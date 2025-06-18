@@ -1,7 +1,7 @@
 import uk.gov.hmrc.DefaultBuildSettings
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.12"
+ThisBuild / scalaVersion := "3.3.6"
 
 lazy val microservice = Project("senior-accounting-officer-submission-frontend", file("."))
   .enablePlugins(play.sbt.PlayScala, SbtDistributablesPlugin)
@@ -12,6 +12,7 @@ lazy val microservice = Project("senior-accounting-officer-submission-frontend",
     scalacOptions += "-Wconf:src=routes/.*:s",
     scalacOptions += "-Wconf:cat=unused-imports&src=html/.*:s",
     pipelineStages := Seq(gzip),
+    PlayKeys.playDefaultPort := 10058
   )
   .settings(CodeCoverageSettings.settings: _*)
 
