@@ -10,6 +10,7 @@ object CodeCoverageSettings {
     "app.*",
     "prod.*",
     ".*Routes.*",
+    ".*views.*",
     "testOnly.*",
     "testOnlyDoNotUseInAppConf.*"
   )
