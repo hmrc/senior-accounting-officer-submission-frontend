@@ -29,9 +29,10 @@ lazy val microservice = (project in file("."))
     retrieveManaged          := true,
     pipelineStages           := Seq(digest, gzip),
     Assets / pipelineStages  := Seq(concat),
-    PlayKeys.playDefaultPort := 10058
+    PlayKeys.playDefaultPort := 10058,
+    Compile / compile        := (Compile / compile dependsOn compileScalastyle).value
   )
-  .settings(CodeCoverageSettings.settings: _*)
+  .settings(CodeCoverageSettings.settings *)
 
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   fork := true,
@@ -42,3 +43,6 @@ lazy val it =
   (project in file("it"))
     .enablePlugins(PlayScala)
     .dependsOn(microservice % "test->test")
+
+lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
+compileScalastyle := scalastyle.in(Compile).toTask("").value
