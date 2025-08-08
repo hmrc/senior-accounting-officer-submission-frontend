@@ -14,14 +14,20 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.senioraccountingofficersubmissionfrontend.config
+package controllers
 
-import com.google.inject.AbstractModule
+import views.html.HelloWorldPage
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.Future
 
-class Module extends AbstractModule {
+@Singleton
+class HelloWorldController @Inject() (mcc: MessagesControllerComponents, helloWorldPage: HelloWorldPage)
+    extends FrontendController(mcc) {
 
-  override def configure(): Unit = {
-
-    bind(classOf[AppConfig]).asEagerSingleton()
+  val helloWorld: Action[AnyContent] = Action.async { implicit request =>
+    Future.successful(Ok(helloWorldPage()))
   }
+
 }
