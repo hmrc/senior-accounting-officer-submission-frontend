@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package uk.gov.hmrc.senioraccountingofficersubmissionfrontend.config
+package config
 
 import javax.inject.{Inject, Singleton}
 
@@ -22,7 +22,7 @@ import play.api.i18n.MessagesApi
 import play.api.mvc.RequestHeader
 import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
-import uk.gov.hmrc.senioraccountingofficersubmissionfrontend.views.html.ErrorTemplate
+import views.html.ErrorTemplate
 
 import scala.concurrent.{ExecutionContext, Future}
 
