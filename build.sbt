@@ -29,10 +29,10 @@ lazy val microservice = (project in file("."))
     retrieveManaged          := true,
     pipelineStages           := Seq(digest, gzip),
     Assets / pipelineStages  := Seq(concat),
-    PlayKeys.playDefaultPort := 10058,
-    Compile / compile        := (Compile / compile dependsOn compileScalastyle).value
+    PlayKeys.playDefaultPort := 10058
   )
   .settings(CodeCoverageSettings.settings *)
+  .settings(scalafixSettings *)
 
 lazy val testSettings: Seq[Def.Setting[_]] = Seq(
   fork := true,
@@ -44,5 +44,11 @@ lazy val it =
     .enablePlugins(PlayScala)
     .dependsOn(microservice % "test->test")
 
-lazy val compileScalastyle = taskKey[Unit]("compileScalastyle")
-compileScalastyle := scalastyle.in(Compile).toTask("").value
+val scalafixSettings: Seq[Setting[_]] = Seq(
+  semanticdbEnabled := true, // enable SemanticDB
+  scalacOptions += {
+    "-Wall"
+  }
+)
+
+addCommandAlias("lint", "scalafixAll;scalafmtAll")
