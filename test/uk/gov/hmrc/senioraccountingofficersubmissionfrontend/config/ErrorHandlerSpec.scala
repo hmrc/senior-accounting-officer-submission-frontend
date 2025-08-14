@@ -15,15 +15,13 @@
  */
 
 package config
-
-import config.ErrorHandler
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
-import play.api.test.FakeRequest
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.test.FakeRequest
 
 class ErrorHandlerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with ScalaFutures {
 
