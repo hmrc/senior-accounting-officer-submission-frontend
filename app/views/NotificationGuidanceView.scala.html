@@ -14,20 +14,19 @@
  * limitations under the License.
  *@
 
-@this(layout: Layout)
+@this(layout: templates.Layout)
 
 @()(implicit request: RequestHeader, messages: Messages)
 
-@layout(pageTitle = Some("Notification Guidance")) {
+@layout(pageTitle = "Notification Guidance") {
 
 
 
- <h1 class="govuk-heading-l">
-  Notification template guide
- </h1>
- <p>Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO.</p>
+ <h1 class="govuk-heading-l">Notification template guide</h1>
+ <p class="govuk-body">Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO.</p>
  <p class="govuk-body">You must fill in all the fields.</p>
- <h3 class="govuk-heading-s">SAO details</h3>
+
+<h3 class="govuk-heading-s">SAO details</h3>
  <ul class="govuk-list govuk-list--bullet">
   <li>SAO name: Full name of the SAO.</li>
   <li>SAO contact details: Email or phone number of the SAO.</li>

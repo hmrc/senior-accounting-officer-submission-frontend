@@ -14,11 +14,11 @@
  * limitations under the License.
  *@
 
-@this(layout: Layout)
+@this(layout: templates.Layout)
 
 @()(implicit request: RequestHeader, messages: Messages)
 
-@layout(pageTitle = Some("senior-accounting-officer-submission-frontend")) {
+@layout(pageTitle = "senior-accounting-officer-submission-frontend") {
     <h1 class="govuk-heading-xl">senior-accounting-officer-submission-frontend</h1>
     <p class="govuk-body">@{messages("service.text")}</p>
 }
