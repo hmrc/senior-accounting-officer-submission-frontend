@@ -14,16 +14,26 @@
  * limitations under the License.
  */
 
-package config
+package controllers
 
-import com.google.inject.AbstractModule
-import controllers.actions.{AuthenticatedIdentifierAction, IdentifierAction}
+import controllers.actions.IdentifierAction
+import play.api.i18n.I18nSupport
+import views.html.IndexView
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 
-class Module extends AbstractModule {
+import javax.inject.{Inject, Singleton}
 
-  override def configure(): Unit = {
-    bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
+@Singleton
+class IndexController @Inject() (
+    identify: IdentifierAction,
+    mcc: MessagesControllerComponents,
+    view: IndexView
+) extends FrontendController(mcc)
+    with I18nSupport {
 
-    bind(classOf[AppConfig]).asEagerSingleton()
+  def onPageLoad: Action[AnyContent] = identify { implicit request =>
+    Ok(view())
   }
+
 }

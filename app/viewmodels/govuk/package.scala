@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-package config
+package viewmodels
 
-import com.google.inject.AbstractModule
-import controllers.actions.{AuthenticatedIdentifierAction, IdentifierAction}
+package object govuk {
 
-class Module extends AbstractModule {
-
-  override def configure(): Unit = {
-    bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
-
-    bind(classOf[AppConfig]).asEagerSingleton()
-  }
+  object all extends ImplicitConversions with BackLinkFluency with ButtonFluency
 }

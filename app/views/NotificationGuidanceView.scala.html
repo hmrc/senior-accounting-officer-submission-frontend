@@ -1,0 +1,61 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(layout: Layout)
+
+@()(implicit request: RequestHeader, messages: Messages)
+
+@layout(pageTitle = Some("Notification Guidance")) {
+
+
+
+ <h1 class="govuk-heading-l">
+  Notification template guide
+ </h1>
+ <p>Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO.</p>
+ <p class="govuk-body">You must fill in all the fields.</p>
+ <h3 class="govuk-heading-s">SAO details</h3>
+ <ul class="govuk-list govuk-list--bullet">
+  <li>SAO name: Full name of the SAO.</li>
+  <li>SAO contact details: Email or phone number of the SAO.</li>
+  <li>SAO start and end date: Dates the SAO held their position during the accounting period.</li>
+ </ul>
+
+ <h3 class="govuk-heading-s">Accounting period</h3>
+ <ul class="govuk-list govuk-list--bullet">
+  <li>The start and end date of the accounting period (DD/MM/YYYY)</li>
+ </ul>
+
+
+ <h3 class="govuk-heading-s">Company information</h3>
+ <ul class="govuk-list govuk-list--bullet">
+  <li>Company name: enter the name of the company the SAO was responsible for.</li>
+  <li>Company UTR: Unique Taxpayer Reference of that company.</li>
+  <li>Company CRN: Company Registration Number of that company.</li>
+  <li>Company Status: inform if a company is Active, Dormant or Liquidated</li>
+ </ul>
+
+ <p class="govuk-body">If you do not have UTR for some companies, please put in the CRN instead.</p>
+
+ <p class="govuk-body">
+  <a class="govuk-link" href="public/templates/sao_notification_template.csv">Download the notification template</a>
+ </p>
+
+}
+
+@{
+//$COVERAGE-OFF$
+}
