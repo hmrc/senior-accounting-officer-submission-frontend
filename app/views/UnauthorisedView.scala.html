@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,18 +12,19 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package config
+@this(
+    layout: templates.Layout
+)
 
-import com.google.inject.AbstractModule
-import controllers.actions.{AuthenticatedIdentifierAction, IdentifierAction}
+@()(implicit request: Request[_], messages: Messages)
 
-class Module extends AbstractModule {
+@layout(
+    pageTitle = titleNoForm(messages("unauthorised.title"))
+) {
 
-  override def configure(): Unit = {
-    bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
+    <h1 class="govuk-heading-xl">@messages("unauthorised.heading")</h1>
 
-    bind(classOf[AppConfig]).asEagerSingleton()
-  }
+    <p class="govuk-body">@messages("unauthorised.guidance")</p>
 }

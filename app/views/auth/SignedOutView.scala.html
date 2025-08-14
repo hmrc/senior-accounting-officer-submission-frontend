@@ -14,15 +14,27 @@
  * limitations under the License.
  *@
 
-@this(layout: Layout)
+@this(
+    layout: templates.Layout,
+    govukButton: GovukButton
+)
 
-@()(implicit request: RequestHeader, messages: Messages)
+@()(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = Some("senior-accounting-officer-submission-frontend")) {
-    <h1 class="govuk-heading-xl">senior-accounting-officer-submission-frontend</h1>
-    <p class="govuk-body">@{messages("service.text")}</p>
-}
+@layout(
+    pageTitle    = titleNoForm(messages("signedOut.title")),
+    showBackLink = false,
+    showSignOut  = false
+) {
 
-@{
-    //$COVERAGE-OFF$
+    <h1 class="govuk-heading-xl">@messages("signedOut.heading")</h1>
+
+    <p class="govuk-body">@messages("signedOut.guidance")</p>
+
+    <p class="govuk-body">
+        @govukButton(
+            ButtonViewModel(messages("site.signIn"))
+                .asLink(routes.IndexController.onPageLoad().url)
+        )
+    </p>
 }

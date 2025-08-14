@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package config
+package controllers
 
-import com.google.inject.AbstractModule
-import controllers.actions.{AuthenticatedIdentifierAction, IdentifierAction}
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.UnauthorisedView
 
-class Module extends AbstractModule {
+import javax.inject.Inject
 
-  override def configure(): Unit = {
-    bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
+class UnauthorisedController @Inject() (
+    val controllerComponents: MessagesControllerComponents,
+    view: UnauthorisedView
+) extends FrontendBaseController
+    with I18nSupport {
 
-    bind(classOf[AppConfig]).asEagerSingleton()
+  def onPageLoad(): Action[AnyContent] = Action { implicit request =>
+    Ok(view())
   }
 }

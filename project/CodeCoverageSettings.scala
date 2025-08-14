@@ -1,3 +1,5 @@
+/*
+ * */
 import sbt.Setting
 import scoverage.ScoverageKeys
 
@@ -11,6 +13,7 @@ object CodeCoverageSettings {
     "prod.*",
     ".*Routes.*",
     ".*views.*",
+    ".*viewmodels.*",
     "testOnly.*",
     "testOnlyDoNotUseInAppConf.*"
   )
@@ -18,7 +21,7 @@ object CodeCoverageSettings {
   val settings: Seq[Setting[_]] = Seq(
     ScoverageKeys.coverageExcludedPackages := excludedPackages.mkString(";"),
     ScoverageKeys.coverageMinimumStmtTotal := 100,
-    ScoverageKeys.coverageFailOnMinimum := true,
-    ScoverageKeys.coverageHighlighting := true
+    ScoverageKeys.coverageFailOnMinimum    := true,
+    ScoverageKeys.coverageHighlighting     := true
   )
 }

@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package config
+import play.api.http.Status
+import support.{ISpecBase, MockAuthHelper}
 
-import com.google.inject.AbstractModule
-import controllers.actions.{AuthenticatedIdentifierAction, IdentifierAction}
+class HealthISpec extends ISpecBase {
 
-class Module extends AbstractModule {
+  "service health endpoint" must {
+    "respond with 200 status" in {
+      val response =
+        wsClient
+          .url(s"$baseUrl/ping/ping")
+          .get()
+          .futureValue
 
-  override def configure(): Unit = {
-    bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
-
-    bind(classOf[AppConfig]).asEagerSingleton()
+      response.status mustBe Status.OK
+      MockAuthHelper.verifyAuthWasCalled(times = 0)
+    }
   }
 }
