@@ -1,2 +1,24 @@
-service.name = senior-accounting-officer-submission-frontend
-service.text = This is your new service
+service.name = Senior Accounting Officer notification and certificate submission
+
+submission.notification.guidance.title = Notification template guide
+submission.notification.guidance.heading = Notification template guide
+
+submission.notification.guidance.p1 = Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO.
+submission.notification.guidance.p2 = You must fill in all the fields.
+
+submission.notification.guidance.sao.details.heading = SAO details
+submission.notification.guidance.sao.details.list.line1.content = SAO name: Full name of the SAO.
+submission.notification.guidance.sao.details.list.line2.content = SAO contact details: Email or phone number of the SAO.
+submission.notification.guidance.sao.details.list.line3.content = SAO start and end date: Dates the SAO held their position during the accounting period.
+
+submission.notification.guidance.accountingPeriod.details.heading = Accounting period
+submission.notification.guidance.accountingPeriod.details.list.line1.content = The start and end date of the accounting period (DD/MM/YYYY)
+
+submission.notification.guidance.companyInformation.details.heading = Company information
+submission.notification.guidance.companyInformation.details.list.line1.content = Company name: enter the name of the company the SAO was responsible for.
+submission.notification.guidance.companyInformation.details.list.line2.content = Company UTR: Unique Taxpayer Reference of that company.
+submission.notification.guidance.companyInformation.details.list.line3.content = Company CRN: Company Registration Number of that company.
+submission.notification.guidance.companyInformation.details.list.line4.content = Company Status: inform if a company is Active, Dormant or Liquidated
+
+submission.notification.guidance.utrCrnGuidance.p = If you do not have UTR for some companies, please put in the CRN instead.
+submission.notification.guidance.notification.template.download.link.content = Download the notification template

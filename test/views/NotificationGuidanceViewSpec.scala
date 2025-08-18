@@ -36,75 +36,58 @@ class NotificationGuidanceViewSpec extends SpecBase with GuiceOneAppPerSuite {
   val mainContent = doc.getElementById("main-content")
 
   "NotificationGuidanceView" must {
-//    "must generate a view with the correct heading" in {
-//      val h1 = mainContent.getElementsByTag("h1")
-//      h1.size() mustBe 1
-//      h1.get(0).text() mustBe "Notification template guide"
-//    }
+    "must generate a view with the correct heading" in {
+      val h1 = mainContent.getElementsByTag("h1")
+      h1.size() mustBe 1
+      h1.get(0).text() mustBe "Notification template guide"
+    }
 
-    //      "with the correct paragraphs" in {
-    //        val mainContent = doc.getElementById("main-content")
-    //
-    //        val paragraphs = mainContent.getElementsByTag("p")
-    //        paragraphs.size() mustBe 4
-    //        List.from(paragraphs.iterator().asScala).foreach(p => p.attr("class") mustBe "govuk-body")
-    //
-    //        paragraphs
-    //          .get(0)
-    //          .text() mustBe "Register the company responsible for submitting the Senior Accounting Officer (SAO) notification and certificate. There’s no required company type. This should be the company where the SAO works from."
-    //        paragraphs
-    //          .get(1)
-    //          .text() mustBe "If your group has more than one SAO, you’ll need to complete a separate registration for each SAO."
-    //        paragraphs
-    //          .get(2)
-    //          .text() mustBe "At the Review and submit section of this registration, you can amend your answers and print or save them for your own records."
-    //        paragraphs.get(3).text() mustBe "Is this page not working properly? (opens in new tab)"
-    //      }
-    //
-    //      "with the correct subheadings and content" in {
-    //        val mainContent = doc.getElementById("main-content")
-    //
-    //        val headings2 = mainContent.getElementsByTag("h2")
-    //        headings2.size() mustBe 3
-    //
-    //        headings2.asScala.foreach(h2 => h2.attr("class") mustBe "govuk-heading-m")
-    //        headings2.get(0).text() mustBe "Company details"
-    //        headings2.get(1).text() mustBe "Contact details"
-    //        headings2.get(2).text() mustBe "Review and submit"
-    //      }
-    //
-    //      "with the correct link texts" in {
-    //        val mainContent = doc.getElementById("main-content")
-    //
-    //        val links = mainContent.getElementsByClass("govuk-link govuk-task-list__link")
-    //        links.size() mustBe 3
-    //        links.get(0).text() mustBe "Company details"
-    //        links.get(1).text() mustBe "Contact details"
-    //        links.get(2).text() mustBe "Check your answers before submitting your registration"
-    //      }
-    //
-    //      "with the correct label texts" in {
-    //        val mainContent = doc.getElementById("main-content")
-    //        val statusTags  = mainContent.getElementsByClass("govuk-task-list__status")
-    //
-    //        statusTags.size() mustBe 3
-    //
-    //        statusTags.asScala.foreach(tag =>
-    //          tag.text() mustBe "Completed"
-    //          tag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--green"
-    //        )
-    //      }
-    //
-    //      "must not show a back link" in {
-    //        val backLink = doc.getElementsByClass("govuk-back-link")
-    //        backLink.size() mustBe 0
-    //      }
-    //
-    //      "must show help link" in {
-    //        val mainContent = doc.getElementById("main-content")
-    //
-    //        val helpLink = mainContent.getElementsByClass("govuk-link hmrc-report-technical-issue ")
-    //        helpLink.size() mustBe 1
-    //      }
+    "with the correct content for guidance at the top" in {
+      val paras = mainContent.getElementsByTag("p")
+      paras.get(0).text mustBe "Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO."
+      paras.get(1).text mustBe "You must fill in all the fields."
+    }
+
+    "with the correct SAO Details content" in {
+      val headings = mainContent.getElementsByTag("h3")
+      headings.get(0).text mustBe "SAO details"
+      val listContents = mainContent.getElementsByTag("li")
+      listContents.get(0).text mustBe "SAO name: Full name of the SAO."
+      listContents.get(1).text mustBe "SAO contact details: Email or phone number of the SAO."
+      listContents
+        .get(2)
+        .text mustBe "SAO start and end date: Dates the SAO held their position during the accounting period."
+    }
+
+    "with the correct Accounting Period Details content" in {
+      val headings = mainContent.getElementsByTag("h3")
+      headings.get(1).text mustBe "Accounting period"
+      val listContents = mainContent.getElementsByTag("li")
+      listContents.get(3).text mustBe "The start and end date of the accounting period (DD/MM/YYYY)"
+
+    }
+
+    "with the correct Company Details content" in {
+      val headings = mainContent.getElementsByTag("h3")
+      headings.get(2).text mustBe "Company information"
+      val listContents = mainContent.getElementsByTag("li")
+      listContents.get(4).text mustBe "Company name: enter the name of the company the SAO was responsible for."
+      listContents.get(5).text mustBe "Company UTR: Unique Taxpayer Reference of that company."
+      listContents.get(6).text mustBe "Company CRN: Company Registration Number of that company."
+      listContents
+        .get(7)
+        .text mustBe "Company Status: inform if a company is Active, Dormant or Liquidated"
+    }
+
+    "with the correct content for guidance at the bottom" in {
+      val paras = mainContent.getElementsByTag("p")
+      paras.get(2).text mustBe "If you do not have UTR for some companies, please put in the CRN instead."
+    }
+
+    "with the correct link content for notification template download" in {
+      val links = mainContent.getElementsByTag("a")
+      links.get(0).text mustBe "Download the notification template"
+    }
+
   }
 }
