@@ -18,6 +18,8 @@ package views
 
 import base.SpecBase
 import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.Request
@@ -28,12 +30,12 @@ class NotificationGuidanceViewSpec extends SpecBase with GuiceOneAppPerSuite {
 
   val SUT: NotificationGuidanceView = app.injector.instanceOf[NotificationGuidanceView]
 
-  given request: Request[_] = FakeRequest()
+  given request: Request[?] = FakeRequest()
 
   given Messages = app.injector.instanceOf[MessagesApi].preferred(request)
 
-  val doc         = Jsoup.parse(SUT().toString)
-  val mainContent = doc.getElementById("main-content")
+  val doc: Document        = Jsoup.parse(SUT().toString)
+  val mainContent: Element = doc.getElementById("main-content")
 
   "NotificationGuidanceView" must {
     "must generate a view with the correct heading" in {

@@ -8,6 +8,7 @@ ThisBuild / scalaVersion := "3.3.6"
 
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
+  .settings(inConfig(Test)(testSettings) *)
   .disablePlugins(JUnitXmlReportPlugin) // Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(ThisBuild / useSuperShell := false)
   .settings(
@@ -35,8 +36,23 @@ lazy val microservice = (project in file("."))
     PlayKeys.playDefaultPort := 10058
   )
   .settings(CodeCoverageSettings.settings *)
+  .settings(scalafixSettings *)
+
+lazy val testSettings: Seq[Def.Setting[_]] = Seq(
+  fork := true,
+  unmanagedSourceDirectories += baseDirectory.value / "test-utils"
+)
 
 lazy val it =
   (project in file("it"))
     .enablePlugins(PlayScala)
     .dependsOn(microservice % "test->test")
+
+val scalafixSettings: Seq[Setting[_]] = Seq(
+  semanticdbEnabled := true, // enable SemanticDB
+  scalacOptions += {
+    "-Wall"
+  }
+)
+
+addCommandAlias("lint", "scalafixAll;scalafmtAll")

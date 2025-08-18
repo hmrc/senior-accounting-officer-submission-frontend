@@ -19,7 +19,8 @@ package controllers.actions
 import base.SpecBase
 import config.AppConfig
 import controllers.routes
-import play.api.mvc.{Action, AnyContent, BodyParsers, Results}
+import play.api.mvc.BodyParsers.Default
+import play.api.mvc.*
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.auth.core.*
@@ -36,8 +37,8 @@ class AuthActionSpec extends SpecBase {
     def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
   }
 
-  val bodyParsers = app.injector.instanceOf[BodyParsers.Default]
-  val appConfig   = app.injector.instanceOf[AppConfig]
+  val bodyParsers: Default = app.injector.instanceOf[BodyParsers.Default]
+  val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
   "Auth Action" when {
 

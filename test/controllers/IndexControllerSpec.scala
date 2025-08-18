@@ -15,7 +15,6 @@
  */
 
 package controllers
-
 import base.SpecBase
 import controllers.actions.{FakeIdentifierAction, IdentifierAction}
 import org.scalatest.wordspec.AnyWordSpec
@@ -36,7 +35,7 @@ class IndexControllerSpec extends SpecBase {
 
   private val controller = app.injector.instanceOf[IndexController]
 
-  "GET /" should {
+  "GET /" must {
     "return 200" in {
       val result = controller.onPageLoad(fakeRequest)
       status(result) mustBe Status.OK
