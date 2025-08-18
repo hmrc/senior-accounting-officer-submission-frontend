@@ -25,7 +25,7 @@
   appConfig: AppConfig,
   hmrcTimeoutDialog: HmrcTimeoutDialog,
   hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-  alphaBanner: StandardAlphaBanner,
+  betaBanner: StandardBetaBanner,
   hmrcStandardPage: HmrcStandardPage
 )
 
@@ -48,7 +48,7 @@
     ),
     banners = Banners(
         displayHmrcBanner = showHmrcBanner,
-        phaseBanner = Some(alphaBanner(appConfig.feedbackUrl))
+        phaseBanner = Some(betaBanner(appConfig.feedbackUrl))
     ),
     isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
     backLink = if (showBackLink) Some(BackLink.mimicsBrowserBackButtonViaJavaScript) else None
