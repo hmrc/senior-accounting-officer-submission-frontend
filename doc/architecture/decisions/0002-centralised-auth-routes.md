@@ -1,4 +1,4 @@
-# 2. remove-unwanted-routes
+# 2. centralised auth routes/control
 
 Date: 2025-08-20
 
