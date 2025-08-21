@@ -19,7 +19,6 @@ package config
 import play.api.Configuration
 import play.api.mvc.RequestHeader
 
-import java.net.URI
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -35,11 +34,11 @@ class AppConfig @Inject() (config: Configuration) {
   def feedbackUrl(implicit request: RequestHeader): String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${host + request.uri}"
 
-  private def hubHostUri: URI    = URI(config.get[String]("hub-frontend.host")).resolve("/senior-accounting-officer")
-  val hubSignOutUrl: String      = hubHostUri.resolve("/account/sign-out-survey").toString
-  val hubUnauthorisedUrl: String = hubHostUri.resolve("/unauthorised").toString
+  private def hubBaseUrl         = config.get[String]("hub-frontend.host") + "/senior-accounting-officer"
+  val hubSignOutUrl: String      = hubBaseUrl + "/account/sign-out-survey"
+  val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
-  val loginContinueUrl: String = hubHostUri.toString
+  val loginContinueUrl: String = hubBaseUrl
   val loginUrl: String         = config.get[String]("urls.login")
   val signOutUrl: String       = config.get[String]("urls.signOut")
 
