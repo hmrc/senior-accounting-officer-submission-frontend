@@ -38,7 +38,7 @@ class AuthActionISpec extends ISpecBase {
 
         MockAuthHelper.verifyAuthWasCalled(times = 0)
         response.status mustBe Status.SEE_OTHER
-        response.headers("Location").head must startWith(appConfig.loginUrl)
+        response.headers("Location").head must startWith(appConfig.loginContinueUrl)
       }
     }
 

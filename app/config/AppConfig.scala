@@ -39,7 +39,4 @@ class AppConfig @Inject() (config: Configuration) {
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
   val loginContinueUrl: String = hubBaseUrl
-  val loginUrl: String         = config.get[String]("urls.login")
-  val signOutUrl: String       = config.get[String]("urls.signOut")
-
 }

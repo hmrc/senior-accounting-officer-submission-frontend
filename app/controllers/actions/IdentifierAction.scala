@@ -50,7 +50,7 @@ class AuthenticatedIdentifierAction @Inject() (
       }.getOrElse(throw new UnauthorizedException("Unable to retrieve internal Id"))
     } recover {
       case _: NoActiveSession =>
-        Redirect(config.loginUrl, Map("continue" -> Seq(config.loginContinueUrl)))
+        Redirect(config.loginContinueUrl)
       case _: AuthorisationException =>
         Redirect(config.hubUnauthorisedUrl)
     }
