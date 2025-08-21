@@ -32,17 +32,15 @@ class AppConfig @Inject() (config: Configuration) {
   private val contactHost                  = config.get[String]("contact-frontend.host")
   private val contactFormServiceIdentifier = config.get[String]("serviceId")
 
-  val loginUrl: String         = config.get[String]("urls.login")
-  val loginContinueUrl: String = config.get[String]("urls.loginContinue")
-  val signOutUrl: String       = config.get[String]("urls.signOut")
-
-  private val exitSurveyBaseUrl: String = config.get[String]("feedback-frontend.host")
-  val exitSurveyUrl: String             = s"$exitSurveyBaseUrl/feedback/$contactFormServiceIdentifier"
-
   def feedbackUrl(implicit request: RequestHeader): String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${host + request.uri}"
 
-  val hubHostUri: URI            = URI(config.get[String]("hub-frontend.host")).resolve("/senior-accounting-officer")
+  private def hubHostUri: URI    = URI(config.get[String]("hub-frontend.host")).resolve("/senior-accounting-officer")
   val hubSignOutUrl: String      = hubHostUri.resolve("/account/sign-out-survey").toString
   val hubUnauthorisedUrl: String = hubHostUri.resolve("/unauthorised").toString
+
+  val loginContinueUrl: String = hubHostUri.toString
+  val loginUrl: String         = config.get[String]("urls.login")
+  val signOutUrl: String       = config.get[String]("urls.signOut")
+
 }
