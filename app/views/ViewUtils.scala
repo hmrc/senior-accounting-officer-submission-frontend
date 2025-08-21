@@ -21,16 +21,16 @@ import play.api.i18n.Messages
 
 object ViewUtils {
 
-  def title(form: Form[?], title: String, section: Option[String] = None)(implicit messages: Messages): String =
+  def title(form: Form[?], title: String, section: Option[String] = None)(using messages: Messages): String =
     titleNoForm(
       title = s"${errorPrefix(form)} ${messages(title)}",
       section = section
     )
 
-  def titleNoForm(title: String, section: Option[String] = None)(implicit messages: Messages): String =
+  def titleNoForm(title: String, section: Option[String] = None)(using messages: Messages): String =
     s"${messages(title)} - ${section.fold("")(messages(_) + " - ")}${messages("service.name")} - ${messages("site.govuk")}"
 
-  def errorPrefix(form: Form[?])(implicit messages: Messages): String = {
+  def errorPrefix(form: Form[?])(using messages: Messages): String = {
     if form.hasErrors || form.hasGlobalErrors then messages("error.title.prefix") else ""
   }
 }

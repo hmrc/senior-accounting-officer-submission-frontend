@@ -17,35 +17,44 @@
 package controllers
 
 import base.SpecBase
-import controllers.actions.{FakeIdentifierAction, IdentifierAction}
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.Application
 import play.api.http.Status
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.i18n.{Messages, MessagesApi}
+import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import views.html.NotificationGuidanceView
 
 class NotificationGuidanceControllerSpec extends SpecBase {
-  override def fakeApplication(): Application =
-    new GuiceApplicationBuilder()
-      .overrides(bind[IdentifierAction].to[FakeIdentifierAction])
-      .build()
 
   private val fakeRequest = FakeRequest("GET", "/notification/guidance")
 
   private val controller = app.injector.instanceOf[NotificationGuidanceController]
-
+  private val view       = app.injector.instanceOf[NotificationGuidanceView]
   "GET /" must {
     "return 200" in {
       val result = controller.onPageLoad()(fakeRequest)
+
       status(result) mustBe Status.OK
     }
 
     "return HTML" in {
       val result = controller.onPageLoad()(fakeRequest)
+
       contentType(result) mustBe Some("text/html")
       charset(result) mustBe Some("utf-8")
+    }
+
+    "return correct content html" in {
+      given messages: Messages                           = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
+      given request: FakeRequest[AnyContentAsEmpty.type] =
+        FakeRequest(GET, routes.NotificationGuidanceController.onPageLoad().url)
+
+      val result = route(app, request).value
+
+      status(result) mustEqual OK
+      val content = contentAsString(result)
+      content mustEqual view().toString
     }
   }
 }

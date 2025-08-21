@@ -18,7 +18,6 @@ package controllers.actions
 
 import com.google.inject.Inject
 import config.AppConfig
-import controllers.routes
 import play.api.mvc.Results.*
 import play.api.mvc.*
 import requests.IdentifierRequest

@@ -15,7 +15,6 @@
  *@
 
 @import config.AppConfig
-@import uk.gov.hmrc.hmrcfrontend.views.config.StandardAlphaBanner
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers.*
 @import uk.gov.hmrc.hmrcfrontend.views.html.components.*
 @import uk.gov.hmrc.govukfrontend.views.html.components.*
@@ -33,7 +32,7 @@
   showBackLink: Boolean = true,
   showSignOut: Boolean = true,
   showHmrcBanner: Boolean = false
-)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+)(contentBlock: Html)(using request: RequestHeader, messages: Messages)
 
 @content = {
     @contentBlock

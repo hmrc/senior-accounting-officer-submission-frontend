@@ -17,19 +17,10 @@
 package config
 
 import base.SpecBase
-import controllers.actions.{FakeIdentifierAction, IdentifierAction}
 import org.scalatest.wordspec.AnyWordSpec
-import play.api.Application
-import play.api.inject.bind
-import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 
 class ErrorHandlerSpec extends SpecBase {
-
-  override def fakeApplication(): Application =
-    new GuiceApplicationBuilder()
-      .overrides(bind[IdentifierAction].to[FakeIdentifierAction])
-      .build()
 
   private val fakeRequest = FakeRequest("GET", "/")
 
