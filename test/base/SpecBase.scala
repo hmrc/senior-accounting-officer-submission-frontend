@@ -14,35 +14,23 @@
  * limitations under the License.
  */
 
-package controllers
-import org.scalatest.matchers.should.Matchers
+package base
+
+import controllers.actions.*
+import org.scalatest.OptionValues
+import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.matchers.must.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
-import play.api.http.Status
+import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import play.api.test.FakeRequest
-import play.api.test.Helpers.*
 
-class HelloWorldControllerSpec extends AnyWordSpec with Matchers with GuiceOneAppPerSuite {
+trait SpecBase extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with OptionValues with ScalaFutures {
+
   override def fakeApplication(): Application =
     new GuiceApplicationBuilder()
+      .overrides(bind[IdentifierAction].to[FakeIdentifierAction])
       .build()
 
-  private val fakeRequest = FakeRequest("GET", "/")
-
-  private val controller = app.injector.instanceOf[HelloWorldController]
-
-  "GET /" should {
-    "return 200" in {
-      val result = controller.helloWorld(fakeRequest)
-      status(result) shouldBe Status.OK
-    }
-
-    "return HTML" in {
-      val result = controller.helloWorld(fakeRequest)
-      contentType(result) shouldBe Some("text/html")
-      charset(result) shouldBe Some("utf-8")
-    }
-  }
 }

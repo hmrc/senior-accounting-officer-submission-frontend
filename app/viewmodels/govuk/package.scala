@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,17 +12,11 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(layout: Layout)
+package viewmodels
 
-@()(implicit request: RequestHeader, messages: Messages)
+package object govuk {
 
-@layout(pageTitle = Some("senior-accounting-officer-submission-frontend")) {
-    <h1 class="govuk-heading-xl">senior-accounting-officer-submission-frontend</h1>
-    <p class="govuk-body">@{messages("service.text")}</p>
-}
-
-@{
-    //$COVERAGE-OFF$
+  object all extends ImplicitConversions with BackLinkFluency with ButtonFluency
 }

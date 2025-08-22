@@ -9,6 +9,7 @@ ThisBuild / scalaVersion := "3.3.6"
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
   .settings(inConfig(Test)(testSettings) *)
+  .disablePlugins(JUnitXmlReportPlugin) // Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(ThisBuild / useSuperShell := false)
   .settings(
     name := appName,
@@ -23,7 +24,10 @@ lazy val microservice = (project in file("."))
       "uk.gov.hmrc.hmrcfrontend.views.html.components.*",
       "uk.gov.hmrc.hmrcfrontend.views.html.helpers.*",
       "uk.gov.hmrc.hmrcfrontend.views.config.*",
-      "controllers.routes.*"
+      "controllers.routes.*",
+      "views.ViewUtils.*",
+      "viewmodels.govuk.all.*",
+      "viewmodels.*"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged          := true,

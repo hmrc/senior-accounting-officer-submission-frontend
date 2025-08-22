@@ -17,6 +17,7 @@
 package config
 
 import play.api.Configuration
+import play.api.mvc.RequestHeader
 
 import javax.inject.{Inject, Singleton}
 
@@ -25,4 +26,17 @@ class AppConfig @Inject() (config: Configuration) {
   val welshLanguageSupportEnabled: Boolean =
     config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
 
+  val host: String = config.get[String]("host")
+
+  private val contactHost                  = config.get[String]("contact-frontend.host")
+  private val contactFormServiceIdentifier = config.get[String]("serviceId")
+
+  def feedbackUrl(implicit request: RequestHeader): String =
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${host + request.uri}"
+
+  private def hubBaseUrl         = config.get[String]("hub-frontend.host") + "/senior-accounting-officer"
+  val hubSignOutUrl: String      = hubBaseUrl + "/account/sign-out-survey"
+  val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
+
+  val loginContinueUrl: String = hubBaseUrl
 }

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,26 +12,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@import config.AppConfig
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.HmrcStandardPage
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage.HmrcStandardPageParams
+package config
 
-@this(
-  appConfig: AppConfig,
-  hmrcStandardPage: HmrcStandardPage
-)
+import base.SpecBase
+import org.scalatest.wordspec.AnyWordSpec
+import play.api.test.FakeRequest
 
-@(pageTitle: Option[String] = None)(contentBlock: Html)(implicit request: RequestHeader, messages: Messages)
+class ErrorHandlerSpec extends SpecBase {
 
-@hmrcStandardPage(
-  HmrcStandardPageParams(
-    pageTitle = pageTitle,
-    isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled
-  )
-)(contentBlock)
+  private val fakeRequest = FakeRequest("GET", "/")
 
-@{
-    //$COVERAGE-OFF$
+  private val handler = app.injector.instanceOf[ErrorHandler]
+
+  "standardErrorTemplate" should {
+    "render HTML" in {
+      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
+      html.contentType mustBe "text/html"
+    }
+  }
+
 }

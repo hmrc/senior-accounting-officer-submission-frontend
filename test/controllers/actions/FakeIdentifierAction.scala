@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package config
+package controllers.actions
 
-import com.google.inject.AbstractModule
-import controllers.actions.{AuthenticatedIdentifierAction, IdentifierAction}
+import play.api.mvc.*
+import requests.IdentifierRequest
 
-class Module extends AbstractModule {
+import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
 
-  override def configure(): Unit = {
-    bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
+class FakeIdentifierAction @Inject() (bodyParsers: PlayBodyParsers) extends IdentifierAction {
 
-    bind(classOf[AppConfig]).asEagerSingleton()
-  }
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
+    block(IdentifierRequest(request, "id"))
+
+  override def parser: BodyParser[AnyContent] =
+    bodyParsers.default
+
+  override protected def executionContext: ExecutionContext =
+    scala.concurrent.ExecutionContext.Implicits.global
 }

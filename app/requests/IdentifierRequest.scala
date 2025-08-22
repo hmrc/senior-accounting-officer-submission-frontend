@@ -14,21 +14,8 @@
  * limitations under the License.
  */
 
-package controllers
+package requests
 
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import views.html.HelloWorldPage
+import play.api.mvc.{Request, WrappedRequest}
 
-import javax.inject.{Inject, Singleton}
-import scala.concurrent.Future
-
-@Singleton
-class HelloWorldController @Inject() (mcc: MessagesControllerComponents, helloWorldPage: HelloWorldPage)
-    extends FrontendController(mcc) {
-
-  val helloWorld: Action[AnyContent] = Action.async { implicit request =>
-    Future.successful(Ok(helloWorldPage()))
-  }
-
-}
+final case class IdentifierRequest[A](request: Request[A], userId: String) extends WrappedRequest[A](request)
