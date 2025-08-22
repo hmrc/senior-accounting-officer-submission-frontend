@@ -4,7 +4,7 @@ Date: 2025-08-20
 
 ## Status
 
-Under Review
+Accepted
 
 ## Context
 
