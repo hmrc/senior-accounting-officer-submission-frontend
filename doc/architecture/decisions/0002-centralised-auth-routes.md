@@ -25,3 +25,4 @@ The hub service will host all the auth related routes, here we will only referen
 - If in the unlikely event that we do decide to change the respective routes then we need to remember to update both services, it would also mean that these services cannot be released in a mismatched state.
 - We will need to refactor the sign out journey on the hub so there is a single route with configurable control over survey vs no survey (and updated here)
 - This would avoid code duplication and centralise the maintenance efforts for unauthorised and sign out
+- Due to the co-dependency both hub and submission must always be shuttered/unshuttered together
