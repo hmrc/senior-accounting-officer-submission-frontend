@@ -39,4 +39,8 @@ class AppConfig @Inject() (config: Configuration) {
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
   val loginContinueUrl: String = hubBaseUrl
+
+  val notificationFilename: String = config.get[String]("file.notification.csv-file")
+  val notificationFileDir: String  = config.get[String]("file.notification.dir")
+
 }
