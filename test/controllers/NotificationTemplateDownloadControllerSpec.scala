@@ -24,6 +24,7 @@ import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import org.apache.pekko.stream.Materializer
+import config.AppConfig
 
 class NotificationTemplateDownloadControllerSpec extends SpecBase {
 
@@ -41,6 +42,13 @@ class NotificationTemplateDownloadControllerSpec extends SpecBase {
 
       contentDisposition mustBe Some("attachment; filename=test.csv")
       contentType(result) mustBe Some("text/csv")
+    }
+
+    "return an internal server error if template file is unavailable" in {
+      AppConfig.setValue("templateFile", "nonsense/file/path")
+      val result = controller.onPageLoad()(fakeRequest)
+
+      status(result) mustBe Status.INTERNAL_SERVER_ERROR
     }
   }
 }

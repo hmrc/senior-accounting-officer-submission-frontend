@@ -40,5 +40,17 @@ class AppConfig @Inject() (config: Configuration) {
 
   val loginContinueUrl: String = hubBaseUrl
 
-  val templateFile = config.get[String]("templateFile")
+  private def getValue(key: String): String =
+    sys.props
+      .get(key)
+      .getOrElse(
+        config.get[String](key)
+      )
+
+  def templateFile = getValue("templateFile")
+}
+
+object AppConfig {
+  def setValue(key: String, value: String): Unit =
+    sys.props.addOne((key, value)): Unit
 }

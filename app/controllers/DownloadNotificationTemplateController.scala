@@ -43,7 +43,7 @@ class DownloadNotificationTemplateController @Inject(appConfig: AppConfig)(
           "Content-Disposition" -> s"attachment; filename=${filename}"
         )
     } else {
-      NotFound("File not found") // TODO: this should be a 500 error, not users fault!
+      InternalServerError("Unable to provide template")
     }
   }
   }
