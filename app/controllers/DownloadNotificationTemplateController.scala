@@ -34,16 +34,16 @@ class DownloadNotificationTemplateController @Inject(appConfig: AppConfig)(
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = identify { implicit request => {
-    val notificationTemplateDownloadPath: Path =
-      Paths.get(appConfig.notificationFileDir, appConfig.notificationFilename)
-    val file = notificationTemplateDownloadPath.toFile
-    if file.exists && !file.isDirectory then {
-      Ok.sendFile(content = file, inline = false)
+    val templateFilepath: Path = Paths.get(appConfig.templateFile)
+    val templateFile = templateFilepath.toFile
+    if templateFile.exists && !templateFile.isDirectory then {
+      val filename = templateFilepath.getFileName
+      Ok.sendFile(content = templateFile, inline = false)
         .withHeaders(
-          "Content-Disposition" -> s"attachment; filename=${appConfig.notificationFilename}"
+          "Content-Disposition" -> s"attachment; filename=${filename}"
         )
     } else {
-      NotFound("File not found")
+      NotFound("File not found") // TODO: this should be a 500 error, not users fault!
     }
   }
   }

@@ -14,7 +14,12 @@
  * limitations under the License.
  *@
 
-@this(layout: templates.Layout)
+@import config.AppConfig
+
+@this(
+    layout: templates.Layout,
+    appConfig: AppConfig
+)
 
 @()(using request: RequestHeader, messages: Messages)
 
@@ -50,7 +55,7 @@
  <p class="govuk-body">@messages("submission.notification.guidance.utrCrnGuidance.p")</p>
 
  <p class="govuk-body">
-  <a class="govuk-link" href="public/templates/sao_notification_template.csv">@messages("submission.notification.guidance.notification.template.download.link.content")</a>
+   <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">@messages("submission.notification.guidance.notification.template.download.link.content")</a>
  </p>
 
 }
