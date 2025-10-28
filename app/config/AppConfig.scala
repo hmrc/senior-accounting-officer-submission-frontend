@@ -47,7 +47,7 @@ class AppConfig @Inject() (config: Configuration) {
         config.get[String](key)
       )
 
-  def templateFile = getValue("templateFile")
+  def templateFile: String = getValue("templateFile")
 }
 
 object AppConfig {

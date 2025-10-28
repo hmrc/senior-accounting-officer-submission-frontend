@@ -17,14 +17,11 @@
 package controllers
 
 import base.SpecBase
+import config.AppConfig
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import org.apache.pekko.stream.Materializer
-import config.AppConfig
 
 class NotificationTemplateDownloadControllerSpec extends SpecBase {
 

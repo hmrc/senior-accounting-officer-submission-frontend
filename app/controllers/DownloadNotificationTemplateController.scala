@@ -22,29 +22,31 @@ import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import java.nio.file.{Path, Paths}
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class DownloadNotificationTemplateController @Inject(appConfig: AppConfig)(
-  identify: IdentifierAction,
-  mcc: MessagesControllerComponents
+import java.nio.file.{Path, Paths}
+import javax.inject.Inject
+
+class DownloadNotificationTemplateController @Inject (appConfig: AppConfig)(
+    identify: IdentifierAction,
+    mcc: MessagesControllerComponents
 )(implicit val ec: ExecutionContext)
-  extends FrontendController(mcc)
+    extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = identify { implicit request => {
-    val templateFilepath: Path = Paths.get(appConfig.templateFile)
-    val templateFile = templateFilepath.toFile
-    if templateFile.exists && !templateFile.isDirectory then {
-      val filename = templateFilepath.getFileName
-      Ok.sendFile(content = templateFile, inline = false)
-        .withHeaders(
-          "Content-Disposition" -> s"attachment; filename=${filename}"
-        )
-    } else {
-      InternalServerError("Unable to provide template")
+  def onPageLoad(): Action[AnyContent] = identify { implicit request =>
+    {
+      val templateFilepath: Path = Paths.get(appConfig.templateFile)
+      val templateFile           = templateFilepath.toFile
+      if templateFile.exists && !templateFile.isDirectory then {
+        val filename = templateFilepath.getFileName
+        Ok.sendFile(content = templateFile, inline = false)
+          .withHeaders(
+            "Content-Disposition" -> s"attachment; filename=${filename}"
+          )
+      } else {
+        InternalServerError("Unable to provide template")
+      }
     }
-  }
   }
 }
