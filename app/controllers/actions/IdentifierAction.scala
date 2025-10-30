@@ -17,42 +17,80 @@
 package controllers.actions
 
 import com.google.inject.Inject
-import config.AppConfig
-import play.api.mvc.*
+import controllers.routes
+import models.requests.IdentifierRequest
 import play.api.mvc.Results.*
-import requests.IdentifierRequest
+import play.api.mvc.*
 import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
 import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.{ExecutionContext, Future}
+import config.AppConfig
 
 trait IdentifierAction
     extends ActionBuilder[IdentifierRequest, AnyContent]
     with ActionFunction[Request, IdentifierRequest]
 
-class AuthenticatedIdentifierAction @Inject() (
+final class FrontendAuthenticatedIdentifierAction @Inject() (
     override val authConnector: AuthConnector,
     config: AppConfig,
-    val parser: BodyParsers.Default
-)(implicit val executionContext: ExecutionContext)
+    override val parser: BodyParsers.Default
+)(using ExecutionContext)
+    extends AuthenticatedIdentifierAction(config, parser, isFrontend = true)
+
+trait ApiAuthenticatedIdentifierAction extends IdentifierAction
+
+class ApiAuthenticatedIdentifierActionImpl @Inject() (
+    override val authConnector: AuthConnector,
+    config: AppConfig,
+    override val parser: BodyParsers.Default
+)(using ExecutionContext)
+    extends AuthenticatedIdentifierAction(config, parser, isFrontend = false)
+    with ApiAuthenticatedIdentifierAction
+
+abstract class AuthenticatedIdentifierAction(
+    config: AppConfig,
+    val parser: BodyParsers.Default,
+    isFrontend: Boolean
+)(using override val executionContext: ExecutionContext)
     extends IdentifierAction
     with AuthorisedFunctions {
 
   override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
-
-    implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+    given hc: HeaderCarrier =
+      if isFrontend then {
+        HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+      } else {
+        HeaderCarrierConverter.fromRequest(request)
+      }
 
     authorised().retrieve(Retrievals.internalId) {
       _.map { internalId =>
         block(IdentifierRequest(request, internalId))
       }.getOrElse(throw new UnauthorizedException("Unable to retrieve internal Id"))
     } recover {
-      case _: NoActiveSession =>
-        Redirect(config.loginContinueUrl)
       case _: AuthorisationException =>
-        Redirect(config.hubUnauthorisedUrl)
+        Redirect(routes.NotificationGuidanceController.onPageLoad())
+    }
+  }
+}
+
+class SessionIdentifierAction @Inject() (
+    val parser: BodyParsers.Default
+)(override implicit val executionContext: ExecutionContext)
+    extends IdentifierAction {
+
+  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] = {
+
+    val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+
+    hc.sessionId match {
+      case Some(session) =>
+        block(IdentifierRequest(request, session.value))
+      case None =>
+        Future.successful(Redirect(routes.NotificationGuidanceController.onPageLoad()))
     }
   }
 }
