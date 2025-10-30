@@ -31,15 +31,7 @@ import javax.inject.Inject
 
 sealed trait UpscanInitiateRequest
 
-// TODO expectedContentType is also an optional value
-case class UpscanInitiateRequestV1(
-    callbackUrl: String,
-    successRedirect: Option[String] = None,
-    minimumFileSize: Option[Int] = None,
-    maximumFileSize: Option[Int] = Some(4096)
-) extends UpscanInitiateRequest
 
-// TODO expectedContentType is also an optional value
 case class UpscanInitiateRequestV2(
     callbackUrl: String,
     successRedirect: Option[String] = None,
@@ -47,6 +39,11 @@ case class UpscanInitiateRequestV2(
     minimumFileSize: Option[Int] = None,
     maximumFileSize: Option[Int] = Some(4096)
 ) extends UpscanInitiateRequest
+
+object UpscanInitiateRequestV2:
+  given Format[UpscanInitiateRequestV2] = Json.format[UpscanInitiateRequestV2]
+
+
 
 case class UploadForm(
     href: String,
@@ -58,20 +55,18 @@ case class Reference(value: String) extends AnyVal
 object Reference:
   given Reads[Reference] = Reads.StringReads.map(Reference(_))
 
+
+
 case class PreparedUpload(
     reference: Reference,
     uploadRequest: UploadForm
 )
 
-object UpscanInitiateRequestV1:
-  given Format[UpscanInitiateRequestV1] = Json.format[UpscanInitiateRequestV1]
-
-object UpscanInitiateRequestV2:
-  given Format[UpscanInitiateRequestV2] = Json.format[UpscanInitiateRequestV2]
-
 object PreparedUpload:
   given Reads[UploadForm]     = Json.reads[UploadForm]
   given Reads[PreparedUpload] = Json.reads[PreparedUpload]
+
+
 
 class UpscanInitiateConnector @Inject() (
     httpClient: HttpClientV2,
