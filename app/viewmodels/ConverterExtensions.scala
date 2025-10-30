@@ -14,16 +14,31 @@
  * limitations under the License.
  */
 
-package navigation
+package viewmodels
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
+import play.api.i18n.Messages
+import play.twirl.api.Html
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
 
-import javax.inject.{Inject, Singleton}
+object converters extends ConverterExtensions
 
-@Singleton
-class Navigator @Inject() () {
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes.NotificationGuidanceController.onPageLoad()
+trait ConverterExtensions {
+
+  extension (value: Int) {
+    def toText: Text = Text(value.toString)
+  }
+
+  extension (string: String) {
+    inline def toText: Text =
+      Text(string)
+
+    inline def toKey: Key =
+      Key(content = Text(string))
+  }
+
+  extension (html: Html) {
+    inline def toText: Text =
+      Text(html.toString)
+  }
 }

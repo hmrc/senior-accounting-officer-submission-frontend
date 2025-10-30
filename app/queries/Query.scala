@@ -14,16 +14,22 @@
  * limitations under the License.
  */
 
-package navigation
+package queries
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
+import models.UserAnswers
+import play.api.libs.json.JsPath
 
-import javax.inject.{Inject, Singleton}
+import scala.util.{Success, Try}
 
-@Singleton
-class Navigator @Inject() () {
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes.NotificationGuidanceController.onPageLoad()
+sealed trait Query {
+
+  def path: JsPath
+}
+
+trait Gettable[A] extends Query
+
+trait Settable[A] extends Query {
+
+  def cleanup(value: Option[A], userAnswers: UserAnswers): Try[UserAnswers] =
+    Success(userAnswers)
 }

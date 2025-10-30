@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-package navigation
+package viewmodels
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
+import play.api.data.Field
+import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.errormessage.ErrorMessage
 
-import javax.inject.{Inject, Singleton}
+trait ErrorMessageAwareness {
 
-@Singleton
-class Navigator @Inject() () {
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes.NotificationGuidanceController.onPageLoad()
+  def errorMessage(field: Field)(using messages: Messages): Option[ErrorMessage] =
+    field.error
+      .map { err =>
+        ErrorMessage(
+          content = Text(messages(err.message, err.args*)),
+          visuallyHiddenText = Some(messages("error.prefix"))
+        )
+      }
 }

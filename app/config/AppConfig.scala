@@ -44,6 +44,8 @@ class AppConfig @Inject() (config: Configuration) {
     sys.props.getOrElse(key, config.get[String](key))
 
   def templateFile: String = getValue("templateFile")
+
+  val cacheTtl: Long = config.get[Int]("mongodb.timeToLiveInSeconds")
 }
 
 object AppConfig {

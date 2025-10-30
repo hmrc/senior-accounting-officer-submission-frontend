@@ -14,16 +14,10 @@
  * limitations under the License.
  */
 
-package navigation
+package config
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
-
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class Navigator @Inject() () {
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes.NotificationGuidanceController.onPageLoad()
+trait CurrencyFormatter {
+  def currencyFormat(amt: BigDecimal): String = f"£$amt%,1.2f".replace(".00", "")
 }
+
+object CurrencyFormatter extends CurrencyFormatter

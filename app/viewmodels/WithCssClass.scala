@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package navigation
+package viewmodels
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
-
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class Navigator @Inject() () {
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes.NotificationGuidanceController.onPageLoad()
+abstract class WithCssClass(className: String) {
+  override val toString: String = className
 }

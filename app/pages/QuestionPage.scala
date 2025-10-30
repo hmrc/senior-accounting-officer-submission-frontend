@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package navigation
+package pages
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
+import queries.{Gettable, Settable}
 
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class Navigator @Inject() () {
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes.NotificationGuidanceController.onPageLoad()
-}
+trait QuestionPage[A] extends Page with Gettable[A] with Settable[A]

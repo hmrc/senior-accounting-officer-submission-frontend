@@ -14,16 +14,11 @@
  * limitations under the License.
  */
 
-package navigation
+package pages
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
+trait Page
 
-import javax.inject.{Inject, Singleton}
+object Page {
 
-@Singleton
-class Navigator @Inject() () {
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes.NotificationGuidanceController.onPageLoad()
+  given Conversion[Page, String] = (page: Page) => page.toString
 }

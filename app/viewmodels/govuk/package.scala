@@ -18,5 +18,5 @@ package viewmodels
 
 package object govuk {
 
-  object all extends ImplicitConversions with BackLinkFluency with ButtonFluency
+  object all extends ImplicitConversions with BackLinkFluency with ButtonFluency with CheckboxFluency with FieldsetFluency
 }

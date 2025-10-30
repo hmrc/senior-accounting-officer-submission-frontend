@@ -14,16 +14,8 @@
  * limitations under the License.
  */
 
-package navigation
+package models.requests
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
+import play.api.mvc.{Request, WrappedRequest}
 
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class Navigator @Inject() () {
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = routes.NotificationGuidanceController.onPageLoad()
-}
+case class IdentifierRequest[A](request: Request[A], userId: String) extends WrappedRequest[A](request)
