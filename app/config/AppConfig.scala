@@ -18,11 +18,12 @@ package config
 
 import play.api.Configuration
 import play.api.mvc.RequestHeader
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfig @Inject() (config: Configuration) {
+class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration) {
   val welshLanguageSupportEnabled: Boolean =
     config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
 
@@ -34,9 +35,14 @@ class AppConfig @Inject() (config: Configuration) {
   def feedbackUrl(implicit request: RequestHeader): String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${host + request.uri}"
 
-  private def hubBaseUrl         = config.get[String]("hub-frontend.host") + "/senior-accounting-officer"
+  def hubBaseUrl: String         = config.get[String]("hub-frontend.host") + "/senior-accounting-officer"
   val hubSignOutUrl: String      = hubBaseUrl + "/account/sign-out-survey"
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
   val loginContinueUrl: String = hubBaseUrl
+
+  lazy val initiateV2Url: String            = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
+  lazy val uploadRedirectTargetBase: String = config.get[String]("upload-redirect-target-base")
+  lazy val callbackEndpointTarget: String   = config.get[String]("upscan.callback-endpoint")
+
 }
