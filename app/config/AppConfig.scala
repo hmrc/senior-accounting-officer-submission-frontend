@@ -39,4 +39,14 @@ class AppConfig @Inject() (config: Configuration) {
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
   val loginContinueUrl: String = hubBaseUrl
+
+  private def getValue(key: String): String =
+    sys.props.getOrElse(key, config.get[String](key))
+
+  def templateFile: String = getValue("templateFile")
+}
+
+object AppConfig {
+  def setValue(key: String, value: String): Unit =
+    sys.props.addOne((key, value)): Unit
 }

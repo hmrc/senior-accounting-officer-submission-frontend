@@ -89,7 +89,7 @@ class NotificationGuidanceViewSpec extends SpecBase with GuiceOneAppPerSuite {
     "with the correct link content for notification template download" in {
       val links = mainContent.getElementsByTag("a")
       links.get(0).text mustBe "Download the notification template"
+      links.attr("href") mustBe "/senior-accounting-officer/submission/download/notification/template"
     }
-
   }
 }
