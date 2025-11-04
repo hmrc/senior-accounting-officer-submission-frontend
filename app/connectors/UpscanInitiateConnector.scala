@@ -31,7 +31,6 @@ import javax.inject.Inject
 
 sealed trait UpscanInitiateRequest
 
-
 case class UpscanInitiateRequestV2(
     callbackUrl: String,
     successRedirect: Option[String] = None,
@@ -43,8 +42,6 @@ case class UpscanInitiateRequestV2(
 object UpscanInitiateRequestV2:
   given Format[UpscanInitiateRequestV2] = Json.format[UpscanInitiateRequestV2]
 
-
-
 case class UploadForm(
     href: String,
     fields: Map[String, String]
@@ -55,8 +52,6 @@ case class Reference(value: String) extends AnyVal
 object Reference:
   given Reads[Reference] = Reads.StringReads.map(Reference(_))
 
-
-
 case class PreparedUpload(
     reference: Reference,
     uploadRequest: UploadForm
@@ -65,8 +60,6 @@ case class PreparedUpload(
 object PreparedUpload:
   given Reads[UploadForm]     = Json.reads[UploadForm]
   given Reads[PreparedUpload] = Json.reads[PreparedUpload]
-
-
 
 class UpscanInitiateConnector @Inject() (
     httpClient: HttpClientV2,

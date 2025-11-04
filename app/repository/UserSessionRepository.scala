@@ -16,12 +16,13 @@
 
 package repository
 
+import com.mongodb.client.model
 import connectors.Reference
 import models.*
 import org.bson.types.ObjectId
 import org.mongodb.scala.model.*
 import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.Updates.set
+import org.mongodb.scala.model.Updates.{set, setOnInsert}
 import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
 import uk.gov.hmrc.mongo.MongoComponent
@@ -29,24 +30,25 @@ import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.{Inject, Singleton}
 
 object UserSessionRepository:
-  val status = "status"
-
-  private given Format[UploadStatus] =
-    given Format[UploadStatus.UploadedSuccessfully] =
-      Json.format[UploadStatus.UploadedSuccessfully]
-    val read: Reads[UploadStatus] =
-      (json: JsValue) =>
-        val jsObject = json.asInstanceOf[JsObject]
-        jsObject.value.get("_type") match
-          case Some(JsString("InProgress"))           => JsSuccess(UploadStatus.InProgress)
-          case Some(JsString("Failed"))               => JsSuccess(UploadStatus.Failed)
-          case Some(JsString("UploadedSuccessfully")) => Json.fromJson[UploadStatus.UploadedSuccessfully](jsObject)
-          case Some(value)                            => JsError(s"Unexpected value of _type: $value")
-          case None                                   => JsError("Missing _type field")
+  val status                                                                  = "status"
+  given uploadedSuccessfullyFormat: Format[UploadStatus.UploadedSuccessfully] =
+    Json.format[UploadStatus.UploadedSuccessfully]
+  given Format[UploadStatus] =
+    given Format[UploadStatus.UploadedSuccessfully] = uploadedSuccessfullyFormat
+    val read: Reads[UploadStatus]                   = (json: JsValue) =>
+      json match {
+        case jsObject: JsObject =>
+          jsObject.value.get("_type") match
+            case Some(JsString("InProgress"))           => JsSuccess(UploadStatus.InProgress)
+            case Some(JsString("Failed"))               => JsSuccess(UploadStatus.Failed)
+            case Some(JsString("UploadedSuccessfully")) => Json.fromJson[UploadStatus.UploadedSuccessfully](jsObject)
+            case Some(value)                            => JsError(s"Unexpected value of _type: $value")
+            case None                                   => JsError("Missing _type field")
+        case other => JsError(s"Expected a JsObject but got ${other.getClass.getSimpleName}")
+      }
 
     val write: Writes[UploadStatus] =
       (p: UploadStatus) =>
@@ -59,15 +61,9 @@ object UserSessionRepository:
 
     Format(read, write)
 
-  private given Format[UploadId] =
-    Format
-      .at[String](__ \ "value")
-      .inmap[UploadId](UploadId.apply, _.value)
+  private given Format[UploadId] = Json.valueFormat[UploadId]
 
-  private given Format[Reference] =
-    Format
-      .at[String](__ \ "value")
-      .inmap[Reference](Reference.apply, _.value)
+  private given Format[Reference] = Json.valueFormat[Reference]
 
   private[repository] val mongoFormat: Format[UploadDetails] =
     given Format[ObjectId] = MongoFormats.objectIdFormat
@@ -108,8 +104,12 @@ class UserSessionRepository @Inject() (
     collection
       .findOneAndUpdate(
         filter = equal("reference", Codecs.toBson(reference)),
-        update = set("status", Codecs.toBson(newStatus)),
-        options = FindOneAndUpdateOptions().upsert(true)
+        update = Updates.combine(
+          set("status", Codecs.toBson(newStatus)),
+          setOnInsert("uploadId", Codecs.toBson(UploadId.generate())),
+          setOnInsert("_id", ObjectId.get())
+        ),
+        options = FindOneAndUpdateOptions().upsert(true).returnDocument(model.ReturnDocument.AFTER)
       )
       .toFuture()
       .map(_.status)

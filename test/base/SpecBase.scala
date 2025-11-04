@@ -29,8 +29,10 @@ import play.api.inject.guice.GuiceApplicationBuilder
 trait SpecBase extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with OptionValues with ScalaFutures {
 
   override def fakeApplication(): Application =
-    new GuiceApplicationBuilder()
-      .overrides(bind[IdentifierAction].to[FakeIdentifierAction])
+    applicationBuilder()
       .build()
 
+  def applicationBuilder(): GuiceApplicationBuilder =
+    new GuiceApplicationBuilder()
+      .overrides(bind[IdentifierAction].to[FakeIdentifierAction])
 }

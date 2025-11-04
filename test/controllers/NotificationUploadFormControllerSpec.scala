@@ -1,0 +1,106 @@
+/*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers
+
+import base.SpecBase
+import config.AppConfig
+import connectors.{PreparedUpload, Reference, UploadForm, UpscanInitiateConnector}
+import models.{UploadId, UpscanFileReference, UpscanInitiateResponse}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar
+import play.api.http.Status
+import play.api.inject.bind
+import play.api.test.FakeRequest
+import play.api.test.Helpers.*
+import play.twirl.api.Html
+import services.UploadProgressTracker
+import uk.gov.hmrc.http.HeaderCarrier
+import views.html.NotificationUploadFormView
+
+import scala.concurrent.Future
+
+class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
+
+  private val fakeRequest = FakeRequest("GET", "/notification/guidance")
+
+  private val controller = app.injector.instanceOf[NotificationGuidanceController]
+  private val view       = app.injector.instanceOf[NotificationUploadFormView]
+
+  "GET /" must {
+    "return 200" in {
+      val result = controller.onPageLoad()(fakeRequest)
+
+      status(result) mustBe Status.OK
+    }
+  }
+
+  "return HTML" in {
+    val result = controller.onPageLoad()(fakeRequest)
+
+    contentType(result) mustBe Some("text/html")
+    charset(result) mustBe Some("utf-8")
+  }
+
+  "NotificationUploadFormController" must {
+
+    "return OK and the correct view for a GET" in {
+      val mockAppConfig                  = mock[AppConfig]
+      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
+      val mockUploadProgressTracker      = mock[UploadProgressTracker]
+      val mockNotificationUploadFormView = mock[NotificationUploadFormView]
+
+      val application = applicationBuilder()
+        .overrides(
+          bind[AppConfig].toInstance(mockAppConfig),
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[UploadProgressTracker].toInstance(mockUploadProgressTracker),
+          bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
+        )
+        .build()
+
+      running(application) {
+
+        val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
+
+        when(mockNotificationUploadFormView.apply(any())(any(), any())).thenReturn(Html(""))
+
+        when(
+          mockUpscanInitiateConnector.initiateV2(any[Option[String]](), any[Option[String]]())(using
+            any[HeaderCarrier]()
+          )
+        )
+          .thenReturn(Future.successful(upscanInitiateResponse))
+
+        when(mockUploadProgressTracker.requestUpload(any[UploadId], any[Reference])).thenReturn(Future.successful(()))
+
+        when(mockAppConfig.hubBaseUrl).thenReturn("http://localhost:10000/senior-accounting-officer")
+
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+
+        verify(mockNotificationUploadFormView, times(1)).apply(any())(any(), any())
+
+      }
+
+    }
+  }
+
+}
