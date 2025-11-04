@@ -96,6 +96,5 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       statusCaptor.getValue mustBe UploadStatus.Failed
 
     }
-//
   }
 }
