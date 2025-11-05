@@ -41,8 +41,7 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
 
   val loginContinueUrl: String = hubBaseUrl
 
-  lazy val initiateV2Url: String            = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
-  lazy val uploadRedirectTargetBase: String = config.get[String]("upload-redirect-target-base")
-  lazy val callbackEndpointTarget: String   = config.get[String]("upscan.callback-endpoint")
+  lazy val initiateV2Url: String          = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
+  lazy val callbackEndpointTarget: String = config.get[String]("upscan.callback-endpoint")
 
 }
