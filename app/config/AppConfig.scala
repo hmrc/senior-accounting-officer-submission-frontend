@@ -44,4 +44,13 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   lazy val initiateV2Url: String          = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
   lazy val callbackEndpointTarget: String = config.get[String]("upscan.callback-endpoint")
 
+  private def getValue(key: String): String =
+    sys.props.getOrElse(key, config.get[String](key))
+
+  def templateFile: String = getValue("templateFile")
+}
+
+object AppConfig {
+  def setValue(key: String, value: String): Unit =
+    sys.props.addOne((key, value)): Unit
 }
