@@ -17,11 +17,12 @@
 package connectors
 
 import base.SpecBase
-import play.api.libs.json.{JsSuccess, JsError, Json}
+import play.api.libs.json.JsValue
+import play.api.libs.json.{JsError, JsSuccess, Json}
 
 class UpscanInitiateConnectorFormatSpec extends SpecBase {
 
-  val initiateRequestModel = UpscanInitiateRequestV2(
+  val initiateRequestModel: UpscanInitiateRequestV2 = UpscanInitiateRequestV2(
     callbackUrl = "localhost:8080//callbackUrl",
     successRedirect = Some("localhost:8080//successUrl"),
     errorRedirect = Some("localhost:8080//errorUrl"),
@@ -29,7 +30,7 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
     maximumFileSize = Some(4096)
   )
 
-  val initiateRequestJson = Json.parse(
+  val initiateRequestJson: JsValue = Json.parse(
     """{
       |  "callbackUrl": "localhost:8080//callbackUrl",
       |  "successRedirect": "localhost:8080//successUrl",
@@ -39,7 +40,7 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
       |}""".stripMargin
   )
 
-  val preparedUploadModel = PreparedUpload(
+  val preparedUploadModel: PreparedUpload = PreparedUpload(
     reference = Reference("ref-123"),
     uploadRequest = UploadForm(
       href = "upload-url",
@@ -50,7 +51,7 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
     )
   )
 
-  val preparedUploadJson = Json.parse(
+  val preparedUploadJson: JsValue = Json.parse(
     """{
       | "reference": "ref-123",
       | "uploadRequest":{

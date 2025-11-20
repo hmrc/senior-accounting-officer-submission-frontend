@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import config.AppConfig
-import connectors.{PreparedUpload, Reference, UploadForm, UpscanInitiateConnector}
+import connectors.{Reference, UpscanInitiateConnector}
 import models.{UploadId, UpscanFileReference, UpscanInitiateResponse}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
@@ -39,7 +39,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
   private val fakeRequest = FakeRequest("GET", "/notification/guidance")
 
   private val controller = app.injector.instanceOf[NotificationGuidanceController]
-  private val view       = app.injector.instanceOf[NotificationUploadFormView]
+  app.injector.instanceOf[NotificationUploadFormView]
 
   "GET /" must {
     "return 200" in {

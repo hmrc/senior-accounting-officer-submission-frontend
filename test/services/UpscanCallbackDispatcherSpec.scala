@@ -18,16 +18,17 @@ package services
 
 import base.SpecBase
 import connectors.Reference
-import controllers.internal.{ErrorDetails, FailedCallbackBody, ReadyCallbackBody, UploadDetails}
+import controllers.internal.*
 import models.UploadStatus
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers.{eq as eqTo, *}
+import org.mockito.ArgumentMatchers.{eq as _, *}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 
+import scala.concurrent.Future
+
 import java.net.URL
 import java.time.Instant
-import scala.concurrent.Future
 
 class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
 

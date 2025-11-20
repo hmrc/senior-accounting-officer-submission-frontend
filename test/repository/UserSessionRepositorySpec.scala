@@ -19,12 +19,12 @@ package repository
 import base.SpecBase
 import connectors.Reference
 import models.*
-import models.UploadStatus.InProgress
 import org.bson.types.ObjectId
+import org.mongodb.scala.model.*
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
-import org.mongodb.scala.model.*
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class UserSessionRepositorySpec

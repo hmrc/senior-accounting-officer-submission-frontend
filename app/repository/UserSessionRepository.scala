@@ -30,6 +30,7 @@ import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import javax.inject.{Inject, Singleton}
 
 object UserSessionRepository:

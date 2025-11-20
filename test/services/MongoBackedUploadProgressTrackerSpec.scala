@@ -16,11 +16,11 @@
 
 package services
 
+import connectors.Reference
+import models.*
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import connectors.Reference
-import models.*
 import repository.UserSessionRepository
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
@@ -34,7 +34,7 @@ class MongoBackedUploadProgressTrackerSpec
 
   override val repository: UserSessionRepository = UserSessionRepository(mongoComponent)
 
-  val progressTracker = MongoBackedUploadProgressTracker(repository)
+  val progressTracker: MongoBackedUploadProgressTracker = MongoBackedUploadProgressTracker(repository)
 
   "MongoBackedUploadProgressTracker" should:
     "coordinate workflow" in:

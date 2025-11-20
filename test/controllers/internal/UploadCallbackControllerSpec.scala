@@ -18,13 +18,13 @@ package controllers.internal
 
 import base.SpecBase
 import org.mockito.ArgumentMatchers.any
-import org.scalatestplus.mockito.MockitoSugar
-import services.UpscanCallbackDispatcher
-import play.api.inject.bind
-import play.api.test.Helpers.*
 import org.mockito.Mockito.{times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar
+import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
+import play.api.test.Helpers.*
+import services.UpscanCallbackDispatcher
 
 import scala.concurrent.Future
 

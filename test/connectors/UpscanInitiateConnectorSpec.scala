@@ -19,9 +19,8 @@ package connectors
 import base.SpecBase
 import config.AppConfig
 import models.UpscanInitiateResponse
-import org.apache.http.impl.client.HttpClients
-import org.mockito.Mockito.when
 import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
