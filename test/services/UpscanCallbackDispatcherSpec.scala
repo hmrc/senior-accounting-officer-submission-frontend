@@ -20,6 +20,7 @@ import base.SpecBase
 import connectors.Reference
 import controllers.internal.*
 import models.UploadStatus
+import models.upscan.*
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{eq as _, *}
 import org.mockito.Mockito.{times, verify, when}
@@ -38,10 +39,10 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val mockUploadProgressTracker = mock[UploadProgressTracker]
       val dispatcher                = new UpscanCallbackDispatcher(mockUploadProgressTracker)
 
-      val callback = ReadyCallbackBody(
+      val callback = UpscanSuccessCallback(
         reference = Reference("foo"),
         downloadUrl = new URL("http://localhost:8080/download"),
-        uploadDetails = UploadDetails(
+        uploadDetails = UpscanUploadDetails(
           uploadTimestamp = Instant.now(),
           checksum = "bar",
           fileMimeType = "application/pdf",
@@ -75,9 +76,9 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val mockUploadProgressTracker = mock[UploadProgressTracker]
       val dispatcher                = new UpscanCallbackDispatcher(mockUploadProgressTracker)
 
-      val callback = FailedCallbackBody(
+      val callback = UpscanFailureCallback(
         reference = Reference("foo"),
-        failureDetails = ErrorDetails(
+        failureDetails = UpscanFailureDetails(
           failureReason = "QUARANTINE",
           message = "This file has a virus"
         )

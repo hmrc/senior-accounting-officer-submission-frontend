@@ -16,66 +16,15 @@
 
 package controllers.internal
 
-import connectors.Reference
-import controllers.internal.CallbackBody.*
+import models.upscan.*
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.*
 import services.UpscanCallbackDispatcher
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import utils.HttpUrlFormat
 
-import scala.concurrent.ExecutionContext
-
-import java.net.URL
-import java.time.Instant
 import javax.inject.{Inject, Singleton}
-
-sealed trait CallbackBody:
-  def reference: Reference
-
-case class ReadyCallbackBody(
-    reference: Reference,
-    downloadUrl: URL,
-    uploadDetails: UploadDetails
-) extends CallbackBody
-
-case class FailedCallbackBody(
-    reference: Reference,
-    failureDetails: ErrorDetails
-) extends CallbackBody
-
-object CallbackBody:
-
-  given Reads[UploadDetails] = Json.reads[UploadDetails]
-  given Reads[ErrorDetails]  = Json.reads[ErrorDetails]
-
-  given Reads[ReadyCallbackBody] =
-    given Format[URL] = HttpUrlFormat.format
-    Json.reads[ReadyCallbackBody]
-
-  given Reads[FailedCallbackBody] = Json.reads[FailedCallbackBody]
-
-  given Reads[CallbackBody] =
-    (json: JsValue) =>
-      json \ "fileStatus" match
-        case JsDefined(JsString("READY"))  => json.validate[ReadyCallbackBody]
-        case JsDefined(JsString("FAILED")) => json.validate[FailedCallbackBody]
-        case JsDefined(value)              => JsError(s"Invalid type discriminator: $value")
-        case _                             => JsError(s"Missing type discriminator")
-
-case class UploadDetails(
-    uploadTimestamp: Instant,
-    checksum: String,
-    fileMimeType: String,
-    fileName: String,
-    size: Long
-)
-
-case class ErrorDetails(
-    failureReason: String,
-    message: String
-)
+import scala.concurrent.ExecutionContext
 
 @Singleton
 class UploadCallbackController @Inject() (
@@ -89,5 +38,5 @@ class UploadCallbackController @Inject() (
     Action.async(parse.json): request =>
       given Request[JsValue] = request
       logger.info(s"Received callback notification [${Json.stringify(request.body)}]")
-      withJsonBody[CallbackBody]: feedback =>
+      withJsonBody[UpscanCallback]: feedback =>
         upscanCallbackDispatcher.handleCallback(feedback).map(_ => Ok)

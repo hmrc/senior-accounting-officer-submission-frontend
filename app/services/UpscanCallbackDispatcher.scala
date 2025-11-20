@@ -16,7 +16,7 @@
 
 package services
 
-import controllers.internal.{CallbackBody, FailedCallbackBody, ReadyCallbackBody}
+import models.upscan.{UpscanCallback, UpscanFailureCallback, UpscanSuccessCallback}
 import models.UploadStatus
 
 import scala.concurrent.Future
@@ -25,17 +25,17 @@ import javax.inject.Inject
 
 class UpscanCallbackDispatcher @Inject() (sessionStorage: UploadProgressTracker):
 
-  def handleCallback(callback: CallbackBody): Future[Unit] =
+  def handleCallback(callback: UpscanCallback): Future[Unit] =
     val uploadStatus =
       callback match
-        case s: ReadyCallbackBody =>
+        case s: UpscanSuccessCallback =>
           UploadStatus.UploadedSuccessfully(
             name = s.uploadDetails.fileName,
             mimeType = s.uploadDetails.fileMimeType,
             downloadUrl = s.downloadUrl.getFile,
             size = Some(s.uploadDetails.size)
           )
-        case _: FailedCallbackBody =>
+        case _: UpscanFailureCallback =>
           UploadStatus.Failed
 
     sessionStorage.registerUploadResult(callback.reference, uploadStatus)

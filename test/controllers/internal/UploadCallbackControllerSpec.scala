@@ -25,6 +25,7 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import services.UpscanCallbackDispatcher
+import models.upscan.*
 
 import scala.concurrent.Future
 
@@ -64,7 +65,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        verify(mockUpscanCallbackDispatcher, times(1)).handleCallback(any[ReadyCallbackBody])
+        verify(mockUpscanCallbackDispatcher, times(1)).handleCallback(any[UpscanSuccessCallback])
       }
     }
 
@@ -97,7 +98,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        verify(mockUpscanCallbackDispatcher, times(1)).handleCallback(any[FailedCallbackBody])
+        verify(mockUpscanCallbackDispatcher, times(1)).handleCallback(any[UpscanFailureCallback])
       }
     }
 
