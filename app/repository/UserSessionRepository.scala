@@ -33,12 +33,13 @@ import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.{Inject, Singleton}
 
 object UserSessionRepository:
-  val status                                                                  = "status"
-  given uploadedSuccessfullyFormat: Format[UploadStatus.UploadedSuccessfully] =
-    Json.format[UploadStatus.UploadedSuccessfully]
+  val status = "status"
+
   given Format[UploadStatus] =
-    given Format[UploadStatus.UploadedSuccessfully] = uploadedSuccessfullyFormat
-    val read: Reads[UploadStatus]                   = (json: JsValue) =>
+
+    given Format[UploadStatus.UploadedSuccessfully] = Json.format[UploadStatus.UploadedSuccessfully]
+
+    val read: Reads[UploadStatus] = (json: JsValue) =>
       json match {
         case jsObject: JsObject =>
           jsObject.value.get("_type") match
