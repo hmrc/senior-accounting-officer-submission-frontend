@@ -89,7 +89,7 @@ class UserSessionRepository @Inject() (
     ):
   import UserSessionRepository.given
 
-  override lazy val requiresTtlIndex: Boolean = false // example repo, never deployed to prod
+  override lazy val requiresTtlIndex: Boolean = false
 
   def insert(details: UploadDetails): Future[Unit] =
     collection

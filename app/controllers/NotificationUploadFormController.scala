@@ -42,7 +42,7 @@ class NotificationUploadFormController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = identify async { implicit request =>
-    val uploadId = UploadId.generate() // generating the upload id here
+    val uploadId = UploadId.generate()
 
     val successRedirectUrl = appConfig.hubBaseUrl + s"?uploadId=${uploadId.value}"
     val errorRedirectUrl   = appConfig.hubBaseUrl
@@ -50,6 +50,6 @@ class NotificationUploadFormController @Inject() (
     for
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2(Some(successRedirectUrl), Some(errorRedirectUrl))
       _ <- uploadProgressTracker.requestUpload(uploadId, Reference(upscanInitiateResponse.fileReference.reference))
-    yield Ok(notificationUploadFormView(upscanInitiateResponse)) // generate the upload form
+    yield Ok(notificationUploadFormView(upscanInitiateResponse))
   }
 }

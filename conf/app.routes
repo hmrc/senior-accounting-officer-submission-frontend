@@ -7,6 +7,4 @@ GET        /notification/guidance                       controllers.Notification
 
 GET        /notification/upload                         controllers.NotificationUploadFormController.onPageLoad()
 
-# GET        /notification/upload/success                 controllers.NotificationUploadFormController.showResult(uploadId: models.UploadId)
-# GET        /notification/upload/error                   controllers.NotificationUploadFormController.showError(errorCode: String, errorMessage: String, errorRequestId: String, key: String)
 GET        /download/notification/template              controllers.DownloadNotificationTemplateController.onPageLoad()
