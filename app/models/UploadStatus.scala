@@ -18,8 +18,16 @@ package models
 
 sealed trait UploadStatus
 object UploadStatus:
+  /** The file upload is currently in progress
+    */
   case object InProgress extends UploadStatus
-  case object Failed     extends UploadStatus
+
+  /** The file upload has failed
+    */
+  case object Failed extends UploadStatus
+
+  /** The file has been successfully uploaded
+    */
   case class UploadedSuccessfully(
       name: String,
       mimeType: String,

@@ -32,7 +32,7 @@ class MongoBackedUploadProgressTracker @Inject() (
 ) extends UploadProgressTracker:
 
   override def requestUpload(uploadId: UploadId, fileReference: Reference): Future[Unit] =
-    repository.insert(UploadDetails(ObjectId.get(), uploadId, fileReference, UploadStatus.InProgress))
+    repository.insert(FileUploadState(ObjectId.get(), uploadId, fileReference, UploadStatus.InProgress))
 
   override def registerUploadResult(fileReference: Reference, uploadStatus: UploadStatus): Future[Unit] =
     repository.updateStatus(fileReference, uploadStatus).map(_ => ())

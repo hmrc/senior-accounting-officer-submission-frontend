@@ -19,7 +19,7 @@ package models
 import connectors.Reference
 import org.bson.types.ObjectId
 
-case class UploadDetails(
+case class FileUploadState(
     id: ObjectId,
     uploadId: UploadId,
     reference: Reference,

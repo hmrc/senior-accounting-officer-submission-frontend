@@ -67,19 +67,19 @@ object UserSessionRepository:
 
   private given Format[Reference] = Json.valueFormat[Reference]
 
-  private[repository] val mongoFormat: Format[UploadDetails] =
+  private[repository] val mongoFormat: Format[FileUploadState] =
     given Format[ObjectId] = MongoFormats.objectIdFormat
     ((__ \ "_id").format[ObjectId]
       ~ (__ \ "uploadId").format[UploadId]
       ~ (__ \ "reference").format[Reference]
-      ~ (__ \ "status").format[UploadStatus])(UploadDetails.apply, Tuple.fromProductTyped _)
+      ~ (__ \ "status").format[UploadStatus])(FileUploadState.apply, Tuple.fromProductTyped _)
 
 @Singleton
 class UserSessionRepository @Inject() (
     mongoComponent: MongoComponent
 )(using
     ExecutionContext
-) extends PlayMongoRepository[UploadDetails](
+) extends PlayMongoRepository[FileUploadState](
       collectionName = "UpscanResultTrackerRepository",
       mongoComponent = mongoComponent,
       domainFormat = UserSessionRepository.mongoFormat,
@@ -93,13 +93,13 @@ class UserSessionRepository @Inject() (
 
   override lazy val requiresTtlIndex: Boolean = false
 
-  def insert(details: UploadDetails): Future[Unit] =
+  def insert(details: FileUploadState): Future[Unit] =
     collection
       .insertOne(details)
       .toFuture()
       .map(_ => ())
 
-  def findByUploadId(uploadId: UploadId): Future[Option[UploadDetails]] =
+  def findByUploadId(uploadId: UploadId): Future[Option[FileUploadState]] =
     collection.find(equal("uploadId", Codecs.toBson(uploadId))).headOption()
 
   def updateStatus(reference: Reference, newStatus: UploadStatus): Future[UploadStatus] =

@@ -16,6 +16,8 @@
 
 package models
 
+/** The response recieved from upscan when the initiate api is called to initiate a file upload
+  */
 case class UpscanInitiateResponse(
     fileReference: UpscanFileReference,
     postTarget: String,

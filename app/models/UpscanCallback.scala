@@ -29,7 +29,7 @@ sealed trait UpscanCallback:
 final case class UpscanSuccessCallback(
     reference: Reference,
     downloadUrl: URL,
-    uploadDetails: UpscanUploadDetails
+    uploadDetails: UpscanFileMetadata
 ) extends UpscanCallback
 
 final case class UpscanFailureCallback(
@@ -39,7 +39,7 @@ final case class UpscanFailureCallback(
 
 object UpscanCallback:
 
-  given Reads[UpscanUploadDetails]  = Json.reads[UpscanUploadDetails]
+  given Reads[UpscanFileMetadata]   = Json.reads[UpscanFileMetadata]
   given Reads[UpscanFailureDetails] = Json.reads[UpscanFailureDetails]
 
   given Reads[UpscanSuccessCallback] =
@@ -56,7 +56,7 @@ object UpscanCallback:
         case JsDefined(value)              => JsError(s"Invalid type discriminator: $value")
         case _                             => JsError(s"Missing type discriminator")
 
-final case class UpscanUploadDetails(
+final case class UpscanFileMetadata(
     uploadTimestamp: Instant,
     checksum: String,
     fileMimeType: String,

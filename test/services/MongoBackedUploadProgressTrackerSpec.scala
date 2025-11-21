@@ -29,7 +29,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class MongoBackedUploadProgressTrackerSpec
     extends AnyWordSpec
     with Matchers
-    with DefaultPlayMongoRepositorySupport[UploadDetails]
+    with DefaultPlayMongoRepositorySupport[FileUploadState]
     with IntegrationPatience:
 
   override val repository: UserSessionRepository = UserSessionRepository(mongoComponent)

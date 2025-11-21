@@ -29,7 +29,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 
 class UserSessionRepositorySpec
     extends SpecBase
-    with DefaultPlayMongoRepositorySupport[UploadDetails]
+    with DefaultPlayMongoRepositorySupport[FileUploadState]
     with ScalaFutures
     with MockitoSugar {
 
@@ -39,7 +39,7 @@ class UserSessionRepositorySpec
     "insert, findByUploadId, and updateStatus" in {
       val uploadId  = UploadId.generate()
       val reference = Reference("foo")
-      val details   = UploadDetails(
+      val details   = FileUploadState(
         id = ObjectId.get(),
         uploadId = uploadId,
         reference = reference,
@@ -89,7 +89,7 @@ class UserSessionRepositorySpec
     }
 
     "serialize and deserialize InProgress status" in:
-      val input = UploadDetails(ObjectId.get(), UploadId.generate(), Reference("ABC"), UploadStatus.InProgress)
+      val input = FileUploadState(ObjectId.get(), UploadId.generate(), Reference("ABC"), UploadStatus.InProgress)
 
       val serialized = UserSessionRepository.mongoFormat.writes(input)
       val output     = UserSessionRepository.mongoFormat.reads(serialized)
@@ -97,7 +97,7 @@ class UserSessionRepositorySpec
       output.get mustBe input
 
     "serialize and deserialize Failed status" in:
-      val input = UploadDetails(ObjectId.get(), UploadId.generate(), Reference("ABC"), UploadStatus.Failed)
+      val input = FileUploadState(ObjectId.get(), UploadId.generate(), Reference("ABC"), UploadStatus.Failed)
 
       val serialized = UserSessionRepository.mongoFormat.writes(input)
       val output     = UserSessionRepository.mongoFormat.reads(serialized)
@@ -105,7 +105,7 @@ class UserSessionRepositorySpec
       output.get mustBe input
 
     "serialize and deserialize UploadedSuccessfully status when size is unknown" in:
-      val input = UploadDetails(
+      val input = FileUploadState(
         ObjectId.get(),
         UploadId.generate(),
         Reference("ABC"),
@@ -118,7 +118,7 @@ class UserSessionRepositorySpec
       output.get mustBe input
 
     "serialize and deserialize UploadedSuccessfully status when size is known" in:
-      val input = UploadDetails(
+      val input = FileUploadState(
         ObjectId.get(),
         UploadId.generate(),
         Reference("ABC"),

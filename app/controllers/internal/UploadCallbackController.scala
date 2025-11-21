@@ -16,16 +16,17 @@
 
 package controllers.internal
 
-import models.UpscanCallback
 import models.*
+import models.UpscanCallback
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.*
 import services.UpscanCallbackDispatcher
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.ExecutionContext
+
+import javax.inject.{Inject, Singleton}
 
 @Singleton
 class UploadCallbackController @Inject() (

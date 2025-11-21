@@ -16,7 +16,7 @@
 
 package services
 
-import models.{UploadStatus, UpscanCallback, UpscanFailureCallback, UpscanSuccessCallback}
+import models.*
 
 import scala.concurrent.Future
 

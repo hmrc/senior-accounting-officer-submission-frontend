@@ -16,6 +16,8 @@
 
 package models
 
+/** a unique reference for the file in upscan
+  */
 case class UpscanFileReference(
     reference: String
 )

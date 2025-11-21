@@ -18,8 +18,7 @@ package services
 
 import base.SpecBase
 import connectors.Reference
-import controllers.internal.*
-import models.{UploadStatus, UpscanFailureCallback, UpscanFailureDetails, UpscanSuccessCallback, UpscanUploadDetails}
+import models.*
 import models.*
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{eq as _, *}
@@ -27,6 +26,7 @@ import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 
 import scala.concurrent.Future
+
 import java.net.URL
 import java.time.Instant
 
@@ -41,7 +41,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val callback = UpscanSuccessCallback(
         reference = Reference("foo"),
         downloadUrl = new URL("http://localhost:8080/download"),
-        uploadDetails = UpscanUploadDetails(
+        uploadDetails = UpscanFileMetadata(
           uploadTimestamp = Instant.now(),
           checksum = "bar",
           fileMimeType = "application/pdf",
