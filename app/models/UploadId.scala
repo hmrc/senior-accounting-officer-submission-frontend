@@ -16,29 +16,9 @@
 
 package models
 
-import connectors.Reference
-import org.bson.types.ObjectId
 import play.api.mvc.QueryStringBindable
 
 import java.util.UUID
-
-sealed trait UploadStatus
-object UploadStatus:
-  case object InProgress extends UploadStatus
-  case object Failed     extends UploadStatus
-  case class UploadedSuccessfully(
-      name: String,
-      mimeType: String,
-      downloadUrl: String,
-      size: Option[Long]
-  ) extends UploadStatus
-
-case class UploadDetails(
-    id: ObjectId,
-    uploadId: UploadId,
-    reference: Reference,
-    status: UploadStatus
-)
 
 case class UploadId(value: String) extends AnyVal
 
@@ -48,13 +28,3 @@ object UploadId:
 
   implicit def queryBinder(implicit stringBinder: QueryStringBindable[String]): QueryStringBindable[UploadId] =
     stringBinder.transform(UploadId(_), _.value)
-
-case class UpscanFileReference(
-    reference: String
-)
-
-case class UpscanInitiateResponse(
-    fileReference: UpscanFileReference,
-    postTarget: String,
-    formFields: Map[String, String]
-)

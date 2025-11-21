@@ -17,6 +17,7 @@
 package controllers.internal
 
 import base.SpecBase
+import models.{UpscanFailureCallback, UpscanSuccessCallback}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
@@ -25,7 +26,7 @@ import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import services.UpscanCallbackDispatcher
-import models.upscan.*
+import models.*
 
 import scala.concurrent.Future
 

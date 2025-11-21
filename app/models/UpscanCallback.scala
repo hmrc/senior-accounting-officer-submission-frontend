@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package models.upscan
+package models
 
 import connectors.Reference
-import play.api.libs.json.{Format, JsDefined, JsError, JsString, JsValue, Json, Reads}
+import play.api.libs.json.*
 import utils.HttpUrlFormat
 
 import java.net.URL
