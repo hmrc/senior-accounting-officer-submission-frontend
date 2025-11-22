@@ -22,9 +22,9 @@ import scala.concurrent.Future
 
 import javax.inject.Inject
 
-class UpscanCallbackDispatcher @Inject() (sessionStorage: UploadProgressTracker):
+class UpscanCallbackDispatcher @Inject() (sessionStorage: UpscanUploadProgressTracker):
 
-  def handleCallback(callback: UpscanCallback): Future[Unit] =
+  def processUpscanCallback(callback: UpscanCallback): Future[Unit] =
     val uploadStatus =
       callback match
         case s: UpscanSuccessCallback =>
@@ -37,4 +37,4 @@ class UpscanCallbackDispatcher @Inject() (sessionStorage: UploadProgressTracker)
         case _: UpscanFailureCallback =>
           UploadStatus.Failed
 
-    sessionStorage.registerUploadResult(callback.reference, uploadStatus)
+    sessionStorage.updateUploadStatus(callback.reference, uploadStatus)

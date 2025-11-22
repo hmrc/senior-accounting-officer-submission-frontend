@@ -22,7 +22,7 @@ import controllers.actions.IdentifierAction
 import models.*
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.UploadProgressTracker
+import services.UpscanUploadProgressTracker
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NotificationUploadFormView
 
@@ -36,7 +36,7 @@ class NotificationUploadFormController @Inject() (
     appConfig: AppConfig,
     notificationUploadFormView: NotificationUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
-    uploadProgressTracker: UploadProgressTracker
+    uploadProgressTracker: UpscanUploadProgressTracker
 )(implicit ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
@@ -49,7 +49,7 @@ class NotificationUploadFormController @Inject() (
 
     for
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2(Some(successRedirectUrl), Some(errorRedirectUrl))
-      _                      <- uploadProgressTracker.requestUpload(
+      _                      <- uploadProgressTracker.initialiseUpload(
         uploadId,
         UpscanFileReference(upscanInitiateResponse.fileReference.reference)
       )

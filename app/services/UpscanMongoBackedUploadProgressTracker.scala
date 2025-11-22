@@ -24,19 +24,19 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class MongoBackedUploadProgressTracker @Inject() (
+class UpscanMongoBackedUploadProgressTracker @Inject() (
     repository: UserSessionRepository
 )(using
     ExecutionContext
-) extends UploadProgressTracker:
+) extends UpscanUploadProgressTracker:
 
-  override def requestUpload(uploadId: UploadId, fileReference: UpscanFileReference): Future[Unit] =
+  override def initialiseUpload(uploadId: UploadId, fileReference: UpscanFileReference): Future[Unit] =
     repository.insert(FileUploadState(ObjectId.get(), uploadId, fileReference, UploadStatus.InProgress))
 
-  override def registerUploadResult(fileReference: UpscanFileReference, uploadStatus: UploadStatus): Future[Unit] =
+  override def updateUploadStatus(fileReference: UpscanFileReference, uploadStatus: UploadStatus): Future[Unit] =
     repository.updateStatus(fileReference, uploadStatus).map(_ => ())
 
-  override def getUploadResult(id: UploadId): Future[Option[UploadStatus]] =
+  override def getUploadStatus(id: UploadId): Future[Option[UploadStatus]] =
     repository
       .findByUploadId(id)
       .map(_.map(_.status))

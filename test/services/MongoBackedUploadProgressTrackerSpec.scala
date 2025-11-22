@@ -33,7 +33,7 @@ class MongoBackedUploadProgressTrackerSpec
 
   override val repository: UserSessionRepository = UserSessionRepository(mongoComponent)
 
-  val progressTracker: MongoBackedUploadProgressTracker = MongoBackedUploadProgressTracker(repository)
+  val progressTracker: UpscanMongoBackedUploadProgressTracker = UpscanMongoBackedUploadProgressTracker(repository)
 
   "MongoBackedUploadProgressTracker" should:
     "coordinate workflow" in:
@@ -41,9 +41,9 @@ class MongoBackedUploadProgressTrackerSpec
       val id             = UploadId("upload-id")
       val expectedStatus = UploadStatus.UploadedSuccessfully("name", "mimeType", "downloadUrl", size = Some(123))
 
-      progressTracker.requestUpload(id, reference).futureValue
-      progressTracker.registerUploadResult(reference, expectedStatus).futureValue
+      progressTracker.initialiseUpload(id, reference).futureValue
+      progressTracker.updateUploadStatus(reference, expectedStatus).futureValue
 
-      val result = progressTracker.getUploadResult(id).futureValue
+      val result = progressTracker.getUploadStatus(id).futureValue
 
       result shouldBe Some(expectedStatus)

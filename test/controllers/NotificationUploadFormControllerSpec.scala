@@ -28,7 +28,7 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import play.twirl.api.Html
-import services.UploadProgressTracker
+import services.UpscanUploadProgressTracker
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.NotificationUploadFormView
 
@@ -61,14 +61,14 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
     "return OK and the correct view for a GET" in {
       val mockAppConfig                  = mock[AppConfig]
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockUploadProgressTracker      = mock[UploadProgressTracker]
+      val mockUploadProgressTracker      = mock[UpscanUploadProgressTracker]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
       val application = applicationBuilder()
         .overrides(
           bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
-          bind[UploadProgressTracker].toInstance(mockUploadProgressTracker),
+          bind[UpscanUploadProgressTracker].toInstance(mockUploadProgressTracker),
           bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
         )
         .build()
@@ -86,7 +86,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         )
           .thenReturn(Future.successful(upscanInitiateResponse))
 
-        when(mockUploadProgressTracker.requestUpload(any[UploadId], any[UpscanFileReference]))
+        when(mockUploadProgressTracker.initialiseUpload(any[UploadId], any[UpscanFileReference]))
           .thenReturn(Future.successful(()))
 
         when(mockAppConfig.hubBaseUrl).thenReturn("http://localhost:10000/senior-accounting-officer")

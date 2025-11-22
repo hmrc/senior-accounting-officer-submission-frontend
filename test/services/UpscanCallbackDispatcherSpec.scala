@@ -33,7 +33,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
   "UpscanCallbackDispatcher" must {
 
     "handle a ReadyCallbackBody" in {
-      val mockUploadProgressTracker = mock[UploadProgressTracker]
+      val mockUploadProgressTracker = mock[UpscanUploadProgressTracker]
       val dispatcher                = new UpscanCallbackDispatcher(mockUploadProgressTracker)
 
       val callback = UpscanSuccessCallback(
@@ -48,15 +48,15 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
         )
       )
 
-      when(mockUploadProgressTracker.registerUploadResult(any(), any())).thenReturn(Future.successful(()))
+      when(mockUploadProgressTracker.updateUploadStatus(any(), any())).thenReturn(Future.successful(()))
 
-      dispatcher.handleCallback(callback).futureValue
+      dispatcher.processUpscanCallback(callback).futureValue
 
       val referenceCaptor = ArgumentCaptor.forClass(classOf[AnyRef])
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
       verify(mockUploadProgressTracker, times(1))
-        .registerUploadResult(referenceCaptor.capture().asInstanceOf[UpscanFileReference], statusCaptor.capture())
+        .updateUploadStatus(referenceCaptor.capture().asInstanceOf[UpscanFileReference], statusCaptor.capture())
 
       referenceCaptor.getValue.toString mustBe "foo"
 
@@ -70,7 +70,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
     }
 
     "handle a FailedCallbackBody" in {
-      val mockUploadProgressTracker = mock[UploadProgressTracker]
+      val mockUploadProgressTracker = mock[UpscanUploadProgressTracker]
       val dispatcher                = new UpscanCallbackDispatcher(mockUploadProgressTracker)
 
       val callback = UpscanFailureCallback(
@@ -81,15 +81,15 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
         )
       )
 
-      when(mockUploadProgressTracker.registerUploadResult(any(), any())).thenReturn(Future.successful(()))
+      when(mockUploadProgressTracker.updateUploadStatus(any(), any())).thenReturn(Future.successful(()))
 
-      dispatcher.handleCallback(callback).futureValue
+      dispatcher.processUpscanCallback(callback).futureValue
 
       val referenceCaptor = ArgumentCaptor.forClass(classOf[AnyRef])
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
       verify(mockUploadProgressTracker, times(1))
-        .registerUploadResult(referenceCaptor.capture().asInstanceOf[UpscanFileReference], statusCaptor.capture())
+        .updateUploadStatus(referenceCaptor.capture().asInstanceOf[UpscanFileReference], statusCaptor.capture())
 
       referenceCaptor.getValue.toString mustBe "foo"
       statusCaptor.getValue mustBe UploadStatus.Failed

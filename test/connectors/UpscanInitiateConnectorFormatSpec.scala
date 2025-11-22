@@ -78,7 +78,7 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
       val result         = incompleteJson.validate[UpscanInitiateRequestV2]
 
       result match {
-        case JsError(_)      => succeed // Test passes if it fails
+        case JsError(_)      => succeed
         case JsSuccess(_, _) => fail("Parsing should have failed due to a missing 'checksum' field")
       }
     }
