@@ -33,7 +33,11 @@ import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.{Inject, Singleton}
 
 object UserSessionRepository:
-  val status = "status"
+  private val status               = "status"
+  private val statusType           = "statusType"
+  private val InProgress           = "InProgress"
+  private val Failed               = "Failed"
+  private val UploadedSuccessfully = "UploadedSuccessfully"
 
   given Format[UploadStatus] =
 
@@ -42,23 +46,23 @@ object UserSessionRepository:
     val read: Reads[UploadStatus] = (json: JsValue) =>
       json match {
         case jsObject: JsObject =>
-          jsObject.value.get("statusType") match
-            case Some(JsString("InProgress"))           => JsSuccess(UploadStatus.InProgress)
-            case Some(JsString("Failed"))               => JsSuccess(UploadStatus.Failed)
-            case Some(JsString("UploadedSuccessfully")) => Json.fromJson[UploadStatus.UploadedSuccessfully](jsObject)
-            case Some(value)                            => JsError(s"Unexpected value of statusType: $value")
-            case None                                   => JsError("Missing statusType field")
+          jsObject.value.get(statusType) match
+            case Some(JsString(InProgress))           => JsSuccess(UploadStatus.InProgress)
+            case Some(JsString(Failed))               => JsSuccess(UploadStatus.Failed)
+            case Some(JsString(UploadedSuccessfully)) => Json.fromJson[UploadStatus.UploadedSuccessfully](jsObject)
+            case Some(value)                          => JsError(s"Unexpected value of statusType: $value")
+            case None                                 => JsError("Missing statusType field")
         case other => JsError(s"Expected a JsObject but got ${other.getClass.getSimpleName}")
       }
 
     val write: Writes[UploadStatus] =
       (p: UploadStatus) =>
         p fold (
-          ifInProgress = JsObject(Map("statusType" -> JsString("InProgress"))),
-          ifFailed = JsObject(Map("statusType" -> JsString("Failed"))),
+          ifInProgress = JsObject(Map(statusType -> JsString(InProgress))),
+          ifFailed = JsObject(Map(statusType -> JsString(Failed))),
           ifSuccess = s =>
             Json.toJson(s).as[JsObject]
-              + ("statusType" -> JsString("UploadedSuccessfully"))
+              + (statusType -> JsString(UploadedSuccessfully))
         )
 
     Format(read, write)
