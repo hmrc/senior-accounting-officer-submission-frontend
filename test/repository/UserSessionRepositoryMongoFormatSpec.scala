@@ -28,7 +28,7 @@ class UserSessionRepositoryMongoFormatSpec extends SpecBase {
     "correctly write and read UploadStatus.InProgress" in {
       val status: UploadStatus = UploadStatus.InProgress
       val json                 = Json.toJson(status)
-      json mustBe Json.obj("_type" -> "InProgress")
+      json mustBe Json.obj("statusType" -> "InProgress")
       val result = Json.fromJson[UploadStatus](json)
       result.get mustBe status
     }
@@ -36,7 +36,7 @@ class UserSessionRepositoryMongoFormatSpec extends SpecBase {
     "correctly write and read UploadStatus.Failed" in {
       val status: UploadStatus = UploadStatus.Failed
       val json                 = Json.toJson(status)
-      json mustBe Json.obj("_type" -> "Failed")
+      json mustBe Json.obj("statusType" -> "Failed")
       val result = Json.fromJson[UploadStatus](json)
       result.get mustBe status
     }
@@ -50,26 +50,26 @@ class UserSessionRepositoryMongoFormatSpec extends SpecBase {
         "mimeType"    -> "mimetype",
         "downloadUrl" -> "url",
         "size"        -> 123L,
-        "_type"       -> "UploadedSuccessfully"
+        "statusType"  -> "UploadedSuccessfully"
       )
       val result =
         Json.fromJson[UploadStatus](json)
       result.get mustBe status
     }
 
-    "return a JsError when reading an invalid _type" in {
-      val json   = Json.obj("_type" -> "Invalid")
+    "return a JsError when reading an invalid statusType" in {
+      val json   = Json.obj("statusType" -> "Invalid")
       val result = Json.fromJson[UploadStatus](json)
       result mustBe a[JsError]
     }
 
-    "return a JsError when _type is unexpected value" in {
-      val json   = Json.obj("_type" -> JsString("UNEXPECTED_VALUE"))
+    "return a JsError when statusType is unexpected value" in {
+      val json   = Json.obj("statusType" -> JsString("UNEXPECTED_VALUE"))
       val result = Json.fromJson[UploadStatus](json)
       result mustBe a[JsError]
     }
 
-    "return a JsError when _type is missing" in {
+    "return a JsError when statusType is missing" in {
       val json   = Json.obj("foo" -> "bar")
       val result = Json.fromJson[UploadStatus](json)
       result mustBe a[JsError]

@@ -42,23 +42,24 @@ object UserSessionRepository:
     val read: Reads[UploadStatus] = (json: JsValue) =>
       json match {
         case jsObject: JsObject =>
-          jsObject.value.get("_type") match
+          jsObject.value.get("statusType") match
             case Some(JsString("InProgress"))           => JsSuccess(UploadStatus.InProgress)
             case Some(JsString("Failed"))               => JsSuccess(UploadStatus.Failed)
             case Some(JsString("UploadedSuccessfully")) => Json.fromJson[UploadStatus.UploadedSuccessfully](jsObject)
-            case Some(value)                            => JsError(s"Unexpected value of _type: $value")
-            case None                                   => JsError("Missing _type field")
+            case Some(value)                            => JsError(s"Unexpected value of statusType: $value")
+            case None                                   => JsError("Missing statusType field")
         case other => JsError(s"Expected a JsObject but got ${other.getClass.getSimpleName}")
       }
 
     val write: Writes[UploadStatus] =
       (p: UploadStatus) =>
-        p match
-          case UploadStatus.InProgress              => JsObject(Map("_type" -> JsString("InProgress")))
-          case UploadStatus.Failed                  => JsObject(Map("_type" -> JsString("Failed")))
-          case s: UploadStatus.UploadedSuccessfully =>
+        p fold (
+          ifInProgress = JsObject(Map("statusType" -> JsString("InProgress"))),
+          ifFailed = JsObject(Map("statusType" -> JsString("Failed"))),
+          ifSuccess = s =>
             Json.toJson(s).as[JsObject]
-              + ("_type" -> JsString("UploadedSuccessfully"))
+              + ("statusType" -> JsString("UploadedSuccessfully"))
+        )
 
     Format(read, write)
 
