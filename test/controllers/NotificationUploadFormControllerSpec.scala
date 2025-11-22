@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import config.AppConfig
-import connectors.{Reference, UpscanInitiateConnector}
+import connectors.UpscanInitiateConnector
 import models.{UploadId, UpscanFileReference, UpscanInitiateResponse}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
@@ -86,7 +86,8 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         )
           .thenReturn(Future.successful(upscanInitiateResponse))
 
-        when(mockUploadProgressTracker.requestUpload(any[UploadId], any[Reference])).thenReturn(Future.successful(()))
+        when(mockUploadProgressTracker.requestUpload(any[UploadId], any[UpscanFileReference]))
+          .thenReturn(Future.successful(()))
 
         when(mockAppConfig.hubBaseUrl).thenReturn("http://localhost:10000/senior-accounting-officer")
 

@@ -18,7 +18,7 @@ package connectors
 
 import base.SpecBase
 import config.AppConfig
-import models.UpscanInitiateResponse
+import models.{UpscanFileReference, UpscanInitiateResponse}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -37,7 +37,7 @@ class UpscanInitiateConnectorSpec extends SpecBase with MockitoSugar {
       val connector          = new UpscanInitiateConnector(mockHttpClient, mockAppConfig)
 
       val preparedUpload = PreparedUpload(
-        reference = Reference("foo"),
+        reference = UpscanFileReference("foo"),
         uploadRequest = UploadForm(
           href = "bar",
           fields = Map("baz" -> "bar2")

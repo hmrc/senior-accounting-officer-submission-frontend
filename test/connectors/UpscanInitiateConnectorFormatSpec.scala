@@ -17,6 +17,7 @@
 package connectors
 
 import base.SpecBase
+import models.*
 import play.api.libs.json.JsValue
 import play.api.libs.json.{JsError, JsSuccess, Json}
 
@@ -41,7 +42,7 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
   )
 
   val preparedUploadModel: PreparedUpload = PreparedUpload(
-    reference = Reference("ref-123"),
+    reference = UpscanFileReference("ref-123"),
     uploadRequest = UploadForm(
       href = "upload-url",
       fields = Map(

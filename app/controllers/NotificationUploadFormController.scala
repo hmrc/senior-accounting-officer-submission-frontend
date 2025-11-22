@@ -17,9 +17,9 @@
 package controllers
 
 import config.AppConfig
-import connectors.{Reference, UpscanInitiateConnector}
+import connectors.UpscanInitiateConnector
 import controllers.actions.IdentifierAction
-import models.UploadId
+import models.*
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.UploadProgressTracker
@@ -49,7 +49,10 @@ class NotificationUploadFormController @Inject() (
 
     for
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2(Some(successRedirectUrl), Some(errorRedirectUrl))
-      _ <- uploadProgressTracker.requestUpload(uploadId, Reference(upscanInitiateResponse.fileReference.reference))
+      _                      <- uploadProgressTracker.requestUpload(
+        uploadId,
+        UpscanFileReference(upscanInitiateResponse.fileReference.reference)
+      )
     yield Ok(notificationUploadFormView(upscanInitiateResponse))
   }
 }

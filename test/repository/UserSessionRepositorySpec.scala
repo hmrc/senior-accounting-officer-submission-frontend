@@ -17,7 +17,6 @@
 package repository
 
 import base.SpecBase
-import connectors.Reference
 import models.*
 import org.bson.types.ObjectId
 import org.mongodb.scala.model.*
@@ -38,7 +37,7 @@ class UserSessionRepositorySpec
   "UserSessionRepository" must {
     "insert, findByUploadId, and updateStatus" in {
       val uploadId  = UploadId.generate()
-      val reference = Reference("foo")
+      val reference = UpscanFileReference("foo")
       val details   = FileUploadState(
         id = ObjectId.get(),
         uploadId = uploadId,
@@ -71,16 +70,16 @@ class UserSessionRepositorySpec
     }
 
     "upsert a new document when updateStatus is called with a non-existent reference" in {
-      val reference = Reference("bar")
+      val reference = UpscanFileReference("bar")
       val newStatus = UploadStatus.Failed
 
-      repository.collection.find(Filters.equal("reference", reference.value)).headOption().futureValue mustBe None
+      repository.collection.find(Filters.equal("reference", reference.reference)).headOption().futureValue mustBe None
 
       val updated = repository.updateStatus(reference, newStatus).futureValue
       updated mustBe newStatus
 
       val found = repository.collection
-        .find(Filters.equal("reference", reference.value))
+        .find(Filters.equal("reference", reference.reference))
         .headOption()
         .futureValue
       found must not be empty
@@ -89,7 +88,8 @@ class UserSessionRepositorySpec
     }
 
     "serialize and deserialize InProgress status" in:
-      val input = FileUploadState(ObjectId.get(), UploadId.generate(), Reference("ABC"), UploadStatus.InProgress)
+      val input =
+        FileUploadState(ObjectId.get(), UploadId.generate(), UpscanFileReference("ABC"), UploadStatus.InProgress)
 
       val serialized = UserSessionRepository.mongoFormat.writes(input)
       val output     = UserSessionRepository.mongoFormat.reads(serialized)
@@ -97,7 +97,7 @@ class UserSessionRepositorySpec
       output.get mustBe input
 
     "serialize and deserialize Failed status" in:
-      val input = FileUploadState(ObjectId.get(), UploadId.generate(), Reference("ABC"), UploadStatus.Failed)
+      val input = FileUploadState(ObjectId.get(), UploadId.generate(), UpscanFileReference("ABC"), UploadStatus.Failed)
 
       val serialized = UserSessionRepository.mongoFormat.writes(input)
       val output     = UserSessionRepository.mongoFormat.reads(serialized)
@@ -108,7 +108,7 @@ class UserSessionRepositorySpec
       val input = FileUploadState(
         ObjectId.get(),
         UploadId.generate(),
-        Reference("ABC"),
+        UpscanFileReference("ABC"),
         UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = None)
       )
 
@@ -121,7 +121,7 @@ class UserSessionRepositorySpec
       val input = FileUploadState(
         ObjectId.get(),
         UploadId.generate(),
-        Reference("ABC"),
+        UpscanFileReference("ABC"),
         UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = Some(123456))
       )
 

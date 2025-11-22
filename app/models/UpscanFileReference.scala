@@ -16,8 +16,17 @@
 
 package models
 
+import play.api.libs.json.*
+
 /** a unique reference for the file in upscan
   */
 case class UpscanFileReference(
     reference: String
-)
+) extends AnyVal
+
+object UpscanFileReference:
+  given Format[UpscanFileReference] =
+    Format(
+      Reads.StringReads.map(UpscanFileReference(_)),
+      Writes(ref => JsString(ref.reference))
+    )

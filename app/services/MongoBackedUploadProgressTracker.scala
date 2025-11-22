@@ -16,7 +16,6 @@
 
 package services
 
-import connectors.Reference
 import models.*
 import org.bson.types.ObjectId
 import repository.UserSessionRepository
@@ -31,10 +30,10 @@ class MongoBackedUploadProgressTracker @Inject() (
     ExecutionContext
 ) extends UploadProgressTracker:
 
-  override def requestUpload(uploadId: UploadId, fileReference: Reference): Future[Unit] =
+  override def requestUpload(uploadId: UploadId, fileReference: UpscanFileReference): Future[Unit] =
     repository.insert(FileUploadState(ObjectId.get(), uploadId, fileReference, UploadStatus.InProgress))
 
-  override def registerUploadResult(fileReference: Reference, uploadStatus: UploadStatus): Future[Unit] =
+  override def registerUploadResult(fileReference: UpscanFileReference, uploadStatus: UploadStatus): Future[Unit] =
     repository.updateStatus(fileReference, uploadStatus).map(_ => ())
 
   override def getUploadResult(id: UploadId): Future[Option[UploadStatus]] =

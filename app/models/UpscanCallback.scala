@@ -16,7 +16,6 @@
 
 package models
 
-import connectors.Reference
 import play.api.libs.json.*
 import utils.HttpUrlFormat
 
@@ -24,16 +23,16 @@ import java.net.URL
 import java.time.Instant
 
 sealed trait UpscanCallback:
-  def reference: Reference
+  def reference: UpscanFileReference
 
 final case class UpscanSuccessCallback(
-    reference: Reference,
+    reference: UpscanFileReference,
     downloadUrl: URL,
     uploadDetails: UpscanFileMetadata
 ) extends UpscanCallback
 
 final case class UpscanFailureCallback(
-    reference: Reference,
+    reference: UpscanFileReference,
     failureDetails: UpscanFailureDetails
 ) extends UpscanCallback
 

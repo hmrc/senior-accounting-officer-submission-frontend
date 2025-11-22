@@ -17,8 +17,6 @@
 package services
 
 import base.SpecBase
-import connectors.Reference
-import models.*
 import models.*
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{eq as _, *}
@@ -39,7 +37,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val dispatcher                = new UpscanCallbackDispatcher(mockUploadProgressTracker)
 
       val callback = UpscanSuccessCallback(
-        reference = Reference("foo"),
+        reference = UpscanFileReference("foo"),
         downloadUrl = new URL("http://localhost:8080/download"),
         uploadDetails = UpscanFileMetadata(
           uploadTimestamp = Instant.now(),
@@ -58,7 +56,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
       verify(mockUploadProgressTracker, times(1))
-        .registerUploadResult(referenceCaptor.capture().asInstanceOf[Reference], statusCaptor.capture())
+        .registerUploadResult(referenceCaptor.capture().asInstanceOf[UpscanFileReference], statusCaptor.capture())
 
       referenceCaptor.getValue.toString mustBe "foo"
 
@@ -76,7 +74,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val dispatcher                = new UpscanCallbackDispatcher(mockUploadProgressTracker)
 
       val callback = UpscanFailureCallback(
-        reference = Reference("foo"),
+        reference = UpscanFileReference("foo"),
         failureDetails = UpscanFailureDetails(
           failureReason = "QUARANTINE",
           message = "This file has a virus"
@@ -91,7 +89,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
       verify(mockUploadProgressTracker, times(1))
-        .registerUploadResult(referenceCaptor.capture().asInstanceOf[Reference], statusCaptor.capture())
+        .registerUploadResult(referenceCaptor.capture().asInstanceOf[UpscanFileReference], statusCaptor.capture())
 
       referenceCaptor.getValue.toString mustBe "foo"
       statusCaptor.getValue mustBe UploadStatus.Failed

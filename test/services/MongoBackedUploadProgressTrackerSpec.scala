@@ -16,7 +16,6 @@
 
 package services
 
-import connectors.Reference
 import models.*
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.matchers.should.Matchers
@@ -38,7 +37,7 @@ class MongoBackedUploadProgressTrackerSpec
 
   "MongoBackedUploadProgressTracker" should:
     "coordinate workflow" in:
-      val reference      = Reference("reference")
+      val reference      = UpscanFileReference("reference")
       val id             = UploadId("upload-id")
       val expectedStatus = UploadStatus.UploadedSuccessfully("name", "mimeType", "downloadUrl", size = Some(123))
 

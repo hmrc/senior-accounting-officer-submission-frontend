@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package services
+package models
 
-import com.google.inject.ImplementedBy
-import models.*
+import play.api.libs.json.{Format, Json}
 
-import scala.concurrent.Future
+sealed trait UpscanInitiateRequest
 
-@ImplementedBy(classOf[MongoBackedUploadProgressTracker])
-trait UploadProgressTracker:
+case class UpscanInitiateRequestV2(
+    callbackUrl: String,
+    successRedirect: Option[String] = None,
+    errorRedirect: Option[String] = None,
+    minimumFileSize: Option[Int] = None,
+    maximumFileSize: Option[Int] = Some(4096)
+) extends UpscanInitiateRequest
 
-  def requestUpload(uploadId: UploadId, fileReference: UpscanFileReference): Future[Unit]
-
-  def registerUploadResult(reference: UpscanFileReference, uploadStatus: UploadStatus): Future[Unit]
-
-  def getUploadResult(id: UploadId): Future[Option[UploadStatus]]
+object UpscanInitiateRequestV2:
+  given Format[UpscanInitiateRequestV2] = Json.format[UpscanInitiateRequestV2]

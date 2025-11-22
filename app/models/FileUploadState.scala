@@ -16,12 +16,11 @@
 
 package models
 
-import connectors.Reference
 import org.bson.types.ObjectId
 
 case class FileUploadState(
     id: ObjectId,
     uploadId: UploadId,
-    reference: Reference,
+    reference: UpscanFileReference,
     status: UploadStatus
 )

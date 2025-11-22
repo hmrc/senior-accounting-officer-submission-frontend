@@ -17,7 +17,6 @@
 package repository
 
 import com.mongodb.client.model
-import connectors.Reference
 import models.*
 import org.bson.types.ObjectId
 import org.mongodb.scala.model.*
@@ -65,13 +64,11 @@ object UserSessionRepository:
 
   private given Format[UploadId] = Json.valueFormat[UploadId]
 
-  private given Format[Reference] = Json.valueFormat[Reference]
-
   private[repository] val mongoFormat: Format[FileUploadState] =
     given Format[ObjectId] = MongoFormats.objectIdFormat
     ((__ \ "_id").format[ObjectId]
       ~ (__ \ "uploadId").format[UploadId]
-      ~ (__ \ "reference").format[Reference]
+      ~ (__ \ "reference").format[UpscanFileReference]
       ~ (__ \ "status").format[UploadStatus])(FileUploadState.apply, Tuple.fromProductTyped _)
 
 @Singleton
@@ -102,7 +99,7 @@ class UserSessionRepository @Inject() (
   def findByUploadId(uploadId: UploadId): Future[Option[FileUploadState]] =
     collection.find(equal("uploadId", Codecs.toBson(uploadId))).headOption()
 
-  def updateStatus(reference: Reference, newStatus: UploadStatus): Future[UploadStatus] =
+  def updateStatus(reference: UpscanFileReference, newStatus: UploadStatus): Future[UploadStatus] =
     collection
       .findOneAndUpdate(
         filter = equal("reference", Codecs.toBson(reference)),

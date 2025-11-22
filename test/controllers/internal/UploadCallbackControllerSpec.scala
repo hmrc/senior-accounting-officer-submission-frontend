@@ -18,7 +18,6 @@ package controllers.internal
 
 import base.SpecBase
 import models.*
-import models.{UpscanFailureCallback, UpscanSuccessCallback}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar

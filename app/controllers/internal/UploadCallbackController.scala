@@ -17,7 +17,6 @@
 package controllers.internal
 
 import models.*
-import models.UpscanCallback
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.mvc.*

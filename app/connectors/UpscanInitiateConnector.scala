@@ -17,7 +17,7 @@
 package connectors
 
 import config.AppConfig
-import models.{UpscanFileReference, UpscanInitiateResponse}
+import models.{UpscanFileReference, UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue
 import play.mvc.Http.HeaderNames
@@ -29,31 +29,13 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-sealed trait UpscanInitiateRequest
-
-case class UpscanInitiateRequestV2(
-    callbackUrl: String,
-    successRedirect: Option[String] = None,
-    errorRedirect: Option[String] = None,
-    minimumFileSize: Option[Int] = None,
-    maximumFileSize: Option[Int] = Some(4096)
-) extends UpscanInitiateRequest
-
-object UpscanInitiateRequestV2:
-  given Format[UpscanInitiateRequestV2] = Json.format[UpscanInitiateRequestV2]
-
 case class UploadForm(
     href: String,
     fields: Map[String, String]
 )
 
-case class Reference(value: String) extends AnyVal
-
-object Reference:
-  given Reads[Reference] = Reads.StringReads.map(Reference(_))
-
 case class PreparedUpload(
-    reference: Reference,
+    reference: UpscanFileReference,
     uploadRequest: UploadForm
 )
 
@@ -91,7 +73,7 @@ class UpscanInitiateConnector @Inject() (
         .withBody(Json.toJson(request))
         .setHeader(headers.toSeq*)
         .execute[PreparedUpload]
-      fileReference = UpscanFileReference(response.reference.value)
-      postTarget    = response.uploadRequest.href
-      formFields    = response.uploadRequest.fields
-    yield UpscanInitiateResponse(fileReference, postTarget, formFields)
+      upscanFileReference = UpscanFileReference(response.reference.reference)
+      postTarget          = response.uploadRequest.href
+      formFields          = response.uploadRequest.fields
+    yield UpscanInitiateResponse(upscanFileReference, postTarget, formFields)
