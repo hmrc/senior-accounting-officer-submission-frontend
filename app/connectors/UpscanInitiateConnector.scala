@@ -29,20 +29,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-case class UploadForm(
-    href: String,
-    fields: Map[String, String]
-)
-
-case class PreparedUpload(
-    reference: UpscanFileReference,
-    uploadRequest: UploadForm
-)
-
-object PreparedUpload:
-  given Reads[UploadForm]     = Json.reads[UploadForm]
-  given Reads[PreparedUpload] = Json.reads[PreparedUpload]
-
 class UpscanInitiateConnector @Inject() (
     httpClient: HttpClientV2,
     appConfig: AppConfig
@@ -67,13 +53,8 @@ class UpscanInitiateConnector @Inject() (
       url: String,
       request: T
   )(using HeaderCarrier, Writes[T]): Future[UpscanInitiateResponse] =
-    for
-      response <- httpClient
-        .post(url"$url")
-        .withBody(Json.toJson(request))
-        .setHeader(headers.toSeq*)
-        .execute[PreparedUpload]
-      upscanFileReference = UpscanFileReference(response.reference.reference)
-      postTarget          = response.uploadRequest.href
-      formFields          = response.uploadRequest.fields
-    yield UpscanInitiateResponse(upscanFileReference, postTarget, formFields)
+    httpClient
+      .post(url"$url")
+      .withBody(Json.toJson(request))
+      .setHeader(headers.toSeq*)
+      .execute[UpscanInitiateResponse]

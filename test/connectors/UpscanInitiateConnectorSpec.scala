@@ -36,12 +36,10 @@ class UpscanInitiateConnectorSpec extends SpecBase with MockitoSugar {
       val mockRequestBuilder = mock[RequestBuilder]
       val connector          = new UpscanInitiateConnector(mockHttpClient, mockAppConfig)
 
-      val preparedUpload = PreparedUpload(
-        reference = UpscanFileReference("foo"),
-        uploadRequest = UploadForm(
-          href = "bar",
-          fields = Map("baz" -> "bar2")
-        )
+      val upscanInitiateResponse = UpscanInitiateResponse(
+        fileReference = UpscanFileReference("foo"),
+        postTarget = "bar",
+        formFields = Map("baz1" -> "baz2")
       )
 
       when(mockAppConfig.initiateV2Url).thenReturn("http://localhost:8080/initiate")
@@ -49,7 +47,8 @@ class UpscanInitiateConnectorSpec extends SpecBase with MockitoSugar {
       when(mockHttpClient.post(any[java.net.URL])(any[HeaderCarrier])).thenReturn(mockRequestBuilder)
       when(mockRequestBuilder.withBody(any())(any(), any(), any())).thenReturn(mockRequestBuilder)
       when(mockRequestBuilder.setHeader(any())).thenReturn(mockRequestBuilder)
-      when(mockRequestBuilder.execute[PreparedUpload](any(), any())).thenReturn(Future.successful(preparedUpload))
+      when(mockRequestBuilder.execute[UpscanInitiateResponse](any(), any()))
+        .thenReturn(Future.successful(upscanInitiateResponse))
 
       val result = connector.initiateV2(Some("success"), Some("error"))(using HeaderCarrier()).futureValue
 

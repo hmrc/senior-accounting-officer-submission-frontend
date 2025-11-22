@@ -41,18 +41,16 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
       |}""".stripMargin
   )
 
-  val preparedUploadModel: PreparedUpload = PreparedUpload(
-    reference = UpscanFileReference("ref-123"),
-    uploadRequest = UploadForm(
-      href = "upload-url",
-      fields = Map(
-        "field1" -> "value1",
-        "field2" -> "value2"
-      )
+  val upscanInitiateResponseModel = UpscanInitiateResponse(
+    fileReference = UpscanFileReference("ref-123"),
+    postTarget = "upload-url",
+    formFields = Map(
+      "field1" -> "value1",
+      "field2" -> "value2"
     )
   )
 
-  val preparedUploadJson: JsValue = Json.parse(
+  val upscanInitiateResponseJson: JsValue = Json.parse(
     """{
       | "reference": "ref-123",
       | "uploadRequest":{
@@ -88,8 +86,8 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
 
   "PreparedUpload" must {
     "correctly read JSON" in {
-      val result = Json.fromJson[PreparedUpload](preparedUploadJson)
-      result.get mustBe preparedUploadModel
+      val result = Json.fromJson[UpscanInitiateResponse](upscanInitiateResponseJson)
+      result.get mustBe upscanInitiateResponseModel
     }
   }
 }
