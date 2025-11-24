@@ -17,20 +17,42 @@
 package base
 
 import controllers.actions.*
-import org.scalatest.OptionValues
-import org.scalatest.concurrent.ScalaFutures
+import models.ContactInfo
+import models.UserAnswers
+import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
+import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.wordspec.AnyWordSpec
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import org.scalatest.{OptionValues, TryValues}
+import pages.ContactsPage
 import play.api.Application
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.test.FakeRequest
 
-trait SpecBase extends AnyWordSpec with Matchers with GuiceOneAppPerSuite with OptionValues with ScalaFutures {
+trait SpecBase
+    extends AnyFreeSpec
+    with Matchers
+    with TryValues
+    with OptionValues
+    with ScalaFutures
+    with IntegrationPatience {
 
-  override def fakeApplication(): Application =
+  val userAnswersId: String                         = "id"
+  def emptyUserAnswers: UserAnswers                 = UserAnswers(userAnswersId)
+  def userAnswersWithConfirmedContacts: UserAnswers = UserAnswers(id = userAnswersId)
+    .set(ContactsPage, List(ContactInfo("name", "email")))
+    .success
+    .value
+
+  def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
+
+  protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
     new GuiceApplicationBuilder()
-      .overrides(bind[IdentifierAction].to[FakeIdentifierAction])
-      .build()
-
+      .overrides(
+        bind[DataRequiredAction].to[DataRequiredActionImpl],
+        bind[IdentifierAction].to[FakeIdentifierAction],
+        bind[ApiAuthenticatedIdentifierAction].to[FakeIdentifierAction],
+        bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
+      )
 }

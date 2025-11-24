@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-package viewmodels
+package generators
 
-import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
+import models.*
+import org.scalacheck.Arbitrary.arbitrary // scalafix:ok; need to keep this import cos it could be used by some scaffold
+import org.scalacheck.{Arbitrary, Gen}
 
-import scala.language.implicitConversions
+trait ModelGenerators {
 
-object implicits extends ImplicitConversions
+  given arbitraryContactHaveYouAddedAll: Arbitrary[ContactHaveYouAddedAll] =
+    Arbitrary {
+      Gen.oneOf(ContactHaveYouAddedAll.values.toSeq)
+    }
 
-trait ImplicitConversions {
-
-  implicit def stringToText(string: String)(implicit messages: Messages): Text =
-    Text(messages(string))
-
-  implicit def stringToKey(string: String)(implicit messages: Messages): Key =
-    Key(content = Text(messages(string)))
 }
