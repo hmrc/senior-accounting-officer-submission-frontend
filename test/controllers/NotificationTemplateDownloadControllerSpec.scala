@@ -19,34 +19,41 @@ package controllers
 import base.SpecBase
 import config.AppConfig
 import play.api.http.Status
+import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
-// todo: update the guice;
-class NotificationTemplateDownloadControllerSpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationTemplateDownloadControllerSpec extends SpecBase {
 
-  private val fakeRequest = FakeRequest("GET", "/download/notification/template")
-
-  private val controller = app.injector.instanceOf[DownloadNotificationTemplateController]
+  given request: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest(GET, routes.DownloadNotificationTemplateController.onPageLoad().url)
 
   "GET must " - {
     "return a file with correct name,type and headers" in {
-      val result = controller.onPageLoad()(fakeRequest)
 
-      status(result) mustBe Status.OK
+      val app = applicationBuilder(userAnswers = None).build()
+      running(app) {
+        val result = route(app, request).value
 
-      val contentDisposition = header("Content-Disposition", result)
+        status(result) mustBe Status.OK
 
-      contentDisposition mustBe Some("attachment; filename=test.csv")
-      contentType(result) mustBe Some("text/csv")
+        val contentDisposition = header("Content-Disposition", result)
+
+        contentDisposition mustBe Some("attachment; filename=test.csv")
+        contentType(result) mustBe Some("text/csv")
+      }
+
     }
 
     "return an internal server error if template file is unavailable" in {
-      AppConfig.setValue("templateFile", "nonsense/file/path")
-      val result = controller.onPageLoad()(fakeRequest)
 
-      status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      val app = applicationBuilder(userAnswers = None).build()
+      running(app) {
+        AppConfig.setValue("templateFile", "nonsense/file/path")
+        val result = route(app, request).value
+
+        status(result) mustBe Status.INTERNAL_SERVER_ERROR
+      }
     }
   }
 }
