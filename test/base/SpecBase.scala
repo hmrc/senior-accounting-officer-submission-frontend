@@ -17,13 +17,11 @@
 package base
 
 import controllers.actions.*
-import models.ContactInfo
 import models.UserAnswers
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
-import pages.ContactsPage
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
@@ -40,10 +38,6 @@ trait SpecBase
 
   val userAnswersId: String                         = "id"
   def emptyUserAnswers: UserAnswers                 = UserAnswers(userAnswersId)
-  def userAnswersWithConfirmedContacts: UserAnswers = UserAnswers(id = userAnswersId)
-    .set(ContactsPage, List(ContactInfo("name", "email")))
-    .success
-    .value
 
   def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
@@ -52,7 +46,6 @@ trait SpecBase
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
-        bind[ApiAuthenticatedIdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
       )
 }

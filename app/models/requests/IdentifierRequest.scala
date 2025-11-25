@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package generators
+package models.requests
 
-import models.*
-import org.scalacheck.Arbitrary.arbitrary // scalafix:ok; need to keep this import cos it could be used by some scaffold
-import org.scalacheck.{Arbitrary, Gen}
+import play.api.mvc.{Request, WrappedRequest}
 
-trait ModelGenerators {}
+case class IdentifierRequest[A](request: Request[A], userId: String) extends WrappedRequest[A](request)

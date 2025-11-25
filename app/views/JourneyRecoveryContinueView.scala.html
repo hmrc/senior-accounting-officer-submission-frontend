@@ -1,4 +1,4 @@
-/*
+@*
  * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,12 +12,25 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *@
 
-package generators
+@this(
+    layout: templates.Layout,
+    govukButton: GovukButton
+)
 
-import models.*
-import org.scalacheck.Arbitrary.arbitrary // scalafix:ok; need to keep this import cos it could be used by some scaffold
-import org.scalacheck.{Arbitrary, Gen}
+@(continueUrl: String)(using request: Request[?], messages: Messages)
 
-trait ModelGenerators {}
+@layout(pageTitle = titleNoForm(messages("journeyRecovery.continue.title"))) {
+
+    <h1 class="govuk-heading-xl">@messages("journeyRecovery.continue.heading")</h1>
+
+    <p class="govuk-body">@messages("journeyRecovery.continue.guidance")</p>
+
+    <p class="govuk-body">
+        @govukButton(
+            ButtonViewModel(messages("site.continue").toText)
+                .asLink(continueUrl)
+        )
+    </p>
+}
