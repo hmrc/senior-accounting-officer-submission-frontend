@@ -30,6 +30,7 @@ journeyRecovery.startAgain.guidance = [Add content to explain why the user needs
 
 timeout.title = You’re about to be signed out
 timeout.message = For security reasons, you will be signed out of this service in
+timeout.keepAlive = Stay signed in
 timeout.signOut = Sign out
 
 submission.notification.guidance.title = Notification template guide
