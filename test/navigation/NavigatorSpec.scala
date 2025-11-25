@@ -17,9 +17,6 @@
 package navigation
 
 import base.SpecBase
-import controllers.routes
-import models.*
-import pages.*
 
 class NavigatorSpec extends SpecBase {
 
@@ -27,10 +24,8 @@ class NavigatorSpec extends SpecBase {
 
   "Navigator" - {
 
-    "in Normal mode" - {
-    }
+    "in Normal mode" - {}
 
-    "in Check mode" - {
-    }
+    "in Check mode" - {}
   }
 }

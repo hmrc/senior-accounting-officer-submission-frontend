@@ -36,8 +36,8 @@ trait SpecBase
     with ScalaFutures
     with IntegrationPatience {
 
-  val userAnswersId: String                         = "id"
-  def emptyUserAnswers: UserAnswers                 = UserAnswers(userAnswersId)
+  val userAnswersId: String         = "id"
+  def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
   def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 

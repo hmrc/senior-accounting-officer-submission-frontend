@@ -45,17 +45,17 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
     "the user hasn't logged in must" - {
       "redirect the user to log in " in {
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new MissingBearerToken),
-            appConfig,
-            bodyParsers
-          )
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new MissingBearerToken),
+          appConfig,
+          bodyParsers
+        )
 
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+        val controller = new Harness(authAction)
+        val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value must startWith(appConfig.loginContinueUrl)
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value must startWith(appConfig.loginContinueUrl)
 
       }
     }
@@ -63,16 +63,16 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
     "the user's session has expired must" - {
       "redirect the user to log in " in {
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new BearerTokenExpired),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new BearerTokenExpired),
+          appConfig,
+          bodyParsers
+        )
+        val controller = new Harness(authAction)
+        val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value must startWith(appConfig.loginContinueUrl)
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value must startWith(appConfig.loginContinueUrl)
 
       }
     }
@@ -80,16 +80,16 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
     "the user doesn't have sufficient enrolments must" - {
       "redirect the user to the unauthorised page" in {
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new InsufficientEnrolments),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new InsufficientEnrolments),
+          appConfig,
+          bodyParsers
+        )
+        val controller = new Harness(authAction)
+        val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
 
       }
     }
@@ -97,16 +97,16 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
     "the user doesn't have sufficient confidence level must" - {
       "redirect the user to the unauthorised page" in {
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new InsufficientConfidenceLevel),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new InsufficientConfidenceLevel),
+          appConfig,
+          bodyParsers
+        )
+        val controller = new Harness(authAction)
+        val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
 
       }
     }
@@ -114,48 +114,48 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
     "the user used an unaccepted auth provider must" - {
       "redirect the user to the unauthorised page" in {
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new UnsupportedAuthProvider),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new UnsupportedAuthProvider),
+          appConfig,
+          bodyParsers
+        )
+        val controller = new Harness(authAction)
+        val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
       }
     }
 
     "the user has an unsupported affinity group must" - {
       "redirect the user to the unauthorised page" in {
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new UnsupportedAffinityGroup),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new UnsupportedAffinityGroup),
+          appConfig,
+          bodyParsers
+        )
+        val controller = new Harness(authAction)
+        val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result) mustBe Some(appConfig.hubUnauthorisedUrl)
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe Some(appConfig.hubUnauthorisedUrl)
       }
     }
 
     "the user has an unsupported credential role must" - {
       "redirect the user to the unauthorised page" in {
 
-          val authAction = new AuthenticatedIdentifierAction(
-            new FakeFailingAuthConnector(new UnsupportedCredentialRole),
-            appConfig,
-            bodyParsers
-          )
-          val controller = new Harness(authAction)
-          val result = controller.onPageLoad()(FakeRequest())
+        val authAction = new AuthenticatedIdentifierAction(
+          new FakeFailingAuthConnector(new UnsupportedCredentialRole),
+          appConfig,
+          bodyParsers
+        )
+        val controller = new Harness(authAction)
+        val result     = controller.onPageLoad()(FakeRequest())
 
-          status(result) mustBe SEE_OTHER
-          redirectLocation(result) mustBe Some(appConfig.hubUnauthorisedUrl)
+        status(result) mustBe SEE_OTHER
+        redirectLocation(result) mustBe Some(appConfig.hubUnauthorisedUrl)
       }
     }
 

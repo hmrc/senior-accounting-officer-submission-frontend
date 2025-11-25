@@ -28,11 +28,11 @@ class NotificationGuidanceControllerSpec extends SpecBase {
 
   given request: FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, routes.NotificationGuidanceController.onPageLoad().url)
-  
+
   "GET / must" - {
     "return 200" in {
       val app = applicationBuilder(userAnswers = None).build()
-      
+
       running(app) {
         val result = route(app, request).value
 

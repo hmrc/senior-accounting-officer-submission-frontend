@@ -17,8 +17,8 @@
 package config
 
 import base.SpecBase
-import play.api.test.FakeRequest
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.test.FakeRequest
 
 class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
 
