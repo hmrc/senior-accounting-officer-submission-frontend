@@ -16,7 +16,7 @@
 
 package repositories
 
-import config.FrontendAppConfig
+import config.AppConfig
 import models.UserAnswers
 import org.mockito.Mockito.when
 import org.mongodb.scala.model.Filters
@@ -50,7 +50,7 @@ class SessionRepositoryISpec
 
   private val userAnswers = UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
 
-  private val mockAppConfig = mock[FrontendAppConfig]
+  private val mockAppConfig = mock[AppConfig]
   when(mockAppConfig.cacheTtl) thenReturn 1L
 
   protected override val repository: SessionRepository = new SessionRepository(

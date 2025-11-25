@@ -14,30 +14,13 @@
  * limitations under the License.
  */
 
-package navigation
+package viewmodels
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
+sealed trait LabelSize
 
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class Navigator @Inject() () {
-
-  private val normalRoutes: Page => UserAnswers => Call = {
-    case _ => _ => ???
-  }
-
-  private val checkRouteMap: Page => UserAnswers => Call = { case _ =>
-    _ => ???
-  }
-
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
-    case NormalMode =>
-      normalRoutes(page)(userAnswers)
-    case CheckMode =>
-      checkRouteMap(page)(userAnswers)
-  }
+object LabelSize {
+  case object ExtraLarge extends WithCssClass("govuk-label--xl") with LabelSize
+  case object Large      extends WithCssClass("govuk-label--l") with LabelSize
+  case object Medium     extends WithCssClass("govuk-label--m") with LabelSize
+  case object Small      extends WithCssClass("govuk-label--s") with LabelSize
 }

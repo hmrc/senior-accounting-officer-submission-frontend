@@ -16,7 +16,7 @@
 
 package repositories
 
-import config.FrontendAppConfig
+import config.AppConfig
 import models.UserAnswers
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model.*
@@ -35,7 +35,7 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class SessionRepository @Inject() (
     mongoComponent: MongoComponent,
-    appConfig: FrontendAppConfig,
+    appConfig: AppConfig,
     clock: Clock
 )(using ec: ExecutionContext)
     extends PlayMongoRepository[UserAnswers](

@@ -16,20 +16,6 @@
 
 package viewmodels
 
-package object govuk {
-
-  object all
-      extends ConverterExtensions
-      with BackLinkFluency
-      with ButtonFluency
-      with CheckboxFluency
-      with DateFluency
-      with ErrorSummaryFluency
-      with FieldsetFluency
-      with HintFluency
-      with InputFluency
-      with LabelFluency
-      with RadiosFluency
-      with SummaryListFluency
-      with TagFluency
+abstract class WithName(name: String) {
+  override val toString: String = name
 }

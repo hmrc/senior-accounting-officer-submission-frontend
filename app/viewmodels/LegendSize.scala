@@ -14,30 +14,13 @@
  * limitations under the License.
  */
 
-package navigation
+package viewmodels
 
-import controllers.routes
-import models.*
-import pages.*
-import play.api.mvc.Call
+sealed trait LegendSize
 
-import javax.inject.{Inject, Singleton}
-
-@Singleton
-class Navigator @Inject() () {
-
-  private val normalRoutes: Page => UserAnswers => Call = {
-    case _ => _ => ???
-  }
-
-  private val checkRouteMap: Page => UserAnswers => Call = { case _ =>
-    _ => ???
-  }
-
-  def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
-    case NormalMode =>
-      normalRoutes(page)(userAnswers)
-    case CheckMode =>
-      checkRouteMap(page)(userAnswers)
-  }
+object LegendSize {
+  case object ExtraLarge extends WithCssClass("govuk-fieldset__legend--xl") with LegendSize
+  case object Large      extends WithCssClass("govuk-fieldset__legend--l") with LegendSize
+  case object Medium     extends WithCssClass("govuk-fieldset__legend--m") with LegendSize
+  case object Small      extends WithCssClass("govuk-fieldset__legend--s") with LegendSize
 }
