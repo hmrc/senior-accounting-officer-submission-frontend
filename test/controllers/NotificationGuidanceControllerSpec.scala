@@ -24,14 +24,15 @@ import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.NotificationGuidanceView
-
-class NotificationGuidanceControllerSpec extends SpecBase {
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+// todo - refactor regarding guice;
+class NotificationGuidanceControllerSpec extends SpecBase with GuiceOneAppPerSuite{
 
   private val fakeRequest = FakeRequest("GET", "/notification/guidance")
 
   private val controller = app.injector.instanceOf[NotificationGuidanceController]
   private val view       = app.injector.instanceOf[NotificationGuidanceView]
-  "GET /" must {
+  "GET / must" - {
     "return 200" in {
       val result = controller.onPageLoad()(fakeRequest)
 

@@ -18,18 +18,19 @@ package controllers
 
 import base.SpecBase
 import config.AppConfig
-import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
-class NotificationTemplateDownloadControllerSpec extends SpecBase {
+// todo: update the guice;
+class NotificationTemplateDownloadControllerSpec extends SpecBase with GuiceOneAppPerSuite {
 
   private val fakeRequest = FakeRequest("GET", "/download/notification/template")
 
   private val controller = app.injector.instanceOf[DownloadNotificationTemplateController]
 
-  "GET " must {
+  "GET must " - {
     "return a file with correct name,type and headers" in {
       val result = controller.onPageLoad()(fakeRequest)
 
