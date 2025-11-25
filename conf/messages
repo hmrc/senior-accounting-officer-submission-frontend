@@ -1,5 +1,9 @@
 service.name = Senior Accounting Officer notification and certificate
 
+timeout.title = You’re about to be signed out
+timeout.message = For security reasons, you will be signed out of this service in
+timeout.signOut = Sign out
+
 submission.notification.guidance.title = Notification template guide
 submission.notification.guidance.heading = Notification template guide
 
