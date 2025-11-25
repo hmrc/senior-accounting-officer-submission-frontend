@@ -17,45 +17,54 @@
 package controllers
 
 import base.SpecBase
-import org.scalatest.wordspec.AnyWordSpec
 import play.api.http.Status
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.NotificationGuidanceView
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-// todo - refactor regarding guice;
-class NotificationGuidanceControllerSpec extends SpecBase with GuiceOneAppPerSuite{
 
-  private val fakeRequest = FakeRequest("GET", "/notification/guidance")
+class NotificationGuidanceControllerSpec extends SpecBase {
 
-  private val controller = app.injector.instanceOf[NotificationGuidanceController]
-  private val view       = app.injector.instanceOf[NotificationGuidanceView]
+  given request: FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest(GET, routes.NotificationGuidanceController.onPageLoad().url)
+  
   "GET / must" - {
     "return 200" in {
-      val result = controller.onPageLoad()(fakeRequest)
+      val app = applicationBuilder(userAnswers = None).build()
+      
+      running(app) {
+        val result = route(app, request).value
 
-      status(result) mustBe Status.OK
+        status(result) mustBe Status.OK
+      }
     }
 
     "return HTML" in {
-      val result = controller.onPageLoad()(fakeRequest)
+      val app = applicationBuilder(userAnswers = None).build()
 
-      contentType(result) mustBe Some("text/html")
-      charset(result) mustBe Some("utf-8")
+      running(app) {
+        val result = route(app, request).value
+
+        contentType(result) mustBe Some("text/html")
+        charset(result) mustBe Some("utf-8")
+      }
     }
 
     "return correct content html" in {
-      given messages: Messages                           = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
-      given request: FakeRequest[AnyContentAsEmpty.type] =
-        FakeRequest(GET, routes.NotificationGuidanceController.onPageLoad().url)
+      val app = applicationBuilder(userAnswers = None).build()
 
-      val result = route(app, request).value
+      running(app) {
+        val view = app.injector.instanceOf[NotificationGuidanceView]
 
-      status(result) mustEqual OK
-      val content = contentAsString(result)
-      content mustEqual view().toString
+        given messages: Messages = app.injector.instanceOf[MessagesApi].preferred(request)
+
+        val result = route(app, request).value
+
+        status(result) mustEqual OK
+        val content = contentAsString(result)
+        content mustEqual view().toString
+      }
     }
   }
 }
