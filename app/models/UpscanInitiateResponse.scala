@@ -21,7 +21,7 @@ import play.api.libs.json.{JsPath, Reads}
 
 /** The response received from upscan when the initiate api is called to initiate a file upload
   */
-case class UpscanInitiateResponse(
+final case class UpscanInitiateResponse(
     fileReference: UpscanFileReference,
     postTarget: String,
     formFields: Map[String, String]

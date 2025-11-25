@@ -38,7 +38,7 @@ object UploadStatus:
 
   /** The file has been successfully uploaded
     */
-  case class UploadedSuccessfully(
+  final case class UploadedSuccessfully(
       name: String,
       mimeType: String,
       downloadUrl: String,

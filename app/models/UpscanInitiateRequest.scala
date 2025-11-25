@@ -20,7 +20,7 @@ import play.api.libs.json.{Format, Json}
 
 sealed trait UpscanInitiateRequest
 
-case class UpscanInitiateRequestV2(
+final case class UpscanInitiateRequestV2(
     callbackUrl: String,
     successRedirect: Option[String] = None,
     errorRedirect: Option[String] = None,

@@ -18,7 +18,7 @@ package models
 
 import org.bson.types.ObjectId
 
-case class FileUploadState(
+final case class FileUploadState(
     id: ObjectId,
     uploadId: UploadId,
     reference: UpscanFileReference,

@@ -20,7 +20,7 @@ import play.api.mvc.QueryStringBindable
 
 import java.util.UUID
 
-case class UploadId(value: String) extends AnyVal
+final case class UploadId(value: String) extends AnyVal
 
 object UploadId:
   def generate(): UploadId =

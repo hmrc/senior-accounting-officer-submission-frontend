@@ -20,7 +20,7 @@ import play.api.libs.json.*
 
 /** a unique reference for the file in upscan
   */
-case class UpscanFileReference(
+final case class UpscanFileReference(
     reference: String
 ) extends AnyVal
 
