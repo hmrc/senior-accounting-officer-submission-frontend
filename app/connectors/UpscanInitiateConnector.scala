@@ -17,7 +17,7 @@
 package connectors
 
 import config.AppConfig
-import models.{UpscanFileReference, UpscanInitiateRequestV2, UpscanInitiateResponse}
+import models.{UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue
 import play.mvc.Http.HeaderNames
@@ -38,14 +38,11 @@ class UpscanInitiateConnector @Inject() (
     HeaderNames.CONTENT_TYPE -> "application/json"
   )
 
-  def initiateV2(
-      redirectOnSuccess: Option[String],
-      redirectOnError: Option[String]
-  )(using HeaderCarrier): Future[UpscanInitiateResponse] =
+  def initiateV2(uploadId: String)(using HeaderCarrier): Future[UpscanInitiateResponse] =
     val request = UpscanInitiateRequestV2(
       callbackUrl = appConfig.callbackEndpointTarget,
-      successRedirect = redirectOnSuccess,
-      errorRedirect = redirectOnError
+      successRedirect = Some(appConfig.hubBaseUrl + s"?uploadId=$uploadId"),
+      errorRedirect = Some(appConfig.hubBaseUrl)
     )
     initiate(appConfig.initiateV2Url, request)
 

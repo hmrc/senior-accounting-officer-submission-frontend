@@ -33,7 +33,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.{Inject, Singleton}
 
 object UserSessionRepository:
-  private val status               = "status"
+
   private val statusType           = "statusType"
   private val InProgress           = "InProgress"
   private val Failed               = "Failed"

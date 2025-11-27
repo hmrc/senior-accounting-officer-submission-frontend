@@ -50,7 +50,7 @@ class UpscanInitiateConnectorSpec extends SpecBase with MockitoSugar {
       when(mockRequestBuilder.execute[UpscanInitiateResponse](any(), any()))
         .thenReturn(Future.successful(upscanInitiateResponse))
 
-      val result = connector.initiateV2(Some("success"), Some("error"))(using HeaderCarrier()).futureValue
+      val result = connector.initiateV2("fakeUploadId")(using HeaderCarrier()).futureValue
 
       result mustBe an[UpscanInitiateResponse]
     }

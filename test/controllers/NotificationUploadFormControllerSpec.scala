@@ -80,7 +80,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         when(mockNotificationUploadFormView.apply(any())(any(), any())).thenReturn(Html(""))
 
         when(
-          mockUpscanInitiateConnector.initiateV2(any[Option[String]](), any[Option[String]]())(using
+          mockUpscanInitiateConnector.initiateV2(any[String])(using
             any[HeaderCarrier]()
           )
         )
