@@ -6,3 +6,7 @@ GET        /assets/*file                                controllers.Assets.versi
 GET        /notification/guidance                       controllers.NotificationGuidanceController.onPageLoad()
 
 GET        /download/notification/template              controllers.DownloadNotificationTemplateController.onPageLoad()
+
+GET         /refresh-session                                   controllers.KeepAliveController.keepAlive()
+
+GET         /there-is-a-problem                                controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)

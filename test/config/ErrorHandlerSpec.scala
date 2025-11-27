@@ -17,20 +17,19 @@
 package config
 
 import base.SpecBase
-import org.scalatest.wordspec.AnyWordSpec
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.test.FakeRequest
 
-class ErrorHandlerSpec extends SpecBase {
+class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
 
   private val fakeRequest = FakeRequest("GET", "/")
 
   private val handler = app.injector.instanceOf[ErrorHandler]
 
-  "standardErrorTemplate" should {
-    "render HTML" in {
+  "standardErrorTemplate" - {
+    "must render HTML" in {
       val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
       html.contentType mustBe "text/html"
     }
   }
-
 }

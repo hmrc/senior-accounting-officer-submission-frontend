@@ -29,6 +29,14 @@ lazy val microservice = (project in file("."))
       "viewmodels.govuk.all.*",
       "viewmodels.*"
     ),
+    scalacOptions ++= Seq(
+      "-feature",
+      "-Wconf:"
+        + "cat=deprecation:w,"
+        + "cat=feature:w,"
+        + "src=target/.*:s,"
+        + "src=test/.*&id=E176:s"
+    ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged          := true,
     pipelineStages           := Seq(digest, gzip),
