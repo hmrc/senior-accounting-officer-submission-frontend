@@ -14,22 +14,18 @@
  * limitations under the License.
  */
 
-package config
+package services
 
-import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.test.FakeRequest
+import com.google.inject.ImplementedBy
+import models.*
 
-class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
+import scala.concurrent.Future
 
-  private val fakeRequest = FakeRequest("GET", "/")
+@ImplementedBy(classOf[UpscanMongoBackedUploadProgressTracker])
+trait UpscanUploadProgressTracker:
 
-  private val handler = app.injector.instanceOf[ErrorHandler]
+  def initialiseUpload(uploadId: UploadId, fileReference: UpscanFileReference): Future[Unit]
 
-  "standardErrorTemplate must" - {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
-      html.contentType mustBe "text/html"
-    }
-  }
-}
+  def updateUploadStatus(reference: UpscanFileReference, uploadStatus: UploadStatus): Future[Unit]
+
+  def getUploadStatus(id: UploadId): Future[Option[UploadStatus]]

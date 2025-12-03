@@ -18,11 +18,13 @@ package config
 
 import play.api.Configuration
 import play.api.mvc.RequestHeader
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfig @Inject() (config: Configuration) {
+class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration) {
+
   val cacheTtl: Long = config.get[Int]("mongodb.timeToLiveInSeconds")
 
   val welshLanguageSupportEnabled: Boolean =
@@ -42,12 +44,15 @@ class AppConfig @Inject() (config: Configuration) {
 
   val loginContinueUrl: String = hubBaseUrl
 
+  lazy val initiateV2Url: String          = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
+  lazy val callbackEndpointTarget: String = config.get[String]("upscan.callback-endpoint")
+
   private def getValue(key: String): String =
     sys.props.getOrElse(key, config.get[String](key))
 
   def templateFile: String = getValue("templateFile")
 
-  val timeout: Int = config.get[Int]("timeout-dialog.timeout")
+  val timeout: Int   = config.get[Int]("timeout-dialog.timeout")
   val countdown: Int = config.get[Int]("timeout-dialog.countdown")
 
 }

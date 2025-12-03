@@ -14,22 +14,19 @@
  * limitations under the License.
  */
 
-package config
+package models
 
-import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.test.FakeRequest
+import play.api.libs.json.{Format, Json}
 
-class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
+sealed trait UpscanInitiateRequest
 
-  private val fakeRequest = FakeRequest("GET", "/")
+final case class UpscanInitiateRequestV2(
+    callbackUrl: String,
+    successRedirect: Option[String] = None,
+    errorRedirect: Option[String] = None,
+    minimumFileSize: Option[Int] = None,
+    maximumFileSize: Option[Int] = Some(4096)
+) extends UpscanInitiateRequest
 
-  private val handler = app.injector.instanceOf[ErrorHandler]
-
-  "standardErrorTemplate must" - {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
-      html.contentType mustBe "text/html"
-    }
-  }
-}
+object UpscanInitiateRequestV2:
+  given Format[UpscanInitiateRequestV2] = Json.format[UpscanInitiateRequestV2]

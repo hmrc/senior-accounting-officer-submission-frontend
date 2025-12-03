@@ -17,19 +17,21 @@
 package config
 
 import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.test.FakeRequest
+import org.scalatest.wordspec.AnyWordSpec
 
-class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
+class AppConfigSpec extends SpecBase {
 
-  private val fakeRequest = FakeRequest("GET", "/")
+  val application = applicationBuilder().build()
 
-  private val handler = app.injector.instanceOf[ErrorHandler]
+  lazy val config: AppConfig = application.injector.instanceOf[AppConfig]
+  "initiateV2Url must" - {
+    "return correct intitate end point" in {
+      config.initiateV2Url mustBe "http://localhost:9570/upscan/v2/initiate"
+    }
 
-  "standardErrorTemplate must" - {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
-      html.contentType mustBe "text/html"
+    "return correct callback end point" in {
+      config.callbackEndpointTarget mustBe "http://localhost:10058/internal/upscan-callback"
     }
   }
+
 }

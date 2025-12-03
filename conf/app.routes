@@ -5,6 +5,8 @@ GET        /assets/*file                                controllers.Assets.versi
 
 GET        /notification/guidance                       controllers.NotificationGuidanceController.onPageLoad()
 
+GET        /notification/upload                         controllers.NotificationUploadFormController.onPageLoad()
+
 GET        /download/notification/template              controllers.DownloadNotificationTemplateController.onPageLoad()
 
 GET         /refresh-session                                   controllers.KeepAliveController.keepAlive()

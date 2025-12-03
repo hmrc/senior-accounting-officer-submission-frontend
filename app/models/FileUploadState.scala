@@ -14,22 +14,13 @@
  * limitations under the License.
  */
 
-package config
+package models
 
-import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.test.FakeRequest
+import org.bson.types.ObjectId
 
-class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
-
-  private val fakeRequest = FakeRequest("GET", "/")
-
-  private val handler = app.injector.instanceOf[ErrorHandler]
-
-  "standardErrorTemplate must" - {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
-      html.contentType mustBe "text/html"
-    }
-  }
-}
+final case class FileUploadState(
+    id: ObjectId,
+    uploadId: UploadId,
+    reference: UpscanFileReference,
+    status: UploadStatus
+)
