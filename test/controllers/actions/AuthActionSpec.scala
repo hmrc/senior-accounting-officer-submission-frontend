@@ -18,6 +18,7 @@ package controllers.actions
 
 import base.SpecBase
 import config.AppConfig
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.mvc.*
 import play.api.mvc.BodyParsers.Default
 import play.api.test.FakeRequest
@@ -30,7 +31,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.{ExecutionContext, Future}
 
-class AuthActionSpec extends SpecBase {
+class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
 
   class Harness(authAction: IdentifierAction) {
     def onPageLoad(): Action[AnyContent] = authAction { _ => Results.Ok }
@@ -39,24 +40,27 @@ class AuthActionSpec extends SpecBase {
   val bodyParsers: Default = app.injector.instanceOf[BodyParsers.Default]
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
 
-  "Auth Action" when {
+  "Auth Action when" - {
 
-    "the user hasn't logged in" must {
+    "the user hasn't logged in must" - {
       "redirect the user to log in " in {
+
         val authAction = new AuthenticatedIdentifierAction(
           new FakeFailingAuthConnector(new MissingBearerToken),
           appConfig,
           bodyParsers
         )
+
         val controller = new Harness(authAction)
         val result     = controller.onPageLoad()(FakeRequest())
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result).value must startWith(appConfig.loginContinueUrl)
+
       }
     }
 
-    "the user's session has expired" must {
+    "the user's session has expired must" - {
       "redirect the user to log in " in {
 
         val authAction = new AuthenticatedIdentifierAction(
@@ -69,11 +73,13 @@ class AuthActionSpec extends SpecBase {
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result).value must startWith(appConfig.loginContinueUrl)
+
       }
     }
 
-    "the user doesn't have sufficient enrolments" must {
+    "the user doesn't have sufficient enrolments must" - {
       "redirect the user to the unauthorised page" in {
+
         val authAction = new AuthenticatedIdentifierAction(
           new FakeFailingAuthConnector(new InsufficientEnrolments),
           appConfig,
@@ -84,11 +90,13 @@ class AuthActionSpec extends SpecBase {
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
+
       }
     }
 
-    "the user doesn't have sufficient confidence level" must {
+    "the user doesn't have sufficient confidence level must" - {
       "redirect the user to the unauthorised page" in {
+
         val authAction = new AuthenticatedIdentifierAction(
           new FakeFailingAuthConnector(new InsufficientConfidenceLevel),
           appConfig,
@@ -99,10 +107,11 @@ class AuthActionSpec extends SpecBase {
 
         status(result) mustBe SEE_OTHER
         redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
+
       }
     }
 
-    "the user used an unaccepted auth provider" must {
+    "the user used an unaccepted auth provider must" - {
       "redirect the user to the unauthorised page" in {
 
         val authAction = new AuthenticatedIdentifierAction(
@@ -118,7 +127,7 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
-    "the user has an unsupported affinity group" must {
+    "the user has an unsupported affinity group must" - {
       "redirect the user to the unauthorised page" in {
 
         val authAction = new AuthenticatedIdentifierAction(
@@ -134,7 +143,7 @@ class AuthActionSpec extends SpecBase {
       }
     }
 
-    "the user has an unsupported credential role" must {
+    "the user has an unsupported credential role must" - {
       "redirect the user to the unauthorised page" in {
 
         val authAction = new AuthenticatedIdentifierAction(

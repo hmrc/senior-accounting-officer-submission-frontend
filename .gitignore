@@ -3,6 +3,7 @@
 !.gitignore
 !.scalafmt.conf
 !.scalafix.conf
+!.g8
 bin
 .bloop/
 .cache

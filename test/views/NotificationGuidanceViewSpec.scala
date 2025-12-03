@@ -37,7 +37,7 @@ class NotificationGuidanceViewSpec extends SpecBase with GuiceOneAppPerSuite {
   val doc: Document        = Jsoup.parse(SUT().toString)
   val mainContent: Element = doc.getElementById("main-content")
 
-  "NotificationGuidanceView" must {
+  "NotificationGuidanceView must" - {
     "must generate a view with the correct heading" in {
       val h1 = mainContent.getElementsByTag("h1")
       h1.size() mustBe 1

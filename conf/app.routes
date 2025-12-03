@@ -8,3 +8,7 @@ GET        /notification/guidance                       controllers.Notification
 GET        /notification/upload                         controllers.NotificationUploadFormController.onPageLoad()
 
 GET        /download/notification/template              controllers.DownloadNotificationTemplateController.onPageLoad()
+
+GET         /refresh-session                                   controllers.KeepAliveController.keepAlive()
+
+GET         /there-is-a-problem                                controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)

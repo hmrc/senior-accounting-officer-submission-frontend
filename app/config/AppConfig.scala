@@ -24,6 +24,9 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration) {
+
+  val cacheTtl: Long = config.get[Int]("mongodb.timeToLiveInSeconds")
+
   val welshLanguageSupportEnabled: Boolean =
     config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
 
@@ -48,6 +51,10 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
     sys.props.getOrElse(key, config.get[String](key))
 
   def templateFile: String = getValue("templateFile")
+
+  val timeout: Int = config.get[Int]("timeout-dialog.timeout")
+  val countdown: Int = config.get[Int]("timeout-dialog.countdown")
+
 }
 
 object AppConfig {
