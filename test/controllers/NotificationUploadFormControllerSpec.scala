@@ -66,6 +66,23 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       val mockUploadProgressTracker      = mock[UpscanUploadProgressTracker]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
+      val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
+      val request                = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+      when(mockAppConfig.cacheTtl).thenReturn(900L)
+      when(mockNotificationUploadFormView.apply(any())(any(), any())).thenReturn(Html(""))
+
+      when(
+        mockUpscanInitiateConnector.initiateV2(any[String])(using
+          any[HeaderCarrier]()
+        )
+      ).thenReturn(Future.successful(upscanInitiateResponse))
+
+      when(mockUploadProgressTracker.initialiseUpload(any[UploadId], any[UpscanFileReference]))
+        .thenReturn(Future.successful(()))
+
+      when(mockAppConfig.hubBaseUrl).thenReturn("http://localhost:10000/senior-accounting-officer")
+
       val application = applicationBuilder()
         .overrides(
           bind[AppConfig].toInstance(mockAppConfig),
@@ -76,34 +93,12 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-
-        val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
-
-        when(mockNotificationUploadFormView.apply(any())(any(), any())).thenReturn(Html(""))
-
-        when(
-          mockUpscanInitiateConnector.initiateV2(any[String])(using
-            any[HeaderCarrier]()
-          )
-        )
-          .thenReturn(Future.successful(upscanInitiateResponse))
-
-        when(mockUploadProgressTracker.initialiseUpload(any[UploadId], any[UpscanFileReference]))
-          .thenReturn(Future.successful(()))
-
-        when(mockAppConfig.hubBaseUrl).thenReturn("http://localhost:10000/senior-accounting-officer")
-
-        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
-
         val result = route(application, request).value
 
         status(result) mustEqual OK
 
         verify(mockNotificationUploadFormView, times(1)).apply(any())(any(), any())
-
       }
-
     }
   }
-
 }
