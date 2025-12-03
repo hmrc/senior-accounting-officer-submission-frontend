@@ -23,7 +23,6 @@ import models.{UploadId, UpscanFileReference, UpscanInitiateResponse}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import play.api.http.Status
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -32,31 +31,10 @@ import services.UpscanUploadProgressTracker
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.NotificationUploadFormView
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
-
-  private val fakeRequest = FakeRequest("GET", "/notification/guidance")
-
-  private val application = applicationBuilder().build()
-
-  private val controller = application.injector.instanceOf[NotificationGuidanceController]
-  application.injector.instanceOf[NotificationUploadFormView]
-
-  "GET / must" - {
-    "return 200" in {
-      val result = controller.onPageLoad()(fakeRequest)
-
-      status(result) mustBe Status.OK
-    }
-  }
-
-  "return HTML" in {
-    val result = controller.onPageLoad()(fakeRequest)
-
-    contentType(result) mustBe Some("text/html")
-    charset(result) mustBe Some("utf-8")
-  }
 
   "NotificationUploadFormController must" - {
 
@@ -67,7 +45,6 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
       val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
-      val request                = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
 
       when(mockAppConfig.cacheTtl).thenReturn(900L)
       when(mockNotificationUploadFormView.apply(any())(any(), any())).thenReturn(Html(""))
@@ -93,12 +70,91 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
         val result = route(application, request).value
 
         status(result) mustEqual OK
 
         verify(mockNotificationUploadFormView, times(1)).apply(any())(any(), any())
       }
+    }
+
+    "return an error when upscan initiate connector fails" in {
+      given ec: ExecutionContext         = scala.concurrent.ExecutionContext.Implicits.global
+      val mockAppConfig                  = mock[AppConfig]
+      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
+      val mockUploadProgressTracker      = mock[UpscanUploadProgressTracker]
+      val mockNotificationUploadFormView = mock[NotificationUploadFormView]
+
+      when(mockAppConfig.cacheTtl).thenReturn(900L)
+
+      when(
+        mockUpscanInitiateConnector.initiateV2(any[String])(using
+          any[HeaderCarrier]
+        )
+      ).thenReturn(Future.failed(new RuntimeException("Upscan service unavailable")))
+
+      val application = applicationBuilder()
+        .overrides(
+          bind[AppConfig].toInstance(mockAppConfig),
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[UpscanUploadProgressTracker].toInstance(mockUploadProgressTracker),
+          bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
+        )
+        .build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        result.failed.futureValue mustBe an[RuntimeException]
+
+      }
+
+    }
+
+    "return an error when upload progress tracker fails" in {
+      val mockAppConfig                  = mock[AppConfig]
+      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
+      val mockUploadProgressTracker      = mock[UpscanUploadProgressTracker]
+      val mockNotificationUploadFormView = mock[NotificationUploadFormView]
+
+      when(mockAppConfig.cacheTtl).thenReturn(900L)
+
+      val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
+
+      when(
+        mockUpscanInitiateConnector.initiateV2(any[String])(using
+          any[HeaderCarrier]()
+        )
+      )
+        .thenReturn(Future.successful(upscanInitiateResponse))
+
+      when(mockUploadProgressTracker.initialiseUpload(any[UploadId], any[UpscanFileReference]))
+        .thenReturn(Future.failed(new RuntimeException("Database connection failed")))
+
+      val application = applicationBuilder()
+        .overrides(
+          bind[AppConfig].toInstance(mockAppConfig),
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[UpscanUploadProgressTracker].toInstance(mockUploadProgressTracker),
+          bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
+        )
+        .build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        result.failed.futureValue mustBe an[RuntimeException]
+
+      }
+
     }
   }
 }
