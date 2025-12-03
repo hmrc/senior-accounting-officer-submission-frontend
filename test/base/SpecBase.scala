@@ -48,8 +48,5 @@ trait SpecBase
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
       )
-      
-  override def fakeApplication(): Application =
-    applicationBuilder()
-      .build()    
+
 }

@@ -20,7 +20,7 @@ import base.SpecBase
 import play.api.mvc.QueryStringBindable
 
 class UploadIdSpec extends SpecBase {
-  "UploadId.queryBinder" must {
+  "UploadId.queryBinder must" - {
 
     val binder: QueryStringBindable[UploadId] = UploadId.queryBinder
 

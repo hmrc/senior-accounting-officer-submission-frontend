@@ -20,13 +20,11 @@ import base.SpecBase
 import org.scalatest.wordspec.AnyWordSpec
 
 class AppConfigSpec extends SpecBase {
-  /*
-  lazy val initiateV2Url: String          = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
-  lazy val callbackEndpointTarget: String = config.get[String]("upscan.callback-endpoint")
-   */
 
-  lazy val config: AppConfig = app.injector.instanceOf[AppConfig]
-  "initiateV2Url" must {
+  val application = applicationBuilder().build()
+
+  lazy val config: AppConfig = application.injector.instanceOf[AppConfig]
+  "initiateV2Url must" - {
     "return correct intitate end point" in {
       config.initiateV2Url mustBe "http://localhost:9570/upscan/v2/initiate"
     }

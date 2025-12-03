@@ -38,10 +38,12 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
   private val fakeRequest = FakeRequest("GET", "/notification/guidance")
 
-  private val controller = app.injector.instanceOf[NotificationGuidanceController]
-  app.injector.instanceOf[NotificationUploadFormView]
+  private val application = applicationBuilder().build()
 
-  "GET /" must {
+  private val controller = application.injector.instanceOf[NotificationGuidanceController]
+  application.injector.instanceOf[NotificationUploadFormView]
+
+  "GET / must" - {
     "return 200" in {
       val result = controller.onPageLoad()(fakeRequest)
 
@@ -56,7 +58,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
     charset(result) mustBe Some("utf-8")
   }
 
-  "NotificationUploadFormController" must {
+  "NotificationUploadFormController must" - {
 
     "return OK and the correct view for a GET" in {
       val mockAppConfig                  = mock[AppConfig]

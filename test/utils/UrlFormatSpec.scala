@@ -29,7 +29,7 @@ class UrlFormatSpec extends SpecBase {
 
   import utils.HttpUrlFormat.given // Import the implicit format here
 
-  "UrlFormat" must {
+  "UrlFormat must" - {
     "correctly write a URL to a JsString" in {
       Json.toJson(validUrlInstance) mustEqual validUrlJson
     }

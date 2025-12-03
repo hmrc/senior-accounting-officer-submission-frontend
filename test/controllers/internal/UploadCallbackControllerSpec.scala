@@ -30,7 +30,7 @@ import services.UpscanCallbackDispatcher
 import scala.concurrent.Future
 
 class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
-  "UploadCallbackController" must {
+  "UploadCallbackController must" - {
 
     "handle a ReadyCallbackBody" in {
       val mockUpscanCallbackDispatcher = mock[UpscanCallbackDispatcher]

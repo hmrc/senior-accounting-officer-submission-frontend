@@ -26,8 +26,8 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
 
   private val handler = app.injector.instanceOf[ErrorHandler]
 
-  "standardErrorTemplate" - {
-    "must render HTML" in {
+  "standardErrorTemplate must" - {
+    "render HTML" in {
       val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
       html.contentType mustBe "text/html"
     }

@@ -30,7 +30,7 @@ import java.time.Instant
 
 class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
 
-  "UpscanCallbackDispatcher" must {
+  "UpscanCallbackDispatcher must" - {
 
     "handle a ReadyCallbackBody" in {
       val mockUploadProgressTracker = mock[UpscanUploadProgressTracker]

@@ -34,7 +34,7 @@ class UserSessionRepositorySpec
 
   override val repository: UserSessionRepository = new UserSessionRepository((mongoComponent))
 
-  "UserSessionRepository" must {
+  "UserSessionRepository must" - {
     "insert, findByUploadId, and updateStatus" in {
       val uploadId  = UploadId.generate()
       val reference = UpscanFileReference("foo")

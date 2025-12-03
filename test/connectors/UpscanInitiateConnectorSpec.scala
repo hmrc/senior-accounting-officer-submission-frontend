@@ -29,7 +29,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class UpscanInitiateConnectorSpec extends SpecBase with MockitoSugar {
-  "UpscanInitiateConnector" must {
+  "UpscanInitiateConnector must" - {
     "initiateV2" in {
       val mockHttpClient     = mock[HttpClientV2]
       val mockAppConfig      = mock[AppConfig]

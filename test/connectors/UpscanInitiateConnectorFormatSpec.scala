@@ -63,7 +63,7 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
       |}""".stripMargin
   )
 
-  "UpscanInitiateRequestV2" must {
+  "UpscanInitiateRequestV2 must" - {
 
     "must be converted to JSON correctly (writes)" in {
       Json.toJson(initiateRequestModel) mustEqual initiateRequestJson
@@ -84,7 +84,7 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
     }
   }
 
-  "PreparedUpload" must {
+  "PreparedUpload must" - {
     "correctly read JSON" in {
       val result = Json.fromJson[UpscanInitiateResponse](upscanInitiateResponseJson)
       result.get mustBe upscanInitiateResponseModel

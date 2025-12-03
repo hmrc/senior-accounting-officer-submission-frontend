@@ -23,7 +23,7 @@ import repository.UserSessionRepository.given
 
 class UserSessionRepositoryMongoFormatSpec extends SpecBase {
 
-  "UserSessionRepository.mongoFormat" must {
+  "UserSessionRepository.mongoFormat must" - {
 
     "correctly write and read UploadStatus.InProgress" in {
       val status: UploadStatus = UploadStatus.InProgress
