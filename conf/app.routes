@@ -10,3 +10,4 @@ GET        /download/notification/template              controllers.DownloadNoti
 GET         /refresh-session                                   controllers.KeepAliveController.keepAlive()
 
 GET         /there-is-a-problem                                controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
+GET        /submit-notification-start                       controllers.SubmitNotificationStartController.onPageLoad()

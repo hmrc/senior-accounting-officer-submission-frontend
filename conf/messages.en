@@ -55,3 +55,5 @@ submission.notification.guidance.companyInformation.details.list.line4.content =
 
 submission.notification.guidance.utrCrnGuidance.p = If you do not have UTR for some companies, please put in the CRN instead.
 submission.notification.guidance.notification.template.download.link.content = Download the notification template
+submitNotificationStart.title = submitNotificationStart
+submitNotificationStart.heading = submitNotificationStart
