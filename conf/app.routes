@@ -13,3 +13,8 @@ GET         /there-is-a-problem                                controllers.Journ
 GET        /submit-notification-start                       controllers.SubmitNotificationStartController.onPageLoad()
 
 GET        /notification/upload                       controllers.NotificationUploadFormController.onPageLoad()
+
+GET        /notificationAdditionalInformation                        controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
+POST       /notificationAdditionalInformation                        controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
+GET        /changeNotificationAdditionalInformation                  controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeNotificationAdditionalInformation                  controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
