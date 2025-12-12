@@ -92,3 +92,10 @@ saoName.checkYourAnswersLabel = saoName
 saoName.error.required = Enter saoName
 saoName.error.length = SaoName must be 100 characters or less
 saoName.change.hidden = SaoName
+
+saoEmail.title = saoEmail
+saoEmail.heading = saoEmail
+saoEmail.checkYourAnswersLabel = saoEmail
+saoEmail.error.required = Enter saoEmail
+saoEmail.error.length = SaoEmail must be 100 characters or less
+saoEmail.change.hidden = SaoEmail

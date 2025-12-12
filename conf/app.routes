@@ -36,3 +36,8 @@ GET        /saoName                        controllers.SaoNameController.onPageL
 POST       /saoName                        controllers.SaoNameController.onSubmit(mode: Mode = NormalMode)
 GET        /changeSaoName                  controllers.SaoNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeSaoName                  controllers.SaoNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /saoEmail                        controllers.SaoEmailController.onPageLoad(mode: Mode = NormalMode)
+POST       /saoEmail                        controllers.SaoEmailController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSaoEmail                  controllers.SaoEmailController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSaoEmail                  controllers.SaoEmailController.onSubmit(mode: Mode = CheckMode)
