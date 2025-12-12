@@ -62,3 +62,5 @@ GET        /certificateSubmissionDeclaration                        controllers.
 POST       /certificateSubmissionDeclaration                        controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)
 GET        /changeCertificateSubmissionDeclaration                  controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCertificateSubmissionDeclaration                  controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
+
+GET        /certificateConfirmation                       controllers.CertificateConfirmationController.onPageLoad()

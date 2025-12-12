@@ -134,3 +134,6 @@ certificateSubmissionDeclaration.error.sao.length = sao must be 100 characters o
 certificateSubmissionDeclaration.error.proxy.length = proxy must be 100 characters or less
 certificateSubmissionDeclaration.sao.change.hidden = sao
 certificateSubmissionDeclaration.proxy.change.hidden = proxy
+
+certificateConfirmation.title = certificateConfirmation
+certificateConfirmation.heading = certificateConfirmation
