@@ -26,3 +26,8 @@ GET        /submitNotification                       controllers.SubmitNotificat
 GET        /notificationConfirmation                       controllers.NotificationConfirmationController.onPageLoad()
 
 GET        /submitCertificateStart                       controllers.SubmitCertificateStartController.onPageLoad()
+
+GET        /isThisTheSaoOnCertificate                        controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST       /isThisTheSaoOnCertificate                        controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeIsThisTheSaoOnCertificate                  controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeIsThisTheSaoOnCertificate                  controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)

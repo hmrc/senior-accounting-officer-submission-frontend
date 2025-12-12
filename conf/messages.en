@@ -79,3 +79,9 @@ notificationConfirmation.heading = notificationConfirmation
 
 submitCertificateStart.title = submitCertificateStart
 submitCertificateStart.heading = submitCertificateStart
+
+isThisTheSaoOnCertificate.title = isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.heading = isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.checkYourAnswersLabel = isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.error.required = Select yes if isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.change.hidden = IsThisTheSaoOnCertificate
