@@ -20,9 +20,12 @@ import models.*
 import org.scalacheck.Arbitrary.arbitrary // scalafix:ok; need to keep this import cos it could be used by some scaffold
 import org.scalacheck.{Arbitrary, Gen}
 
-trait ModelGenerators {}
+trait ModelGenerators {
 
   given arbitraryWhoSubmitsCertificate: Arbitrary[WhoSubmitsCertificate] =
     Arbitrary {
       Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
     }
+}
+
+  
