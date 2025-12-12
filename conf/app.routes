@@ -57,3 +57,8 @@ POST       /changeWhoSubmitsCertificate                  controllers.WhoSubmitsC
 GET        /qualifiedCompanies                       controllers.QualifiedCompaniesController.onPageLoad()
 
 GET        /unqualifiedCompanies                       controllers.UnqualifiedCompaniesController.onPageLoad()
+
+GET        /certificateSubmissionDeclaration                        controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificateSubmissionDeclaration                        controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCertificateSubmissionDeclaration                  controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCertificateSubmissionDeclaration                  controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)

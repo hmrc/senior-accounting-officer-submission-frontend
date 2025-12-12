@@ -22,6 +22,14 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  given arbitraryCertificateSubmissionDeclaration: Arbitrary[CertificateSubmissionDeclaration] =
+    Arbitrary {
+      for {
+        sao <- arbitrary[String]
+        proxy <- arbitrary[String]
+      } yield CertificateSubmissionDeclaration(sao, proxy)
+    }
+
   given arbitraryWhoSubmitsCertificate: Arbitrary[WhoSubmitsCertificate] =
     Arbitrary {
       Gen.oneOf(WhoSubmitsCertificate.values.toSeq)

@@ -122,3 +122,15 @@ qualifiedCompanies.heading = qualifiedCompanies
 
 unqualifiedCompanies.title = unqualifiedCompanies
 unqualifiedCompanies.heading = unqualifiedCompanies
+
+certificateSubmissionDeclaration.title = certificateSubmissionDeclaration
+certificateSubmissionDeclaration.heading = certificateSubmissionDeclaration
+certificateSubmissionDeclaration.sao = sao
+certificateSubmissionDeclaration.proxy = proxy
+certificateSubmissionDeclaration.checkYourAnswersLabel = CertificateSubmissionDeclaration
+certificateSubmissionDeclaration.error.sao.required = Enter sao
+certificateSubmissionDeclaration.error.proxy.required = Enter proxy
+certificateSubmissionDeclaration.error.sao.length = sao must be 100 characters or less
+certificateSubmissionDeclaration.error.proxy.length = proxy must be 100 characters or less
+certificateSubmissionDeclaration.sao.change.hidden = sao
+certificateSubmissionDeclaration.proxy.change.hidden = proxy
