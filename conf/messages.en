@@ -99,3 +99,9 @@ saoEmail.checkYourAnswersLabel = saoEmail
 saoEmail.error.required = Enter saoEmail
 saoEmail.error.length = SaoEmail must be 100 characters or less
 saoEmail.change.hidden = SaoEmail
+
+saoEmailCommunicationChoice.title = saoEmailCommunicationChoice
+saoEmailCommunicationChoice.heading = saoEmailCommunicationChoice
+saoEmailCommunicationChoice.checkYourAnswersLabel = saoEmailCommunicationChoice
+saoEmailCommunicationChoice.error.required = Select yes if saoEmailCommunicationChoice
+saoEmailCommunicationChoice.change.hidden = SaoEmailCommunicationChoice

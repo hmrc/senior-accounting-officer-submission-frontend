@@ -41,3 +41,8 @@ GET        /saoEmail                        controllers.SaoEmailController.onPag
 POST       /saoEmail                        controllers.SaoEmailController.onSubmit(mode: Mode = NormalMode)
 GET        /changeSaoEmail                  controllers.SaoEmailController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeSaoEmail                  controllers.SaoEmailController.onSubmit(mode: Mode = CheckMode)
+
+GET        /saoEmailCommunicationChoice                        controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = NormalMode)
+POST       /saoEmailCommunicationChoice                        controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSaoEmailCommunicationChoice                  controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSaoEmailCommunicationChoice                  controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = CheckMode)
