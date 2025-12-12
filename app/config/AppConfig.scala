@@ -47,7 +47,7 @@ class AppConfig @Inject() (config: Configuration) {
 
   def templateFile: String = getValue("templateFile")
 
-  val timeout: Int = config.get[Int]("timeout-dialog.timeout")
+  val timeout: Int   = config.get[Int]("timeout-dialog.timeout")
   val countdown: Int = config.get[Int]("timeout-dialog.countdown")
 
 }

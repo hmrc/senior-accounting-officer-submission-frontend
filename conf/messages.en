@@ -55,3 +55,85 @@ submission.notification.guidance.companyInformation.details.list.line4.content =
 
 submission.notification.guidance.utrCrnGuidance.p = If you do not have UTR for some companies, please put in the CRN instead.
 submission.notification.guidance.notification.template.download.link.content = Download the notification template
+submitNotificationStart.title = submitNotificationStart
+submitNotificationStart.heading = submitNotificationStart
+
+notificationUploadForm.title = notificationUploadForm
+notificationUploadForm.heading = notificationUploadForm
+
+notificationAdditionalInformation.title = notificationAdditionalInformation
+notificationAdditionalInformation.heading = notificationAdditionalInformation
+notificationAdditionalInformation.checkYourAnswersLabel = notificationAdditionalInformation
+notificationAdditionalInformation.error.required = Enter notificationAdditionalInformation
+notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 100 characters or less
+notificationAdditionalInformation.change.hidden = NotificationAdditionalInformation
+
+notificationCheckYourAnswers.title = notificationCheckYourAnswers
+notificationCheckYourAnswers.heading = notificationCheckYourAnswers
+
+submitNotification.title = submitNotification
+submitNotification.heading = submitNotification
+
+notificationConfirmation.title = notificationConfirmation
+notificationConfirmation.heading = notificationConfirmation
+
+submitCertificateStart.title = submitCertificateStart
+submitCertificateStart.heading = submitCertificateStart
+
+isThisTheSaoOnCertificate.title = isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.heading = isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.checkYourAnswersLabel = isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.error.required = Select yes if isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.change.hidden = IsThisTheSaoOnCertificate
+
+saoName.title = saoName
+saoName.heading = saoName
+saoName.checkYourAnswersLabel = saoName
+saoName.error.required = Enter saoName
+saoName.error.length = SaoName must be 100 characters or less
+saoName.change.hidden = SaoName
+
+saoEmail.title = saoEmail
+saoEmail.heading = saoEmail
+saoEmail.checkYourAnswersLabel = saoEmail
+saoEmail.error.required = Enter saoEmail
+saoEmail.error.length = SaoEmail must be 100 characters or less
+saoEmail.change.hidden = SaoEmail
+
+saoEmailCommunicationChoice.title = saoEmailCommunicationChoice
+saoEmailCommunicationChoice.heading = saoEmailCommunicationChoice
+saoEmailCommunicationChoice.checkYourAnswersLabel = saoEmailCommunicationChoice
+saoEmailCommunicationChoice.error.required = Select yes if saoEmailCommunicationChoice
+saoEmailCommunicationChoice.change.hidden = SaoEmailCommunicationChoice
+
+certificateCheckYourAnswers.title = certificateCheckYourAnswers
+certificateCheckYourAnswers.heading = certificateCheckYourAnswers
+
+whoSubmitsCertificate.title = Who is submitting the certificate?
+whoSubmitsCertificate.heading = Who is submitting the certificate?
+whoSubmitsCertificate.sao = I am the Senior Accounting Officer
+whoSubmitsCertificate.proxy = I am authorised to submit the certificate on behalf of the Senior Accounting Officer
+whoSubmitsCertificate.checkYourAnswersLabel = Who is submitting the certificate?
+whoSubmitsCertificate.error.required = Select whoSubmitsCertificate
+whoSubmitsCertificate.change.hidden = WhoSubmitsCertificate
+
+qualifiedCompanies.title = qualifiedCompanies
+qualifiedCompanies.heading = qualifiedCompanies
+
+unqualifiedCompanies.title = unqualifiedCompanies
+unqualifiedCompanies.heading = unqualifiedCompanies
+
+certificateSubmissionDeclaration.title = certificateSubmissionDeclaration
+certificateSubmissionDeclaration.heading = certificateSubmissionDeclaration
+certificateSubmissionDeclaration.sao = sao
+certificateSubmissionDeclaration.proxy = proxy
+certificateSubmissionDeclaration.checkYourAnswersLabel = CertificateSubmissionDeclaration
+certificateSubmissionDeclaration.error.sao.required = Enter sao
+certificateSubmissionDeclaration.error.proxy.required = Enter proxy
+certificateSubmissionDeclaration.error.sao.length = sao must be 100 characters or less
+certificateSubmissionDeclaration.error.proxy.length = proxy must be 100 characters or less
+certificateSubmissionDeclaration.sao.change.hidden = sao
+certificateSubmissionDeclaration.proxy.change.hidden = proxy
+
+certificateConfirmation.title = certificateConfirmation
+certificateConfirmation.heading = certificateConfirmation
