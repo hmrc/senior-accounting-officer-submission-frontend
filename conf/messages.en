@@ -76,3 +76,6 @@ submitNotification.heading = submitNotification
 
 notificationConfirmation.title = notificationConfirmation
 notificationConfirmation.heading = notificationConfirmation
+
+submitCertificateStart.title = submitCertificateStart
+submitCertificateStart.heading = submitCertificateStart

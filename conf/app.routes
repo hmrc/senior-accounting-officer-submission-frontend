@@ -24,3 +24,5 @@ GET        /notificationCheckYourAnswers                       controllers.Notif
 GET        /submitNotification                       controllers.SubmitNotificationController.onPageLoad()
 
 GET        /notificationConfirmation                       controllers.NotificationConfirmationController.onPageLoad()
+
+GET        /submitCertificateStart                       controllers.SubmitCertificateStartController.onPageLoad()
