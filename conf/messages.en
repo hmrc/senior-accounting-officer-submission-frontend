@@ -119,3 +119,6 @@ whoSubmitsCertificate.change.hidden = WhoSubmitsCertificate
 
 qualifiedCompanies.title = qualifiedCompanies
 qualifiedCompanies.heading = qualifiedCompanies
+
+unqualifiedCompanies.title = unqualifiedCompanies
+unqualifiedCompanies.heading = unqualifiedCompanies
