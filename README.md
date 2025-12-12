@@ -1,4 +1,10 @@
 
+>>  **Current sbt issue**:
+> [12/12/25] "Terminal weirdness" with sbt and giter8 (g8) scaffolds refers to several interactive shell issues where user input is not handled or displayed correctly during template generation. This often manifests when using sbt new or g8Scaffold and is frequently caused by sbt's Super Shell interfering with interactive prompts
+>
+>Current workaround is to run the following command:
+>> `sbt --supershell=false`
+
 # senior-accounting-officer-submission-frontend
 
 This frontend allows customers with SAO (Senior Accounting Officer) enrolment to submit their SAO notification and certificate.
