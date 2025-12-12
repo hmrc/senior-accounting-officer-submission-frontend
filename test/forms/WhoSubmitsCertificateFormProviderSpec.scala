@@ -16,24 +16,24 @@
 
 package forms
 
-import forms.behaviours.BooleanFieldBehaviours
+import forms.behaviours.OptionFieldBehaviours
+import models.WhoSubmitsCertificate
 import play.api.data.FormError
 
-class SaoEmailCommunicationChoiceFormProviderSpec extends BooleanFieldBehaviours {
+class WhoSubmitsCertificateFormProviderSpec extends OptionFieldBehaviours {
 
-  val requiredKey = "saoEmailCommunicationChoice.error.required"
-  val invalidKey = "error.boolean"
-
-  val form = new SaoEmailCommunicationChoiceFormProvider()()
+  val form = new WhoSubmitsCertificateFormProvider()()
+  val requiredKey = "whoSubmitsCertificate.error.required"
 
   ".value" - {
 
     val fieldName = "value"
 
-    behave like booleanField(
+    behave like optionsField[WhoSubmitsCertificate](
       form,
       fieldName,
-      invalidError = FormError(fieldName, invalidKey)
+      validValues  = WhoSubmitsCertificate.values,
+      invalidError = FormError(fieldName, "error.invalid")
     )
 
     behave like mandatoryField(
@@ -46,7 +46,7 @@ class SaoEmailCommunicationChoiceFormProviderSpec extends BooleanFieldBehaviours
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Select yes if saoEmailCommunicationChoice"
+      message = "Select whoSubmitsCertificate"
     )
   }
 }

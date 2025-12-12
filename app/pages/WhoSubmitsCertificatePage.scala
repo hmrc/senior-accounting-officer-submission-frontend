@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package generators
+package pages
 
-import models.*
-import org.scalacheck.Arbitrary.arbitrary // scalafix:ok; need to keep this import cos it could be used by some scaffold
-import org.scalacheck.{Arbitrary, Gen}
+import models.WhoSubmitsCertificate
+import play.api.libs.json.JsPath
 
-trait ModelGenerators {}
+case object WhoSubmitsCertificatePage extends QuestionPage[WhoSubmitsCertificate] {
 
-  given arbitraryWhoSubmitsCertificate: Arbitrary[WhoSubmitsCertificate] =
-    Arbitrary {
-      Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
-    }
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "whoSubmitsCertificate"
+}

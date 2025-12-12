@@ -21,24 +21,25 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.inject.Injector
 import play.api.data.Form
+import forms.WhoSubmitsCertificateFormProvider
+import models.WhoSubmitsCertificate
 import models.{NormalMode, CheckMode, Mode}
-import pages.SaoEmailPage
-import forms.SaoEmailFormProvider
-import views.html.SaoEmailView
-import views.SaoEmailViewSpec.*
+import pages.WhoSubmitsCertificatePage
+import views.html.WhoSubmitsCertificateView
+import views.WhoSubmitsCertificateViewSpec.*
 
 
-class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
+class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateView] {
 
-  private val formProvider = app.injector.instanceOf[SaoEmailFormProvider]
-  private val form: Form[String] = formProvider()
+  private val formProvider = app.injector.instanceOf[WhoSubmitsCertificateFormProvider]
+  private val form: Form[WhoSubmitsCertificate] = formProvider()
 
-  private def generateView(form: Form[String], mode: Mode): Document = {
+  private def generateView(form: Form[WhoSubmitsCertificate], mode: Mode): Document = {
     val view = SUT(form, mode)
     Jsoup.parse(view.toString)
   }
 
-  "SaoEmailView" - {
+  "WhoSubmitsCertificateView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -53,16 +54,18 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithRadioButtons(
             name = "value",
-            label = pageHeading,
-            value = "",
-            hint = None,
+            radios = List(
+              radio(value = option1key, label = option1Label),
+              radio(value = option2key, label = option2Label),
+            ),
+            isChecked = None,
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SaoEmailController.onSubmit(mode),
+            action = controllers.routes.WhoSubmitsCertificateController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -72,7 +75,7 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
         }
 
         "when the form is filled in" - {
-          val doc = generateView(form.bind(Map("value" -> testInputValue)), mode)
+          val doc = generateView(form.bind(Map("value" -> option1key)), mode)
 
           doc.createTestsWithStandardPageElements(
             pageTitle = pageTitle,
@@ -82,16 +85,18 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithRadioButtons(
             name = "value",
-            label = pageHeading,
-            value = testInputValue,
-            hint = None,
+            radios = List(
+              radio(value = option1key, label = option1Label),
+              radio(value = option2key, label = option2Label),
+            ),
+            isChecked = Some(radio(value = option1key, label = option1Label)),
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SaoEmailController.onSubmit(mode),
+            action = controllers.routes.WhoSubmitsCertificateController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -111,16 +116,18 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
             hasError = true
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithRadioButtons(
             name = "value",
-            label = pageHeading,
-            value = "",
-            hint = None,
+            radios = List(
+              radio(value = option1key, label = option1Label),
+              radio(value = option2key, label = option2Label),
+            ),
+            isChecked = None,
             hasError = true
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SaoEmailController.onSubmit(mode),
+            action = controllers.routes.WhoSubmitsCertificateController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -130,11 +137,15 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
         }
       }
     }
+
   }
 }
 
-object SaoEmailViewSpec {
-  val pageHeading = "saoEmail"
-  val pageTitle = "saoEmail"
-  val testInputValue = "myTestInputValue"
+object WhoSubmitsCertificateViewSpec {
+  val pageHeading = "Who is submitting the certificate?"
+  val pageTitle = "Who is submitting the certificate?"
+  val option1key = "sao"
+  val option1Label = "I am the Senior Accounting Officer"
+  val option2key = "proxy"
+  val option2Label = "I am authorised to submit the certificate on behalf of the Senior Accounting Officer"
 }

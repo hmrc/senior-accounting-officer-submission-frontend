@@ -17,43 +17,43 @@
 package controllers
 
 import base.SpecBase
-import forms.SaoEmailCommunicationChoiceFormProvider
-import models.{NormalMode, UserAnswers}
+import forms.WhoSubmitsCertificateFormProvider
+import models.{NormalMode, WhoSubmitsCertificate, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.SaoEmailCommunicationChoicePage
+import pages.WhoSubmitsCertificatePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.SaoEmailCommunicationChoiceView
+import views.html.WhoSubmitsCertificateView
 
 import scala.concurrent.Future
 
-class SaoEmailCommunicationChoiceControllerSpec extends SpecBase with MockitoSugar {
+class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute = Call("GET", "/foo")
 
-  val formProvider = new SaoEmailCommunicationChoiceFormProvider()
+  lazy val whoSubmitsCertificateRoute = routes.WhoSubmitsCertificateController.onPageLoad(NormalMode).url
+
+  val formProvider = new WhoSubmitsCertificateFormProvider()
   val form = formProvider()
 
-  lazy val saoEmailCommunicationChoiceRoute = routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode).url
-
-  "SaoEmailCommunicationChoice Controller" - {
+  "WhoSubmitsCertificate Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, saoEmailCommunicationChoiceRoute)
+        val request = FakeRequest(GET, whoSubmitsCertificateRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[SaoEmailCommunicationChoiceView]
+        val view = application.injector.instanceOf[WhoSubmitsCertificateView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
@@ -62,19 +62,19 @@ class SaoEmailCommunicationChoiceControllerSpec extends SpecBase with MockitoSug
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SaoEmailCommunicationChoicePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhoSubmitsCertificatePage, WhoSubmitsCertificate.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, saoEmailCommunicationChoiceRoute)
+        val request = FakeRequest(GET, whoSubmitsCertificateRoute)
 
-        val view = application.injector.instanceOf[SaoEmailCommunicationChoiceView]
+        val view = application.injector.instanceOf[WhoSubmitsCertificateView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(WhoSubmitsCertificate.values.head), NormalMode)(using request, messages(application)).toString
       }
     }
 
@@ -94,8 +94,8 @@ class SaoEmailCommunicationChoiceControllerSpec extends SpecBase with MockitoSug
 
       running(application) {
         val request =
-          FakeRequest(POST, saoEmailCommunicationChoiceRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, whoSubmitsCertificateRoute)
+            .withFormUrlEncodedBody(("value", WhoSubmitsCertificate.values.head.toString))
 
         val result = route(application, request).value
 
@@ -110,12 +110,12 @@ class SaoEmailCommunicationChoiceControllerSpec extends SpecBase with MockitoSug
 
       running(application) {
         val request =
-          FakeRequest(POST, saoEmailCommunicationChoiceRoute)
-            .withFormUrlEncodedBody(("value", ""))
+          FakeRequest(POST, whoSubmitsCertificateRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> ""))
+        val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[SaoEmailCommunicationChoiceView]
+        val view = application.injector.instanceOf[WhoSubmitsCertificateView]
 
         val result = route(application, request).value
 
@@ -129,7 +129,7 @@ class SaoEmailCommunicationChoiceControllerSpec extends SpecBase with MockitoSug
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, saoEmailCommunicationChoiceRoute)
+        val request = FakeRequest(GET, whoSubmitsCertificateRoute)
 
         val result = route(application, request).value
 
@@ -138,18 +138,19 @@ class SaoEmailCommunicationChoiceControllerSpec extends SpecBase with MockitoSug
       }
     }
 
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+    "redirect to Journey Recovery for a POST if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, saoEmailCommunicationChoiceRoute)
-            .withFormUrlEncodedBody(("value", "true"))
+          FakeRequest(POST, whoSubmitsCertificateRoute)
+            .withFormUrlEncodedBody(("value", WhoSubmitsCertificate.values.head.toString))
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
+
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }

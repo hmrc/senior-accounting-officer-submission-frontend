@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-package generators
+package forms
 
-import models.*
-import org.scalacheck.Arbitrary.arbitrary // scalafix:ok; need to keep this import cos it could be used by some scaffold
-import org.scalacheck.{Arbitrary, Gen}
+import javax.inject.Inject
 
-trait ModelGenerators {}
+import forms.mappings.Mappings
+import play.api.data.Form
+import models.WhoSubmitsCertificate
 
-  given arbitraryWhoSubmitsCertificate: Arbitrary[WhoSubmitsCertificate] =
-    Arbitrary {
-      Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
-    }
+class WhoSubmitsCertificateFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[WhoSubmitsCertificate] =
+    Form(
+      "value" -> enumerable[WhoSubmitsCertificate]("whoSubmitsCertificate.error.required")
+    )
+}

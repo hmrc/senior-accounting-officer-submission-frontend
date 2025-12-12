@@ -48,3 +48,8 @@ GET         /changeSaoEmailCommunicationChoice              controllers.SaoEmail
 POST        /changeSaoEmailCommunicationChoice              controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificateCheckYourAnswers                    controllers.CertificateCheckYourAnswersController.onPageLoad()
+
+GET        /whoSubmitsCertificate                        controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST       /whoSubmitsCertificate                        controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeWhoSubmitsCertificate                  controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeWhoSubmitsCertificate                  controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
