@@ -20,3 +20,5 @@ GET        /changeNotificationAdditionalInformation                  controllers
 POST       /changeNotificationAdditionalInformation                  controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
 GET        /notificationCheckYourAnswers                       controllers.NotificationCheckYourAnswersController.onPageLoad()
+
+GET        /submitNotification                       controllers.SubmitNotificationController.onPageLoad()

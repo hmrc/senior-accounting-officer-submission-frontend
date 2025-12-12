@@ -70,3 +70,6 @@ notificationAdditionalInformation.change.hidden = NotificationAdditionalInformat
 
 notificationCheckYourAnswers.title = notificationCheckYourAnswers
 notificationCheckYourAnswers.heading = notificationCheckYourAnswers
+
+submitNotification.title = submitNotification
+submitNotification.heading = submitNotification
