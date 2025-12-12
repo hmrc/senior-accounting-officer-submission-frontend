@@ -1,48 +1,50 @@
 # microservice specific routes
 
-->         /hmrc-frontend                               hmrcfrontend.Routes
-GET        /assets/*file                                controllers.Assets.versioned(path = "/public", file: Asset)
+->          /hmrc-frontend                                  hmrcfrontend.Routes
+GET         /assets/*file                                   controllers.Assets.versioned(path = "/public", file: Asset)
 
-GET        /notification/guidance                       controllers.NotificationGuidanceController.onPageLoad()
+GET         /notification/guidance                          controllers.NotificationGuidanceController.onPageLoad()
 
-GET        /download/notification/template              controllers.DownloadNotificationTemplateController.onPageLoad()
+GET         /download/notification/template                 controllers.DownloadNotificationTemplateController.onPageLoad()
 
-GET         /refresh-session                                   controllers.KeepAliveController.keepAlive()
+GET         /refresh-session                                controllers.KeepAliveController.keepAlive()
 
-GET         /there-is-a-problem                                controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
-GET        /submit-notification-start                       controllers.SubmitNotificationStartController.onPageLoad()
+GET         /there-is-a-problem                             controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
+GET         /submit-notification-start                      controllers.SubmitNotificationStartController.onPageLoad()
 
-GET        /notification/upload                       controllers.NotificationUploadFormController.onPageLoad()
+GET         /notification/upload                            controllers.NotificationUploadFormController.onPageLoad()
 
-GET        /notificationAdditionalInformation                        controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
-POST       /notificationAdditionalInformation                        controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
-GET        /changeNotificationAdditionalInformation                  controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeNotificationAdditionalInformation                  controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
+GET         /notificationAdditionalInformation              controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
+POST        /notificationAdditionalInformation              controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
+GET         /changeNotificationAdditionalInformation        controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
+POST        /changeNotificationAdditionalInformation        controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
-GET        /notificationCheckYourAnswers                       controllers.NotificationCheckYourAnswersController.onPageLoad()
+GET         /notificationCheckYourAnswers                   controllers.NotificationCheckYourAnswersController.onPageLoad()
 
-GET        /submitNotification                       controllers.SubmitNotificationController.onPageLoad()
+GET         /submitNotification                             controllers.SubmitNotificationController.onPageLoad()
 
-GET        /notificationConfirmation                       controllers.NotificationConfirmationController.onPageLoad()
+GET         /notificationConfirmation                       controllers.NotificationConfirmationController.onPageLoad()
 
-GET        /submitCertificateStart                       controllers.SubmitCertificateStartController.onPageLoad()
+GET         /submitCertificateStart                         controllers.SubmitCertificateStartController.onPageLoad()
 
-GET        /isThisTheSaoOnCertificate                        controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
-POST       /isThisTheSaoOnCertificate                        controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
-GET        /changeIsThisTheSaoOnCertificate                  controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeIsThisTheSaoOnCertificate                  controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)
+GET         /isThisTheSaoOnCertificate                      controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST        /isThisTheSaoOnCertificate                      controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
+GET         /changeIsThisTheSaoOnCertificate                controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
+POST        /changeIsThisTheSaoOnCertificate                controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)
 
-GET        /saoName                        controllers.SaoNameController.onPageLoad(mode: Mode = NormalMode)
-POST       /saoName                        controllers.SaoNameController.onSubmit(mode: Mode = NormalMode)
-GET        /changeSaoName                  controllers.SaoNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeSaoName                  controllers.SaoNameController.onSubmit(mode: Mode = CheckMode)
+GET         /saoName                                        controllers.SaoNameController.onPageLoad(mode: Mode = NormalMode)
+POST        /saoName                                        controllers.SaoNameController.onSubmit(mode: Mode = NormalMode)
+GET         /changeSaoName                                  controllers.SaoNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /changeSaoName                                  controllers.SaoNameController.onSubmit(mode: Mode = CheckMode)
 
-GET        /saoEmail                        controllers.SaoEmailController.onPageLoad(mode: Mode = NormalMode)
-POST       /saoEmail                        controllers.SaoEmailController.onSubmit(mode: Mode = NormalMode)
-GET        /changeSaoEmail                  controllers.SaoEmailController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeSaoEmail                  controllers.SaoEmailController.onSubmit(mode: Mode = CheckMode)
+GET         /saoEmail                                       controllers.SaoEmailController.onPageLoad(mode: Mode = NormalMode)
+POST        /saoEmail                                       controllers.SaoEmailController.onSubmit(mode: Mode = NormalMode)
+GET         /changeSaoEmail                                 controllers.SaoEmailController.onPageLoad(mode: Mode = CheckMode)
+POST        /changeSaoEmail                                 controllers.SaoEmailController.onSubmit(mode: Mode = CheckMode)
 
-GET        /saoEmailCommunicationChoice                        controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = NormalMode)
-POST       /saoEmailCommunicationChoice                        controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = NormalMode)
-GET        /changeSaoEmailCommunicationChoice                  controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeSaoEmailCommunicationChoice                  controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = CheckMode)
+GET         /saoEmailCommunicationChoice                    controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = NormalMode)
+POST        /saoEmailCommunicationChoice                    controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = NormalMode)
+GET         /changeSaoEmailCommunicationChoice              controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = CheckMode)
+POST        /changeSaoEmailCommunicationChoice              controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = CheckMode)
+
+GET         /certificateCheckYourAnswers                    controllers.CertificateCheckYourAnswersController.onPageLoad()

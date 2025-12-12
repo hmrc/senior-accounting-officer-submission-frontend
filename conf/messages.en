@@ -105,3 +105,6 @@ saoEmailCommunicationChoice.heading = saoEmailCommunicationChoice
 saoEmailCommunicationChoice.checkYourAnswersLabel = saoEmailCommunicationChoice
 saoEmailCommunicationChoice.error.required = Select yes if saoEmailCommunicationChoice
 saoEmailCommunicationChoice.change.hidden = SaoEmailCommunicationChoice
+
+certificateCheckYourAnswers.title = certificateCheckYourAnswers
+certificateCheckYourAnswers.heading = certificateCheckYourAnswers
