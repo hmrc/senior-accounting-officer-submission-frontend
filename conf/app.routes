@@ -31,3 +31,8 @@ GET        /isThisTheSaoOnCertificate                        controllers.IsThisT
 POST       /isThisTheSaoOnCertificate                        controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
 GET        /changeIsThisTheSaoOnCertificate                  controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeIsThisTheSaoOnCertificate                  controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)
+
+GET        /saoName                        controllers.SaoNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /saoName                        controllers.SaoNameController.onSubmit(mode: Mode = NormalMode)
+GET        /changeSaoName                  controllers.SaoNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeSaoName                  controllers.SaoNameController.onSubmit(mode: Mode = CheckMode)

@@ -85,3 +85,10 @@ isThisTheSaoOnCertificate.heading = isThisTheSaoOnCertificate
 isThisTheSaoOnCertificate.checkYourAnswersLabel = isThisTheSaoOnCertificate
 isThisTheSaoOnCertificate.error.required = Select yes if isThisTheSaoOnCertificate
 isThisTheSaoOnCertificate.change.hidden = IsThisTheSaoOnCertificate
+
+saoName.title = saoName
+saoName.heading = saoName
+saoName.checkYourAnswersLabel = saoName
+saoName.error.required = Enter saoName
+saoName.error.length = SaoName must be 100 characters or less
+saoName.change.hidden = SaoName
