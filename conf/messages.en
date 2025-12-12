@@ -116,3 +116,6 @@ whoSubmitsCertificate.proxy = I am authorised to submit the certificate on behal
 whoSubmitsCertificate.checkYourAnswersLabel = Who is submitting the certificate?
 whoSubmitsCertificate.error.required = Select whoSubmitsCertificate
 whoSubmitsCertificate.change.hidden = WhoSubmitsCertificate
+
+qualifiedCompanies.title = qualifiedCompanies
+qualifiedCompanies.heading = qualifiedCompanies

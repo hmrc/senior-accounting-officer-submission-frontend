@@ -53,3 +53,5 @@ GET        /whoSubmitsCertificate                        controllers.WhoSubmitsC
 POST       /whoSubmitsCertificate                        controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
 GET        /changeWhoSubmitsCertificate                  controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeWhoSubmitsCertificate                  controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
+
+GET        /qualifiedCompanies                       controllers.QualifiedCompaniesController.onPageLoad()
