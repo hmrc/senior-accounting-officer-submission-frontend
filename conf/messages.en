@@ -67,3 +67,6 @@ notificationAdditionalInformation.checkYourAnswersLabel = notificationAdditional
 notificationAdditionalInformation.error.required = Enter notificationAdditionalInformation
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 100 characters or less
 notificationAdditionalInformation.change.hidden = NotificationAdditionalInformation
+
+notificationCheckYourAnswers.title = notificationCheckYourAnswers
+notificationCheckYourAnswers.heading = notificationCheckYourAnswers
