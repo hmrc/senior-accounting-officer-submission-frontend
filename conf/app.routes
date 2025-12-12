@@ -22,3 +22,5 @@ POST       /changeNotificationAdditionalInformation                  controllers
 GET        /notificationCheckYourAnswers                       controllers.NotificationCheckYourAnswersController.onPageLoad()
 
 GET        /submitNotification                       controllers.SubmitNotificationController.onPageLoad()
+
+GET        /notificationConfirmation                       controllers.NotificationConfirmationController.onPageLoad()

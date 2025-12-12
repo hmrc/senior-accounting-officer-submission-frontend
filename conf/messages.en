@@ -73,3 +73,6 @@ notificationCheckYourAnswers.heading = notificationCheckYourAnswers
 
 submitNotification.title = submitNotification
 submitNotification.heading = submitNotification
+
+notificationConfirmation.title = notificationConfirmation
+notificationConfirmation.heading = notificationConfirmation
