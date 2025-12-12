@@ -38,7 +38,7 @@ class IsThisTheSaoOnCertificateControllerSpec extends SpecBase with MockitoSugar
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new IsThisTheSaoOnCertificateFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val isThisTheSaoOnCertificateRoute = routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode).url
 
@@ -74,7 +74,10 @@ class IsThisTheSaoOnCertificateControllerSpec extends SpecBase with MockitoSugar
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

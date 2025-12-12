@@ -28,10 +28,9 @@ import pages.WhoSubmitsCertificatePage
 import views.html.WhoSubmitsCertificateView
 import views.WhoSubmitsCertificateViewSpec.*
 
-
 class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateView] {
 
-  private val formProvider = app.injector.instanceOf[WhoSubmitsCertificateFormProvider]
+  private val formProvider                      = app.injector.instanceOf[WhoSubmitsCertificateFormProvider]
   private val form: Form[WhoSubmitsCertificate] = formProvider()
 
   private def generateView(form: Form[WhoSubmitsCertificate], mode: Mode): Document = {
@@ -58,7 +57,7 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
             name = "value",
             radios = List(
               radio(value = option1key, label = option1Label),
-              radio(value = option2key, label = option2Label),
+              radio(value = option2key, label = option2Label)
             ),
             isChecked = None,
             hasError = false
@@ -89,7 +88,7 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
             name = "value",
             radios = List(
               radio(value = option1key, label = option1Label),
-              radio(value = option2key, label = option2Label),
+              radio(value = option2key, label = option2Label)
             ),
             isChecked = Some(radio(value = option1key, label = option1Label)),
             hasError = false
@@ -120,7 +119,7 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
             name = "value",
             radios = List(
               radio(value = option1key, label = option1Label),
-              radio(value = option2key, label = option2Label),
+              radio(value = option2key, label = option2Label)
             ),
             isChecked = None,
             hasError = true
@@ -142,10 +141,10 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
 }
 
 object WhoSubmitsCertificateViewSpec {
-  val pageHeading = "Who is submitting the certificate?"
-  val pageTitle = "Who is submitting the certificate?"
-  val option1key = "sao"
+  val pageHeading  = "Who is submitting the certificate?"
+  val pageTitle    = "Who is submitting the certificate?"
+  val option1key   = "sao"
   val option1Label = "I am the Senior Accounting Officer"
-  val option2key = "proxy"
+  val option2key   = "proxy"
   val option2Label = "I am authorised to submit the certificate on behalf of the Senior Accounting Officer"
 }

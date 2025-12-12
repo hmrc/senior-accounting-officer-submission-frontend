@@ -44,5 +44,5 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
 object NotificationCheckYourAnswersViewSpec {
   val pageHeading = "notificationCheckYourAnswers"
-  val pageTitle = "notificationCheckYourAnswers"
+  val pageTitle   = "notificationCheckYourAnswers"
 }

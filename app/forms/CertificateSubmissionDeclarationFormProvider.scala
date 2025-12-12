@@ -25,12 +25,12 @@ import models.CertificateSubmissionDeclaration
 
 class CertificateSubmissionDeclarationFormProvider @Inject() extends Mappings {
 
-   def apply(): Form[CertificateSubmissionDeclaration] = Form(
-     mapping(
+  def apply(): Form[CertificateSubmissionDeclaration] = Form(
+    mapping(
       "sao" -> text("certificateSubmissionDeclaration.error.sao.required")
         .verifying(maxLength(100, "certificateSubmissionDeclaration.error.sao.length")),
       "proxy" -> text("certificateSubmissionDeclaration.error.proxy.required")
         .verifying(maxLength(100, "certificateSubmissionDeclaration.error.proxy.length"))
     )(CertificateSubmissionDeclaration.apply)(x => Some((x.sao, x.proxy)))
-   )
- }
+  )
+}

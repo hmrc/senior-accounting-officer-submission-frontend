@@ -22,7 +22,7 @@ import play.api.data.FormError
 class SaoEmailCommunicationChoiceFormProviderSpec extends BooleanFieldBehaviours {
 
   val requiredKey = "saoEmailCommunicationChoice.error.required"
-  val invalidKey = "error.boolean"
+  val invalidKey  = "error.boolean"
 
   val form = new SaoEmailCommunicationChoiceFormProvider()()
 

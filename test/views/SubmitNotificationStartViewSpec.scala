@@ -44,5 +44,5 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 
 object SubmitNotificationStartViewSpec {
   val pageHeading = "submitNotificationStart"
-  val pageTitle = "submitNotificationStart"
+  val pageTitle   = "submitNotificationStart"
 }

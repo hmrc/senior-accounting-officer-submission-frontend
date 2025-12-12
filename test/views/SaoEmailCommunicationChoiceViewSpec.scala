@@ -27,10 +27,9 @@ import pages.SaoEmailCommunicationChoicePage
 import views.html.SaoEmailCommunicationChoiceView
 import views.SaoEmailCommunicationChoiceViewSpec.*
 
-
 class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunicationChoiceView] {
 
-  private val formProvider = app.injector.instanceOf[SaoEmailCommunicationChoiceFormProvider]
+  private val formProvider        = app.injector.instanceOf[SaoEmailCommunicationChoiceFormProvider]
   private val form: Form[Boolean] = formProvider()
 
   private def generateView(form: Form[Boolean], mode: Mode): Document = {
@@ -57,7 +56,7 @@ class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunica
             name = "value",
             radios = List(
               radio(value = yesKey, label = yesLabel),
-              radio(value = noKey, label = noLabel),
+              radio(value = noKey, label = noLabel)
             ),
             isChecked = None,
             hasError = false
@@ -88,7 +87,7 @@ class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunica
             name = "value",
             radios = List(
               radio(value = yesKey, label = yesLabel),
-              radio(value = noKey, label = noLabel),
+              radio(value = noKey, label = noLabel)
             ),
             isChecked = Some(radio(value = yesKey, label = yesLabel)),
             hasError = false
@@ -119,7 +118,7 @@ class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunica
             name = "value",
             radios = List(
               radio(value = yesKey, label = yesLabel),
-              radio(value = noKey, label = noLabel),
+              radio(value = noKey, label = noLabel)
             ),
             isChecked = None,
             hasError = true
@@ -143,9 +142,9 @@ class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunica
 
 object SaoEmailCommunicationChoiceViewSpec {
   val pageHeading = "saoEmailCommunicationChoice"
-  val pageTitle = "saoEmailCommunicationChoice"
-  val yesKey = "true"
-  val yesLabel = "Yes"
-  val noKey = "false"
-  val noLabel = "No"
+  val pageTitle   = "saoEmailCommunicationChoice"
+  val yesKey      = "true"
+  val yesLabel    = "Yes"
+  val noKey       = "false"
+  val noLabel     = "No"
 }

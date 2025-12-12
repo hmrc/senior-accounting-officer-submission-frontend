@@ -26,21 +26,23 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
 
-object CertificateSubmissionDeclarationSummary  {
+object CertificateSubmissionDeclarationSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateSubmissionDeclarationPage).map {
-      answer =>
+    answers.get(CertificateSubmissionDeclarationPage).map { answer =>
 
       val value = HtmlFormat.escape(answer.sao).toString + "<br/>" + HtmlFormat.escape(answer.proxy).toString
 
-        SummaryListRowViewModel(
-          key     = messages("certificateSubmissionDeclaration.checkYourAnswersLabel").toKey,
-          value   = ValueViewModel(HtmlContent(value)),
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.CertificateSubmissionDeclarationController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("certificateSubmissionDeclaration.change.hidden"))
+      SummaryListRowViewModel(
+        key = messages("certificateSubmissionDeclaration.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(HtmlContent(value)),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.CertificateSubmissionDeclarationController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("certificateSubmissionDeclaration.change.hidden"))
         )
+      )
     }
 }

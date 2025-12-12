@@ -44,5 +44,5 @@ class UnqualifiedCompaniesViewSpec extends ViewSpecBase[UnqualifiedCompaniesView
 
 object UnqualifiedCompaniesViewSpec {
   val pageHeading = "unqualifiedCompanies"
-  val pageTitle = "unqualifiedCompanies"
+  val pageTitle   = "unqualifiedCompanies"
 }

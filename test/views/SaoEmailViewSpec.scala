@@ -27,10 +27,9 @@ import forms.SaoEmailFormProvider
 import views.html.SaoEmailView
 import views.SaoEmailViewSpec.*
 
-
 class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
 
-  private val formProvider = app.injector.instanceOf[SaoEmailFormProvider]
+  private val formProvider       = app.injector.instanceOf[SaoEmailFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
@@ -134,7 +133,7 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
 }
 
 object SaoEmailViewSpec {
-  val pageHeading = "saoEmail"
-  val pageTitle = "saoEmail"
+  val pageHeading    = "saoEmail"
+  val pageTitle      = "saoEmail"
   val testInputValue = "myTestInputValue"
 }

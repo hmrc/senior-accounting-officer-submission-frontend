@@ -44,5 +44,5 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
 
 object NotificationConfirmationViewSpec {
   val pageHeading = "notificationConfirmation"
-  val pageTitle = "notificationConfirmation"
+  val pageTitle   = "notificationConfirmation"
 }

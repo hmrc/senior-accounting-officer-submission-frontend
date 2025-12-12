@@ -22,8 +22,8 @@ import play.api.data.FormError
 class SaoNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "saoName.error.required"
-  val lengthKey = "saoName.error.length"
-  val maxLength = 100
+  val lengthKey   = "saoName.error.length"
+  val maxLength   = 100
 
   val form = new SaoNameFormProvider()()
 

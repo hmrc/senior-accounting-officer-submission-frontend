@@ -44,5 +44,5 @@ class SubmitCertificateStartViewSpec extends ViewSpecBase[SubmitCertificateStart
 
 object SubmitCertificateStartViewSpec {
   val pageHeading = "submitCertificateStart"
-  val pageTitle = "submitCertificateStart"
+  val pageTitle   = "submitCertificateStart"
 }

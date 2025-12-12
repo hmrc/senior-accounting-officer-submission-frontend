@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.*
 
-case class CertificateSubmissionDeclaration (sao: String, proxy: String)
+case class CertificateSubmissionDeclaration(sao: String, proxy: String)
 
 object CertificateSubmissionDeclaration {
 

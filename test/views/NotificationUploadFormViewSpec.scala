@@ -44,5 +44,5 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
 
 object NotificationUploadFormViewSpec {
   val pageHeading = "notificationUploadForm"
-  val pageTitle = "notificationUploadForm"
+  val pageTitle   = "notificationUploadForm"
 }

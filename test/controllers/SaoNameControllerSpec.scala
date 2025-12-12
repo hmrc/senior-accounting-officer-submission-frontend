@@ -38,7 +38,7 @@ class SaoNameControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new SaoNameFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   lazy val saoNameRoute = routes.SaoNameController.onPageLoad(NormalMode).url
 
@@ -74,7 +74,10 @@ class SaoNameControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

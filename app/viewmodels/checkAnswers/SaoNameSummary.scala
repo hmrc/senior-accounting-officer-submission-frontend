@@ -25,19 +25,17 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
 
-object SaoNameSummary  {
+object SaoNameSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(SaoNamePage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = messages("saoName.checkYourAnswersLabel").toKey,
-          value   = ValueViewModel(HtmlFormat.escape(answer).toText),
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.SaoNameController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("saoName.change.hidden"))
-          )
+    answers.get(SaoNamePage).map { answer =>
+      SummaryListRowViewModel(
+        key = messages("saoName.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(HtmlFormat.escape(answer).toText),
+        actions = Seq(
+          ActionItemViewModel(messages("site.change").toText, routes.SaoNameController.onPageLoad(CheckMode).url)
+            .withVisuallyHiddenText(messages("saoName.change.hidden"))
         )
+      )
     }
 }

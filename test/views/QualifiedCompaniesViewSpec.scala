@@ -44,5 +44,5 @@ class QualifiedCompaniesViewSpec extends ViewSpecBase[QualifiedCompaniesView] {
 
 object QualifiedCompaniesViewSpec {
   val pageHeading = "qualifiedCompanies"
-  val pageTitle = "qualifiedCompanies"
+  val pageTitle   = "qualifiedCompanies"
 }

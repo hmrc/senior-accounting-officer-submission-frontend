@@ -28,7 +28,6 @@ import pages.CertificateSubmissionDeclarationPage
 import views.html.CertificateSubmissionDeclarationView
 import views.CertificateSubmissionDeclarationViewSpec.*
 
-
 class CertificateSubmissionDeclarationViewSpec extends ViewSpecBase[CertificateSubmissionDeclarationView] {
 
   private val formProvider = app.injector.instanceOf[CertificateSubmissionDeclarationFormProvider]
@@ -56,7 +55,13 @@ class CertificateSubmissionDeclarationViewSpec extends ViewSpecBase[CertificateS
 
           doc.createTestMustShowNumberOfInputs(2)
           doc.createTestMustShowTextInput(name = "sao", label = field1Label, value = "", hint = None, hasError = false)
-          doc.createTestMustShowTextInput(name = "proxy", label = field2Label, value = "", hint = None, hasError = false)
+          doc.createTestMustShowTextInput(
+            name = "proxy",
+            label = field2Label,
+            value = "",
+            hint = None,
+            hasError = false
+          )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateSubmissionDeclarationController.onSubmit(mode),
@@ -80,8 +85,20 @@ class CertificateSubmissionDeclarationViewSpec extends ViewSpecBase[CertificateS
           )
 
           doc.createTestMustShowNumberOfInputs(2)
-          doc.createTestMustShowTextInput(name = "sao", label = field1Label, value = testInputValue1, hint = None, hasError = false)
-          doc.createTestMustShowTextInput(name = "proxy", label = field2Label, value = testInputValue2, hint = None, hasError = false)
+          doc.createTestMustShowTextInput(
+            name = "sao",
+            label = field1Label,
+            value = testInputValue1,
+            hint = None,
+            hasError = false
+          )
+          doc.createTestMustShowTextInput(
+            name = "proxy",
+            label = field2Label,
+            value = testInputValue2,
+            hint = None,
+            hasError = false
+          )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateSubmissionDeclarationController.onSubmit(mode),
@@ -125,7 +142,7 @@ class CertificateSubmissionDeclarationViewSpec extends ViewSpecBase[CertificateS
 
 object CertificateSubmissionDeclarationViewSpec {
   val pageHeading = "certificateSubmissionDeclaration"
-  val pageTitle = "certificateSubmissionDeclaration"
+  val pageTitle   = "certificateSubmissionDeclaration"
   val field1Label = "sao"
   val field2Label = "proxy"
 

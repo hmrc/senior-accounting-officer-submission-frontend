@@ -27,10 +27,9 @@ import forms.SaoNameFormProvider
 import views.html.SaoNameView
 import views.SaoNameViewSpec.*
 
-
 class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
 
-  private val formProvider = app.injector.instanceOf[SaoNameFormProvider]
+  private val formProvider       = app.injector.instanceOf[SaoNameFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
@@ -134,7 +133,7 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
 }
 
 object SaoNameViewSpec {
-  val pageHeading = "saoName"
-  val pageTitle = "saoName"
+  val pageHeading    = "saoName"
+  val pageTitle      = "saoName"
   val testInputValue = "myTestInputValue"
 }

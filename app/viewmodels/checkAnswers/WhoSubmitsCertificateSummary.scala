@@ -26,25 +26,27 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
 
-object WhoSubmitsCertificateSummary  {
+object WhoSubmitsCertificateSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(WhoSubmitsCertificatePage).map {
-      answer =>
+    answers.get(WhoSubmitsCertificatePage).map { answer =>
 
-        val value = ValueViewModel(
-          HtmlContent(
-            HtmlFormat.escape(messages(s"whoSubmitsCertificate.$answer"))
-          )
+      val value = ValueViewModel(
+        HtmlContent(
+          HtmlFormat.escape(messages(s"whoSubmitsCertificate.$answer"))
         )
+      )
 
-        SummaryListRowViewModel(
-          key     = messages("whoSubmitsCertificate.checkYourAnswersLabel").toKey,
-          value   = value,
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.WhoSubmitsCertificateController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("whoSubmitsCertificate.change.hidden"))
+      SummaryListRowViewModel(
+        key = messages("whoSubmitsCertificate.checkYourAnswersLabel").toKey,
+        value = value,
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.WhoSubmitsCertificateController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("whoSubmitsCertificate.change.hidden"))
         )
+      )
     }
 }

@@ -22,8 +22,8 @@ import play.api.data.FormError
 class NotificationAdditionalInformationFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "notificationAdditionalInformation.error.required"
-  val lengthKey = "notificationAdditionalInformation.error.length"
-  val maxLength = 100
+  val lengthKey   = "notificationAdditionalInformation.error.length"
+  val maxLength   = 100
 
   val form = new NotificationAdditionalInformationFormProvider()()
 

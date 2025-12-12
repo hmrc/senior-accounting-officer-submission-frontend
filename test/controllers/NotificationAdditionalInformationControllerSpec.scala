@@ -38,9 +38,10 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new NotificationAdditionalInformationFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
-  lazy val notificationAdditionalInformationRoute = routes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url
+  lazy val notificationAdditionalInformationRoute =
+    routes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url
 
   "NotificationAdditionalInformation Controller" - {
 
@@ -74,7 +75,10 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

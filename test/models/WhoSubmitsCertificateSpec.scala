@@ -32,10 +32,11 @@ class WhoSubmitsCertificateSpec extends AnyFreeSpec with Matchers with ScalaChec
 
       val gen = Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
 
-      forAll(gen) {
-        whoSubmitsCertificate =>
-
-          JsString(whoSubmitsCertificate.toString).validate[WhoSubmitsCertificate].asOpt.value mustEqual whoSubmitsCertificate
+      forAll(gen) { whoSubmitsCertificate =>
+        JsString(whoSubmitsCertificate.toString)
+          .validate[WhoSubmitsCertificate]
+          .asOpt
+          .value mustEqual whoSubmitsCertificate
       }
     }
 
@@ -43,10 +44,8 @@ class WhoSubmitsCertificateSpec extends AnyFreeSpec with Matchers with ScalaChec
 
       val gen = arbitrary[String] suchThat (!WhoSubmitsCertificate.values.map(_.toString).contains(_))
 
-      forAll(gen) {
-        invalidValue =>
-
-          JsString(invalidValue).validate[WhoSubmitsCertificate] mustEqual JsError("error.invalid")
+      forAll(gen) { invalidValue =>
+        JsString(invalidValue).validate[WhoSubmitsCertificate] mustEqual JsError("error.invalid")
       }
     }
 
@@ -54,10 +53,8 @@ class WhoSubmitsCertificateSpec extends AnyFreeSpec with Matchers with ScalaChec
 
       val gen = Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
 
-      forAll(gen) {
-        whoSubmitsCertificate =>
-
-          Json.toJson(whoSubmitsCertificate) mustEqual JsString(whoSubmitsCertificate.toString)
+      forAll(gen) { whoSubmitsCertificate =>
+        Json.toJson(whoSubmitsCertificate) mustEqual JsString(whoSubmitsCertificate.toString)
       }
     }
   }

@@ -44,5 +44,5 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
 
 object CertificateCheckYourAnswersViewSpec {
   val pageHeading = "certificateCheckYourAnswers"
-  val pageTitle = "certificateCheckYourAnswers"
+  val pageTitle   = "certificateCheckYourAnswers"
 }

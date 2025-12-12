@@ -22,7 +22,7 @@ import play.api.data.FormError
 class IsThisTheSaoOnCertificateFormProviderSpec extends BooleanFieldBehaviours {
 
   val requiredKey = "isThisTheSaoOnCertificate.error.required"
-  val invalidKey = "error.boolean"
+  val invalidKey  = "error.boolean"
 
   val form = new IsThisTheSaoOnCertificateFormProvider()()
 

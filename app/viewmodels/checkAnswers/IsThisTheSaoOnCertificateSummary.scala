@@ -24,21 +24,23 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
 
-object IsThisTheSaoOnCertificateSummary  {
+object IsThisTheSaoOnCertificateSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(IsThisTheSaoOnCertificatePage).map {
-      answer =>
+    answers.get(IsThisTheSaoOnCertificatePage).map { answer =>
 
-        val value = if (answer) "site.yes" else "site.no"
+      val value = if answer then "site.yes" else "site.no"
 
-        SummaryListRowViewModel(
-          key     = messages("isThisTheSaoOnCertificate.checkYourAnswersLabel").toKey,
-          value   = ValueViewModel(messages(value).toText),
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.IsThisTheSaoOnCertificateController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("isThisTheSaoOnCertificate.change.hidden"))
+      SummaryListRowViewModel(
+        key = messages("isThisTheSaoOnCertificate.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(messages(value).toText),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.IsThisTheSaoOnCertificateController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("isThisTheSaoOnCertificate.change.hidden"))
         )
+      )
     }
 }

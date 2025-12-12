@@ -25,19 +25,20 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
 
-object NotificationAdditionalInformationSummary  {
+object NotificationAdditionalInformationSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationAdditionalInformationPage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,
-          value   = ValueViewModel(HtmlFormat.escape(answer).toText),
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.NotificationAdditionalInformationController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("notificationAdditionalInformation.change.hidden"))
+    answers.get(NotificationAdditionalInformationPage).map { answer =>
+      SummaryListRowViewModel(
+        key = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(HtmlFormat.escape(answer).toText),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.NotificationAdditionalInformationController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("notificationAdditionalInformation.change.hidden"))
         )
+      )
     }
 }

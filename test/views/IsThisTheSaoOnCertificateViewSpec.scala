@@ -27,10 +27,9 @@ import pages.IsThisTheSaoOnCertificatePage
 import views.html.IsThisTheSaoOnCertificateView
 import views.IsThisTheSaoOnCertificateViewSpec.*
 
-
 class IsThisTheSaoOnCertificateViewSpec extends ViewSpecBase[IsThisTheSaoOnCertificateView] {
 
-  private val formProvider = app.injector.instanceOf[IsThisTheSaoOnCertificateFormProvider]
+  private val formProvider        = app.injector.instanceOf[IsThisTheSaoOnCertificateFormProvider]
   private val form: Form[Boolean] = formProvider()
 
   private def generateView(form: Form[Boolean], mode: Mode): Document = {
@@ -57,7 +56,7 @@ class IsThisTheSaoOnCertificateViewSpec extends ViewSpecBase[IsThisTheSaoOnCerti
             name = "value",
             radios = List(
               radio(value = yesKey, label = yesLabel),
-              radio(value = noKey, label = noLabel),
+              radio(value = noKey, label = noLabel)
             ),
             isChecked = None,
             hasError = false
@@ -88,7 +87,7 @@ class IsThisTheSaoOnCertificateViewSpec extends ViewSpecBase[IsThisTheSaoOnCerti
             name = "value",
             radios = List(
               radio(value = yesKey, label = yesLabel),
-              radio(value = noKey, label = noLabel),
+              radio(value = noKey, label = noLabel)
             ),
             isChecked = Some(radio(value = yesKey, label = yesLabel)),
             hasError = false
@@ -119,7 +118,7 @@ class IsThisTheSaoOnCertificateViewSpec extends ViewSpecBase[IsThisTheSaoOnCerti
             name = "value",
             radios = List(
               radio(value = yesKey, label = yesLabel),
-              radio(value = noKey, label = noLabel),
+              radio(value = noKey, label = noLabel)
             ),
             isChecked = None,
             hasError = true
@@ -143,9 +142,9 @@ class IsThisTheSaoOnCertificateViewSpec extends ViewSpecBase[IsThisTheSaoOnCerti
 
 object IsThisTheSaoOnCertificateViewSpec {
   val pageHeading = "isThisTheSaoOnCertificate"
-  val pageTitle = "isThisTheSaoOnCertificate"
-  val yesKey = "true"
-  val yesLabel = "Yes"
-  val noKey = "false"
-  val noLabel = "No"
+  val pageTitle   = "isThisTheSaoOnCertificate"
+  val yesKey      = "true"
+  val yesLabel    = "Yes"
+  val noKey       = "false"
+  val noLabel     = "No"
 }

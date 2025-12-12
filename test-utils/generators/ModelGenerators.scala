@@ -25,7 +25,7 @@ trait ModelGenerators {
   given arbitraryCertificateSubmissionDeclaration: Arbitrary[CertificateSubmissionDeclaration] =
     Arbitrary {
       for {
-        sao <- arbitrary[String]
+        sao   <- arbitrary[String]
         proxy <- arbitrary[String]
       } yield CertificateSubmissionDeclaration(sao, proxy)
     }
@@ -35,5 +35,3 @@ trait ModelGenerators {
       Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
     }
 }
-
-  

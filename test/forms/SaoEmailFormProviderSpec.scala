@@ -22,8 +22,8 @@ import play.api.data.FormError
 class SaoEmailFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "saoEmail.error.required"
-  val lengthKey = "saoEmail.error.length"
-  val maxLength = 100
+  val lengthKey   = "saoEmail.error.length"
+  val maxLength   = 100
 
   val form = new SaoEmailFormProvider()()
 

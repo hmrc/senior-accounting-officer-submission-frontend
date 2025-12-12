@@ -24,21 +24,23 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
 
-object SaoEmailCommunicationChoiceSummary  {
+object SaoEmailCommunicationChoiceSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(SaoEmailCommunicationChoicePage).map {
-      answer =>
+    answers.get(SaoEmailCommunicationChoicePage).map { answer =>
 
-        val value = if (answer) "site.yes" else "site.no"
+      val value = if answer then "site.yes" else "site.no"
 
-        SummaryListRowViewModel(
-          key     = messages("saoEmailCommunicationChoice.checkYourAnswersLabel").toKey,
-          value   = ValueViewModel(messages(value).toText),
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.SaoEmailCommunicationChoiceController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("saoEmailCommunicationChoice.change.hidden"))
+      SummaryListRowViewModel(
+        key = messages("saoEmailCommunicationChoice.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(messages(value).toText),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.SaoEmailCommunicationChoiceController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("saoEmailCommunicationChoice.change.hidden"))
         )
+      )
     }
 }

@@ -24,10 +24,10 @@ class CertificateSubmissionDeclarationFormProviderSpec extends StringFieldBehavi
   val form = new CertificateSubmissionDeclarationFormProvider()()
 
   val field1RequiredKey = "certificateSubmissionDeclaration.error.sao.required"
-  val field1LengthKey = "certificateSubmissionDeclaration.error.sao.length"
+  val field1LengthKey   = "certificateSubmissionDeclaration.error.sao.length"
 
   val field2RequiredKey = "certificateSubmissionDeclaration.error.proxy.required"
-  val field2LengthKey = "certificateSubmissionDeclaration.error.proxy.length"
+  val field2LengthKey   = "certificateSubmissionDeclaration.error.proxy.length"
 
   ".sao" - {
 

@@ -40,7 +40,7 @@ class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
   lazy val whoSubmitsCertificateRoute = routes.WhoSubmitsCertificateController.onPageLoad(NormalMode).url
 
   val formProvider = new WhoSubmitsCertificateFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
   "WhoSubmitsCertificate Controller" - {
 
@@ -62,7 +62,8 @@ class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhoSubmitsCertificatePage, WhoSubmitsCertificate.values.head).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(WhoSubmitsCertificatePage, WhoSubmitsCertificate.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -74,7 +75,10 @@ class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(WhoSubmitsCertificate.values.head), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(WhoSubmitsCertificate.values.head), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

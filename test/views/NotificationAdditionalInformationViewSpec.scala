@@ -27,10 +27,9 @@ import forms.NotificationAdditionalInformationFormProvider
 import views.html.NotificationAdditionalInformationView
 import views.NotificationAdditionalInformationViewSpec.*
 
-
 class NotificationAdditionalInformationViewSpec extends ViewSpecBase[NotificationAdditionalInformationView] {
 
-  private val formProvider = app.injector.instanceOf[NotificationAdditionalInformationFormProvider]
+  private val formProvider       = app.injector.instanceOf[NotificationAdditionalInformationFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
@@ -134,7 +133,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
 }
 
 object NotificationAdditionalInformationViewSpec {
-  val pageHeading = "notificationAdditionalInformation"
-  val pageTitle = "notificationAdditionalInformation"
+  val pageHeading    = "notificationAdditionalInformation"
+  val pageTitle      = "notificationAdditionalInformation"
   val testInputValue = "myTestInputValue"
 }

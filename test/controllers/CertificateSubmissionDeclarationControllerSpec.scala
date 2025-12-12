@@ -39,15 +39,16 @@ class CertificateSubmissionDeclarationControllerSpec extends SpecBase with Mocki
   def onwardRoute = Call("GET", "/foo")
 
   val formProvider = new CertificateSubmissionDeclarationFormProvider()
-  val form = formProvider()
+  val form         = formProvider()
 
-  lazy val certificateSubmissionDeclarationRoute = routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode).url
+  lazy val certificateSubmissionDeclarationRoute =
+    routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode).url
 
   val userAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
       CertificateSubmissionDeclarationPage.toString -> Json.obj(
-        "sao" -> "value 1",
+        "sao"   -> "value 1",
         "proxy" -> "value 2"
       )
     )
@@ -83,7 +84,10 @@ class CertificateSubmissionDeclarationControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(CertificateSubmissionDeclaration("value 1", "value 2")), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(CertificateSubmissionDeclaration("value 1", "value 2")),
+          NormalMode
+        )(using request, messages(application)).toString
       }
     }
 
