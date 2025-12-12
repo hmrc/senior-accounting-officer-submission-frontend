@@ -49,18 +49,18 @@ POST        /changeSaoEmailCommunicationChoice              controllers.SaoEmail
 
 GET         /certificateCheckYourAnswers                    controllers.CertificateCheckYourAnswersController.onPageLoad()
 
-GET        /whoSubmitsCertificate                        controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
-POST       /whoSubmitsCertificate                        controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
-GET        /changeWhoSubmitsCertificate                  controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeWhoSubmitsCertificate                  controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
+GET         /whoSubmitsCertificate                          controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST        /whoSubmitsCertificate                          controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
+GET         /changeWhoSubmitsCertificate                    controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = CheckMode)
+POST        /changeWhoSubmitsCertificate                    controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
 
-GET        /qualifiedCompanies                       controllers.QualifiedCompaniesController.onPageLoad()
+GET         /qualifiedCompanies                             controllers.QualifiedCompaniesController.onPageLoad()
 
-GET        /unqualifiedCompanies                       controllers.UnqualifiedCompaniesController.onPageLoad()
+GET         /unqualifiedCompanies                           controllers.UnqualifiedCompaniesController.onPageLoad()
 
-GET        /certificateSubmissionDeclaration                        controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificateSubmissionDeclaration                        controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCertificateSubmissionDeclaration                  controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCertificateSubmissionDeclaration                  controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
+GET         /certificateSubmissionDeclaration               controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificateSubmissionDeclaration               controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)
+GET         /changeCertificateSubmissionDeclaration         controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = CheckMode)
+POST        /changeCertificateSubmissionDeclaration         controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificateConfirmation                       controllers.CertificateConfirmationController.onPageLoad()
+GET         /certificateConfirmation                        controllers.CertificateConfirmationController.onPageLoad()
