@@ -24,4 +24,10 @@
 @layout(pageTitle = titleNoForm(messages("submitNotificationStart.title"))) {
 
     <h1 class="govuk-heading-xl">@messages("submitNotificationStart.heading")</h1>
+    <a class="govuk-link" href="@routes.NotificationUploadFormController.onPageLoad()">
+     Upload a submission template
+    </a><br/>
+    <a class="govuk-link" href="@routes.NotificationGuidanceController.onPageLoad()">
+     Submit a notification
+    </a><br/>
 }
