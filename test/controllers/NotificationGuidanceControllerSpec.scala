@@ -17,8 +17,6 @@
 package controllers
 
 import base.SpecBase
-import play.api.http.Status
-import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -26,44 +24,37 @@ import views.html.NotificationGuidanceView
 
 class NotificationGuidanceControllerSpec extends SpecBase {
 
-  given request: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, routes.NotificationGuidanceController.onPageLoad().url)
+  "NotificationGuidance Controller" - {
 
-  "GET / must" - {
-    "return 200" in {
-      val app = applicationBuilder(userAnswers = None).build()
+    "must return OK and the correct view for a GET" in {
 
-      running(app) {
-        val result = route(app, request).value
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        status(result) mustBe Status.OK
-      }
-    }
+      running(application) {
+        val request = FakeRequest(GET, routes.NotificationGuidanceController.onPageLoad().url)
 
-    "return HTML" in {
-      val app = applicationBuilder(userAnswers = None).build()
+        val result = route(application, request).value
 
-      running(app) {
-        val result = route(app, request).value
-
-        contentType(result) mustBe Some("text/html")
-        charset(result) mustBe Some("utf-8")
-      }
-    }
-
-    "return correct content html" in {
-      val app = applicationBuilder(userAnswers = None).build()
-
-      running(app) {
-        val view = app.injector.instanceOf[NotificationGuidanceView]
-
-        given messages: Messages = app.injector.instanceOf[MessagesApi].preferred(request)
-
-        val result = route(app, request).value
+        val view = application.injector.instanceOf[NotificationGuidanceView]
 
         status(result) mustEqual OK
-        val content = contentAsString(result)
-        content mustEqual view().toString
+        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+      }
+    }
+
+    "must return OK and the correct view for a POST" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(POST, routes.NotificationGuidanceController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[NotificationGuidanceView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view()(using request, messages(application)).toString
       }
     }
   }

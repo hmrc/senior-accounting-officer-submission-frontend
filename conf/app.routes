@@ -3,8 +3,6 @@
 ->          /hmrc-frontend                                  hmrcfrontend.Routes
 GET         /assets/*file                                   controllers.Assets.versioned(path = "/public", file: Asset)
 
-GET         /notification/guidance                          controllers.NotificationGuidanceController.onPageLoad()
-
 GET         /download/notification/template                 controllers.DownloadNotificationTemplateController.onPageLoad()
 
 GET         /refresh-session                                controllers.KeepAliveController.keepAlive()
@@ -13,6 +11,9 @@ GET         /there-is-a-problem                             controllers.JourneyR
 GET         /submit-notification-start                      controllers.SubmitNotificationStartController.onPageLoad()
 
 GET         /notification/upload                            controllers.NotificationUploadFormController.onPageLoad()
+
+GET         /notification/guidance                          controllers.NotificationGuidanceController.onPageLoad()
+POST        /notification/guidance                          controllers.NotificationGuidanceController.onSubmit()
 
 GET         /notificationAdditionalInformation              controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /notificationAdditionalInformation              controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
