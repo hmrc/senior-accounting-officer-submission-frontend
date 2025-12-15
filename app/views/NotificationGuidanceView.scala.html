@@ -18,7 +18,9 @@
 
 @this(
     layout: templates.Layout,
-    appConfig: AppConfig
+    formHelper: FormWithCSRF,
+    appConfig: AppConfig,
+    govukButton: GovukButton
 )
 
 @()(using request: RequestHeader, messages: Messages)
@@ -58,6 +60,12 @@
    <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">@messages("submission.notification.guidance.notification.template.download.link.content")</a>
  </p>
 
+
+  @formHelper(action = routes.NotificationGuidanceController.onSubmit()){
+    @govukButton(
+      ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
+    )
+  }
 }
 
 @{
