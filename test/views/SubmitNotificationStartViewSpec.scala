@@ -17,6 +17,7 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.i18n.Messages
@@ -39,6 +40,22 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.getMainContent
+      .select("a.govuk-link")
+      .get(0)
+      .createTestWithLink(
+        linkText = "Upload a submission template",
+        destinationUrl = routes.NotificationUploadFormController.onPageLoad().url
+      )
+
+    doc.getMainContent
+      .select("a.govuk-link")
+      .get(1)
+      .createTestWithLink(
+        linkText = "Submit a notification",
+        destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+      )
   }
 }
 
