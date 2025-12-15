@@ -17,15 +17,43 @@
 package navigation
 
 import base.SpecBase
+import controllers.routes
+import models.{CheckMode, NormalMode, UserAnswers}
+import pages.{NotificationGuidancePage, Page}
 
 class NavigatorSpec extends SpecBase {
 
   val navigator = new Navigator
 
-  "Navigator" - {
+  "Navigator.nextPage" - {
 
-    "in Normal mode" - {}
+    "in Normal mode" - {
 
-    "in Check mode" - {}
+      "must throw an not-implemented error for an unspecified configuration" in {
+        case object UnknownPage extends Page
+        intercept[NotImplementedError] {
+          navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id"))
+        }
+      }
+
+      "when on NotificationGuidancePage, must go to notification additional information page" in {
+        navigator.nextPage(
+          NotificationGuidancePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
+      }
+    }
+
+    "in Check mode" - {
+
+      "must throw an not-implemented error for an unspecified configuration" in {
+        case object UnknownPage extends Page
+        intercept[NotImplementedError] {
+          navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id"))
+        }
+      }
+
+    }
   }
 }
