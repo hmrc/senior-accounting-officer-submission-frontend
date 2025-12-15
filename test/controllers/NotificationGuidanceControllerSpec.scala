@@ -17,6 +17,10 @@
 package controllers
 
 import base.SpecBase
+import navigation.Navigator
+import org.mockito.Mockito.verify
+import org.scalatestplus.mockito.MockitoSugar.*
+import play.api.inject
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -44,8 +48,11 @@ class NotificationGuidanceControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a POST" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
+      val mockNavigator = mock[Navigator] 
+      
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .bindings(inject.bind[Navigator].toInstance(mockNavigator))
+        .build()
       running(application) {
         val request = FakeRequest(POST, routes.NotificationGuidanceController.onSubmit().url)
 
@@ -53,6 +60,8 @@ class NotificationGuidanceControllerSpec extends SpecBase {
 
         val view = application.injector.instanceOf[NotificationGuidanceView]
 
+        verify(mockNavigator).nextPage(???, ???, ???)
+        
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(using request, messages(application)).toString
       }
