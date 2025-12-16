@@ -20,6 +20,7 @@ import base.SpecBase
 import controllers.routes
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.{NotificationAdditionalInformationPage, NotificationGuidancePage, Page}
+import pages.NotificationCheckYourAnswersPage
 
 class NavigatorSpec extends SpecBase {
 
@@ -50,6 +51,14 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on NotificationCheckYourAnswersPage, must go to submit notification page" in {
+        navigator.nextPage(
+          NotificationCheckYourAnswersPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.SubmitNotificationController.onPageLoad()
       }
     }
 

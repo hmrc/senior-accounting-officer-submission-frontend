@@ -29,7 +29,8 @@ class Navigator @Inject() () {
   private val normalRoutes: Page => UserAnswers => Call = {
     case NotificationGuidancePage => _ => routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
     case NotificationAdditionalInformationPage => _ => routes.NotificationCheckYourAnswersController.onPageLoad()
-    case _                        => _ => ???
+    case NotificationCheckYourAnswersPage      => _ => routes.SubmitNotificationController.onPageLoad()
+    case _                                     => _ => ???
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = { case _ =>

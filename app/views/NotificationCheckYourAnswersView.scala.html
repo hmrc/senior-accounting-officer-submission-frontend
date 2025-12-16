@@ -24,4 +24,8 @@
 @layout(pageTitle = titleNoForm(messages("notificationCheckYourAnswers.title"))) {
 
     <h1 class="govuk-heading-xl">@messages("notificationCheckYourAnswers.heading")</h1>
+
+    @govukButton(
+        ButtonViewModel(messages("site.continue").toText)
+    )
 }
