@@ -22,6 +22,7 @@ GET         /notification/change-additional-information               controller
 POST        /notification/change-additional-information               controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onPageLoad()
+POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit()
 
 GET         /notification/submit                                      controllers.SubmitNotificationController.onPageLoad()
 
