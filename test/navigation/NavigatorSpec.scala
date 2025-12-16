@@ -19,7 +19,7 @@ package navigation
 import base.SpecBase
 import controllers.routes
 import models.{CheckMode, NormalMode, UserAnswers}
-import pages.{NotificationGuidancePage, Page}
+import pages.{NotificationAdditionalInformationPage, NotificationGuidancePage, Page}
 
 class NavigatorSpec extends SpecBase {
 
@@ -42,6 +42,14 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
+      }
+
+      "when on NotificationAdditionalInformationPage, must go to notification check your answers page" in {
+        navigator.nextPage(
+          NotificationAdditionalInformationPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
       }
     }
 
