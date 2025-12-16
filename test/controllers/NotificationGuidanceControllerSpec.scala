@@ -18,18 +18,17 @@ package controllers
 
 import base.SpecBase
 import navigation.Navigator
-import org.mockito.ArgumentMatchers.{any, eq as meq}
-import org.mockito.Mockito.{verify, when}
-import org.scalatestplus.mockito.MockitoSugar.*
-import pages.NotificationGuidancePage
 import play.api.http.HeaderNames
-import play.api.inject
+import play.api.inject.*
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.NotificationGuidanceView
+import navigation.FakeNavigator
 
 class NotificationGuidanceControllerSpec extends SpecBase {
+
+  def onwardRoute = Call("GET", "/foo")
 
   "NotificationGuidance Controller" - {
 
@@ -51,25 +50,17 @@ class NotificationGuidanceControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a POST" in {
 
-      val mockNavigator = mock[Navigator]
-
-      val testCall = Call("", "/testUrl")
-
-      when(mockNavigator.nextPage(any(), any(), any()))
-        .thenReturn(testCall)
-
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .bindings(inject.bind[Navigator].toInstance(mockNavigator))
+        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
         .build()
+
       running(application) {
         val request = FakeRequest(POST, routes.NotificationGuidanceController.onSubmit().url)
 
         val result = route(application, request).value
 
-        verify(mockNavigator).nextPage(meq(NotificationGuidancePage), any(), any())
-
         status(result) mustEqual SEE_OTHER
-        header(HeaderNames.LOCATION, result) mustEqual Some(testCall.url)
+        header(HeaderNames.LOCATION, result) mustEqual Some(onwardRoute.url)
       }
     }
   }
