@@ -22,10 +22,13 @@ import org.jsoup.nodes.Document
 import play.api.i18n.Messages
 import views.html.SubmitNotificationView
 import views.SubmitNotificationViewSpec.*
+import controllers.routes
 
 class SubmitNotificationViewSpec extends ViewSpecBase[SubmitNotificationView] {
 
   private def generateView(): Document = Jsoup.parse(SUT().toString)
+
+  def onwardRoute = routes.SubmitNotificationController.onSubmit()
 
   "SubmitNotificationView" - {
     val doc: Document = generateView()
@@ -37,6 +40,8 @@ class SubmitNotificationViewSpec extends ViewSpecBase[SubmitNotificationView] {
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
+
+    doc.createTestsWithSubmissionButton(action = onwardRoute, buttonText = "Confirm and Submit")
 
     doc.createTestsWithOrWithoutError(hasError = false)
   }
