@@ -23,7 +23,7 @@
 @()(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("submitNotification.title"))) {
-    @formHelper(action = routes.SubmitNotificationController.onSubmit(mode)) {
+    @formHelper(action = routes.SubmitNotificationController.onSubmit()) {
         <h1 class="govuk-heading-xl">@messages("submitNotification.heading")</h1>
     }
 }

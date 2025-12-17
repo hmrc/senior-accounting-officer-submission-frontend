@@ -40,5 +40,20 @@ class SubmitNotificationControllerSpec extends SpecBase {
         contentAsString(result) mustEqual view()(using request, messages(application)).toString
       }
     }
+
+    "must redirect to the NotificationConfirmationController" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(POST, routes.SubmitNotificationController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        header("location", result) mustEqual (Some(routes.NotificationConfirmationController.onPageLoad().url))
+      }
+    }
+
   }
 }
