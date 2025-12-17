@@ -57,6 +57,8 @@ submission.notification.guidance.utrCrnGuidance.p = If you do not have UTR for s
 submission.notification.guidance.notification.template.download.link.content = Download the notification template
 submitNotificationStart.title = submitNotificationStart
 submitNotificationStart.heading = submitNotificationStart
+submitNotificationStart.uploadNotificationLinkText = Upload a submission template
+submitNotificationStart.submitNotificationLinkText = Submit a notification
 
 notificationUploadForm.title = notificationUploadForm
 notificationUploadForm.heading = notificationUploadForm

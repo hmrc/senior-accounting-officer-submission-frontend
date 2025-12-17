@@ -16,26 +16,16 @@
 
 package views
 
-import base.SpecBase
+import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.mvc.Request
-import play.api.test.FakeRequest
+import org.jsoup.nodes.{Document, Element}
 import views.html.NotificationGuidanceView
 
-class NotificationGuidanceViewSpec extends SpecBase with GuiceOneAppPerSuite {
-
-  val SUT: NotificationGuidanceView = app.injector.instanceOf[NotificationGuidanceView]
-
-  given request: Request[?] = FakeRequest()
-
-  given Messages = app.injector.instanceOf[MessagesApi].preferred(request)
+class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView] {
 
   val doc: Document        = Jsoup.parse(SUT().toString)
-  val mainContent: Element = doc.getElementById("main-content")
+  val mainContent: Element = doc.getMainContent
 
   "NotificationGuidanceView must" - {
     "must generate a view with the correct heading" in {
@@ -89,7 +79,13 @@ class NotificationGuidanceViewSpec extends SpecBase with GuiceOneAppPerSuite {
     "with the correct link content for notification template download" in {
       val links = mainContent.getElementsByTag("a")
       links.get(0).text mustBe "Download the notification template"
-      links.attr("href") mustBe "/senior-accounting-officer/submission/download/notification/template"
+      links.attr("href") mustBe routes.DownloadNotificationTemplateController.onPageLoad().url
     }
+
+    doc.createTestsWithSubmissionButton(
+      action = routes.NotificationGuidanceController.onSubmit(),
+      buttonText = "Continue"
+    )
+
   }
 }

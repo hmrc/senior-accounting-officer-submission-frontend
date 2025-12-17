@@ -16,6 +16,7 @@
 
 package navigation
 
+import controllers.routes
 import models.*
 import pages.*
 import play.api.mvc.Call
@@ -25,8 +26,12 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class Navigator @Inject() () {
 
-  private val normalRoutes: Page => UserAnswers => Call = { case _ =>
-    _ => ???
+  private val normalRoutes: Page => UserAnswers => Call = {
+    case NotificationGuidancePage => _ => routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
+    case NotificationAdditionalInformationPage => _ => routes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationCheckYourAnswersPage      => _ => routes.SubmitNotificationController.onPageLoad()
+    case SubmitNotificationPage                => _ => routes.NotificationConfirmationController.onPageLoad()
+    case _                                     => _ => ???
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = { case _ =>

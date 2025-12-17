@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,23 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(
-        layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        govukButton: GovukButton
-)
+package pages
 
-@()(using request: Request[?], messages: Messages)
-
-@layout(pageTitle = titleNoForm(messages("notificationCheckYourAnswers.title"))) {
-
-    <h1 class="govuk-heading-xl">@messages("notificationCheckYourAnswers.heading")</h1>
-
-    @formHelper(action = routes.NotificationCheckYourAnswersController.onSubmit()){
-        @govukButton(
-            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
-        )
-    }
-}
+case object NotificationGuidancePage extends Page

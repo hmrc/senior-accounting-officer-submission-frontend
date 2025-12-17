@@ -22,6 +22,9 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmitNotificationView
+import navigation.Navigator
+import pages.SubmitNotificationPage
+import models.NormalMode
 
 class SubmitNotificationController @Inject() (
     override val messagesApi: MessagesApi,
@@ -29,11 +32,16 @@ class SubmitNotificationController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: SubmitNotificationView
+    view: SubmitNotificationView,
+    navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     Ok(view())
+  }
+
+  def onSubmit: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Redirect(navigator.nextPage(SubmitNotificationPage, NormalMode, request.userAnswers))
   }
 }
