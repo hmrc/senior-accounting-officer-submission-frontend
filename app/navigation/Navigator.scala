@@ -30,6 +30,7 @@ class Navigator @Inject() () {
     case NotificationGuidancePage => _ => routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
     case NotificationAdditionalInformationPage => _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage      => _ => routes.SubmitNotificationController.onPageLoad()
+    case SubmitNotificationPage                => _ => routes.NotificationConfirmationController.onPageLoad()
     case _                                     => _ => ???
   }
 
