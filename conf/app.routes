@@ -25,6 +25,7 @@ GET         /notification/check-your-answers                          controller
 POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit()
 
 GET         /notification/submit                                      controllers.SubmitNotificationController.onPageLoad()
+POST        /notification/submit                                      controllers.SubmitNotificationController.onSubmit()
 
 GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad()
 
