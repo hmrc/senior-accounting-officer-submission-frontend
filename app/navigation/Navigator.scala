@@ -31,7 +31,15 @@ class Navigator @Inject() () {
     case NotificationAdditionalInformationPage => _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage      => _ => routes.SubmitNotificationController.onPageLoad()
     case SubmitNotificationPage                => _ => routes.NotificationConfirmationController.onPageLoad()
-    case _                                     => _ => ???
+    case SubmitCertificateStartPage            => _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
+    case IsThisTheSaoOnCertificatePage         =>
+      userAnswers =>
+        userAnswers.get(IsThisTheSaoOnCertificatePage) match {
+          case Some(true)  => routes.SaoEmailController.onPageLoad(NormalMode)
+          case Some(false) => routes.SaoNameController.onPageLoad(NormalMode)
+          case _           => ???
+        }
+    case _ => _ => ???
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = { case _ =>

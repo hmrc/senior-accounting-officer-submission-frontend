@@ -19,9 +19,15 @@ package navigation
 import base.SpecBase
 import controllers.routes
 import models.{CheckMode, NormalMode, UserAnswers}
-import pages.{NotificationAdditionalInformationPage, NotificationGuidancePage, Page}
-import pages.NotificationCheckYourAnswersPage
-import pages.SubmitNotificationPage
+import pages.{
+  IsThisTheSaoOnCertificatePage,
+  NotificationAdditionalInformationPage,
+  NotificationCheckYourAnswersPage,
+  NotificationGuidancePage,
+  Page,
+  SubmitCertificateStartPage,
+  SubmitNotificationPage
+}
 
 class NavigatorSpec extends SpecBase {
 
@@ -69,6 +75,41 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("id")
         ) mustBe routes.NotificationConfirmationController.onPageLoad()
       }
+
+      "when on SubmitCertificateStartPage, must go to is this SAO on certificate page" in {
+        navigator.nextPage(
+          SubmitCertificateStartPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
+      }
+
+      "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO email page" in {
+        navigator.nextPage(
+          IsThisTheSaoOnCertificatePage,
+          NormalMode,
+          UserAnswers("id").set(IsThisTheSaoOnCertificatePage, true).get
+        ) mustBe routes.SaoEmailController.onPageLoad(NormalMode)
+      }
+
+      "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO name page" in {
+        navigator.nextPage(
+          IsThisTheSaoOnCertificatePage,
+          NormalMode,
+          UserAnswers("id").set(IsThisTheSaoOnCertificatePage, false).get
+        ) mustBe routes.SaoNameController.onPageLoad(NormalMode)
+      }
+
+      "when on IsThisTheSaoOnCertificatePage and the question is not answered then" in {
+        intercept[NotImplementedError] {
+          navigator.nextPage(
+            IsThisTheSaoOnCertificatePage,
+            NormalMode,
+            UserAnswers("id")
+          )
+        }
+      }
+
     }
 
     "in Check mode" - {
