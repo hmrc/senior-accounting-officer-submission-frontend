@@ -20,10 +20,16 @@ import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.SubmitNotificationView
+import play.api.inject.bind
+import navigation.Navigator
+import navigation.FakeNavigator
+import play.api.mvc.Call
 
 class SubmitNotificationControllerSpec extends SpecBase {
 
   "SubmitNotification Controller" - {
+
+    def onwardRoute = Call("GET", "/foo")
 
     "must return OK and the correct view for a GET" in {
 
@@ -41,9 +47,12 @@ class SubmitNotificationControllerSpec extends SpecBase {
       }
     }
 
-    "must redirect to the NotificationConfirmationController" in {
+    "must redirect to the next page for a POST" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+          .build()
 
       running(application) {
         val request = FakeRequest(POST, routes.SubmitNotificationController.onSubmit().url)
@@ -51,9 +60,8 @@ class SubmitNotificationControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        header("location", result) mustEqual (Some(routes.NotificationConfirmationController.onPageLoad().url))
+        header("location", result) mustEqual Some(onwardRoute.url)
       }
     }
-
   }
 }

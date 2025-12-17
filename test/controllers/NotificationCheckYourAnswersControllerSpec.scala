@@ -46,7 +46,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       }
     }
 
-    "must redirect to the next page when valid data is submitted" in {
+    "must redirect to the next page for a POST" in {
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
