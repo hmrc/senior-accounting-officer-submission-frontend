@@ -41,7 +41,7 @@ class SubmitNotificationViewSpec extends ViewSpecBase[SubmitNotificationView] {
       hasError = false
     )
 
-    doc.createTestsWithSubmissionButton(action = onwardRoute, buttonText = "Confirm and Submit")
+    doc.createTestsWithSubmissionButton(action = onwardRoute, buttonText = "Continue")
 
     doc.createTestsWithOrWithoutError(hasError = false)
   }

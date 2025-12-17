@@ -25,5 +25,8 @@
 @layout(pageTitle = titleNoForm(messages("submitNotification.title"))) {
     @formHelper(action = routes.SubmitNotificationController.onSubmit()) {
         <h1 class="govuk-heading-xl">@messages("submitNotification.heading")</h1>
+         @govukButton(
+            ButtonViewModel(messages("site.continue").toText)
+        )
     }
 }
