@@ -17,6 +17,7 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.i18n.Messages
@@ -39,6 +40,11 @@ class SubmitCertificateStartViewSpec extends ViewSpecBase[SubmitCertificateStart
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithSubmissionButton(
+      action = routes.SubmitCertificateStartController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
 }
 
