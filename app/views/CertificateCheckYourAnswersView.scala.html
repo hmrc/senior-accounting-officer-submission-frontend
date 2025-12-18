@@ -16,6 +16,7 @@
 
 @this(
         layout: templates.Layout,
+        formHelper: FormWithCSRF,
         govukButton: GovukButton
 )
 
@@ -24,4 +25,10 @@
 @layout(pageTitle = titleNoForm(messages("certificateCheckYourAnswers.title"))) {
 
     <h1 class="govuk-heading-xl">@messages("certificateCheckYourAnswers.heading")</h1>
+
+    @formHelper(action = routes.CertificateCheckYourAnswersController.onSubmit()){
+       @govukButton(
+          ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
+       )
+    }
 }
