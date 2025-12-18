@@ -61,8 +61,10 @@ GET         /certificate/change-submitter                             controller
 POST        /certificate/change-submitter                             controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/qualified-companies                          controllers.QualifiedCompaniesController.onPageLoad()
+POST        /certificate/qualified-companies                          controllers.QualifiedCompaniesController.onSubmit()
 
 GET         /certificate/unqualified-companies                        controllers.UnqualifiedCompaniesController.onPageLoad()
+POST        /certificate/unqualified-companies                        controllers.UnqualifiedCompaniesController.onSubmit()
 
 GET         /certificate/declaration                                  controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/declaration                                  controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)
