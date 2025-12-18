@@ -30,6 +30,7 @@ POST        /notification/submit                                      controller
 GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad()
 
 GET         /certificate/start                                        controllers.SubmitCertificateStartController.onPageLoad()
+POST        /certificate/start                                        controllers.SubmitCertificateStartController.onSubmit()
 
 GET         /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
@@ -52,6 +53,7 @@ GET         /certificate/change-sao-email-communication-choice        controller
 POST        /certificate/change-sao-email-communication-choice        controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/check-your-answers                           controllers.CertificateCheckYourAnswersController.onPageLoad()
+POST        /certificate/check-your-answers                           controllers.CertificateCheckYourAnswersController.onSubmit()
 
 GET         /certificate/submitter                                    controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/submitter                                    controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
@@ -59,8 +61,10 @@ GET         /certificate/change-submitter                             controller
 POST        /certificate/change-submitter                             controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/qualified-companies                          controllers.QualifiedCompaniesController.onPageLoad()
+POST        /certificate/qualified-companies                          controllers.QualifiedCompaniesController.onSubmit()
 
 GET         /certificate/unqualified-companies                        controllers.UnqualifiedCompaniesController.onPageLoad()
+POST        /certificate/unqualified-companies                        controllers.UnqualifiedCompaniesController.onSubmit()
 
 GET         /certificate/declaration                                  controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/declaration                                  controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)

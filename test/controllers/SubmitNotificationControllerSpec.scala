@@ -27,9 +27,9 @@ import play.api.mvc.Call
 
 class SubmitNotificationControllerSpec extends SpecBase {
 
-  "SubmitNotification Controller" - {
+  def onwardRoute = Call("GET", "/foo")
 
-    def onwardRoute = Call("GET", "/foo")
+  "SubmitNotification Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -61,6 +61,35 @@ class SubmitNotificationControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         header("location", result) mustEqual Some(onwardRoute.url)
+      }
+    }
+
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.SubmitNotificationController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, routes.SubmitNotificationController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
   }
