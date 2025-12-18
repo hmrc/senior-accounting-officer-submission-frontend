@@ -40,5 +40,20 @@ class CertificateConfirmationControllerSpec extends SpecBase {
         contentAsString(result) mustEqual view()(using request, messages(application)).toString
       }
     }
+
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.CertificateConfirmationController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+    
   }
 }
