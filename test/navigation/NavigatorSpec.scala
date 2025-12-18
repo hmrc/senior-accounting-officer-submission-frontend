@@ -19,9 +19,7 @@ package navigation
 import base.SpecBase
 import controllers.routes
 import models.{CheckMode, NormalMode, UserAnswers}
-import pages.{NotificationAdditionalInformationPage, NotificationGuidancePage, Page}
-import pages.NotificationCheckYourAnswersPage
-import pages.SubmitNotificationPage
+import pages.*
 
 class NavigatorSpec extends SpecBase {
 
@@ -68,6 +66,104 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.NotificationConfirmationController.onPageLoad()
+      }
+
+      "when on SubmitCertificateStartPage, must go to is this SAO on certificate page" in {
+        navigator.nextPage(
+          SubmitCertificateStartPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
+      }
+
+      "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO email page" in {
+        navigator.nextPage(
+          IsThisTheSaoOnCertificatePage,
+          NormalMode,
+          UserAnswers("id").set(IsThisTheSaoOnCertificatePage, true).get
+        ) mustBe routes.SaoEmailController.onPageLoad(NormalMode)
+      }
+
+      "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO name page" in {
+        navigator.nextPage(
+          IsThisTheSaoOnCertificatePage,
+          NormalMode,
+          UserAnswers("id").set(IsThisTheSaoOnCertificatePage, false).get
+        ) mustBe routes.SaoNameController.onPageLoad(NormalMode)
+      }
+
+      "when on IsThisTheSaoOnCertificatePage and the question is not answered then" in {
+        intercept[NotImplementedError] {
+          navigator.nextPage(
+            IsThisTheSaoOnCertificatePage,
+            NormalMode,
+            UserAnswers("id")
+          )
+        }
+      }
+
+      "when on SaoNamePage, must go to SAO email page" in {
+        navigator.nextPage(
+          SaoNamePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.SaoEmailController.onPageLoad(NormalMode)
+      }
+
+      "when on SaoEmailPage, must go to SAO email communication choice page" in {
+        navigator.nextPage(
+          SaoEmailPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode)
+      }
+
+      "when on SaoEmailCommunicationChoicePage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          SaoEmailCommunicationChoicePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on CertificateCheckYourAnswersPage, must go to who submits certificate page" in {
+        navigator.nextPage(
+          CertificateCheckYourAnswersPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.WhoSubmitsCertificateController.onPageLoad(NormalMode)
+      }
+
+      "when on WhoSubmitsCertificatePage, must go to qualified companies page" in {
+        navigator.nextPage(
+          WhoSubmitsCertificatePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.QualifiedCompaniesController.onPageLoad()
+      }
+
+      "when on QualifiedCompaniesPage, must go to unqualified companies page" in {
+        navigator.nextPage(
+          QualifiedCompaniesPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.UnqualifiedCompaniesController.onPageLoad()
+      }
+
+      "when on UnqualifiedCompaniesPage, must go to certificate submission declaration page" in {
+        navigator.nextPage(
+          UnqualifiedCompaniesPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode)
+      }
+
+      "when on CertificateSubmissionDeclarationPage, must go to certificate confirmation page" in {
+        navigator.nextPage(
+          CertificateSubmissionDeclarationPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateConfirmationController.onPageLoad()
       }
     }
 
