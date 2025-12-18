@@ -27,9 +27,9 @@ import views.html.UnqualifiedCompaniesView
 
 class UnqualifiedCompaniesControllerSpec extends SpecBase {
 
-  "UnqualifiedCompanies Controller" - {
+  def onwardRoute = Call("GET", "/foo")
 
-    def onwardRoute = Call("GET", "/foo")
+  "UnqualifiedCompanies Controller" - {
 
     "must return OK and the correct view for a GET" in {
 

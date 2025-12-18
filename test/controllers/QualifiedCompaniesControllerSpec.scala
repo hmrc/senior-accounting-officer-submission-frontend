@@ -26,10 +26,9 @@ import play.api.test.Helpers.*
 import views.html.QualifiedCompaniesView
 
 class QualifiedCompaniesControllerSpec extends SpecBase {
+  def onwardRoute = Call("GET", "/foo")
 
   "QualifiedCompanies Controller" - {
-
-    def onwardRoute = Call("GET", "/foo")
 
     "must return OK and the correct view for a GET" in {
 

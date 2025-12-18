@@ -27,9 +27,9 @@ import play.api.mvc.Call
 
 class SubmitNotificationControllerSpec extends SpecBase {
 
-  "SubmitNotification Controller" - {
+  def onwardRoute = Call("GET", "/foo")
 
-    def onwardRoute = Call("GET", "/foo")
+  "SubmitNotification Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
