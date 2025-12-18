@@ -54,6 +54,6 @@ class CertificateConfirmationControllerSpec extends SpecBase {
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
-    
+
   }
 }

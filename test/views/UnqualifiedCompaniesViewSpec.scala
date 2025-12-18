@@ -22,6 +22,7 @@ import org.jsoup.nodes.Document
 import play.api.i18n.Messages
 import views.html.UnqualifiedCompaniesView
 import views.UnqualifiedCompaniesViewSpec.*
+import controllers.routes
 
 class UnqualifiedCompaniesViewSpec extends ViewSpecBase[UnqualifiedCompaniesView] {
 
@@ -39,6 +40,11 @@ class UnqualifiedCompaniesViewSpec extends ViewSpecBase[UnqualifiedCompaniesView
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithSubmissionButton(
+      action = routes.UnqualifiedCompaniesController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
 }
 

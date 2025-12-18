@@ -19,9 +19,9 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
 import views.html.CertificateCheckYourAnswersView
 import views.CertificateCheckYourAnswersViewSpec.*
+import controllers.routes
 
 class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckYourAnswersView] {
 
@@ -39,6 +39,11 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithSubmissionButton(
+      action = routes.CertificateCheckYourAnswersController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
 }
 

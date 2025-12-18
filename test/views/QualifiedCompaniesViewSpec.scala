@@ -22,6 +22,7 @@ import org.jsoup.nodes.Document
 import play.api.i18n.Messages
 import views.html.QualifiedCompaniesView
 import views.QualifiedCompaniesViewSpec.*
+import controllers.routes
 
 class QualifiedCompaniesViewSpec extends ViewSpecBase[QualifiedCompaniesView] {
 
@@ -39,6 +40,11 @@ class QualifiedCompaniesViewSpec extends ViewSpecBase[QualifiedCompaniesView] {
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithSubmissionButton(
+      action = routes.QualifiedCompaniesController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
 }
 
