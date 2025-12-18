@@ -30,6 +30,7 @@ POST        /notification/submit                                      controller
 GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad()
 
 GET         /certificate/start                                        controllers.SubmitCertificateStartController.onPageLoad()
+POST        /certificate/start                                        controllers.SubmitCertificateStartController.onSubmit()
 
 GET         /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)

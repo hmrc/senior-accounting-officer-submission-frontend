@@ -48,7 +48,7 @@ class NotificationGuidanceControllerSpec extends SpecBase {
       }
     }
 
-    "must return OK and the correct view for a POST" in {
+    "must redirect to the next page for a POST" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
