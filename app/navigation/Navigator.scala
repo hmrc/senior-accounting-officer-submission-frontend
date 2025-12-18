@@ -42,7 +42,13 @@ class Navigator @Inject() () {
     case SaoNamePage                     => _ => routes.SaoEmailController.onPageLoad(NormalMode)
     case SaoEmailPage                    => _ => routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode)
     case SaoEmailCommunicationChoicePage => _ => routes.CertificateCheckYourAnswersController.onPageLoad()
-    case _                               => _ => ???
+    case CertificateCheckYourAnswersPage => _ => routes.WhoSubmitsCertificateController.onPageLoad(NormalMode)
+    case WhoSubmitsCertificatePage       => _ => routes.QualifiedCompaniesController.onPageLoad()
+    case QualifiedCompaniesPage          => _ => routes.UnqualifiedCompaniesController.onPageLoad()
+    case UnqualifiedCompaniesPage => _ => routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode)
+    case CertificateSubmissionDeclarationPage =>
+      _ => routes.CertificateConfirmationController.onPageLoad()
+    case _ => _ => ???
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = { case _ =>

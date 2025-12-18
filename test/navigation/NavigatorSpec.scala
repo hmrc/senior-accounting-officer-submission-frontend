@@ -125,6 +125,46 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("id")
         ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
       }
+
+      "when on CertificateCheckYourAnswersPage, must go to who submits certificate page" in {
+        navigator.nextPage(
+          CertificateCheckYourAnswersPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.WhoSubmitsCertificateController.onPageLoad(NormalMode)
+      }
+
+      "when on WhoSubmitsCertificatePage, must go to qualified companies page" in {
+        navigator.nextPage(
+          WhoSubmitsCertificatePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.QualifiedCompaniesController.onPageLoad()
+      }
+
+      "when on QualifiedCompaniesPage, must go to unqualified companies page" in {
+        navigator.nextPage(
+          QualifiedCompaniesPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.UnqualifiedCompaniesController.onPageLoad()
+      }
+
+      "when on UnqualifiedCompaniesPage, must go to certificate submission declaration page" in {
+        navigator.nextPage(
+          UnqualifiedCompaniesPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode)
+      }
+
+      "when on CertificateSubmissionDeclarationPage, must go to certificate confirmation page" in {
+        navigator.nextPage(
+          CertificateSubmissionDeclarationPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateConfirmationController.onPageLoad()
+      }
     }
 
     "in Check mode" - {
