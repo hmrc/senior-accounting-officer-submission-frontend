@@ -39,7 +39,10 @@ class Navigator @Inject() () {
           case Some(false) => routes.SaoNameController.onPageLoad(NormalMode)
           case _           => ???
         }
-    case _ => _ => ???
+    case SaoNamePage                     => _ => routes.SaoEmailController.onPageLoad(NormalMode)
+    case SaoEmailPage                    => _ => routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode)
+    case SaoEmailCommunicationChoicePage => _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+    case _                               => _ => ???
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = { case _ =>

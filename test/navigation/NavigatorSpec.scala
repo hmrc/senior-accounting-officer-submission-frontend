@@ -19,15 +19,7 @@ package navigation
 import base.SpecBase
 import controllers.routes
 import models.{CheckMode, NormalMode, UserAnswers}
-import pages.{
-  IsThisTheSaoOnCertificatePage,
-  NotificationAdditionalInformationPage,
-  NotificationCheckYourAnswersPage,
-  NotificationGuidancePage,
-  Page,
-  SubmitCertificateStartPage,
-  SubmitNotificationPage
-}
+import pages.*
 
 class NavigatorSpec extends SpecBase {
 
@@ -110,6 +102,29 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
+      "when on SaoNamePage, must go to SAO email page" in {
+        navigator.nextPage(
+          SaoNamePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.SaoEmailController.onPageLoad(NormalMode)
+      }
+
+      "when on SaoEmailPage, must go to SAO email communication choice page" in {
+        navigator.nextPage(
+          SaoEmailPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode)
+      }
+
+      "when on SaoEmailCommunicationChoicePage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          SaoEmailCommunicationChoicePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+      }
     }
 
     "in Check mode" - {
