@@ -27,28 +27,41 @@ import javax.inject.{Inject, Singleton}
 class Navigator @Inject() () {
 
   private val normalRoutes: Page => UserAnswers => Call = {
-    case NotificationGuidancePage => _ => routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
-    case NotificationAdditionalInformationPage => _ => routes.NotificationCheckYourAnswersController.onPageLoad()
-    case NotificationCheckYourAnswersPage      => _ => routes.SubmitNotificationController.onPageLoad()
-    case SubmitNotificationPage                => _ => routes.NotificationConfirmationController.onPageLoad()
-    case SubmitCertificateStartPage            => _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
-    case IsThisTheSaoOnCertificatePage         =>
+    case NotificationGuidancePage =>
+      _ => routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
+    case NotificationAdditionalInformationPage =>
+      _ => routes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationCheckYourAnswersPage =>
+      _ => routes.SubmitNotificationController.onPageLoad()
+    case SubmitNotificationPage =>
+      _ => routes.NotificationConfirmationController.onPageLoad()
+    case SubmitCertificateStartPage =>
+      _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
+    case IsThisTheSaoOnCertificatePage =>
       userAnswers =>
         userAnswers.get(IsThisTheSaoOnCertificatePage) match {
           case Some(true)  => routes.SaoEmailController.onPageLoad(NormalMode)
           case Some(false) => routes.SaoNameController.onPageLoad(NormalMode)
           case _           => ???
         }
-    case SaoNamePage                     => _ => routes.SaoEmailController.onPageLoad(NormalMode)
-    case SaoEmailPage                    => _ => routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode)
-    case SaoEmailCommunicationChoicePage => _ => routes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateCheckYourAnswersPage => _ => routes.WhoSubmitsCertificateController.onPageLoad(NormalMode)
-    case WhoSubmitsCertificatePage       => _ => routes.QualifiedCompaniesController.onPageLoad()
-    case QualifiedCompaniesPage          => _ => routes.UnqualifiedCompaniesController.onPageLoad()
-    case UnqualifiedCompaniesPage => _ => routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode)
+    case SaoNamePage =>
+      _ => routes.SaoEmailController.onPageLoad(NormalMode)
+    case SaoEmailPage =>
+      _ => routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode)
+    case SaoEmailCommunicationChoicePage =>
+      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+    case CertificateCheckYourAnswersPage =>
+      _ => routes.WhoSubmitsCertificateController.onPageLoad(NormalMode)
+    case WhoSubmitsCertificatePage =>
+      _ => routes.QualifiedCompaniesController.onPageLoad()
+    case QualifiedCompaniesPage =>
+      _ => routes.UnqualifiedCompaniesController.onPageLoad()
+    case UnqualifiedCompaniesPage =>
+      _ => routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode)
     case CertificateSubmissionDeclarationPage =>
       _ => routes.CertificateConfirmationController.onPageLoad()
-    case _ => _ => ???
+    case _ =>
+      _ => ???
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = { case _ =>
