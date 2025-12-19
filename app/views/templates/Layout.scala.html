@@ -32,8 +32,7 @@
   showBackLink: Boolean = true,
   timeout: Boolean = true,
   showSignOut: Boolean = true,
-  showHmrcBanner: Boolean = false,
-  additionalHeadContent: Option[Html] = None
+  showHmrcBanner: Boolean = false
 )(contentBlock: Html)(using request: RequestHeader, messages: Messages)
 
 @head = {
@@ -51,7 +50,6 @@
             language            = Some(messages.lang.code)
         ))
     }
-    @additionalHeadContent
 }
 
 @content = {
