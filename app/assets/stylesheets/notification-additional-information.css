@@ -1,3 +1,5 @@
 #submit, #skip {
+    /* use the style from govuk-button by removing the overrides from govuk-input  */
     width: auto;
+    border: 2px solid rgba(0,0,0,0);
 }

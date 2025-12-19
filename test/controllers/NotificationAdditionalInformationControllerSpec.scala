@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import forms.NotificationAdditionalInformationFormProvider
+import forms.{NotificationAdditionalInformation, NotificationAdditionalInformationFormProvider}
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -75,7 +75,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+        contentAsString(result) mustEqual view(form.fill(NotificationAdditionalInformation("answer")), NormalMode)(using
           request,
           messages(application)
         ).toString

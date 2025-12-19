@@ -466,7 +466,7 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       }
 
       s"must have a submit button with text '$buttonText'" in {
-        val button = target.resolve.select("button[type=submit], input[type=submit]")
+        val button = target.resolve.select("button[type=submit]")
         withClue(
           s"Submit Button with text '$buttonText' not found\n"
         ) {

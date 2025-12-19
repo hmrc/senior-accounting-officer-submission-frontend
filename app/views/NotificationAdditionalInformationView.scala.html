@@ -26,7 +26,7 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("notificationAdditionalInformation.title")), additionalHeadContent = Some(scripts)) {
+@layout(pageTitle = title(form, messages("notificationAdditionalInformation.title")), additionalHeadContent = Some(additionalStyles)) {
 
     @formHelper(action = routes.NotificationAdditionalInformationController.onSubmit(mode)) {
 
@@ -42,28 +42,31 @@
             .withWidth(Full)
         )
 
-        @govukInput(
-            Input(
-                id = "submit",
-                name = "button",
-                value = Some(messages("site.continue")),
-                inputType = "submit",
-                classes = "govuk-button"
+        <div class="govuk-button-group">
+            @govukInput(
+                Input(
+                    id = "submit",
+                    name = "button",
+                    value = Some(messages("site.continue")),
+                    inputType = "submit",
+                    classes = "govuk-button"
+                )
             )
-        )
 
-        @govukInput(
-            Input(
-                id = "skip",
-                name = "button",
-                value = Some(messages("Skip")),
-                inputType = "submit",
-                classes = "govuk-button govuk-button--secondary"
+            @govukInput(
+                Input(
+                    id = "skip",
+                    name = "button",
+                    value = Some(messages("Skip")),
+                    inputType = "submit",
+                    classes = "govuk-button govuk-button--secondary"
+                )
             )
-        )
+        </div>
+
     }
 }
 
-@scripts = {
+@additionalStyles = {
     <link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/notification-additional-information.css")'>
 }
