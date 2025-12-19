@@ -47,7 +47,8 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
         
         data.get(key) match {
           case _ if isSkip => Right(None)
-          case r@Some(s) if s.nonEmpty => Right(r)
+          case r@Some(s) if s.nonEmpty && s.length <100 => Right(r)
+          case r@Some(s) if s.length >=100 => Left(Seq(FormError(key, "notificationAdditionalInformation.error.length")))
           case _ => Left(Seq(FormError(key, "notificationAdditionalInformation.error.required")))
         }
       }

@@ -75,7 +75,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(NotificationAdditionalInformation("answer")), NormalMode)(using
+        contentAsString(result) mustEqual view(form.fill(NotificationAdditionalInformation(Some("answer"))), NormalMode)(using
           request,
           messages(application)
         ).toString
