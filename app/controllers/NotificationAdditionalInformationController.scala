@@ -23,7 +23,7 @@ import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.NotificationAdditionalInformationPage
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, MessagesApi, Messages}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -63,11 +63,21 @@ class NotificationAdditionalInformationController @Inject() (
         .bindFromRequest()
         .fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
+          value => {
+            // TODO change this so there'll be a different name submitted for each button instead of being dependent on i18n text
+            val skip = summon[Messages]("site.skip")
+            def tryUpdateAnswers =
+                value.button match {
+                  case Some(`skip`) =>
+                    request.userAnswers.remove(NotificationAdditionalInformationPage)
+                  case _ =>
+                    request.userAnswers.set(NotificationAdditionalInformationPage, value.value)
+                }
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value.value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <- Future.fromTry(tryUpdateAnswers)
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
+          }
         )
   }
 }
