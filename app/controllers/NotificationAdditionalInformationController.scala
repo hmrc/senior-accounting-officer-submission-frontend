@@ -17,7 +17,8 @@
 package controllers
 
 import controllers.actions.*
-import forms.NotificationAdditionalInformationFormProvider
+import forms.{NotificationAdditionalInformation, NotificationAdditionalInformationFormProvider}
+
 import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
@@ -50,7 +51,7 @@ class NotificationAdditionalInformationController @Inject() (
 
     val preparedForm = request.userAnswers.get(NotificationAdditionalInformationPage) match {
       case None        => form
-      case Some(value) => form.fill(value)
+      case Some(value) => form.fill(NotificationAdditionalInformation(value))
     }
 
     Ok(view(preparedForm, mode))
@@ -64,7 +65,7 @@ class NotificationAdditionalInformationController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value.value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
         )

@@ -17,15 +17,21 @@
 package forms
 
 import javax.inject.Inject
-
-import forms.mappings.Mappings
+import forms.mappings.*
 import play.api.data.Form
+import play.api.data.Forms.{mapping, optional}
+
+final case class NotificationAdditionalInformation(value: String, button: Option[String] = None)
 
 class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(): Form[NotificationAdditionalInformation] =
     Form(
-      "value" -> text("notificationAdditionalInformation.error.required")
-        .verifying(maxLength(100, "notificationAdditionalInformation.error.length"))
+      mapping(
+        "value" -> text("notificationAdditionalInformation.error.required").verifying(
+          maxLength(100, "notificationAdditionalInformation.error.length")
+        ),
+        "button" -> optional(text("notificationAdditionalInformation.error.required"))
+      )(NotificationAdditionalInformation.apply)((n) => Some(n.value, n.button))
     )
 }
