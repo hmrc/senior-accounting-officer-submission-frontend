@@ -16,22 +16,44 @@
 
 package forms
 
-import javax.inject.Inject
 import forms.mappings.*
-import play.api.data.Form
-import play.api.data.Forms.{mapping, optional}
+import play.api.data.Forms.{mapping, of, optional}
+import play.api.data.format.Formatter
+import play.api.data.{Form, FormError, Forms}
 
-final case class NotificationAdditionalInformation(value: String, button: Option[String] = None)
+import javax.inject.Inject
+
+final case class NotificationAdditionalInformation(value: Option[String], button: Option[String] = None)
 
 class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
 
   def apply(): Form[NotificationAdditionalInformation] =
     Form(
       mapping(
-        "value" -> text("notificationAdditionalInformation.error.required").verifying(
-          maxLength(100, "notificationAdditionalInformation.error.length")
-        ),
+        "value" -> of(customFormatter)
+//          .verifying(
+//            maxLength(100, "notificationAdditionalInformation.error.length")
+//        )
+        ,
         "button" -> optional(text("notificationAdditionalInformation.error.required"))
       )(NotificationAdditionalInformation.apply)((n) => Some(n.value, n.button))
     )
+
+  private def customFormatter: Formatter[Option[String]] =
+    new Formatter[Option[String]] {
+
+      override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
+        val isSkip = data.get("button") == Some("Skip")
+        
+        data.get(key) match {
+          case _ if isSkip => Right(None)
+          case r@Some(s) if s.nonEmpty => Right(r)
+          case _ => Left(Seq(FormError(key, "notificationAdditionalInformation.error.required")))
+        }
+      }
+
+      override def unbind(key: String, value: Option[String]): Map[String, String] =
+        Map(key -> value.getOrElse(""))
+    }
+
 }

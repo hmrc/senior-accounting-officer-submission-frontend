@@ -51,7 +51,7 @@ class NotificationAdditionalInformationController @Inject() (
 
     val preparedForm = request.userAnswers.get(NotificationAdditionalInformationPage) match {
       case None        => form
-      case Some(value) => form.fill(NotificationAdditionalInformation(value))
+      case Some(value) => form.fill(NotificationAdditionalInformation(Some(value)))
     }
 
     Ok(view(preparedForm, mode))
@@ -71,7 +71,7 @@ class NotificationAdditionalInformationController @Inject() (
                   case Some(`skip`) =>
                     request.userAnswers.remove(NotificationAdditionalInformationPage)
                   case _ =>
-                    request.userAnswers.set(NotificationAdditionalInformationPage, value.value)
+                    request.userAnswers.set(NotificationAdditionalInformationPage, value.value.get)
                 }
             for {
               updatedAnswers <- Future.fromTry(tryUpdateAnswers)
