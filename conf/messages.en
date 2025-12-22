@@ -66,6 +66,8 @@ notificationUploadForm.heading = notificationUploadForm
 
 notificationAdditionalInformation.title = Notification details
 notificationAdditionalInformation.heading = Additional information
+notificationAdditionalInformation.p1 = Tell us if there’s anything we should know about your notification or the companies listed.
+notificationAdditionalInformation.p2 = This could include:
 notificationAdditionalInformation.checkYourAnswersLabel = notificationAdditionalInformation
 notificationAdditionalInformation.error.required = Enter notificationAdditionalInformation
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 100 characters or less

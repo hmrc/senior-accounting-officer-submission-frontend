@@ -28,6 +28,9 @@
 
 @layout(pageTitle = title(form, messages("notificationAdditionalInformation.title"))) {
 
+    <p class="govuk-body">@messages("notificationAdditionalInformation.p1")</p>
+    <p class="govuk-body">@messages("notificationAdditionalInformation.p2")</p>
+
     @formHelper(action = routes.NotificationAdditionalInformationController.onSubmit(mode)) {
 
         @if(form.errors.nonEmpty) {
