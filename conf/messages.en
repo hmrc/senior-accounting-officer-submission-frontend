@@ -64,8 +64,8 @@ submitNotificationStart.submitNotificationLinkText = Submit a notification
 notificationUploadForm.title = notificationUploadForm
 notificationUploadForm.heading = notificationUploadForm
 
-notificationAdditionalInformation.title = notificationAdditionalInformation
-notificationAdditionalInformation.heading = notificationAdditionalInformation
+notificationAdditionalInformation.title = Notification details
+notificationAdditionalInformation.heading = Additional information
 notificationAdditionalInformation.checkYourAnswersLabel = notificationAdditionalInformation
 notificationAdditionalInformation.error.required = Enter notificationAdditionalInformation
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 100 characters or less

@@ -168,7 +168,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
 }
 
 object NotificationAdditionalInformationViewSpec {
-  val pageHeading    = "notificationAdditionalInformation"
-  val pageTitle      = "notificationAdditionalInformation"
+  val pageHeading    = "Additional information"
+  val pageTitle      = "Notification details"
   val testInputValue = "myTestInputValue"
 }
