@@ -32,11 +32,7 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
   def apply(): Form[NotificationAdditionalInformation] =
     Form(
       mapping(
-        "value" -> of(customFormatter)
-//          .verifying(
-//            maxLength(100, "notificationAdditionalInformation.error.length")
-//        )
-        ,
+        "value"  -> of(customFormatter),
         "button" -> optional(text("notificationAdditionalInformation.error.required"))
       )(NotificationAdditionalInformation.apply)((n) => Some(n.value, n.button))
     )
@@ -48,9 +44,9 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
         val isSkip = data.get("button") == Some("Skip")
 
         data.get(key) match {
-          case _ if isSkip                                       => Right(None)
-          case r @ Some(s) if s.nonEmpty && s.length < maxLength => Right(r)
-          case r @ Some(s) if s.length >= maxLength              =>
+          case _ if isSkip                                                              => Right(None)
+          case Some(fieldValue) if fieldValue.nonEmpty && fieldValue.length < maxLength => Right(Some(fieldValue))
+          case Some(fieldValue) if fieldValue.length >= maxLength                       =>
             Left(Seq(FormError(key, "notificationAdditionalInformation.error.length", Seq(maxLength))))
           case _ => Left(Seq(FormError(key, "notificationAdditionalInformation.error.required")))
         }
