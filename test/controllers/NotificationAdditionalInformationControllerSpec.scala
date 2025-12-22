@@ -75,7 +75,10 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(NotificationAdditionalInformation(Some("answer"))), NormalMode)(using
+        contentAsString(result) mustEqual view(
+          form.fill(NotificationAdditionalInformation(Some("answer"))),
+          NormalMode
+        )(using
           request,
           messages(application)
         ).toString
@@ -102,7 +105,6 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
-
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
       }

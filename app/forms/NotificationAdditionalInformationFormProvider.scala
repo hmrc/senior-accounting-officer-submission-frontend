@@ -46,7 +46,7 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
     new Formatter[Option[String]] {
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
-        val isSkip = data.get("button") == Some("Skip")
+        val isSkip = data.contains("skipButton")
 
         data.get(key) match {
           case _ if isSkip                                                              => Right(None)
