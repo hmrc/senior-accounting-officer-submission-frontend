@@ -85,6 +85,10 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             paragraphs
           )
 
+          doc.createTestsWithBulletPoints(
+            bulletPoints
+          )
+
           doc.createTestsWithASingleTextInput(
             name = "value",
             label = pageHeading,
@@ -175,5 +179,12 @@ object NotificationAdditionalInformationViewSpec {
   val pageHeading    = "Additional information"
   val pageTitle      = "Notification details"
   val testInputValue = "myTestInputValue"
-  val paragraphs      = Seq("Tell us if there’s anything we should know about your notification or the companies listed.", "This could include:")
+  val paragraphs     = Seq(
+    "Tell us if there’s anything we should know about your notification or the companies listed.",
+    "This could include:"
+  )
+  val bulletPoints = Seq(
+    "a company’s status changing, such as becoming dormant or going into liquidation",
+    "anything else relevant to the companies listed"
+  )
 }

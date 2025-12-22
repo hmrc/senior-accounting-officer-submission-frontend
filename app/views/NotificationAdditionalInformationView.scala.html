@@ -30,6 +30,10 @@
 
     <p class="govuk-body">@messages("notificationAdditionalInformation.p1")</p>
     <p class="govuk-body">@messages("notificationAdditionalInformation.p2")</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("notificationAdditionalInformation.list.line1.content")</li>
+        <li>@messages("notificationAdditionalInformation.list.line2.content")</li>
+    </ul>
 
     @formHelper(action = routes.NotificationAdditionalInformationController.onSubmit(mode)) {
 
