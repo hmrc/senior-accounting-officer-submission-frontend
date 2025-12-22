@@ -64,18 +64,16 @@ class NotificationAdditionalInformationController @Inject() (
         .fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value => {
-            // TODO change this so there'll be a different name submitted for each button instead of being dependent on i18n text
-            val skip = summon[Messages]("site.skip")
             def tryUpdateAnswers =
-                value.button match {
-                  case Some(`skip`) =>
-                    request.userAnswers.remove(NotificationAdditionalInformationPage)
-                  case _ =>
-                    request.userAnswers.set(NotificationAdditionalInformationPage, value.value.get)
-                }
+              (value.continueButton, value.skipButton) match {
+                case (None, Some(_)) =>
+                  request.userAnswers.remove(NotificationAdditionalInformationPage)
+                case _ =>
+                  request.userAnswers.set(NotificationAdditionalInformationPage, value.value.get)
+              }
             for {
               updatedAnswers <- Future.fromTry(tryUpdateAnswers)
-              _ <- sessionRepository.set(updatedAnswers)
+              _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
           }
         )

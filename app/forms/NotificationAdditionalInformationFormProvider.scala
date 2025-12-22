@@ -23,7 +23,11 @@ import play.api.data.{Form, FormError, Forms}
 
 import javax.inject.Inject
 
-final case class NotificationAdditionalInformation(value: Option[String], button: Option[String] = None)
+final case class NotificationAdditionalInformation(
+    value: Option[String],
+    continueButton: Option[String] = None,
+    skipButton: Option[String] = None
+)
 
 class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
 
@@ -32,9 +36,10 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
   def apply(): Form[NotificationAdditionalInformation] =
     Form(
       mapping(
-        "value"  -> of(customFormatter),
-        "button" -> optional(text("notificationAdditionalInformation.error.required"))
-      )(NotificationAdditionalInformation.apply)((n) => Some(n.value, n.button))
+        "value"          -> of(customFormatter),
+        "continueButton" -> optional(text("notificationAdditionalInformation.error.required")),
+        "skipButton"     -> optional(text("notificationAdditionalInformation.error.required"))
+      )(NotificationAdditionalInformation.apply)((n) => Some(n.value, n.continueButton, n.skipButton))
     )
 
   private def customFormatter: Formatter[Option[String]] =
