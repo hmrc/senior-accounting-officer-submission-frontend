@@ -122,9 +122,9 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             hasError = true
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestMustShowTextArea(
             name = "value",
-            label = pageHeading,
+            label = textAreaLabel,
             value = "",
             hint = None,
             hasError = true
@@ -222,7 +222,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             labels.get(0).text mustEqual label
           }
 
-          val erroredFormGroup = target.resolve.select(s""".govuk-form-group--error label[for="$textareaId"]""")
+          val erroredFormGroup = target.resolve.select(s""".govuk-error-summary a[href="#$textareaId"]""")
           if hasError then {
             withClue("error content must be shown\n") {
               erroredFormGroup.size mustBe 1
@@ -236,7 +236,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
 
         s"textarea with name '$name' must have value of '$value'" in {
           withClue(s"textarea with name '$name' does not have a value attribute '$value'\n") {
-            textAreaElement.attr("value") mustEqual value
+            textAreaElement.text mustEqual value
           }
         }
 
@@ -277,14 +277,8 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
 
         if hasError then {
           s"textarea with name '$name' must show an associated error message when field has error" in {
-            val errorMessageSelector = textAreaElement
-              .attr("aria-describedby")
-              .split(" ")
-              .filter(_.nonEmpty)
-              .map("#" + _ + ".govuk-error-message")
-              .mkString(",")
 
-            val errorMessageElements = target.resolve.safeSelect(errorMessageSelector)
+            val errorMessageElements = target.resolve.safeSelect(s".govuk-error-summary a[href=\"#$name\"]")
 
             withClue(s"textarea does not have expected error message with id '$name'\n") {
               errorMessageElements.size mustBe 1
