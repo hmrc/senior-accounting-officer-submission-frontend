@@ -32,8 +32,8 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
     Form(
       mapping(
         "value"          -> of(customFormatter),
-        "continueButton" -> optional(text("notificationAdditionalInformation.error.required")),
-        "skipButton"     -> optional(text("notificationAdditionalInformation.error.required"))
+        "continueButton" -> optional(text()),
+        "skipButton"     -> optional(text())
       )(NotificationAdditionalInformation.apply)((n) => Some(n.value, n.continueButton, n.skipButton))
     )
 
