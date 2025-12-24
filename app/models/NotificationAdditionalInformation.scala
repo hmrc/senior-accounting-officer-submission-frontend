@@ -19,10 +19,10 @@ package models
 import play.api.libs.json.*
 
 final case class NotificationAdditionalInformation(
-                                                    value: Option[String],
-                                                    continueButton: Option[String] = None,
-                                                    skipButton: Option[String] = None
-                                                  )
+    value: Option[String],
+    continueButton: Option[String] = None,
+    skipButton: Option[String] = None
+)
 
 object NotificationAdditionalInformation {
 

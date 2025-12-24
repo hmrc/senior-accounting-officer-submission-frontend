@@ -180,7 +180,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
   extension (target: => Document | Element) {
     private def resolve: Element = target match {
       case doc: Document => doc.getMainContent
-      case _ => target
+      case _             => target
     }
 
     private def safeSelect(cssQuery: String): Elements =
@@ -189,12 +189,12 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
       else Elements()
 
     def createTestMustShowTextArea(
-                                     name: String,
-                                     label: String,
-                                     value: String,
-                                     hint: Option[String],
-                                     hasError: Boolean
-                                   )(using pos: Position): Unit = {
+        name: String,
+        label: String,
+        value: String,
+        hint: Option[String],
+        hasError: Boolean
+    )(using pos: Position): Unit = {
 
       s"for textarea '$name'" - {
 
