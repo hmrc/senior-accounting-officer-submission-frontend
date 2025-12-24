@@ -17,17 +17,12 @@
 package forms
 
 import forms.mappings.*
+import models.NotificationAdditionalInformation
 import play.api.data.Forms.{mapping, of, optional}
 import play.api.data.format.Formatter
 import play.api.data.{Form, FormError, Forms}
 
 import javax.inject.Inject
-
-final case class NotificationAdditionalInformation(
-    value: Option[String],
-    continueButton: Option[String] = None,
-    skipButton: Option[String] = None
-)
 
 class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
 

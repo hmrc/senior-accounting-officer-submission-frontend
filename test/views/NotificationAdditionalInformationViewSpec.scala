@@ -17,8 +17,8 @@
 package views
 
 import base.ViewSpecBase
-import forms.{NotificationAdditionalInformation, NotificationAdditionalInformationFormProvider}
-import models.Mode
+import forms.NotificationAdditionalInformationFormProvider
+import models.{Mode, NotificationAdditionalInformation}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
