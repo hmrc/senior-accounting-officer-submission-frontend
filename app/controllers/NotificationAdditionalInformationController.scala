@@ -19,10 +19,10 @@ package controllers
 import controllers.actions.*
 import forms.NotificationAdditionalInformationFormProvider
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, NotificationAdditionalInformation}
 import navigation.Navigator
 import pages.NotificationAdditionalInformationPage
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -50,7 +50,7 @@ class NotificationAdditionalInformationController @Inject() (
 
     val preparedForm = request.userAnswers.get(NotificationAdditionalInformationPage) match {
       case None        => form
-      case Some(value) => form.fill(value)
+      case Some(value) => form.fill(NotificationAdditionalInformation(Some(value)))
     }
 
     Ok(view(preparedForm, mode))
@@ -62,11 +62,19 @@ class NotificationAdditionalInformationController @Inject() (
         .bindFromRequest()
         .fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
+          value => {
+            def tryUpdateAnswers =
+              (value.continueButton, value.skipButton) match {
+                case (None, Some(_)) =>
+                  request.userAnswers.remove(NotificationAdditionalInformationPage)
+                case _ =>
+                  request.userAnswers.set(NotificationAdditionalInformationPage, value.value.get)
+              }
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
+              updatedAnswers <- Future.fromTry(tryUpdateAnswers)
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
+          }
         )
   }
 }
