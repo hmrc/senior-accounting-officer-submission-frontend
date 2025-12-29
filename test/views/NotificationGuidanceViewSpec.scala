@@ -54,6 +54,11 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
       .get(0)
       .createTestWithLink(downloadLinkText, "#")
 
+    "with the correct first heading" in {
+      val headings = mainContent.getElementsByTag("h3")
+      headings.get(0).text mustBe pageHeadings(0)
+    }
+
     "with the correct SAO Details content" in {
       val headings = mainContent.getElementsByTag("h3")
       headings.get(0).text mustBe "SAO details"
@@ -112,4 +117,5 @@ object NotificationGuidanceViewSpec {
     "When you upload your completed template:"
   )
   val downloadLinkText = "Download the submission template."
+  val pageHeadings     = Seq("Step 1: Download and complete a submission template")
 }

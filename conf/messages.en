@@ -49,6 +49,8 @@ submission.notification.guidance.p10 = Guidance is also included in the template
 submission.notification.guidance.p11 = Keep a copy of your uploaded CSV files for your records.
 submission.notification.guidance.p12 = When you upload your completed template:
 
+submission.notification.guidance.step1 = Step 1: Download and complete a submission template
+
 submission.notification.guidance.sao.details.heading = SAO details
 submission.notification.guidance.sao.details.list.line1.content = SAO name: Full name of the SAO.
 submission.notification.guidance.sao.details.list.line2.content = SAO contact details: Email or phone number of the SAO.

@@ -26,29 +26,28 @@
 @()(using request: RequestHeader, messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("submission.notification.guidance.title"))) {
+  <h1 class="govuk-heading-l">@messages("submission.notification.guidance.heading")</h1>
+  <p class="govuk-body">@messages("submission.notification.guidance.p1")</p>
 
- <h1 class="govuk-heading-l">@messages("submission.notification.guidance.heading")</h1>
- <p class="govuk-body">@messages("submission.notification.guidance.p1")</p>
+  <h3 class="govuk-heading-s">@messages("submission.notification.guidance.step1")</h3>
 
- <h3 class="govuk-heading-s">@messages("SAO details")</h3>
+  <p class="govuk-body">
+    <a class="govuk-link" href="#">
+      @messages("submission.notification.guidance.template-download-link-content")
+    </a>
+  </p>
 
-<p class="govuk-body">
-  <a class="govuk-link" href="#">
-    @messages("submission.notification.guidance.template-download-link-content")
-  </a>
-</p>
-
-<p class="govuk-body">@messages("submission.notification.guidance.p2")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p3")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p4")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p5")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p6")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p7")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p8")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p9")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p10")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p11")</p>
-<p class="govuk-body">@messages("submission.notification.guidance.p12")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p2")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p3")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p4")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p5")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p6")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p7")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p8")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p9")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p10")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p11")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.p12")</p>
 
 <ul class="govuk-list govuk-list--bullet">
   <li>@messages("submission.notification.guidance.sao.details.list.line1.content")</li>
