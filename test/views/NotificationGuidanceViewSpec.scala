@@ -49,6 +49,11 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 
     doc.createTestsWithParagraphs(paragraphs)
 
+    doc.getMainContent
+      .select("a.govuk-link")
+      .get(0)
+      .createTestWithLink(downloadLinkText, "#")
+
     "with the correct SAO Details content" in {
       val headings = mainContent.getElementsByTag("h3")
       headings.get(0).text mustBe "SAO details"
@@ -80,12 +85,6 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
         .text mustBe "Company Status: inform if a company is Active, Dormant or Liquidated"
     }
 
-    "with the correct link content for notification template download" in {
-      val links = mainContent.getElementsByTag("a")
-      links.get(0).text mustBe "Download the notification template"
-      links.attr("href") mustBe routes.DownloadNotificationTemplateController.onPageLoad().url
-    }
-
     doc.createTestsWithSubmissionButton(
       action = routes.NotificationGuidanceController.onSubmit(),
       buttonText = "Continue"
@@ -112,4 +111,5 @@ object NotificationGuidanceViewSpec {
     "Keep a copy of your uploaded CSV files for your records.",
     "When you upload your completed template:"
   )
+  val downloadLinkText = "Download the submission template."
 }
