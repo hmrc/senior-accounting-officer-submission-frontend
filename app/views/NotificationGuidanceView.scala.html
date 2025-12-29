@@ -44,44 +44,44 @@
   <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading2")</h3>
   <p class="govuk-body">@messages("submission.notification.guidance.p5")</p>
 
+  <ol class="govuk-list govuk-list--number">
+    <li>@messages("submission.notification.guidance.li1")</li>
+    <li>@messages("submission.notification.guidance.li2")</li>
+    <li>@messages("submission.notification.guidance.li3")</li>
+    <li>@messages("submission.notification.guidance.li4")</li>
+  </ol>
+
   <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading3")</h3>
   <p class="govuk-body">@messages("submission.notification.guidance.p6")</p>
   <p class="govuk-body">@messages("submission.notification.guidance.p7")</p>
   <p class="govuk-body">@messages("submission.notification.guidance.p8")</p>
   <p class="govuk-body">@messages("submission.notification.guidance.p9")</p>
+  <ol class="govuk-list govuk-list--number">
+    <li>@messages("submission.notification.guidance.li5")</li>
+    <li>@messages("submission.notification.guidance.li6")</li>
+    <li>@messages("submission.notification.guidance.li7")</li>
+  </ol>
   <p class="govuk-body">@messages("submission.notification.guidance.p10")</p>
   <p class="govuk-body">@messages("submission.notification.guidance.p11")</p>
 
   <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading4")</h3>
   <p class="govuk-body">@messages("submission.notification.guidance.p12")</p>
+  <ol class="govuk-list govuk-list--bullet">
+    <li>@messages("submission.notification.guidance.li8")</li>
+    <li>@messages("submission.notification.guidance.li9")</li>
+  </ol>
 
   <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading5")</h3>
+  <ul class="govuk-list govuk-list--number">
+    <li>@messages("submission.notification.guidance.li10")</li>
+    <li>@messages("submission.notification.guidance.li11")</li>
+  </ul>
+
   <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading6")</h3>
-
-<ul class="govuk-list govuk-list--bullet">
-  <li>@messages("submission.notification.guidance.sao.details.list.line1.content")</li>
-  <li>@messages("submission.notification.guidance.sao.details.list.line2.content")</li>
-  <li>@messages("submission.notification.guidance.sao.details.list.line3.content")</li>
-</ul>
-
- <ul class="govuk-list govuk-list--bullet">
-  <li>@messages("submission.notification.guidance.accountingPeriod.details.list.line1.content")</li>
- </ul>
-
-
- <ul class="govuk-list govuk-list--bullet">
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line1.content")</li>
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line2.content")</li>
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line3.content")</li>
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line4.content")</li>
- </ul>
-
- <!-- <p class="govuk-body">@messages("submission.notification.guidance.utrCrnGuidance.p")</p> -->
-
- <!-- <p class="govuk-body"> -->
-   <!-- <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">@messages("submission.notification.guidance.notification.template.download.link.content")</a> -->
- <!-- </p> -->
-
+  <ul class="govuk-list govuk-list--number">
+   <li>@messages("submission.notification.guidance.li12")</li>
+   <li>@messages("submission.notification.guidance.li13")</li>
+  </ul>
 
   @formHelper(action = routes.NotificationGuidanceController.onSubmit()){
     @govukButton(

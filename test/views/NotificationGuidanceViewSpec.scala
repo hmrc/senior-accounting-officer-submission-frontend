@@ -56,30 +56,9 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 
     doc.createTestsForSubHeadings(pageSubheadings)
 
-    "with the correct SAO Details content" in {
-      val listContents = mainContent.getElementsByTag("li")
-      listContents.get(0).text mustBe "SAO name: Full name of the SAO."
-      listContents.get(1).text mustBe "SAO contact details: Email or phone number of the SAO."
-      listContents
-        .get(2)
-        .text mustBe "SAO start and end date: Dates the SAO held their position during the accounting period."
-    }
-
-    "with the correct Accounting Period Details content" in {
-      val listContents = mainContent.getElementsByTag("li")
-      listContents.get(3).text mustBe "The start and end date of the accounting period (DD/MM/YYYY)"
-
-    }
-
-    "with the correct Company Details content" in {
-      val listContents = mainContent.getElementsByTag("li")
-      listContents.get(4).text mustBe "Company name: enter the name of the company the SAO was responsible for."
-      listContents.get(5).text mustBe "Company UTR: Unique Taxpayer Reference of that company."
-      listContents.get(6).text mustBe "Company CRN: Company Registration Number of that company."
-      listContents
-        .get(7)
-        .text mustBe "Company Status: inform if a company is Active, Dormant or Liquidated"
-    }
+    // TODO: naming, i am using the bullet point function to test numbered items.
+    // FIXME: the below function does not check for the govuk css class
+    doc.createTestsWithBulletPoints(pageListItems)
 
     doc.createTestsWithSubmissionButton(
       action = routes.NotificationGuidanceController.onSubmit(),
@@ -129,5 +108,20 @@ object NotificationGuidanceViewSpec {
     "Step 4: Make your submission",
     "Complete both notification and certificate at the same time",
     "Complete certificate at a different time."
+  )
+  val pageListItems = Seq(
+    "Save it as a CSV (comma delimited) file.",
+    "Upload it to the service.",
+    "Check that all details are correct.",
+    "Submit the file to complete your notification and certificate.",
+    "correct the errors in your Excel file",
+    "save again as a CSV",
+    "upload the file again",
+    "notification details will be used to complete your notification",
+    "certificate details will be used to complete your certificate",
+    "Start your submission by uploading the template and submitting your notification.",
+    "After notification is submitted, complete the certificate journey to finish your submission.",
+    "Upload your template again with certificate information filled out.",
+    "Complete the certificate journey and sign the declaration."
   )
 }

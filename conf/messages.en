@@ -56,20 +56,26 @@ submission.notification.guidance.subheading4 = Step 4: Make your submission
 submission.notification.guidance.subheading5 = Complete both notification and certificate at the same time
 submission.notification.guidance.subheading6 = Complete certificate at a different time.
 
-submission.notification.guidance.sao.details.heading = SAO details
-submission.notification.guidance.sao.details.list.line1.content = SAO name: Full name of the SAO.
-submission.notification.guidance.sao.details.list.line2.content = SAO contact details: Email or phone number of the SAO.
-submission.notification.guidance.sao.details.list.line3.content = SAO start and end date: Dates the SAO held their position during the accounting period.
+submission.notification.guidance.li1 = Save it as a CSV (comma delimited) file.
+submission.notification.guidance.li2 = Upload it to the service.
+submission.notification.guidance.li3 = Check that all details are correct.
+submission.notification.guidance.li4 = Submit the file to complete your notification and certificate.
 
-submission.notification.guidance.accountingPeriod.details.list.line1.content = The start and end date of the accounting period (DD/MM/YYYY)
+submission.notification.guidance.li5 = correct the errors in your Excel file
+submission.notification.guidance.li6 = save again as a CSV
+submission.notification.guidance.li7 = upload the file again
 
-submission.notification.guidance.companyInformation.details.list.line1.content = Company name: enter the name of the company the SAO was responsible for.
-submission.notification.guidance.companyInformation.details.list.line2.content = Company UTR: Unique Taxpayer Reference of that company.
-submission.notification.guidance.companyInformation.details.list.line3.content = Company CRN: Company Registration Number of that company.
-submission.notification.guidance.companyInformation.details.list.line4.content = Company Status: inform if a company is Active, Dormant or Liquidated
+submission.notification.guidance.li8 = notification details will be used to complete your notification
+submission.notification.guidance.li9 = certificate details will be used to complete your certificate
 
-submission.notification.guidance.utrCrnGuidance.p = If you do not have UTR for some companies, please put in the CRN instead.
+submission.notification.guidance.li10 = Start your submission by uploading the template and submitting your notification.
+submission.notification.guidance.li11 = After notification is submitted, complete the certificate journey to finish your submission.
+
+submission.notification.guidance.li12 = Upload your template again with certificate information filled out.
+submission.notification.guidance.li13 = Complete the certificate journey and sign the declaration.
+
 submission.notification.guidance.template-download-link-content = Download the submission template.
+
 submitNotificationStart.title = submitNotificationStart
 submitNotificationStart.heading = submitNotificationStart
 submitNotificationStart.uploadNotificationLinkText = Upload a submission template
