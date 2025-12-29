@@ -71,6 +71,7 @@ notificationAdditionalInformation.p1 = Tell us if there’s anything we should k
 notificationAdditionalInformation.p2 = This could include:
 notificationAdditionalInformation.list.line1.content = a company’s status changing, such as becoming dormant or going into liquidation
 notificationAdditionalInformation.list.line2.content = anything else relevant to the companies listed
+notificationAdditionalInformation.label = Provide information about your notification
 notificationAdditionalInformation.checkYourAnswersLabel = notificationAdditionalInformation
 notificationAdditionalInformation.error.required = Enter notificationAdditionalInformation
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 100 characters or less
