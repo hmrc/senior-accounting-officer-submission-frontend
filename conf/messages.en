@@ -49,17 +49,20 @@ submission.notification.guidance.p10 = Guidance is also included in the template
 submission.notification.guidance.p11 = Keep a copy of your uploaded CSV files for your records.
 submission.notification.guidance.p12 = When you upload your completed template:
 
-submission.notification.guidance.step1 = Step 1: Download and complete a submission template
+submission.notification.guidance.subheading1 = Step 1: Download and complete a submission template
+submission.notification.guidance.subheading2 = Step 2: Upload your template
+submission.notification.guidance.subheading3 = Step 3: Check the information is correct
+submission.notification.guidance.subheading4 = Step 4: Make your submission
+submission.notification.guidance.subheading5 = Complete both notification and certificate at the same time
+submission.notification.guidance.subheading6 = Complete certificate at a different time.
 
 submission.notification.guidance.sao.details.heading = SAO details
 submission.notification.guidance.sao.details.list.line1.content = SAO name: Full name of the SAO.
 submission.notification.guidance.sao.details.list.line2.content = SAO contact details: Email or phone number of the SAO.
 submission.notification.guidance.sao.details.list.line3.content = SAO start and end date: Dates the SAO held their position during the accounting period.
 
-submission.notification.guidance.accountingPeriod.details.heading = Accounting period
 submission.notification.guidance.accountingPeriod.details.list.line1.content = The start and end date of the accounting period (DD/MM/YYYY)
 
-submission.notification.guidance.companyInformation.details.heading = Company information
 submission.notification.guidance.companyInformation.details.list.line1.content = Company name: enter the name of the company the SAO was responsible for.
 submission.notification.guidance.companyInformation.details.list.line2.content = Company UTR: Unique Taxpayer Reference of that company.
 submission.notification.guidance.companyInformation.details.list.line3.content = Company CRN: Company Registration Number of that company.

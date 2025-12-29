@@ -54,14 +54,9 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
       .get(0)
       .createTestWithLink(downloadLinkText, "#")
 
-    "with the correct first heading" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(0).text mustBe pageHeadings(0)
-    }
+    doc.createTestsForSubHeadings(pageSubheadings)
 
     "with the correct SAO Details content" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(0).text mustBe "SAO details"
       val listContents = mainContent.getElementsByTag("li")
       listContents.get(0).text mustBe "SAO name: Full name of the SAO."
       listContents.get(1).text mustBe "SAO contact details: Email or phone number of the SAO."
@@ -71,16 +66,12 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     }
 
     "with the correct Accounting Period Details content" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(1).text mustBe "Accounting period"
       val listContents = mainContent.getElementsByTag("li")
       listContents.get(3).text mustBe "The start and end date of the accounting period (DD/MM/YYYY)"
 
     }
 
     "with the correct Company Details content" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(2).text mustBe "Company information"
       val listContents = mainContent.getElementsByTag("li")
       listContents.get(4).text mustBe "Company name: enter the name of the company the SAO was responsible for."
       listContents.get(5).text mustBe "Company UTR: Unique Taxpayer Reference of that company."
@@ -95,6 +86,20 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
       buttonText = "Continue"
     )
 
+  }
+
+  extension (target: => Document) {
+    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
+      val headings = doc.getMainContent.getElementsByTag("h3")
+      "must have expected number of headings" in {
+        headings.size() mustBe subheadings.length
+      }
+      subheadings.zipWithIndex.foreach((subheading, i) => {
+        s"must have heading '$subheading'" in {
+          headings.get(i).text mustBe subheading
+        }
+      })
+    }
   }
 }
 
@@ -117,5 +122,12 @@ object NotificationGuidanceViewSpec {
     "When you upload your completed template:"
   )
   val downloadLinkText = "Download the submission template."
-  val pageHeadings     = Seq("Step 1: Download and complete a submission template")
+  val pageSubheadings  = Seq(
+    "Step 1: Download and complete a submission template",
+    "Step 2: Upload your template",
+    "Step 3: Check the information is correct",
+    "Step 4: Make your submission",
+    "Complete both notification and certificate at the same time",
+    "Complete certificate at a different time."
+  )
 }
