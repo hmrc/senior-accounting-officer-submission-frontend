@@ -159,21 +159,22 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
       }
 
       s"must have ${buttonTexts.size} number of buttons" in {
-        val button = target.select("input[type=submit]")
+        val buttons = target.select("button")
 
-        button.size() mustBe buttonTexts.size
+        buttons.size() mustBe buttonTexts.size
       }
 
-      buttonTexts.zipWithIndex.foreach((buttonText, i) => {
-        s"must have a submit button with text '$buttonText'" in {
-          val button = target.select("input[type=submit]").get(i)
-          withClue(
-            s"Submit Button with text '$buttonText' not found\n"
-          ) {
-            button.attr("value") mustBe buttonText
+      buttonTexts.zipWithIndex
+        .foreach((buttonText, i) => {
+          s"must have a submit button with text '$buttonText'" in {
+            val button = target.select("button").get(i)
+            withClue(
+              s"Submit Button with text '$buttonText' not found\n"
+            ) {
+              button.text() mustBe buttonText
+            }
           }
-        }
-      })
+        })
     }
   }
 
