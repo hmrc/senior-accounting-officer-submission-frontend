@@ -36,8 +36,18 @@ timeout.signOut = Sign out
 submission.notification.guidance.title = Notification and certificate submission template guidance
 submission.notification.guidance.heading = Submission template guidance
 
-submission.notification.guidance.p1 = Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO.
-submission.notification.guidance.p2 = You must fill in all the fields.
+submission.notification.guidance.p1 = This is a step by step guide on how to submit a notification and certificate using the submission template.
+submission.notification.guidance.p2 = Fill in all required fields for each company in your group. Each row should represent one company the SAO was responsible for in the previous financial year.
+submission.notification.guidance.p3 = Do not change the layout or structure of the template, if you do, the upload will fail.
+submission.notification.guidance.p4 = Use the guidance in row 3 under each column heading to help you enter the information correctly.
+submission.notification.guidance.p5 = When you’ve completed your template:
+submission.notification.guidance.p6 = Before you submit your certificate, you can check the information you uploaded is correct.
+submission.notification.guidance.p7 = If the information is not correct, upload an updated submission template before continuing.
+submission.notification.guidance.p8 = If there are any errors when you try to upload the template (for example, missing or invalid data), you’ll be shown a list of what to fix.
+submission.notification.guidance.p9 = You can:
+submission.notification.guidance.p10 = Guidance is also included in the template to help you complete each field correctly.
+submission.notification.guidance.p11 = Keep a copy of your uploaded CSV files for your records.
+submission.notification.guidance.p12 = When you upload your completed template:
 
 submission.notification.guidance.sao.details.heading = SAO details
 submission.notification.guidance.sao.details.list.line1.content = SAO name: Full name of the SAO.
@@ -54,7 +64,7 @@ submission.notification.guidance.companyInformation.details.list.line3.content =
 submission.notification.guidance.companyInformation.details.list.line4.content = Company Status: inform if a company is Active, Dormant or Liquidated
 
 submission.notification.guidance.utrCrnGuidance.p = If you do not have UTR for some companies, please put in the CRN instead.
-submission.notification.guidance.notification.template.download.link.content = Download the notification template
+submission.notification.guidance.template-download-link-content = Download the submission template.
 submitNotificationStart.title = submitNotificationStart
 submitNotificationStart.heading = submitNotificationStart
 submitNotificationStart.uploadNotificationLinkText = Upload a submission template

@@ -29,14 +29,32 @@
 
  <h1 class="govuk-heading-l">@messages("submission.notification.guidance.heading")</h1>
  <p class="govuk-body">@messages("submission.notification.guidance.p1")</p>
- <p class="govuk-body">@messages("submission.notification.guidance.p2")</p>
 
-<h3 class="govuk-heading-s">@messages("SAO details")</h3>
- <ul class="govuk-list govuk-list--bullet">
+ <h3 class="govuk-heading-s">@messages("SAO details")</h3>
+
+<p class="govuk-body">
+  <a href="#">
+    @messages("submission.notification.guidance.template-download-link-content")
+  </a>
+</p>
+
+<p class="govuk-body">@messages("submission.notification.guidance.p2")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p3")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p4")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p5")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p6")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p7")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p8")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p9")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p10")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p11")</p>
+<p class="govuk-body">@messages("submission.notification.guidance.p12")</p>
+
+<ul class="govuk-list govuk-list--bullet">
   <li>@messages("submission.notification.guidance.sao.details.list.line1.content")</li>
   <li>@messages("submission.notification.guidance.sao.details.list.line2.content")</li>
   <li>@messages("submission.notification.guidance.sao.details.list.line3.content")</li>
- </ul>
+</ul>
 
  <h3 class="govuk-heading-s">@messages("submission.notification.guidance.accountingPeriod.details.heading")</h3>
  <ul class="govuk-list govuk-list--bullet">
@@ -52,11 +70,11 @@
   <li>@messages("submission.notification.guidance.companyInformation.details.list.line4.content")</li>
  </ul>
 
- <p class="govuk-body">@messages("submission.notification.guidance.utrCrnGuidance.p")</p>
+ <!-- <p class="govuk-body">@messages("submission.notification.guidance.utrCrnGuidance.p")</p> -->
 
- <p class="govuk-body">
-   <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">@messages("submission.notification.guidance.notification.template.download.link.content")</a>
- </p>
+ <!-- <p class="govuk-body"> -->
+   <!-- <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">@messages("submission.notification.guidance.notification.template.download.link.content")</a> -->
+ <!-- </p> -->
 
 
   @formHelper(action = routes.NotificationGuidanceController.onSubmit()){

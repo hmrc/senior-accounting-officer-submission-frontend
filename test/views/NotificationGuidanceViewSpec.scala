@@ -47,12 +47,7 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 
     doc.createTestsWithOrWithoutError(hasError = false)
 
-
-    "with the correct content for guidance at the top" in {
-      val paras = mainContent.getElementsByTag("p")
-      paras.get(0).text mustBe "Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO."
-      paras.get(1).text mustBe "You must fill in all the fields."
-    }
+    doc.createTestsWithParagraphs(paragraphs)
 
     "with the correct SAO Details content" in {
       val headings = mainContent.getElementsByTag("h3")
@@ -85,11 +80,6 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
         .text mustBe "Company Status: inform if a company is Active, Dormant or Liquidated"
     }
 
-    "with the correct content for guidance at the bottom" in {
-      val paras = mainContent.getElementsByTag("p")
-      paras.get(2).text mustBe "If you do not have UTR for some companies, please put in the CRN instead."
-    }
-
     "with the correct link content for notification template download" in {
       val links = mainContent.getElementsByTag("a")
       links.get(0).text mustBe "Download the notification template"
@@ -107,4 +97,19 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 object NotificationGuidanceViewSpec {
   val pageTitle   = "Notification and certificate submission template guidance"
   val pageHeading = "Submission template guidance"
+  val paragraphs  = Seq(
+    "This is a step by step guide on how to submit a notification and certificate using the submission template.",
+    "Download the submission template.",
+    "Fill in all required fields for each company in your group. Each row should represent one company the SAO was responsible for in the previous financial year.",
+    "Do not change the layout or structure of the template, if you do, the upload will fail.",
+    "Use the guidance in row 3 under each column heading to help you enter the information correctly.",
+    "When you’ve completed your template:",
+    "Before you submit your certificate, you can check the information you uploaded is correct.",
+    "If the information is not correct, upload an updated submission template before continuing.",
+    "If there are any errors when you try to upload the template (for example, missing or invalid data), you’ll be shown a list of what to fix.",
+    "You can:",
+    "Guidance is also included in the template to help you complete each field correctly.",
+    "Keep a copy of your uploaded CSV files for your records.",
+    "When you upload your completed template:"
+  )
 }
