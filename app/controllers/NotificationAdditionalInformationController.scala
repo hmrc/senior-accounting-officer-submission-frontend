@@ -62,13 +62,13 @@ class NotificationAdditionalInformationController @Inject() (
         .bindFromRequest()
         .fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value => {
+          form => {
             def tryUpdateAnswers =
-              (value.continueButton, value.skipButton) match {
-                case (None, Some(_)) =>
-                  request.userAnswers.remove(NotificationAdditionalInformationPage)
+              form.value match {
+                case Some(value) =>
+                  request.userAnswers.set(NotificationAdditionalInformationPage, value)
                 case _ =>
-                  request.userAnswers.set(NotificationAdditionalInformationPage, value.value.get)
+                  request.userAnswers.remove(NotificationAdditionalInformationPage)
               }
             for {
               updatedAnswers <- Future.fromTry(tryUpdateAnswers)

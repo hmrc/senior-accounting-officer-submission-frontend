@@ -46,20 +46,31 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        @govukTextArea(Textarea(
-            id = "",
-            name = "value",
-            classes = "",
-            label = Label(content = Text(messages("notificationAdditionalInformation.label"))).withCssClass("govuk-label govuk-label--s"),
-            hint = None,
-            value = form("value").value,
-            autocomplete = None,
-            errorMessage = None
-        ))
+        @govukTextArea(
+            Textarea(
+                id = "",
+                name = "value",
+                classes = "",
+                label = Label(
+                    content = Text(messages("notificationAdditionalInformation.label"))
+                ).withCssClass("govuk-label govuk-label--s"),
+                hint = None,
+                value = form("value").value,
+                autocomplete = None,
+                errorMessage = None
+            )
+        )
 
         <div class="govuk-button-group">
-            <input name="confirmButton" type="submit" id="submit" class="govuk-button" value="@messages("site.continue")">
-            <input name="skipButton" type="submit" id="skip" class="govuk-button govuk-button--secondary" value="@messages("site.skip")">
+            @govukButton(
+                ButtonViewModel(messages("site.continue").toText)
+                    .withName("confirmButton")
+            )
+            @govukButton(
+                ButtonViewModel(messages("site.skip").toText)
+                    .withName("skipButton")
+                    .withCssClass("govuk-button--secondary")
+            )
         </div>
 
     }
