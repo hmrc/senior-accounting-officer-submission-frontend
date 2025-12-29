@@ -25,11 +25,9 @@
 
 @()(using request: RequestHeader, messages: Messages)
 
-@layout(pageTitle = "Notification Guidance") {
+@layout(pageTitle = titleNoForm(messages("submission.notification.guidance.title"))) {
 
-
-
- <h1 class="govuk-heading-l">@messages("submission.notification.guidance.title")</h1>
+ <h1 class="govuk-heading-l">@messages("submission.notification.guidance.heading")</h1>
  <p class="govuk-body">@messages("submission.notification.guidance.p1")</p>
  <p class="govuk-body">@messages("submission.notification.guidance.p2")</p>
 

@@ -33,8 +33,8 @@ timeout.message = For security reasons, you will be signed out of this service i
 timeout.keepAlive = Stay signed in
 timeout.signOut = Sign out
 
-submission.notification.guidance.title = Notification template guide
-submission.notification.guidance.heading = Notification template guide
+submission.notification.guidance.title = Notification and certificate submission template guidance
+submission.notification.guidance.heading = Submission template guidance
 
 submission.notification.guidance.p1 = Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO.
 submission.notification.guidance.p2 = You must fill in all the fields.

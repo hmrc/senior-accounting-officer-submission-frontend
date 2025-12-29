@@ -21,18 +21,32 @@ import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import views.html.NotificationGuidanceView
+import views.NotificationGuidanceViewSpec.*
 
 class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView] {
 
   val doc: Document        = Jsoup.parse(SUT().toString)
   val mainContent: Element = doc.getMainContent
 
-  "NotificationGuidanceView must" - {
-    "must generate a view with the correct heading" in {
-      val h1 = mainContent.getElementsByTag("h1")
-      h1.size() mustBe 1
-      h1.get(0).text() mustBe "Notification template guide"
-    }
+  private def generateView(): Document = {
+    val view = SUT()
+    Jsoup.parse(view.toString)
+  }
+
+  "NotificationGuidanceView" - {
+
+    val doc = generateView()
+
+    doc.createTestsWithStandardPageElements(
+      pageTitle = pageTitle,
+      pageHeading = pageHeading,
+      showBackLink = true,
+      showIsThisPageNotWorkingProperlyLink = true,
+      hasError = false
+    )
+
+    doc.createTestsWithOrWithoutError(hasError = false)
+
 
     "with the correct content for guidance at the top" in {
       val paras = mainContent.getElementsByTag("p")
@@ -88,4 +102,9 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     )
 
   }
+}
+
+object NotificationGuidanceViewSpec {
+  val pageTitle   = "Notification and certificate submission template guidance"
+  val pageHeading = "Submission template guidance"
 }
