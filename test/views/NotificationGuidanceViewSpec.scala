@@ -61,6 +61,7 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     // doc.createTestsWithBulletPoints(pageListItems)
 
     doc.createTestsWithUnorderedListItemsWithCssCheck(pageBullets)
+    doc.createTestsWithOrderedListItemsWithCssCheck(pageNumberedListItems)
 
     doc.createTestsWithSubmissionButton(
       action = routes.NotificationGuidanceController.onSubmit(),
