@@ -56,6 +56,8 @@ submission.notification.guidance.subheading4 = Step 4: Make your submission
 submission.notification.guidance.subheading5 = Complete both notification and certificate at the same time
 submission.notification.guidance.subheading6 = Complete certificate at a different time.
 
+submission.notification.guidance.inset.text = If you only completed the notification section, you’ll need to re-upload the same template later when you’re ready to complete your certificate.
+
 submission.notification.guidance.li1 = Save it as a CSV (comma delimited) file.
 submission.notification.guidance.li2 = Upload it to the service.
 submission.notification.guidance.li3 = Check that all details are correct.

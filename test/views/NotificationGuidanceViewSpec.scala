@@ -56,11 +56,8 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 
     doc.createTestsForSubHeadings(pageSubheadings)
 
-    // TODO: naming, i am using the bullet point function to test numbered items.
-    // FIXME: the below function does not check for the govuk css class
-    // doc.createTestsWithBulletPoints(pageListItems)
-
     doc.createTestsWithUnorderedListItemsWithCssCheck(pageBullets)
+
     doc.createTestsWithOrderedListItemsWithCssCheck(pageNumberedListItems)
 
     doc.createTestsWithSubmissionButton(
@@ -68,6 +65,7 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
       buttonText = "Continue"
     )
 
+    doc.createTestForInsetText(pageInsetText)
   }
 
   extension (target: => Document) {
@@ -81,6 +79,17 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
           headings.get(i).text mustBe subheading
         }
       })
+    }
+
+    def createTestForInsetText(text: String): Unit = {
+      val insetTextElement = doc.getMainContent.select(".govuk-inset-text")
+      "must have one inset string" in {
+        insetTextElement.size() mustBe 1
+      }
+
+      s"must have expected inset string of $text" in {
+        insetTextElement.text() mustBe text
+      }
     }
   }
 }
@@ -129,4 +138,6 @@ object NotificationGuidanceViewSpec {
     "notification details will be used to complete your notification",
     "certificate details will be used to complete your certificate"
   )
+  val pageInsetText =
+    "If you only completed the notification section, you’ll need to re-upload the same template later when you’re ready to complete your certificate."
 }
