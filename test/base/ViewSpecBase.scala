@@ -562,6 +562,23 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       )
     }
 
+    def createTestsWithUnorderedListItemsWithCssCheck(
+        listItems: Seq[String]
+    )(using
+        pos: Position
+    ): Unit = {
+      createTestWithCountOfElement(
+        selector = "ul.govuk-list--bullet li",
+        count = listItems.size,
+        description = "bullets"
+      )
+      createTestsWithOrderOfElements(
+        selector = "ul.govuk-list--bullet li",
+        texts = listItems,
+        description = "bullets"
+      )
+    }
+
     def createTestsWithCaption(
         caption: String
     )(using pos: Position): Unit = {

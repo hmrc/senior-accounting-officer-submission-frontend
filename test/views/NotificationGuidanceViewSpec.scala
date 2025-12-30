@@ -58,7 +58,9 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 
     // TODO: naming, i am using the bullet point function to test numbered items.
     // FIXME: the below function does not check for the govuk css class
-    doc.createTestsWithBulletPoints(pageListItems)
+    // doc.createTestsWithBulletPoints(pageListItems)
+
+    doc.createTestsWithUnorderedListItemsWithCssCheck(pageBullets)
 
     doc.createTestsWithSubmissionButton(
       action = routes.NotificationGuidanceController.onSubmit(),
@@ -109,19 +111,21 @@ object NotificationGuidanceViewSpec {
     "Complete both notification and certificate at the same time",
     "Complete certificate at a different time."
   )
-  val pageListItems = Seq(
+  val pageNumberedListItems = Seq(
     "Save it as a CSV (comma delimited) file.",
     "Upload it to the service.",
     "Check that all details are correct.",
     "Submit the file to complete your notification and certificate.",
-    "correct the errors in your Excel file",
-    "save again as a CSV",
-    "upload the file again",
-    "notification details will be used to complete your notification",
-    "certificate details will be used to complete your certificate",
     "Start your submission by uploading the template and submitting your notification.",
     "After notification is submitted, complete the certificate journey to finish your submission.",
     "Upload your template again with certificate information filled out.",
     "Complete the certificate journey and sign the declaration."
+  )
+  val pageBullets = Seq(
+    "correct the errors in your Excel file",
+    "save again as a CSV",
+    "upload the file again",
+    "notification details will be used to complete your notification",
+    "certificate details will be used to complete your certificate"
   )
 }
