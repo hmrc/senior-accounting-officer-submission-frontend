@@ -52,7 +52,12 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     doc.getMainContent
       .select("a.govuk-link")
       .get(0)
-      .createTestWithLink(downloadLinkText, "#")
+      .createTestWithLink(linkTexts(0), "#")
+
+    doc.getMainContent
+      .select("a.govuk-link")
+      .get(1)
+      .createTestWithLink(linkTexts(1), "#")
 
     doc.createTestsForSubHeadings(pageSubheadings)
 
@@ -66,6 +71,7 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     )
 
     doc.createTestForInsetText(pageInsetText)
+
   }
 
   extension (target: => Document) {
@@ -112,7 +118,6 @@ object NotificationGuidanceViewSpec {
     "Keep a copy of your uploaded CSV files for your records.",
     "When you upload your completed template:"
   )
-  val downloadLinkText = "Download the submission template."
   val pageSubheadings  = Seq(
     "Step 1: Download and complete a submission template",
     "Step 2: Upload your template",
@@ -140,4 +145,7 @@ object NotificationGuidanceViewSpec {
   )
   val pageInsetText =
     "If you only completed the notification section, you’ll need to re-upload the same template later when you’re ready to complete your certificate."
+
+  val linkTexts = Seq("Download the submission template.", "upload an updated submission template")
+
 }
