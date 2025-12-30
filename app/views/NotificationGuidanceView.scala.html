@@ -74,16 +74,16 @@
   </ul>
 
   <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading5")</h3>
-  <ul class="govuk-list govuk-list--number">
+  <ol class="govuk-list govuk-list--number">
     <li>@messages("submission.notification.guidance.li10")</li>
     <li>@messages("submission.notification.guidance.li11")</li>
-  </ul>
+  </ol>
 
   <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading6")</h3>
-  <ul class="govuk-list govuk-list--number">
+  <ol class="govuk-list govuk-list--number">
    <li>@messages("submission.notification.guidance.li12")</li>
    <li>@messages("submission.notification.guidance.li13")</li>
-  </ul>
+  </ol>
 
   @formHelper(action = routes.NotificationGuidanceController.onSubmit()){
     @govukButton(
