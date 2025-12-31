@@ -562,6 +562,40 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       )
     }
 
+    def createTestsWithBulletPointsAndClassCheck(
+                                                  bullets: Seq[String]
+    )(using
+        pos: Position
+    ): Unit = {
+      createTestWithCountOfElement(
+        selector = "ul.govuk-list--bullet li",
+        count = bullets.size,
+        description = "bullets"
+      )
+      createTestsWithOrderOfElements(
+        selector = "ul.govuk-list--bullet li",
+        texts = bullets,
+        description = "bullets"
+      )
+    }
+
+    def createTestsWithNumberedItems(
+                                      numberedItems: Seq[String]
+    )(using
+        pos: Position
+    ): Unit = {
+      createTestWithCountOfElement(
+        selector = "ol.govuk-list--number li",
+        count = numberedItems.size,
+        description = "numbered items"
+      )
+      createTestsWithOrderOfElements(
+        selector = "ol.govuk-list--number li",
+        texts = numberedItems,
+        description = "numbered items"
+      )
+    }
+
     def createTestsWithCaption(
         caption: String
     )(using pos: Position): Unit = {
