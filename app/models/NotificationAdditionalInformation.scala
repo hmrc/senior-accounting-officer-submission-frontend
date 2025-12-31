@@ -14,19 +14,10 @@
  * limitations under the License.
  */
 
-package forms.behaviours
+package models
 
-import play.api.data.{Form, FormError}
-
-trait StringFieldBehaviours extends FieldBehaviours {
-
-  def fieldWithMaxLength(form: Form[?], fieldName: String, maxLength: Int, lengthError: FormError): Unit = {
-
-    s"must not bind strings longer than $maxLength characters" in {
-      forAll(stringsLongerThan(maxLength) -> "longString") { (string: String) =>
-        val result = form.bind(Map(fieldName -> string)).apply(fieldName)
-        result.errors must contain only lengthError
-      }
-    }
-  }
-}
+final case class NotificationAdditionalInformation(
+    value: Option[String],
+    continueButton: Option[String] = None,
+    skipButton: Option[String] = None
+)
