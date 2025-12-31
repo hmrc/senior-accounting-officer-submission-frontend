@@ -562,36 +562,36 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       )
     }
 
-    def createTestsWithUnorderedListItemsWithCssCheck(
-        listItems: Seq[String]
+    def createTestsWithBulletPointsAndClassCheck(
+                                                  bullets: Seq[String]
     )(using
         pos: Position
     ): Unit = {
       createTestWithCountOfElement(
         selector = "ul.govuk-list--bullet li",
-        count = listItems.size,
+        count = bullets.size,
         description = "bullets"
       )
       createTestsWithOrderOfElements(
         selector = "ul.govuk-list--bullet li",
-        texts = listItems,
+        texts = bullets,
         description = "bullets"
       )
     }
 
-    def createTestsWithOrderedListItemsWithCssCheck(
-        listItems: Seq[String]
+    def createTestsWithNumberedItems(
+                                      numberedItems: Seq[String]
     )(using
         pos: Position
     ): Unit = {
       createTestWithCountOfElement(
         selector = "ol.govuk-list--number li",
-        count = listItems.size,
+        count = numberedItems.size,
         description = "numbered items"
       )
       createTestsWithOrderOfElements(
         selector = "ol.govuk-list--number li",
-        texts = listItems,
+        texts = numberedItems,
         description = "numbered items"
       )
     }
