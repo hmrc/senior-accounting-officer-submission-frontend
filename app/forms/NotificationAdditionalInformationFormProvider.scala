@@ -26,14 +26,18 @@ import javax.inject.Inject
 
 class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
 
-  val maxLength = 100
+  val maxLength     = 100
+  val requiredError = "notificationAdditionalInformation.error.required"
+  val lengthError   = "notificationAdditionalInformation.error.length"
+
+  val skipButtonField = "skipButton"
 
   def apply(): Form[NotificationAdditionalInformation] =
     Form(
       mapping(
         "value"          -> of(customFormatter),
         "continueButton" -> optional(text()),
-        "skipButton"     -> optional(text())
+        skipButtonField  -> optional(text())
       )(NotificationAdditionalInformation.apply)((n) => Some(n.value, n.continueButton, n.skipButton))
     )
 
@@ -41,19 +45,26 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
     new Formatter[Option[String]] {
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
-        val isSkip = data.contains("skipButton")
+        val isSkip = data.contains(skipButtonField)
 
-        data.get(key) match {
-          case _ if isSkip                                                              => Right(None)
-          case Some(fieldValue) if fieldValue.nonEmpty && fieldValue.length < maxLength => Right(Some(fieldValue))
-          case Some(fieldValue) if fieldValue.length >= maxLength                       =>
-            Left(Seq(FormError(key, "notificationAdditionalInformation.error.length", Seq(maxLength))))
-          case _ => Left(Seq(FormError(key, "notificationAdditionalInformation.error.required")))
+        val fieldValue = data
+          .get(key)
+          .map(_.trim)
+          .filter(_.nonEmpty)
+
+        if isSkip then {
+          Right(None)
+        } else {
+          fieldValue match {
+            case None                                              => Left(Seq(FormError(key, requiredError)))
+            case Some(fieldValue) if fieldValue.length > maxLength =>
+              Left(Seq(FormError(key, lengthError, Seq(maxLength))))
+            case Some(fieldValue) => Right(Some(fieldValue))
+          }
         }
       }
 
       override def unbind(key: String, value: Option[String]): Map[String, String] =
         Map(key -> value.getOrElse(""))
     }
-
 }
