@@ -18,48 +18,93 @@ package views
 
 import base.ViewSpecBase
 import controllers.routes
+import models.SubmitNotificationStage
+import models.SubmitNotificationStage.{SubmitNotificationInfo, UploadSubmissionTemplateDetails}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
 import views.html.SubmitNotificationStartView
 import views.SubmitNotificationStartViewSpec.*
 
 class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationStartView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT().toString)
+  private def generateView(stage: SubmitNotificationStage): Document = Jsoup.parse(SUT(stage).toString)
 
   "SubmitNotificationStartView" - {
-    val doc: Document = generateView()
 
-    doc.createTestsWithStandardPageElements(
-      pageTitle = pageTitle,
-      pageHeading = pageHeading,
-      showBackLink = true,
-      showIsThisPageNotWorkingProperlyLink = true,
-      hasError = false
-    )
+    "SubmitNotificationStartView with 'upload template' stage" - {
 
-    doc.createTestsWithOrWithoutError(hasError = false)
-
-    doc.getMainContent
-      .select("a.govuk-link")
-      .get(0)
-      .createTestWithLink(
-        linkText = "Upload a submission template",
-        destinationUrl = routes.NotificationUploadFormController.onPageLoad().url
+      val doc: Document = generateView(UploadSubmissionTemplateDetails)
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
       )
 
-    doc.getMainContent
-      .select("a.govuk-link")
-      .get(1)
-      .createTestWithLink(
-        linkText = "Submit a notification",
-        destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+      doc.createTestsWithParagraphs(paragraphs)
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+
+      doc.getMainContent
+        .select("a.govuk-link")
+        .get(0)
+        .createTestWithLink(
+          linkText = guidanceLinkText,
+          destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+        )
+
+      doc.getMainContent
+        .select("a.govuk-link")
+        .get(1)
+        .createTestWithLink(
+          linkText = uploadTemplateLinkText,
+          destinationUrl = routes.NotificationUploadFormController.onPageLoad().url
+        )
+    }
+
+    "SubmitNotificationStartView with 'submit notification' stage" - {
+      val doc: Document = generateView(SubmitNotificationInfo)
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
       )
+
+      doc.createTestsWithParagraphs(paragraphs)
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+
+      doc.getMainContent
+        .select("a.govuk-link")
+        .get(0)
+        .createTestWithLink(
+          linkText = guidanceLinkText,
+          destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+        )
+
+      doc.getMainContent
+        .select("a.govuk-link")
+        .get(1)
+        .createTestWithLink(
+          linkText = submitNotificationLinkText,
+          destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+        )
+    }
   }
 }
 
 object SubmitNotificationStartViewSpec {
-  val pageHeading = "submitNotificationStart"
-  val pageTitle   = "submitNotificationStart"
+  val pageHeading = "Submit a notification"
+  val pageTitle   = "Submit a notification"
+  val paragraphs  = Seq(
+    "To submit a notification, you’ll need to:",
+    "If you need help, read the submission template guidance (opens in new tab)."
+  )
+  val guidanceLinkText = "read the submission template guidance (opens in new tab)"
+  val uploadTemplateLinkText = "Upload a submission template"
+  val submitNotificationLinkText = "Submit a notification"
+
 }

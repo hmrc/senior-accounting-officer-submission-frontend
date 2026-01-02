@@ -24,6 +24,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmitNotificationStartView
 import repositories.SessionRepository
 import models.UserAnswers
+import models.SubmitNotificationStage
 
 class SubmitNotificationStartController @Inject() (
     override val messagesApi: MessagesApi,
@@ -37,6 +38,6 @@ class SubmitNotificationStartController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData) { implicit request =>
     sessionRepository.set(UserAnswers(request.userId))
-    Ok(view())
+    Ok(view(SubmitNotificationStage.UploadSubmissionTemplateDetails))
   }
 }
