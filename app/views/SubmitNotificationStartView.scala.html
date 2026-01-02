@@ -27,15 +27,20 @@
 
     <p class="govuk-body">@messages("submitNotificationStart.paragraph1")</p>
 
+    <ul class="govuk-list govuk-list--bullet">
+     <li>@messages("submitNotificationStart.bulletPoint1")</li>
+     <li>@messages("submitNotificationStart.bulletPoint2")</li>
+    </ul>
+
     <p class="govuk-body">
         @messages("submitNotificationStart.paragraph2.part1")
-        <a href="#" class="govuk-link">@messages("submitNotificationStart.paragraph2.part2")</a>
-        @messages("submitNotificationStart.paragraph2.part3")
+        <a href="@routes.NotificationGuidanceController.onPageLoad()" class="govuk-link" target="_blank">@messages("submitNotificationStart.paragraph2.part2")</a>@messages("submitNotificationStart.paragraph2.part3")
     </p>
 
     <a class="govuk-link" href="@routes.NotificationUploadFormController.onPageLoad()">
         @messages("submitNotificationStart.uploadNotificationLinkText")
     </a><br/>
+
     <a class="govuk-link" href="@routes.NotificationGuidanceController.onPageLoad()">
         @messages("submitNotificationStart.submitNotificationLinkText")
     </a><br/>

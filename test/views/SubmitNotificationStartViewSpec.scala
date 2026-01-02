@@ -20,7 +20,6 @@ import base.ViewSpecBase
 import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
 import views.html.SubmitNotificationStartView
 import views.SubmitNotificationStartViewSpec.*
 
@@ -39,21 +38,31 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
       hasError = false
     )
 
+    doc.createTestsWithParagraphs(paragraphs)
+
     doc.createTestsWithOrWithoutError(hasError = false)
 
     doc.getMainContent
       .select("a.govuk-link")
       .get(0)
       .createTestWithLink(
-        linkText = "Upload a submission template",
-        destinationUrl = routes.NotificationUploadFormController.onPageLoad().url
+        linkText = linkTexts(0),
+        destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
       )
 
     doc.getMainContent
       .select("a.govuk-link")
       .get(1)
       .createTestWithLink(
-        linkText = "Submit a notification",
+        linkText = linkTexts(1),
+        destinationUrl = routes.NotificationUploadFormController.onPageLoad().url
+      )
+
+    doc.getMainContent
+      .select("a.govuk-link")
+      .get(2)
+      .createTestWithLink(
+        linkText = linkTexts(2),
         destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
       )
   }
@@ -62,4 +71,13 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 object SubmitNotificationStartViewSpec {
   val pageHeading = "Submit a notification"
   val pageTitle   = "Submit a notification"
+  val paragraphs  = Seq(
+    "To submit a notification, you’ll need to:",
+    "If you need help, read the submission template guidance (opens in new tab)."
+  )
+  val linkTexts = Seq(
+    "read the submission template guidance (opens in new tab)",
+    "Upload a submission template",
+    "Submit a notification"
+  )
 }

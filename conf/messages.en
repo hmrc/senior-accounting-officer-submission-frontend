@@ -64,6 +64,9 @@ submitNotificationStart.paragraph2.part1 = If you need help,
 submitNotificationStart.paragraph2.part2 = read the submission template guidance (opens in new tab)
 submitNotificationStart.paragraph2.part3 = .
 
+submitNotificationStart.bulletPoint1 = upload a submission template with your company details
+submitNotificationStart.bulletPoint2 = confirm your Senior Accounting Officer’s details
+
 submitNotificationStart.uploadNotificationLinkText = Upload a submission template
 submitNotificationStart.submitNotificationLinkText = Submit a notification
 
