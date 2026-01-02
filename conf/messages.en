@@ -55,8 +55,15 @@ submission.notification.guidance.companyInformation.details.list.line4.content =
 
 submission.notification.guidance.utrCrnGuidance.p = If you do not have UTR for some companies, please put in the CRN instead.
 submission.notification.guidance.notification.template.download.link.content = Download the notification template
+
 submitNotificationStart.title = Submit a notification
 submitNotificationStart.heading = Submit a notification
+submitNotificationStart.paragraph1 = To submit a notification, you’ll need to:
+
+submitNotificationStart.paragraph2.part1 = If you need help, 
+submitNotificationStart.paragraph2.part2 = read the submission template guidance (opens in new tab)
+submitNotificationStart.paragraph2.part3 = .
+
 submitNotificationStart.uploadNotificationLinkText = Upload a submission template
 submitNotificationStart.submitNotificationLinkText = Submit a notification
 
