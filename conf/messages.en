@@ -70,6 +70,10 @@ submitNotificationStart.bulletPoint2 = confirm your Senior Accounting Officer’
 submitNotificationStart.uploadNotificationLinkText = Upload a submission template
 submitNotificationStart.submitNotificationLinkText = Submit a notification
 
+submitNotificationStart.row.status.cannotStartYet = Cannot start yet
+submitNotificationStart.row.status.completed = Completed
+submitNotificationStart.row.status.notStarted = Not started
+
 notificationUploadForm.title = notificationUploadForm
 notificationUploadForm.heading = notificationUploadForm
 
