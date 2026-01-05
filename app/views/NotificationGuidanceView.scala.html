@@ -14,58 +14,77 @@
  * limitations under the License.
  *@
 
-@import config.AppConfig
-
 @this(
     layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    appConfig: AppConfig,
-    govukButton: GovukButton
 )
 
 @()(using request: RequestHeader, messages: Messages)
 
-@layout(pageTitle = "Notification Guidance") {
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("submission.notification.guidance.title"))) {
+  <h1 class="govuk-heading-l">@messages("submission.notification.guidance.heading")</h1>
+  <p class="govuk-body">@messages("submission.notification.guidance.paragraph1")</p>
 
+  <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading1")</h3>
 
+  <p class="govuk-body">
+    <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">
+      @messages("submission.notification.guidance.subheading1.downloadTemplateLinkText")
+    </a>
+  </p>
 
- <h1 class="govuk-heading-l">@messages("submission.notification.guidance.title")</h1>
- <p class="govuk-body">@messages("submission.notification.guidance.p1")</p>
- <p class="govuk-body">@messages("submission.notification.guidance.p2")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading1.paragraph1")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading1.paragraph2")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading1.paragraph3")</p>
 
-<h3 class="govuk-heading-s">@messages("SAO details")</h3>
- <ul class="govuk-list govuk-list--bullet">
-  <li>@messages("submission.notification.guidance.sao.details.list.line1.content")</li>
-  <li>@messages("submission.notification.guidance.sao.details.list.line2.content")</li>
-  <li>@messages("submission.notification.guidance.sao.details.list.line3.content")</li>
- </ul>
+  <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading2")</h3>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading2.paragraph1")</p>
 
- <h3 class="govuk-heading-s">@messages("submission.notification.guidance.accountingPeriod.details.heading")</h3>
- <ul class="govuk-list govuk-list--bullet">
-  <li>@messages("submission.notification.guidance.accountingPeriod.details.list.line1.content")</li>
- </ul>
+  <ol class="govuk-list govuk-list--number">
+    <li>@messages("submission.notification.guidance.subheading2.list1.item1")</li>
+    <li>@messages("submission.notification.guidance.subheading2.list1.item2")</li>
+    <li>@messages("submission.notification.guidance.subheading2.list1.item3")</li>
+    <li>@messages("submission.notification.guidance.subheading2.list1.item4")</li>
+  </ol>
 
+  <div class="govuk-inset-text">
+      @messages("submission.notification.guidance.subheading2.inset.text")
+  </div>
 
- <h3 class="govuk-heading-s">@messages("submission.notification.guidance.companyInformation.details.heading")</h3>
- <ul class="govuk-list govuk-list--bullet">
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line1.content")</li>
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line2.content")</li>
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line3.content")</li>
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line4.content")</li>
- </ul>
+  <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading3")</h3>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading3.paragraph1")</p>
+  <p class="govuk-body">
+      @Html(messages("submission.notification.guidance.subheading3.paragraph2WithLink", routes.DownloadNotificationTemplateController.onPageLoad()))
+  </p>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading3.paragraph3")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading3.paragraph4")</p>
 
- <p class="govuk-body">@messages("submission.notification.guidance.utrCrnGuidance.p")</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>@messages("submission.notification.guidance.subheading3.list1.item1")</li>
+    <li>@messages("submission.notification.guidance.subheading3.list1.item2")</li>
+    <li>@messages("submission.notification.guidance.subheading3.list1.item3")</li>
+  </ul>
 
- <p class="govuk-body">
-   <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">@messages("submission.notification.guidance.notification.template.download.link.content")</a>
- </p>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading3.paragraph5")</p>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading3.paragraph6")</p>
 
+  <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading4")</h3>
+  <p class="govuk-body">@messages("submission.notification.guidance.subheading4.paragraph1")</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>@messages("submission.notification.guidance.subheading4.list1.item1")</li>
+    <li>@messages("submission.notification.guidance.subheading4.list1.item2")</li>
+  </ul>
 
-  @formHelper(action = routes.NotificationGuidanceController.onSubmit()){
-    @govukButton(
-      ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
-    )
-  }
+  <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading5")</h3>
+  <ol class="govuk-list govuk-list--number">
+    <li>@messages("submission.notification.guidance.subheading5.list1.item1")</li>
+    <li>@messages("submission.notification.guidance.subheading5.list1.item2")</li>
+  </ol>
+
+  <h3 class="govuk-heading-s">@messages("submission.notification.guidance.subheading6")</h3>
+  <ol class="govuk-list govuk-list--number">
+   <li>@messages("submission.notification.guidance.subheading6.list1.item1")</li>
+   <li>@messages("submission.notification.guidance.subheading6.list1.item2")</li>
+  </ol>
 }
 
 @{

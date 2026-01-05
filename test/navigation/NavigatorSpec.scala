@@ -36,14 +36,6 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "when on NotificationGuidancePage, must go to notification additional information page" in {
-        navigator.nextPage(
-          NotificationGuidancePage,
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
-      }
-
       "when on NotificationAdditionalInformationPage, must go to notification check your answers page" in {
         navigator.nextPage(
           NotificationAdditionalInformationPage,
