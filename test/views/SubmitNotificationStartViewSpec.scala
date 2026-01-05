@@ -22,8 +22,8 @@ import models.SubmitNotificationStage
 import models.SubmitNotificationStage.{SubmitNotificationInfo, UploadSubmissionTemplateDetails}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.html.SubmitNotificationStartView
 import views.SubmitNotificationStartViewSpec.*
+import views.html.SubmitNotificationStartView
 
 class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationStartView] {
 
@@ -90,13 +90,22 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      doc.getMainContent
-        .select("a.govuk-link")
-        .get(0)
-        .createTestWithLink(
-          linkText = guidanceLinkText,
-          destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
-        )
+      "must have link to template guidance" - {
+        "link must open in a new tab" in {
+          doc.getMainContent
+            .select("a.govuk-link")
+            .get(0)
+            .attr("target") mustBe "_blank"
+        }
+
+        doc.getMainContent
+          .select("a.govuk-link")
+          .get(0)
+          .createTestWithLink(
+            linkText = guidanceLinkText,
+            destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+          )
+      }
 
       doc.getMainContent
         .select("a.govuk-link")
