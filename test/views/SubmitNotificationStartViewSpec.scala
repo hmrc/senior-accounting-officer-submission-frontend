@@ -37,7 +37,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
         pageHeading = pageHeading,
-        showBackLink = true,
+        showBackLink = false,
         showIsThisPageNotWorkingProperlyLink = true,
         hasError = false
       )
@@ -68,7 +68,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
         pageHeading = pageHeading,
-        showBackLink = true,
+        showBackLink = false,
         showIsThisPageNotWorkingProperlyLink = true,
         hasError = false
       )

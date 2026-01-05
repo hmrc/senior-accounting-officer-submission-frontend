@@ -21,7 +21,7 @@
 
 @(currentStage: SubmitNotificationStage)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("submitNotificationStart.title"))) {
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("submitNotificationStart.title"))) {
 
     <h1 class="govuk-heading-l">@messages("submitNotificationStart.heading")</h1>
 
