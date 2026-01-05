@@ -38,6 +38,6 @@ class SubmitNotificationStartController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData) { implicit request =>
     sessionRepository.set(UserAnswers(request.userId))
-    Ok(view(SubmitNotificationStage.UploadSubmissionTemplateDetails))
+    Ok(view(SubmitNotificationStage.ShowAllLinks))
   }
 }

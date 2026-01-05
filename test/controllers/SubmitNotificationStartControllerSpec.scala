@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import models.SubmitNotificationStage.UploadSubmissionTemplateDetails
+import models.SubmitNotificationStage.ShowAllLinks
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.SubmitNotificationStartView
@@ -38,7 +38,7 @@ class SubmitNotificationStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[SubmitNotificationStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(UploadSubmissionTemplateDetails)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(ShowAllLinks)(using request, messages(application)).toString
       }
     }
   }
