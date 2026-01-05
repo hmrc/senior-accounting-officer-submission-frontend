@@ -35,8 +35,8 @@ enum SubmitNotificationStage(
 
   // Todo : To be removed when screen is lockdown
   case ShowAllLinks
-        extends SubmitNotificationStage(
-          uploadNotificationTemplateStatus = NotStarted,
-          submitNotificationStatus = NotStarted
-        )
+      extends SubmitNotificationStage(
+        uploadNotificationTemplateStatus = NotStarted,
+        submitNotificationStatus = NotStarted
+      )
 }

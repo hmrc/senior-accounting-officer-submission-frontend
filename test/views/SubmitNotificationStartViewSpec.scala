@@ -132,9 +132,9 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 }
 
 object SubmitNotificationStartViewSpec {
-  val pageHeading = "Submit a notification"
-  val pageTitle   = "Submit a notification"
-  val paragraphs  = Seq(
+  val pageHeading             = "Submit a notification"
+  val pageTitle               = "Submit a notification"
+  val paragraphs: Seq[String] = Seq(
     "To submit a notification, you’ll need to:",
     "If you need help, read the submission template guidance (opens in new tab)."
   )

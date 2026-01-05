@@ -17,14 +17,15 @@
 package controllers
 
 import controllers.actions.*
-import javax.inject.Inject
+import models.SubmitNotificationStage
+import models.UserAnswers
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmitNotificationStartView
-import repositories.SessionRepository
-import models.UserAnswers
-import models.SubmitNotificationStage
+
+import javax.inject.Inject
 
 class SubmitNotificationStartController @Inject() (
     override val messagesApi: MessagesApi,
