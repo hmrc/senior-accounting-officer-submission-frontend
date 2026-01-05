@@ -42,9 +42,7 @@ submission.notification.guidance.p3 = Do not change the layout or structure of t
 submission.notification.guidance.p4 = Use the guidance in row 3 under each column heading to help you enter the information correctly.
 submission.notification.guidance.p5 = When you’ve completed your template:
 submission.notification.guidance.p6 = Before you submit your certificate, you can check the information you uploaded is correct.
-submission.notification.guidance.p7a = If the information is not correct,
-submission.notification.guidance.p7b = upload an updated submission template
-submission.notification.guidance.p7c = before continuing.
+submission.notification.guidance.p7WithLink = If the information is not correct, <a class="govuk-link" href="{0}">upload an updated submission template</a> before continuing.
 submission.notification.guidance.p8 = If there are any errors when you try to upload the template (for example, missing or invalid data), you’ll be shown a list of what to fix.
 submission.notification.guidance.p9 = You can:
 submission.notification.guidance.p10 = Guidance is also included in the template to help you complete each field correctly.
