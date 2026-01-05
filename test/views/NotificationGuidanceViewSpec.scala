@@ -17,6 +17,7 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import views.NotificationGuidanceViewSpec.*
@@ -51,12 +52,12 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     doc.getMainContent
       .select("a.govuk-link")
       .get(0)
-      .createTestWithLink(linkTexts(0), "#")
+      .createTestWithLink(linkTexts(0), routes.DownloadNotificationTemplateController.onPageLoad().url)
 
     doc.getMainContent
       .select("a.govuk-link")
       .get(1)
-      .createTestWithLink(linkTexts(1), "#")
+      .createTestWithLink(linkTexts(1), routes.DownloadNotificationTemplateController.onPageLoad().url)
 
     doc.createTestsForSubHeadings(pageSubheadings)
 
