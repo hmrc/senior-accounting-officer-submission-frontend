@@ -46,13 +46,21 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      doc.getMainContent
-        .select("a.govuk-link")
-        .get(0)
-        .createTestWithLink(
-          linkText = guidanceLinkText,
-          destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
-        )
+      "must have link to template guidance" - {
+        def getTemplateGuidanceLink = doc.getMainContent
+          .select("a.govuk-link")
+          .get(0)
+
+        "link must open in a new tab" in {
+          getTemplateGuidanceLink.attr("target") mustBe "_blank"
+        }
+
+        getTemplateGuidanceLink
+          .createTestWithLink(
+            linkText = guidanceLinkText,
+            destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+          )
+      }
 
       doc.getMainContent
         .select("a.govuk-link")
@@ -91,16 +99,15 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
       doc.createTestsWithOrWithoutError(hasError = false)
 
       "must have link to template guidance" - {
-        "link must open in a new tab" in {
-          doc.getMainContent
-            .select("a.govuk-link")
-            .get(0)
-            .attr("target") mustBe "_blank"
-        }
-
-        doc.getMainContent
+        def getTemplateGuidanceLink = doc.getMainContent
           .select("a.govuk-link")
           .get(0)
+
+        "link must open in a new tab" in {
+          getTemplateGuidanceLink.attr("target") mustBe "_blank"
+        }
+
+        getTemplateGuidanceLink
           .createTestWithLink(
             linkText = guidanceLinkText,
             destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
