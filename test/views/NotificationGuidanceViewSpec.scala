@@ -40,7 +40,7 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
       pageHeading = pageHeading,
-      showBackLink = true,
+      showBackLink = false,
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
@@ -64,11 +64,6 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     doc.createTestsWithBulletPoints(pageBullets)
 
     doc.createTestsWithNumberedItems(pageNumberedListItems)
-
-    doc.createTestsWithSubmissionButton(
-      action = routes.NotificationGuidanceController.onSubmit(),
-      buttonText = "Continue"
-    )
 
     doc.createTestForInsetText(pageInsetText)
 

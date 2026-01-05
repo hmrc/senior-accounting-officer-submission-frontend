@@ -14,18 +14,13 @@
  * limitations under the License.
  *@
 
-@import config.AppConfig
-
 @this(
     layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    appConfig: AppConfig,
-    govukButton: GovukButton
 )
 
 @()(using request: RequestHeader, messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("submission.notification.guidance.title"))) {
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("submission.notification.guidance.title"))) {
   <h1 class="govuk-heading-l">@messages("submission.notification.guidance.heading")</h1>
   <p class="govuk-body">@messages("submission.notification.guidance.paragraph1")</p>
 
@@ -90,12 +85,6 @@
    <li>@messages("submission.notification.guidance.subheading6.list1.item1")</li>
    <li>@messages("submission.notification.guidance.subheading6.list1.item2")</li>
   </ol>
-
-  @formHelper(action = routes.NotificationGuidanceController.onSubmit()){
-    @govukButton(
-      ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
-    )
-  }
 }
 
 @{
