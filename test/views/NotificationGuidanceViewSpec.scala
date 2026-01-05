@@ -20,6 +20,7 @@ import base.ViewSpecBase
 import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
+import views.NotificationGuidanceViewSpec.*
 import views.html.NotificationGuidanceView
 
 class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView] {
@@ -27,65 +28,119 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
   val doc: Document        = Jsoup.parse(SUT().toString)
   val mainContent: Element = doc.getMainContent
 
-  "NotificationGuidanceView must" - {
-    "must generate a view with the correct heading" in {
-      val h1 = mainContent.getElementsByTag("h1")
-      h1.size() mustBe 1
-      h1.get(0).text() mustBe "Notification template guide"
-    }
+  private def generateView(): Document = {
+    val view = SUT()
+    Jsoup.parse(view.toString)
+  }
 
-    "with the correct content for guidance at the top" in {
-      val paras = mainContent.getElementsByTag("p")
-      paras.get(0).text mustBe "Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO."
-      paras.get(1).text mustBe "You must fill in all the fields."
-    }
+  "NotificationGuidanceView" - {
 
-    "with the correct SAO Details content" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(0).text mustBe "SAO details"
-      val listContents = mainContent.getElementsByTag("li")
-      listContents.get(0).text mustBe "SAO name: Full name of the SAO."
-      listContents.get(1).text mustBe "SAO contact details: Email or phone number of the SAO."
-      listContents
-        .get(2)
-        .text mustBe "SAO start and end date: Dates the SAO held their position during the accounting period."
-    }
+    val doc = generateView()
 
-    "with the correct Accounting Period Details content" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(1).text mustBe "Accounting period"
-      val listContents = mainContent.getElementsByTag("li")
-      listContents.get(3).text mustBe "The start and end date of the accounting period (DD/MM/YYYY)"
-
-    }
-
-    "with the correct Company Details content" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(2).text mustBe "Company information"
-      val listContents = mainContent.getElementsByTag("li")
-      listContents.get(4).text mustBe "Company name: enter the name of the company the SAO was responsible for."
-      listContents.get(5).text mustBe "Company UTR: Unique Taxpayer Reference of that company."
-      listContents.get(6).text mustBe "Company CRN: Company Registration Number of that company."
-      listContents
-        .get(7)
-        .text mustBe "Company Status: inform if a company is Active, Dormant or Liquidated"
-    }
-
-    "with the correct content for guidance at the bottom" in {
-      val paras = mainContent.getElementsByTag("p")
-      paras.get(2).text mustBe "If you do not have UTR for some companies, please put in the CRN instead."
-    }
-
-    "with the correct link content for notification template download" in {
-      val links = mainContent.getElementsByTag("a")
-      links.get(0).text mustBe "Download the notification template"
-      links.attr("href") mustBe routes.DownloadNotificationTemplateController.onPageLoad().url
-    }
-
-    doc.createTestsWithSubmissionButton(
-      action = routes.NotificationGuidanceController.onSubmit(),
-      buttonText = "Continue"
+    doc.createTestsWithStandardPageElements(
+      pageTitle = pageTitle,
+      pageHeading = pageHeading,
+      showBackLink = false,
+      showIsThisPageNotWorkingProperlyLink = true,
+      hasError = false
     )
 
+    doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithParagraphs(paragraphs)
+
+    doc.getMainContent
+      .select("a.govuk-link")
+      .get(0)
+      .createTestWithLink(linkTexts(0), routes.DownloadNotificationTemplateController.onPageLoad().url)
+
+    doc.getMainContent
+      .select("a.govuk-link")
+      .get(1)
+      .createTestWithLink(linkTexts(1), routes.DownloadNotificationTemplateController.onPageLoad().url)
+
+    doc.createTestsForSubHeadings(pageSubheadings)
+
+    doc.createTestsWithBulletPoints(pageBullets)
+
+    doc.createTestsWithNumberedItems(pageNumberedListItems)
+
+    doc.createTestForInsetText(pageInsetText)
+
   }
+
+  extension (target: => Document) {
+    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
+      val headings = doc.getMainContent.getElementsByTag("h3")
+      "must have expected number of headings" in {
+        headings.size() mustBe subheadings.length
+      }
+      subheadings.zipWithIndex.foreach((subheading, i) => {
+        s"must have heading '$subheading'" in {
+          headings.get(i).text mustBe subheading
+        }
+      })
+    }
+
+    def createTestForInsetText(text: String): Unit = {
+      val insetTextElement = doc.getMainContent.select(".govuk-inset-text")
+      "must have one inset string" in {
+        insetTextElement.size() mustBe 1
+      }
+
+      s"must have expected inset string of $text" in {
+        insetTextElement.text() mustBe text
+      }
+    }
+  }
+}
+
+object NotificationGuidanceViewSpec {
+  val pageTitle               = "Notification and certificate submission template guidance"
+  val pageHeading             = "Submission template guidance"
+  val paragraphs: Seq[String] = Seq(
+    "This is a step by step guide on how to submit a notification and certificate using the submission template.",
+    "Download the submission template.",
+    "Fill in all required fields for each company in your group. Each row should represent one company the SAO was responsible for in the previous financial year.",
+    "Do not change the layout or structure of the template, if you do, the upload will fail.",
+    "Use the guidance in row 3 under each column heading to help you enter the information correctly.",
+    "When you’ve completed your template:",
+    "Before you submit your certificate, you can check the information you uploaded is correct.",
+    "If the information is not correct, upload an updated submission template before continuing.",
+    "If there are any errors when you try to upload the template (for example, missing or invalid data), you’ll be shown a list of what to fix.",
+    "You can:",
+    "Guidance is also included in the template to help you complete each field correctly.",
+    "Keep a copy of your uploaded CSV files for your records.",
+    "When you upload your completed template:"
+  )
+  val pageSubheadings: Seq[String] = Seq(
+    "Step 1: Download and complete a submission template",
+    "Step 2: Upload your template",
+    "Step 3: Check the information is correct",
+    "Step 4: Make your submission",
+    "Complete both notification and certificate at the same time",
+    "Complete certificate at a different time."
+  )
+  val pageNumberedListItems: Seq[String] = Seq(
+    "Save it as a CSV (comma delimited) file.",
+    "Upload it to the service.",
+    "Check that all details are correct.",
+    "Submit the file to complete your notification and certificate.",
+    "Start your submission by uploading the template and submitting your notification.",
+    "After notification is submitted, complete the certificate journey to finish your submission.",
+    "Upload your template again with certificate information filled out.",
+    "Complete the certificate journey and sign the declaration."
+  )
+  val pageBullets: Seq[String] = Seq(
+    "correct the errors in your Excel file",
+    "save again as a CSV",
+    "upload the file again",
+    "notification details will be used to complete your notification",
+    "certificate details will be used to complete your certificate"
+  )
+  val pageInsetText =
+    "If you only completed the notification section, you’ll need to re-upload the same template later when you’re ready to complete your certificate."
+
+  val linkTexts: Seq[String] = Seq("Download the submission template.", "upload an updated submission template")
+
 }
