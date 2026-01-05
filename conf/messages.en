@@ -80,7 +80,7 @@ submitNotificationStart.title = Submit a notification
 submitNotificationStart.heading = Submit a notification
 submitNotificationStart.paragraph1 = To submit a notification, you’ll need to:
 
-submitNotificationStart.paragraph2WithLink = If you need help, <a href="{0}" class="govuk-link" target="_blank">read the submission template guidance (opens in new tab)</a>.
+submitNotificationStart.paragraph2WithLink = If you need help, <a {0}>read the submission template guidance (opens in new tab)</a>.
 
 submitNotificationStart.list1.item1 = upload a submission template with your company details
 submitNotificationStart.list1.item2 = confirm your Senior Accounting Officer’s details

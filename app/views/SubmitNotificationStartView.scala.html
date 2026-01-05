@@ -33,7 +33,12 @@
     </ul>
 
     <p class="govuk-body">
-        @Html(messages("submitNotificationStart.paragraph2WithLink", routes.NotificationGuidanceController.onPageLoad()))
+      @Html(
+          messages(
+              "submitNotificationStart.paragraph2WithLink",
+              templateGuidanceLinkAttributes
+          )
+      )
     </p>
 
     <ul class="govuk-task-list">
@@ -85,4 +90,8 @@
         }
     </div>
 </li>
+}
+
+@templateGuidanceLinkAttributes = @{
+    s"""href="${routes.NotificationGuidanceController.onPageLoad()}" class="govuk-link" target="_blank""""
 }
