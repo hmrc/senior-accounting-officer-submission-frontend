@@ -61,6 +61,19 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
           linkText = uploadTemplateLinkText,
           destinationUrl = routes.NotificationUploadFormController.onPageLoad().url
         )
+
+      "must show the correct statuses" in {
+        val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
+        statusTags.size() mustBe 2
+
+        val uploadNotificationTag = statusTags.get(0)
+        val submitNotificationTag = statusTags.get(1)
+
+        uploadNotificationTag.text() mustBe "Not started"
+        uploadNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
+        submitNotificationTag.text() mustBe "Cannot start yet"
+        submitNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--grey"
+      }
     }
 
     "SubmitNotificationStartView with 'submit notification' stage" - {
@@ -92,6 +105,19 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
           linkText = submitNotificationLinkText,
           destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
         )
+
+      "must show the correct statuses" in {
+        val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
+        statusTags.size() mustBe 2
+
+        val uploadNotificationTag = statusTags.get(0)
+        val submitNotificationTag = statusTags.get(1)
+
+        uploadNotificationTag.text() mustBe "Completed"
+        uploadNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--green"
+        submitNotificationTag.text() mustBe "Not started"
+        submitNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
+      }
     }
   }
 }
@@ -103,8 +129,8 @@ object SubmitNotificationStartViewSpec {
     "To submit a notification, you’ll need to:",
     "If you need help, read the submission template guidance (opens in new tab)."
   )
-  val guidanceLinkText = "read the submission template guidance (opens in new tab)"
-  val uploadTemplateLinkText = "Upload a submission template"
+  val guidanceLinkText           = "read the submission template guidance (opens in new tab)"
+  val uploadTemplateLinkText     = "Upload a submission template"
   val submitNotificationLinkText = "Submit a notification"
 
 }
