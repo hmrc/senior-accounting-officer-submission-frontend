@@ -61,7 +61,7 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 
     doc.createTestsForSubHeadings(pageSubheadings)
 
-    doc.createTestsWithBulletPointsAndClassCheck(pageBullets)
+    doc.createTestsWithBulletPoints(pageBullets)
 
     doc.createTestsWithNumberedItems(pageNumberedListItems)
 
