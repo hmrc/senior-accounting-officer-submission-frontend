@@ -17,11 +17,10 @@
 package views
 
 import base.ViewSpecBase
-import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
-import views.html.NotificationGuidanceView
 import views.NotificationGuidanceViewSpec.*
+import views.html.NotificationGuidanceView
 
 class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView] {
 
@@ -96,9 +95,9 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 }
 
 object NotificationGuidanceViewSpec {
-  val pageTitle   = "Notification and certificate submission template guidance"
-  val pageHeading = "Submission template guidance"
-  val paragraphs  = Seq(
+  val pageTitle               = "Notification and certificate submission template guidance"
+  val pageHeading             = "Submission template guidance"
+  val paragraphs: Seq[String] = Seq(
     "This is a step by step guide on how to submit a notification and certificate using the submission template.",
     "Download the submission template.",
     "Fill in all required fields for each company in your group. Each row should represent one company the SAO was responsible for in the previous financial year.",
@@ -113,7 +112,7 @@ object NotificationGuidanceViewSpec {
     "Keep a copy of your uploaded CSV files for your records.",
     "When you upload your completed template:"
   )
-  val pageSubheadings  = Seq(
+  val pageSubheadings: Seq[String] = Seq(
     "Step 1: Download and complete a submission template",
     "Step 2: Upload your template",
     "Step 3: Check the information is correct",
@@ -121,7 +120,7 @@ object NotificationGuidanceViewSpec {
     "Complete both notification and certificate at the same time",
     "Complete certificate at a different time."
   )
-  val pageNumberedListItems = Seq(
+  val pageNumberedListItems: Seq[String] = Seq(
     "Save it as a CSV (comma delimited) file.",
     "Upload it to the service.",
     "Check that all details are correct.",
@@ -131,7 +130,7 @@ object NotificationGuidanceViewSpec {
     "Upload your template again with certificate information filled out.",
     "Complete the certificate journey and sign the declaration."
   )
-  val pageBullets = Seq(
+  val pageBullets: Seq[String] = Seq(
     "correct the errors in your Excel file",
     "save again as a CSV",
     "upload the file again",
@@ -141,6 +140,6 @@ object NotificationGuidanceViewSpec {
   val pageInsetText =
     "If you only completed the notification section, you’ll need to re-upload the same template later when you’re ready to complete your certificate."
 
-  val linkTexts = Seq("Download the submission template.", "upload an updated submission template")
+  val linkTexts: Seq[String] = Seq("Download the submission template.", "upload an updated submission template")
 
 }
