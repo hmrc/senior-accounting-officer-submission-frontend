@@ -64,7 +64,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NotificationAdditionalInformationPage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(NotificationAdditionalInformationPage, Some("answer")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

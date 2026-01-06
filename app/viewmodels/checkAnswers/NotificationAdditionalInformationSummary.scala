@@ -28,7 +28,7 @@ import viewmodels.govuk.summarylist.*
 object NotificationAdditionalInformationSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationAdditionalInformationPage).map { answer =>
+    answers.getNullable(NotificationAdditionalInformationPage).map { answer =>
       SummaryListRowViewModel(
         key = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,
         value = ValueViewModel(HtmlFormat.escape(answer).toText),
