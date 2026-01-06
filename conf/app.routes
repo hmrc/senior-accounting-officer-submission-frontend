@@ -10,7 +10,7 @@ GET         /there-is-a-problem                                       controller
 
 GET         /notification/start                                       controllers.SubmitNotificationStartController.onPageLoad()
 
-GET         /templateGuidance                                         controllers.TemplateGuidanceController.onPageLoad()
+GET         /template-guidance                                        controllers.TemplateGuidanceController.onPageLoad()
 
 GET         /notification/template/download                           controllers.DownloadNotificationTemplateController.onPageLoad()
 
