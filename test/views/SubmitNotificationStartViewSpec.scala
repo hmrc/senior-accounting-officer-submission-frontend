@@ -58,7 +58,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
         getTemplateGuidanceLink
           .createTestWithLink(
             linkText = guidanceLinkText,
-            destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+            destinationUrl = routes.TemplateGuidanceController.onPageLoad().url
           )
       }
 
@@ -110,7 +110,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
         getTemplateGuidanceLink
           .createTestWithLink(
             linkText = guidanceLinkText,
-            destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+            destinationUrl = routes.TemplateGuidanceController.onPageLoad().url
           )
       }
 

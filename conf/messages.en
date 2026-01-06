@@ -94,6 +94,9 @@ submitNotificationStart.row.status.notStarted = Not started
 notificationUploadForm.title = notificationUploadForm
 notificationUploadForm.heading = notificationUploadForm
 
+notificationGuidance.title = notificationGuidance
+notificationGuidance.heading = notificationGuidance
+
 notificationAdditionalInformation.title = notificationAdditionalInformation
 notificationAdditionalInformation.heading = notificationAdditionalInformation
 notificationAdditionalInformation.checkYourAnswersLabel = notificationAdditionalInformation
