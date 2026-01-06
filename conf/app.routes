@@ -9,11 +9,15 @@ GET         /refresh-session                                          controller
 GET         /there-is-a-problem                                       controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
 
 GET         /notification/start                                       controllers.SubmitNotificationStartController.onPageLoad()
+
+GET         /template-guidance                                        controllers.TemplateGuidanceController.onPageLoad()
+
 GET         /notification/template/download                           controllers.DownloadNotificationTemplateController.onPageLoad()
 
 GET         /notification/upload                                      controllers.NotificationUploadFormController.onPageLoad()
 
 GET         /notification/guidance                                    controllers.NotificationGuidanceController.onPageLoad()
+POST        /notification/guidance                                    controllers.NotificationGuidanceController.onSubmit()
 
 GET         /notification/additional-information                      controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/additional-information                      controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
