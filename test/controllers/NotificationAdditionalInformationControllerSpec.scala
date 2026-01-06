@@ -32,15 +32,16 @@ import repositories.SessionRepository
 import views.html.NotificationAdditionalInformationView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class NotificationAdditionalInformationControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new NotificationAdditionalInformationFormProvider()
-  val form         = formProvider()
+  val formProvider       = new NotificationAdditionalInformationFormProvider()
+  val form: Form[String] = formProvider()
 
-  lazy val notificationAdditionalInformationRoute =
+  lazy val notificationAdditionalInformationRoute: String =
     routes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url
 
   "NotificationAdditionalInformation Controller" - {

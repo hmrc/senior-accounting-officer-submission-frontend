@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.*
 import forms.WhoSubmitsCertificateFormProvider
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.WhoSubmitsCertificatePage
@@ -29,6 +28,10 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.WhoSubmitsCertificateView
 
 import scala.concurrent.{ExecutionContext, Future}
+
+import javax.inject.Inject
+import play.api.data.Form
+import models.WhoSubmitsCertificate
 
 class WhoSubmitsCertificateController @Inject() (
     override val messagesApi: MessagesApi,
@@ -44,7 +47,7 @@ class WhoSubmitsCertificateController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[WhoSubmitsCertificate] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
 

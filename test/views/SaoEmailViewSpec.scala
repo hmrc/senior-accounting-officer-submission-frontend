@@ -17,15 +17,13 @@
 package views
 
 import base.ViewSpecBase
+import forms.SaoEmailFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import models.{NormalMode, CheckMode, Mode}
-import pages.SaoEmailPage
-import forms.SaoEmailFormProvider
-import views.html.SaoEmailView
 import views.SaoEmailViewSpec.*
+import views.html.SaoEmailView
 
 class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
 

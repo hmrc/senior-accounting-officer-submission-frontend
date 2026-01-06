@@ -32,15 +32,16 @@ import repositories.SessionRepository
 import views.html.SaoNameView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class SaoNameControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new SaoNameFormProvider()
-  val form         = formProvider()
+  val formProvider       = new SaoNameFormProvider()
+  val form: Form[String] = formProvider()
 
-  lazy val saoNameRoute = routes.SaoNameController.onPageLoad(NormalMode).url
+  lazy val saoNameRoute: String = routes.SaoNameController.onPageLoad(NormalMode).url
 
   "SaoName Controller" - {
 

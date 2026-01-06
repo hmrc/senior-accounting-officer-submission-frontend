@@ -27,7 +27,7 @@ import views.html.CertificateCheckYourAnswersView
 
 class CertificateCheckYourAnswersControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   "CertificateCheckYourAnswers Controller" - {
 

@@ -17,15 +17,13 @@
 package views
 
 import base.ViewSpecBase
+import forms.NotificationAdditionalInformationFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import models.{NormalMode, CheckMode, Mode}
-import pages.NotificationAdditionalInformationPage
-import forms.NotificationAdditionalInformationFormProvider
-import views.html.NotificationAdditionalInformationView
 import views.NotificationAdditionalInformationViewSpec.*
+import views.html.NotificationAdditionalInformationView
 
 class NotificationAdditionalInformationViewSpec extends ViewSpecBase[NotificationAdditionalInformationView] {
 

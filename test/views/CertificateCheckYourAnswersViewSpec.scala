@@ -17,11 +17,11 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.html.CertificateCheckYourAnswersView
 import views.CertificateCheckYourAnswersViewSpec.*
-import controllers.routes
+import views.html.CertificateCheckYourAnswersView
 
 class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckYourAnswersView] {
 

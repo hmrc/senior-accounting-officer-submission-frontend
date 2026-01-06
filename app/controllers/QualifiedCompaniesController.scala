@@ -20,12 +20,12 @@ import controllers.actions.*
 import models.NormalMode
 import navigation.Navigator
 import pages.QualifiedCompaniesPage
-
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.QualifiedCompaniesView
+
+import javax.inject.Inject
 
 class QualifiedCompaniesController @Inject() (
     override val messagesApi: MessagesApi,
