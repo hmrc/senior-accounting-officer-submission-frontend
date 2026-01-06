@@ -86,7 +86,7 @@ trait InputFluency {
     def withAttribute(attribute: (String, String)): Input =
       input.copy(attributes = input.attributes + attribute)
 
-    def withSpellcheck(on: Boolean = true): Input =
+    def withSpellcheck(on: Boolean): Input =
       input.copy(spellcheck = Some(on))
 
     def withPrefix(prefix: PrefixOrSuffix): Input =

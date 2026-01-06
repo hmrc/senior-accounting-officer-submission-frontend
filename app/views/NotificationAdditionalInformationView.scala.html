@@ -29,33 +29,26 @@
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("notificationAdditionalInformation.title"))) {
-    <span class="govuk-caption-m">@messages("notificationAdditionalInformation.caption")</span>
-    <h1 class="govuk-heading-l"> @messages("notificationAdditionalInformation.heading")</h1>
-    <p class="govuk-body">@messages("notificationAdditionalInformation.p1")</p>
-    <p class="govuk-body">@messages("notificationAdditionalInformation.p2")</p>
-    <ul class="govuk-list govuk-list--bullet">
-        <li>@messages("notificationAdditionalInformation.list.line1.content")</li>
-        <li>@messages("notificationAdditionalInformation.list.line2.content")</li>
-    </ul>
 
     @formHelper(action = routes.NotificationAdditionalInformationController.onSubmit(mode)) {
-
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <span class="govuk-caption-m">@messages("notificationAdditionalInformation.caption")</span>
+        <h1 class="govuk-heading-l"> @messages("notificationAdditionalInformation.heading")</h1>
+        <p class="govuk-body">@messages("notificationAdditionalInformation.p1")</p>
+        <p class="govuk-body">@messages("notificationAdditionalInformation.p2")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("notificationAdditionalInformation.list.line1.content")</li>
+            <li>@messages("notificationAdditionalInformation.list.line2.content")</li>
+        </ul>
+
         @govukTextArea(
-            Textarea(
-                id = "",
-                name = "value",
-                classes = "",
-                label = Label(
-                    content = Text(messages("notificationAdditionalInformation.label"))
-                ).withCssClass("govuk-label govuk-label--s"),
-                hint = None,
-                value = form("value").value,
-                autocomplete = None,
-                errorMessage = None
+            TextareaViewModel(
+                field = form("value"),
+                label = LabelViewModel(messages("notificationAdditionalInformation.label").toText)
+                            .withCssClass("govuk-label--s")
             )
         )
 
