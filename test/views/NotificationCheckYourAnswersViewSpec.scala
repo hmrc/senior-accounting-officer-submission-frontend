@@ -20,9 +20,8 @@ import base.ViewSpecBase
 import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.NotificationCheckYourAnswersView
 import views.NotificationCheckYourAnswersViewSpec.*
+import views.html.NotificationCheckYourAnswersView
 
 class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationCheckYourAnswersView] {
 

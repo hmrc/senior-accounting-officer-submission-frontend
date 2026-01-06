@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,24 @@
 package controllers
 
 import controllers.actions.*
-import models.SubmitNotificationStage
-import models.UserAnswers
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.SubmitNotificationStartView
+import views.html.TemplateGuidanceView
 
 import javax.inject.Inject
 
-class SubmitNotificationStartController @Inject() (
+class TemplateGuidanceController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: SubmitNotificationStartView,
-    sessionRepository: SessionRepository
+    view: TemplateGuidanceView
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData) { implicit request =>
-    sessionRepository.set(UserAnswers(request.userId))
-    Ok(view(SubmitNotificationStage.ShowAllLinks))
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Ok(view())
   }
 }

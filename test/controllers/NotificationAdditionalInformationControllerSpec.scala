@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.NotificationAdditionalInformationPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -35,12 +36,12 @@ import scala.concurrent.Future
 
 class NotificationAdditionalInformationControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new NotificationAdditionalInformationFormProvider()
-  val form         = formProvider()
+  val formProvider                                  = new NotificationAdditionalInformationFormProvider()
+  val form: Form[NotificationAdditionalInformation] = formProvider()
 
-  lazy val notificationAdditionalInformationRoute =
+  lazy val notificationAdditionalInformationRoute: String =
     routes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url
 
   "NotificationAdditionalInformation Controller" - {

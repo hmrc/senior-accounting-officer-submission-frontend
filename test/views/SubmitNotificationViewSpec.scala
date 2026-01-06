@@ -17,18 +17,18 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.SubmitNotificationView
 import views.SubmitNotificationViewSpec.*
-import controllers.routes
+import views.html.SubmitNotificationView
+import play.api.mvc.Call
 
 class SubmitNotificationViewSpec extends ViewSpecBase[SubmitNotificationView] {
 
   private def generateView(): Document = Jsoup.parse(SUT().toString)
 
-  def onwardRoute = routes.SubmitNotificationController.onSubmit()
+  def onwardRoute: Call = routes.SubmitNotificationController.onSubmit()
 
   "SubmitNotificationView" - {
     val doc: Document = generateView()

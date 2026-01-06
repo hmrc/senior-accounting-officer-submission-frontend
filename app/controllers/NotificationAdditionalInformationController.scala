@@ -18,17 +18,19 @@ package controllers
 
 import controllers.actions.*
 import forms.NotificationAdditionalInformationFormProvider
-import javax.inject.Inject
 import models.{Mode, NotificationAdditionalInformation}
 import navigation.Navigator
 import pages.NotificationAdditionalInformationPage
-import play.api.i18n.{I18nSupport, Messages, MessagesApi}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationAdditionalInformationView
 
 import scala.concurrent.{ExecutionContext, Future}
+
+import javax.inject.Inject
+import play.api.data.Form
 
 class NotificationAdditionalInformationController @Inject() (
     override val messagesApi: MessagesApi,
@@ -44,7 +46,7 @@ class NotificationAdditionalInformationController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[NotificationAdditionalInformation] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
 

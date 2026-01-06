@@ -9,6 +9,9 @@ GET         /refresh-session                                          controller
 GET         /there-is-a-problem                                       controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
 
 GET         /notification/start                                       controllers.SubmitNotificationStartController.onPageLoad()
+
+GET         /template-guidance                                        controllers.TemplateGuidanceController.onPageLoad()
+
 GET         /notification/template/download                           controllers.DownloadNotificationTemplateController.onPageLoad()
 
 GET         /notification/upload                                      controllers.NotificationUploadFormController.onPageLoad()

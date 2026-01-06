@@ -32,15 +32,17 @@ import repositories.SessionRepository
 import views.html.IsThisTheSaoOnCertificateView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class IsThisTheSaoOnCertificateControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new IsThisTheSaoOnCertificateFormProvider()
-  val form         = formProvider()
+  val formProvider        = new IsThisTheSaoOnCertificateFormProvider()
+  val form: Form[Boolean] = formProvider()
 
-  lazy val isThisTheSaoOnCertificateRoute = routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode).url
+  lazy val isThisTheSaoOnCertificateRoute: String =
+    routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode).url
 
   "IsThisTheSaoOnCertificate Controller" - {
 

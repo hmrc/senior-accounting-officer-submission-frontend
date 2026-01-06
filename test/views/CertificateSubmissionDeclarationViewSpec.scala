@@ -17,16 +17,14 @@
 package views
 
 import base.ViewSpecBase
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import play.api.inject.Injector
-import play.api.data.Form
 import forms.CertificateSubmissionDeclarationFormProvider
 import models.CertificateSubmissionDeclaration
-import models.{NormalMode, CheckMode, Mode}
-import pages.CertificateSubmissionDeclarationPage
-import views.html.CertificateSubmissionDeclarationView
+import models.Mode
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import play.api.data.Form
 import views.CertificateSubmissionDeclarationViewSpec.*
+import views.html.CertificateSubmissionDeclarationView
 
 class CertificateSubmissionDeclarationViewSpec extends ViewSpecBase[CertificateSubmissionDeclarationView] {
 

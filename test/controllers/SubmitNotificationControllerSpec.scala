@@ -17,17 +17,17 @@
 package controllers
 
 import base.SpecBase
+import navigation.FakeNavigator
+import navigation.Navigator
+import play.api.inject.bind
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.SubmitNotificationView
-import play.api.inject.bind
-import navigation.Navigator
-import navigation.FakeNavigator
-import play.api.mvc.Call
 
 class SubmitNotificationControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   "SubmitNotification Controller" - {
 

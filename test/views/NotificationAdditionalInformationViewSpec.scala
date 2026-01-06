@@ -302,14 +302,14 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
 }
 
 object NotificationAdditionalInformationViewSpec {
-  val pageHeading    = "Additional information"
-  val pageTitle      = "Notification details"
-  val testInputValue = "myTestInputValue"
-  val paragraphs     = Seq(
+  val pageHeading             = "Additional information"
+  val pageTitle               = "Notification details"
+  val testInputValue          = "myTestInputValue"
+  val paragraphs: Seq[String] = Seq(
     "Tell us if there’s anything we should know about your notification or the companies listed.",
     "This could include:"
   )
-  val bulletPoints = Seq(
+  val bulletPoints: Seq[String] = Seq(
     "a company’s status changing, such as becoming dormant or going into liquidation",
     "anything else relevant to the companies listed"
   )

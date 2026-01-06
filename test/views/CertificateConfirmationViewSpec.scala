@@ -19,9 +19,8 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.CertificateConfirmationView
 import views.CertificateConfirmationViewSpec.*
+import views.html.CertificateConfirmationView
 
 class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmationView] {
 

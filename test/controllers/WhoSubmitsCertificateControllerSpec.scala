@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.WhoSubmitsCertificateFormProvider
-import models.{NormalMode, WhoSubmitsCertificate, UserAnswers}
+import models.{NormalMode, UserAnswers, WhoSubmitsCertificate}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -32,15 +32,16 @@ import repositories.SessionRepository
 import views.html.WhoSubmitsCertificateView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  lazy val whoSubmitsCertificateRoute = routes.WhoSubmitsCertificateController.onPageLoad(NormalMode).url
+  lazy val whoSubmitsCertificateRoute: String = routes.WhoSubmitsCertificateController.onPageLoad(NormalMode).url
 
-  val formProvider = new WhoSubmitsCertificateFormProvider()
-  val form         = formProvider()
+  val formProvider                      = new WhoSubmitsCertificateFormProvider()
+  val form: Form[WhoSubmitsCertificate] = formProvider()
 
   "WhoSubmitsCertificate Controller" - {
 

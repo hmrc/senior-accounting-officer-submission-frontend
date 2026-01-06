@@ -17,14 +17,15 @@
 package controllers
 
 import controllers.actions.*
-import javax.inject.Inject
+import models.NormalMode
+import navigation.Navigator
+import pages.SubmitNotificationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmitNotificationView
-import navigation.Navigator
-import pages.SubmitNotificationPage
-import models.NormalMode
+
+import javax.inject.Inject
 
 class SubmitNotificationController @Inject() (
     override val messagesApi: MessagesApi,

@@ -19,9 +19,8 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.NotificationConfirmationView
 import views.NotificationConfirmationViewSpec.*
+import views.html.NotificationConfirmationView
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
 

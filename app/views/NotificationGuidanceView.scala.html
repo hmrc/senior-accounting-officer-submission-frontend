@@ -1,5 +1,5 @@
 @*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,60 +14,19 @@
  * limitations under the License.
  *@
 
-@import config.AppConfig
-
 @this(
-    layout: templates.Layout,
-    formHelper: FormWithCSRF,
-    appConfig: AppConfig,
-    govukButton: GovukButton
+   layout: templates.Layout,
+   formHelper: FormWithCSRF,
+   govukButton: GovukButton
 )
 
-@()(using request: RequestHeader, messages: Messages)
+@()(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = "Notification Guidance") {
-
-
-
- <h1 class="govuk-heading-l">@messages("submission.notification.guidance.title")</h1>
- <p class="govuk-body">@messages("submission.notification.guidance.p1")</p>
- <p class="govuk-body">@messages("submission.notification.guidance.p2")</p>
-
-<h3 class="govuk-heading-s">@messages("SAO details")</h3>
- <ul class="govuk-list govuk-list--bullet">
-  <li>@messages("submission.notification.guidance.sao.details.list.line1.content")</li>
-  <li>@messages("submission.notification.guidance.sao.details.list.line2.content")</li>
-  <li>@messages("submission.notification.guidance.sao.details.list.line3.content")</li>
- </ul>
-
- <h3 class="govuk-heading-s">@messages("submission.notification.guidance.accountingPeriod.details.heading")</h3>
- <ul class="govuk-list govuk-list--bullet">
-  <li>@messages("submission.notification.guidance.accountingPeriod.details.list.line1.content")</li>
- </ul>
-
-
- <h3 class="govuk-heading-s">@messages("submission.notification.guidance.companyInformation.details.heading")</h3>
- <ul class="govuk-list govuk-list--bullet">
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line1.content")</li>
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line2.content")</li>
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line3.content")</li>
-  <li>@messages("submission.notification.guidance.companyInformation.details.list.line4.content")</li>
- </ul>
-
- <p class="govuk-body">@messages("submission.notification.guidance.utrCrnGuidance.p")</p>
-
- <p class="govuk-body">
-   <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">@messages("submission.notification.guidance.notification.template.download.link.content")</a>
- </p>
-
-
-  @formHelper(action = routes.NotificationGuidanceController.onSubmit()){
-    @govukButton(
-      ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
-    )
-  }
-}
-
-@{
-//$COVERAGE-OFF$
+@layout(pageTitle = titleNoForm(messages("notificationGuidance.title"))) {
+    <h1 class="govuk-heading-xl">@messages("notificationGuidance.heading")</h1>
+    @formHelper(action = routes.NotificationGuidanceController.onSubmit()) {
+        @govukButton(
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
+        )
+    }
 }

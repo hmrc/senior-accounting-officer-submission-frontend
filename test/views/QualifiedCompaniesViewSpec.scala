@@ -17,12 +17,11 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.QualifiedCompaniesView
 import views.QualifiedCompaniesViewSpec.*
-import controllers.routes
+import views.html.QualifiedCompaniesView
 
 class QualifiedCompaniesViewSpec extends ViewSpecBase[QualifiedCompaniesView] {
 

@@ -20,12 +20,12 @@ import controllers.actions.*
 import models.NormalMode
 import navigation.Navigator
 import pages.SubmitCertificateStartPage
-
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmitCertificateStartView
+
+import javax.inject.Inject
 
 class SubmitCertificateStartController @Inject() (
     override val messagesApi: MessagesApi,

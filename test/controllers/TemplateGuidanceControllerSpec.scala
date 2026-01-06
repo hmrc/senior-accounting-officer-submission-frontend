@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,28 +17,27 @@
 package controllers
 
 import base.SpecBase
-import models.SubmitNotificationStage.ShowAllLinks
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.SubmitNotificationStartView
+import views.html.TemplateGuidanceView
 
-class SubmitNotificationStartControllerSpec extends SpecBase {
+class TemplateGuidanceControllerSpec extends SpecBase {
 
-  "SubmitNotificationStart Controller" - {
+  "TemplateGuidance Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.SubmitNotificationStartController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.TemplateGuidanceController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[SubmitNotificationStartView]
+        val view = application.injector.instanceOf[TemplateGuidanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(ShowAllLinks)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view()(using request, messages(application)).toString
       }
     }
   }
