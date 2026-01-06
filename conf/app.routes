@@ -9,6 +9,9 @@ GET         /refresh-session                                          controller
 GET         /there-is-a-problem                                       controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
 
 GET         /notification/start                                       controllers.SubmitNotificationStartController.onPageLoad()
+
+GET         /templateGuidance                                         controllers.TemplateGuidanceController.onPageLoad()
+
 GET         /notification/template/download                           controllers.DownloadNotificationTemplateController.onPageLoad()
 
 GET         /notification/upload                                      controllers.NotificationUploadFormController.onPageLoad()
@@ -72,5 +75,3 @@ GET         /certificate/change-declaration                           controller
 POST        /certificate/change-declaration                           controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/confirmation                                 controllers.CertificateConfirmationController.onPageLoad()
-
-GET        /templateGuidance                       controllers.TemplateGuidanceController.onPageLoad()

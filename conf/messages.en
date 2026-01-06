@@ -33,6 +33,21 @@ timeout.message = For security reasons, you will be signed out of this service i
 timeout.keepAlive = Stay signed in
 timeout.signOut = Sign out
 
+submitNotificationStart.title = Submit a notification
+submitNotificationStart.heading = Submit a notification
+submitNotificationStart.paragraph1 = To submit a notification, you’ll need to:
+
+submitNotificationStart.paragraph2WithLink = If you need help, <a {0}>read the submission template guidance (opens in new tab)</a>.
+
+submitNotificationStart.list1.item1 = upload a submission template with your company details
+submitNotificationStart.list1.item2 = confirm your Senior Accounting Officer’s details
+submitNotificationStart.uploadNotificationLinkText = Upload a submission template
+submitNotificationStart.submitNotificationLinkText = Submit a notification
+
+submitNotificationStart.row.status.cannotStartYet = Cannot start yet
+submitNotificationStart.row.status.completed = Completed
+submitNotificationStart.row.status.notStarted = Not started
+
 template.guidance.title = Notification and certificate submission template guidance
 template.guidance.heading = Submission template guidance
 
@@ -75,21 +90,6 @@ template.guidance.subheading5.list1.item2 = After notification is submitted, com
 template.guidance.subheading6 = Complete certificate at a different time.
 template.guidance.subheading6.list1.item1 = Upload your template again with certificate information filled out.
 template.guidance.subheading6.list1.item2 = Complete the certificate journey and sign the declaration.
-
-submitNotificationStart.title = Submit a notification
-submitNotificationStart.heading = Submit a notification
-submitNotificationStart.paragraph1 = To submit a notification, you’ll need to:
-
-submitNotificationStart.paragraph2WithLink = If you need help, <a {0}>read the submission template guidance (opens in new tab)</a>.
-
-submitNotificationStart.list1.item1 = upload a submission template with your company details
-submitNotificationStart.list1.item2 = confirm your Senior Accounting Officer’s details
-submitNotificationStart.uploadNotificationLinkText = Upload a submission template
-submitNotificationStart.submitNotificationLinkText = Submit a notification
-
-submitNotificationStart.row.status.cannotStartYet = Cannot start yet
-submitNotificationStart.row.status.completed = Completed
-submitNotificationStart.row.status.notStarted = Not started
 
 notificationUploadForm.title = notificationUploadForm
 notificationUploadForm.heading = notificationUploadForm
