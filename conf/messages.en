@@ -108,7 +108,7 @@ notificationAdditionalInformation.list.line2.content = anything else relevant to
 notificationAdditionalInformation.label = Provide information about your notification
 notificationAdditionalInformation.checkYourAnswersLabel = notificationAdditionalInformation
 notificationAdditionalInformation.error.required = Enter notificationAdditionalInformation
-notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 100 characters or less
+notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 5000 characters or less
 notificationAdditionalInformation.change.hidden = NotificationAdditionalInformation
 
 notificationCheckYourAnswers.title = notificationCheckYourAnswers

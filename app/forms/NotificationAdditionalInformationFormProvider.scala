@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
 
-  val maxLength     = 100
+  val maxLength     = 5000
   val requiredError = "notificationAdditionalInformation.error.required"
   val lengthError   = "notificationAdditionalInformation.error.length"
 
@@ -34,7 +34,7 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
   def apply(): Form[Option[String]] =
     Form(
       "value" -> mandatoryUnlessSkipped(
-        text(errorKey = requiredError).verifying(maxLength(100, lengthError))
+        text(errorKey = requiredError).verifying(maxLength(maxLength, lengthError))
       )
     )
 
