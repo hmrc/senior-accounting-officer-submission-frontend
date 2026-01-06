@@ -19,8 +19,8 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.html.NotificationGuidanceView
 import views.NotificationGuidanceViewSpec.*
+import views.html.NotificationGuidanceView
 
 class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView] {
 
@@ -48,5 +48,5 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 
 object NotificationGuidanceViewSpec {
   val pageHeading = "notificationGuidance"
-  val pageTitle = "notificationGuidance"
+  val pageTitle   = "notificationGuidance"
 }
