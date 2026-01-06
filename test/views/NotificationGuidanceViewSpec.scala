@@ -38,6 +38,11 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithSubmissionButton(
+      action = controllers.routes.NotificationGuidanceController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
 }
 
