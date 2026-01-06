@@ -15,7 +15,7 @@
  *@
 
 @this(
-        layout: templates.Layout,
+    layout: templates.Layout,
 )
 
 @()(using request: RequestHeader, messages: Messages)
@@ -28,7 +28,7 @@
 
     <p class="govuk-body">
         <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">
-        @messages("template.guidance.subheading1.downloadTemplateLinkText")
+            @messages("template.guidance.subheading1.downloadTemplateLinkText")
         </a>
     </p>
 
@@ -47,13 +47,13 @@
     </ol>
 
     <div class="govuk-inset-text">
-    @messages("template.guidance.subheading2.inset.text")
+        @messages("template.guidance.subheading2.inset.text")
     </div>
 
     <h3 class="govuk-heading-s">@messages("template.guidance.subheading3")</h3>
     <p class="govuk-body">@messages("template.guidance.subheading3.paragraph1")</p>
     <p class="govuk-body">
-    @Html(messages("template.guidance.subheading3.paragraph2WithLink", routes.DownloadNotificationTemplateController.onPageLoad()))
+        @Html(messages("template.guidance.subheading3.paragraph2WithLink", routes.DownloadNotificationTemplateController.onPageLoad()))
     </p>
     <p class="govuk-body">@messages("template.guidance.subheading3.paragraph3")</p>
     <p class="govuk-body">@messages("template.guidance.subheading3.paragraph4")</p>
