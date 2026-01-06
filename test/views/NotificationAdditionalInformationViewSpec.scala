@@ -18,7 +18,7 @@ package views
 
 import base.ViewSpecBase
 import forms.NotificationAdditionalInformationFormProvider
-import models.{Mode, NotificationAdditionalInformation}
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
@@ -31,9 +31,9 @@ import views.html.NotificationAdditionalInformationView
 class NotificationAdditionalInformationViewSpec extends ViewSpecBase[NotificationAdditionalInformationView] {
 
   private val formProvider = app.injector.instanceOf[NotificationAdditionalInformationFormProvider]
-  private val form: Form[NotificationAdditionalInformation] = formProvider()
+  private val form: Form[Option[String]] = formProvider()
 
-  private def generateView(form: Form[NotificationAdditionalInformation], mode: Mode): Document = {
+  private def generateView(form: Form[Option[String]], mode: Mode): Document = {
     val view = SUT(form, mode)
     Jsoup.parse(view.toString)
   }

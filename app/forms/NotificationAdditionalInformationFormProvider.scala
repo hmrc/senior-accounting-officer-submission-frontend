@@ -17,8 +17,7 @@
 package forms
 
 import forms.mappings.*
-import models.NotificationAdditionalInformation
-import play.api.data.Forms.{mapping, of, optional}
+import play.api.data.Forms.of
 import play.api.data.format.Formatter
 import play.api.data.{Form, FormError, Forms}
 
@@ -32,13 +31,9 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
 
   val skipButtonField = "skipButton"
 
-  def apply(): Form[NotificationAdditionalInformation] =
+  def apply(): Form[Option[String]] =
     Form(
-      mapping(
-        "value"          -> of(customFormatter),
-        "continueButton" -> optional(text()),
-        skipButtonField  -> optional(text())
-      )(NotificationAdditionalInformation.apply)((n) => Some(n.value, n.continueButton, n.skipButton))
+      "value" -> of(customFormatter)
     )
 
   private def customFormatter: Formatter[Option[String]] =

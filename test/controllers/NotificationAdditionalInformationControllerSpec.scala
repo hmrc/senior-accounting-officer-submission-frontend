@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.NotificationAdditionalInformationFormProvider
-import models.{NormalMode, NotificationAdditionalInformation, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -38,8 +38,8 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider                                  = new NotificationAdditionalInformationFormProvider()
-  val form: Form[NotificationAdditionalInformation] = formProvider()
+  val formProvider               = new NotificationAdditionalInformationFormProvider()
+  val form: Form[Option[String]] = formProvider()
 
   lazy val notificationAdditionalInformationRoute: String =
     routes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url
@@ -64,7 +64,8 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NotificationAdditionalInformationPage, Some("answer")).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(NotificationAdditionalInformationPage, Some("answer")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -77,7 +78,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(NotificationAdditionalInformation(Some("answer"))),
+          form.fill(Some("answer")),
           NormalMode
         )(using
           request,

@@ -28,9 +28,7 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-    @layout(
-    pageTitle = title(form, messages("notificationAdditionalInformation.title"))
-    ) {
+@layout(pageTitle = title(form, messages("notificationAdditionalInformation.title"))) {
     <span class="govuk-caption-m">@messages("notificationAdditionalInformation.caption")</span>
     <h1 class="govuk-heading-l"> @messages("notificationAdditionalInformation.heading")</h1>
     <p class="govuk-body">@messages("notificationAdditionalInformation.p1")</p>

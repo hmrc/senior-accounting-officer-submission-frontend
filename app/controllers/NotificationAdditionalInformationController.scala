@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.*
 import forms.NotificationAdditionalInformationFormProvider
-import models.{Mode, NotificationAdditionalInformation}
+import models.Mode
 import navigation.Navigator
 import pages.NotificationAdditionalInformationPage
 import play.api.data.Form
@@ -48,13 +48,13 @@ class NotificationAdditionalInformationController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  val form: Form[NotificationAdditionalInformation] = formProvider()
+  val form: Form[Option[String]] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
 
     val preparedForm = request.userAnswers.getNullable(NotificationAdditionalInformationPage) match {
-      case None            => form
-      case value @ Some(_) => form.fill(NotificationAdditionalInformation(value))
+      case None  => form
+      case value => form.fill(value)
     }
 
     Ok(view(preparedForm, mode))
@@ -66,10 +66,10 @@ class NotificationAdditionalInformationController @Inject() (
         .bindFromRequest()
         .fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          form =>
+          value =>
             for {
               updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, form.value))
+                .fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
         )
