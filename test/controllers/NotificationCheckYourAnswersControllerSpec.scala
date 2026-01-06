@@ -26,7 +26,7 @@ import views.html.NotificationCheckYourAnswersView
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   "NotificationCheckYourAnswers Controller" - {
 

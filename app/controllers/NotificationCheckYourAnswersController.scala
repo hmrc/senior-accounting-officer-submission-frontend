@@ -20,12 +20,12 @@ import controllers.actions.*
 import models.NormalMode
 import navigation.Navigator
 import pages.NotificationCheckYourAnswersPage
-
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationCheckYourAnswersView
+
+import javax.inject.Inject
 
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,

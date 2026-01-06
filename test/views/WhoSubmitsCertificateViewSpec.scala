@@ -17,16 +17,14 @@
 package views
 
 import base.ViewSpecBase
+import forms.WhoSubmitsCertificateFormProvider
+import models.Mode
+import models.WhoSubmitsCertificate
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import forms.WhoSubmitsCertificateFormProvider
-import models.WhoSubmitsCertificate
-import models.{NormalMode, CheckMode, Mode}
-import pages.WhoSubmitsCertificatePage
-import views.html.WhoSubmitsCertificateView
 import views.WhoSubmitsCertificateViewSpec.*
+import views.html.WhoSubmitsCertificateView
 
 class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateView] {
 

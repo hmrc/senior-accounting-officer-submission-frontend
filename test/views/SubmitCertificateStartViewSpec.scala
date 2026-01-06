@@ -20,9 +20,8 @@ import base.ViewSpecBase
 import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.SubmitCertificateStartView
 import views.SubmitCertificateStartViewSpec.*
+import views.html.SubmitCertificateStartView
 
 class SubmitCertificateStartViewSpec extends ViewSpecBase[SubmitCertificateStartView] {
 

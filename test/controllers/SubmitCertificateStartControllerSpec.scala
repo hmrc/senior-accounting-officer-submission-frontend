@@ -27,7 +27,7 @@ import views.html.SubmitCertificateStartView
 
 class SubmitCertificateStartControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   "SubmitCertificateStart Controller" - {
 

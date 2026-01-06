@@ -17,6 +17,7 @@
 package controllers
 
 import base.SpecBase
+import navigation.FakeNavigator
 import navigation.Navigator
 import play.api.http.HeaderNames
 import play.api.inject.*
@@ -24,7 +25,6 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.NotificationGuidanceView
-import navigation.FakeNavigator
 
 class NotificationGuidanceControllerSpec extends SpecBase {
 

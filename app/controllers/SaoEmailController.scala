@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.*
 import forms.SaoEmailFormProvider
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.SaoEmailPage
@@ -29,6 +28,9 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SaoEmailView
 
 import scala.concurrent.{ExecutionContext, Future}
+
+import javax.inject.Inject
+import play.api.data.Form
 
 class SaoEmailController @Inject() (
     override val messagesApi: MessagesApi,
@@ -44,7 +46,7 @@ class SaoEmailController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[String] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
 

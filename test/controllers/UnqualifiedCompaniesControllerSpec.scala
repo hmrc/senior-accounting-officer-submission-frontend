@@ -19,15 +19,15 @@ package controllers
 import base.SpecBase
 import navigation.{FakeNavigator, Navigator}
 import play.api.http.HeaderNames
+import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
-import play.api.inject.bind
 import play.api.test.Helpers.*
 import views.html.UnqualifiedCompaniesView
 
 class UnqualifiedCompaniesControllerSpec extends SpecBase {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   "UnqualifiedCompanies Controller" - {
 

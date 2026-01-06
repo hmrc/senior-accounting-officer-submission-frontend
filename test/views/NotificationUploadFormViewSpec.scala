@@ -19,9 +19,8 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.NotificationUploadFormView
 import views.NotificationUploadFormViewSpec.*
+import views.html.NotificationUploadFormView
 
 class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadFormView] {
 

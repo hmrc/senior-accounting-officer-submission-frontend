@@ -17,15 +17,13 @@
 package views
 
 import base.ViewSpecBase
+import forms.SaoEmailCommunicationChoiceFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import forms.SaoEmailCommunicationChoiceFormProvider
-import models.{NormalMode, CheckMode, Mode}
-import pages.SaoEmailCommunicationChoicePage
-import views.html.SaoEmailCommunicationChoiceView
 import views.SaoEmailCommunicationChoiceViewSpec.*
+import views.html.SaoEmailCommunicationChoiceView
 
 class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunicationChoiceView] {
 

@@ -17,15 +17,13 @@
 package views
 
 import base.ViewSpecBase
+import forms.SaoNameFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import models.{NormalMode, CheckMode, Mode}
-import pages.SaoNamePage
-import forms.SaoNameFormProvider
-import views.html.SaoNameView
 import views.SaoNameViewSpec.*
+import views.html.SaoNameView
 
 class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
 

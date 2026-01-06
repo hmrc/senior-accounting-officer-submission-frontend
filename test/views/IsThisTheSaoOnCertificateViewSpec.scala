@@ -17,15 +17,13 @@
 package views
 
 import base.ViewSpecBase
+import forms.IsThisTheSaoOnCertificateFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import forms.IsThisTheSaoOnCertificateFormProvider
-import models.{NormalMode, CheckMode, Mode}
-import pages.IsThisTheSaoOnCertificatePage
-import views.html.IsThisTheSaoOnCertificateView
 import views.IsThisTheSaoOnCertificateViewSpec.*
+import views.html.IsThisTheSaoOnCertificateView
 
 class IsThisTheSaoOnCertificateViewSpec extends ViewSpecBase[IsThisTheSaoOnCertificateView] {
 

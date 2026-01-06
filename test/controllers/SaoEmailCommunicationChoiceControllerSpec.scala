@@ -32,15 +32,17 @@ import repositories.SessionRepository
 import views.html.SaoEmailCommunicationChoiceView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class SaoEmailCommunicationChoiceControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new SaoEmailCommunicationChoiceFormProvider()
-  val form         = formProvider()
+  val formProvider        = new SaoEmailCommunicationChoiceFormProvider()
+  val form: Form[Boolean] = formProvider()
 
-  lazy val saoEmailCommunicationChoiceRoute = routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode).url
+  lazy val saoEmailCommunicationChoiceRoute: String =
+    routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode).url
 
   "SaoEmailCommunicationChoice Controller" - {
 
