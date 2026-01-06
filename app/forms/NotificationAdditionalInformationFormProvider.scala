@@ -19,7 +19,7 @@ package forms
 import forms.mappings.*
 import play.api.data.Forms.of
 import play.api.data.format.Formatter
-import play.api.data.{Form, FormError, Forms}
+import play.api.data.{Form, FormError, Forms, Mapping}
 
 import javax.inject.Inject
 
@@ -33,33 +33,28 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Option[String]] =
     Form(
-      "value" -> of(customFormatter)
+      "value" -> mandatoryUnlessSkipped(
+        text(errorKey = requiredError).verifying(maxLength(100, lengthError))
+      )
     )
 
-  private def customFormatter: Formatter[Option[String]] =
-    new Formatter[Option[String]] {
+  private def mandatoryUnlessSkipped(mapping: Mapping[String]): Mapping[Option[String]] =
+    of(new Formatter[Option[String]] {
 
       override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
         val isSkip = data.contains(skipButtonField)
 
-        val fieldValue = data
-          .get(key)
-          .map(_.trim)
-          .filter(_.nonEmpty)
-
         if isSkip then {
           Right(None)
         } else {
-          fieldValue match {
-            case None                                              => Left(Seq(FormError(key, requiredError)))
-            case Some(fieldValue) if fieldValue.length > maxLength =>
-              Left(Seq(FormError(key, lengthError, Seq(maxLength))))
-            case Some(fieldValue) => Right(Some(fieldValue))
-          }
+          mapping.withPrefix(key).bind(data).map(Some.apply)
         }
       }
 
       override def unbind(key: String, value: Option[String]): Map[String, String] =
-        Map(key -> value.getOrElse(""))
-    }
+        value.fold(Map.empty) {
+          case v if v.nonEmpty => Map(key -> v)
+          case _               => Map.empty
+        }
+    })
 }
