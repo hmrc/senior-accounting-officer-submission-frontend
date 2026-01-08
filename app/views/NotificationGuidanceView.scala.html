@@ -27,6 +27,13 @@
 
     <p class="govuk-body">@messages("notificationGuidance.paragraph1")</p>
     <p class="govuk-body">@messages("notificationGuidance.paragraph2")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("notificationGuidance.list1.item1")</li>
+        <li>@messages("notificationGuidance.list1.item2")</li>
+        <li>@messages("notificationGuidance.list1.item3")</li>
+    </ul>
+
     <p class="govuk-body">@messages("notificationGuidance.paragraph3")</p>
 
     @formHelper(action = routes.NotificationGuidanceController.onSubmit()) {

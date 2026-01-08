@@ -41,6 +41,8 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 
     doc.createTestsWithParagraphs(paragraphs)
 
+    doc.createTestsWithBulletPoints(pageBullets)
+
     doc.createTestsWithSubmissionButton(
       action = controllers.routes.NotificationGuidanceController.onSubmit(),
       buttonText = "Continue"
@@ -55,6 +57,12 @@ object NotificationGuidanceViewSpec {
   val paragraphs: Seq[String] = Seq(
     "Tell HMRC who was responsible for your company’s tax accounting arrangement during the previous financial year.",
     "Each notification must include:",
-    "Only one notification can be submitted per financial year. If more than one person acted as SAO, include all of them in the same notification.",
+    "Only one notification can be submitted per financial year. If more than one person acted as SAO, include all of them in the same notification."
+  )
+
+  val pageBullets: Seq[String] = Seq(
+    "the name and contact details of each person who acted as the Senior Accounting Officer",
+    "the accounting period they were responsible during the previous financial year",
+    "the name, Unique Taxpayer Reference (UTR) and Company Registration Number (CRN) of every company the SAO was responsible for, if your company is part of a group"
   )
 }
