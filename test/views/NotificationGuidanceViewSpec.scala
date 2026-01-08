@@ -23,8 +23,6 @@ import views.NotificationGuidanceViewSpec.*
 import views.html.NotificationGuidanceView
 
 class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView] {
-  // val doc: Document = Jsoup.parse(SUT().toString)
-
   private def generateView(): Document = Jsoup.parse(SUT().toString)
 
   "NotificationGuidanceView" - {
@@ -52,9 +50,9 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     )
   }
 
-  extension (target: => Document) {
+  extension (doc: => Document) {
     def createTestForInsetText(text: String): Unit = {
-      val insetTextElement = target.getMainContent.select(".govuk-inset-text")
+      val insetTextElement = doc.getMainContent.select(".govuk-inset-text")
       "must have one inset string" in {
         insetTextElement.size() mustBe 1
       }
