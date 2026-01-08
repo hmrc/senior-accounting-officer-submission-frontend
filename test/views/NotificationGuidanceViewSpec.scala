@@ -32,12 +32,14 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
       pageHeading = pageHeading,
-      showBackLink = true,
+      showBackLink = false,
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithParagraphs(paragraphs)
 
     doc.createTestsWithSubmissionButton(
       action = controllers.routes.NotificationGuidanceController.onSubmit(),
@@ -47,6 +49,12 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 }
 
 object NotificationGuidanceViewSpec {
-  val pageHeading = "notificationGuidance"
-  val pageTitle   = "notificationGuidance"
+  val pageHeading = "Submit a notification"
+  val pageTitle   = "Submit a notification"
+
+  val paragraphs: Seq[String] = Seq(
+    "Tell HMRC who was responsible for your company’s tax accounting arrangement during the previous financial year.",
+    "Each notification must include:",
+    "Only one notification can be submitted per financial year. If more than one person acted as SAO, include all of them in the same notification.",
+  )
 }

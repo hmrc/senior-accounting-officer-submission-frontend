@@ -94,8 +94,12 @@ template.guidance.subheading6.list1.item2 = Complete the certificate journey and
 notificationUploadForm.title = notificationUploadForm
 notificationUploadForm.heading = notificationUploadForm
 
-notificationGuidance.title = notificationGuidance
-notificationGuidance.heading = notificationGuidance
+notificationGuidance.title = Submit a notification
+notificationGuidance.heading = Submit a notification
+notificationGuidance.paragraph1 = Tell HMRC who was responsible for your company’s tax accounting arrangement during the previous financial year.
+notificationGuidance.paragraph2 = Each notification must include:
+notificationGuidance.paragraph3 = Only one notification can be submitted per financial year. If more than one person acted as SAO, include all of them in the same notification.
+
 
 notificationAdditionalInformation.title = notificationAdditionalInformation
 notificationAdditionalInformation.heading = notificationAdditionalInformation
