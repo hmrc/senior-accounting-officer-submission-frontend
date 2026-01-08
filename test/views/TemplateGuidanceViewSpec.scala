@@ -35,7 +35,7 @@ class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
 
   "TemplateGuidanceView" - {
 
-    val doc = generateView()
+    // val doc = generateView()
 
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,

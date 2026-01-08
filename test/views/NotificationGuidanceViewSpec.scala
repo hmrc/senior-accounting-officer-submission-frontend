@@ -23,6 +23,7 @@ import views.NotificationGuidanceViewSpec.*
 import views.html.NotificationGuidanceView
 
 class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView] {
+  // val doc: Document = Jsoup.parse(SUT().toString)
 
   private def generateView(): Document = Jsoup.parse(SUT().toString)
 
@@ -43,10 +44,25 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
 
     doc.createTestsWithBulletPoints(pageBullets)
 
+    doc.createTestForInsetText(pageInsetText)
+
     doc.createTestsWithSubmissionButton(
       action = controllers.routes.NotificationGuidanceController.onSubmit(),
       buttonText = "Continue"
     )
+  }
+
+  extension (target: => Document) {
+    def createTestForInsetText(text: String): Unit = {
+      val insetTextElement = target.getMainContent.select(".govuk-inset-text")
+      "must have one inset string" in {
+        insetTextElement.size() mustBe 1
+      }
+
+      s"must have expected inset string of $text" in {
+        insetTextElement.text() mustBe text
+      }
+    }
   }
 }
 
@@ -65,4 +81,6 @@ object NotificationGuidanceViewSpec {
     "the accounting period they were responsible during the previous financial year",
     "the name, Unique Taxpayer Reference (UTR) and Company Registration Number (CRN) of every company the SAO was responsible for, if your company is part of a group"
   )
+  val pageInsetText =
+    "You can only submit the notification after the financial year has ended. The deadline is 6 months after the end of the financial year for public limited companies and 9 months after for other companies."
 }

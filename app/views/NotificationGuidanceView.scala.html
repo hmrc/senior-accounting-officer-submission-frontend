@@ -36,6 +36,10 @@
 
     <p class="govuk-body">@messages("notificationGuidance.paragraph3")</p>
 
+    <div class="govuk-inset-text">
+        @messages("notificationGuidance.inset.text")
+    </div>
+
     @formHelper(action = routes.NotificationGuidanceController.onSubmit()) {
         @govukButton(
             ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
