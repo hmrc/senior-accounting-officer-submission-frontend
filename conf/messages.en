@@ -114,8 +114,13 @@ notificationAdditionalInformation.change.hidden = NotificationAdditionalInformat
 notificationCheckYourAnswers.title = notificationCheckYourAnswers
 notificationCheckYourAnswers.heading = notificationCheckYourAnswers
 
-submitNotification.title = submitNotification
-submitNotification.heading = submitNotification
+submitNotification.title = Confirm notification and submit
+submitNotification.heading = Confirm and submit a notification
+submitNotification.caption = Submit a notification
+submitNotification.paragraph1 = You confirm that this is an official notification to HMRC in relation to the Senior Accounting Officer requirement in accordance with Schedule 46 of the Finance Act 2009.
+submitNotification.paragraph2 = By sending the notification you agree that the information you have given is complete and correct. If you deliberately give wrong or incomplete information, or do not report changes, the company may have to pay a penalty of £5,000.
+submitNotification.inset.text = If you later realise you’ve submitted incorrect information, contact your Customer Compliance Manager if you have one, or the Customer Engagement Team for support.
+submitNotification.button = Confirm and submit
 
 notificationConfirmation.title = notificationConfirmation
 notificationConfirmation.heading = notificationConfirmation
