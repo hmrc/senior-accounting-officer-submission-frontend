@@ -22,10 +22,11 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.NotificationCheckYourAnswersViewSpec.*
 import views.html.NotificationCheckYourAnswersView
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 
 class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationCheckYourAnswersView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT().toString)
+  private def generateView(): Document = Jsoup.parse(SUT(SummaryList()).toString)
 
   "NotificationCheckYourAnswersView" - {
     val doc: Document = generateView()

@@ -23,6 +23,11 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.NotificationCheckYourAnswersView
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
+import play.api.mvc.Request
+import play.api.i18n.Messages
+import play.api.mvc.AnyContentAsEmpty
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
@@ -35,14 +40,21 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.NotificationCheckYourAnswersController.onPageLoad().url)
+        given request: Request[AnyContentAsEmpty.type] =
+          FakeRequest(GET, routes.NotificationCheckYourAnswersController.onPageLoad().url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[NotificationCheckYourAnswersView]
 
+        given Messages = messages(application)
+
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          SummaryList(
+            Seq(NotificationAdditionalInformationSummary.row(emptyUserAnswers))
+          )
+        ).toString
       }
     }
 

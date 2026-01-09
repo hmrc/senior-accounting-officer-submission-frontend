@@ -14,19 +14,21 @@
  * limitations under the License.
  *@
 
+@import viewmodels.checkAnswers.*
 @this(
-        layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        govukButton: GovukButton
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukButton: GovukButton,
+    govukSummaryList: GovukSummaryList
 )
 
-@()(using request: Request[?], messages: Messages)
+@(summaryList: SummaryList)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationCheckYourAnswers.title"))) {
     <span class="govuk-caption-m">@messages("notificationCheckYourAnswers.caption")</span>
-    <h1 class="govuk-heading-xl">@messages("notificationCheckYourAnswers.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("notificationCheckYourAnswers.heading")</h1>
 
-    <!-- TODO: code for the data list -->
+    @govukSummaryList(summaryList)
 
     @formHelper(action = routes.NotificationCheckYourAnswersController.onSubmit()){
         @govukButton(

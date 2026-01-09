@@ -26,6 +26,8 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationCheckYourAnswersView
 
 import javax.inject.Inject
+import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
@@ -39,7 +41,13 @@ class NotificationCheckYourAnswersController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
+    val summaryList = SummaryList(rows =
+      Seq(
+        NotificationAdditionalInformationSummary.row(request.userAnswers)
+      )
+    )
+
+    Ok(view(summaryList))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
