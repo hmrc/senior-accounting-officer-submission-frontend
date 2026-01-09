@@ -23,7 +23,6 @@ import views.NotificationGuidanceViewSpec.*
 import views.html.NotificationGuidanceView
 
 class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView] {
-
   private def generateView(): Document = Jsoup.parse(SUT().toString)
 
   "NotificationGuidanceView" - {
@@ -32,21 +31,54 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
       pageHeading = pageHeading,
-      showBackLink = true,
+      showBackLink = false,
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
 
+    doc.createTestsWithParagraphs(paragraphs)
+
+    doc.createTestsWithBulletPoints(pageBullets)
+
+    doc.createTestForInsetText(pageInsetText)
+
     doc.createTestsWithSubmissionButton(
       action = controllers.routes.NotificationGuidanceController.onSubmit(),
       buttonText = "Continue"
     )
   }
+
+  extension (doc: => Document) {
+    def createTestForInsetText(text: String): Unit = {
+      val insetTextElement = doc.getMainContent.select(".govuk-inset-text")
+      "must have one inset string" in {
+        insetTextElement.size() mustBe 1
+      }
+
+      s"must have expected inset string of $text" in {
+        insetTextElement.text() mustBe text
+      }
+    }
+  }
 }
 
 object NotificationGuidanceViewSpec {
-  val pageHeading = "notificationGuidance"
-  val pageTitle   = "notificationGuidance"
+  val pageHeading = "Submit a notification"
+  val pageTitle   = "Submit a notification"
+
+  val paragraphs: Seq[String] = Seq(
+    "Tell HMRC who was responsible for your company’s tax accounting arrangement during the previous financial year.",
+    "Each notification must include:",
+    "Only one notification can be submitted per financial year. If more than one person acted as SAO, include all of them in the same notification."
+  )
+
+  val pageBullets: Seq[String] = Seq(
+    "the name and contact details of each person who acted as the Senior Accounting Officer",
+    "the accounting period they were responsible during the previous financial year",
+    "the name, Unique Taxpayer Reference (UTR) and Company Registration Number (CRN) of every company the SAO was responsible for, if your company is part of a group"
+  )
+  val pageInsetText =
+    "You can only submit the notification after the financial year has ended. The deadline is 6 months after the end of the financial year for public limited companies and 9 months after for other companies."
 }
