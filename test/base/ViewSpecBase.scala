@@ -182,6 +182,114 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       }
     }
 
+    def createTestMustShowTextarea(
+                                    name: String,
+                                    label: String,
+                                    value: String,
+                                    hint: Option[String],
+                                    hasError: Boolean
+                                  )(using pos: Position): Unit = {
+
+      s"for textarea '$name'" - {
+
+        def textareaElements = target.resolve.select(s"textarea[name=$name].govuk-textarea")
+
+        s"textarea with name '$name' must exist on the page" in {
+          withClue(s"textarea with the name '$name' not found\n'") {
+            textareaElements.size mustBe 1
+          }
+        }
+
+        def textAreaElement = textareaElements.get(0)
+
+        s"textarea with name '$name' must have a label '$label' with correct id and text" in {
+          val textareaId = textAreaElement.attr("id")
+          withClue(s"textarea with an 'id' attribute not found\n") {
+            textareaId must not be ""
+          }
+
+          val labels = target.resolve.select(s"""label[for="$textareaId"]""")
+          withClue(s"label for '$textareaId' not found\n") {
+            labels.size() must be > 0
+          }
+          withClue(s"label text does not match expected label text '$label'\n") {
+            labels.get(0).text mustEqual label
+          }
+
+          val erroredFormGroup = target.resolve.select(s""".govuk-error-summary a[href="#$textareaId"]""")
+          if hasError then {
+            withClue("error content must be shown\n") {
+              erroredFormGroup.size mustBe 1
+            }
+          } else {
+            withClue("error content must not be shown\n") {
+              erroredFormGroup.size mustBe 0
+            }
+          }
+        }
+
+        s"textarea with name '$name' must have value of '$value'" in {
+          withClue(s"textarea with name '$name' does not have a value attribute '$value'\n") {
+            textAreaElement.text mustEqual value
+          }
+        }
+
+        hint match {
+          case Some(expectedHintText) => {
+            def hintSelector = textAreaElement
+              .attr("aria-describedby")
+              .split(" ")
+              .filter(_.nonEmpty)
+              .map("#" + _ + ".govuk-hint")
+              .mkString(",")
+
+            def hints = target.resolve.safeSelect(hintSelector)
+
+            s"textarea with name '$name' must have a hint with values '$expectedHintText'" in {
+              withClue(s"for textarea with name '$name' hint element not found\n") {
+                hints.size() must be > 0
+              }
+              withClue(s"textarea with name '$name' multiple hint elements found\n") {
+                hints.size() mustBe 1
+              }
+              withClue(
+                s"textarea with name '$name' hint text does not match expected value '$expectedHintText' not found\n"
+              ) {
+                hints.get(0).text mustEqual expectedHintText
+              }
+            }
+          }
+          case None =>
+            s"textarea with name '$name' must not have an associated hint" in {
+              val hints = target.resolve.select(".govuk-hint")
+
+              withClue(s"for textarea with name '$name' hint element not found\n") {
+                hints.size() mustBe 0
+              }
+            }
+        }
+
+        if hasError then {
+          s"textarea with name '$name' must show an associated error message when field has error" in {
+
+            val errorMessageElements = target.resolve.safeSelect(s".govuk-error-summary a[href=\"#$name\"]")
+
+            withClue(s"textarea does not have expected error message with id '$name'\n") {
+              errorMessageElements.size mustBe 1
+            }
+          }
+        } else {
+          s"textarea with name '$name' must not show an associated error message when field has no error" in {
+            val errorMessageElements = target.resolve.select(".govuk-error-message")
+
+            withClue(s"textarea has unexpected error message with id '$name'\n") {
+              errorMessageElements.size mustBe 0
+            }
+          }
+        }
+      }
+    }
+
     def createTestMustShowTextInput(
         name: String,
         label: String,
