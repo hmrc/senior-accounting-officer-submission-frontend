@@ -20,8 +20,7 @@ import base.ViewSpecBase
 import forms.NotificationAdditionalInformationFormProvider
 import models.Mode
 import org.jsoup.Jsoup
-import org.jsoup.nodes.{Document, Element}
-import org.jsoup.select.Elements
+import org.jsoup.nodes.Document
 import org.scalactic.source.Position
 import play.api.data.Form
 import play.api.mvc.Call

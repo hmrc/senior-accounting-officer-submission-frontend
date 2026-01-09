@@ -183,12 +183,12 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
     }
 
     def createTestMustShowTextarea(
-                                    name: String,
-                                    label: String,
-                                    value: String,
-                                    hint: Option[String],
-                                    hasError: Boolean
-                                  )(using pos: Position): Unit = {
+        name: String,
+        label: String,
+        value: String,
+        hint: Option[String],
+        hasError: Boolean
+    )(using pos: Position): Unit = {
 
       s"for textarea '$name'" - {
 
