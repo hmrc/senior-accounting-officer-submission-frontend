@@ -118,8 +118,9 @@ notificationAdditionalInformation.error.required = Enter notificationAdditionalI
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 5000 characters or less
 notificationAdditionalInformation.change.hidden = NotificationAdditionalInformation
 
-notificationCheckYourAnswers.title = notificationCheckYourAnswers
-notificationCheckYourAnswers.heading = notificationCheckYourAnswers
+notificationCheckYourAnswers.title = Submit a notification
+notificationCheckYourAnswers.heading = Check your answers
+notificationCheckYourAnswers.caption = Submit a notification
 
 submitNotification.title = Confirm notification and submit
 submitNotification.heading = Confirm and submit a notification

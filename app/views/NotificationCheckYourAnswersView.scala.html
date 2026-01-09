@@ -23,8 +23,10 @@
 @()(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationCheckYourAnswers.title"))) {
-
+    <span class="govuk-caption-m">@messages("notificationCheckYourAnswers.caption")</span>
     <h1 class="govuk-heading-xl">@messages("notificationCheckYourAnswers.heading")</h1>
+
+    <!-- TODO: code for the data list -->
 
     @formHelper(action = routes.NotificationCheckYourAnswersController.onSubmit()){
         @govukButton(

@@ -40,14 +40,22 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
     doc.createTestsWithOrWithoutError(hasError = false)
 
+    doc.createTestsWithCaption(
+      pageCaption
+    )
+
+    // TODO: test for the data list
+
     doc.createTestsWithSubmissionButton(
       action = routes.NotificationCheckYourAnswersController.onSubmit(),
-      buttonText = "Continue"
+      buttonText = pageButtonText
     )
   }
 }
 
 object NotificationCheckYourAnswersViewSpec {
-  val pageHeading = "notificationCheckYourAnswers"
-  val pageTitle   = "notificationCheckYourAnswers"
+  val pageHeading    = "Check your answers"
+  val pageTitle      = "Submit a notification"
+  val pageCaption    = "Submit a notification"
+  val pageButtonText = "Continue"
 }
