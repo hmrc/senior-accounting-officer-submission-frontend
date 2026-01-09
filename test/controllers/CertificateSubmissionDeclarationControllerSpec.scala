@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CertificateSubmissionDeclarationPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -33,7 +34,6 @@ import repositories.SessionRepository
 import views.html.CertificateSubmissionDeclarationView
 
 import scala.concurrent.Future
-import play.api.data.Form
 
 class CertificateSubmissionDeclarationControllerSpec extends SpecBase with MockitoSugar {
 

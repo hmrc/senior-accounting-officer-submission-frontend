@@ -21,6 +21,7 @@ import forms.SaoEmailFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.SaoEmailPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,7 +31,6 @@ import views.html.SaoEmailView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import play.api.data.Form
 
 class SaoEmailController @Inject() (
     override val messagesApi: MessagesApi,

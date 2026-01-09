@@ -17,9 +17,9 @@
 package forms
 
 import forms.mappings.*
+import play.api.data.*
 import play.api.data.Forms.of
 import play.api.data.format.Formatter
-import play.api.data.{Form, FormError, Forms, Mapping}
 
 import javax.inject.Inject
 

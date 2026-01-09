@@ -18,9 +18,11 @@ package controllers
 
 import controllers.actions.*
 import forms.CertificateSubmissionDeclarationFormProvider
+import models.CertificateSubmissionDeclaration
 import models.Mode
 import navigation.Navigator
 import pages.CertificateSubmissionDeclarationPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,8 +32,6 @@ import views.html.CertificateSubmissionDeclarationView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import models.CertificateSubmissionDeclaration
-import play.api.data.Form
 
 class CertificateSubmissionDeclarationController @Inject() (
     override val messagesApi: MessagesApi,

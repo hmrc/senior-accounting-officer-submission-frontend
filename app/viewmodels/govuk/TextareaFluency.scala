@@ -62,7 +62,7 @@ trait TextareaFluency {
 
     def withAutocomplete(value: String): Textarea =
       textarea.copy(autocomplete = Some(value))
-    
+
     def withAttribute(attribute: (String, String)): Textarea =
       textarea.copy(attributes = textarea.attributes + attribute)
 
