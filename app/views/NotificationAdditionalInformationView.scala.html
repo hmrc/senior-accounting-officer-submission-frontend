@@ -14,8 +14,9 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth.*
+@import forms.FormHelpers
 @import uk.gov.hmrc.govukfrontend.views.html.components.GovukTextarea
+@import viewmodels.InputWidth.*
 
 @this(
     layout: templates.Layout,
@@ -55,14 +56,14 @@
         <div class="govuk-button-group">
             @govukButton(
                 ButtonViewModel(messages("site.continue").toText)
-                    .withName("confirmButton")
+                    .withAttribute("id", "submit")
             )
             @govukButton(
                 ButtonViewModel(messages("site.skip").toText)
-                    .withName("skipButton")
+                    .withName(FormHelpers.skipButtonFieldName)
                     .withCssClass("govuk-button--secondary")
+                    .withAttribute("id", "skip")
             )
         </div>
-
     }
 }

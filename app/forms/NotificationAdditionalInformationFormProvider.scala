@@ -18,8 +18,6 @@ package forms
 
 import forms.mappings.*
 import play.api.data.*
-import play.api.data.Forms.of
-import play.api.data.format.Formatter
 
 import javax.inject.Inject
 
@@ -29,32 +27,12 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
   val requiredError = "notificationAdditionalInformation.error.required"
   val lengthError   = "notificationAdditionalInformation.error.length"
 
-  val skipButtonField = "skipButton"
 
   def apply(): Form[Option[String]] =
     Form(
-      "value" -> mandatoryUnlessSkipped(
+      "value" -> FormHelpers.mandatoryUnlessSkipped(
         text(errorKey = requiredError).verifying(maxLength(maxLength, lengthError))
       )
     )
 
-  private def mandatoryUnlessSkipped(mapping: Mapping[String]): Mapping[Option[String]] =
-    of(new Formatter[Option[String]] {
-
-      override def bind(key: String, data: Map[String, String]): Either[Seq[FormError], Option[String]] = {
-        val isSkip = data.contains(skipButtonField)
-
-        if isSkip then {
-          Right(None)
-        } else {
-          mapping.withPrefix(key).bind(data).map(Some.apply)
-        }
-      }
-
-      override def unbind(key: String, value: Option[String]): Map[String, String] =
-        value.fold(Map.empty) {
-          case v if v.nonEmpty => Map(key -> v)
-          case _               => Map.empty
-        }
-    })
 }
