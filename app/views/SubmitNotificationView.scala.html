@@ -23,10 +23,19 @@
 @()(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("submitNotification.title"))) {
+    <span class="govuk-caption-m">@messages("submitNotification.caption")</span>
     @formHelper(action = routes.SubmitNotificationController.onSubmit()) {
-        <h1 class="govuk-heading-xl">@messages("submitNotification.heading")</h1>
-         @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
+        <h1 class="govuk-heading-l">@messages("submitNotification.heading")</h1>
+
+        <p class="govuk-body">@messages("submitNotification.paragraph1")</p>
+        <p class="govuk-body">@messages("submitNotification.paragraph2")</p>
+
+        <div class="govuk-inset-text">
+            @messages("submitNotification.inset.text")
+        </div>
+
+        @govukButton(
+            ButtonViewModel(messages("submitNotification.button").toText)
         )
     }
 }

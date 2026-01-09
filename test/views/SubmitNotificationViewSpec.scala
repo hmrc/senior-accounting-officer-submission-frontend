@@ -41,13 +41,30 @@ class SubmitNotificationViewSpec extends ViewSpecBase[SubmitNotificationView] {
       hasError = false
     )
 
-    doc.createTestsWithSubmissionButton(action = onwardRoute, buttonText = "Continue")
+    doc.createTestsWithCaption(
+      pageCaption
+    )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithParagraphs(paragraphs)
+
+    doc.createTestForInsetText(pageInsetText)
+
+    doc.createTestsWithSubmissionButton(action = onwardRoute, buttonText = pageButtonText)
   }
 }
 
 object SubmitNotificationViewSpec {
-  val pageHeading = "submitNotification"
-  val pageTitle   = "submitNotification"
+  val pageHeading = "Confirm and submit a notification"
+  val pageTitle   =
+    "Confirm notification and submit" // TODO: Is this correct? Other pages have matching title and heading.
+  val pageCaption             = "Submit a notification"
+  val paragraphs: Seq[String] = Seq(
+    "You confirm that this is an official notification to HMRC in relation to the Senior Accounting Officer requirement in accordance with Schedule 46 of the Finance Act 2009.",
+    "By sending the notification you agree that the information you have given is complete and correct. If you deliberately give wrong or incomplete information, or do not report changes, the company may have to pay a penalty of £5,000."
+  )
+  val pageInsetText =
+    "If you later realise you’ve submitted incorrect information, contact your Customer Compliance Manager if you have one, or the Customer Engagement Team for support."
+  val pageButtonText = "Confirm and submit"
 }
