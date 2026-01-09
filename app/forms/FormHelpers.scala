@@ -17,8 +17,8 @@
 package forms
 
 import play.api.data.Forms.of
-import play.api.data.{FormError, Mapping}
 import play.api.data.format.Formatter
+import play.api.data.{FormError, Mapping}
 
 object FormHelpers {
 
@@ -40,7 +40,7 @@ object FormHelpers {
       override def unbind(key: String, value: Option[String]): Map[String, String] =
         value.fold(Map.empty) {
           case v if v.nonEmpty => Map(key -> v)
-          case _ => Map.empty
+          case _               => Map.empty
         }
     })
 

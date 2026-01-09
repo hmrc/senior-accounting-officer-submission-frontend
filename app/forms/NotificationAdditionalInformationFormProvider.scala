@@ -27,7 +27,6 @@ class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
   val requiredError = "notificationAdditionalInformation.error.required"
   val lengthError   = "notificationAdditionalInformation.error.length"
 
-
   def apply(): Form[Option[String]] =
     Form(
       "value" -> FormHelpers.mandatoryUnlessSkipped(
