@@ -49,19 +49,6 @@ class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView
       buttonText = "Continue"
     )
   }
-
-  extension (doc: => Document) {
-    def createTestForInsetText(text: String): Unit = {
-      val insetTextElement = doc.getMainContent.select(".govuk-inset-text")
-      "must have one inset string" in {
-        insetTextElement.size() mustBe 1
-      }
-
-      s"must have expected inset string of $text" in {
-        insetTextElement.text() mustBe text
-      }
-    }
-  }
 }
 
 object NotificationGuidanceViewSpec {
