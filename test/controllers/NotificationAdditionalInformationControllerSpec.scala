@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.NotificationAdditionalInformationPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -32,14 +33,13 @@ import repositories.SessionRepository
 import views.html.NotificationAdditionalInformationView
 
 import scala.concurrent.Future
-import play.api.data.Form
 
 class NotificationAdditionalInformationControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider       = new NotificationAdditionalInformationFormProvider()
-  val form: Form[String] = formProvider()
+  val formProvider               = new NotificationAdditionalInformationFormProvider()
+  val form: Form[Option[String]] = formProvider()
 
   lazy val notificationAdditionalInformationRoute: String =
     routes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url
@@ -64,7 +64,8 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NotificationAdditionalInformationPage, "answer").success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(NotificationAdditionalInformationPage, Some("answer")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -76,7 +77,10 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+        contentAsString(result) mustEqual view(
+          form.fill(Some("answer")),
+          NormalMode
+        )(using
           request,
           messages(application)
         ).toString
@@ -103,7 +107,6 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
-
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
       }

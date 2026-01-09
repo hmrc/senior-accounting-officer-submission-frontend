@@ -16,16 +16,22 @@
 
 package forms
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import forms.mappings.*
+import play.api.data.*
 
 import javax.inject.Inject
 
 class NotificationAdditionalInformationFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  val maxLength     = 5000
+  val requiredError = "notificationAdditionalInformation.error.required"
+  val lengthError   = "notificationAdditionalInformation.error.length"
+
+  def apply(): Form[Option[String]] =
     Form(
-      "value" -> text("notificationAdditionalInformation.error.required")
-        .verifying(maxLength(100, "notificationAdditionalInformation.error.length"))
+      "value" -> FormHelpers.mandatoryUnlessSkipped(
+        text(errorKey = requiredError).verifying(maxLength(maxLength, lengthError))
+      )
     )
+
 }

@@ -21,7 +21,11 @@ import forms.NotificationAdditionalInformationFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.NotificationAdditionalInformationPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.*
+import play.api.libs.json.Reads.*
+import play.api.libs.json.Writes.*
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -30,7 +34,6 @@ import views.html.NotificationAdditionalInformationView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import play.api.data.Form
 
 class NotificationAdditionalInformationController @Inject() (
     override val messagesApi: MessagesApi,
@@ -46,13 +49,13 @@ class NotificationAdditionalInformationController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  val form: Form[String] = formProvider()
+  val form: Form[Option[String]] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
 
-    val preparedForm = request.userAnswers.get(NotificationAdditionalInformationPage) match {
-      case None        => form
-      case Some(value) => form.fill(value)
+    val preparedForm = request.userAnswers.getNullable(NotificationAdditionalInformationPage) match {
+      case None  => form
+      case value => form.fill(value)
     }
 
     Ok(view(preparedForm, mode))
@@ -66,8 +69,9 @@ class NotificationAdditionalInformationController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
+              updatedAnswers <- Future
+                .fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
         )
   }

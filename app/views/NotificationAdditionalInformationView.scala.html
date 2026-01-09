@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import forms.FormHelpers
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukTextarea
 @import viewmodels.InputWidth.*
 
 @this(
@@ -21,6 +23,7 @@
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukInput: GovukInput,
+    govukTextArea: GovukTextarea,
     govukButton: GovukButton
 )
 
@@ -29,21 +32,38 @@
 @layout(pageTitle = title(form, messages("notificationAdditionalInformation.title"))) {
 
     @formHelper(action = routes.NotificationAdditionalInformationController.onSubmit(mode)) {
-
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        @govukInput(
-            InputViewModel(
+        <span class="govuk-caption-m">@messages("notificationAdditionalInformation.caption")</span>
+        <h1 class="govuk-heading-l"> @messages("notificationAdditionalInformation.heading")</h1>
+        <p class="govuk-body">@messages("notificationAdditionalInformation.paragraph1")</p>
+        <p class="govuk-body">@messages("notificationAdditionalInformation.paragraph2")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("notificationAdditionalInformation.list1.item1")</li>
+            <li>@messages("notificationAdditionalInformation.list1.item2")</li>
+        </ul>
+
+        @govukTextArea(
+            TextareaViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("notificationAdditionalInformation.heading").toText).asPageHeading(LabelSize.Large)
+                label = LabelViewModel(messages("notificationAdditionalInformation.label").toText)
+                            .withCssClass("govuk-label--s")
             )
-            .withWidth(Full)
         )
 
-        @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
-        )
+        <div class="govuk-button-group">
+            @govukButton(
+                ButtonViewModel(messages("site.continue").toText)
+                    .withAttribute("id", "submit")
+            )
+            @govukButton(
+                ButtonViewModel(messages("site.skip").toText)
+                    .withName(FormHelpers.skipButtonFieldName)
+                    .withCssClass("govuk-button--secondary")
+                    .withAttribute("id", "skip")
+            )
+        </div>
     }
 }

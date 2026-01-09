@@ -23,7 +23,7 @@ class NotificationAdditionalInformationFormProviderSpec extends StringFieldBehav
 
   val requiredKey = "notificationAdditionalInformation.error.required"
   val lengthKey   = "notificationAdditionalInformation.error.length"
-  val maxLength   = 100
+  val maxLength   = 5000
 
   val form = new NotificationAdditionalInformationFormProvider()()
 
@@ -59,7 +59,7 @@ class NotificationAdditionalInformationFormProviderSpec extends StringFieldBehav
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "NotificationAdditionalInformation must be 100 characters or less"
+      message = "NotificationAdditionalInformation must be 5000 characters or less"
     )
   }
 }

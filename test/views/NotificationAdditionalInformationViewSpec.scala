@@ -21,16 +21,18 @@ import forms.NotificationAdditionalInformationFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.scalactic.source.Position
 import play.api.data.Form
+import play.api.mvc.Call
 import views.NotificationAdditionalInformationViewSpec.*
 import views.html.NotificationAdditionalInformationView
 
 class NotificationAdditionalInformationViewSpec extends ViewSpecBase[NotificationAdditionalInformationView] {
 
-  private val formProvider       = app.injector.instanceOf[NotificationAdditionalInformationFormProvider]
-  private val form: Form[String] = formProvider()
+  private val formProvider               = app.injector.instanceOf[NotificationAdditionalInformationFormProvider]
+  private val form: Form[Option[String]] = formProvider()
 
-  private def generateView(form: Form[String], mode: Mode): Document = {
+  private def generateView(form: Form[Option[String]], mode: Mode): Document = {
     val view = SUT(form, mode)
     Jsoup.parse(view.toString)
   }
@@ -50,17 +52,18 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestMustShowNumberOfTextareas(1)
+          doc.createTestMustShowTextarea(
             name = "value",
-            label = pageHeading,
+            label = textAreaLabel,
             value = "",
             hint = None,
             hasError = false
           )
 
-          doc.createTestsWithSubmissionButton(
+          doc.createTestsWithSubmissionButtons(
             action = controllers.routes.NotificationAdditionalInformationController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonTexts = Seq("Continue", "Skip")
           )
 
           doc.createTestsWithOrWithoutError(
@@ -79,17 +82,27 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithParagraphs(
+            paragraphs
+          )
+
+          doc.createTestsWithBulletPoints(
+            bulletPoints
+          )
+
+          doc.createTestMustShowNumberOfTextareas(1)
+
+          doc.createTestMustShowTextarea(
             name = "value",
-            label = pageHeading,
+            label = textAreaLabel,
             value = testInputValue,
             hint = None,
             hasError = false
           )
 
-          doc.createTestsWithSubmissionButton(
+          doc.createTestsWithSubmissionButtons(
             action = controllers.routes.NotificationAdditionalInformationController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonTexts = Seq("Continue", "Skip")
           )
 
           doc.createTestsWithOrWithoutError(
@@ -108,17 +121,17 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             hasError = true
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestMustShowTextarea(
             name = "value",
-            label = pageHeading,
+            label = textAreaLabel,
             value = "",
             hint = None,
             hasError = true
           )
 
-          doc.createTestsWithSubmissionButton(
+          doc.createTestsWithSubmissionButtons(
             action = controllers.routes.NotificationAdditionalInformationController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonTexts = Seq("Continue", "Skip")
           )
 
           doc.createTestsWithOrWithoutError(
@@ -128,10 +141,54 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
       }
     }
   }
+
+  extension (doc: Document) {
+    def createTestsWithSubmissionButtons(
+        action: Call,
+        buttonTexts: Seq[String]
+    )(using
+        pos: Position
+    ): Unit = {
+      def target = doc.getMainContent
+      s"must have a form which submits to '${action.method} ${action.url}'" in {
+        val form = target.select("form")
+        form.attr("method") mustBe action.method
+        form.attr("action") mustBe action.url
+        form.size() mustBe 1
+      }
+
+      s"must have ${buttonTexts.size} number of buttons" in {
+        val buttons = target.select("button")
+
+        buttons.size() mustBe buttonTexts.size
+      }
+
+      buttonTexts.zipWithIndex
+        .foreach((buttonText, i) => {
+          s"must have a submit button with text '$buttonText'" in {
+            val button = target.select("button").get(i)
+            withClue(
+              s"Submit Button with text '$buttonText' not found\n"
+            ) {
+              button.text() mustBe buttonText
+            }
+          }
+        })
+    }
+  }
 }
 
 object NotificationAdditionalInformationViewSpec {
-  val pageHeading    = "notificationAdditionalInformation"
-  val pageTitle      = "notificationAdditionalInformation"
-  val testInputValue = "myTestInputValue"
+  val pageHeading             = "Additional information"
+  val pageTitle               = "Notification details"
+  val testInputValue          = "myTestInputValue"
+  val paragraphs: Seq[String] = Seq(
+    "Tell us if there’s anything we should know about your notification or the companies listed.",
+    "This could include:"
+  )
+  val bulletPoints: Seq[String] = Seq(
+    "a company’s status changing, such as becoming dormant or going into liquidation",
+    "anything else relevant to the companies listed"
+  )
+  val textAreaLabel = "Provide information about your notification"
 }

@@ -20,9 +20,9 @@ import base.ViewSpecBase
 import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import play.api.mvc.Call
 import views.SubmitNotificationViewSpec.*
 import views.html.SubmitNotificationView
-import play.api.mvc.Call
 
 class SubmitNotificationViewSpec extends ViewSpecBase[SubmitNotificationView] {
 
