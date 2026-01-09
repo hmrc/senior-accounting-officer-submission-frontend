@@ -53,7 +53,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             hasError = false
           )
 
-          doc.createTestMustShowNumberOfInputs(1)
+          doc.createTestMustShowNumberOfTextareas(1)
           doc.createTestMustShowTextArea(
             name = "value",
             label = textAreaLabel,
@@ -91,7 +91,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             bulletPoints
           )
 
-          doc.createTestMustShowNumberOfInputs(1)
+          doc.createTestMustShowNumberOfTextareas(1)
 
           doc.createTestMustShowTextArea(
             name = "value",
