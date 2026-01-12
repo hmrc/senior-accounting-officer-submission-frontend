@@ -169,6 +169,14 @@ class NavigatorSpec extends SpecBase {
 
     "in Check mode" - {
 
+      "when on NotificationAdditionalInformationPage, must go to notification check your answers page" in {
+        navigator.nextPage(
+          NotificationAdditionalInformationPage,
+          CheckMode,
+          UserAnswers("id")
+        ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
+      }
+
       "must throw an not-implemented error for an unspecified configuration" in {
         case object UnknownPage extends Page
         intercept[NotImplementedError] {
