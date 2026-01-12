@@ -25,6 +25,12 @@ import views.html.NotificationCheckYourAnswersView
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.govuk.summarylist.*
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, Value as SLValue}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import viewmodels.converters.*
 
 class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationCheckYourAnswersView] {
 
@@ -33,8 +39,8 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
   "NotificationCheckYourAnswersView" - {
 
     "empty summary list must result in no table rows" - {
-      val summaryList   = SummaryList()
-      val doc: Document = generateView(summaryList)
+      val summaryList                = SummaryList()
+      val doc: Document              = generateView(summaryList)
       def descriptionLists: Elements = doc.getMainContent.getElementsByTag("dl")
 
       "page must have description list" in {
@@ -60,8 +66,6 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         pageCaption
       )
 
-      // TODO: test for the data list
-
       doc.createTestsWithSubmissionButton(
         action = routes.NotificationCheckYourAnswersController.onSubmit(),
         buttonText = pageButtonText
@@ -69,8 +73,19 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
     }
 
     "non-empty summary list must result in a table with rows" - {
-      val summaryList   = SummaryList()
-      val doc: Document = generateView(summaryList)
+      val summaryList =
+        SummaryList(rows = Seq(SummaryListRowViewModel("testKey".toKey, SLValue("nonEmptyString".toText))))
+      val doc: Document              = generateView(summaryList)
+      def descriptionLists: Elements = doc.getMainContent.getElementsByTag("dl")
+
+      "page must have description list" in {
+        descriptionLists.size() mustBe 1
+      }
+
+      "description list must have no rows" in {
+        val descriptionList = descriptionLists.get(0)
+        descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 0
+      }
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -85,8 +100,6 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
       doc.createTestsWithCaption(
         pageCaption
       )
-
-      // TODO: test for the data list
 
       doc.createTestsWithSubmissionButton(
         action = routes.NotificationCheckYourAnswersController.onSubmit(),
