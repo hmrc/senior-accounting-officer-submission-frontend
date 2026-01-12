@@ -18,6 +18,7 @@ package views
 
 import base.ViewSpecBase
 import controllers.routes
+import models.CheckMode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.NotificationCheckYourAnswersViewSpec.*
@@ -74,7 +75,21 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
     "non-empty summary list must result in a table with rows" - {
       val summaryList =
-        SummaryList(rows = Seq(SummaryListRowViewModel("testKey".toKey, SLValue("nonEmptyString".toText))))
+        SummaryList(rows =
+          Seq(
+            SummaryListRowViewModel(
+              key = "testKey".toKey,
+              value = SLValue("nonEmptyString".toText),
+              actions = Seq(
+                ActionItemViewModel(
+                  "dummyMessage".toText,
+                  "dummyUrl"
+                )
+                  .withVisuallyHiddenText("dummyVisuallyHiddenText")
+              )
+            )
+          )
+        )
       val doc: Document              = generateView(summaryList)
       def descriptionLists: Elements = doc.getMainContent.getElementsByTag("dl")
 
@@ -82,9 +97,21 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         descriptionLists.size() mustBe 1
       }
 
-      "description list must have no rows" in {
+      "description list must have one row" in {
         val descriptionList = descriptionLists.get(0)
-        descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 0
+        descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 1
+      }
+
+      "description list value must be 'nonEmptyString'" in {
+        val descriptionList = descriptionLists.get(0)
+        validateSummaryListRow(
+          row = descriptionList.getElementsByClass("govuk-summary-list__row").get(0),
+          keyText = "testKey",
+          valueText = "nonEmptyString",
+          actionText = "dummyMessage",
+          actionHiddenText = "dummyVisuallyHiddenText",
+          actionHref = "dummyUrl"
+        )
       }
 
       doc.createTestsWithStandardPageElements(
@@ -129,7 +156,9 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
     }
 
     val action = row.select("dd.govuk-summary-list__actions")
-    action.size() mustBe 1
+    withClue("row action not found!:\n") {
+      action.size() mustBe 1
+    }
 
     val linkText = action.get(0).select("a")
     linkText.size() mustBe 1
