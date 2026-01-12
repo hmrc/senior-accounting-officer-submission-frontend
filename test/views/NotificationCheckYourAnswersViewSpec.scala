@@ -23,34 +23,101 @@ import org.jsoup.nodes.Document
 import views.NotificationCheckYourAnswersViewSpec.*
 import views.html.NotificationCheckYourAnswersView
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import org.jsoup.nodes.Element
 
 class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationCheckYourAnswersView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(SummaryList()).toString)
+  private def generateView(summaryList: SummaryList): Document = Jsoup.parse(SUT(summaryList).toString)
 
   "NotificationCheckYourAnswersView" - {
-    val doc: Document = generateView()
+    "empty summary list must result in no table rows" - {
+      val summaryList   = SummaryList()
+      val doc: Document = generateView(summaryList)
 
-    doc.createTestsWithStandardPageElements(
-      pageTitle = pageTitle,
-      pageHeading = pageHeading,
-      showBackLink = true,
-      showIsThisPageNotWorkingProperlyLink = true,
-      hasError = false
-    )
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
 
-    doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithOrWithoutError(hasError = false)
 
-    doc.createTestsWithCaption(
-      pageCaption
-    )
+      doc.createTestsWithCaption(
+        pageCaption
+      )
 
-    // TODO: test for the data list
+      // TODO: test for the data list
 
-    doc.createTestsWithSubmissionButton(
-      action = routes.NotificationCheckYourAnswersController.onSubmit(),
-      buttonText = pageButtonText
-    )
+      doc.createTestsWithSubmissionButton(
+        action = routes.NotificationCheckYourAnswersController.onSubmit(),
+        buttonText = pageButtonText
+      )
+    }
+
+    "non-empty summary list must result in a table with rows" - {
+      val summaryList   = SummaryList()
+      val doc: Document = generateView(summaryList)
+
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+
+      doc.createTestsWithCaption(
+        pageCaption
+      )
+
+      // TODO: test for the data list
+
+      doc.createTestsWithSubmissionButton(
+        action = routes.NotificationCheckYourAnswersController.onSubmit(),
+        buttonText = pageButtonText
+      )
+    }
+  }
+
+  def validateSummaryListRow(
+      row: Element,
+      keyText: String,
+      valueText: String,
+      actionText: String,
+      actionHiddenText: String,
+      actionHref: String
+  ): Unit = {
+    val key = row.select("dt.govuk-summary-list__key")
+    key.size() mustBe 1
+    withClue("row keyText mismatch:\n") {
+      key.get(0).text() mustBe keyText
+    }
+
+    val value = row.select("dd.govuk-summary-list__value")
+    value.size() mustBe 1
+    withClue("row valueText mismatch:\n") {
+      value.get(0).text() mustBe valueText
+    }
+
+    val action = row.select("dd.govuk-summary-list__actions")
+    action.size() mustBe 1
+
+    val linkText = action.get(0).select("a")
+    linkText.size() mustBe 1
+    withClue("row actionHref mismatch:\n") {
+      linkText.get(0).attr("href") mustBe actionHref
+    }
+    withClue("row actionHiddenText mismatch:\n") {
+      linkText.get(0).select("span.govuk-visually-hidden").text() mustBe actionHiddenText
+    }
+    linkText.get(0).select("span.govuk-visually-hidden").remove()
+    withClue("row actionText mismatch:\n") {
+      linkText.get(0).text() mustBe actionText
+    }
   }
 }
 
