@@ -24,15 +24,27 @@ import views.NotificationCheckYourAnswersViewSpec.*
 import views.html.NotificationCheckYourAnswersView
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 
 class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationCheckYourAnswersView] {
 
   private def generateView(summaryList: SummaryList): Document = Jsoup.parse(SUT(summaryList).toString)
 
   "NotificationCheckYourAnswersView" - {
+
     "empty summary list must result in no table rows" - {
       val summaryList   = SummaryList()
       val doc: Document = generateView(summaryList)
+      def descriptionLists: Elements = doc.getMainContent.getElementsByTag("dl")
+
+      "page must have description list" in {
+        descriptionLists.size() mustBe 1
+      }
+
+      "description list must have no rows" in {
+        val descriptionList = descriptionLists.get(0)
+        descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 0
+      }
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
