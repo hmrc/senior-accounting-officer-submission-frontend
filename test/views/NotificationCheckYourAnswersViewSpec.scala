@@ -29,7 +29,6 @@ import org.jsoup.select.Elements
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist.*
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, Value as SLValue}
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Content
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import viewmodels.converters.*
 
