@@ -94,6 +94,7 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
             )
           )
         )
+
       val doc: Document              = generateView(summaryList)
       def descriptionLists: Elements = doc.getMainContent.getElementsByTag("dl")
 
@@ -101,26 +102,31 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         descriptionLists.size() mustBe 1
       }
 
-      "description list must have two rows" in {
-        val descriptionList = descriptionLists.get(0)
-        descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 2
-      }
+      "description list" - {
+        def descriptionList = descriptionLists.get(0)
 
-      "description list value must be 'nonEmptyString'" in {
-        val descriptionList = descriptionLists.get(0)
-        validateSummaryListRow(
-          row = descriptionList.getElementsByClass("govuk-summary-list__row").get(0),
-          keyText = "testKey",
-          valueText = "nonEmptyString",
-          actionText = "dummyMessage",
-          actionHiddenText = "dummyVisuallyHiddenText",
-          actionHref = "dummyUrl"
-        )
-        validateSummaryListRowNoAction(
-          row = descriptionList.getElementsByClass("govuk-summary-list__row").get(1),
-          keyText = "testKey2",
-          valueText = "nonEmptyString2"
-        )
+        "must have two rows" in {
+          descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 2
+        }
+
+        "must generate correct content when there is a call to action" in {
+          validateSummaryListRow(
+            row = descriptionList.getElementsByClass("govuk-summary-list__row").get(0),
+            keyText = "testKey",
+            valueText = "nonEmptyString",
+            actionText = "dummyMessage",
+            actionHiddenText = "dummyVisuallyHiddenText",
+            actionHref = "dummyUrl"
+          )
+        }
+
+        "must generate correct content when there is no call to action" in {
+          validateSummaryListRowNoAction(
+            row = descriptionList.getElementsByClass("govuk-summary-list__row").get(1),
+            keyText = "testKey2",
+            valueText = "nonEmptyString2"
+          )
+        }
       }
 
       doc.createTestsWithStandardPageElements(
@@ -184,10 +190,10 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
   }
 
   def validateSummaryListRowNoAction(
-                              row: Element,
-                              keyText: String,
-                              valueText: String
-                            ): Unit = {
+      row: Element,
+      keyText: String,
+      valueText: String
+  ): Unit = {
     val key = row.select("dt.govuk-summary-list__key")
     key.size() mustBe 1
     withClue("row keyText mismatch:\n") {
