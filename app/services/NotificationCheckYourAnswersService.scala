@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
+package services
+
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import models.UserAnswers
+import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
+import play.api.i18n.Messages
 
 class NotificationCheckYourAnswersService {
-  def getSummaryList(userAnswers: UserAnswers): SummaryList = { ??? }
+  def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
+    SummaryList(rows =
+      Seq(
+        NotificationAdditionalInformationSummary.row(userAnswers)
+      )
+    )
+  }
 }
