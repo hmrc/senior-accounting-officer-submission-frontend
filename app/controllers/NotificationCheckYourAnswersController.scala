@@ -27,8 +27,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationCheckYourAnswersView
 
 import javax.inject.Inject
-import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,

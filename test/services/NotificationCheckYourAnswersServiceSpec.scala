@@ -18,11 +18,11 @@ package services
 
 import base.SpecBase
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import pages.NotificationAdditionalInformationPage
+import play.api.i18n.Messages
 import play.api.i18n.MessagesApi
 import play.api.test.FakeRequest
-import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
 
 class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {

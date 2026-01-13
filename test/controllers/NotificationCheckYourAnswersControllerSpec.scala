@@ -21,17 +21,16 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
+import play.api.i18n.Messages
 import play.api.inject.bind
+import play.api.mvc.AnyContentAsEmpty
 import play.api.mvc.Call
+import play.api.mvc.Request
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.NotificationCheckYourAnswersView
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
-import play.api.mvc.Request
-import play.api.i18n.Messages
-import play.api.mvc.AnyContentAsEmpty
 import services.NotificationCheckYourAnswersService
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import views.html.NotificationCheckYourAnswersView
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 

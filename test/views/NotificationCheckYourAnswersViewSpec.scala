@@ -18,19 +18,18 @@ package views
 
 import base.ViewSpecBase
 import controllers.routes
-import models.CheckMode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.NotificationCheckYourAnswersViewSpec.*
-import views.html.NotificationCheckYourAnswersView
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist.*
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, Value as SLValue}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, Value as SLValue}
 import viewmodels.converters.*
+import viewmodels.govuk.summarylist.*
+import views.NotificationCheckYourAnswersViewSpec.*
+import views.html.NotificationCheckYourAnswersView
 
 class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationCheckYourAnswersView] {
 
