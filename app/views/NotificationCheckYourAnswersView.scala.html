@@ -27,7 +27,12 @@
     <span class="govuk-caption-m">@messages("notificationCheckYourAnswers.caption")</span>
     <h1 class="govuk-heading-l">@messages("notificationCheckYourAnswers.heading")</h1>
 
-    @govukSummaryList(summaryList)
+    <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">@messages("notificationCheckYourAnswers.card.title", "'dummy date'")</h2>
+        </div>
+        <div class="govuk-summary-card__content">@govukSummaryList(summaryList)</div>
+    </div>
 
     @formHelper(action = routes.NotificationCheckYourAnswersController.onSubmit()){
         @govukButton(

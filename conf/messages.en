@@ -121,6 +121,7 @@ notificationAdditionalInformation.change.hidden = NotificationAdditionalInformat
 notificationCheckYourAnswers.title = Submit a notification
 notificationCheckYourAnswers.heading = Check your answers
 notificationCheckYourAnswers.caption = Submit a notification
+notificationCheckYourAnswers.card.title = Financial year end {0}
 
 submitNotification.title = Confirm notification and submit
 submitNotification.heading = Confirm and submit a notification
