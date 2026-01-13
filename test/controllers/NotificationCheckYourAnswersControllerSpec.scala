@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.inject.bind
@@ -40,24 +40,25 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
   "NotificationCheckYourAnswers Controller" - {
 
     "must return OK and the correct view for a GET" in {
-
       val mockService = mock[NotificationCheckYourAnswersService]
       when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).overrides(bind[NotificationCheckYourAnswersService].toInstance(mockService)).build()
+
+      val userAnswers = emptyUserAnswers
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(bind[NotificationCheckYourAnswersService].toInstance(mockService))
+        .build()
 
       running(application) {
         given request: Request[AnyContentAsEmpty.type] =
           FakeRequest(GET, routes.NotificationCheckYourAnswersController.onPageLoad().url)
 
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[NotificationCheckYourAnswersView]
-
+        val result     = route(application, request).value
+        val view       = application.injector.instanceOf[NotificationCheckYourAnswersView]
         given Messages = messages(application)
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(SummaryList()).toString
-        verify(mockService).getSummaryList(any()) (using any())
+        verify(mockService).getSummaryList(meq(userAnswers))(using any())
       }
     }
 
