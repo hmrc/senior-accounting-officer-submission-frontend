@@ -87,6 +87,10 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
                 )
                   .withVisuallyHiddenText("dummyVisuallyHiddenText")
               )
+            ),
+            SummaryListRowViewModel(
+              key = "testKey2".toKey,
+              value = SLValue("nonEmptyString2".toText)
             )
           )
         )
@@ -97,9 +101,9 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         descriptionLists.size() mustBe 1
       }
 
-      "description list must have one row" in {
+      "description list must have two rows" in {
         val descriptionList = descriptionLists.get(0)
-        descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 1
+        descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 2
       }
 
       "description list value must be 'nonEmptyString'" in {
@@ -111,6 +115,11 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
           actionText = "dummyMessage",
           actionHiddenText = "dummyVisuallyHiddenText",
           actionHref = "dummyUrl"
+        )
+        validateSummaryListRowNoAction(
+          row = descriptionList.getElementsByClass("govuk-summary-list__row").get(1),
+          keyText = "testKey2",
+          valueText = "nonEmptyString2"
         )
       }
 
@@ -171,6 +180,29 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
     linkText.get(0).select("span.govuk-visually-hidden").remove()
     withClue("row actionText mismatch:\n") {
       linkText.get(0).text() mustBe actionText
+    }
+  }
+
+  def validateSummaryListRowNoAction(
+                              row: Element,
+                              keyText: String,
+                              valueText: String
+                            ): Unit = {
+    val key = row.select("dt.govuk-summary-list__key")
+    key.size() mustBe 1
+    withClue("row keyText mismatch:\n") {
+      key.get(0).text() mustBe keyText
+    }
+
+    val value = row.select("dd.govuk-summary-list__value")
+    value.size() mustBe 1
+    withClue("row valueText mismatch:\n") {
+      value.get(0).text() mustBe valueText
+    }
+
+    val action = row.select("dd.govuk-summary-list__actions")
+    withClue("row action found!:\n") {
+      action.size() mustBe 0
     }
   }
 }
