@@ -22,6 +22,7 @@ import navigation.Navigator
 import pages.NotificationCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.NotificationCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationCheckYourAnswersView
 
@@ -36,16 +37,13 @@ class NotificationCheckYourAnswersController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
-    navigator: Navigator
+    navigator: Navigator,
+    notificationCheckYourAnswersService: NotificationCheckYourAnswersService
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val summaryList = SummaryList(rows =
-      Seq(
-        NotificationAdditionalInformationSummary.row(request.userAnswers)
-      )
-    )
+    val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
 
     Ok(view(summaryList))
   }

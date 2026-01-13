@@ -18,6 +18,9 @@ package controllers
 
 import base.SpecBase
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{verify, when}
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -28,6 +31,7 @@ import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
 import play.api.mvc.Request
 import play.api.i18n.Messages
 import play.api.mvc.AnyContentAsEmpty
+import services.NotificationCheckYourAnswersService
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
@@ -37,7 +41,9 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val mockService = mock[NotificationCheckYourAnswersService]
+      when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).overrides(bind[NotificationCheckYourAnswersService].toInstance(mockService)).build()
 
       running(application) {
         given request: Request[AnyContentAsEmpty.type] =
@@ -50,11 +56,8 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         given Messages = messages(application)
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          SummaryList(
-            Seq(NotificationAdditionalInformationSummary.row(emptyUserAnswers))
-          )
-        ).toString
+        contentAsString(result) mustEqual view(SummaryList()).toString
+        verify(mockService).getSummaryList(any()) (using any())
       }
     }
 
