@@ -38,17 +38,47 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
   "NotificationCheckYourAnswersView" - {
 
     "empty summary list must result in no table rows" - {
-      val summaryList                = SummaryList()
-      val doc: Document              = generateView(summaryList)
-      def descriptionLists: Elements = doc.getMainContent.getElementsByTag("dl")
+      val summaryList   = SummaryList()
+      val doc: Document = generateView(summaryList)
 
-      "page must have description list" in {
-        descriptionLists.size() mustBe 1
-      }
+      "Summary Card" - {
+        "must be exactly one present" in {
+          doc.summaryListCards.size() mustBe 1
+        }
 
-      "description list must have no rows" in {
-        val descriptionList = descriptionLists.get(0)
-        descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 0
+        "must have exactly one title present" in {
+          doc.summaryListTitles.size() mustBe 1
+        }
+
+        "must have the correct title" in {
+          doc.summaryListTitle.text() mustBe cardTitle()
+        }
+
+        "title must have css class 'govuk-summary-card__title'" in {
+          doc.summaryListTitle.hasClass("govuk-summary-card__title") mustBe true
+        }
+
+        "title must be in a div with css class 'govuk-summary-card__title-wrapper'" in {
+          val parent = doc.summaryListTitle.closest("div")
+          parent.hasClass("govuk-summary-card__title-wrapper") mustBe true
+        }
+
+        "must have description list" in {
+          doc.descriptionLists.size() mustBe 1
+        }
+
+        "description list must have no rows" in {
+          doc.descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 0
+        }
+
+        "description list must have css class 'govuk-summary-list'" in {
+          doc.descriptionList.hasClass("govuk-summary-list") mustBe true
+        }
+
+        "description list must be inside a div that has css class 'govuk-summary-card__content'" in {
+          val parent = doc.descriptionList.closest("div")
+          parent.hasClass("govuk-summary-card__content") mustBe true
+        }
       }
 
       doc.createTestsWithStandardPageElements(
@@ -93,37 +123,67 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
           )
         )
 
-      val doc: Document              = generateView(summaryList)
-      def descriptionLists: Elements = doc.getMainContent.getElementsByTag("dl")
+      val doc: Document = generateView(summaryList)
 
-      "page must have description list" in {
-        descriptionLists.size() mustBe 1
-      }
-
-      "description list" - {
-        def descriptionList = descriptionLists.get(0)
-
-        "must have two rows" in {
-          descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 2
+      "Summary Card" - {
+        "must be exactly one present" in {
+          doc.summaryListCards.size() mustBe 1
         }
 
-        "must generate correct content when there is a call to action" in {
-          validateSummaryListRow(
-            row = descriptionList.getElementsByClass("govuk-summary-list__row").get(0),
-            keyText = "testKey",
-            valueText = "nonEmptyString",
-            actionText = "dummyMessage",
-            actionHiddenText = "dummyVisuallyHiddenText",
-            actionHref = "dummyUrl"
-          )
+        "must have exactly one title present" in {
+          doc.summaryListTitles.size() mustBe 1
         }
 
-        "must generate correct content when there is no call to action" in {
-          validateSummaryListRowNoAction(
-            row = descriptionList.getElementsByClass("govuk-summary-list__row").get(1),
-            keyText = "testKey2",
-            valueText = "nonEmptyString2"
-          )
+        "must have the correct title" in {
+          doc.summaryListTitle.text() mustBe cardTitle()
+        }
+
+        "title must have css class 'govuk-summary-card__title'" in {
+          doc.summaryListTitle.hasClass("govuk-summary-card__title") mustBe true
+        }
+
+        "title must be in a div with css class 'govuk-summary-card__title-wrapper'" in {
+          val parent = doc.summaryListTitle.closest("div")
+          parent.hasClass("govuk-summary-card__title-wrapper") mustBe true
+        }
+
+        "page must have description list" in {
+          doc.descriptionLists.size() mustBe 1
+        }
+
+        "description list" - {
+
+          "must have two rows" in {
+            doc.descriptionList.getElementsByClass("govuk-summary-list__row").size() mustBe 2
+          }
+
+          "must generate correct content when there is a call to action" in {
+            validateSummaryListRow(
+              row = doc.descriptionList.getElementsByClass("govuk-summary-list__row").get(0),
+              keyText = "testKey",
+              valueText = "nonEmptyString",
+              actionText = "dummyMessage",
+              actionHiddenText = "dummyVisuallyHiddenText",
+              actionHref = "dummyUrl"
+            )
+          }
+
+          "must generate correct content when there is no call to action" in {
+            validateSummaryListRowNoAction(
+              row = doc.descriptionList.getElementsByClass("govuk-summary-list__row").get(1),
+              keyText = "testKey2",
+              valueText = "nonEmptyString2"
+            )
+          }
+
+          "description list must have css class 'govuk-summary-list'" in {
+            doc.descriptionList.hasClass("govuk-summary-list") mustBe true
+          }
+
+          "description list must be inside a div that has css class 'govuk-summary-card__content'" in {
+            val parent = doc.descriptionList.closest("div")
+            parent.hasClass("govuk-summary-card__content") mustBe true
+          }
         }
       }
 
@@ -209,11 +269,21 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
       action.size() mustBe 0
     }
   }
+
+  extension (target: Document | Element) {
+    def summaryListCards: Elements  = target.select("div.govuk-summary-card")
+    def summaryListCard: Element    = summaryListCards.get(0)
+    def summaryListTitles: Elements = summaryListCard.select("h2")
+    def summaryListTitle: Element   = summaryListTitles.get(0)
+    def descriptionLists: Elements  = summaryListCard.summaryListCard.select("dl")
+    def descriptionList: Element    = descriptionLists.get(0)
+  }
 }
 
 object NotificationCheckYourAnswersViewSpec {
-  val pageHeading    = "Check your answers"
-  val pageTitle      = "Submit a notification"
-  val pageCaption    = "Submit a notification"
-  val pageButtonText = "Continue"
+  val pageHeading                                             = "Check your answers"
+  val pageTitle                                               = "Submit a notification"
+  val pageCaption                                             = "Submit a notification"
+  val pageButtonText                                          = "Continue"
+  def cardTitle(yearEndDate: String = "'dummy date'"): String = s"Financial year end $yearEndDate"
 }
