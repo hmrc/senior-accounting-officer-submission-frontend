@@ -107,19 +107,19 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         SummaryList(rows =
           Seq(
             SummaryListRowViewModel(
-              key = "testKey".toKey,
-              value = SLValue("nonEmptyString".toText),
+              key = testKey1.toKey,
+              value = SLValue(testValue1.toText),
               actions = Seq(
                 ActionItemViewModel(
-                  "dummyMessage".toText,
-                  "dummyUrl"
+                  testActionMessage1.toText,
+                  testActionUrl1
                 )
-                  .withVisuallyHiddenText("dummyVisuallyHiddenText")
+                  .withVisuallyHiddenText(testActionHiddenText1)
               )
             ),
             SummaryListRowViewModel(
-              key = "testKey2".toKey,
-              value = SLValue("nonEmptyString2".toText)
+              key = testKey2.toKey,
+              value = SLValue(testValue2.toText)
             )
           )
         )
@@ -161,19 +161,19 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
           "must generate correct content when there is a call to action" in {
             validateSummaryListRow(
               row = doc.descriptionList.getElementsByClass("govuk-summary-list__row").get(0),
-              keyText = "testKey",
-              valueText = "nonEmptyString",
-              actionText = "dummyMessage",
-              actionHiddenText = "dummyVisuallyHiddenText",
-              actionHref = "dummyUrl"
+              keyText = testKey1,
+              valueText = testValue1,
+              actionText = testActionMessage1,
+              actionHiddenText = testActionHiddenText1,
+              actionHref = testActionUrl1
             )
           }
 
           "must generate correct content when there is no call to action" in {
             validateSummaryListRowNoAction(
               row = doc.descriptionList.getElementsByClass("govuk-summary-list__row").get(1),
-              keyText = "testKey2",
-              valueText = "nonEmptyString2"
+              keyText = testKey2,
+              valueText = testValue2
             )
           }
 
@@ -288,4 +288,11 @@ object NotificationCheckYourAnswersViewSpec {
   val pageButtonText           = "Continue"
   val testFinancialYearEndDate = "'Dummy Date'"
   val cardTitle: String        = s"Financial year end $testFinancialYearEndDate"
+  val testKey1                 = "testKey"
+  val testValue1               = "nonEmptyString"
+  val testActionMessage1       = "dummyMessage"
+  val testActionUrl1           = "dummyUrl"
+  val testActionHiddenText1    = "dummyVisuallyHiddenText"
+  val testKey2                 = "testKey2"
+  val testValue2               = "nonEmptyString2"
 }
