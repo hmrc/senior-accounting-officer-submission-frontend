@@ -58,7 +58,7 @@ class SubmitNotificationViewSpec extends ViewSpecBase[SubmitNotificationView] {
 object SubmitNotificationViewSpec {
   val pageHeading = "Confirm and submit a notification"
   val pageTitle   =
-    "Confirm notification and submit" // TODO: Is this correct? Other pages have matching title and heading.
+    "Confirm notification and submit"
   val pageCaption             = "Submit a notification"
   val paragraphs: Seq[String] = Seq(
     "You confirm that this is an official notification to HMRC in relation to the Senior Accounting Officer requirement in accordance with Schedule 46 of the Finance Act 2009.",

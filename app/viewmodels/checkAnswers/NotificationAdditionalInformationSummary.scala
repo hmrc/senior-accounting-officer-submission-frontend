@@ -27,18 +27,22 @@ import viewmodels.govuk.summarylist.*
 
 object NotificationAdditionalInformationSummary {
 
-  def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.getNullable(NotificationAdditionalInformationPage).map { answer =>
-      SummaryListRowViewModel(
-        key = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(HtmlFormat.escape(answer).toText),
-        actions = Seq(
-          ActionItemViewModel(
-            messages("site.change").toText,
-            routes.NotificationAdditionalInformationController.onPageLoad(CheckMode).url
-          )
-            .withVisuallyHiddenText(messages("notificationAdditionalInformation.change.hidden"))
+  def row(answers: UserAnswers)(using messages: Messages): SummaryListRow = {
+    val additionalInformation =
+      answers.getNullable(NotificationAdditionalInformationPage).getOrElse("")
+
+    SummaryListRowViewModel(
+      key = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,
+      value = ValueViewModel(HtmlFormat.escape(additionalInformation).toText),
+      actions = Seq(
+        ActionItemViewModel(
+          messages("site.change").toText,
+          routes.NotificationAdditionalInformationController.onPageLoad(CheckMode).url
         )
+          .withVisuallyHiddenText(
+            messages("notificationAdditionalInformation.change.hidden", answers.getFinancialYearEndDate)
+          )
       )
-    }
+    )
+  }
 }

@@ -15,16 +15,24 @@
  *@
 
 @this(
-        layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        govukButton: GovukButton
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukButton: GovukButton,
+    govukSummaryList: GovukSummaryList
 )
 
-@()(using request: Request[?], messages: Messages)
+@(summaryList: SummaryList, financialYearEndDate: String)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationCheckYourAnswers.title"))) {
+    <span class="govuk-caption-m">@messages("notificationCheckYourAnswers.caption")</span>
+    <h1 class="govuk-heading-l">@messages("notificationCheckYourAnswers.heading")</h1>
 
-    <h1 class="govuk-heading-xl">@messages("notificationCheckYourAnswers.heading")</h1>
+    <div class="govuk-summary-card">
+        <div class="govuk-summary-card__title-wrapper">
+            <h2 class="govuk-summary-card__title">@messages("notificationCheckYourAnswers.card.title", financialYearEndDate)</h2>
+        </div>
+        <div class="govuk-summary-card__content">@govukSummaryList(summaryList)</div>
+    </div>
 
     @formHelper(action = routes.NotificationCheckYourAnswersController.onSubmit()){
         @govukButton(

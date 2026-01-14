@@ -18,10 +18,18 @@ package controllers
 
 import base.SpecBase
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers.{any, eq as meq}
+import org.mockito.Mockito.{verify, when}
+import org.scalatestplus.mockito.MockitoSugar.mock
+import play.api.i18n.Messages
 import play.api.inject.bind
+import play.api.mvc.AnyContentAsEmpty
 import play.api.mvc.Call
+import play.api.mvc.Request
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import services.NotificationCheckYourAnswersService
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.html.NotificationCheckYourAnswersView
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
@@ -31,18 +39,25 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
   "NotificationCheckYourAnswers Controller" - {
 
     "must return OK and the correct view for a GET" in {
+      val mockService = mock[NotificationCheckYourAnswersService]
+      when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers = emptyUserAnswers
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(bind[NotificationCheckYourAnswersService].toInstance(mockService))
+        .build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.NotificationCheckYourAnswersController.onPageLoad().url)
+        given request: Request[AnyContentAsEmpty.type] =
+          FakeRequest(GET, routes.NotificationCheckYourAnswersController.onPageLoad().url)
 
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[NotificationCheckYourAnswersView]
+        val result     = route(application, request).value
+        val view       = application.injector.instanceOf[NotificationCheckYourAnswersView]
+        given Messages = messages(application)
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(SummaryList(), userAnswers.getFinancialYearEndDate).toString
+        verify(mockService).getSummaryList(meq(userAnswers))(using any())
       }
     }
 

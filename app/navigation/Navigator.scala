@@ -64,8 +64,10 @@ class Navigator @Inject() () {
       _ => ???
   }
 
-  private val checkRouteMap: Page => UserAnswers => Call = { case _ =>
-    _ => ???
+  private val checkRouteMap: Page => UserAnswers => Call = {
+    case NotificationAdditionalInformationPage =>
+      _ => routes.NotificationCheckYourAnswersController.onPageLoad()
+    case _ => _ => ???
   }
 
   def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {

@@ -92,4 +92,9 @@ object UserAnswers {
   }
 
   given format: OFormat[UserAnswers] = OFormat(reads, writes)
+
+  extension (userAnswers: UserAnswers) {
+    // TODO need to support i18n & Option
+    def getFinancialYearEndDate: String = "'Dummy Date'"
+  }
 }
