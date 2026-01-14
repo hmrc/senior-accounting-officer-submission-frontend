@@ -113,10 +113,10 @@ notificationAdditionalInformation.paragraph2 = This could include:
 notificationAdditionalInformation.list1.item1 = a company’s status changing, such as becoming dormant or going into liquidation
 notificationAdditionalInformation.list1.item2 = anything else relevant to the companies listed
 notificationAdditionalInformation.label = Provide information about your notification
-notificationAdditionalInformation.checkYourAnswersLabel = notificationAdditionalInformation
+notificationAdditionalInformation.checkYourAnswersLabel = Additional information
 notificationAdditionalInformation.error.required = Enter notificationAdditionalInformation
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 5000 characters or less
-notificationAdditionalInformation.change.hidden = NotificationAdditionalInformation
+notificationAdditionalInformation.change.hidden =  the additional information supplied for the notification (Financial year end {0})
 
 notificationCheckYourAnswers.title = Submit a notification
 notificationCheckYourAnswers.heading = Check your answers
