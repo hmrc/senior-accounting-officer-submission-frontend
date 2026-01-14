@@ -33,7 +33,8 @@ import views.html.NotificationCheckYourAnswersView
 
 class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationCheckYourAnswersView] {
 
-  private def generateView(summaryList: SummaryList): Document = Jsoup.parse(SUT(summaryList).toString)
+  private def generateView(summaryList: SummaryList): Document =
+    Jsoup.parse(SUT(summaryList, testFinancialYearEndDate).toString)
 
   "NotificationCheckYourAnswersView" - {
 
@@ -51,7 +52,7 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         }
 
         "must have the correct title" in {
-          doc.summaryListTitle.text() mustBe cardTitle()
+          doc.summaryListTitle.text() mustBe cardTitle
         }
 
         "title must have css class 'govuk-summary-card__title'" in {
@@ -135,7 +136,7 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         }
 
         "must have the correct title" in {
-          doc.summaryListTitle.text() mustBe cardTitle()
+          doc.summaryListTitle.text() mustBe cardTitle
         }
 
         "title must have css class 'govuk-summary-card__title'" in {
@@ -281,9 +282,10 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 }
 
 object NotificationCheckYourAnswersViewSpec {
-  val pageHeading                                             = "Check your answers"
-  val pageTitle                                               = "Submit a notification"
-  val pageCaption                                             = "Submit a notification"
-  val pageButtonText                                          = "Continue"
-  def cardTitle(yearEndDate: String = "'dummy date'"): String = s"Financial year end $yearEndDate"
+  val pageHeading              = "Check your answers"
+  val pageTitle                = "Submit a notification"
+  val pageCaption              = "Submit a notification"
+  val pageButtonText           = "Continue"
+  val testFinancialYearEndDate = "'Dummy Date'"
+  val cardTitle: String        = s"Financial year end $testFinancialYearEndDate"
 }

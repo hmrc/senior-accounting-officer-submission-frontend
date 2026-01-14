@@ -56,7 +56,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         given Messages = messages(application)
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(SummaryList()).toString
+        contentAsString(result) mustEqual view(SummaryList(), userAnswers.getFinancialYearEndDate).toString
         verify(mockService).getSummaryList(meq(userAnswers))(using any())
       }
     }
