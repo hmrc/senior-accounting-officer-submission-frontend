@@ -39,7 +39,9 @@ object NotificationAdditionalInformationSummary {
           messages("site.change").toText,
           routes.NotificationAdditionalInformationController.onPageLoad(CheckMode).url
         )
-          .withVisuallyHiddenText(messages("notificationAdditionalInformation.change.hidden", answers.getFinancialYearEndDate))
+          .withVisuallyHiddenText(
+            messages("notificationAdditionalInformation.change.hidden", answers.getFinancialYearEndDate)
+          )
       )
     )
   }
