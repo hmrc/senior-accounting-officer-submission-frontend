@@ -27,7 +27,7 @@
     <h3 class="govuk-heading-s">@messages("template.guidance.subheading1")</h3>
 
     <p class="govuk-body">
-        <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.onPageLoad()">
+        <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.downloadFile()">
             @messages("template.guidance.subheading1.downloadTemplateLinkText")
         </a>
     </p>
@@ -53,7 +53,7 @@
     <h3 class="govuk-heading-s">@messages("template.guidance.subheading3")</h3>
     <p class="govuk-body">@messages("template.guidance.subheading3.paragraph1")</p>
     <p class="govuk-body">
-        @Html(messages("template.guidance.subheading3.paragraph2WithLink", routes.DownloadNotificationTemplateController.onPageLoad()))
+        @Html(messages("template.guidance.subheading3.paragraph2WithLink", routes.DownloadNotificationTemplateController.downloadFile()))
     </p>
     <p class="govuk-body">@messages("template.guidance.subheading3.paragraph3")</p>
     <p class="govuk-body">@messages("template.guidance.subheading3.paragraph4")</p>

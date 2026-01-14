@@ -34,8 +34,7 @@ class DownloadNotificationTemplateController @Inject (appConfig: AppConfig)(
     extends FrontendController(mcc)
     with I18nSupport {
 
-  // TODO rename this
-  def onPageLoad(): Action[AnyContent] = identify { implicit request =>
+  def downloadFile(): Action[AnyContent] = identify { implicit request =>
     {
       val templateFilepath: Path = Paths.get(appConfig.templateFile)
       val templateFile           = templateFilepath.toFile

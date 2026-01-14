@@ -26,7 +26,7 @@ import play.api.test.Helpers.*
 class NotificationTemplateDownloadControllerSpec extends SpecBase {
 
   given request: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, routes.DownloadNotificationTemplateController.onPageLoad().url)
+    FakeRequest(GET, routes.DownloadNotificationTemplateController.downloadFile().url)
 
   "GET must " - {
     "return a file with correct name,type and headers" in {

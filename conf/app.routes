@@ -12,7 +12,7 @@ GET         /notification/start                                       controller
 
 GET         /template-guidance                                        controllers.TemplateGuidanceController.onPageLoad()
 
-GET         /notification/template/download                           controllers.DownloadNotificationTemplateController.onPageLoad()
+GET         /notification/template/download                           controllers.DownloadNotificationTemplateController.downloadFile()
 
 GET         /notification/upload                                      controllers.NotificationUploadFormController.onPageLoad()
 
