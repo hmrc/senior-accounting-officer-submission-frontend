@@ -24,9 +24,10 @@ import views.NotificationConfirmationViewSpec.*
 import views.html.NotificationConfirmationView
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
-  
-  val notificationConfirmationDetails  = NotificationConfirmationDetails(notificationId = "SAONOT0123456789")
-  
+
+  val notificationConfirmationDetails: NotificationConfirmationDetails =
+    NotificationConfirmationDetails(notificationId = testReferenceNumber)
+
   private def generateView(): Document = Jsoup.parse(SUT(notificationConfirmationDetails).toString)
 
   "NotificationConfirmationView" - {
@@ -48,6 +49,12 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
       "must have the correct body" - {
         doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
       }
+
+      "must have the reference number in bold" in {
+        val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
+        strongTags.size() mustBe 1
+        strongTags.get(0).text() mustBe testReferenceNumber
+      }
     }
 
     doc.createTestsWithOrWithoutError(hasError = false)
@@ -58,6 +65,7 @@ object NotificationConfirmationViewSpec {
   val pageHeading = "Notification submitted"
   val pageTitle   = "Confirmation page"
 
-  val panelTitle = "Notification submitted"
-  val panelBody  = "Your reference number SAONOT0123456789"
+  val panelTitle          = "Notification submitted"
+  val testReferenceNumber = "SAONOT0123456789"
+  val panelBody: String   = s"Your reference number $testReferenceNumber"
 }
