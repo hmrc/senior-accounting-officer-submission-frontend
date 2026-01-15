@@ -26,7 +26,11 @@ import views.html.NotificationConfirmationView
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
 
   val notificationConfirmationDetails: NotificationConfirmationDetails =
-    NotificationConfirmationDetails(companyName = "ABC Limited", notificationId = testReferenceNumber, notificationDateTime = "Placeholder Date/Time")
+    NotificationConfirmationDetails(
+      companyName = "ABC Limited",
+      notificationId = testReferenceNumber,
+      notificationDateTime = testDate
+    )
 
   private def generateView(): Document = Jsoup.parse(SUT(notificationConfirmationDetails).toString)
 
@@ -66,12 +70,12 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
 }
 
 object NotificationConfirmationViewSpec {
-  val pageHeading = "Notification submitted"
-  val pageTitle   = "Confirmation page"
+  val pageHeading    = "Notification submitted"
+  val pageTitle      = "Confirmation page"
   val pageParagraphs = Seq(
     "ABC Limited has successfully submitted a notification to let HMRC know who the Senior Accounting Officer is and which company they are responsible for tax accounting arrangements.",
     "Submitted on 17 January 2025 at 14:15am (GMT).",
-    "We've sent a confirmation email with your reference number to all the contacts you gave during registration.",
+    "We’ve sent a confirmation email with your reference number to all the contacts you gave during registration.",
     "If you need to keep a record of your answers, you can:",
     "You will be able to see the status of your submission on your account homepage.",
     "You can now submit a certificate."
@@ -79,4 +83,5 @@ object NotificationConfirmationViewSpec {
   val panelTitle          = "Notification submitted"
   val testReferenceNumber = "SAONOT0123456789"
   val panelBody: String   = s"Your reference number $testReferenceNumber"
+  val testDate            = "17 January 2025 at 14:15am (GMT)"
 }

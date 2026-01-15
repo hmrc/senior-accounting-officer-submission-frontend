@@ -135,7 +135,13 @@ notificationConfirmation.title = Confirmation page
 notificationConfirmation.heading = Notification submitted
 notificationConfirmation.reference.text = Your reference number
 notificationConfirmation.paragraph1 = {0} has successfully submitted a notification to let HMRC know who the Senior Accounting Officer is and which company they are responsible for tax accounting arrangements.
-
+notificationConfirmation.paragraph2 = Submitted on {0}.
+notificationConfirmation.paragraph3 = We’ve sent a confirmation email with your reference number to all the contacts you gave during registration.
+notificationConfirmation.paragraph4 = If you need to keep a record of your answers, you can:
+notificationConfirmation.paragraph5 = You will be able to see the status of your submission on your account homepage.
+notificationConfirmation.paragraph6 = You can now submit a certificate.
+# TODO add the hrefs text for the NotificationConfirmationView and the h2s
+# Goodnight
 submitCertificateStart.title = submitCertificateStart
 submitCertificateStart.heading = submitCertificateStart
 

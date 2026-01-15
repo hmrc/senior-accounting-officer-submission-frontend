@@ -37,16 +37,14 @@
     </div>
 
     <p class="govuk-body">@messages("notificationConfirmation.paragraph1", details.companyName)</p>
-    <p class="govuk-body">@messages("registration.complete.p2")</p>
-    <p class="govuk-body">@messages("registration.complete.p3")</p>
-<p class="govuk-body">@messages("registration.complete.p4")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph2", details.notificationDateTime)</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
+<p class="govuk-body">@messages("notificationConfirmation.paragraph4")</p>
     <ul class="govuk-list govuk-list--bullet">
-        <li><a class="govuk-link" href="#">@messages("registration.complete.a1")</a></li>
+        <li><a class="govuk-link" href="#">@messages("registration.complete.a1")</a></li> @*TODO have placeholder links here with correct actual text.*@
         <li><a class="govuk-link" href="#">@messages("registration.complete.a2")</a></li>
     </ul>
-    <p class="govuk-body">@messages("registration.complete.p5")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph5")</p>
     <h2 class="govuk-heading-m">@messages("registration.complete.h2")</h2>
-    <p class="govuk-body">@messages("registration.complete.p6")
-        <a class="govuk-link" href="#">@messages("registration.complete.a3").</a>
-    </p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph6")</p>
 }
