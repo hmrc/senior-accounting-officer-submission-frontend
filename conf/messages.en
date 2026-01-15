@@ -141,7 +141,7 @@ notificationConfirmation.paragraph4 = If you need to keep a record of your answe
 notificationConfirmation.paragraph5 = You will be able to see the status of your submission on your account homepage.
 notificationConfirmation.paragraph6 = You can now submit a certificate.
 # TODO add the hrefs text for the NotificationConfirmationView and the h2s
-# Goodnight
+
 submitCertificateStart.title = submitCertificateStart
 submitCertificateStart.heading = submitCertificateStart
 
