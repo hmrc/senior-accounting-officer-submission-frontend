@@ -14,25 +14,26 @@
  * limitations under the License.
  *@
 
+@import models.NotificationConfirmationDetails
+
 @this(
-        layout: templates.Layout,
-        govukButton: GovukButton
+    layout: templates.Layout,
+    govukButton: GovukButton
 )
 
-@()(using request: Request[?], messages: Messages)
+@(details: NotificationConfirmationDetails)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
 
     <div class="govuk-panel govuk-panel--confirmation">
-     <h1 class="govuk-panel__title">
-      @messages("notificationConfirmation.heading")
-     </h1>
-     <div class="govuk-panel__body">
-      @messages("notificationConfirmation.reference.text")
-      <br>
-      <strong>SAONOT0123456789</strong>
-<!--      @messages("registration.complete.referenceNumberPrefix") <strong>"Apple"</strong>-->
-     </div>
+        <h1 class="govuk-panel__title">
+            @messages("notificationConfirmation.heading")
+        </h1>
+        <div class="govuk-panel__body">
+            @messages("notificationConfirmation.reference.text")
+            <br>
+            <strong>details.notificationId</strong>
+        </div>
     </div>
 
 <!--    <h1 class="govuk-heading-l">@messages("notificationConfirmation.heading")</h1>-->

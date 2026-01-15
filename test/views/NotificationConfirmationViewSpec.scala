@@ -32,16 +32,29 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
       pageHeading = pageHeading,
-      showBackLink = true,
+      showBackLink = false,
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
+
+    "with a confirmation panel that" - {
+      "must have the correct title" - {
+        doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+      }
+
+      "must have the correct body" - {
+        doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
+      }
+    }
 
     doc.createTestsWithOrWithoutError(hasError = false)
   }
 }
 
 object NotificationConfirmationViewSpec {
-  val pageHeading = "notificationConfirmation"
-  val pageTitle   = "notificationConfirmation"
+  val pageHeading = "Notification submitted"
+  val pageTitle   = "Confirmation page"
+
+  val panelTitle = "Notification submitted"
+  val panelBody  = "Your reference number SAONOT0123456789"
 }
