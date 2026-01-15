@@ -134,6 +134,7 @@ submitNotification.button = Confirm and submit
 notificationConfirmation.title = Confirmation page
 notificationConfirmation.heading = Notification submitted
 notificationConfirmation.reference.text = Your reference number
+notificationConfirmation.paragraph1 = {0} has successfully submitted a notification to let HMRC know who the Senior Accounting Officer is and which company they are responsible for tax accounting arrangements.
 
 submitCertificateStart.title = submitCertificateStart
 submitCertificateStart.heading = submitCertificateStart

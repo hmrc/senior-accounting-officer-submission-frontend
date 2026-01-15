@@ -36,6 +36,6 @@ class NotificationConfirmationController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view(NotificationConfirmationDetails(notificationId = "SAONOT0123456789")))
+    Ok(view(NotificationConfirmationDetails(companyName = "ABC Limited", notificationId = "SAONOT0123456789", notificationDateTime = "Placeholder Date/Time")))
   }
 }

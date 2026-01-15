@@ -16,4 +16,10 @@
 
 package models
 
-final case class NotificationConfirmationDetails(notificationId: String)
+import java.time.ZonedDateTime
+
+final case class NotificationConfirmationDetails(
+                                                 companyName: String,
+                                                 notificationId: String,
+                                                 notificationDateTime: String
+                                                )
