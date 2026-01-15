@@ -23,5 +23,17 @@
 
 @layout(pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("notificationConfirmation.heading")</h1>
+    <div class="govuk-panel govuk-panel--confirmation">
+     <h1 class="govuk-panel__title">
+      @messages("notificationConfirmation.heading")
+     </h1>
+     <div class="govuk-panel__body">
+      @messages("notificationConfirmation.reference.text")
+      <br>
+      <strong>SAONOT0123456789</strong>
+<!--      @messages("registration.complete.referenceNumberPrefix") <strong>"Apple"</strong>-->
+     </div>
+    </div>
+
+<!--    <h1 class="govuk-heading-l">@messages("notificationConfirmation.heading")</h1>-->
 }
