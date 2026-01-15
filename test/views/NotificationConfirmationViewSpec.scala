@@ -17,14 +17,17 @@
 package views
 
 import base.ViewSpecBase
+import models.NotificationConfirmationDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.NotificationConfirmationViewSpec.*
 import views.html.NotificationConfirmationView
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
-
-  private def generateView(): Document = Jsoup.parse(SUT().toString)
+  
+  val notificationConfirmationDetails  = NotificationConfirmationDetails(notificationId = "SAONOT0123456789")
+  
+  private def generateView(): Document = Jsoup.parse(SUT(notificationConfirmationDetails).toString)
 
   "NotificationConfirmationView" - {
     val doc: Document = generateView()

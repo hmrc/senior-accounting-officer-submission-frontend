@@ -160,12 +160,12 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
 
     def getPanelTitle: Element =
       util
-        .Try(target.resolve.select(".govuk-panel__title").get(0))
+        .Try(target.resolve.select("h1.govuk-panel__title").get(0))
         .getOrElse(throw RuntimeException("No panel title found"))
 
     def getPanelBody: Element =
       util
-        .Try(target.resolve.select(".govuk-panel__body").get(0))
+        .Try(target.resolve.select("div.govuk-panel__body").get(0))
         .getOrElse(throw RuntimeException("No panel body found"))
 
     def createTestMustShowNumberOfInputs(expectedCount: Int)(using pos: Position): Unit = {
