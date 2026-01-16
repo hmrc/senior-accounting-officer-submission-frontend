@@ -65,6 +65,15 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
       pageParagraphs
     )
 
+    doc.createTestsWithBulletPoints(
+      pageListItems
+    )
+
+    doc.getMainContent.select("li").get(0).createTestWithLink(
+      linkText = "Download a PDF – Save a copy of this confirmation",
+      destinationUrl = "#"
+    )
+
     doc.createTestsWithOrWithoutError(hasError = false)
   }
 }
@@ -84,4 +93,5 @@ object NotificationConfirmationViewSpec {
   val testReferenceNumber = "SAONOT0123456789"
   val panelBody: String   = s"Your reference number $testReferenceNumber"
   val testDate            = "17 January 2025 at 14:15am (GMT)"
+  val pageListItems = Seq("Download a PDF – Save a copy of this confirmation", "Print this page – Print a paper copy")
 }

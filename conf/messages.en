@@ -140,8 +140,9 @@ notificationConfirmation.paragraph3 = We’ve sent a confirmation email with you
 notificationConfirmation.paragraph4 = If you need to keep a record of your answers, you can:
 notificationConfirmation.paragraph5 = You will be able to see the status of your submission on your account homepage.
 notificationConfirmation.paragraph6 = You can now submit a certificate.
-# TODO add the hrefs text for the NotificationConfirmationView and the h2s
-# Goodnight
+notificationConfirmation.list1.item1 = Download a PDF – Save a copy of this confirmation
+notificationConfirmation.list1.item2 = Print this page – Print a paper copy
+
 submitCertificateStart.title = submitCertificateStart
 submitCertificateStart.heading = submitCertificateStart
 
