@@ -69,10 +69,28 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
       pageListItems
     )
 
-    doc.getMainContent.select("li").get(0).createTestWithLink(
-      linkText = "Download a PDF – Save a copy of this confirmation",
-      destinationUrl = "#"
-    )
+    doc.getMainContent
+      .select("li")
+      .get(0)
+      .createTestWithLink(
+        linkText = pageListItems(0),
+        destinationUrl = "#"
+      )
+
+    doc.getMainContent
+      .select("li")
+      .get(1)
+      .createTestWithLink(
+        linkText = pageListItems(1),
+        destinationUrl = "#"
+      )
+
+    doc.getMainContent
+      .selectFirst("p a")
+      .createTestWithLink(
+        linkText = "account homepage.",
+        destinationUrl = "#"
+      )
 
     doc.createTestsWithOrWithoutError(hasError = false)
   }
