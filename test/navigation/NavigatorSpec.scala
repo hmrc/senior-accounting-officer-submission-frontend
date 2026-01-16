@@ -165,6 +165,14 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("id")
         ) mustBe routes.CertificateConfirmationController.onPageLoad()
       }
+
+      "when on NotificationConfirmationPage, must go to certificate start page" in {
+        navigator.nextPage(
+          NotificationConfirmationPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.SubmitCertificateStartController.onPageLoad()
+      }
     }
 
     "in Check mode" - {

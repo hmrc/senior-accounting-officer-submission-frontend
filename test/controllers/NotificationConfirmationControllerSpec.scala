@@ -60,5 +60,9 @@ class NotificationConfirmationControllerSpec extends SpecBase {
       }
     }
 
+    "must redirect to the next page for a POST" in {
+      //TODO continue to finish this test
+    }
+
   }
 }
