@@ -142,6 +142,7 @@ notificationConfirmation.paragraph5WithLink = You will be able to see the status
 notificationConfirmation.paragraph6 = You can now submit a certificate.
 notificationConfirmation.list1.item1 = Download a PDF – Save a copy of this confirmation
 notificationConfirmation.list1.item2 = Print this page – Print a paper copy
+notificationConfirmation.subheading = What happens next
 
 submitCertificateStart.title = submitCertificateStart
 submitCertificateStart.heading = submitCertificateStart

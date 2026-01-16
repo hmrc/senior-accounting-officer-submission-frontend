@@ -92,8 +92,27 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
         destinationUrl = "#"
       )
 
+    doc.createTestsForSubHeadings(
+      pageSubheadings
+    )
+
     doc.createTestsWithOrWithoutError(hasError = false)
   }
+
+  extension (target: => Document) {
+    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
+      val headings = target.getMainContent.getElementsByTag("h2")
+      "must have expected number of headings" in {
+        headings.size() mustBe subheadings.length
+      }
+      subheadings.zipWithIndex.foreach((subheading, i) => {
+        s"must have heading '$subheading'" in {
+          headings.get(i).text mustBe subheading
+        }
+      })
+    }
+  }
+
 }
 
 object NotificationConfirmationViewSpec {
@@ -112,4 +131,5 @@ object NotificationConfirmationViewSpec {
   val panelBody: String   = s"Your reference number $testReferenceNumber"
   val testDate            = "17 January 2025 at 14:15am (GMT)"
   val pageListItems = Seq("Download a PDF – Save a copy of this confirmation", "Print this page – Print a paper copy")
+  val pageSubheadings = Seq("What happens next")
 }
