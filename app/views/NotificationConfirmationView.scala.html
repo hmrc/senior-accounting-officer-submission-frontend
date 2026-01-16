@@ -15,10 +15,12 @@
  *@
 
 @import models.NotificationConfirmationDetails
+@import config.AppConfig
 
 @this(
     layout: templates.Layout,
-    govukButton: GovukButton
+    govukButton: GovukButton,
+    appConfig: AppConfig
 )
 
 @(details: NotificationConfirmationDetails)(using request: Request[?], messages: Messages)
@@ -50,7 +52,7 @@
 }
 
 @accountHomepageLinkAttributes = @{
-    """href="#" class="govuk-link""""
+    s"""href="${appConfig.hubBaseUrl}" class="govuk-link""""
 }
 
     

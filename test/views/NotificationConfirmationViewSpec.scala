@@ -22,6 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.NotificationConfirmationViewSpec.*
 import views.html.NotificationConfirmationView
+import config.AppConfig
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
 
@@ -35,6 +36,7 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
   private def generateView(): Document = Jsoup.parse(SUT(notificationConfirmationDetails).toString)
 
   "NotificationConfirmationView" - {
+    AppConfig.setValue("hub-frontend.host", hubUrl)
     val doc: Document = generateView()
 
     doc.createTestsWithStandardPageElements(
@@ -89,12 +91,12 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
       .selectFirst("p a")
       .createTestWithLink(
         linkText = "account homepage.",
-        destinationUrl = "#"
+        destinationUrl = s"$hubUrl/senior-accounting-officer"
       )
 
-    doc.createTestsForSubHeadings(
-      pageSubheadings
-    )
+      doc.createTestsForSubHeadings(
+        pageSubheadings
+      )
 
     doc.createTestsWithOrWithoutError(hasError = false)
   }
@@ -132,4 +134,5 @@ object NotificationConfirmationViewSpec {
   val testDate            = "17 January 2025 at 14:15am (GMT)"
   val pageListItems = Seq("Download a PDF – Save a copy of this confirmation", "Print this page – Print a paper copy")
   val pageSubheadings = Seq("What happens next")
+  val hubUrl = "testHubUrl"
 }
