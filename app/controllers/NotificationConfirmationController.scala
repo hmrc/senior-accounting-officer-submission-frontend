@@ -22,8 +22,11 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationConfirmationView
+import pages.NotificationConfirmationPage
 
 import javax.inject.Inject
+import navigation.Navigator
+import models.NormalMode
 
 class NotificationConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
@@ -31,11 +34,24 @@ class NotificationConfirmationController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationConfirmationView
+    view: NotificationConfirmationView,
+    navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view(NotificationConfirmationDetails(companyName = "ABC Limited", notificationId = "SAONOT0123456789", notificationDateTime = "Placeholder Date/Time")))
+    Ok(
+      view(
+        NotificationConfirmationDetails(
+          companyName = "ABC Limited",
+          notificationId = "SAONOT0123456789",
+          notificationDateTime = "Placeholder Date/Time"
+        )
+      )
+    )
+  }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
   }
 }

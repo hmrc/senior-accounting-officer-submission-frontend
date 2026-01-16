@@ -1,4 +1,4 @@
-# microservice specific routes
+#           microservice                                              specific routes
 
 ->          /hmrc-frontend                                            hmrcfrontend.Routes
 GET         /assets/*file                                             controllers.Assets.versioned(path = "/public", file: Asset)
@@ -31,6 +31,7 @@ GET         /notification/submit                                      controller
 POST        /notification/submit                                      controllers.SubmitNotificationController.onSubmit()
 
 GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad()
+POST        /notification/confirmation                                controllers.NotificationConfirmationController.onSubmit()
 
 GET         /certificate/start                                        controllers.SubmitCertificateStartController.onPageLoad()
 POST        /certificate/start                                        controllers.SubmitCertificateStartController.onSubmit()
