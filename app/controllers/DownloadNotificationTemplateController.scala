@@ -35,6 +35,8 @@ import scala.jdk.CollectionConverters.*
 import scala.concurrent.ExecutionContext
 import DownloadNotificationTemplateController.*
 
+import scala.collection.mutable.ListBuffer
+
 class DownloadNotificationTemplateController @Inject (appConfig: AppConfig)(
     identify: IdentifierAction,
     mcc: MessagesControllerComponents
@@ -47,41 +49,47 @@ class DownloadNotificationTemplateController @Inject (appConfig: AppConfig)(
       val templateFilepath: Path = Paths.get(appConfig.templateFile)
       val templateFile           = templateFilepath.toFile
       if templateFile.exists && !templateFile.isDirectory then {
-        val filename = templateFilepath.getFileName
-
-        val testData = Seq(
-          Row(
-            companyName = "Test company",
-            utr = "0123456789",
-            crn = "1234567890",
-            companyType = "PLC",
-            status = "Active",
-            financialYearEndDate = "31/12/2025",
-            certificateType = "Unqualified"
-          ),
-          Row(
-            companyName = "Test company 2",
-            utr = "1234567890",
-            crn = "0123456789",
-            companyType = "LTD",
-            status = "Active",
-            financialYearEndDate = "31/12/2025",
-            qualified = TaxRegimes(
-              corporationTax = true,
-              vat = true,
-              paye = true,
-              insurancePremiumTax = true,
-              stampDutyLandTax = true,
-              stampDutyReserveTax = true,
-              petroleumRevenueTax = true,
-              customsDuties = true,
-              exciseDuties = true,
-              bankLevy = true
-            ),
-            certificateType = "Qualified",
-            additionalInformation = Some("test additional info")
+        val filename              = templateFilepath.getFileName
+        val list: ListBuffer[Row] = ListBuffer[Row]()
+        val testData: Seq[Row]    = (1 to 500)
+          .foldLeft(list)((l, ?) =>
+            list.addAll(
+              Seq(
+                Row(
+                  companyName = "Test company",
+                  utr = "0123456789",
+                  crn = "1234567890",
+                  companyType = "PLC",
+                  status = "Active",
+                  financialYearEndDate = "31/12/2025",
+                  certificateType = "Unqualified"
+                ),
+                Row(
+                  companyName = "Test company 2",
+                  utr = "1234567890",
+                  crn = "0123456789",
+                  companyType = "LTD",
+                  status = "Active",
+                  financialYearEndDate = "31/12/2025",
+                  qualified = TaxRegimes(
+                    corporationTax = true,
+                    vat = true,
+                    paye = true,
+                    insurancePremiumTax = true,
+                    stampDutyLandTax = true,
+                    stampDutyReserveTax = true,
+                    petroleumRevenueTax = true,
+                    customsDuties = true,
+                    exciseDuties = true,
+                    bankLevy = true
+                  ),
+                  certificateType = "Qualified",
+                  additionalInformation = Some("test additional info")
+                )
+              )
+            )
           )
-        )
+          .toSeq
 
         val workbook = setData(readExcel(templateFile), testData)
 
@@ -215,7 +223,7 @@ object DownloadNotificationTemplateController {
       val constraint = helper.createExplicitListConstraint(options)
       val validation = helper.createValidation(
         constraint,
-        new CellRangeAddressList(firstRowIndex, firstRowIndex + totalRows, column.index, column.index)
+        new CellRangeAddressList(firstRowIndex, firstRowIndex + totalRows - 1, column.index, column.index)
       )
       validation.setSuppressDropDownArrow(true) // required in order to turn this into a dropdown
       sheet.addValidationData(validation)
