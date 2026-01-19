@@ -17,11 +17,14 @@
 package controllers
 
 import config.AppConfig
+import controllers.DownloadNotificationTemplateController.*
+import controllers.Execution.trampoline
 import controllers.actions.IdentifierAction
 import org.apache.pekko.stream.scaladsl.*
 import org.apache.pekko.util.ByteString
-import org.apache.poi.ss.usermodel.{CellType, DataValidationHelper}
+import org.apache.poi.ss.usermodel.{CellStyle, CellType, DataValidationHelper, Workbook}
 import org.apache.poi.ss.util.CellRangeAddressList
+import org.apache.poi.xssf.streaming.{SXSSFSheet, SXSSFWorkbook}
 import org.apache.poi.xssf.usermodel.{XSSFSheet, XSSFWorkbook}
 import play.api.Logger
 import play.api.i18n.I18nSupport
@@ -31,11 +34,9 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream, File, FileInputStream}
 import java.nio.file.{Path, Paths}
 import javax.inject.Inject
-import scala.jdk.CollectionConverters.*
-import scala.concurrent.ExecutionContext
-import DownloadNotificationTemplateController.*
-
 import scala.collection.mutable.ListBuffer
+import scala.concurrent.{ExecutionContext, Future, blocking}
+import scala.jdk.CollectionConverters.*
 
 class DownloadNotificationTemplateController @Inject (appConfig: AppConfig)(
     identify: IdentifierAction,
@@ -91,15 +92,9 @@ class DownloadNotificationTemplateController @Inject (appConfig: AppConfig)(
           )
           .toSeq
 
-        val workbook = setData(readExcel(templateFile), testData)
+        val dataContent = xssf(templateFile, testData)
+//        val dataContent = sxssf(templateFile, testData)
 
-        val dataContent: Source[ByteString, ?] = StreamConverters.fromInputStream(() => {
-          // TODO is there a better way to do this
-          val bos = new ByteArrayOutputStream
-          workbook.write(bos)
-          val barray = bos.toByteArray
-          new ByteArrayInputStream(barray)
-        })
         Ok.chunked(dataContent, inline = false, fileName = Some(filename.toString))
       } else {
         InternalServerError("Unable to provide template")
@@ -107,116 +102,113 @@ class DownloadNotificationTemplateController @Inject (appConfig: AppConfig)(
     }
   }
 
-  def readExcel(file: File): XSSFWorkbook = {
-    val inputStream = FileInputStream(file)
-    val workbook    = new XSSFWorkbook(inputStream)
-    workbook
+}
+
+def readExcel(file: File): XSSFWorkbook = {
+  val inputStream = FileInputStream(file)
+  val workbook    = new XSSFWorkbook(inputStream)
+  workbook
+}
+
+def getDataRowFormat[T <: Workbook](workbook: T): Seq[CellFormat] = {
+  val sheet          = workbook.getSheetAt(0)
+  val formattedRow   = Option(sheet.getRow(firstRowIndex)).getOrElse(sheet.createRow(firstRowIndex))
+  val formattedRange = 0 to 17
+
+  formattedRange.map { index =>
+    val cell      = Option(formattedRow.getCell(index)).getOrElse(formattedRow.createCell(index))
+    val cellType  = cell.getCellType
+    val cellStyle = cell.getCellStyle
+
+    cellType match {
+      case CellType.FORMULA =>
+        CellFormat(cellStyle, Some(cell.getCellFormula))
+      case _ =>
+        CellFormat(cellStyle, None)
+    }
   }
+}
 
-  def setData(workbook: XSSFWorkbook, data: Seq[Row]): XSSFWorkbook = {
-    val sheet          = workbook.getSheetAt(0)
-    val formattedRow   = sheet.getRow(firstRowIndex)
-    val formattedRange = 0 to 17
+def setData[T <: Workbook](workbook: T, rowFormats: Seq[CellFormat], data: Seq[Row]): Unit = {
+  val sheet = workbook.getSheetAt(0)
 
-    val cellFormats = formattedRange.map { index =>
-      val cell      = Option(formattedRow.getCell(index)).getOrElse(formattedRow.createCell(index))
-      val cellType  = cell.getCellType
-      val cellStyle = cell.getCellStyle
+  data.zipWithIndex.foreach((rowData, index) => {
+    val row = {
+      val targetIndex = firstRowIndex + index
+      Option(sheet.getRow(targetIndex)).getOrElse(sheet.createRow(targetIndex))
+    }
+    rowFormats.zipWithIndex.foreach((format, index) =>
+      val cell = Option(row.getCell(index)).getOrElse(row.createCell(index))
+      cell.setCellStyle(format.cellStyle)
+      format.formula.map(cell.setCellFormula)
+    )
 
-      cellType match {
-        case CellType.FORMULA =>
-          (cellStyle, Some(cell.getCellFormula), cellType)
-        case _ =>
-          (cellStyle, None, cellType)
+    row.getCell(Column.CompanyName.index).setCellValue(rowData.companyName)
+    row.getCell(Column.Utr.index).setCellValue(rowData.utr)
+    row.getCell(Column.Crn.index).setCellValue(rowData.crn)
+    row.getCell(Column.CompanyType.index).setCellValue(rowData.companyType)
+    row.getCell(Column.Status.index).setCellValue(rowData.status)
+    row.getCell(Column.FinancialYearEndDate.index).setCellValue(rowData.financialYearEndDate)
+    row.getCell(Column.CorporationTax.index).setCellValue(rowData.qualified.corporationTax)
+    row.getCell(Column.Vat.index).setCellValue(rowData.qualified.vat)
+    row.getCell(Column.Paye.index).setCellValue(rowData.qualified.paye)
+    row.getCell(Column.InsurancePremiumTax.index).setCellValue(rowData.qualified.insurancePremiumTax)
+    row.getCell(Column.StampDutyLandTax.index).setCellValue(rowData.qualified.stampDutyLandTax)
+    row.getCell(Column.StampDutyReserveTax.index).setCellValue(rowData.qualified.stampDutyReserveTax)
+    row.getCell(Column.PetroleumRevenueTax.index).setCellValue(rowData.qualified.petroleumRevenueTax)
+    row.getCell(Column.CustomsDuties.index).setCellValue(rowData.qualified.customsDuties)
+    row.getCell(Column.ExciseDuties.index).setCellValue(rowData.qualified.exciseDuties)
+    row.getCell(Column.BankLevy.index).setCellValue(rowData.qualified.bankLevy)
+    row.getCell(Column.CertificateType.index).setCellValue(rowData.certificateType)
+    rowData.additionalInformation.foreach(row.getCell(Column.AdditionalInformation.index).setCellValue)
+  })
+}
+
+//XSSFWorkbook in memory only
+def xssf(templateFile: File, testData: Seq[Row]): Source[ByteString, ?] = {
+
+  val workbook   = readExcel(templateFile)
+  val rowFormats = getDataRowFormat(workbook)
+
+  workbook.updateDropdownConfigs(testData.size)
+
+  setData(workbook, rowFormats, testData)
+
+  workbook.asSource
+}
+
+//SXSSFWorkbook written to temp files to reduce memory usage
+def sxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
+
+  val xssfWorkbook = readExcel(templateFile)
+
+  // before we create SXSSFWorkbook we need to
+  // a)  create the constraints in the xssf before we create sxssf
+  // b)  we need to remove all intended data rows in the XSSFWorkbook part,
+  //       otherwise it'll be written to the disk and we won't be able to write to those rows anymore
+
+  val rowFormats = getDataRowFormat(xssfWorkbook)
+  val sheet      = xssfWorkbook.getSheetAt(0)
+  sheet.removeRow(sheet.getRow(3))
+  xssfWorkbook.updateDropdownConfigs(data.size)
+
+  val sxssfWorkbook = new SXSSFWorkbook(xssfWorkbook)
+
+  setData(sxssfWorkbook, rowFormats, data)
+
+  sxssfWorkbook.asSource
+    .watchTermination() { (_, termination) =>
+      termination.foreach { _ =>
+        if sxssfWorkbook != null then sxssfWorkbook.close()
+        Logger(this.getClass).logger.error("Stream closed, resources cleaned up.")
       }
     }
-
-    data.zipWithIndex.foreach((rowData, index) => {
-      val row = {
-        val targetIndex = firstRowIndex + index
-        Option(sheet.getRow(targetIndex)).getOrElse(sheet.createRow(targetIndex))
-      }
-      formattedRange.foreach(index =>
-        val cell = Option(row.getCell(index)).getOrElse(row.createCell(index))
-        cell.setCellStyle(cellFormats(index)._1)
-        cellFormats(index)._2.map(cell.setCellFormula)
-        cell.setCellType(cellFormats(index)._3)
-      )
-
-      row.getCell(Column.CompanyName.index).setCellValue(rowData.companyName)
-      row.getCell(Column.Utr.index).setCellValue(rowData.utr)
-      row.getCell(Column.Crn.index).setCellValue(rowData.crn)
-      row.getCell(Column.CompanyType.index).setCellValue(rowData.companyType)
-      row.getCell(Column.Status.index).setCellValue(rowData.status)
-      row.getCell(Column.FinancialYearEndDate.index).setCellValue(rowData.financialYearEndDate)
-      row.getCell(Column.CorporationTax.index).setCellValue(rowData.qualified.corporationTax)
-      row.getCell(Column.Vat.index).setCellValue(rowData.qualified.vat)
-      row.getCell(Column.Paye.index).setCellValue(rowData.qualified.paye)
-      row.getCell(Column.InsurancePremiumTax.index).setCellValue(rowData.qualified.insurancePremiumTax)
-      row.getCell(Column.StampDutyLandTax.index).setCellValue(rowData.qualified.stampDutyLandTax)
-      row.getCell(Column.StampDutyReserveTax.index).setCellValue(rowData.qualified.stampDutyReserveTax)
-      row.getCell(Column.PetroleumRevenueTax.index).setCellValue(rowData.qualified.petroleumRevenueTax)
-      row.getCell(Column.CustomsDuties.index).setCellValue(rowData.qualified.customsDuties)
-      row.getCell(Column.ExciseDuties.index).setCellValue(rowData.qualified.exciseDuties)
-      row.getCell(Column.BankLevy.index).setCellValue(rowData.qualified.bankLevy)
-      row.getCell(Column.CertificateType.index).setCellValue(rowData.certificateType)
-      rowData.additionalInformation.foreach(row.getCell(Column.AdditionalInformation.index).setCellValue)
-    })
-
-    Logger(this.getClass).logger.error("validations" + sheet.getDataValidations.size())
-    Logger(this.getClass).logger.error(
-      "validation ranges " + sheet.getDataValidations
-        .iterator()
-        .asScala
-        .toList
-        .map(_.getRegions.getCellRangeAddresses.map(_.formatAsString()).mkString)
-    )
-
-    // dropdowns are dataValidations attached at the sheet level and not associated to an individual cell
-    // The idea here is to recreate new ones instead of than expand the ranges of existing validations (not obvious how to)
-
-    // sheet.getDataValidations will always be a copy and therefore anything we do on them will have no actual effect
-    val existingValidationList = sheet.getCTWorksheet.getDataValidations.getDataValidationList
-    existingValidationList.removeAll(existingValidationList)
-
-    // we could use sheet.getCTWorksheet.getDataValidations.getDataValidationList to update the address range of each validation via .setSqref
-    // e.g. setSqref(List("D4:D5").asJava)
-    // however it is not obvious how we can tell which validation is which since getSqref returns a list of any
-
-    sheet.addDropDown(
-      options = Array("LTD", "PLC"),
-      column = Column.CompanyType,
-      totalRows = data.size
-    )
-
-    sheet.addDropDown(
-      options = Array("Active", "Dormant", "Administration", "Liquidation"),
-      column = Column.Status,
-      totalRows = data.size
-    )
-
-    sheet.addDropDown(
-      options = Array("Qualified", "Unqualified"),
-      column = Column.CertificateType,
-      totalRows = data.size
-    )
-
-    Logger(this.getClass).logger.error(
-      "validation ranges " + sheet.getDataValidations
-        .iterator()
-        .asScala
-        .toList
-        .map(_.getRegions.getCellRangeAddresses.map(_.formatAsString()).mkString)
-    )
-
-    workbook
-  }
 }
 
 object DownloadNotificationTemplateController {
   val firstRowIndex = 3
 
-  extension (sheet: XSSFSheet) {
+  extension (sheet: XSSFSheet | SXSSFSheet) {
     def helper: DataValidationHelper = sheet.getDataValidationHelper
 
     def addDropDown(options: Array[String], column: Column, totalRows: Int): Unit = {
@@ -229,7 +221,80 @@ object DownloadNotificationTemplateController {
       sheet.addValidationData(validation)
     }
   }
+
+  // data validations (dropdowns) can only be configured via XSSFWorkbook
+  extension (workbook: XSSFWorkbook) {
+
+    def updateDropdownConfigs(dataSize: Int): Unit = {
+      val sheet = workbook.getSheetAt(0)
+
+      Logger(this.getClass).logger.error("validations" + sheet.getDataValidations.size())
+      Logger(this.getClass).logger.error(
+        "validation ranges " + sheet.getDataValidations
+          .iterator()
+          .asScala
+          .toList
+          .map(_.getRegions.getCellRangeAddresses.map(_.formatAsString()).mkString)
+      )
+
+      // dropdowns are dataValidations attached at the sheet level and not associated to an individual cell
+      // The idea here is to recreate new ones instead of than expand the ranges of existing validations (not obvious how to)
+
+      // sheet.getDataValidations will always be a copy and therefore anything we do on them will have no actual effect
+      val existingValidationList = sheet.getCTWorksheet.getDataValidations.getDataValidationList
+      existingValidationList.removeAll(existingValidationList)
+
+      // we could use sheet.getCTWorksheet.getDataValidations.getDataValidationList to update the address range of each validation via .setSqref
+      // e.g. setSqref(List("D4:D5").asJava)
+      // however it is not obvious how we can tell which validation is which since getSqref returns a list of any
+
+      sheet.addDropDown(
+        options = Array("LTD", "PLC"),
+        column = Column.CompanyType,
+        totalRows = dataSize
+      )
+
+      sheet.addDropDown(
+        options = Array("Active", "Dormant", "Administration", "Liquidation"),
+        column = Column.Status,
+        totalRows = dataSize
+      )
+
+      sheet.addDropDown(
+        options = Array("Qualified", "Unqualified"),
+        column = Column.CertificateType,
+        totalRows = dataSize
+      )
+
+      Logger(this.getClass).logger.error(
+        "validation ranges " + sheet.getDataValidations
+          .iterator()
+          .asScala
+          .toList
+          .map(_.getRegions.getCellRangeAddresses.map(_.formatAsString()).mkString)
+      )
+
+    }
+
+  }
+
+  extension (workbook: Workbook) {
+    def asSource: Source[ByteString, ?] =
+      StreamConverters.fromInputStream(() => {
+        val bos = new ByteArrayOutputStream
+        Future {
+          blocking {
+            workbook.write(bos)
+          }
+        }
+        val barray = bos.toByteArray
+        new ByteArrayInputStream(barray)
+      })
+  }
+
 }
+
+final case class CellFormat(cellStyle: CellStyle, formula: Option[String])
 
 final case class TaxRegimes(
     corporationTax: Boolean = false,
