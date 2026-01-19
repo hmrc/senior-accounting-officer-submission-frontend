@@ -60,6 +60,8 @@ class Navigator @Inject() () {
       _ => routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode)
     case CertificateSubmissionDeclarationPage =>
       _ => routes.CertificateConfirmationController.onPageLoad()
+    case NotificationConfirmationPage =>
+      _ => routes.SubmitCertificateStartController.onPageLoad()
     case _ =>
       _ => ???
   }

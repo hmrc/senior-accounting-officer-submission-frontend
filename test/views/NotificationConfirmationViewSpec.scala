@@ -17,6 +17,8 @@
 package views
 
 import base.ViewSpecBase
+import config.AppConfig
+import models.NotificationConfirmationDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.NotificationConfirmationViewSpec.*
@@ -24,24 +26,114 @@ import views.html.NotificationConfirmationView
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT().toString)
+  val notificationConfirmationDetails: NotificationConfirmationDetails =
+    NotificationConfirmationDetails(
+      companyName = "ABC Limited",
+      notificationId = testReferenceNumber,
+      notificationDateTime = testDate
+    )
+
+  private def generateView(): Document = Jsoup.parse(SUT(notificationConfirmationDetails).toString)
 
   "NotificationConfirmationView" - {
+    AppConfig.setValue("hub-frontend.host", hubUrl)
     val doc: Document = generateView()
 
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
       pageHeading = pageHeading,
-      showBackLink = true,
+      showBackLink = false,
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
 
+    "with a confirmation panel that" - {
+      "must have the correct title" - {
+        doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+      }
+
+      "must have the correct body" - {
+        doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
+      }
+
+      "must have the reference number in bold" in {
+        val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
+        strongTags.size() mustBe 1
+        strongTags.get(0).text() mustBe testReferenceNumber
+      }
+    }
+
+    doc.createTestsWithParagraphs(
+      pageParagraphs
+    )
+
+    doc.createTestsWithBulletPoints(
+      pageListItems
+    )
+
+    doc.getMainContent
+      .select("li")
+      .get(0)
+      .createTestWithLink(
+        linkText = pageListItems(0),
+        destinationUrl = "#"
+      )
+
+    doc.getMainContent
+      .select("li")
+      .get(1)
+      .createTestWithLink(
+        linkText = pageListItems(1),
+        destinationUrl = "#"
+      )
+
+    doc.getMainContent
+      .selectFirst("p a")
+      .createTestWithLink(
+        linkText = "account homepage.",
+        destinationUrl = s"$hubUrl/senior-accounting-officer"
+      )
+
+    doc.createTestsForSubHeadings(
+      pageSubheadings
+    )
+
     doc.createTestsWithOrWithoutError(hasError = false)
   }
+
+  extension (target: => Document) {
+    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
+      val headings = target.getMainContent.getElementsByTag("h2")
+      "must have expected number of headings" in {
+        headings.size() mustBe subheadings.length
+      }
+      subheadings.zipWithIndex.foreach((subheading, i) => {
+        s"must have heading '$subheading'" in {
+          headings.get(i).text mustBe subheading
+        }
+      })
+    }
+  }
+
 }
 
 object NotificationConfirmationViewSpec {
-  val pageHeading = "notificationConfirmation"
-  val pageTitle   = "notificationConfirmation"
+  val pageHeading                 = "Notification submitted"
+  val pageTitle                   = "Confirmation page"
+  val pageParagraphs: Seq[String] = Seq(
+    "ABC Limited has successfully submitted a notification to let HMRC know who the Senior Accounting Officer is and which company they are responsible for tax accounting arrangements.",
+    "Submitted on 17 January 2025 at 14:15am (GMT).",
+    "We’ve sent a confirmation email with your reference number to all the contacts you gave during registration.",
+    "If you need to keep a record of your answers, you can:",
+    "You will be able to see the status of your submission on your account homepage.",
+    "You can now submit a certificate."
+  )
+  val panelTitle                 = "Notification submitted"
+  val testReferenceNumber        = "SAONOT0123456789"
+  val panelBody: String          = s"Your reference number $testReferenceNumber"
+  val testDate                   = "17 January 2025 at 14:15am (GMT)"
+  val pageListItems: Seq[String] =
+    Seq("Download a PDF – Save a copy of this confirmation", "Print this page – Print a paper copy")
+  val pageSubheadings: Seq[String] = Seq("What happens next")
+  val hubUrl                       = "testHubUrl"
 }

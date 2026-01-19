@@ -14,14 +14,52 @@
  * limitations under the License.
  *@
 
+@import models.NotificationConfirmationDetails
+@import config.AppConfig
+
 @this(
-        layout: templates.Layout,
-        govukButton: GovukButton
+    layout: templates.Layout,
+    govukButton: GovukButton,
+    formHelper: FormWithCSRF,
+    appConfig: AppConfig
 )
 
-@()(using request: Request[?], messages: Messages)
+@(details: NotificationConfirmationDetails)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("notificationConfirmation.heading")</h1>
+    <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+            @messages("notificationConfirmation.heading")
+        </h1>
+        <div class="govuk-panel__body">
+            @messages("notificationConfirmation.reference.text")
+            <br>
+            <strong>@details.notificationId</strong>
+        </div>
+    </div>
+
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph1", details.companyName)</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph2", details.notificationDateTime)</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
+<p class="govuk-body">@messages("notificationConfirmation.paragraph4")</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li><a class="govuk-link" href="#">@messages("notificationConfirmation.list1.item1")</a></li>
+        <li><a class="govuk-link" href="#">@messages("notificationConfirmation.list1.item2")</a></li>
+    </ul>
+    <p class="govuk-body">@Html(messages("notificationConfirmation.paragraph5WithLink", accountHomepageLinkAttributes))</p>
+    <h2 class="govuk-heading-m">@messages("notificationConfirmation.subheading")</h2>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph6")</p>
+
+    @formHelper(action = routes.NotificationConfirmationController.onSubmit()) {
+        @govukButton(
+            ButtonViewModel(messages("site.continue").toText)
+        )
+    }
 }
+
+@accountHomepageLinkAttributes = @{
+    s"""href="${appConfig.hubBaseUrl}" class="govuk-link""""
+}
+
+    
