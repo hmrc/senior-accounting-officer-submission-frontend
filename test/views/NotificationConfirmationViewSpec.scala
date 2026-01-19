@@ -17,12 +17,12 @@
 package views
 
 import base.ViewSpecBase
+import config.AppConfig
 import models.NotificationConfirmationDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.NotificationConfirmationViewSpec.*
 import views.html.NotificationConfirmationView
-import config.AppConfig
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
 
@@ -94,9 +94,9 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
         destinationUrl = s"$hubUrl/senior-accounting-officer"
       )
 
-      doc.createTestsForSubHeadings(
-        pageSubheadings
-      )
+    doc.createTestsForSubHeadings(
+      pageSubheadings
+    )
 
     doc.createTestsWithOrWithoutError(hasError = false)
   }
@@ -118,9 +118,9 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
 }
 
 object NotificationConfirmationViewSpec {
-  val pageHeading    = "Notification submitted"
-  val pageTitle      = "Confirmation page"
-  val pageParagraphs = Seq(
+  val pageHeading                 = "Notification submitted"
+  val pageTitle                   = "Confirmation page"
+  val pageParagraphs: Seq[String] = Seq(
     "ABC Limited has successfully submitted a notification to let HMRC know who the Senior Accounting Officer is and which company they are responsible for tax accounting arrangements.",
     "Submitted on 17 January 2025 at 14:15am (GMT).",
     "We’ve sent a confirmation email with your reference number to all the contacts you gave during registration.",
@@ -128,11 +128,12 @@ object NotificationConfirmationViewSpec {
     "You will be able to see the status of your submission on your account homepage.",
     "You can now submit a certificate."
   )
-  val panelTitle          = "Notification submitted"
-  val testReferenceNumber = "SAONOT0123456789"
-  val panelBody: String   = s"Your reference number $testReferenceNumber"
-  val testDate            = "17 January 2025 at 14:15am (GMT)"
-  val pageListItems = Seq("Download a PDF – Save a copy of this confirmation", "Print this page – Print a paper copy")
-  val pageSubheadings = Seq("What happens next")
-  val hubUrl = "testHubUrl"
+  val panelTitle                 = "Notification submitted"
+  val testReferenceNumber        = "SAONOT0123456789"
+  val panelBody: String          = s"Your reference number $testReferenceNumber"
+  val testDate                   = "17 January 2025 at 14:15am (GMT)"
+  val pageListItems: Seq[String] =
+    Seq("Download a PDF – Save a copy of this confirmation", "Print this page – Print a paper copy")
+  val pageSubheadings: Seq[String] = Seq("What happens next")
+  val hubUrl                       = "testHubUrl"
 }

@@ -16,10 +16,8 @@
 
 package models
 
-import java.time.ZonedDateTime
-
 final case class NotificationConfirmationDetails(
-                                                 companyName: String,
-                                                 notificationId: String,
-                                                 notificationDateTime: String
-                                                )
+    companyName: String,
+    notificationId: String,
+    notificationDateTime: String
+)

@@ -44,8 +44,13 @@ class NotificationConfirmationControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[NotificationConfirmationView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(NotificationConfirmationDetails(companyName = "ABC Limited", notificationId = "SAONOT0123456789", notificationDateTime = "Placeholder Date/Time"))(
-          using
+        contentAsString(result) mustEqual view(
+          NotificationConfirmationDetails(
+            companyName = "ABC Limited",
+            notificationId = "SAONOT0123456789",
+            notificationDateTime = "Placeholder Date/Time"
+          )
+        )(using
           request,
           messages(application)
         ).toString
