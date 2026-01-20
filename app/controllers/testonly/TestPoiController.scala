@@ -22,8 +22,8 @@ import org.apache.pekko.stream.scaladsl.*
 import org.apache.pekko.util.ByteString
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddressList
-import org.apache.poi.xssf.streaming.{SXSSFSheet, SXSSFWorkbook}
-import org.apache.poi.xssf.usermodel.{XSSFSheet, XSSFWorkbook}
+import org.apache.poi.xssf.streaming.{DeferredSXSSFWorkbook, SXSSFWorkbook}
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.slf4j
 import play.api.Logger
 import play.api.i18n.I18nSupport
@@ -31,12 +31,13 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.testonly.TestPoiView
 
-import java.io.*
-import java.nio.file.{Path, Paths}
-import javax.inject.Inject
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.jdk.CollectionConverters.*
+
+import java.io.*
+import java.nio.file.{Path, Paths}
+import javax.inject.Inject
 
 class TestPoiController @Inject() (
     mcc: MessagesControllerComponents,
@@ -53,14 +54,17 @@ class TestPoiController @Inject() (
 
   def testSxssf: Action[AnyContent] = downloadFile(writerType = "sxssf")
 
-  def downloadFile(writerType: "xssf" | "sxssf"): Action[AnyContent] = Action { implicit request =>
+  def testDeferredSxssf: Action[AnyContent] = downloadFile(writerType = "deferredSxssf")
+
+  def downloadFile(writerType: "xssf" | "sxssf" | "deferredSxssf"): Action[AnyContent] = Action { implicit request =>
     val templateFilepath: Path = Paths.get(templateFileConfig)
     val templateFile           = templateFilepath.toFile
     if templateFile.exists && !templateFile.isDirectory then {
       val filename    = templateFilepath.getFileName
       val dataContent = writerType match {
-        case "xssf"  => xssf(templateFile, testData)
-        case "sxssf" => sxssf(templateFile, testData)
+        case "xssf"          => xssf(templateFile, testData)
+        case "sxssf"         => sxssf(templateFile, testData)
+        case "deferredSxssf" => deferredSxssf(templateFile, testData)
       }
 
       Ok.chunked(dataContent, inline = false, fileName = Some(filename.toString))
@@ -102,7 +106,7 @@ def sxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
 
   val rowFormats = getDataRowFormat(xssfWorkbook)
   val sheet      = xssfWorkbook.getSheetAt(0)
-  sheet.removeRow(sheet.getRow(3))
+  sheet.removeRow(sheet.getRow(firstRowIndex))
   xssfWorkbook.updateDropdownConfigs(data.size)
 
   val sxssfWorkbook = new SXSSFWorkbook(xssfWorkbook)
@@ -120,11 +124,43 @@ def sxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
     }
 }
 
+// DeferredSXSSFWorkbook writes to fewer temp files but also reduce memory usage from XSSFWorkbook
+def deferredSxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
+
+  val xssfWorkbook = readExcel(templateFile)
+
+  // before we create DeferredSXSSFWorkbook we need to
+  // a)  create the constraints in the xssf before we create sxssf
+  // b)  we need to remove all intended data rows in the XSSFWorkbook part,
+  //       otherwise it'll already be streamed and we won't be able to write to those rows anymore
+  //       If this were to happen, unlike in the SXSSFWorkbook case, currently we won't even get an exception
+
+  val rowFormats = getDataRowFormat(xssfWorkbook)
+  val sheet      = xssfWorkbook.getSheetAt(0)
+  sheet.removeRow(sheet.getRow(firstRowIndex))
+  xssfWorkbook.updateDropdownConfigs(data.size)
+
+  val deferredSxssfWorkbook = new DeferredSXSSFWorkbook(xssfWorkbook)
+
+  deferredSxssfWorkbook.configureStream(rowFormats, data)
+
+  deferredSxssfWorkbook.asSource
+    .wireTap(str => logger.error("source emit"))
+    .watchTermination() { (_, termination) =>
+      termination.foreach { _ =>
+        Option(deferredSxssfWorkbook).foreach { workbook =>
+          workbook.close()
+          logger.error("Stream closed, resources cleaned up.")
+        }
+      }
+    }
+}
+
 object TestPoiController {
 
   private val templateFileConfig = "data/templates/testonly/Submission template- Notification and certificate (v7).xlsx"
 
-  private val firstRowIndex = 3
+  private[testonly] val firstRowIndex = 3
 
   private[testonly] val logger: slf4j.Logger = Logger(this.getClass).logger
 
@@ -172,7 +208,7 @@ object TestPoiController {
 
   }
 
-  extension (sheet: XSSFSheet | SXSSFSheet) {
+  extension (sheet: Sheet) {
     def helper: DataValidationHelper = sheet.getDataValidationHelper
 
     def addDropdown(options: Array[String], column: Column, totalRows: Int): Unit = {
@@ -183,6 +219,76 @@ object TestPoiController {
       )
       validation.setSuppressDropDownArrow(true) // required in order to turn this into a dropdown
       sheet.addValidationData(validation)
+    }
+
+    def setData(rowFormats: Seq[CellFormat], data: Seq[Row]): Unit = {
+      data.zipWithIndex.foreach((rowData, index) => {
+        val row = {
+          val targetIndex = firstRowIndex + index
+          Option(sheet.getRow(targetIndex)).getOrElse(sheet.createRow(targetIndex))
+        }
+        rowFormats.zipWithIndex.foreach((format, index) =>
+          val cell = Option(row.getCell(index)).getOrElse(row.createCell(index))
+          cell.setCellStyle(format.cellStyle)
+          format.formula.map(cell.setCellFormula)
+        )
+
+        row.getCell(Column.CompanyName.index).setCellValue(rowData.companyName)
+        row.getCell(Column.Utr.index).setCellValue(rowData.utr)
+        row.getCell(Column.Crn.index).setCellValue(rowData.crn)
+        row.getCell(Column.CompanyType.index).setCellValue(rowData.companyType)
+        row.getCell(Column.Status.index).setCellValue(rowData.status)
+        row.getCell(Column.FinancialYearEndDate.index).setCellValue(rowData.financialYearEndDate)
+        row.getCell(Column.CorporationTax.index).setCellValue(rowData.qualified.corporationTax)
+        row.getCell(Column.Vat.index).setCellValue(rowData.qualified.vat)
+        row.getCell(Column.Paye.index).setCellValue(rowData.qualified.paye)
+        row.getCell(Column.InsurancePremiumTax.index).setCellValue(rowData.qualified.insurancePremiumTax)
+        row.getCell(Column.StampDutyLandTax.index).setCellValue(rowData.qualified.stampDutyLandTax)
+        row.getCell(Column.StampDutyReserveTax.index).setCellValue(rowData.qualified.stampDutyReserveTax)
+        row.getCell(Column.PetroleumRevenueTax.index).setCellValue(rowData.qualified.petroleumRevenueTax)
+        row.getCell(Column.CustomsDuties.index).setCellValue(rowData.qualified.customsDuties)
+        row.getCell(Column.ExciseDuties.index).setCellValue(rowData.qualified.exciseDuties)
+        row.getCell(Column.BankLevy.index).setCellValue(rowData.qualified.bankLevy)
+        row.getCell(Column.CertificateType.index).setCellValue(rowData.certificateType)
+        rowData.additionalInformation.foreach(row.getCell(Column.AdditionalInformation.index).setCellValue)
+      })
+
+    }
+  }
+
+  extension [T <: Workbook](workbook: T) {
+    def asSource: Source[ByteString, ?] =
+      StreamConverters.fromInputStream(() => {
+        val bos = new ByteArrayOutputStream
+        Future {
+          blocking {
+            workbook match {
+              case w: DeferredSXSSFWorkbook => w.writeAvoidingTempFiles(bos)
+              case _                        => workbook.write(bos)
+            }
+          }
+        }
+        val barray = bos.toByteArray
+        new ByteArrayInputStream(barray)
+      })
+
+    def getDataRowFormat: Seq[CellFormat] = {
+      val sheet          = workbook.getSheetAt(0)
+      val formattedRow   = Option(sheet.getRow(firstRowIndex)).getOrElse(sheet.createRow(firstRowIndex))
+      val formattedRange = 0 to 17
+
+      formattedRange.map { index =>
+        val cell      = Option(formattedRow.getCell(index)).getOrElse(formattedRow.createCell(index))
+        val cellType  = cell.getCellType
+        val cellStyle = cell.getCellStyle
+
+        cellType match {
+          case CellType.FORMULA =>
+            CellFormat(cellStyle, Some(cell.getCellFormula))
+          case _ =>
+            CellFormat(cellStyle, None)
+        }
+      }
     }
   }
 
@@ -237,78 +343,24 @@ object TestPoiController {
           .toList
           .map(_.getRegions.getCellRangeAddresses.map(_.formatAsString()).mkString)
       )
-
     }
-
   }
 
-  extension [T <: Workbook](workbook: T) {
-    def asSource: Source[ByteString, ?] =
-      StreamConverters.fromInputStream(() => {
-        val bos = new ByteArrayOutputStream
-        Future {
-          blocking {
-            workbook.write(bos)
-          }
-        }
-        val barray = bos.toByteArray
-        new ByteArrayInputStream(barray)
-      })
-
-    def getDataRowFormat: Seq[CellFormat] = {
-      val sheet          = workbook.getSheetAt(0)
-      val formattedRow   = Option(sheet.getRow(firstRowIndex)).getOrElse(sheet.createRow(firstRowIndex))
-      val formattedRange = 0 to 17
-
-      formattedRange.map { index =>
-        val cell      = Option(formattedRow.getCell(index)).getOrElse(formattedRow.createCell(index))
-        val cellType  = cell.getCellType
-        val cellStyle = cell.getCellStyle
-
-        cellType match {
-          case CellType.FORMULA =>
-            CellFormat(cellStyle, Some(cell.getCellFormula))
-          case _ =>
-            CellFormat(cellStyle, None)
-        }
-      }
-    }
-
+  // set data for XSSFWorkbook & SXSSFWorkbook are identical and synchronously since they must be in memory (or in temp file)
+  // before we write to outputstream
+  extension (workbook: XSSFWorkbook | SXSSFWorkbook) {
     def setData(rowFormats: Seq[CellFormat], data: Seq[Row]): Unit = {
       val sheet = workbook.getSheetAt(0)
-
-      data.zipWithIndex.foreach((rowData, index) => {
-        val row = {
-          val targetIndex = firstRowIndex + index
-          Option(sheet.getRow(targetIndex)).getOrElse(sheet.createRow(targetIndex))
-        }
-        rowFormats.zipWithIndex.foreach((format, index) =>
-          val cell = Option(row.getCell(index)).getOrElse(row.createCell(index))
-          cell.setCellStyle(format.cellStyle)
-          format.formula.map(cell.setCellFormula)
-        )
-
-        row.getCell(Column.CompanyName.index).setCellValue(rowData.companyName)
-        row.getCell(Column.Utr.index).setCellValue(rowData.utr)
-        row.getCell(Column.Crn.index).setCellValue(rowData.crn)
-        row.getCell(Column.CompanyType.index).setCellValue(rowData.companyType)
-        row.getCell(Column.Status.index).setCellValue(rowData.status)
-        row.getCell(Column.FinancialYearEndDate.index).setCellValue(rowData.financialYearEndDate)
-        row.getCell(Column.CorporationTax.index).setCellValue(rowData.qualified.corporationTax)
-        row.getCell(Column.Vat.index).setCellValue(rowData.qualified.vat)
-        row.getCell(Column.Paye.index).setCellValue(rowData.qualified.paye)
-        row.getCell(Column.InsurancePremiumTax.index).setCellValue(rowData.qualified.insurancePremiumTax)
-        row.getCell(Column.StampDutyLandTax.index).setCellValue(rowData.qualified.stampDutyLandTax)
-        row.getCell(Column.StampDutyReserveTax.index).setCellValue(rowData.qualified.stampDutyReserveTax)
-        row.getCell(Column.PetroleumRevenueTax.index).setCellValue(rowData.qualified.petroleumRevenueTax)
-        row.getCell(Column.CustomsDuties.index).setCellValue(rowData.qualified.customsDuties)
-        row.getCell(Column.ExciseDuties.index).setCellValue(rowData.qualified.exciseDuties)
-        row.getCell(Column.BankLevy.index).setCellValue(rowData.qualified.bankLevy)
-        row.getCell(Column.CertificateType.index).setCellValue(rowData.certificateType)
-        rowData.additionalInformation.foreach(row.getCell(Column.AdditionalInformation.index).setCellValue)
-      })
+      sheet.setData(rowFormats, data)
     }
+  }
 
+  // for DeferredSXSSFWorkbook data is set using a generator function and on demand, since it is not done until we request write
+  extension (workbook: DeferredSXSSFWorkbook) {
+    def configureStream(rowFormats: Seq[CellFormat], data: Seq[Row]): Unit = {
+      val streamingSheet = workbook.getStreamingSheetAt(0)
+      streamingSheet.setRowGenerator(sheet => sheet.setData(rowFormats, data))
+    }
   }
 
 }
