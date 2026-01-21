@@ -20,11 +20,12 @@ import config.AppConfig
 import controllers.actions.IdentifierAction
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.ExecutionContext
 
-import java.nio.file.{Path, Paths}
+import java.io.File
 import javax.inject.Inject
 
 class DownloadNotificationTemplateController @Inject (appConfig: AppConfig)(
@@ -36,17 +37,16 @@ class DownloadNotificationTemplateController @Inject (appConfig: AppConfig)(
 
   def downloadFile(): Action[AnyContent] = identify { implicit request =>
     {
-      val templateFilepath: Path = Paths.get(appConfig.templateFile)
-      val templateFile           = templateFilepath.toFile
-      if templateFile.exists && !templateFile.isDirectory then {
-        val filename = templateFilepath.getFileName
-        Ok.sendFile(content = templateFile, inline = false)
-          .withHeaders(
-            "Content-Disposition" -> s"attachment; filename=${filename}"
-          )
-      } else {
-        InternalServerError("Unable to provide template")
-      }
+      val templateFile =
+        Option(getClass.getResource(appConfig.templateFile))
+          .map(resource => new File(resource.toURI))
+          .filter(file => file.exists && !file.isDirectory)
+          .getOrElse(throw InternalServerException("Unable to provide template"))
+
+      Ok.sendFile(content = templateFile, inline = false)
+        .withHeaders(
+          "Content-Disposition" -> s"attachment; filename=${templateFile.getName}"
+        )
     }
   }
 }

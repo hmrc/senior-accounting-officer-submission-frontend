@@ -28,6 +28,7 @@ import org.slf4j
 import play.api.Logger
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.testonly.TestPoiView
 
@@ -36,7 +37,6 @@ import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.jdk.CollectionConverters.*
 
 import java.io.*
-import java.nio.file.{Path, Paths}
 import javax.inject.Inject
 
 class TestPoiController @Inject() (
@@ -57,20 +57,20 @@ class TestPoiController @Inject() (
   def testDeferredSxssf: Action[AnyContent] = downloadFile(writerType = "deferredSxssf")
 
   def downloadFile(writerType: "xssf" | "sxssf" | "deferredSxssf"): Action[AnyContent] = Action { implicit request =>
-    val templateFilepath: Path = Paths.get(templateFileConfig)
-    val templateFile           = templateFilepath.toFile
-    if templateFile.exists && !templateFile.isDirectory then {
-      val filename    = templateFilepath.getFileName
-      val dataContent = writerType match {
-        case "xssf"          => xssf(templateFile, testData)
-        case "sxssf"         => sxssf(templateFile, testData)
-        case "deferredSxssf" => deferredSxssf(templateFile, testData)
-      }
+    // using .toURI to HTTP encode spaces in file names, otherwise files with spaces will not be found
+    val templateFile =
+      Option(getClass.getResource(templateFileConfig))
+        .map(resource => new File(resource.toURI))
+        .filter(file => file.exists && !file.isDirectory)
+        .getOrElse(throw InternalServerException(s"Unable to provide template"))
 
-      Ok.chunked(dataContent, inline = false, fileName = Some(filename.toString))
-    } else {
-      InternalServerError("Unable to provide template")
+    val dataContent = writerType match {
+      case "xssf"          => xssf(templateFile, testData)
+      case "sxssf"         => sxssf(templateFile, testData)
+      case "deferredSxssf" => deferredSxssf(templateFile, testData)
     }
+
+    Ok.chunked(dataContent, inline = false, fileName = Some(templateFile.getName))
   }
 
 }
@@ -158,7 +158,7 @@ def deferredSxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
 
 object TestPoiController {
 
-  private val templateFileConfig = "data/templates/testonly/Submission template- Notification and certificate (v7).xlsx"
+  private val templateFileConfig = "/templates/testonly/Submission template- Notification and certificate (v7).xlsx"
 
   private[testonly] val firstRowIndex = 3
 
