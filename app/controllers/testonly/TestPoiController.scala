@@ -94,6 +94,7 @@ def xssf(templateFile: File, testData: Seq[Row], implementationType: Impl)(using
   val workbook   = readExcel(templateFile)
   val rowFormats = getDataRowFormat(workbook)
 
+  workbook.updateConditionalFormating(testData.size)
   workbook.updateDropdownConfigs(testData.size)
 
   workbook.setData(rowFormats, testData)
@@ -113,6 +114,7 @@ def sxssf(templateFile: File, data: Seq[Row], implementationType: Impl)(using
   // b)  we need to remove all intended data rows in the XSSFWorkbook part,
   //       otherwise it'll be written to the disk and we won't be able to write to those rows anymore
 
+  xssfWorkbook.updateConditionalFormating(data.size)
   val rowFormats = getDataRowFormat(xssfWorkbook)
   val sheet      = xssfWorkbook.getSheetAt(0)
   sheet.removeRow(sheet.getRow(firstRowIndex))
@@ -147,6 +149,7 @@ def deferredSxssf(templateFile: File, data: Seq[Row], implementationType: Impl)(
   //       otherwise it'll already be streamed and we won't be able to write to those rows anymore
   //       If this were to happen, unlike in the SXSSFWorkbook case, currently we won't even get an exception
 
+  xssfWorkbook.updateConditionalFormating(data.size)
   val rowFormats = getDataRowFormat(xssfWorkbook)
   val sheet      = xssfWorkbook.getSheetAt(0)
   sheet.removeRow(sheet.getRow(firstRowIndex))
@@ -364,6 +367,19 @@ object TestPoiController {
 
   // data validations (dropdowns) can only be configured via XSSFWorkbook
   extension (workbook: XSSFWorkbook) {
+
+    def updateConditionalFormating(dataSize: Int): Unit = {
+      val sheet    = workbook.getSheetAt(0)
+      val cdf      = sheet.getSheetConditionalFormatting
+      val cdfTotal = cdf.getNumConditionalFormattings
+      (0 until cdfTotal).foreach(i =>
+        val rule = cdf.getConditionalFormattingAt(i)
+        rule.setFormattingRanges(rule.getFormattingRanges.map { range =>
+          range.setLastRow(firstRowIndex + dataSize - 1)
+          range
+        })
+      )
+    }
 
     def updateDropdownConfigs(dataSize: Int): Unit = {
       val sheet = workbook.getSheetAt(0)
