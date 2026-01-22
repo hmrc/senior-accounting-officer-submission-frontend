@@ -18,6 +18,8 @@ package controllers.testonly
 
 import controllers.Execution.trampoline
 import controllers.testonly.TestPoiController.*
+import controllers.testonly.TestPoiController.Impl.A
+import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.scaladsl.*
 import org.apache.pekko.util.ByteString
 import org.apache.poi.ss.usermodel.*
@@ -32,17 +34,16 @@ import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.testonly.TestPoiView
 
+import java.io.*
+import javax.inject.Inject
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.jdk.CollectionConverters.*
 
-import java.io.*
-import javax.inject.Inject
-
 class TestPoiController @Inject() (
     mcc: MessagesControllerComponents,
     testPoiView: TestPoiView
-)(implicit val ec: ExecutionContext)
+)(implicit val ec: ExecutionContext, system: ActorSystem)
     extends FrontendController(mcc)
     with I18nSupport {
 
@@ -56,7 +57,11 @@ class TestPoiController @Inject() (
 
   def testDeferredSxssf: Action[AnyContent] = downloadFile(writerType = "deferredSxssf")
 
-  def downloadFile(writerType: "xssf" | "sxssf" | "deferredSxssf"): Action[AnyContent] = Action { implicit request =>
+  def downloadFile(
+      writerType: "xssf" | "sxssf" | "deferredSxssf",
+      dataRows: Int = 1000,
+      impl: Impl = Impl.C
+  ): Action[AnyContent] = Action { implicit request =>
     // using .toURI to HTTP encode spaces in file names, otherwise files with spaces will not be found
     val templateFile =
       Option(getClass.getResource(templateFileConfig))
@@ -65,9 +70,9 @@ class TestPoiController @Inject() (
         .getOrElse(throw InternalServerException(s"Unable to provide template"))
 
     val dataContent = writerType match {
-      case "xssf"          => xssf(templateFile, testData)
-      case "sxssf"         => sxssf(templateFile, testData)
-      case "deferredSxssf" => deferredSxssf(templateFile, testData)
+      case "xssf"          => xssf(templateFile, testData(dataRows), impl)
+      case "sxssf"         => sxssf(templateFile, testData(dataRows), impl)
+      case "deferredSxssf" => deferredSxssf(templateFile, testData(dataRows), impl)
     }
 
     Ok.chunked(dataContent, inline = false, fileName = Some(templateFile.getName))
@@ -82,7 +87,9 @@ def readExcel(file: File): XSSFWorkbook = {
 }
 
 //XSSFWorkbook in memory only
-def xssf(templateFile: File, testData: Seq[Row]): Source[ByteString, ?] = {
+def xssf(templateFile: File, testData: Seq[Row], implementationType: Impl)(using
+    system: ActorSystem
+): Source[ByteString, ?] = {
 
   val workbook   = readExcel(templateFile)
   val rowFormats = getDataRowFormat(workbook)
@@ -91,11 +98,13 @@ def xssf(templateFile: File, testData: Seq[Row]): Source[ByteString, ?] = {
 
   workbook.setData(rowFormats, testData)
 
-  workbook.asSource
+  workbook.asSource(implementationType)
 }
 
 //SXSSFWorkbook written to temp files to reduce memory usage
-def sxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
+def sxssf(templateFile: File, data: Seq[Row], implementationType: Impl)(using
+    system: ActorSystem
+): Source[ByteString, ?] = {
 
   val xssfWorkbook = readExcel(templateFile)
 
@@ -113,7 +122,8 @@ def sxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
 
   sxssfWorkbook.setData(rowFormats, data)
 
-  sxssfWorkbook.asSource
+  sxssfWorkbook
+    .asSource(implementationType)
     .watchTermination() { (_, termination) =>
       termination.foreach { _ =>
         Option(sxssfWorkbook).foreach { workbook =>
@@ -125,7 +135,9 @@ def sxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
 }
 
 // DeferredSXSSFWorkbook writes to fewer temp files but also reduce memory usage from XSSFWorkbook
-def deferredSxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
+def deferredSxssf(templateFile: File, data: Seq[Row], implementationType: Impl)(using
+    system: ActorSystem
+): Source[ByteString, ?] = {
 
   val xssfWorkbook = readExcel(templateFile)
 
@@ -144,7 +156,8 @@ def deferredSxssf(templateFile: File, data: Seq[Row]): Source[ByteString, ?] = {
 
   deferredSxssfWorkbook.configureStream(rowFormats, data)
 
-  deferredSxssfWorkbook.asSource
+  deferredSxssfWorkbook
+    .asSource(implementationType)
     .wireTap(str => logger.error("source emit"))
     .watchTermination() { (_, termination) =>
       termination.foreach { _ =>
@@ -164,48 +177,42 @@ object TestPoiController {
 
   private[testonly] val logger: slf4j.Logger = Logger(this.getClass).logger
 
-  private def testData: Seq[Row] = {
-    val list: ListBuffer[Row] = ListBuffer[Row]()
-    (1 to 500)
-      .foldLeft(list)((l, ?) =>
-        list.addAll(
-          Seq(
-            Row(
-              companyName = "Test company",
-              utr = "0123456789",
-              crn = "1234567890",
-              companyType = "PLC",
-              status = "Active",
-              financialYearEndDate = "31/12/2025",
-              certificateType = "Unqualified"
-            ),
-            Row(
-              companyName = "Test company 2",
-              utr = "1234567890",
-              crn = "0123456789",
-              companyType = "LTD",
-              status = "Active",
-              financialYearEndDate = "31/12/2025",
-              qualified = TaxRegimes(
-                corporationTax = true,
-                vat = true,
-                paye = true,
-                insurancePremiumTax = true,
-                stampDutyLandTax = true,
-                stampDutyReserveTax = true,
-                petroleumRevenueTax = true,
-                customsDuties = true,
-                exciseDuties = true,
-                bankLevy = true
-              ),
-              certificateType = "Qualified",
-              additionalInformation = Some("test additional info")
-            )
-          )
+  private def testData(rows: Int): Seq[Row] = {
+    (1 to rows).map {
+      case index if (index & 1) == 1 =>
+        Row(
+          companyName = s"Test company $index",
+          utr = "0123456789",
+          crn = "1234567890",
+          companyType = "PLC",
+          status = "Active",
+          financialYearEndDate = "31/12/2025",
+          certificateType = "Unqualified"
         )
-      )
-      .toSeq
-
+      case index =>
+        Row(
+          companyName = s"Test company $index",
+          utr = "1234567890",
+          crn = "0123456789",
+          companyType = "LTD",
+          status = "Active",
+          financialYearEndDate = "31/12/2025",
+          qualified = TaxRegimes(
+            corporationTax = true,
+            vat = true,
+            paye = true,
+            insurancePremiumTax = true,
+            stampDutyLandTax = true,
+            stampDutyReserveTax = true,
+            petroleumRevenueTax = true,
+            customsDuties = true,
+            exciseDuties = true,
+            bankLevy = true
+          ),
+          certificateType = "Qualified",
+          additionalInformation = Some("test additional info")
+        )
+    }
   }
 
   extension (sheet: Sheet) {
@@ -256,21 +263,55 @@ object TestPoiController {
     }
   }
 
+  enum Impl {
+    case A, B, C, D
+  }
+
   extension [T <: Workbook](workbook: T) {
-    def asSource: Source[ByteString, ?] =
-      StreamConverters.fromInputStream(() => {
-        val bos = new ByteArrayOutputStream
-        Future {
-          blocking {
-            workbook match {
-              case w: DeferredSXSSFWorkbook => w.writeAvoidingTempFiles(bos)
-              case _                        => workbook.write(bos)
+    def asSource(implementationType: Impl)(using system: ActorSystem): Source[ByteString, ?] = {
+      given blockingEc: ExecutionContext = system.dispatchers.lookup("pekko.actor.default-blocking-io-dispatcher")
+      implementationType match {
+        case Impl.A =>
+          StreamConverters.fromInputStream(() => {
+            val bos = new ByteArrayOutputStream
+            Future {
+              blocking {
+                workbook match {
+                  case w: DeferredSXSSFWorkbook => w.writeAvoidingTempFiles(bos)
+                  case _                        => workbook.write(bos)
+                }
+              }
             }
-          }
-        }
-        val barray = bos.toByteArray
-        new ByteArrayInputStream(barray)
-      })
+            val barray = bos.toByteArray
+            new ByteArrayInputStream(barray)
+          })
+        case Impl.B =>
+          Source
+            .single(workbook)
+            .map(workbook => {
+              val bos = new ByteArrayOutputStream()
+              workbook match {
+                case w: DeferredSXSSFWorkbook => w.writeAvoidingTempFiles(bos)
+                case _                        => workbook.write(bos)
+              }
+              bos
+            })
+            .map(bos => ByteString(bos.toByteArray))
+        case Impl.C =>
+          StreamConverters
+            .asOutputStream() // Creates a Source that materializes an OutputStream
+            .mapMaterializedValue { outputStream =>
+              Future {
+                try {
+                  workbook.write(outputStream)
+                } finally {
+                  outputStream.close()
+                }
+              }(blockingEc)
+            }
+      }
+
+    }
 
     def getDataRowFormat: Seq[CellFormat] = {
       val sheet          = workbook.getSheetAt(0)
