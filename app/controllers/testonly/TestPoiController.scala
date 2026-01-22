@@ -21,10 +21,12 @@ import controllers.testonly.TestPoiController.*
 import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.scaladsl.*
 import org.apache.pekko.util.ByteString
+import org.apache.poi.ss.formula.ptg.{AreaPtgBase, RefPtgBase}
+import org.apache.poi.ss.formula.{FormulaParser, FormulaRenderer, FormulaType}
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddressList
-import org.apache.poi.xssf.streaming.{DeferredSXSSFWorkbook, SXSSFWorkbook}
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.apache.poi.xssf.streaming.{DeferredSXSSFWorkbook, SXSSFEvaluationWorkbook, SXSSFSheet, SXSSFWorkbook}
+import org.apache.poi.xssf.usermodel.{XSSFEvaluationWorkbook, XSSFSheet, XSSFWorkbook}
 import org.slf4j
 import play.api.Logger
 import play.api.i18n.I18nSupport
@@ -58,7 +60,7 @@ class TestPoiController @Inject() (
   def downloadFile(
       writerType: "xssf" | "sxssf" | "deferredSxssf",
       dataRows: Int = 1000,
-      impl: Impl = Impl.C
+      impl: Impl = Impl.A
   ): Action[AnyContent] = Action { implicit request =>
     // using .toURI to HTTP encode spaces in file names, otherwise files with spaces will not be found
     val templateFile =
@@ -226,16 +228,43 @@ object TestPoiController {
       sheet.addValidationData(validation)
     }
 
+    private def copyFormula(formula: String, coldiff: Int, rowdiff: Int) = {
+      // adopted from https://stackoverflow.com/questions/47594254/apache-poi-update-formula-references-when-copying
+      val workbookWrapper = sheet match {
+        case sheet: XSSFSheet  => XSSFEvaluationWorkbook.create(sheet.getWorkbook)
+        case sheet: SXSSFSheet => SXSSFEvaluationWorkbook.create(sheet.getWorkbook)
+      }
+      // PTG is an Excel term which stands for Parse Token
+      val ptgs = FormulaParser.parse(formula, workbookWrapper, FormulaType.CELL, sheet.getWorkbook.getSheetIndex(sheet))
+
+      //  there are other token types we don't care about e.g. String
+      ptgs
+        .collect {
+          case ref: RefPtgBase => // base class for cell references
+            if ref.isColRelative then ref.setColumn(ref.getColumn + coldiff)
+            if ref.isRowRelative then ref.setRow(ref.getRow + rowdiff)
+          case ref: AreaPtgBase => // base class for range references
+            if ref.isFirstColRelative then ref.setFirstColumn(ref.getFirstColumn + coldiff)
+            if ref.isLastColRelative then ref.setLastColumn(ref.getLastColumn + coldiff)
+            if ref.isFirstRowRelative then ref.setFirstRow(ref.getFirstRow + rowdiff)
+            if ref.isLastRowRelative then ref.setLastRow(ref.getLastRow + rowdiff)
+        }
+        .asInstanceOf[Unit]
+
+      FormulaRenderer.toFormulaString(workbookWrapper, ptgs)
+    }
+
     def setData(rowFormats: Seq[CellFormat], data: Seq[Row]): Unit = {
       data.zipWithIndex.foreach((rowData, index) => {
+        val rowIndex = firstRowIndex + index
+
         val row = {
-          val targetIndex = firstRowIndex + index
-          Option(sheet.getRow(targetIndex)).getOrElse(sheet.createRow(targetIndex))
+          Option(sheet.getRow(rowIndex)).getOrElse(sheet.createRow(rowIndex))
         }
         rowFormats.zipWithIndex.foreach((format, index) =>
           val cell = Option(row.getCell(index)).getOrElse(row.createCell(index))
           cell.setCellStyle(format.cellStyle)
-          format.formula.map(cell.setCellFormula)
+          format.formula.map(f => cell.setCellFormula(sheet.copyFormula(f, 0, rowIndex - firstRowIndex)))
         )
 
         row.getCell(Column.CompanyName.index).setCellValue(rowData.companyName)
@@ -267,7 +296,6 @@ object TestPoiController {
 
   extension [T <: Workbook](workbook: T) {
     def asSource(implementationType: Impl)(using system: ActorSystem): Source[ByteString, ?] = {
-      given blockingEc: ExecutionContext = system.dispatchers.lookup("pekko.stream.materializer.blocking-io-dispatcher")
       implementationType match {
         case Impl.A =>
           StreamConverters.fromInputStream(() => {
@@ -296,6 +324,8 @@ object TestPoiController {
             })
             .map(bos => ByteString(bos.toByteArray))
         case Impl.C =>
+          given blockingEc: ExecutionContext =
+            system.dispatchers.lookup("pekko.stream.materializer.blocking-io-dispatcher")
           StreamConverters
             .asOutputStream() // Creates a Source that materializes an OutputStream
             .mapMaterializedValue { outputStream =>
