@@ -29,21 +29,37 @@
     <h1 class="govuk-heading-xl">Test POI implementations</h1>
 
     @formHelper(action = _root_.controllers.testonly.routes.TestPoiController.onSubmit()){
-        <div style="margin: 1em 0 1em 0;">
-            <label for="workbook">Workbook type</label>
-            <select name="workbook" id="workbook">
-                <option value="xssf">XSSF</option>
-                <option value="sxssf">SXSSF</option>
-                <option value="deferredSxssf">DeferredSXSSF</option>
-            </select>
-        </div>
+        <fieldset style="margin: 1em 0 1em 0;">
+            <legend>Workbook type</legend>
+            <div>
+                <label for="xssf" style="width: 100%;display: block;">
+                    <input type="radio" id="xssf" name="workbook" value="xssf" checked />
+                    XSSF - Keep everything in memory before write
+                </label>
+            </div>
 
-        <div style="margin: 1em 0 1em 0;">
+            <div>
+                <label for="sxssf" style="width: 100%;display: block;">
+                    <input type="radio" id="sxssf" name="workbook" value="sxssf" >
+                    SXSSF - Stream to temporary files and read from them to write
+                </label>
+            </div>
+
+            <div>
+                <label for="deferredSxssf" style="width: 100%;display: block;">
+                    <input type="radio" id="deferredSxssf" name="workbook" value="deferredSxssf" >
+                    DeferredSXSSF - Stream minimal data to temporary files, rows streamed directly to write
+                </label>
+            </div>
+        </fieldset>
+
+
+        <fie style="margin: 1em 0 1em 0;">
             <label>
                 Size
-                <input type="number" name="rows" min="1" max="10000" value="1000"/>
+                <input type="number" name="rows" min="1" max="10000" value="1000">
             </label>
-        </div>
+        </fie>
 
         <div style="margin: 1em 0 1em 0;">
             <label for="algorithm">File write algorithm</label>
@@ -55,7 +71,7 @@
         </div>
 
         @govukButton(
-            ButtonViewModel("download".toText).withAttribute("id", "submit")
+            ButtonViewModel("Download".toText).withAttribute("id", "submit")
         )
     }
 

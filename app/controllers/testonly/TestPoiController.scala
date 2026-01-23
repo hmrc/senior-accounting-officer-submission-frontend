@@ -25,7 +25,7 @@ import org.apache.poi.ss.formula.ptg.{AreaPtgBase, RefPtgBase}
 import org.apache.poi.ss.formula.{FormulaParser, FormulaRenderer, FormulaType}
 import org.apache.poi.ss.usermodel.*
 import org.apache.poi.ss.util.CellRangeAddressList
-import org.apache.poi.xssf.streaming.{DeferredSXSSFWorkbook, SXSSFEvaluationWorkbook, SXSSFSheet, SXSSFWorkbook}
+import org.apache.poi.xssf.streaming.*
 import org.apache.poi.xssf.usermodel.{XSSFEvaluationWorkbook, XSSFSheet, XSSFWorkbook}
 import org.slf4j
 import play.api.Logger
@@ -35,10 +35,11 @@ import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.testonly.TestPoiView
 
-import java.io.*
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.jdk.CollectionConverters.*
+
+import java.io.*
+import javax.inject.Inject
 
 class TestPoiController @Inject() (
     mcc: MessagesControllerComponents,
