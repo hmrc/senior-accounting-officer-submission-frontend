@@ -45,7 +45,7 @@ class $className$SummarySpec extends SpecBase with GuiceOneAppPerSuite {
       def SUT(answer: $className$ = $className$.$option1key;format="Camel"$) = $className$Summary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "$className;format="decap"$".toKey
+        SUT().key mustBe "$title$".toKey
       }
 
       "expected value" - {
