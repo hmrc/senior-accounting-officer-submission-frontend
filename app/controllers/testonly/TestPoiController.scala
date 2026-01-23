@@ -138,11 +138,12 @@ def sxssf(templateFile: File, data: Seq[Row], implementationType: Impl)(using
 
   sxssfWorkbook
     .asSource(implementationType)
+    .wireTap(str => logger.info("source emit"))
     .watchTermination() { (_, termination) =>
       termination.foreach { _ =>
         Option(sxssfWorkbook).foreach { workbook =>
           workbook.close()
-          logger.error("Stream closed, resources cleaned up.")
+          logger.info("Stream closed, resources cleaned up.")
         }
       }
     }
@@ -173,12 +174,12 @@ def deferredSxssf(templateFile: File, data: Seq[Row], implementationType: Impl)(
 
   deferredSxssfWorkbook
     .asSource(implementationType)
-    .wireTap(str => logger.error("source emit"))
+    .wireTap(str => logger.info("source emit"))
     .watchTermination() { (_, termination) =>
       termination.foreach { _ =>
         Option(deferredSxssfWorkbook).foreach { workbook =>
           workbook.close()
-          logger.error("Stream closed, resources cleaned up.")
+          logger.info("Stream closed, resources cleaned up.")
         }
       }
     }
@@ -430,8 +431,8 @@ object TestPoiController {
     def updateDropdownConfigs(dataSize: Int): Unit = {
       val sheet = workbook.getSheetAt(0)
 
-      logger.error("validations" + sheet.getDataValidations.size())
-      logger.error(
+      logger.info("validations" + sheet.getDataValidations.size())
+      logger.info(
         "validation ranges " + sheet.getDataValidations
           .iterator()
           .asScala
@@ -468,7 +469,7 @@ object TestPoiController {
         totalRows = dataSize
       )
 
-      logger.error(
+      logger.info(
         "validation ranges " + sheet.getDataValidations
           .iterator()
           .asScala
