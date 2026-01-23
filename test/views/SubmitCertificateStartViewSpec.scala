@@ -61,9 +61,9 @@ class SubmitCertificateStartViewSpec extends ViewSpecBase[SubmitCertificateStart
 }
 
 object SubmitCertificateStartViewSpec {
-  val pageHeading = "Submit a certificate"
-  val pageTitle   = "Submit a certificate"
-  val pageCaption = "Submit a certificate"
+  val pageHeading             = "Submit a certificate"
+  val pageTitle               = "Submit a certificate"
+  val pageCaption             = "Submit a certificate"
   val paragraphs: Seq[String] = Seq(
     "The company details and tax regimes you provided in the uploaded template will be used to prepare your certificate.",
     "If you need to update company details or tax information, you can upload another submission template again before continuing.",
