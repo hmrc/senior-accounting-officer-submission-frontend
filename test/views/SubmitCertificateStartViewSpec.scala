@@ -33,12 +33,25 @@ class SubmitCertificateStartViewSpec extends ViewSpecBase[SubmitCertificateStart
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
       pageHeading = pageHeading,
-      showBackLink = true,
+      showBackLink = false,
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithParagraphs(paragraphs)
+
+    doc.createTestsWithCaption(pageCaption)
+
+    doc.createTestsWithBulletPoints(pageBullets)
+
+    doc.getMainContent
+      .selectFirst("p a")
+      .createTestWithLink(
+        linkText = uploadSubmissionTemplateLinkText,
+        destinationUrl = "#"
+      )
 
     doc.createTestsWithSubmissionButton(
       action = routes.SubmitCertificateStartController.onSubmit(),
@@ -48,6 +61,17 @@ class SubmitCertificateStartViewSpec extends ViewSpecBase[SubmitCertificateStart
 }
 
 object SubmitCertificateStartViewSpec {
-  val pageHeading = "submitCertificateStart"
-  val pageTitle   = "submitCertificateStart"
+  val pageHeading = "Submit a certificate"
+  val pageTitle   = "Submit a certificate"
+  val pageCaption = "Submit a certificate"
+  val paragraphs: Seq[String] = Seq(
+    "The company details and tax regimes you provided in the uploaded template will be used to prepare your certificate.",
+    "If you need to update company details or tax information, you can upload another submission template again before continuing.",
+    "If you have qualified companies:"
+  )
+  val pageBullets: Seq[String] = Seq(
+    "You’ll need to review the list of companies identified as qualified and confirm that is it correct before continuing.",
+    "You’ll also need to confirm the number of qualified company in the certificate statement before submitting the certificate."
+  )
+  val uploadSubmissionTemplateLinkText = "upload another submission template"
 }

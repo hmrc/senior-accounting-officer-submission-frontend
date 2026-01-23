@@ -22,7 +22,7 @@
 
 @()(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("submitCertificateStart.title"))) {
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("submitCertificateStart.title"))) {
 
     <span class="govuk-caption-m">@messages("submitCertificateStart.caption")</span>
     <h1 class="govuk-heading-l">@messages("submitCertificateStart.heading")</h1>
