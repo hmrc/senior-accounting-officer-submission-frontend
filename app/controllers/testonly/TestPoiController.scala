@@ -39,6 +39,7 @@ import java.io.*
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.jdk.CollectionConverters.*
+import scala.util.Try
 
 class TestPoiController @Inject() (
     mcc: MessagesControllerComponents,
@@ -60,7 +61,7 @@ class TestPoiController @Inject() (
   def downloadFile(
       writerType: "xssf" | "sxssf" | "deferredSxssf",
       dataRows: Int = 1000,
-      impl: Impl = Impl.A
+      impl: Impl = Impl.D
   ): Action[AnyContent] = Action { implicit request =>
     // using .toURI to HTTP encode spaces in file names, otherwise files with spaces will not be found
     val templateFile =
@@ -294,7 +295,7 @@ object TestPoiController {
   }
 
   enum Impl {
-    case A, B, C
+    case A, B, C, D
   }
 
   extension [T <: Workbook](workbook: T) {
@@ -341,6 +342,21 @@ object TestPoiController {
                 }
               }
             }
+        case Impl.D =>
+          StreamConverters.fromInputStream(() => {
+            given blockingEc: ExecutionContext =
+              system.dispatchers.lookup("pekko.stream.materializer.blocking-io-dispatcher")
+            val pos = new PipedOutputStream
+            Future {
+              blocking {
+                workbook match {
+                  case w: DeferredSXSSFWorkbook => w.writeAvoidingTempFiles(pos)
+                  case _                        => workbook.write(pos)
+                }
+              }
+            }.onComplete(_ => pos.close())
+            new PipedInputStream(pos)
+          })
       }
 
     }
