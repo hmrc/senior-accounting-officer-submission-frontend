@@ -306,7 +306,7 @@ object TestPoiController {
   }
 
   enum Impl {
-    case A, B, C, D
+    case A, B, C, D, E
   }
 
   extension [T <: Workbook](workbook: T) {
@@ -368,6 +368,25 @@ object TestPoiController {
             }.onComplete(_ => pos.close())
             new PipedInputStream(pos)
           })
+        case Impl.E =>
+          given blockingEc: ExecutionContext =
+            system.dispatchers.lookup("pekko.stream.materializer.blocking-io-dispatcher")
+          val pos = new PipedOutputStream
+          val pis = new PipedInputStream(pos)
+          Source
+            .single(workbook)
+            .via(
+              Flow.fromSinkAndSource(
+                Sink.foreach[Workbook](workbook =>
+                  Future {
+                    blocking {
+                      workbook.write(pos)
+                    }
+                  }.onComplete(_ => pos.close())
+                ),
+                StreamConverters.fromInputStream(() => pis)
+              )
+            )
       }
 
     }
