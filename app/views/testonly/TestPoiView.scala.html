@@ -14,8 +14,12 @@
  * limitations under the License.
  *@
 
+@import controllers.testonly.TestPoiController.Impl
+
 @this(
     layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukButton: GovukButton,
 )
 
 @()(using request: Request[?], messages: Messages)
@@ -24,7 +28,39 @@
 
     <h1 class="govuk-heading-xl">Test POI implementations</h1>
 
-    <p>Using XSSF <a href="@controllers.testonly.routes.TestPoiController.testXssf()">download</a></p>
+    @formHelper(action = _root_.controllers.testonly.routes.TestPoiController.onSubmit()){
+        <div style="margin: 1em 0 1em 0;">
+            <label for="workbook">Workbook type</label>
+            <select name="workbook" id="workbook">
+                <option value="xssf">XSSF</option>
+                <option value="sxssf">SXSSF</option>
+                <option value="deferredSxssf">DeferredSXSSF</option>
+            </select>
+        </div>
+
+        <div style="margin: 1em 0 1em 0;">
+            <label>
+                Size
+                <input type="number" name="rows" min="1" max="10000" value="1000"/>
+            </label>
+        </div>
+
+        <div style="margin: 1em 0 1em 0;">
+            <label for="algorithm">File write algorithm</label>
+            <select name="algorithm" id="algorithm">
+            @for(implName <- Impl.values) {
+                <option value="@implName">@implName</option>
+            }
+            </select>
+        </div>
+
+        @govukButton(
+            ButtonViewModel("download".toText).withAttribute("id", "submit")
+        )
+    }
+
+
+    <p>Using XSSF <a href="@controllers.testonly.routes.TestPoiController.testXssf()" >download</a></p>
 
     <p>Using SXSSF <a href="@controllers.testonly.routes.TestPoiController.testSxssf()">download</a></p>
 

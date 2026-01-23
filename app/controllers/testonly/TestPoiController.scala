@@ -39,7 +39,6 @@ import java.io.*
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.jdk.CollectionConverters.*
-import scala.util.Try
 
 class TestPoiController @Inject() (
     mcc: MessagesControllerComponents,
@@ -52,16 +51,28 @@ class TestPoiController @Inject() (
     Ok(testPoiView())
   }
 
-  def testXssf: Action[AnyContent] = downloadFile(writerType = "xssf")
+  def onSubmit(): Action[AnyContent] = Action.async { implicit request =>
+    val form: Map[String, Seq[String]]                 = request.body.asFormUrlEncoded.get
+    val writerType: "xssf" | "sxssf" | "deferredSxssf" =
+      form("workbook").mkString.asInstanceOf["xssf" | "sxssf" | "deferredSxssf"]
+    val rows: Int         = form("rows").mkString.toInt
+    val algorithm: String = form("algorithm").mkString
+    downloadFile(writerType = writerType, rows, Impl.valueOf(algorithm))(request)
+  }
 
-  def testSxssf: Action[AnyContent] = downloadFile(writerType = "sxssf")
+  def testXssf(rows: Int, impl: String): Action[AnyContent] =
+    downloadFile(writerType = "xssf", rows, Impl.valueOf(impl))
 
-  def testDeferredSxssf: Action[AnyContent] = downloadFile(writerType = "deferredSxssf")
+  def testSxssf(rows: Int, impl: String): Action[AnyContent] =
+    downloadFile(writerType = "sxssf", rows, Impl.valueOf(impl))
+
+  def testDeferredSxssf(rows: Int, impl: String): Action[AnyContent] =
+    downloadFile(writerType = "deferredSxssf", rows, Impl.valueOf(impl))
 
   def downloadFile(
       writerType: "xssf" | "sxssf" | "deferredSxssf",
-      dataRows: Int = 1000,
-      impl: Impl = Impl.D
+      testDataRows: Int = 1000,
+      impl: Impl
   ): Action[AnyContent] = Action { implicit request =>
     // using .toURI to HTTP encode spaces in file names, otherwise files with spaces will not be found
     val templateFile =
@@ -71,9 +82,9 @@ class TestPoiController @Inject() (
         .getOrElse(throw InternalServerException(s"Unable to provide template"))
 
     val dataContent = writerType match {
-      case "xssf"          => xssf(templateFile, testData(dataRows), impl)
-      case "sxssf"         => sxssf(templateFile, testData(dataRows), impl)
-      case "deferredSxssf" => deferredSxssf(templateFile, testData(dataRows), impl)
+      case "xssf"          => xssf(templateFile, testData(testDataRows), impl)
+      case "sxssf"         => sxssf(templateFile, testData(testDataRows), impl)
+      case "deferredSxssf" => deferredSxssf(templateFile, testData(testDataRows), impl)
     }
 
     Ok.chunked(dataContent, inline = false, fileName = Some(templateFile.getName))
