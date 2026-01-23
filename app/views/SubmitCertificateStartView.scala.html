@@ -24,11 +24,26 @@
 
 @layout(pageTitle = titleNoForm(messages("submitCertificateStart.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("submitCertificateStart.heading")</h1>
+    <span class="govuk-caption-m">@messages("submitCertificateStart.caption")</span>
+    <h1 class="govuk-heading-l">@messages("submitCertificateStart.heading")</h1>
+
+    <p class="govuk-body">@messages("submitCertificateStart.paragraph1")</p>
+    <p class="govuk-body">@Html(messages("submitCertificateStart.paragraph2WithLink", uploadSubmissionTemplateLinkAttributes))</p>
+
+    <p class="govuk-body">@messages("submitCertificateStart.paragraph3")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("submitCertificateStart.list1.item1")</li>
+        <li>@messages("submitCertificateStart.list1.item2")</li>
+    </ul>
 
     @formHelper(action = routes.SubmitCertificateStartController.onSubmit()){
-       @govukButton(
-          ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
-       )
+        @govukButton(
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
+        )
     }
+}
+
+@uploadSubmissionTemplateLinkAttributes = @{
+    s"""href="#" class="govuk-link""""
 }
