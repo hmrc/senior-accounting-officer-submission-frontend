@@ -50,6 +50,8 @@ class IsThisTheSaoOnCertificateViewSpec extends ViewSpecBase[IsThisTheSaoOnCerti
             hasError = false
           )
 
+          doc.createTestsWithCaption(pageCaption)
+
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
@@ -139,8 +141,9 @@ class IsThisTheSaoOnCertificateViewSpec extends ViewSpecBase[IsThisTheSaoOnCerti
 }
 
 object IsThisTheSaoOnCertificateViewSpec {
-  val pageHeading = "isThisTheSaoOnCertificate"
-  val pageTitle   = "isThisTheSaoOnCertificate"
+  val pageHeading = "Is Jackson Brown named as the Senior Accounting Officer (SAO) on this certificate?"
+  val pageTitle   = "Submit a certificate"
+  val pageCaption = "Submit a certificate"
   val yesKey      = "true"
   val yesLabel    = "Yes"
   val noKey       = "false"
