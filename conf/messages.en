@@ -144,8 +144,14 @@ notificationConfirmation.list1.item1 = Download a PDF – Save a copy of this co
 notificationConfirmation.list1.item2 = Print this page – Print a paper copy
 notificationConfirmation.subheading = What happens next
 
-submitCertificateStart.title = submitCertificateStart
-submitCertificateStart.heading = submitCertificateStart
+submitCertificateStart.title = Submit a certificate
+submitCertificateStart.heading = Submit a certificate
+submitCertificateStart.caption = Submit a certificate
+submitCertificateStart.paragraph1 = The company details and tax regimes you provided in the uploaded template will be used to prepare your certificate.
+submitCertificateStart.paragraph2WithLink = If you need to update company details or tax information, you can <a {0}>upload another submission template</a> again before continuing.
+submitCertificateStart.paragraph3 = If you have qualified companies:
+submitCertificateStart.list1.item1 = You’ll need to review the list of companies identified as qualified and confirm that is it correct before continuing.
+submitCertificateStart.list1.item2 = You’ll also need to confirm the number of qualified company in the certificate statement before submitting the certificate.
 
 isThisTheSaoOnCertificate.title = isThisTheSaoOnCertificate
 isThisTheSaoOnCertificate.heading = isThisTheSaoOnCertificate
