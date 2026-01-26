@@ -159,8 +159,9 @@ isThisTheSaoOnCertificate.checkYourAnswersLabel = isThisTheSaoOnCertificate
 isThisTheSaoOnCertificate.error.required = Select yes if isThisTheSaoOnCertificate
 isThisTheSaoOnCertificate.change.hidden = IsThisTheSaoOnCertificate
 
-saoName.title = saoName
-saoName.heading = saoName
+saoName.caption = Submit a certificate
+saoName.title = Senior Accounting Officer contact details
+saoName.heading = Who is named as the SAO on this certificate?
 saoName.checkYourAnswersLabel = saoName
 saoName.error.required = Enter saoName
 saoName.error.length = SaoName must be 100 characters or less
