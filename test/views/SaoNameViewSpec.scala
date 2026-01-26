@@ -50,6 +50,10 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
             hasError = false
           )
 
+          doc.createTestsWithCaption(
+            caption = pageCaption
+          )
+
           doc.createTestsWithASingleTextInput(
             name = "value",
             label = pageHeading,
@@ -57,6 +61,8 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
             hint = None,
             hasError = false
           )
+
+          doc.createTestsForInputWidth()
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SaoNameController.onSubmit(mode),
@@ -79,6 +85,10 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
             hasError = false
           )
 
+          doc.createTestsWithCaption(
+            caption = pageCaption
+          )
+
           doc.createTestsWithASingleTextInput(
             name = "value",
             label = pageHeading,
@@ -86,6 +96,8 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
             hint = None,
             hasError = false
           )
+
+          doc.createTestsForInputWidth()
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SaoNameController.onSubmit(mode),
@@ -108,6 +120,10 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
             hasError = true
           )
 
+          doc.createTestsWithCaption(
+            caption = pageCaption
+          )
+
           doc.createTestsWithASingleTextInput(
             name = "value",
             label = pageHeading,
@@ -116,6 +132,8 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
             hasError = true
           )
 
+          doc.createTestsForInputWidth()
+          
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SaoNameController.onSubmit(mode),
             buttonText = "Continue"
@@ -128,10 +146,19 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
       }
     }
   }
+
+  extension (target: => Document) {
+    def createTestsForInputWidth(): Unit = {
+      "must have input with expected class 'govuk-input--width-20'" in {
+        target.select("input.govuk-input--width-20").size() mustBe 1
+      }
+    }
+  }
 }
 
 object SaoNameViewSpec {
-  val pageHeading    = "saoName"
-  val pageTitle      = "saoName"
+  val pageCaption    = "Submit a certificate"
+  val pageHeading    = "Who is named as the SAO on this certificate?"
+  val pageTitle      = "Senior Accounting Officer contact details"
   val testInputValue = "myTestInputValue"
 }
