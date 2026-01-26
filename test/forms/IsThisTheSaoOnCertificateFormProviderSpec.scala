@@ -46,7 +46,7 @@ class IsThisTheSaoOnCertificateFormProviderSpec extends BooleanFieldBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Select yes if isThisTheSaoOnCertificate"
+      message = "Select Yes or No"
     )
   }
 }
