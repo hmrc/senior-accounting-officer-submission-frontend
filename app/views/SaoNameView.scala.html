@@ -32,18 +32,20 @@
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
-        }
+            }
 
-        @govukInput(
-            InputViewModel(
-                field = form("value"),
-                label = LabelViewModel(messages("saoName.heading").toText).asPageHeading(LabelSize.Large)
+            @govukInput(
+                InputViewModel(
+                    field = form("value"),
+                    label = LabelViewModel(messages("saoName.heading").toText)
+                        .asPageHeading(LabelSize.Large)
+                )
+                .withWidth(Full)
             )
-            .withWidth(Full)
-        )
 
-        @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
-        )
+            @govukButton(
+                ButtonViewModel(messages("site.continue").toText)
+                    .withAttribute("id", "submit")
+            )
     }
 }
