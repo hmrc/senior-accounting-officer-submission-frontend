@@ -42,7 +42,7 @@
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
         )
     }
 }
