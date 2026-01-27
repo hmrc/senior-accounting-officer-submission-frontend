@@ -133,5 +133,5 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
 object SaoEmailViewSpec {
   val pageHeading    = "saoEmail"
   val pageTitle      = "saoEmail"
-  val testInputValue = "myTestInputValue"
+  val testInputValue = "myTestInputValue@test.com"
 }

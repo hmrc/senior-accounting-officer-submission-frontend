@@ -171,7 +171,8 @@ saoEmail.title = saoEmail
 saoEmail.heading = saoEmail
 saoEmail.checkYourAnswersLabel = saoEmail
 saoEmail.error.required = Enter saoEmail
-saoEmail.error.length = SaoEmail must be 100 characters or less
+saoEmail.error.length = SaoEmail must be 254 characters or less
+saoEmail.error.format = SAO email must be in the correct format
 saoEmail.change.hidden = SaoEmail
 
 saoEmailCommunicationChoice.title = saoEmailCommunicationChoice
