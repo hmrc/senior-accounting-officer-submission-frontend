@@ -133,7 +133,7 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
           )
 
           doc.createTestsForInputWidth()
-          
+
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SaoNameController.onSubmit(mode),
             buttonText = "Continue"
