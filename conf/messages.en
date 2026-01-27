@@ -167,11 +167,12 @@ saoName.error.required = Enter saoName
 saoName.error.length = SaoName must be 100 characters or less
 saoName.change.hidden = SaoName
 
-saoEmail.title = saoEmail
-saoEmail.heading = saoEmail
+saoEmail.title = Senior Accounting Officer contact details
+saoEmail.caption = Submit a certificate
+saoEmail.heading = Enter {0}’s email address
 saoEmail.checkYourAnswersLabel = saoEmail
 saoEmail.error.required = Enter saoEmail
-saoEmail.error.length = SaoEmail must be 254 characters or less
+saoEmail.error.length = SAO Email must be 254 characters or less
 saoEmail.error.format = SAO email must be in the correct format
 saoEmail.change.hidden = SaoEmail
 
