@@ -84,7 +84,7 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.SaoEmailController.onPageLoad(NormalMode)
       }
 
-      "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO name page" in {
+      "when on IsThisTheSaoOnCertificatePage and the user selected No, must go to SAO name page" in {
         navigator.nextPage(
           IsThisTheSaoOnCertificatePage,
           NormalMode,

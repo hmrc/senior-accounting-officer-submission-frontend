@@ -153,10 +153,11 @@ submitCertificateStart.paragraph3 = If you have qualified companies:
 submitCertificateStart.list1.item1 = You’ll need to review the list of companies identified as qualified and confirm that is it correct before continuing.
 submitCertificateStart.list1.item2 = You’ll also need to confirm the number of qualified company in the certificate statement before submitting the certificate.
 
-isThisTheSaoOnCertificate.title = isThisTheSaoOnCertificate
-isThisTheSaoOnCertificate.heading = isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.title = Submit a certificate
+isThisTheSaoOnCertificate.heading = Is Jackson Brown named as the Senior Accounting Officer (SAO) on this certificate?
+isThisTheSaoOnCertificate.caption = Submit a certificate
 isThisTheSaoOnCertificate.checkYourAnswersLabel = isThisTheSaoOnCertificate
-isThisTheSaoOnCertificate.error.required = Select yes if isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.error.required = Select Yes or No
 isThisTheSaoOnCertificate.change.hidden = IsThisTheSaoOnCertificate
 
 saoName.title = saoName

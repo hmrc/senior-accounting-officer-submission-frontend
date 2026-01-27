@@ -26,6 +26,8 @@
 
 @layout(pageTitle = title(form, messages("isThisTheSaoOnCertificate.title"))) {
 
+    <span class="govuk-caption-m">@messages("isThisTheSaoOnCertificate.caption")</span>
+
     @formHelper(action = routes.IsThisTheSaoOnCertificateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
@@ -40,7 +42,7 @@
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
         )
     }
 }
