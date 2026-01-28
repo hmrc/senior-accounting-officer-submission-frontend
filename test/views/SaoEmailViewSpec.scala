@@ -54,13 +54,21 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
             name = "value",
             label = pageHeading,
             value = "",
-            hint = None,
+            hint = Some(pageHint),
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SaoEmailController.onSubmit(mode),
             buttonText = "Continue"
+          )
+
+          doc.createTestsWithCaption(
+            pageCaption
+          )
+
+          doc.createTestMustShowHint(
+            pageHint
           )
 
           doc.createTestsWithOrWithoutError(
@@ -83,13 +91,21 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
             name = "value",
             label = pageHeading,
             value = testInputValue,
-            hint = None,
+            hint = Some(pageHint),
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SaoEmailController.onSubmit(mode),
             buttonText = "Continue"
+          )
+
+          doc.createTestsWithCaption(
+            pageCaption
+          )
+
+          doc.createTestMustShowHint(
+            pageHint
           )
 
           doc.createTestsWithOrWithoutError(
@@ -112,13 +128,21 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
             name = "value",
             label = pageHeading,
             value = "",
-            hint = None,
+            hint = Some(pageHint),
             hasError = true
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SaoEmailController.onSubmit(mode),
             buttonText = "Continue"
+          )
+
+          doc.createTestsWithCaption(
+            pageCaption
+          )
+
+          doc.createTestMustShowHint(
+            pageHint
           )
 
           doc.createTestsWithOrWithoutError(
@@ -131,7 +155,9 @@ class SaoEmailViewSpec extends ViewSpecBase[SaoEmailView] {
 }
 
 object SaoEmailViewSpec {
-  val pageHeading    = "saoEmail"
-  val pageTitle      = "saoEmail"
+  val pageHeading    = "Enter {0}’s email address"
+  val pageTitle      = "Senior Accounting Officer contact details"
+  val pageCaption    = "Submit a certificate"
   val testInputValue = "myTestInputValue@test.com"
+  val pageHint       = "We’ll only use this to contact them about the company’s submission."
 }

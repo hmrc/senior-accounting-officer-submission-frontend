@@ -41,12 +41,9 @@
                 field = form("value"),
                 label = LabelViewModel(messages("saoEmail.heading").toText).asPageHeading(LabelSize.Large)
             )
+            .withHint(HintViewModel(messages("saoEmail.hint").toText))
             .withWidth(Full)
         )
-
-        <div id="submit-certificate-sao-email-address-hint" class="govuk-hint">
-            We’ll only use this to contact them about the company’s submission.
-        </div>
 
         @govukButton(
             ButtonViewModel(messages("site.continue").toText)

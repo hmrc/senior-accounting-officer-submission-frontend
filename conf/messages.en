@@ -170,6 +170,7 @@ saoName.change.hidden = SaoName
 saoEmail.title = Senior Accounting Officer contact details
 saoEmail.caption = Submit a certificate
 saoEmail.heading = Enter {0}’s email address
+saoEmail.hint = We’ll only use this to contact them about the company’s submission.
 saoEmail.checkYourAnswersLabel = saoEmail
 saoEmail.error.required = Enter saoEmail
 saoEmail.error.length = SAO Email must be 254 characters or less
