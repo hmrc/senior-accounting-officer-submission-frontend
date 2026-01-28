@@ -33,18 +33,12 @@ class SaoEmailFormProviderSpec extends StringFieldBehaviours {
   ".value" - {
 
     val fieldName = "value"
-    
+
     behave like fieldWithValidEmailformat(
       form = form,
       fieldName = fieldName,
       generator = genValidEmailAddress
     )
-    
-//    behave like fieldThatBindsValidData(
-//      form,
-//      fieldName,
-//      stringsWithMaxLength(maxLength)
-//    )
 
     behave like fieldWithMaxEmailLength(
       form = form,
@@ -71,17 +65,17 @@ class SaoEmailFormProviderSpec extends StringFieldBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter saoEmail"
+      message = "Enter SAO email address"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "SaoEmail must be 254 characters or less"
+      message = "SAO email address must be 254 characters or less"
     )
 
     createTestWithErrorMessageAssertion(
       key = formatKey,
-      message = "SAO email must be in the correct format"
+      message = "SAO email address must be in the correct format"
     )
   }
 }

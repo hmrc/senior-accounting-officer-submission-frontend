@@ -172,9 +172,9 @@ saoEmail.caption = Submit a certificate
 saoEmail.heading = Enter {0}’s email address
 saoEmail.hint = We’ll only use this to contact them about the company’s submission.
 saoEmail.checkYourAnswersLabel = saoEmail
-saoEmail.error.required = Enter saoEmail
-saoEmail.error.length = SAO Email must be 254 characters or less
-saoEmail.error.format = SAO email must be in the correct format
+saoEmail.error.required = Enter SAO email address
+saoEmail.error.length = SAO email address must be 254 characters or less
+saoEmail.error.format = SAO email address must be in the correct format
 saoEmail.change.hidden = SaoEmail
 
 saoEmailCommunicationChoice.title = saoEmailCommunicationChoice

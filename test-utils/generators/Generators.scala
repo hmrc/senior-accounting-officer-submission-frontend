@@ -25,7 +25,7 @@ import java.time.*
 trait Generators extends ModelGenerators {
 
   given dontShrink: Shrink[String] = Shrink.shrinkAny
-  
+
   val maxEmailLength = 254
 
   def genIntersperseString(gen: Gen[String], value: String, frequencyV: Int = 1, frequencyN: Int = 10): Gen[String] = {
@@ -138,17 +138,17 @@ trait Generators extends ModelGenerators {
       localPart <- Gen.listOfN(localPartLength, safeChar).map(_.mkString)
     } yield s"$localPart@domain.com"
   }
-  
+
   def genValidEmailAddress: Gen[String] = {
     val safeChar = Gen.oneOf(('a' to 'z') ++ ('A' to 'Z') ++ ('0' to '9'))
     for {
       localLength <- Gen.choose(1, 20)
-      local <- Gen.listOfN(localLength, safeChar).map(_.mkString)
-      domain <- Gen.listOfN(5, safeChar).map(_.mkString)
-      tld <- Gen.oneOf("com", "org", "net", "uk", "io")
+      local       <- Gen.listOfN(localLength, safeChar).map(_.mkString)
+      domain      <- Gen.listOfN(5, safeChar).map(_.mkString)
+      tld         <- Gen.oneOf("com", "org", "net", "uk", "io")
     } yield s"$local@$domain.$tld"
   }
-  
+
   def genInvalidEmailAddresses: Gen[String] = {
     Gen.oneOf(
       Gen.const("notAnEmail"),
