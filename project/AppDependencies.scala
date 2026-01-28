@@ -5,17 +5,21 @@ import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "9.19.0"
-  private val hmrcMongoVersion = "2.7.0"
-  private val hmrcPlayFrontend = "12.8.0"
-  private val poiVersion       = "5.5.1"
+  private val bootstrapVersion     = "9.19.0"
+  private val hmrcMongoVersion     = "2.7.0"
+  private val hmrcPlayFrontend     = "12.8.0"
+  private val poiVersion           = "5.5.1"
+  private val pdfBoxVersion        = "3.0.6"
+  private val openhtmltopdfVersion = "1.1.37"
 
   val compile: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"       %% "bootstrap-frontend-play-30" % bootstrapVersion,
-    "uk.gov.hmrc"       %% "play-frontend-hmrc-play-30" % hmrcPlayFrontend,
-    "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-30"         % hmrcMongoVersion,
-    "org.apache.poi"     % "poi"                        % poiVersion,
-    "org.apache.poi"     % "poi-ooxml"                  % poiVersion
+    "uk.gov.hmrc"            %% "bootstrap-frontend-play-30" % bootstrapVersion,
+    "uk.gov.hmrc"            %% "play-frontend-hmrc-play-30" % hmrcPlayFrontend,
+    "uk.gov.hmrc.mongo"      %% "hmrc-mongo-play-30"         % hmrcMongoVersion,
+    "org.apache.poi"          % "poi"                        % poiVersion,
+    "org.apache.poi"          % "poi-ooxml"                  % poiVersion,
+    "org.apache.pdfbox"       % "pdfbox"                     % pdfBoxVersion,
+    "io.github.openhtmltopdf" % "openhtmltopdf-pdfbox"       % openhtmltopdfVersion
   )
 
   val test: Seq[ModuleID] = Seq(
