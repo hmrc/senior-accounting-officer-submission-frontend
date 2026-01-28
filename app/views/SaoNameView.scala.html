@@ -30,18 +30,18 @@
 
     @formHelper(action = routes.SaoNameController.onSubmit(mode)) {
 
+        <span class="govuk-caption-m">@messages("saoName.caption")</span>
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
-            }
+        }
 
-            @govukInput(
-                InputViewModel(
-                    field = form("value"),
-                    label = LabelViewModel(messages("saoName.heading").toText)
-                        .asPageHeading(LabelSize.Large)
-                )
-                .withWidth(Full)
+        @govukInput(
+            InputViewModel(
+                field = form("value"),
+                label = LabelViewModel(messages("saoName.heading").toText).asPageHeading(LabelSize.Large)
             )
+            .withWidth(Fixed20)
+        )
 
             @govukButton(
                 ButtonViewModel(messages("site.continue").toText)
