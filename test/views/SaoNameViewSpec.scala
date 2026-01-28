@@ -147,10 +147,10 @@ class SaoNameViewSpec extends ViewSpecBase[SaoNameView] {
     }
   }
 
-  extension (target: => Document) {
+  extension (doc: => Document) {
     def createTestsForInputWidth(): Unit = {
       "must have input with expected class 'govuk-input--width-20'" in {
-        target.select("input.govuk-input--width-20").size() mustBe 1
+        doc.getMainContent.select("input.govuk-input--width-20").size() mustBe 1
       }
     }
   }
