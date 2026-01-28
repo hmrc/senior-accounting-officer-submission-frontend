@@ -23,9 +23,12 @@ import javax.inject.Inject
 
 class SaoEmailFormProvider @Inject() extends Mappings {
 
+  val emailRegEx = """^.+[@].+[.].+$"""
+
   def apply(): Form[String] =
     Form(
       "value" -> text("saoEmail.error.required")
-        .verifying(maxLength(100, "saoEmail.error.length"))
+        .verifying(maxLength(254, "saoEmail.error.length"))
+        .verifying(regexp(emailRegEx, "saoEmail.error.format"))
     )
 }

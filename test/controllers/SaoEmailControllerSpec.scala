@@ -99,7 +99,7 @@ class SaoEmailControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, saoEmailRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+            .withFormUrlEncodedBody(("value", "test@example.com"))
 
         val result = route(application, request).value
 
