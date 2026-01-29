@@ -99,7 +99,7 @@ class SaoEmailControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, saoEmailRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+            .withFormUrlEncodedBody(("value", "test@example.com"))
 
         val result = route(application, request).value
 
@@ -118,6 +118,26 @@ class SaoEmailControllerSpec extends SpecBase with MockitoSugar {
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
+
+        val view = application.injector.instanceOf[SaoEmailView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
+      }
+    }
+
+    "must return a Bad Request and errors when invalid email format is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, saoEmailRoute)
+            .withFormUrlEncodedBody(("value", "test@test"))
+
+        val boundForm = form.bind(Map("value" -> "test@test"))
 
         val view = application.injector.instanceOf[SaoEmailView]
 

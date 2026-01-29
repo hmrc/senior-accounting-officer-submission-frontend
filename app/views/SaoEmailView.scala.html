@@ -28,6 +28,8 @@
 
 @layout(pageTitle = title(form, messages("saoEmail.title"))) {
 
+    <span class="govuk-caption-m">@messages("saoEmail.caption")</span>
+
     @formHelper(action = routes.SaoEmailController.onSubmit(mode)) {
 
         @if(form.errors.nonEmpty) {
@@ -39,11 +41,12 @@
                 field = form("value"),
                 label = LabelViewModel(messages("saoEmail.heading").toText).asPageHeading(LabelSize.Large)
             )
+            .withHint(HintViewModel(messages("saoEmail.hint").toText))
             .withWidth(Full)
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
         )
     }
 }
