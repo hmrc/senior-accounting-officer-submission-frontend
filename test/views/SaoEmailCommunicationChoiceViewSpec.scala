@@ -50,6 +50,15 @@ class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunica
             hasError = false
           )
 
+          doc.createTestsWithCaption(
+            pageCaption
+          )
+
+          doc.createTestMustShowHint(
+            pageHint
+          )
+
+
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
@@ -79,6 +88,14 @@ class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunica
             showBackLink = true,
             showIsThisPageNotWorkingProperlyLink = true,
             hasError = false
+          )
+
+          doc.createTestsWithCaption(
+            pageCaption
+          )
+
+          doc.createTestMustShowHint(
+            pageHint
           )
 
           doc.createTestsWithRadioButtons(
@@ -112,6 +129,14 @@ class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunica
             hasError = true
           )
 
+          doc.createTestsWithCaption(
+            pageCaption
+          )
+
+          doc.createTestMustShowHint(
+            pageHint
+          )
+
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
@@ -139,10 +164,13 @@ class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunica
 }
 
 object SaoEmailCommunicationChoiceViewSpec {
-  val pageHeading = "saoEmailCommunicationChoice"
-  val pageTitle   = "saoEmailCommunicationChoice"
-  val yesKey      = "true"
-  val yesLabel    = "Yes"
-  val noKey       = "false"
-  val noLabel     = "No"
+  val pageHeading = "Does {0} want to receive emails from HMRC?"
+  val pageCaption = "Submit a certificate"
+  val pageTitle   = "Submit a certificate"
+  val pageHint = "Get emails from HMRC to confirm notification and certificate submissions, this includes updates, changes, or messages about the account."
+  val yesKey = "true"
+  val yesLabel = "Yes"
+  val noKey = "false"
+  val noLabel = "No"
+
 }

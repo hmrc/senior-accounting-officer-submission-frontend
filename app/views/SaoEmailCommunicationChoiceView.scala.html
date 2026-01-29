@@ -25,7 +25,7 @@
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("saoEmailCommunicationChoice.title"))) {
-
+    <span class="govuk-caption-m">@messages("saoEmailCommunicationChoice.caption")</span>
     @formHelper(action = routes.SaoEmailCommunicationChoiceController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
@@ -36,7 +36,7 @@
             RadiosViewModel.yesNo(
                 field = form("value"),
                 legend = LegendViewModel(messages("saoEmailCommunicationChoice.heading").toText).asPageHeading(LegendSize.Large)
-            )
+            ).withHint(HintViewModel(messages("saoEmailCommunicationChoice.hint").toText))
         )
 
         @govukButton(
