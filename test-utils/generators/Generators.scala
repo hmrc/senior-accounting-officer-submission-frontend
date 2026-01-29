@@ -153,6 +153,7 @@ trait Generators extends ModelGenerators {
     Gen.oneOf(
       Gen.const("notAnEmail"),
       Gen.const("missing@domain"),
+      Gen.const("missing@domain."),
       Gen.const("@noDomain.com"),
       Gen.const("missingAtSign.com")
     )
