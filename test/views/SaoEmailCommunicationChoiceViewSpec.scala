@@ -58,7 +58,6 @@ class SaoEmailCommunicationChoiceViewSpec extends ViewSpecBase[SaoEmailCommunica
             pageHint
           )
 
-
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
@@ -167,10 +166,11 @@ object SaoEmailCommunicationChoiceViewSpec {
   val pageHeading = "Does {0} want to receive emails from HMRC?"
   val pageCaption = "Submit a certificate"
   val pageTitle   = "Submit a certificate"
-  val pageHint = "Get emails from HMRC to confirm notification and certificate submissions, this includes updates, changes, or messages about the account."
-  val yesKey = "true"
+  val pageHint    =
+    "Get emails from HMRC to confirm notification and certificate submissions, this includes updates, changes, or messages about the account."
+  val yesKey   = "true"
   val yesLabel = "Yes"
-  val noKey = "false"
-  val noLabel = "No"
+  val noKey    = "false"
+  val noLabel  = "No"
 
 }
