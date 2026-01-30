@@ -196,6 +196,7 @@ whoSubmitsCertificate.proxy = I am authorised to submit the certificate on behal
 whoSubmitsCertificate.checkYourAnswersLabel = Who is submitting the certificate?
 whoSubmitsCertificate.error.required = Select whoSubmitsCertificate
 whoSubmitsCertificate.change.hidden = WhoSubmitsCertificate
+whoSubmitsCertificate.paragraph1 = We need to know if your certificate will be submitted by the Senior Accounting Officer (SAO) or by someone authorised to act on their behalf. This helps us show the correct declaration for you to confirm and sign.
 
 qualifiedCompanies.title = qualifiedCompanies
 qualifiedCompanies.heading = qualifiedCompanies
