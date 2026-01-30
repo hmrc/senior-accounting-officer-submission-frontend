@@ -51,6 +51,10 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
             hasError = false
           )
 
+          doc.createTestsWithCaption(pageCaption)
+
+          doc.createTestsWithParagraphs(paragraphs)
+
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
@@ -81,6 +85,10 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
             showIsThisPageNotWorkingProperlyLink = true,
             hasError = false
           )
+
+          doc.createTestsWithCaption(pageCaption)
+
+          doc.createTestsWithParagraphs(paragraphs)
 
           doc.createTestsWithRadioButtons(
             name = "value",
@@ -113,6 +121,10 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
             hasError = true
           )
 
+          doc.createTestsWithCaption(pageCaption)
+
+          doc.createTestsWithParagraphs(paragraphs)
+
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
@@ -134,13 +146,16 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
         }
       }
     }
-
   }
 }
 
 object WhoSubmitsCertificateViewSpec {
-  val pageHeading  = "Who is submitting the certificate?"
-  val pageTitle    = "Who is submitting the certificate?"
+  val pageHeading = "Who is submitting the certificate?"
+  val pageTitle   = "Who is submitting the certificate?"
+  val pageCaption = "Submit a certificate"
+  val paragraphs  = Seq(
+    "We need to know if your certificate will be submitted by the Senior Accounting Officer (SAO) or by someone authorised to act on their behalf. This helps us show the correct declaration for you to confirm and sign."
+  )
   val option1key   = "sao"
   val option1Label = "I am the Senior Accounting Officer"
   val option2key   = "proxy"
