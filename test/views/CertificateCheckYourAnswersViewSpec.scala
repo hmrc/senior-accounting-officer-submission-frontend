@@ -20,15 +20,17 @@ import base.ViewSpecBase
 import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.CertificateCheckYourAnswersViewSpec.*
 import views.html.CertificateCheckYourAnswersView
 
 class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckYourAnswersView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT().toString)
+  private def generateView(summaryList: SummaryList): Document = Jsoup.parse(SUT(summaryList).toString)
 
   "CertificateCheckYourAnswersView" - {
-    val doc: Document = generateView()
+    val summaryList   = SummaryList()
+    val doc: Document = generateView(summaryList)
 
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
@@ -38,16 +40,22 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
       hasError = false
     )
 
+    doc.createTestsWithCaption(
+      pageCaption
+    )
+
     doc.createTestsWithOrWithoutError(hasError = false)
 
     doc.createTestsWithSubmissionButton(
       action = routes.CertificateCheckYourAnswersController.onSubmit(),
-      buttonText = "Continue"
+      buttonText = pageButtonText
     )
   }
 }
 
 object CertificateCheckYourAnswersViewSpec {
-  val pageHeading = "certificateCheckYourAnswers"
-  val pageTitle   = "certificateCheckYourAnswers"
+  val pageHeading    = "Check your answers"
+  val pageTitle      = "Submit a certificate"
+  val pageCaption    = "Submit a certificate"
+  val pageButtonText = "Continue"
 }

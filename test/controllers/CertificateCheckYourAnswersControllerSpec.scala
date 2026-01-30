@@ -18,11 +18,16 @@ package controllers
 
 import base.SpecBase
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers.{any, eq as meq}
+import org.mockito.Mockito.{verify, when}
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import services.CertificateCheckYourAnswersService
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.html.CertificateCheckYourAnswersView
 
 class CertificateCheckYourAnswersControllerSpec extends SpecBase {
@@ -33,7 +38,13 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val mockService = mock[CertificateCheckYourAnswersService]
+      when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
+
+      val userAnswers = emptyUserAnswers
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(bind[CertificateCheckYourAnswersService].toInstance(mockService))
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.CertificateCheckYourAnswersController.onPageLoad().url)
@@ -43,7 +54,8 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[CertificateCheckYourAnswersView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(SummaryList())(using request, messages(application)).toString
+        verify(mockService).getSummaryList(meq(userAnswers))(using any())
       }
     }
 

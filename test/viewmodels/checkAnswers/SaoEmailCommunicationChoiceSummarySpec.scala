@@ -44,7 +44,7 @@ class SaoEmailCommunicationChoiceSummarySpec extends SpecBase with GuiceOneAppPe
       def SUT(answer: Boolean = true) = SaoEmailCommunicationChoiceSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "saoEmailCommunicationChoice".toKey
+        SUT().key mustBe "Email communications".toKey
       }
 
       "expected value" - {
