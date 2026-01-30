@@ -17,18 +17,21 @@
 @this(
         layout: templates.Layout,
         formHelper: FormWithCSRF,
-        govukButton: GovukButton
+        govukButton: GovukButton,
+        govukSummaryList: GovukSummaryList
 )
 
-@()(using request: Request[?], messages: Messages)
+@(summaryList: SummaryList)(using request : Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("certificateCheckYourAnswers.title"))) {
     <span class="govuk-caption-m">@messages("certificateCheckYourAnswers.caption")</span>
     <h1 class="govuk-heading-l">@messages("certificateCheckYourAnswers.heading")</h1>
 
-    @formHelper(action = routes.CertificateCheckYourAnswersController.onSubmit()){
-       @govukButton(
-          ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
-       )
+    @govukSummaryList(summaryList)
+  
+    @formHelper(action = routes.CertificateCheckYourAnswersController.onSubmit()) {
+        @govukButton(
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
+        )
     }
 }

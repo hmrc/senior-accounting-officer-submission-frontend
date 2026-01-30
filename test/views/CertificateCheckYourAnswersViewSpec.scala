@@ -38,16 +38,22 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
       hasError = false
     )
 
+    doc.createTestsWithCaption(
+      pageCaption
+    )
+
     doc.createTestsWithOrWithoutError(hasError = false)
 
     doc.createTestsWithSubmissionButton(
       action = routes.CertificateCheckYourAnswersController.onSubmit(),
-      buttonText = "Continue"
+      buttonText = pageButtonText
     )
   }
 }
 
 object CertificateCheckYourAnswersViewSpec {
-  val pageHeading = "certificateCheckYourAnswers"
-  val pageTitle   = "certificateCheckYourAnswers"
+  val pageHeading    = "Check your answers"
+  val pageTitle      = "Submit a certificate"
+  val pageCaption    = "Submit a certificate"
+  val pageButtonText = "Continue"
 }
