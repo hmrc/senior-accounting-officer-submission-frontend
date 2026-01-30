@@ -191,6 +191,7 @@ certificateCheckYourAnswers.heading = certificateCheckYourAnswers
 
 whoSubmitsCertificate.title = Who is submitting the certificate?
 whoSubmitsCertificate.heading = Who is submitting the certificate?
+whoSubmitsCertificate.caption = Submit a certificate
 whoSubmitsCertificate.sao = I am the Senior Accounting Officer
 whoSubmitsCertificate.proxy = I am authorised to submit the certificate on behalf of the Senior Accounting Officer
 whoSubmitsCertificate.checkYourAnswersLabel = Who is submitting the certificate?
