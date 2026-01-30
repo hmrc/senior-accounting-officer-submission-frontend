@@ -186,8 +186,9 @@ saoEmailCommunicationChoice.checkYourAnswersLabel = saoEmailCommunicationChoice
 saoEmailCommunicationChoice.error.required = Select yes if saoEmailCommunicationChoice
 saoEmailCommunicationChoice.change.hidden = SaoEmailCommunicationChoice
 
-certificateCheckYourAnswers.title = certificateCheckYourAnswers
-certificateCheckYourAnswers.heading = certificateCheckYourAnswers
+certificateCheckYourAnswers.title = Submit a certificate
+certificateCheckYourAnswers.caption = Submit a certificate
+certificateCheckYourAnswers.heading = Check your answers
 
 whoSubmitsCertificate.title = Who is submitting the certificate?
 whoSubmitsCertificate.heading = Who is submitting the certificate?

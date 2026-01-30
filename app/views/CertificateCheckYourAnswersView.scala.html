@@ -23,8 +23,8 @@
 @()(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("certificateCheckYourAnswers.title"))) {
-
-    <h1 class="govuk-heading-xl">@messages("certificateCheckYourAnswers.heading")</h1>
+    <span class="govuk-caption-m">@messages("certificateCheckYourAnswers.caption")</span>
+    <h1 class="govuk-heading-l">@messages("certificateCheckYourAnswers.heading")</h1>
 
     @formHelper(action = routes.CertificateCheckYourAnswersController.onSubmit()){
        @govukButton(
