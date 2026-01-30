@@ -24,6 +24,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.fieldset.{Fieldset, Legend}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.{RadioItem, Radios}
 import viewmodels.ErrorMessageAwareness
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 object radios extends RadiosFluency
 
@@ -108,5 +109,10 @@ trait RadiosFluency {
 
     def inline(): Radios =
       radios.withCssClass("govuk-radios--inline")
+
+    def withParagraph(text: String): Radios =
+      radios.withFormGroup(
+        radios.formGroup.copy(beforeInput = Some(HtmlContent(s"""<p class="govuk-body">$text</p>""")))
+      )
   }
 }
