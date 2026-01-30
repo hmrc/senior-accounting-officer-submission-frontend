@@ -69,6 +69,12 @@ class Navigator @Inject() () {
   private val checkRouteMap: Page => UserAnswers => Call = {
     case NotificationAdditionalInformationPage =>
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
+    case SaoNamePage =>
+      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+    case SaoEmailPage =>
+      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+    case SaoEmailCommunicationChoicePage =>
+      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
     case _ => _ => ???
   }
 

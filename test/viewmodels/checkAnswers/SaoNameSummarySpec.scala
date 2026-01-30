@@ -44,7 +44,7 @@ class SaoNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
       def SUT(answer: String = "") = SaoNameSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "saoName".toKey
+        SUT().key mustBe "Full name".toKey
       }
 
       "expected value" - {

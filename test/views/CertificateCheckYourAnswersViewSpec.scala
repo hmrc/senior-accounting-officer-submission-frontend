@@ -20,15 +20,17 @@ import base.ViewSpecBase
 import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.CertificateCheckYourAnswersViewSpec.*
 import views.html.CertificateCheckYourAnswersView
 
 class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckYourAnswersView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT().toString)
+  private def generateView(summaryList: SummaryList): Document = Jsoup.parse(SUT(summaryList).toString)
 
   "CertificateCheckYourAnswersView" - {
-    val doc: Document = generateView()
+    val summaryList   = SummaryList()
+    val doc: Document = generateView(summaryList)
 
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,

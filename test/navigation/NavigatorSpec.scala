@@ -185,6 +185,30 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
+      "when on SaoNamePage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          SaoNamePage,
+          CheckMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on SaoEmailPage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          SaoEmailPage,
+          CheckMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on SaoEmailCommunicationChoicePage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          SaoEmailCommunicationChoicePage,
+          CheckMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
       "must throw an not-implemented error for an unspecified configuration" in {
         case object UnknownPage extends Page
         intercept[NotImplementedError] {
