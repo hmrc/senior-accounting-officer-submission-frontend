@@ -32,14 +32,12 @@
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
-
-
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
                 legend = LegendViewModel(messages("whoSubmitsCertificate.heading").toText).asPageHeading(LegendSize.Large),
                 items  = WhoSubmitsCertificate.options
-            ).withHint(HintViewModel(messages("whoSubmitsCertificate.paragraph1").toText))
+            ).withParagraph(messages("whoSubmitsCertificate.paragraph1"))
         )
 
         @govukButton(
