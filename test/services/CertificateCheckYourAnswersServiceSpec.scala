@@ -23,15 +23,10 @@ class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPe
 
   "CertificateCheckYourAnswersService must generate the summaryList when all the userAnswers" - {
 
-    "are present" in {
+    "are present" in {}
 
-    }
-
-    "are empty" in {
-
-    }
+    "are empty" in {}
 
   }
 
-
-  }
+}
