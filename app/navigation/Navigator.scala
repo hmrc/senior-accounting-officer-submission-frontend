@@ -20,11 +20,12 @@ import controllers.routes
 import models.*
 import pages.*
 import play.api.mvc.Call
+import repositories.SessionRepository
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class Navigator @Inject() () {
+class Navigator @Inject()() {
 
   private val normalRoutes: Page => UserAnswers => Call = {
     case NotificationGuidancePage =>
@@ -75,6 +76,13 @@ class Navigator @Inject() () {
       _ => routes.CertificateCheckYourAnswersController.onPageLoad()
     case SaoEmailCommunicationChoicePage =>
       _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+    case IsThisTheSaoOnCertificatePage =>
+      userAnswers =>
+        userAnswers.get(IsThisTheSaoOnCertificatePage) match {
+          case Some(true)  => routes.CertificateCheckYourAnswersController.onPageLoad()
+          case Some(false) => routes.SaoNameController.onPageLoad(CheckMode)
+          case _           => ???
+        }
     case _ => _ => ???
   }
 

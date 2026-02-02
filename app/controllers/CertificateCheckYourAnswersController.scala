@@ -19,16 +19,21 @@ package controllers
 import controllers.actions.*
 import models.NormalMode
 import navigation.Navigator
-import pages.CertificateCheckYourAnswersPage
+import pages.{CertificateCheckYourAnswersPage, IsThisTheSaoOnCertificatePage, SaoNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import services.CertificateCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateCheckYourAnswersView
 
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future}
+import scala.util.{Failure, Success}
 
-class CertificateCheckYourAnswersController @Inject() (
+class CertificateCheckYourAnswersController @Inject(
+                                                     sessionRepo:SessionRepository
+) (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
@@ -37,13 +42,29 @@ class CertificateCheckYourAnswersController @Inject() (
     view: CertificateCheckYourAnswersView,
     navigator: Navigator,
     certificateCheckYourAnswersService: CertificateCheckYourAnswersService
-) extends FrontendBaseController
+) (implicit ec: ExecutionContext) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val summaryList = certificateCheckYourAnswersService.getSummaryList(request.userAnswers)
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
+    val userAnswers = request.userAnswers
 
-    Ok(view(summaryList))
+    userAnswers.get(IsThisTheSaoOnCertificatePage) match {
+      case Some(true) =>
+        userAnswers.remove(SaoNamePage) match {
+          case Success(updatedUserAnswers) => sessionRepo.set(updatedUserAnswers).map {
+            case true =>
+              val summaryList = certificateCheckYourAnswersService.getSummaryList(updatedUserAnswers)
+              Ok(view(summaryList))
+            case _ =>
+              Redirect(routes.JourneyRecoveryController.onPageLoad())
+          }
+          case Failure(_) =>
+            Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        }
+      case _ =>
+        val summaryList = certificateCheckYourAnswersService.getSummaryList(userAnswers)
+        Future.successful(Ok(view(summaryList)))
+    }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
