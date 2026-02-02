@@ -17,15 +17,51 @@
 package services
 
 import base.SpecBase
+import models.UserAnswers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import pages.SaoNamePage
+import play.api.i18n.{Messages, MessagesApi}
+import play.api.libs.json.Json
+import play.api.test.FakeRequest
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryList, SummaryListRow, Value}
+import viewmodels.checkAnswers.{SaoEmailCommunicationChoiceSummary, SaoEmailSummary, SaoNameSummary}
+
 
 class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
   "CertificateCheckYourAnswersService must generate the summaryList when all the userAnswers" - {
 
-    "are present" in {}
+    def SUT        = app.injector.instanceOf[CertificateCheckYourAnswersService]
+    given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
-    "are empty" in {}
+    def userAnswers: UserAnswers = UserAnswers(
+      userAnswersId,
+      Json.obj(
+        SaoNamePage.toString -> Json.obj(
+          "Full name" -> "testName",
+          "Email address" -> "test@testEmail.com",
+          "Email communication choice" -> "testChoice"
+        )
+      )
+    )
+
+    "are present" in {
+//      val nameUserAnswers = emptyUserAnswers.set(SaoNamePage, "testName").get
+//      val emailUserAnswers = emptyUserAnswers.set(SaoNamePage, "test@testEmail.com").get
+//      val emailCommunicationChoiceUserAnswers = emptyUserAnswers.set(SaoNamePage, "testChoice").get
+//
+      println(userAnswers)
+
+
+//      val userAnswers = Seq(nameUserAnswers, emailUserAnswers,emailCommunicationChoiceUserAnswers)
+
+//      println(nameUserAnswers)
+//
+      val test = SUT.getSummaryList(userAnswers)
+    }
+
+    "are empty" in {
+    }
 
   }
 
