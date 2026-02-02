@@ -19,12 +19,12 @@ package services
 import base.SpecBase
 import models.UserAnswers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.SaoNamePage
+import pages.{IsThisTheSaoOnCertificatePage, SaoEmailCommunicationChoicePage, SaoEmailPage, SaoNamePage}
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryList, SummaryListRow, Value}
-import viewmodels.checkAnswers.{SaoEmailCommunicationChoiceSummary, SaoEmailSummary, SaoNameSummary}
+import viewmodels.checkAnswers.{IsThisTheSaoOnCertificateSummary, SaoEmailCommunicationChoiceSummary, SaoEmailSummary, SaoNameSummary}
 
 
 class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
@@ -34,30 +34,21 @@ class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPe
     def SUT        = app.injector.instanceOf[CertificateCheckYourAnswersService]
     given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
-    def userAnswers: UserAnswers = UserAnswers(
-      userAnswersId,
-      Json.obj(
-        SaoNamePage.toString -> Json.obj(
-          "Full name" -> "testName",
-          "Email address" -> "test@testEmail.com",
-          "Email communication choice" -> "testChoice"
+    "when 'No' is selected and Full Name is given" in {
+      val userAnswers = emptyUserAnswers.set(IsThisTheSaoOnCertificatePage, false).get.set(SaoNamePage, "testName").get.set(SaoEmailPage, "test@testemail.com").get.set(SaoEmailCommunicationChoicePage, true).get
+
+      SUT.getSummaryList(userAnswers) mustBe SummaryList(
+        Seq(
+          IsThisTheSaoOnCertificateSummary.row(userAnswers).get,
+          SaoNameSummary.row(userAnswers).get,
+          SaoEmailSummary.row(userAnswers).get,
+          SaoEmailCommunicationChoiceSummary.row(userAnswers).get
         )
       )
-    )
 
-    "are present" in {
-//      val nameUserAnswers = emptyUserAnswers.set(SaoNamePage, "testName").get
-//      val emailUserAnswers = emptyUserAnswers.set(SaoNamePage, "test@testEmail.com").get
-//      val emailCommunicationChoiceUserAnswers = emptyUserAnswers.set(SaoNamePage, "testChoice").get
-//
-      println(userAnswers)
+      //Name wiped when No changed to Yes
+      //Name no displayed when Yes selected
 
-
-//      val userAnswers = Seq(nameUserAnswers, emailUserAnswers,emailCommunicationChoiceUserAnswers)
-
-//      println(nameUserAnswers)
-//
-      val test = SUT.getSummaryList(userAnswers)
     }
 
     "are empty" in {

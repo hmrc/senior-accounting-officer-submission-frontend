@@ -19,19 +19,17 @@ package services
 import models.UserAnswers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.*
-import viewmodels.checkAnswers.{SaoEmailCommunicationChoiceSummary, SaoEmailSummary, SaoNameSummary}
+import viewmodels.checkAnswers.{IsThisTheSaoOnCertificateSummary, SaoEmailCommunicationChoiceSummary, SaoEmailSummary, SaoNameSummary}
 
 class CertificateCheckYourAnswersService {
-  // TODO - [DN - AG - RS] 30/01/26 : SaoEmailSummary, SaoEmailCommunicationChoiceSummary both are returning options, Is this correct ?
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
     SummaryList(rows =
       Seq(
-        SaoNameSummary
-          .row(userAnswers)
-          .getOrElse(SummaryListRow.apply(Key(), Value(), "", None)), // TODO remove this when above is discussed
-        SaoEmailSummary.row(userAnswers).getOrElse(SummaryListRow.apply(Key(), Value(), "", None)),
-        SaoEmailCommunicationChoiceSummary.row(userAnswers).getOrElse(SummaryListRow.apply(Key(), Value(), "", None))
-      )
+        IsThisTheSaoOnCertificateSummary.row(userAnswers),
+        SaoNameSummary.row(userAnswers),
+        SaoEmailSummary.row(userAnswers),
+        SaoEmailCommunicationChoiceSummary.row(userAnswers)
+      ).flatten
     )
   }
 }

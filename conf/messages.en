@@ -156,7 +156,7 @@ submitCertificateStart.list1.item2 = You’ll also need to confirm the number of
 isThisTheSaoOnCertificate.title = Submit a certificate
 isThisTheSaoOnCertificate.heading = Is Jackson Brown named as the Senior Accounting Officer (SAO) on this certificate?
 isThisTheSaoOnCertificate.caption = Submit a certificate
-isThisTheSaoOnCertificate.checkYourAnswersLabel = isThisTheSaoOnCertificate
+isThisTheSaoOnCertificate.checkYourAnswersLabel = Is Jackson Brown named as the Senior Accounting Officer (SAO) on this certificate?
 isThisTheSaoOnCertificate.error.required = Select Yes or No
 isThisTheSaoOnCertificate.change.hidden = IsThisTheSaoOnCertificate
 
