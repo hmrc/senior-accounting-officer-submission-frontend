@@ -19,4 +19,19 @@ package services
 import base.SpecBase
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 
-class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {}
+class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
+
+  "CertificateCheckYourAnswersService must generate the summaryList when all the userAnswers" - {
+
+    "are present" in {
+
+    }
+
+    "are empty" in {
+
+    }
+
+  }
+
+
+  }
