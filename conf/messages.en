@@ -189,7 +189,7 @@ saoEmailCommunicationChoice.change.hidden = SaoEmailCommunicationChoice
 certificateCheckYourAnswers.title = certificateCheckYourAnswers
 certificateCheckYourAnswers.heading = certificateCheckYourAnswers
 
-whoSubmitsCertificate.title = Who is submitting the certificate?
+whoSubmitsCertificate.title = Submit a certificate
 whoSubmitsCertificate.heading = Who is submitting the certificate?
 whoSubmitsCertificate.caption = Submit a certificate
 whoSubmitsCertificate.sao = I am the Senior Accounting Officer
