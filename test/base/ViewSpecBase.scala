@@ -156,7 +156,7 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       else Elements()
 
     def getParagraphs(includeHelpLink: Boolean = false): Iterable[Element] =
-      target.resolve.select(if includeHelpLink then "p" else excludeHelpLinkParagraphsSelector).asScala
+      target.resolve.select(if includeHelpLink then "p" else excludeHelpLinkAndErrorMessageParagraphsSelector).asScala
 
     def getPanelTitle: Element =
       util
@@ -654,19 +654,19 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         pos: Position
     ): Unit = {
       createTestWithCountOfElement(
-        selector = excludeHelpLinkParagraphsSelector,
+        selector = excludeHelpLinkAndErrorMessageParagraphsSelector,
         count = paragraphs.size,
         description = "paragraphs"
       )
       createTestsWithOrderOfElements(
-        selector = excludeHelpLinkParagraphsSelector,
+        selector = excludeHelpLinkAndErrorMessageParagraphsSelector,
         texts = paragraphs,
         description = "paragraphs"
       )
 
       "all paragraphs must have the expected CSS class" in {
         def paragraphs =
-          target.resolve.select(excludeHelpLinkParagraphsSelector).asScala
+          target.resolve.select(excludeHelpLinkAndErrorMessageParagraphsSelector).asScala
 
         paragraphs.foreach(paragraph =>
           withClue(s"$paragraph did not have the expected CSS class\n") {
@@ -764,8 +764,7 @@ object ViewSpecBase {
   val expectedServiceName = "Senior Accounting Officer notification and certificate"
   val expectedServiceId   = "senior-accounting-officer-submission-frontend"
 
-  // TODO: discuss changes to selector
-  val excludeHelpLinkParagraphsSelector =
+  val excludeHelpLinkAndErrorMessageParagraphsSelector =
     "p:not(:has(a.hmrc-report-technical-issue), .govuk-error-message)"
 
   final case class RadioButton(value: String, label: String)
