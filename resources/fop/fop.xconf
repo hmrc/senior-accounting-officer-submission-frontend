@@ -1,0 +1,22 @@
+<fop version="1.0">
+  <strict-configuration>true</strict-configuration>
+  <strict-validation>true</strict-validation>
+  <accessibility>true</accessibility>
+  <base>./</base>
+  <font-base>./fonts</font-base>
+  <renderers>
+    <renderer mime="application/pdf">
+      <pdf-ua-mode>PDF/UA-1</pdf-ua-mode>
+      <fonts>
+        <font kerning="yes" embed-url="Helvetica.ttf" embedding-mode="full">
+          <font-triplet name="Helvetica" style="normal" weight="normal"/>
+          <font-triplet name="Helvetica" style="italic" weight="normal"/>
+        </font>
+        <font kerning="yes" embed-url="Helvetica S Bold.ttf" embedding-mode="full">
+          <font-triplet name="Helvetica" style="normal" weight="bold"/>
+          <font-triplet name="Helvetica" style="italic" weight="bold"/>
+        </font>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>

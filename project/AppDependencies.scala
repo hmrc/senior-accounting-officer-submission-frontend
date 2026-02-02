@@ -11,6 +11,7 @@ object AppDependencies {
   private val poiVersion           = "5.5.1"
   private val pdfBoxVersion        = "3.0.6"
   private val openhtmltopdfVersion = "1.1.37"
+  private val apacheFopVersion     = "2.11"
 
   val compile: Seq[ModuleID] = Seq(
     "uk.gov.hmrc"            %% "bootstrap-frontend-play-30" % bootstrapVersion,
@@ -19,7 +20,8 @@ object AppDependencies {
     "org.apache.poi"          % "poi"                        % poiVersion,
     "org.apache.poi"          % "poi-ooxml"                  % poiVersion,
     "org.apache.pdfbox"       % "pdfbox"                     % pdfBoxVersion,
-    "io.github.openhtmltopdf" % "openhtmltopdf-pdfbox"       % openhtmltopdfVersion
+    "io.github.openhtmltopdf" % "openhtmltopdf-pdfbox"       % openhtmltopdfVersion,
+    "org.apache.xmlgraphics"  % "fop"                        % apacheFopVersion
   )
 
   val test: Seq[ModuleID] = Seq(

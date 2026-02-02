@@ -20,6 +20,7 @@ import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
 import controllers.testonly.OpenHtmlToPdfService.*
 import org.apache.pdfbox.pdmodel.*
 import org.apache.pekko.actor.ActorSystem
+import org.apache.pekko.stream.IOResult
 import org.apache.pekko.stream.scaladsl.{Source, StreamConverters}
 import org.apache.pekko.util.ByteString
 import play.api.Logger
@@ -35,18 +36,230 @@ import javax.inject.Inject
 
 class TestPdfController @Inject() (
     mcc: MessagesControllerComponents,
-    openHtmlToPdfService: OpenHtmlToPdfService
+    openHtmlToPdfService: OpenHtmlToPdfService,
+    apacheFopService: ApacheFopService
 )(implicit val ec: ExecutionContext, system: ActorSystem)
     extends FrontendController(mcc)
     with I18nSupport {
 
   def testPdf(): Action[AnyContent] = Action { implicit request =>
-    val document = openHtmlToPdfService.testPdf()
+//    val document = openHtmlToPdfService.testPdf()
+//    val dataContent = document.asSource
 
-    val dataContent = document.asSource
+    val dataContent = apacheFopService.testPdf()
+
     Ok.chunked(dataContent, inline = false, fileName = Some("test.pdf"))
   }
 
+}
+
+class ApacheFopService @Inject() (implicit val ec: ExecutionContext, system: ActorSystem) {
+
+  import org.apache.fop.apps.*
+  import javax.xml.transform.{Source as _, *}
+  import javax.xml.transform.stream.StreamSource
+  import javax.xml.transform.sax.SAXResult
+  import org.apache.xmlgraphics.util.MimeConstants
+  import java.io.StringReader
+
+  private val userAgentBlock: FOUserAgent => Unit = { foUserAgent =>
+    foUserAgent.setAccessibility(true)
+    foUserAgent.setPdfUAEnabled(true)
+    foUserAgent.setAuthor("HMRC forms service")
+    foUserAgent.setProducer("HMRC forms services")
+    foUserAgent.setCreator("HMRC forms services")
+    foUserAgent.setSubject("SAO Notification Confirmation")
+    foUserAgent.setTitle("SAO Notification Confirmation")
+  }
+
+  private def xslTransformations: String = {
+    s"""<?xml version="1.0" encoding="UTF-8"?>
+      |<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      |                xmlns:fo="http://www.w3.org/1999/XSL/Format">
+      |
+      |    <!-- Root template -->
+      |    <xsl:template match="/">
+      |        <fo:root 
+      |          xmlns:fo="http://www.w3.org/1999/XSL/Format" 
+      |          xmlns:fox="http://xmlgraphics.apache.org/fop/extensions"
+      |          xml:lang="en-GB"
+      |          font-family="Helvetica, sans-serif"
+      |        >
+      |            <fo:layout-master-set>
+      |                <fo:simple-page-master
+      |                  master-name="A4"
+      |                  page-height="29.7cm"
+      |                  page-width="21cm"
+      |                  margin-top="1cm"
+      |                  margin-bottom="1cm"
+      |                  margin-left="2cm"
+      |                  margin-right="2cm"
+      |                >
+      |                  <fo:region-body margin-top="3cm" margin-bottom="2cm"/>
+      |                  <fo:region-before extent="3cm"/>
+      |                </fo:simple-page-master>
+      |            </fo:layout-master-set>
+      |            
+      |            <fo:bookmark-tree>
+      |               <fo:bookmark internal-destination="h1_1">
+      |                 <fo:bookmark-title>This is a Heading</fo:bookmark-title>
+      |               </fo:bookmark>
+      |               <fo:bookmark internal-destination="h1_2">
+      |                 <fo:bookmark-title>Appendix A: Tables</fo:bookmark-title>
+      |               </fo:bookmark>
+      |            </fo:bookmark-tree>
+      |                
+      |            <fo:page-sequence master-reference="A4">
+      |                $header
+      |                <fo:flow flow-name="xsl-region-body">
+      |                    <fo:block role="H1" font-size="24pt" font-weight="bold" margin-bottom="20pt"  id="h1_1" >This is a Heading</fo:block>
+      |                    <fo:block role="P" font-size="16pt" margin-bottom="8pt">This is a paragraph</fo:block>
+      |                   
+      |                    <fo:block role="H1" font-size="24pt" font-weight="bold" id="h1_2" page-break-before="always" margin-bottom="20pt">Appendix A: Tables</fo:block>
+      |                    $booklist
+      |
+      |                    $table
+      |                </fo:flow>
+      |            </fo:page-sequence>
+      |        </fo:root>
+      |        
+      |
+      |    </xsl:template>
+      |</xsl:stylesheet>
+      |""".stripMargin
+  }
+
+  def header: String =
+    s"""
+      |   <fo:static-content flow-name="xsl-region-before" role="Artifact" >
+      |        <fo:block role="Artifact">
+      |           <fo:external-graphic
+      |             role="Artifact"
+      |             content-width="148px" content-height="20px"
+      |             src="url(${getClass.getResource("/fop/gov-uk-logo.png").toURI.toString})"
+      |             padding-right="1cm"
+      |           />
+      |           <fo:block role="Artifact" font-size="16pt" font-weight="bold" margin-bottom="1mm">SAO Notification Confirmation</fo:block>
+      |         </fo:block>
+      |    </fo:static-content>
+      |""".stripMargin
+
+  def booklist: String =
+    """
+      |                    <fo:block role="H2" font-size="24pt" font-weight="bold" margin-bottom="20pt">List of Books</fo:block>
+      |                    <fo:block role="H3" font-size="18pt" margin-bottom="12pt">Books:</fo:block>
+      |
+      |                    <!-- Loop through each book and format its details -->
+      |                    <xsl:for-each select="books/book">
+      |                        <fo:block role="P" font-size="16pt" margin-bottom="8pt">
+      |                            <xsl:value-of select="title"/> by <xsl:value-of select="author"/> (Year: <xsl:value-of select="year"/>)
+      |                        </fo:block>
+      |                    </xsl:for-each>
+      |""".stripMargin
+
+  def table: String =
+    """<fo:table width="100%" table-layout="fixed">
+      |  <fo:table-column xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" fox:header="true" column-width="proportional-column-width(1)"/>
+      |  <fo:table-column column-width="proportional-column-width(1)"/>
+      |  <fo:table-column column-width="proportional-column-width(1)"/>
+      |  <fo:table-header font-weight="bold">
+      |    <fo:table-row>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
+      |        <fo:block>Header Scope = Both</fo:block>
+      |      </fo:table-cell>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
+      |        <fo:block>Header Scope = Column</fo:block>
+      |      </fo:table-cell>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
+      |        <fo:block>Header Scope = Column</fo:block>
+      |      </fo:table-cell>
+      |    </fo:table-row>
+      |  </fo:table-header>
+      |  <fo:table-body>
+      |    <fo:table-row>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt" font-weight="bold">
+      |        <fo:block>Header Scope = Row</fo:block>
+      |      </fo:table-cell>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
+      |        <fo:block>Cell 1.1</fo:block>
+      |      </fo:table-cell>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
+      |        <fo:block>Cell 1.2</fo:block>
+      |      </fo:table-cell>
+      |    </fo:table-row>
+      |    <fo:table-row>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt" font-weight="bold">
+      |        <fo:block>Header Scope = Row</fo:block>
+      |      </fo:table-cell>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
+      |        <fo:block>Cell 2.1</fo:block>
+      |      </fo:table-cell>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
+      |        <fo:block>Cell 2.2</fo:block>
+      |      </fo:table-cell>
+      |    </fo:table-row>
+      |    <fo:table-row>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt" role="TD">
+      |        <fo:block>Non-header</fo:block>
+      |      </fo:table-cell>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
+      |        <fo:block>Cell 3.1</fo:block>
+      |      </fo:table-cell>
+      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
+      |        <fo:block>Cell 3.2</fo:block>
+      |      </fo:table-cell>
+      |    </fo:table-row>
+      |  </fo:table-body>
+      |</fo:table>""".stripMargin
+
+  private def inputXml: String =
+    """<?xml version="1.0" encoding="UTF-8"?>
+      |<books>
+      |    <book>
+      |        <title>Spring Boot in Action</title>
+      |        <author>Craig Walls</author>
+      |        <year>2022</year>
+      |    </book>
+      |    <book>
+      |        <title>Java: The Complete Reference</title>
+      |        <author>Herbert Schildt</author>
+      |        <year>2023</year>
+      |    </book>
+      |</books>
+      |""".stripMargin
+
+  def testPdf(): Source[ByteString, Future[IOResult]] = {
+    val fopFactory  = FopFactory.newInstance(new File(getClass.getResource("/fop/fop.xconf").toURI))
+    val foUserAgent = fopFactory.newFOUserAgent()
+    userAgentBlock(foUserAgent)
+
+    val pos   = new PipedOutputStream
+    def fop() = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, pos)
+
+    val factory     = TransformerFactory.newInstance
+    val transformer = factory.newTransformer(new StreamSource(new StringReader(xslTransformations)))
+    val src         = new StreamSource(new StringReader(inputXml))
+
+    StreamConverters.fromInputStream(() => {
+      val inputStream                    = new PipedInputStream(pos)
+      given blockingEc: ExecutionContext =
+        system.dispatchers.lookup("pekko.stream.materializer.blocking-io-dispatcher")
+
+      Future {
+        blocking {
+          val res = new SAXResult(fop().getDefaultHandler)
+          transformer.transform(src, res)
+        }
+      }.recoverWith { e =>
+        TestPdfController.logger.error("FOP error", e)
+        throw e
+      }.onComplete { _ =>
+        pos.close()
+      }
+
+      inputStream
+    })
+  }
 }
 
 class OpenHtmlToPdfService {
@@ -103,21 +316,19 @@ object OpenHtmlToPdfService {
        |      <th>Financial year end date</th>
        |    </tr>
        |  </thead>
-       |  ${data.foldLeft("")((concat, row) =>
-        s"""
-                                                  | $concat
-                                                  |<tbody>
-                                                  |  <tr>
-                                                  |    <td>${row.companyName}</td>
-                                                  |    <td>${row.crn}</td>
-                                                  |    <td>${row.utr}</td>
-                                                  |    <td>${row.companyType}</td>
-                                                  |    <td>${row.status}</td>
-                                                  |    <td>${row.financialYearEndDate}</td>
-                                                  |  </tr>
-                                                  |</tbody>
-                                                  |""".stripMargin
-      )}
+       |  ${data.foldLeft("")((concat, row) => s"""
+          | $concat
+          |<tbody>
+          |  <tr>
+          |    <td>${row.companyName}</td>
+          |    <td>${row.crn}</td>
+          |    <td>${row.utr}</td>
+          |    <td>${row.companyType}</td>
+          |    <td>${row.status}</td>
+          |    <td>${row.financialYearEndDate}</td>
+          |  </tr>
+          |</tbody>
+          |""".stripMargin)}
        | </table>""".stripMargin
   }
 
