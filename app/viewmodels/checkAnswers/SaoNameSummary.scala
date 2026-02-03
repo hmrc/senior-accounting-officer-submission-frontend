@@ -35,6 +35,7 @@ object SaoNameSummary {
         actions = Seq(
           ActionItemViewModel(messages("site.change").toText, routes.SaoNameController.onPageLoad(CheckMode).url)
             .withVisuallyHiddenText(messages("saoName.change.hidden"))
+            .withAttribute("data-test-id", "change-FullName-link")
         )
       )
     }

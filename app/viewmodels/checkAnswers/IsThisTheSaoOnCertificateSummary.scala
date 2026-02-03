@@ -40,6 +40,7 @@ object IsThisTheSaoOnCertificateSummary {
             routes.IsThisTheSaoOnCertificateController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("isThisTheSaoOnCertificate.change.hidden"))
+            .withAttribute("data-test-id", "change-IsThisTheSAO-link")
         )
       )
     }

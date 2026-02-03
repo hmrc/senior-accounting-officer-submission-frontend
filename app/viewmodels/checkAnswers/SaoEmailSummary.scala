@@ -35,6 +35,7 @@ object SaoEmailSummary {
         actions = Seq(
           ActionItemViewModel(messages("site.change").toText, routes.SaoEmailController.onPageLoad(CheckMode).url)
             .withVisuallyHiddenText(messages("saoEmail.change.hidden"))
+            .withAttribute("data-test-id", "change-EmailAddress-link")
         )
       )
     }
