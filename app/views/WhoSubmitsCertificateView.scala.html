@@ -26,6 +26,8 @@
 
 @layout(pageTitle = title(form, messages("whoSubmitsCertificate.title"))) {
 
+    <span class="govuk-caption-m">@messages("whoSubmitsCertificate.caption")</span>
+
     @formHelper(action = routes.WhoSubmitsCertificateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
@@ -37,11 +39,11 @@
                 field  = form("value"),
                 legend = LegendViewModel(messages("whoSubmitsCertificate.heading").toText).asPageHeading(LegendSize.Large),
                 items  = WhoSubmitsCertificate.options
-            )
+            ).withParagraph(messages("whoSubmitsCertificate.paragraph1"))
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
         )
     }
 }
