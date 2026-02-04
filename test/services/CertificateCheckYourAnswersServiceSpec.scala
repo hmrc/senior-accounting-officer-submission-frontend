@@ -17,15 +17,12 @@
 package services
 
 import base.SpecBase
-import models.UserAnswers
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.{IsThisTheSaoOnCertificatePage, SaoEmailCommunicationChoicePage, SaoEmailPage, SaoNamePage}
+import pages.*
 import play.api.i18n.{Messages, MessagesApi}
-import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryList, SummaryListRow, Value}
-import viewmodels.checkAnswers.{IsThisTheSaoOnCertificateSummary, SaoEmailCommunicationChoiceSummary, SaoEmailSummary, SaoNameSummary}
-
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
+import viewmodels.checkAnswers.*
 
 class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
@@ -35,7 +32,15 @@ class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPe
     given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
     "when 'No' is selected and Full Name is given" in {
-      val userAnswers = emptyUserAnswers.set(IsThisTheSaoOnCertificatePage, false).get.set(SaoNamePage, "testName").get.set(SaoEmailPage, "test@testemail.com").get.set(SaoEmailCommunicationChoicePage, true).get
+      val userAnswers = emptyUserAnswers
+        .set(IsThisTheSaoOnCertificatePage, false)
+        .get
+        .set(SaoNamePage, "testName")
+        .get
+        .set(SaoEmailPage, "test@testemail.com")
+        .get
+        .set(SaoEmailCommunicationChoicePage, true)
+        .get
 
       SUT.getSummaryList(userAnswers) mustBe SummaryList(
         Seq(
@@ -46,13 +51,12 @@ class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPe
         )
       )
 
-      //Name wiped when No changed to Yes
-      //Name no displayed when Yes selected
+      // Name wiped when No changed to Yes
+      // Name no displayed when Yes selected
 
     }
 
-    "are empty" in {
-    }
+    "are empty" in {}
 
   }
 

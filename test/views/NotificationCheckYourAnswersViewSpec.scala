@@ -22,7 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryList, SummaryListRow, Value as SLValue}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Value as SLValue, *}
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 import views.NotificationCheckYourAnswersViewSpec.*

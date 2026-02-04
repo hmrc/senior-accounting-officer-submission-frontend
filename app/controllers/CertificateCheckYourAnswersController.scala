@@ -27,13 +27,14 @@ import services.CertificateCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateCheckYourAnswersView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success}
 
-class CertificateCheckYourAnswersController @Inject(
-                                                     sessionRepo:SessionRepository
-) (
+import javax.inject.Inject
+
+class CertificateCheckYourAnswersController @Inject (
+    sessionRepo: SessionRepository
+)(
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
@@ -42,7 +43,8 @@ class CertificateCheckYourAnswersController @Inject(
     view: CertificateCheckYourAnswersView,
     navigator: Navigator,
     certificateCheckYourAnswersService: CertificateCheckYourAnswersService
-) (implicit ec: ExecutionContext) extends FrontendBaseController
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
@@ -51,13 +53,14 @@ class CertificateCheckYourAnswersController @Inject(
     userAnswers.get(IsThisTheSaoOnCertificatePage) match {
       case Some(true) =>
         userAnswers.remove(SaoNamePage) match {
-          case Success(updatedUserAnswers) => sessionRepo.set(updatedUserAnswers).map {
-            case true =>
-              val summaryList = certificateCheckYourAnswersService.getSummaryList(updatedUserAnswers)
-              Ok(view(summaryList))
-            case _ =>
-              Redirect(routes.JourneyRecoveryController.onPageLoad())
-          }
+          case Success(updatedUserAnswers) =>
+            sessionRepo.set(updatedUserAnswers).map {
+              case true =>
+                val summaryList = certificateCheckYourAnswersService.getSummaryList(updatedUserAnswers)
+                Ok(view(summaryList))
+              case _ =>
+                Redirect(routes.JourneyRecoveryController.onPageLoad())
+            }
           case Failure(_) =>
             Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         }

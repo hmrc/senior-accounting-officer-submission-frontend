@@ -20,12 +20,11 @@ import controllers.routes
 import models.*
 import pages.*
 import play.api.mvc.Call
-import repositories.SessionRepository
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class Navigator @Inject()() {
+class Navigator @Inject() () {
 
   private val normalRoutes: Page => UserAnswers => Call = {
     case NotificationGuidancePage =>

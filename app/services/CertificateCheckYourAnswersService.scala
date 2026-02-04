@@ -19,7 +19,7 @@ package services
 import models.UserAnswers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.*
-import viewmodels.checkAnswers.{IsThisTheSaoOnCertificateSummary, SaoEmailCommunicationChoiceSummary, SaoEmailSummary, SaoNameSummary}
+import viewmodels.checkAnswers.*
 
 class CertificateCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
