@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.SaoNamePage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryListRow}
 import viewmodels.converters.*
@@ -31,7 +32,7 @@ object SaoNameSummary {
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(SaoNamePage).map { answer =>
       SummaryListRowViewModel(
-        key = Key(HtmlContent(s"""<span data-test-id="full-name-key">${messages("saoName.checkYourAnswersLabel")}</span>""")),
+        key = Key(Text("Full name"), ""),
         value = ValueViewModel(HtmlFormat.escape(answer).toText),
         actions = Seq(
           ActionItemViewModel(messages("site.change").toText, routes.SaoNameController.onPageLoad(CheckMode).url)
