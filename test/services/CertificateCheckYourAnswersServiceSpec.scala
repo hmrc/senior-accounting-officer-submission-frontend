@@ -51,10 +51,6 @@ class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPe
           SaoEmailCommunicationChoiceSummary.row(userAnswers).get
         )
       )
-
-      // Name wiped when No changed to Yes
-      // Name no displayed when Yes selected
-
     }
 
     "when 'Yes' is selected and Full Name is NOT given" in {

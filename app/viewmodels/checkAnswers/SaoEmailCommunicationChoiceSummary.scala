@@ -40,7 +40,7 @@ object SaoEmailCommunicationChoiceSummary {
             routes.SaoEmailCommunicationChoiceController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("saoEmailCommunicationChoice.change.hidden"))
-            .withAttribute("data-test-id", "change-EmailCommunicationChoice-link")
+            .withAttribute("data-test-id", "change-email-communication-choice-link")
         )
       )
     }
