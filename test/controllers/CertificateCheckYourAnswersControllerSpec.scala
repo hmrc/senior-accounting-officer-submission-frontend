@@ -33,6 +33,7 @@ import views.html.CertificateCheckYourAnswersView
 class CertificateCheckYourAnswersControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
+
   val testUserAnswers = emptyUserAnswers
 
   "CertificateCheckYourAnswers Controller" - {
@@ -105,32 +106,6 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
       }
     }
 
-    "CertificateCheckYourAnswers Controller" - {
-      "onPageLoad endpoint:" - {
-        "must remove SAO name and return OK in the correct view" - {
-          "when isThisTheSAOOnCertificate true" in {
 
-            val mockService = mock[CertificateCheckYourAnswersService]
-            val mockSessionRepository = mock[SessionRepository]
-
-            when mockService.getSummaryList(any()).thenReturn(SummaryList())
-            when mockSessionRepository.set(any()).thenReturn(Future.successful(true))
-
-            val application = applicationBuilder(userAnswers = None)
-              .overrides(
-                bind[CertificateCheckYourAnswersService].toInstance(mockService)
-                bind[SessionRepository].toInstance(mockSessionRepository)
-              )
-              .build()
-            running(application) {
-              val request =
-                FakeRequest(GET, routes.CertificateCheckYourAnswersController.onPageLoad().url)
-
-              val result = route(application, request).value
-            }
-          }
-        }
-      }
-    }
-
+  }
 }

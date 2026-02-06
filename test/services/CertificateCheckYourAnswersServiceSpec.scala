@@ -28,7 +28,8 @@ class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPe
 
   "CertificateCheckYourAnswersService must generate the summaryList when all the userAnswers" - {
 
-    def SUT        = app.injector.instanceOf[CertificateCheckYourAnswersService]
+    def SUT = app.injector.instanceOf[CertificateCheckYourAnswersService]
+
     given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
     "when 'No' is selected and Full Name is given" in {
@@ -56,8 +57,23 @@ class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPe
 
     }
 
-    "are empty" in {}
+    "when 'Yes' is selected and Full Name is NOT given" in {
+      val userAnswers = emptyUserAnswers
+        .set(IsThisTheSaoOnCertificatePage, true)
+        .get
+        .set(SaoEmailPage, "test@testemail.com")
+        .get
+        .set(SaoEmailCommunicationChoicePage, false)
+        .get
 
+      SUT.getSummaryList(userAnswers) mustBe SummaryList(
+        Seq(
+          IsThisTheSaoOnCertificateSummary.row(userAnswers).get,
+          SaoEmailSummary.row(userAnswers).get,
+          SaoEmailCommunicationChoiceSummary.row(userAnswers).get
+        )
+      )
+
+    }
   }
-
 }
