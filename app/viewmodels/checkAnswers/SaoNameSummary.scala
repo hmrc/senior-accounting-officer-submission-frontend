@@ -32,7 +32,7 @@ object SaoNameSummary {
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(SaoNamePage).map { answer =>
       SummaryListRowViewModel(
-        key = Key(HtmlContent(s"""<span id="full-name-key">${messages("saoName.checkYourAnswersLabel")}</span>""")),
+        key = Key(HtmlContent(s"""<span data-test-id="full-name-key">${messages("saoName.checkYourAnswersLabel")}</span>""")),
         value = ValueViewModel(HtmlFormat.escape(answer).toText),
         actions = Seq(
           ActionItemViewModel(messages("site.change").toText, routes.SaoNameController.onPageLoad(CheckMode).url)
