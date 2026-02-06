@@ -75,5 +75,26 @@ class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPe
       )
 
     }
+
+    "when 'Yes' is selected and Full Name is given, it's NOT generated" in {
+      val userAnswers = emptyUserAnswers
+        .set(IsThisTheSaoOnCertificatePage, true)
+        .get
+        .set(SaoNamePage, "testName")
+        .get
+        .set(SaoEmailPage, "test@testemail.com")
+        .get
+        .set(SaoEmailCommunicationChoicePage, false)
+        .get
+
+      SUT.getSummaryList(userAnswers) mustBe SummaryList(
+        Seq(
+          IsThisTheSaoOnCertificateSummary.row(userAnswers).get,
+          SaoEmailSummary.row(userAnswers).get,
+          SaoEmailCommunicationChoiceSummary.row(userAnswers).get
+        )
+      )
+
+    }
   }
 }
