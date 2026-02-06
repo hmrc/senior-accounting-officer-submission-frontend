@@ -47,27 +47,11 @@ class CertificateCheckYourAnswersController @Inject (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val userAnswers = request.userAnswers
+    val summaryList = certificateCheckYourAnswersService.getSummaryList(userAnswers)
 
-    userAnswers.get(IsThisTheSaoOnCertificatePage) match {
-      case Some(true) =>
-        userAnswers.remove(SaoNamePage) match {
-          case Success(updatedUserAnswers) =>
-            sessionRepo.set(updatedUserAnswers).map {
-              case true =>
-                val summaryList = certificateCheckYourAnswersService.getSummaryList(updatedUserAnswers)
-                Ok(view(summaryList))
-              case _ =>
-                Redirect(routes.JourneyRecoveryController.onPageLoad())
-            }
-          case Failure(_) =>
-            Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-        }
-      case _ =>
-        val summaryList = certificateCheckYourAnswersService.getSummaryList(userAnswers)
-        Future.successful(Ok(view(summaryList)))
-    }
+    Ok(view(summaryList))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>

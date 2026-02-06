@@ -112,6 +112,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
 
             val mockService = mock[CertificateCheckYourAnswersService]
             val mockSessionRepository = mock[SessionRepository]
+
             when mockService.getSummaryList(any()).thenReturn(SummaryList())
             when mockSessionRepository.set(any()).thenReturn(Future.successful(true))
 
@@ -122,7 +123,10 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
               )
               .build()
             running(application) {
+              val request =
+                FakeRequest(GET, routes.CertificateCheckYourAnswersController.onPageLoad().url)
 
+              val result = route(application, request).value
             }
           }
         }
