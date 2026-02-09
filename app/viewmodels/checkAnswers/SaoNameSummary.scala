@@ -33,7 +33,7 @@ object SaoNameSummary {
     answers.get(SaoNamePage).map { answer =>
       SummaryListRowViewModel(
         key = Key(HtmlContent(s"""<span data-test-id="full-name-key">${messages("saoName.checkYourAnswersLabel")}</span>""")),
-        value = ValueViewModel(HtmlFormat.escape(answer).toText),
+        value = ValueViewModel(HtmlContent(s"""<span data-test-id="full-name-value">${HtmlFormat.escape(answer)}</span>""")),
         actions = Seq(
           ActionItemViewModel(messages("site.change").toText, routes.SaoNameController.onPageLoad(CheckMode).url)
             .withVisuallyHiddenText(messages("saoName.change.hidden"))
