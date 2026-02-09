@@ -23,6 +23,8 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.SaoNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
 
 class SaoNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -44,7 +46,7 @@ class SaoNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
       def SUT(answer: String = "") = SaoNameSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "Full name".toKey
+        SUT().key mustBe Key(HtmlContent(s"""<span data-test-id="full-name-key">Full name</span>"""))
       }
 
       "expected value" - {
