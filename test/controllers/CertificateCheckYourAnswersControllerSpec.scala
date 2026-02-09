@@ -106,6 +106,5 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
       }
     }
 
-
   }
 }

@@ -17,7 +17,7 @@
 package services
 
 import models.UserAnswers
-import pages._
+import pages.*
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.*
 import viewmodels.checkAnswers.*
@@ -27,7 +27,10 @@ class CertificateCheckYourAnswersService {
     SummaryList(rows =
       Seq(
         IsThisTheSaoOnCertificateSummary.row(userAnswers),
-        userAnswers.get(page = IsThisTheSaoOnCertificatePage).collect{case false => SaoNameSummary.row(userAnswers)}.flatten,
+        userAnswers
+          .get(page = IsThisTheSaoOnCertificatePage)
+          .collect { case false => SaoNameSummary.row(userAnswers) }
+          .flatten,
         SaoEmailSummary.row(userAnswers),
         SaoEmailCommunicationChoiceSummary.row(userAnswers)
       ).flatten

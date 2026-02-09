@@ -51,7 +51,9 @@ class SaoNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
 
       "expected value" - {
         "must show 'testSaoName' when user answers is 'testSaoName'" in {
-          SUT(answer = "testSaoName").value.content mustBe "testSaoName".toText
+          SUT(answer = "testSaoName").value.content mustBe HtmlContent(
+            """<span data-test-id="full-name-value">testSaoName</span>"""
+          )
         }
       }
 

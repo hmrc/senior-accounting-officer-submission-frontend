@@ -21,7 +21,6 @@ import models.{CheckMode, UserAnswers}
 import pages.SaoNamePage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryListRow}
 import viewmodels.converters.*
@@ -32,12 +31,15 @@ object SaoNameSummary {
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(SaoNamePage).map { answer =>
       SummaryListRowViewModel(
-        key = Key(HtmlContent(s"""<span data-test-id="full-name-key">${messages("saoName.checkYourAnswersLabel")}</span>""")),
-        value = ValueViewModel(HtmlContent(s"""<span data-test-id="full-name-value">${HtmlFormat.escape(answer)}</span>""")),
+        key = Key(
+          HtmlContent(s"""<span data-test-id="full-name-key">${messages("saoName.checkYourAnswersLabel")}</span>""")
+        ),
+        value =
+          ValueViewModel(HtmlContent(s"""<span data-test-id="full-name-value">${HtmlFormat.escape(answer)}</span>""")),
         actions = Seq(
           ActionItemViewModel(messages("site.change").toText, routes.SaoNameController.onPageLoad(CheckMode).url)
             .withVisuallyHiddenText(messages("saoName.change.hidden"))
-            .withAttribute("data-test-id", "change-full-name-link")
+            .withAttribute("data-test-id", "full-name-change-link")
         )
       )
     }

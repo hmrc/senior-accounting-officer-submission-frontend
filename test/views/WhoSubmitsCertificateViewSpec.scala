@@ -150,10 +150,10 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
 }
 
 object WhoSubmitsCertificateViewSpec {
-  val pageHeading = "Who is submitting the certificate?"
-  val pageTitle   = "Submit a certificate"
-  val pageCaption = "Submit a certificate"
-  val paragraphs  = Seq(
+  val pageHeading             = "Who is submitting the certificate?"
+  val pageTitle               = "Submit a certificate"
+  val pageCaption             = "Submit a certificate"
+  val paragraphs: Seq[String] = Seq(
     "We need to know if your certificate will be submitted by the Senior Accounting Officer (SAO) or by someone authorised to act on their behalf. This helps us show the correct declaration for you to confirm and sign."
   )
   val option1key   = "sao"
