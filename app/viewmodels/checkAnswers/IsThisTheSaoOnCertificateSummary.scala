@@ -34,9 +34,11 @@ object IsThisTheSaoOnCertificateSummary {
 
       SummaryListRowViewModel(
         key = Key(
-          createContent("is-this-the-sao-key", messages(
-            "isThisTheSaoOnCertificate.checkYourAnswersLabel"
-          ))
+          HtmlContent(
+            s"""<span data-test-id="is-this-the-sao-key">${messages(
+                "isThisTheSaoOnCertificate.checkYourAnswersLabel"
+              )}</span>"""
+          )
         ),
         value =
           ValueViewModel(HtmlContent(s"""<span data-test-id="is-this-the-sao-value">${messages(value)}</span>""")),
