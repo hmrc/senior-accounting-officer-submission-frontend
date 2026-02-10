@@ -22,7 +22,6 @@ import navigation.Navigator
 import pages.CertificateCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import services.CertificateCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateCheckYourAnswersView
@@ -31,9 +30,7 @@ import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
-class CertificateCheckYourAnswersController @Inject (
-    sessionRepo: SessionRepository
-)(
+class CertificateCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
