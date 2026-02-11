@@ -22,11 +22,12 @@ import play.api.http.Status
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import uk.gov.hmrc.http.InternalServerException
 
 class NotificationTemplateDownloadControllerSpec extends SpecBase {
 
   given request: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, routes.DownloadNotificationTemplateController.onPageLoad().url)
+    FakeRequest(GET, routes.DownloadNotificationTemplateController.downloadFile().url)
 
   "GET must " - {
     "return a file with correct name,type and headers" in {
@@ -45,14 +46,16 @@ class NotificationTemplateDownloadControllerSpec extends SpecBase {
 
     }
 
-    "return an internal server error if template file is unavailable" in {
+    "throw an InternalServerException if template file is unavailable" in {
 
       val app = applicationBuilder(userAnswers = None).build()
       running(app) {
         AppConfig.setValue("templateFile", "nonsense/file/path")
         val result = route(app, request).value
 
-        status(result) mustBe Status.INTERNAL_SERVER_ERROR
+        intercept[InternalServerException] {
+          status(result)
+        }
       }
     }
   }

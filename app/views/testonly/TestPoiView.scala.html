@@ -1,0 +1,84 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.testonly.TestPoiController.Impl
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukButton: GovukButton,
+)
+
+@()(using request: Request[?], messages: Messages)
+
+@layout(pageTitle = titleNoForm("Test POI implementations")) {
+
+    <h1 class="govuk-heading-xl">Test POI implementations</h1>
+
+    @formHelper(action = _root_.controllers.testonly.routes.TestPoiController.onSubmit()){
+        <fieldset style="margin: 1em 0 1em 0;">
+            <legend>Workbook type</legend>
+            <div>
+                <label for="xssf" style="width: 100%;display: block;">
+                    <input type="radio" id="xssf" name="workbook" value="xssf" checked />
+                    XSSF - Keep everything in memory before write
+                </label>
+            </div>
+
+            <div>
+                <label for="sxssf" style="width: 100%;display: block;">
+                    <input type="radio" id="sxssf" name="workbook" value="sxssf" >
+                    SXSSF - Stream to temporary files and read from them to write
+                </label>
+            </div>
+
+            <div>
+                <label for="deferredSxssf" style="width: 100%;display: block;">
+                    <input type="radio" id="deferredSxssf" name="workbook" value="deferredSxssf" >
+                    DeferredSXSSF - Stream minimal data to temporary files, rows streamed directly to write
+                </label>
+            </div>
+        </fieldset>
+
+
+        <fie style="margin: 1em 0 1em 0;">
+            <label>
+                Size
+                <input type="number" name="rows" min="1" max="10000" value="1000">
+            </label>
+        </fie>
+
+        <div style="margin: 1em 0 1em 0;">
+            <label for="algorithm">File write algorithm</label>
+            <select name="algorithm" id="algorithm">
+            @for(implName <- Impl.values) {
+                <option value="@implName">@implName</option>
+            }
+            </select>
+        </div>
+
+        @govukButton(
+            ButtonViewModel("Download".toText).withAttribute("id", "submit")
+        )
+    }
+
+
+    <p>Using XSSF <a href="@controllers.testonly.routes.TestPoiController.testXssf()" >download</a></p>
+
+    <p>Using SXSSF <a href="@controllers.testonly.routes.TestPoiController.testSxssf()">download</a></p>
+
+    <p>Using DeferredSXSSF <a href="@controllers.testonly.routes.TestPoiController.testDeferredSxssf()">download</a></p>
+}

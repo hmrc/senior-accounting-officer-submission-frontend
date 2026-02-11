@@ -14,12 +14,16 @@
  * limitations under the License.
  *@
 
-@this(layout: views.html.templates.Layout)
-@(upscanInitiateResponse: models.UpscanInitiateResponse)(implicit request: RequestHeader, messages: Messages)
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton
+)
 
-@layout(pageTitle = "SAO Notification Upload") {
-    <h1 class="govuk-heading-l">Please upload the documents:</h1>
+@(upscanInitiateResponse: models.UpscanInitiateResponse)(using request: Request[?], messages: Messages)
 
+@layout(pageTitle = titleNoForm(messages("notificationUploadForm.title"))) {
+
+    <h1 class="govuk-heading-xl">@messages("notificationUploadForm.heading")</h1>
     @* ---- populating the form action with the initiate response post target --- *@
     <form action="@upscanInitiateResponse.postTarget" method="post" enctype="multipart/form-data">
 
@@ -38,8 +42,7 @@
                     id="file-input"
                     name="file"
                     class="govuk-file-upload"
-                    accept=".xlsx,.xls,.csv"
-                />
+                    accept=".xlsx,.xls,.csv"/>
             </div>
         </div>
 
@@ -49,4 +52,3 @@
 
     </form>
 }
-

@@ -18,7 +18,7 @@ package controllers
 
 import config.AppConfig
 import connectors.UpscanInitiateConnector
-import controllers.actions.IdentifierAction
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.*
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -27,11 +27,12 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NotificationUploadFormView
 
 import scala.concurrent.ExecutionContext
-
 import javax.inject.Inject
 
 class NotificationUploadFormController @Inject() (
     identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
     mcc: MessagesControllerComponents,
     appConfig: AppConfig,
     notificationUploadFormView: NotificationUploadFormView,
@@ -41,7 +42,7 @@ class NotificationUploadFormController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify async { implicit request =>
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
     val uploadId = UploadId.generate()
     for
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2(uploadId.value)

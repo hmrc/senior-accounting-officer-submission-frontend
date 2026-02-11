@@ -1,0 +1,97 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(
+        layout: templates.Layout,
+        govukButton: GovukButton
+)
+
+@(currentStage: SubmitNotificationStage)(using request: Request[?], messages: Messages)
+
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("submitNotificationStart.title"))) {
+
+    <h1 class="govuk-heading-l">@messages("submitNotificationStart.heading")</h1>
+
+    <p class="govuk-body">@messages("submitNotificationStart.paragraph1")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+     <li>@messages("submitNotificationStart.list1.item1")</li>
+     <li>@messages("submitNotificationStart.list1.item2")</li>
+    </ul>
+
+    <p class="govuk-body">
+      @Html(
+          messages(
+              "submitNotificationStart.paragraph2WithLink",
+              templateGuidanceLinkAttributes
+          )
+      )
+    </p>
+
+    <ul class="govuk-task-list">
+        @row(
+            linkText = messages("submitNotificationStart.uploadNotificationLinkText"),
+            href = routes.NotificationUploadFormController.onPageLoad(),
+            statusName = "upload-template-details",
+            status = currentStage.uploadNotificationTemplateStatus
+        )
+
+        @row(
+            linkText = messages("submitNotificationStart.submitNotificationLinkText"),
+            href = routes.NotificationGuidanceController.onPageLoad(),
+            statusName = "submit-notification-details",
+            status = currentStage.submitNotificationStatus
+        )
+    </ul>
+}
+
+
+@row(linkText: String, href: Call, statusName: String, status: SubmitNotificationStatus) = {
+<li class="govuk-task-list__item govuk-task-list__item--with-link">
+    <div class="govuk-task-list__name-and-hint">
+        @if(status == SubmitNotificationStatus.NotStarted) {
+            <a class="govuk-link govuk-task-list__link" href="@href" aria-describedby="@statusName-status">
+                @linkText
+            </a>
+        } else {
+            @linkText
+        }
+    </div>
+    <div class="govuk-task-list__status" id="@statusName-status">
+        @status match {
+            case SubmitNotificationStatus.CannotStartYet => {
+                <strong class="govuk-tag govuk-tag--grey">
+                    @messages("submitNotificationStart.row.status.cannotStartYet")
+                </strong>
+            }
+            case SubmitNotificationStatus.NotStarted => {
+                <strong class="govuk-tag govuk-tag--blue">
+                    @messages("submitNotificationStart.row.status.notStarted")
+                </strong>
+            }
+            case SubmitNotificationStatus.Completed => {
+                <strong class="govuk-tag govuk-tag--green">
+                    @messages("submitNotificationStart.row.status.completed")
+                </strong>
+            }
+        }
+    </div>
+</li>
+}
+
+@templateGuidanceLinkAttributes = @{
+    s"""href="${routes.TemplateGuidanceController.onPageLoad()}" class="govuk-link" target="_blank""""
+}

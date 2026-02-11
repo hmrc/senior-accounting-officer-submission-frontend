@@ -76,6 +76,17 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         }
       }
 
+    def createTestForInsetText(text: String): Unit = {
+      val insetTextElement = doc.getMainContent.select(".govuk-inset-text")
+      "must have one inset string" in {
+        insetTextElement.size() mustBe 1
+      }
+
+      s"must have expected inset string of $text" in {
+        insetTextElement.text() mustBe text
+      }
+    }
+
     def createTestWithBackLink(show: Boolean)(using pos: Position): Unit =
       if show then
         "must show a backlink " in {
@@ -149,12 +160,12 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
 
     def getPanelTitle: Element =
       util
-        .Try(target.resolve.select(".govuk-panel__title").get(0))
+        .Try(target.resolve.select("h1.govuk-panel__title").get(0))
         .getOrElse(throw RuntimeException("No panel title found"))
 
     def getPanelBody: Element =
       util
-        .Try(target.resolve.select(".govuk-panel__body").get(0))
+        .Try(target.resolve.select("div.govuk-panel__body").get(0))
         .getOrElse(throw RuntimeException("No panel body found"))
 
     def createTestMustShowNumberOfInputs(expectedCount: Int)(using pos: Position): Unit = {
@@ -166,6 +177,126 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
 
         withClue(s"Expected a $expectedCount of inputs but found ${elements.size}\n") {
           elements.size mustBe expectedCount
+        }
+      }
+    }
+
+    def createTestMustShowNumberOfTextareas(expectedCount: Int)(using pos: Position): Unit = {
+      s"must have a $expectedCount of text area(s)" in {
+        val selector = "textarea"
+
+        def elements = target.resolve.select(selector).asScala
+
+        withClue(s"Expected a $expectedCount of text area(s) but found ${elements.size}\n") {
+          elements.size mustBe expectedCount
+        }
+      }
+    }
+
+    def createTestMustShowTextarea(
+        name: String,
+        label: String,
+        value: String,
+        hint: Option[String],
+        hasError: Boolean
+    )(using pos: Position): Unit = {
+
+      s"for textarea '$name'" - {
+
+        def textareaElements = target.resolve.select(s"textarea[name=$name].govuk-textarea")
+
+        s"textarea with name '$name' must exist on the page" in {
+          withClue(s"textarea with the name '$name' not found\n'") {
+            textareaElements.size mustBe 1
+          }
+        }
+
+        def textAreaElement = textareaElements.get(0)
+
+        s"textarea with name '$name' must have a label '$label' with correct id and text" in {
+          val textareaId = textAreaElement.attr("id")
+          withClue(s"textarea with an 'id' attribute not found\n") {
+            textareaId must not be ""
+          }
+
+          val labels = target.resolve.select(s"""label[for="$textareaId"]""")
+          withClue(s"label for '$textareaId' not found\n") {
+            labels.size() must be > 0
+          }
+          withClue(s"label text does not match expected label text '$label'\n") {
+            labels.get(0).text mustEqual label
+          }
+
+          val erroredFormGroup = target.resolve.select(s""".govuk-error-summary a[href="#$textareaId"]""")
+          if hasError then {
+            withClue("error content must be shown\n") {
+              erroredFormGroup.size mustBe 1
+            }
+          } else {
+            withClue("error content must not be shown\n") {
+              erroredFormGroup.size mustBe 0
+            }
+          }
+        }
+
+        s"textarea with name '$name' must have value of '$value'" in {
+          withClue(s"textarea with name '$name' does not have a value attribute '$value'\n") {
+            textAreaElement.text mustEqual value
+          }
+        }
+
+        hint match {
+          case Some(expectedHintText) => {
+            def hintSelector = textAreaElement
+              .attr("aria-describedby")
+              .split(" ")
+              .filter(_.nonEmpty)
+              .map("#" + _ + ".govuk-hint")
+              .mkString(",")
+
+            def hints = target.resolve.safeSelect(hintSelector)
+
+            s"textarea with name '$name' must have a hint with values '$expectedHintText'" in {
+              withClue(s"for textarea with name '$name' hint element not found\n") {
+                hints.size() must be > 0
+              }
+              withClue(s"textarea with name '$name' multiple hint elements found\n") {
+                hints.size() mustBe 1
+              }
+              withClue(
+                s"textarea with name '$name' hint text does not match expected value '$expectedHintText' not found\n"
+              ) {
+                hints.get(0).text mustEqual expectedHintText
+              }
+            }
+          }
+          case None =>
+            s"textarea with name '$name' must not have an associated hint" in {
+              val hints = target.resolve.select(".govuk-hint")
+
+              withClue(s"for textarea with name '$name' hint element not found\n") {
+                hints.size() mustBe 0
+              }
+            }
+        }
+
+        if hasError then {
+          s"textarea with name '$name' must show an associated error message when field has error" in {
+
+            val errorMessageElements = target.resolve.safeSelect(s".govuk-error-summary a[href=\"#$name\"]")
+
+            withClue(s"textarea does not have expected error message with id '$name'\n") {
+              errorMessageElements.size mustBe 1
+            }
+          }
+        } else {
+          s"textarea with name '$name' must not show an associated error message when field has no error" in {
+            val errorMessageElements = target.resolve.select(".govuk-error-message")
+
+            withClue(s"textarea has unexpected error message with id '$name'\n") {
+              errorMessageElements.size mustBe 0
+            }
+          }
         }
       }
     }
@@ -466,9 +597,9 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       }
 
       s"must have a submit button with text '$buttonText'" in {
-        val button = target.resolve.select("button[type=submit], input[type=submit]")
+        val button = target.resolve.select("button[type=submit]")
         withClue(
-          s"Submit Button with text $buttonText not found\n"
+          s"Submit Button with text '$buttonText' not found\n"
         ) {
           button.text() mustBe buttonText
           button.size() mustBe 1
@@ -551,14 +682,31 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         pos: Position
     ): Unit = {
       createTestWithCountOfElement(
-        selector = "li",
+        selector = "ul.govuk-list--bullet li",
         count = bullets.size,
         description = "bullets"
       )
       createTestsWithOrderOfElements(
-        selector = "li",
+        selector = "ul.govuk-list--bullet li",
         texts = bullets,
         description = "bullets"
+      )
+    }
+
+    def createTestsWithNumberedItems(
+        numberedItems: Seq[String]
+    )(using
+        pos: Position
+    ): Unit = {
+      createTestWithCountOfElement(
+        selector = "ol.govuk-list--number li",
+        count = numberedItems.size,
+        description = "numbered items"
+      )
+      createTestsWithOrderOfElements(
+        selector = "ol.govuk-list--number li",
+        texts = numberedItems,
+        description = "numbered items"
       )
     }
 

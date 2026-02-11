@@ -31,12 +31,15 @@ lazy val microservice = (project in file("."))
     ),
     scalacOptions ++= Seq(
       "-feature",
-      "-Wconf:"
-        + "cat=deprecation:w,"
-        + "cat=feature:w,"
-        + "src=target/.*:s,"
-        + "src=test/.*&id=E176:s"
+      "-Wconf:" + Seq(
+        "cat=deprecation:w",
+        "cat=feature:w",
+        "src=target/.*:s",
+        "src=test/.*&id=E175:s",
+        "src=test/.*&id=E176:s"
+      ).mkString(",")
     ),
+    Compile/ unmanagedResourceDirectories += baseDirectory.value / "resources",
     libraryDependencies ++= AppDependencies(),
     retrieveManaged          := true,
     pipelineStages           := Seq(digest, gzip),
@@ -46,7 +49,7 @@ lazy val microservice = (project in file("."))
   .settings(CodeCoverageSettings.settings *)
   .settings(scalafixSettings *)
 
-lazy val testSettings: Seq[Def.Setting[_]] = Seq(
+lazy val testSettings: Seq[Def.Setting[?]] = Seq(
   fork := true,
   unmanagedSourceDirectories += baseDirectory.value / "test-utils"
 )
@@ -56,7 +59,7 @@ lazy val it =
     .enablePlugins(PlayScala)
     .dependsOn(microservice % "test->test")
 
-val scalafixSettings: Seq[Setting[_]] = Seq(
+val scalafixSettings: Seq[Setting[?]] = Seq(
   semanticdbEnabled := true, // enable SemanticDB
   scalacOptions += {
     "-Wall"

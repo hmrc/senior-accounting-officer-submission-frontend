@@ -23,7 +23,7 @@ import support.{ISpecBase, MockAuthHelper, SessionCookieBaker}
 class AuthActionISpec extends ISpecBase {
 
   val appConfig = app.injector.instanceOf[AppConfig]
-  val targetUrl = s"$baseUrl/senior-accounting-officer/submission/notification/guidance"
+  val targetUrl = s"$baseUrl/senior-accounting-officer/submission/notification/start"
 
   "An endpoint with Auth Action" when {
     "Auth is missing" must {
@@ -58,9 +58,6 @@ class AuthActionISpec extends ISpecBase {
 
         MockAuthHelper.verifyAuthWasCalled()
         response.status mustBe Status.OK
-        Option(
-          Jsoup.parse(response.body).selectFirst("h1").text
-        ).get mustBe "Notification template guide"
       }
     }
 

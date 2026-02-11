@@ -14,7 +14,7 @@ object CodeCoverageSettings {
     ".*Routes.*",
     ".*views.*",
     ".*viewmodels.*",
-    "testOnly.*",
+    ".*testonly.*",
     "testOnlyDoNotUseInAppConf.*"
   )
 

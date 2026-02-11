@@ -1,0 +1,67 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import models.NotificationConfirmationDetails
+@import config.AppConfig
+
+@this(
+    layout: templates.Layout,
+    govukButton: GovukButton,
+    formHelper: FormWithCSRF,
+    appConfig: AppConfig
+)
+
+@(details: NotificationConfirmationDetails)(using request: Request[?], messages: Messages)
+
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
+
+    <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+            @messages("notificationConfirmation.heading")
+        </h1>
+        <div class="govuk-panel__body">
+            @messages("notificationConfirmation.reference.text")
+            <br>
+            <strong data-test-id="notification-reference-number">@details.notificationId</strong>
+        </div>
+    </div>
+
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph1", details.companyName)</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph2", details.notificationDateTime)</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph4")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li><a class="govuk-link" href="#">@messages("notificationConfirmation.list1.item1")</a></li>
+        <li><a class="govuk-link" href="#">@messages("notificationConfirmation.list1.item2")</a></li>
+    </ul>
+
+    <p class="govuk-body">@Html(messages("notificationConfirmation.paragraph5WithLink", accountHomepageLinkAttributes))</p>
+    <h2 class="govuk-heading-m">@messages("notificationConfirmation.subheading")</h2>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph6")</p>
+
+    @formHelper(action = routes.NotificationConfirmationController.onSubmit()) {
+        @govukButton(
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
+        )
+    }
+}
+
+@accountHomepageLinkAttributes = @{
+    s"""href="${appConfig.hubBaseUrl}" class="govuk-link""""
+}
+
+    

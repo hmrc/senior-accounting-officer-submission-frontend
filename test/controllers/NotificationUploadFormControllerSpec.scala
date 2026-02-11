@@ -47,7 +47,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
 
       when(mockAppConfig.cacheTtl).thenReturn(900L)
-      when(mockNotificationUploadFormView.apply(any())(any(), any())).thenReturn(Html(""))
+      when(mockNotificationUploadFormView.apply(any())(using any(), any())).thenReturn(Html(""))
 
       when(
         mockUpscanInitiateConnector.initiateV2(any[String])(using
@@ -60,7 +60,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockAppConfig.hubBaseUrl).thenReturn("http://localhost:10000/senior-accounting-officer")
 
-      val application = applicationBuilder()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
           bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
@@ -76,7 +76,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
 
-        verify(mockNotificationUploadFormView, times(1)).apply(any())(any(), any())
+        verify(mockNotificationUploadFormView, times(1)).apply(any())(using any(), any())
       }
     }
 
@@ -95,7 +95,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         )
       ).thenReturn(Future.failed(new RuntimeException("Upscan service unavailable")))
 
-      val application = applicationBuilder()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
           bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
@@ -136,7 +136,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       when(mockUploadProgressTracker.initialiseUpload(any[UploadId], any[UpscanFileReference]))
         .thenReturn(Future.failed(new RuntimeException("Database connection failed")))
 
-      val application = applicationBuilder()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
           bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
@@ -154,7 +154,20 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         result.failed.futureValue mustBe an[RuntimeException]
 
       }
+    }
 
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
     }
   }
 }

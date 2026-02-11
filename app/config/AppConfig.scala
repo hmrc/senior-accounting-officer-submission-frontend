@@ -38,7 +38,7 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   def feedbackUrl(implicit request: RequestHeader): String =
     s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${host + request.uri}"
 
-  def hubBaseUrl: String         = config.get[String]("hub-frontend.host") + "/senior-accounting-officer"
+  def hubBaseUrl: String         = getValue("hub-frontend.host") + "/senior-accounting-officer"
   val hubSignOutUrl: String      = hubBaseUrl + "/account/sign-out-survey"
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 

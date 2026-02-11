@@ -17,53 +17,50 @@
 package controllers
 
 import base.SpecBase
-import play.api.http.Status
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.mvc.AnyContentAsEmpty
+import navigation.FakeNavigator
+import navigation.Navigator
+import play.api.http.HeaderNames
+import play.api.inject.*
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.NotificationGuidanceView
 
 class NotificationGuidanceControllerSpec extends SpecBase {
 
-  given request: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, routes.NotificationGuidanceController.onPageLoad().url)
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  "GET / must" - {
-    "return 200" in {
-      val app = applicationBuilder(userAnswers = None).build()
+  "NotificationGuidance Controller" - {
 
-      running(app) {
-        val result = route(app, request).value
+    "must return OK and the correct view for a GET" in {
 
-        status(result) mustBe Status.OK
-      }
-    }
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-    "return HTML" in {
-      val app = applicationBuilder(userAnswers = None).build()
+      running(application) {
+        val request = FakeRequest(GET, routes.NotificationGuidanceController.onPageLoad().url)
 
-      running(app) {
-        val result = route(app, request).value
+        val result = route(application, request).value
 
-        contentType(result) mustBe Some("text/html")
-        charset(result) mustBe Some("utf-8")
-      }
-    }
-
-    "return correct content html" in {
-      val app = applicationBuilder(userAnswers = None).build()
-
-      running(app) {
-        val view = app.injector.instanceOf[NotificationGuidanceView]
-
-        given messages: Messages = app.injector.instanceOf[MessagesApi].preferred(request)
-
-        val result = route(app, request).value
+        val view = application.injector.instanceOf[NotificationGuidanceView]
 
         status(result) mustEqual OK
-        val content = contentAsString(result)
-        content mustEqual view().toString
+        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+      }
+    }
+
+    "must redirect to the next page for a POST" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(POST, routes.NotificationGuidanceController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        header(HeaderNames.LOCATION, result) mustEqual Some(onwardRoute.url)
       }
     }
   }

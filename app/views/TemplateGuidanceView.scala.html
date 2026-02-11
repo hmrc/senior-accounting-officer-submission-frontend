@@ -1,0 +1,92 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@this(
+    layout: templates.Layout,
+)
+
+@()(using request: RequestHeader, messages: Messages)
+
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("template.guidance.title"))) {
+    <h1 class="govuk-heading-l">@messages("template.guidance.heading")</h1>
+    <p class="govuk-body">@messages("template.guidance.paragraph1")</p>
+
+    <h3 class="govuk-heading-s">@messages("template.guidance.subheading1")</h3>
+
+    <p class="govuk-body">
+        <a class="govuk-link" href="@routes.DownloadNotificationTemplateController.downloadFile()">
+            @messages("template.guidance.subheading1.downloadTemplateLinkText")
+        </a>
+    </p>
+
+    <p class="govuk-body">@messages("template.guidance.subheading1.paragraph1")</p>
+    <p class="govuk-body">@messages("template.guidance.subheading1.paragraph2")</p>
+    <p class="govuk-body">@messages("template.guidance.subheading1.paragraph3")</p>
+
+    <h3 class="govuk-heading-s">@messages("template.guidance.subheading2")</h3>
+    <p class="govuk-body">@messages("template.guidance.subheading2.paragraph1")</p>
+
+    <ol class="govuk-list govuk-list--number">
+        <li>@messages("template.guidance.subheading2.list1.item1")</li>
+        <li>@messages("template.guidance.subheading2.list1.item2")</li>
+        <li>@messages("template.guidance.subheading2.list1.item3")</li>
+        <li>@messages("template.guidance.subheading2.list1.item4")</li>
+    </ol>
+
+    <div class="govuk-inset-text">
+        @messages("template.guidance.subheading2.inset.text")
+    </div>
+
+    <h3 class="govuk-heading-s">@messages("template.guidance.subheading3")</h3>
+    <p class="govuk-body">@messages("template.guidance.subheading3.paragraph1")</p>
+    <p class="govuk-body">
+        @Html(messages("template.guidance.subheading3.paragraph2WithLink", routes.DownloadNotificationTemplateController.downloadFile()))
+    </p>
+    <p class="govuk-body">@messages("template.guidance.subheading3.paragraph3")</p>
+    <p class="govuk-body">@messages("template.guidance.subheading3.paragraph4")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("template.guidance.subheading3.list1.item1")</li>
+        <li>@messages("template.guidance.subheading3.list1.item2")</li>
+        <li>@messages("template.guidance.subheading3.list1.item3")</li>
+    </ul>
+
+    <p class="govuk-body">@messages("template.guidance.subheading3.paragraph5")</p>
+    <p class="govuk-body">@messages("template.guidance.subheading3.paragraph6")</p>
+
+    <h3 class="govuk-heading-s">@messages("template.guidance.subheading4")</h3>
+    <p class="govuk-body">@messages("template.guidance.subheading4.paragraph1")</p>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages("template.guidance.subheading4.list1.item1")</li>
+        <li>@messages("template.guidance.subheading4.list1.item2")</li>
+    </ul>
+
+    <h3 class="govuk-heading-s">@messages("template.guidance.subheading5")</h3>
+    <ol class="govuk-list govuk-list--number">
+        <li>@messages("template.guidance.subheading5.list1.item1")</li>
+        <li>@messages("template.guidance.subheading5.list1.item2")</li>
+    </ol>
+
+    <h3 class="govuk-heading-s">@messages("template.guidance.subheading6")</h3>
+    <ol class="govuk-list govuk-list--number">
+        <li>@messages("template.guidance.subheading6.list1.item1")</li>
+        <li>@messages("template.guidance.subheading6.list1.item2")</li>
+    </ol>
+}
+
+@{
+    //$COVERAGE-OFF$
+}

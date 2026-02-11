@@ -16,80 +16,56 @@
 
 package views
 
-import base.SpecBase
+import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.i18n.{Messages, MessagesApi}
-import play.api.mvc.Request
-import play.api.test.FakeRequest
+import views.NotificationGuidanceViewSpec.*
 import views.html.NotificationGuidanceView
 
-class NotificationGuidanceViewSpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationGuidanceViewSpec extends ViewSpecBase[NotificationGuidanceView] {
+  private def generateView(): Document = Jsoup.parse(SUT().toString)
 
-  val SUT: NotificationGuidanceView = app.injector.instanceOf[NotificationGuidanceView]
+  "NotificationGuidanceView" - {
+    val doc: Document = generateView()
 
-  given request: Request[?] = FakeRequest()
+    doc.createTestsWithStandardPageElements(
+      pageTitle = pageTitle,
+      pageHeading = pageHeading,
+      showBackLink = false,
+      showIsThisPageNotWorkingProperlyLink = true,
+      hasError = false
+    )
 
-  given Messages = app.injector.instanceOf[MessagesApi].preferred(request)
+    doc.createTestsWithOrWithoutError(hasError = false)
 
-  val doc: Document        = Jsoup.parse(SUT().toString)
-  val mainContent: Element = doc.getElementById("main-content")
+    doc.createTestsWithParagraphs(paragraphs)
 
-  "NotificationGuidanceView must" - {
-    "must generate a view with the correct heading" in {
-      val h1 = mainContent.getElementsByTag("h1")
-      h1.size() mustBe 1
-      h1.get(0).text() mustBe "Notification template guide"
-    }
+    doc.createTestsWithBulletPoints(pageBullets)
 
-    "with the correct content for guidance at the top" in {
-      val paras = mainContent.getElementsByTag("p")
-      paras.get(0).text mustBe "Use this template to submit your Senior Accounting Officer (SAO) notification. Each row should represent one company the SAO was responsible for in the previous financial year. If there was more than one SAO in the previous year add this on the next row and include the start and end date of the previous SAO."
-      paras.get(1).text mustBe "You must fill in all the fields."
-    }
+    doc.createTestForInsetText(pageInsetText)
 
-    "with the correct SAO Details content" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(0).text mustBe "SAO details"
-      val listContents = mainContent.getElementsByTag("li")
-      listContents.get(0).text mustBe "SAO name: Full name of the SAO."
-      listContents.get(1).text mustBe "SAO contact details: Email or phone number of the SAO."
-      listContents
-        .get(2)
-        .text mustBe "SAO start and end date: Dates the SAO held their position during the accounting period."
-    }
-
-    "with the correct Accounting Period Details content" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(1).text mustBe "Accounting period"
-      val listContents = mainContent.getElementsByTag("li")
-      listContents.get(3).text mustBe "The start and end date of the accounting period (DD/MM/YYYY)"
-
-    }
-
-    "with the correct Company Details content" in {
-      val headings = mainContent.getElementsByTag("h3")
-      headings.get(2).text mustBe "Company information"
-      val listContents = mainContent.getElementsByTag("li")
-      listContents.get(4).text mustBe "Company name: enter the name of the company the SAO was responsible for."
-      listContents.get(5).text mustBe "Company UTR: Unique Taxpayer Reference of that company."
-      listContents.get(6).text mustBe "Company CRN: Company Registration Number of that company."
-      listContents
-        .get(7)
-        .text mustBe "Company Status: inform if a company is Active, Dormant or Liquidated"
-    }
-
-    "with the correct content for guidance at the bottom" in {
-      val paras = mainContent.getElementsByTag("p")
-      paras.get(2).text mustBe "If you do not have UTR for some companies, please put in the CRN instead."
-    }
-
-    "with the correct link content for notification template download" in {
-      val links = mainContent.getElementsByTag("a")
-      links.get(0).text mustBe "Download the notification template"
-      links.attr("href") mustBe "/senior-accounting-officer/submission/download/notification/template"
-    }
+    doc.createTestsWithSubmissionButton(
+      action = controllers.routes.NotificationGuidanceController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
+}
+
+object NotificationGuidanceViewSpec {
+  val pageHeading = "Submit a notification"
+  val pageTitle   = "Submit a notification"
+
+  val paragraphs: Seq[String] = Seq(
+    "Tell HMRC who was responsible for your company’s tax accounting arrangement during the previous financial year.",
+    "Each notification must include:",
+    "Only one notification can be submitted per financial year. If more than one person acted as SAO, include all of them in the same notification."
+  )
+
+  val pageBullets: Seq[String] = Seq(
+    "the name and contact details of each person who acted as the Senior Accounting Officer",
+    "the accounting period they were responsible during the previous financial year",
+    "the name, Unique Taxpayer Reference (UTR) and Company Registration Number (CRN) of every company the SAO was responsible for, if your company is part of a group"
+  )
+  val pageInsetText =
+    "You can only submit the notification after the financial year has ended. The deadline is 6 months after the end of the financial year for public limited companies and 9 months after for other companies."
 }
