@@ -25,14 +25,6 @@ import views.html.NotificationUploadFormView
 
 class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadFormView] {
 
-  val upscanInitiateResponse = new UpscanInitiateResponse(
-    UpscanFileReference(""),
-    "",
-    Map(
-      "test1" -> "testValue1",
-      "test2" -> "testValue2"
-    )
-  )
   private def generateView(): Document = Jsoup.parse(SUT(upscanInitiateResponse).toString)
 
   "NotificationUploadFormView" - {
@@ -45,9 +37,6 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
-
-    //TODO Do we need this?
-    doc.createTestsWithOrWithoutError(hasError = false)
 
     "must contain hidden fields" in {
       val hiddenFields = doc.select("input[type=hidden]")
@@ -63,4 +52,12 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
 object NotificationUploadFormViewSpec {
   val pageHeading = "notificationUploadForm"
   val pageTitle   = "notificationUploadForm"
+  val upscanInitiateResponse = UpscanInitiateResponse(
+    fileReference = UpscanFileReference("testReference"),
+    postTarget = "formPostTarget",
+    formFields = Map(
+      "test1" -> "testValue1",
+      "test2" -> "testValue2"
+    )
+  )
 }

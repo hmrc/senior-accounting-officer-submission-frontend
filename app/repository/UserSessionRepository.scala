@@ -82,7 +82,7 @@ class UserSessionRepository @Inject() (
 )(using
     ExecutionContext
 ) extends PlayMongoRepository[FileUploadState](
-      collectionName = "UpscanResultTrackerRepository",
+      collectionName = "upscan-result-tracker",
       mongoComponent = mongoComponent,
       domainFormat = UserSessionRepository.mongoFormat,
       indexes = Seq(
