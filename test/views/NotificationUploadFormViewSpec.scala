@@ -28,7 +28,10 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
   val upscanInitiateResponse = new UpscanInitiateResponse(
     UpscanFileReference(""),
     "",
-    Map.empty
+    Map(
+      "test1" -> "testValue1",
+      "test2" -> "testValue2"
+    )
   )
   private def generateView(): Document = Jsoup.parse(SUT(upscanInitiateResponse).toString)
 
@@ -43,7 +46,17 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       hasError = false
     )
 
+    //TODO Do we need this?
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    "must contain hidden fields" in {
+      val hiddenFields = doc.select("input[type=hidden]")
+      hiddenFields.size() mustBe 2
+      hiddenFields.get(0).attr("name") mustBe "test1"
+      hiddenFields.get(1).attr("name") mustBe "test2"
+      hiddenFields.get(0).attr("value") mustBe "testValue1"
+      hiddenFields.get(1).attr("value") mustBe "testValue2"
+    }
   }
 }
 
