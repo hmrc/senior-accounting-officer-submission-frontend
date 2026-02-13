@@ -20,7 +20,8 @@ import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.SaoEmailCommunicationChoicePage
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryListRow}
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
@@ -32,14 +33,23 @@ object SaoEmailCommunicationChoiceSummary {
       val value = if answer then "site.yes" else "site.no"
 
       SummaryListRowViewModel(
-        key = messages("saoEmailCommunicationChoice.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(messages(value).toText),
+        key = Key(
+          HtmlContent(
+            s"""<span data-test-id="email-communication-key">${messages(
+                "saoEmailCommunicationChoice.checkYourAnswersLabel"
+              )}</span>"""
+          )
+        ),
+        value = ValueViewModel(
+          HtmlContent(s"""<span data-test-id="email-communication-value">${messages(value)}</span>""")
+        ),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
             routes.SaoEmailCommunicationChoiceController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("saoEmailCommunicationChoice.change.hidden"))
+            .withAttribute("data-test-id", "email-communication-change-link")
         )
       )
     }

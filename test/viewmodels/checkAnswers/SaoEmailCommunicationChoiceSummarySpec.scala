@@ -22,7 +22,9 @@ import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.SaoEmailCommunicationChoicePage
 import play.api.i18n.{Messages, MessagesApi}
+import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
 
 class SaoEmailCommunicationChoiceSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -44,16 +46,22 @@ class SaoEmailCommunicationChoiceSummarySpec extends SpecBase with GuiceOneAppPe
       def SUT(answer: Boolean = true) = SaoEmailCommunicationChoiceSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "saoEmailCommunicationChoice".toKey
+        SUT().key mustBe Key(
+          HtmlContent("""<span data-test-id="email-communication-key">Email communications</span>""")
+        )
       }
 
       "expected value" - {
         "must show 'Yes' when user answers is true" in {
-          SUT(answer = true).value.content mustBe "Yes".toText
+          SUT(answer = true).value.content mustBe HtmlContent(
+            """<span data-test-id="email-communication-value">Yes</span>"""
+          )
         }
 
         "must show 'No' when user answers is false" in {
-          SUT(answer = false).value.content mustBe "No".toText
+          SUT(answer = false).value.content mustBe HtmlContent(
+            """<span data-test-id="email-communication-value">No</span>"""
+          )
         }
       }
 

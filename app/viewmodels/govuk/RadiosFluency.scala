@@ -19,6 +19,7 @@ package viewmodels.govuk
 import play.api.data.Field
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.FormGroup
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.fieldset.{Fieldset, Legend}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.hint.Hint
@@ -108,5 +109,10 @@ trait RadiosFluency {
 
     def inline(): Radios =
       radios.withCssClass("govuk-radios--inline")
+
+    def withParagraph(text: String): Radios =
+      radios.withFormGroup(
+        radios.formGroup.copy(beforeInput = Some(HtmlContent(s"""<p class="govuk-body">$text</p>""")))
+      )
   }
 }

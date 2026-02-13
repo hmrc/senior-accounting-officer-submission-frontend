@@ -96,5 +96,6 @@ object UserAnswers {
   extension (userAnswers: UserAnswers) {
     // TODO need to support i18n & Option
     def getFinancialYearEndDate: String = "'Dummy Date'"
+    def getDefaultSaoName: String       = "Jackson Brown"
   }
 }

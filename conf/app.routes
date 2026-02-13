@@ -60,8 +60,8 @@ POST        /certificate/change-sao-email-communication-choice        controller
 GET         /certificate/check-your-answers                           controllers.CertificateCheckYourAnswersController.onPageLoad()
 POST        /certificate/check-your-answers                           controllers.CertificateCheckYourAnswersController.onSubmit()
 
-GET         /certificate/submitter                                    controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/submitter                                    controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/submit-certificate-submitter                 controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/submit-certificate-submitter                 controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
 GET         /certificate/change-submitter                             controllers.WhoSubmitsCertificateController.onPageLoad(mode: Mode = CheckMode)
 POST        /certificate/change-submitter                             controllers.WhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
 

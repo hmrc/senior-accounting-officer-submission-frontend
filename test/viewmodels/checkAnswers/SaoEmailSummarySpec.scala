@@ -22,7 +22,9 @@ import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.SaoEmailPage
 import play.api.i18n.{Messages, MessagesApi}
+import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
 
 class SaoEmailSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -44,12 +46,14 @@ class SaoEmailSummarySpec extends SpecBase with GuiceOneAppPerSuite {
       def SUT(answer: String = "") = SaoEmailSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "saoEmail".toKey
+        SUT().key mustBe Key(HtmlContent("""<span data-test-id="email-address-key">Email address</span>"""))
       }
 
       "expected value" - {
         "must show 'testSaoEmail' when user answers is 'testSaoEmail'" in {
-          SUT(answer = "testSaoEmail").value.content mustBe "testSaoEmail".toText
+          SUT(answer = "testSaoEmail").value.content mustBe HtmlContent(
+            """<span data-test-id="email-address-value">testSaoEmail</span>"""
+          )
         }
       }
 

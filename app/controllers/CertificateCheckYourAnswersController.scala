@@ -22,8 +22,11 @@ import navigation.Navigator
 import pages.CertificateCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.CertificateCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateCheckYourAnswersView
+
+import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
@@ -34,12 +37,17 @@ class CertificateCheckYourAnswersController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateCheckYourAnswersView,
-    navigator: Navigator
-) extends FrontendBaseController
+    navigator: Navigator,
+    certificateCheckYourAnswersService: CertificateCheckYourAnswersService
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
+    val userAnswers = request.userAnswers
+    val summaryList = certificateCheckYourAnswersService.getSummaryList(userAnswers)
+
+    Ok(view(summaryList))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>

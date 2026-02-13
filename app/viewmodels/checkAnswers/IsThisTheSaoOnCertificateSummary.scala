@@ -20,7 +20,8 @@ import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.IsThisTheSaoOnCertificatePage
 import play.api.i18n.Messages
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryListRow}
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
@@ -32,14 +33,22 @@ object IsThisTheSaoOnCertificateSummary {
       val value = if answer then "site.yes" else "site.no"
 
       SummaryListRowViewModel(
-        key = messages("isThisTheSaoOnCertificate.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(messages(value).toText),
+        key = Key(
+          HtmlContent(
+            s"""<span data-test-id="is-this-the-sao-key">${messages(
+                "isThisTheSaoOnCertificate.checkYourAnswersLabel"
+              )}</span>"""
+          )
+        ),
+        value =
+          ValueViewModel(HtmlContent(s"""<span data-test-id="is-this-the-sao-value">${messages(value)}</span>""")),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
             routes.IsThisTheSaoOnCertificateController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("isThisTheSaoOnCertificate.change.hidden"))
+            .withAttribute("data-test-id", "is-this-the-sao-change-link")
         )
       )
     }

@@ -21,7 +21,8 @@ import models.{CheckMode, UserAnswers}
 import pages.SaoEmailPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, SummaryListRow}
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
@@ -30,11 +31,20 @@ object SaoEmailSummary {
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(SaoEmailPage).map { answer =>
       SummaryListRowViewModel(
-        key = messages("saoEmail.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(HtmlFormat.escape(answer).toText),
+        key = Key(
+          HtmlContent(
+            s"""<span data-test-id="email-address-key">${messages(
+                "saoEmail.checkYourAnswersLabel"
+              )}</span>"""
+          )
+        ),
+        value = ValueViewModel(
+          HtmlContent(s"""<span data-test-id="email-address-value">${HtmlFormat.escape(answer)}</span>""")
+        ),
         actions = Seq(
           ActionItemViewModel(messages("site.change").toText, routes.SaoEmailController.onPageLoad(CheckMode).url)
             .withVisuallyHiddenText(messages("saoEmail.change.hidden"))
+            .withAttribute("data-test-id", "email-address-change-link")
         )
       )
     }

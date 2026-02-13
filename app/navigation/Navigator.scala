@@ -69,6 +69,19 @@ class Navigator @Inject() () {
   private val checkRouteMap: Page => UserAnswers => Call = {
     case NotificationAdditionalInformationPage =>
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
+    case SaoNamePage =>
+      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+    case SaoEmailPage =>
+      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+    case SaoEmailCommunicationChoicePage =>
+      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+    case IsThisTheSaoOnCertificatePage =>
+      userAnswers =>
+        userAnswers.get(IsThisTheSaoOnCertificatePage) match {
+          case Some(true)  => routes.CertificateCheckYourAnswersController.onPageLoad()
+          case Some(false) => routes.SaoNameController.onPageLoad(CheckMode)
+          case _           => ???
+        }
     case _ => _ => ???
   }
 
