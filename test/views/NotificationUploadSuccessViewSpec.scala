@@ -19,9 +19,8 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.NotificationUploadSuccessView
 import views.NotificationUploadSuccessViewSpec.*
+import views.html.NotificationUploadSuccessView
 
 class NotificationUploadSuccessViewSpec extends ViewSpecBase[NotificationUploadSuccessView] {
 
@@ -44,5 +43,5 @@ class NotificationUploadSuccessViewSpec extends ViewSpecBase[NotificationUploadS
 
 object NotificationUploadSuccessViewSpec {
   val pageHeading = "notificationUploadSuccess"
-  val pageTitle = "notificationUploadSuccess"
+  val pageTitle   = "notificationUploadSuccess"
 }

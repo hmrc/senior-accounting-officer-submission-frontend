@@ -22,9 +22,10 @@ import java.util.UUID
 
 final case class UploadId(value: String) extends AnyVal
 
-object UploadId:
+object UploadId {
   def generate(): UploadId =
     UploadId(UUID.randomUUID().toString)
 
   implicit def queryBinder(implicit stringBinder: QueryStringBindable[String]): QueryStringBindable[UploadId] =
     stringBinder.transform(UploadId(_), _.value)
+}

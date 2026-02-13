@@ -17,10 +17,10 @@
 package connectors
 
 import config.AppConfig
+import controllers.routes
 import models.{UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue
-import play.mvc.Http.HeaderNames
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
@@ -32,27 +32,21 @@ import javax.inject.Inject
 class UpscanInitiateConnector @Inject() (
     httpClient: HttpClientV2,
     appConfig: AppConfig
-)(using ExecutionContext):
+)(using ExecutionContext) {
 
-  private val headers = Map(
-    HeaderNames.CONTENT_TYPE -> "application/json"
-  )
-
-  //TODO - investigate if we need the uploadId in the successRedirect
-  def initiateV2(uploadId: String)(using HeaderCarrier): Future[UpscanInitiateResponse] =
+  // TODO - investigate if we need the uploadId in the successRedirect
+  def initiateV2(uploadId: String)(using HeaderCarrier): Future[UpscanInitiateResponse] = {
     val request = UpscanInitiateRequestV2(
       callbackUrl = appConfig.callbackEndpointTarget,
-      successRedirect = Some(appConfig.host + "/senior-accounting-officer/submission/notification/upload/success" + s"?uploadId=$uploadId"),
-      errorRedirect = Some(appConfig.host + "/senior-accounting-officer/submission/notification/upload/error")
+      successRedirect =
+        Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad() + s"?uploadId=$uploadId"),
+      errorRedirect = Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad())
     )
-    initiate(appConfig.initiateV2Url, request)
 
-  private def initiate[T](
-      url: String,
-      request: T
-  )(using HeaderCarrier, Writes[T]): Future[UpscanInitiateResponse] =
     httpClient
-      .post(url"$url")
+      .post(url"${appConfig.initiateV2Url}")
       .withBody(Json.toJson(request))
-      .setHeader(headers.toSeq*)
       .execute[UpscanInitiateResponse]
+  }
+
+}

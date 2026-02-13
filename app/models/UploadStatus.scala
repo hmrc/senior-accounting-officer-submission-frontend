@@ -16,7 +16,7 @@
 
 package models
 
-sealed trait UploadStatus:
+sealed trait UploadStatus {
   def fold[T](
       ifInProgress: => T,
       ifFailed: => T,
@@ -26,8 +26,9 @@ sealed trait UploadStatus:
     case UploadStatus.Failed                  => ifFailed
     case s: UploadStatus.UploadedSuccessfully => ifSuccess(s)
   }
+}
+object UploadStatus {
 
-object UploadStatus:
   /** The file upload is currently in progress
     */
   case object InProgress extends UploadStatus
@@ -44,3 +45,4 @@ object UploadStatus:
       downloadUrl: String,
       size: Option[Long]
   ) extends UploadStatus
+}

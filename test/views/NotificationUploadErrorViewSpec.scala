@@ -19,9 +19,8 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.NotificationUploadErrorView
 import views.NotificationUploadErrorViewSpec.*
+import views.html.NotificationUploadErrorView
 
 class NotificationUploadErrorViewSpec extends ViewSpecBase[NotificationUploadErrorView] {
 
@@ -44,5 +43,5 @@ class NotificationUploadErrorViewSpec extends ViewSpecBase[NotificationUploadErr
 
 object NotificationUploadErrorViewSpec {
   val pageHeading = "notificationUploadError"
-  val pageTitle = "notificationUploadError"
+  val pageTitle   = "notificationUploadError"
 }

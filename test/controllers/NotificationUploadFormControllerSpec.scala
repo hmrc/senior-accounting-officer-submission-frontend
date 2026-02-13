@@ -32,7 +32,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import views.html.NotificationUploadFormView
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.concurrent.ExecutionContext.Implicits.global
 
 class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 

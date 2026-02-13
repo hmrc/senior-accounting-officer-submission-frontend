@@ -28,7 +28,7 @@ class UpscanMongoBackedUploadProgressTracker @Inject() (
     repository: UserSessionRepository
 )(using
     ExecutionContext
-) extends UpscanUploadProgressTracker:
+) extends UpscanUploadProgressTracker {
 
   override def initialiseUpload(uploadId: UploadId, fileReference: UpscanFileReference): Future[Unit] =
     repository.insert(FileUploadState(ObjectId.get(), uploadId, fileReference, UploadStatus.InProgress))
@@ -40,3 +40,4 @@ class UpscanMongoBackedUploadProgressTracker @Inject() (
     repository
       .findByUploadId(id)
       .map(_.map(_.status))
+}

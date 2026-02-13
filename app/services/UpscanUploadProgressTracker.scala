@@ -22,10 +22,11 @@ import models.*
 import scala.concurrent.Future
 
 @ImplementedBy(classOf[UpscanMongoBackedUploadProgressTracker])
-trait UpscanUploadProgressTracker:
+trait UpscanUploadProgressTracker {
 
   def initialiseUpload(uploadId: UploadId, fileReference: UpscanFileReference): Future[Unit]
 
   def updateUploadStatus(reference: UpscanFileReference, uploadStatus: UploadStatus): Future[Unit]
 
   def getUploadStatus(id: UploadId): Future[Option[UploadStatus]]
+}

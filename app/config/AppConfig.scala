@@ -16,6 +16,7 @@
 
 package config
 
+import controllers.internal.routes
 import play.api.Configuration
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
@@ -45,7 +46,8 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   val loginContinueUrl: String = hubBaseUrl
 
   lazy val initiateV2Url: String          = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
-  lazy val callbackEndpointTarget: String = config.get[String]("upscan.callback-endpoint")
+  lazy val callbackEndpointTarget: String =
+    s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback()}"
 
   private def getValue(key: String): String =
     sys.props.getOrElse(key, config.get[String](key))

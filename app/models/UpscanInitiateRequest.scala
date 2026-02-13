@@ -18,15 +18,14 @@ package models
 
 import play.api.libs.json.{Format, Json}
 
-sealed trait UpscanInitiateRequest
-
 final case class UpscanInitiateRequestV2(
     callbackUrl: String,
     successRedirect: Option[String] = None,
     errorRedirect: Option[String] = None,
     minimumFileSize: Option[Int] = None,
     maximumFileSize: Option[Int] = Some(4096)
-) extends UpscanInitiateRequest
+)
 
-object UpscanInitiateRequestV2:
+object UpscanInitiateRequestV2 {
   given Format[UpscanInitiateRequestV2] = Json.format[UpscanInitiateRequestV2]
+}

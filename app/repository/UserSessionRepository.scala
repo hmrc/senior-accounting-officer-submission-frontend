@@ -32,15 +32,14 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.{Inject, Singleton}
 
-object UserSessionRepository:
+object UserSessionRepository {
 
   private val statusType           = "statusType"
   private val InProgress           = "InProgress"
   private val Failed               = "Failed"
   private val UploadedSuccessfully = "UploadedSuccessfully"
 
-  given Format[UploadStatus] =
-
+  given Format[UploadStatus] = {
     given Format[UploadStatus.UploadedSuccessfully] = Json.format[UploadStatus.UploadedSuccessfully]
 
     val read: Reads[UploadStatus] = (json: JsValue) =>
@@ -66,15 +65,19 @@ object UserSessionRepository:
         )
 
     Format(read, write)
+  }
 
   private given Format[UploadId] = Json.valueFormat[UploadId]
 
-  private[repository] val mongoFormat: Format[FileUploadState] =
+  private[repository] val mongoFormat: Format[FileUploadState] = {
     given Format[ObjectId] = MongoFormats.objectIdFormat
+
     ((__ \ "_id").format[ObjectId]
       ~ (__ \ "uploadId").format[UploadId]
       ~ (__ \ "reference").format[UpscanFileReference]
       ~ (__ \ "status").format[UploadStatus])(FileUploadState.apply, Tuple.fromProductTyped _)
+  }
+}
 
 @Singleton
 class UserSessionRepository @Inject() (
@@ -90,7 +93,8 @@ class UserSessionRepository @Inject() (
         IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true))
       ),
       replaceIndexes = true
-    ):
+    ) {
+
   import UserSessionRepository.given
 
   override lazy val requiresTtlIndex: Boolean = false
@@ -117,3 +121,4 @@ class UserSessionRepository @Inject() (
       )
       .toFuture()
       .map(_.status)
+}

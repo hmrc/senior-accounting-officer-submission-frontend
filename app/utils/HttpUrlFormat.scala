@@ -22,11 +22,10 @@ import scala.util.Try
 
 import java.net.URL
 
-object HttpUrlFormat:
+object HttpUrlFormat {
 
   given format: Format[URL] =
-    new Format[URL]:
-
+    new Format[URL] {
       override def reads(json: JsValue): JsResult[URL] =
         json
           .validate[String]
@@ -40,3 +39,5 @@ object HttpUrlFormat:
 
       override def writes(o: URL): JsValue =
         JsString(o.toString)
+    }
+}

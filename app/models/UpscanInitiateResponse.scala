@@ -27,9 +27,10 @@ final case class UpscanInitiateResponse(
     formFields: Map[String, String]
 )
 
-object UpscanInitiateResponse:
+object UpscanInitiateResponse {
   given Reads[UpscanInitiateResponse] = (
     (JsPath \ "reference").read[UpscanFileReference] and
       (JsPath \ "uploadRequest" \ "href").read[String] and
       (JsPath \ "uploadRequest" \ "fields").read[Map[String, String]]
   )(UpscanInitiateResponse.apply _)
+}

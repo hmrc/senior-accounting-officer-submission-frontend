@@ -50,9 +50,9 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
 }
 
 object NotificationUploadFormViewSpec {
-  val pageHeading = "notificationUploadForm"
-  val pageTitle   = "notificationUploadForm"
-  val upscanInitiateResponse = UpscanInitiateResponse(
+  val pageHeading                                    = "notificationUploadForm"
+  val pageTitle                                      = "notificationUploadForm"
+  val upscanInitiateResponse: UpscanInitiateResponse = UpscanInitiateResponse(
     fileReference = UpscanFileReference("testReference"),
     postTarget = "formPostTarget",
     formFields = Map(

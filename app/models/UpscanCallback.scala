@@ -22,8 +22,9 @@ import utils.HttpUrlFormat
 import java.net.URL
 import java.time.Instant
 
-sealed trait UpscanCallback:
+sealed trait UpscanCallback {
   def reference: UpscanFileReference
+}
 
 final case class UpscanSuccessCallback(
     reference: UpscanFileReference,
@@ -36,14 +37,16 @@ final case class UpscanFailureCallback(
     failureDetails: UpscanFailureDetails
 ) extends UpscanCallback
 
-object UpscanCallback:
+object UpscanCallback {
 
-  given Reads[UpscanFileMetadata]   = Json.reads[UpscanFileMetadata]
+  given Reads[UpscanFileMetadata] = Json.reads[UpscanFileMetadata]
+
   given Reads[UpscanFailureDetails] = Json.reads[UpscanFailureDetails]
 
-  given Reads[UpscanSuccessCallback] =
+  given Reads[UpscanSuccessCallback] = {
     given Format[URL] = HttpUrlFormat.format
     Json.reads[UpscanSuccessCallback]
+  }
 
   given Reads[UpscanFailureCallback] = Json.reads[UpscanFailureCallback]
 
@@ -54,6 +57,7 @@ object UpscanCallback:
         case JsDefined(JsString("FAILED")) => json.validate[UpscanFailureCallback]
         case JsDefined(value)              => JsError(s"Invalid type discriminator: $value")
         case _                             => JsError(s"Missing type discriminator")
+}
 
 final case class UpscanFileMetadata(
     uploadTimestamp: Instant,

@@ -17,11 +17,11 @@
 package config
 
 import base.SpecBase
-import org.scalatest.wordspec.AnyWordSpec
+import play.api.Application
 
 class AppConfigSpec extends SpecBase {
 
-  val application = applicationBuilder().build()
+  val application: Application = applicationBuilder().build()
 
   lazy val config: AppConfig = application.injector.instanceOf[AppConfig]
   "initiateV2Url must" - {

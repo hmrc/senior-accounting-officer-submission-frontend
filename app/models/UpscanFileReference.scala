@@ -24,9 +24,10 @@ final case class UpscanFileReference(
     reference: String
 ) extends AnyVal
 
-object UpscanFileReference:
+object UpscanFileReference {
   given Format[UpscanFileReference] =
     Format(
       Reads.StringReads.map(UpscanFileReference(_)),
       Writes(ref => JsString(ref.reference))
     )
+}
