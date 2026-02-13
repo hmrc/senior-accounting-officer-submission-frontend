@@ -14,6 +14,8 @@ GET         /template-guidance                                        controller
 GET         /notification/template/download                           controllers.DownloadNotificationTemplateController.downloadFile()
 
 GET         /notification/upload                                      controllers.NotificationUploadFormController.onPageLoad()
+GET         /notification/upload/error                                controllers.NotificationUploadErrorController.onPageLoad()
+GET         /notification/upload/success                              controllers.NotificationUploadSuccessController.onPageLoad()
 
 GET         /notification/guidance                                    controllers.NotificationGuidanceController.onPageLoad()
 POST        /notification/guidance                                    controllers.NotificationGuidanceController.onSubmit()
@@ -75,3 +77,4 @@ GET         /certificate/change-declaration                           controller
 POST        /certificate/change-declaration                           controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/confirmation                                 controllers.CertificateConfirmationController.onPageLoad()
+
