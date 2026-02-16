@@ -45,8 +45,9 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
 
   val loginContinueUrl: String = hubBaseUrl
 
-  lazy val initiateV2Url: String          = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
-  lazy val callbackEndpointTarget: String =
+  lazy val upscanInitiateV2Url: String  = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
+  lazy val upscanDownloadHost: String   = config.get[String]("upscan-download.host")
+  lazy val upscanCallbackTarget: String =
     s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback()}"
 
   private def getValue(key: String): String =

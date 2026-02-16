@@ -17,10 +17,15 @@
 package controllers
 
 import controllers.actions.*
+import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.*
+import services.UpscanService
+import services.UpscanService.State
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationUploadSuccessView
+
+import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
@@ -30,11 +35,27 @@ class NotificationUploadSuccessController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
+    upscanService: UpscanService,
     view: NotificationUploadSuccessView
-) extends FrontendBaseController
+)(using ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
+  def onPageLoad(uploadId: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      upscanService.fileUploadState(uploadId).map {
+        case State.NoUploadId =>
+          Redirect(routes.JourneyRecoveryController.onPageLoad())
+        case State.WaitingForUpscan =>
+          Ok(view())
+        case State.UploadToUpscanFailed =>
+          ???
+        case State.DownloadFromUpscanFailed(response) =>
+          ???
+        case State.Result(fileContent) =>
+          Logger(getClass).info(fileContent)
+          Redirect(routes.SubmitNotificationStartController.onPageLoad())
+      }
   }
+
 }
