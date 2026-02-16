@@ -62,7 +62,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
       )
     }
     
-    "Failed" in {
+    "fail to initiate when upscan returns an error" in {
       stubFor(
         post(urlEqualTo("/upscan/v2/initiate"))
           .willReturn(
