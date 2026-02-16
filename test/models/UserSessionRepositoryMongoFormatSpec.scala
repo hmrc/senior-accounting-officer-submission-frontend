@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package repository
+package models
 
 import base.SpecBase
 import models.UploadStatus

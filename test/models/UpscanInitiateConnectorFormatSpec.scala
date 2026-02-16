@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-package connectors
+package models
 
 import base.SpecBase
 import models.*
-import play.api.libs.json.JsValue
-import play.api.libs.json.{JsError, JsSuccess, Json}
+import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 
 class UpscanInitiateConnectorFormatSpec extends SpecBase {
 

@@ -24,13 +24,13 @@ import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Updates.{set, setOnInsert}
 import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
+import repository.UserSessionRepository
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
-import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.{Inject, Singleton}
+import scala.concurrent.{ExecutionContext, Future}
 
 object UserSessionRepository {
 
