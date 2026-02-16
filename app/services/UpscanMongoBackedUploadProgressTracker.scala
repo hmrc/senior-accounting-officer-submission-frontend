@@ -18,14 +18,13 @@ package services
 
 import models.*
 import org.bson.types.ObjectId
-import repository.UserSessionRepository
+import repositories.UpscanSessionRepository
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.Inject
 
 class UpscanMongoBackedUploadProgressTracker @Inject() (
-    repository: UserSessionRepository
+    repository: UpscanSessionRepository
 )(using
     ExecutionContext
 ) extends UpscanUploadProgressTracker {

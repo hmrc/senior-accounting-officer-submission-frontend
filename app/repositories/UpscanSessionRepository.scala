@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package repository
+package repositories                
 
 import com.mongodb.client.model
 import models.*
@@ -24,22 +24,23 @@ import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Updates.{set, setOnInsert}
 import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
-import repository.UserSessionRepository
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
-import javax.inject.{Inject, Singleton}
 import scala.concurrent.{ExecutionContext, Future}
 
-object UserSessionRepository {
+import javax.inject.{Inject, Singleton}
+
+private object UpscanSessionRepository:
 
   private val statusType           = "statusType"
   private val InProgress           = "InProgress"
   private val Failed               = "Failed"
   private val UploadedSuccessfully = "UploadedSuccessfully"
 
-  given Format[UploadStatus] = {
+  given Format[UploadStatus] =
+
     given Format[UploadStatus.UploadedSuccessfully] = Json.format[UploadStatus.UploadedSuccessfully]
 
     val read: Reads[UploadStatus] = (json: JsValue) =>
@@ -65,37 +66,32 @@ object UserSessionRepository {
         )
 
     Format(read, write)
-  }
 
   private given Format[UploadId] = Json.valueFormat[UploadId]
 
-  private[repository] val mongoFormat: Format[FileUploadState] = {
+  private[repositories] val mongoFormat: Format[FileUploadState] =    // ✅ CHANGED from "repository" to "repositories"
     given Format[ObjectId] = MongoFormats.objectIdFormat
-
     ((__ \ "_id").format[ObjectId]
       ~ (__ \ "uploadId").format[UploadId]
       ~ (__ \ "reference").format[UpscanFileReference]
       ~ (__ \ "status").format[UploadStatus])(FileUploadState.apply, Tuple.fromProductTyped _)
-  }
-}
 
 @Singleton
-class UserSessionRepository @Inject() (
-    mongoComponent: MongoComponent
-)(using
-    ExecutionContext
-) extends PlayMongoRepository[FileUploadState](
-      collectionName = "upscan-result-tracker",
-      mongoComponent = mongoComponent,
-      domainFormat = UserSessionRepository.mongoFormat,
-      indexes = Seq(
-        IndexModel(Indexes.ascending("uploadId"), IndexOptions().unique(true)),
-        IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true))
-      ),
-      replaceIndexes = true
-    ) {
-
-  import UserSessionRepository.given
+class UpscanSessionRepository @Inject() (
+                                        mongoComponent: MongoComponent
+                                      )(using
+                                        ExecutionContext
+                                      ) extends PlayMongoRepository[FileUploadState](
+  collectionName = "upscan-result-tracker",
+  mongoComponent = mongoComponent,
+  domainFormat = UpscanSessionRepository.mongoFormat,
+  indexes = Seq(
+    IndexModel(Indexes.ascending("uploadId"), IndexOptions().unique(true)),
+    IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true))
+  ),
+  replaceIndexes = true
+):
+  import UpscanSessionRepository.given
 
   override lazy val requiresTtlIndex: Boolean = false
 
@@ -121,4 +117,3 @@ class UserSessionRepository @Inject() (
       )
       .toFuture()
       .map(_.status)
-}
