@@ -43,17 +43,16 @@ private object UpscanSessionRepository:
 
     given Format[UploadStatus.UploadedSuccessfully] = Json.format[UploadStatus.UploadedSuccessfully]
 
-    val read: Reads[UploadStatus] = (json: JsValue) =>
-      json match {
-        case jsObject: JsObject =>
-          jsObject.value.get(statusType) match
-            case Some(JsString(InProgress))           => JsSuccess(UploadStatus.InProgress)
-            case Some(JsString(Failed))               => JsSuccess(UploadStatus.Failed)
-            case Some(JsString(UploadedSuccessfully)) => Json.fromJson[UploadStatus.UploadedSuccessfully](jsObject)
-            case Some(value)                          => JsError(s"Unexpected value of statusType: $value")
-            case None                                 => JsError("Missing statusType field")
-        case other => JsError(s"Expected a JsObject but got ${other.getClass.getSimpleName}")
-      }
+    val read: Reads[UploadStatus] = {
+      case jsObject: JsObject =>
+        jsObject.value.get(statusType) match
+          case Some(JsString(InProgress)) => JsSuccess(UploadStatus.InProgress)
+          case Some(JsString(Failed)) => JsSuccess(UploadStatus.Failed)
+          case Some(JsString(UploadedSuccessfully)) => Json.fromJson[UploadStatus.UploadedSuccessfully](jsObject)
+          case Some(value) => JsError(s"Unexpected value of statusType: $value")
+          case None => JsError("Missing statusType field")
+      case other => JsError(s"Expected a JsObject but got ${other.getClass.getSimpleName}")
+    }
 
     val write: Writes[UploadStatus] =
       (p: UploadStatus) =>
@@ -69,7 +68,7 @@ private object UpscanSessionRepository:
 
   private given Format[UploadId] = Json.valueFormat[UploadId]
 
-  private[repositories] val mongoFormat: Format[FileUploadState] =    // ✅ CHANGED from "repository" to "repositories"
+  private[repositories] val mongoFormat: Format[FileUploadState] =   
     given Format[ObjectId] = MongoFormats.objectIdFormat
     ((__ \ "_id").format[ObjectId]
       ~ (__ \ "uploadId").format[UploadId]
