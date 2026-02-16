@@ -40,7 +40,7 @@ class UpscanInitiateConnector @Inject() (
       callbackUrl = appConfig.callbackEndpointTarget,
       successRedirect =
         Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad() + s"?uploadId=$uploadId"),
-      errorRedirect = Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad())
+      errorRedirect = Some(appConfig.host + routes.NotificationUploadErrorController.onPageLoad())
     )
 
     httpClient

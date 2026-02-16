@@ -26,6 +26,8 @@ import play.api.test.FakeRequest
 import support.ISpecBase
 import uk.gov.hmrc.http.HeaderCarrier
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class UpscanInitiateConnectorISpec extends ISpecBase {
 
   override def additionalConfigs: Map[String, Any] = Map(
@@ -37,26 +39,21 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
 
   given Request[?] = FakeRequest()
 
-  "UpscanInitiateConnector.initiateV2 must" - {
-
-    val fakeUpscanInitiateResponse = UpscanInitiateResponse(
-      fileReference = UpscanFileReference("foo"),
-      postTarget = "bar",
-      formFields = Map("T1" -> "V1")
-    )
-    
-    "hit the correct endpoint" in {
+  "UpscanInitiateConnector.initiateV2" must {
+    "successfully initiate an upscan v2 upload" in {
       initiateStart()
-      
-      val response: UpscanInitiateResponse = SUT.initiateV2("01234dsfsdfsd")(using HeaderCarrier()).futureValue
 
-      response mustBe UpscanInitiateResponse
-      //      verify(
-      //        1,
-      //        postRequestedFor(urlEqualTo("/grs-stub/start"))
-      //          .withRequestBody(equalTo(Json.toJson(testInput).toString))
-      //      )
+      val uploadId = "12345678"
+      val response: UpscanInitiateResponse = SUT.initiateV2(uploadId)(using HeaderCarrier()).futureValue
 
+      Json.toJson(response) mustBe Json.toJson(fakeUpscanInitiateResponse)
+      verify(
+        1,
+        postRequestedFor(urlEqualTo("/upscan/v2/initiate"))
+          .withRequestBody(matchingJsonPath("$.callbackUrl", containing("/upscan-callback")))
+          .withRequestBody(matchingJsonPath("$.successRedirect", containing(s"/upload/success?uploadId=$uploadId")))
+          .withRequestBody(matchingJsonPath("$.errorRedirect", containing(s"/upload/error")))
+      )
     }
   }
 
@@ -64,13 +61,13 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
 
 object UpscanInitiateConnectorISpec {
 
-//  def fR= UpscanInitiateResponse(
-//    fileReference = UpscanFileReference("foo"),
-//    postTarget = "bar",
-//    formFields = Map("T1" -> "V1")
-//  )
-  
-  def initiateStart(): StubMapping = 
+  def fakeUpscanInitiateResponse= UpscanInitiateResponse(
+    fileReference = UpscanFileReference("foo"),
+    postTarget = "bar",
+    formFields = Map("T1" -> "V1")
+  )
+
+  def initiateStart(): StubMapping =
     stubFor(
       post(urlEqualTo("/upscan/v2/initiate"))
         .willReturn(
