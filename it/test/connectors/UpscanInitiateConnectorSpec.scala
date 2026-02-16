@@ -16,43 +16,74 @@
 
 package connectors
 
-import base.SpecBase
-import config.AppConfig
+import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import models.{UpscanFileReference, UpscanInitiateResponse}
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import play.api.mvc.Request
+import play.api.test.FakeRequest
+import support.ISpecBase
 import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+class UpscanInitiateConnectorSpec extends ISpecBase {
 
-class UpscanInitiateConnectorSpec extends SpecBase with MockitoSugar {
-  "UpscanInitiateConnector must" - {
-    "initiateV2" in {
-      val mockHttpClient     = mock[HttpClientV2]
-      val mockAppConfig      = mock[AppConfig]
-      val mockRequestBuilder = mock[RequestBuilder]
-      val connector          = new UpscanInitiateConnector(mockHttpClient, mockAppConfig)
+  override def additionalConfigs: Map[String, Any] = Map(
+    "microservice.services.upscan-initiate.port" -> wireMockPort
+  )
 
-      val upscanInitiateResponse = UpscanInitiateResponse(
-        fileReference = UpscanFileReference("foo"),
-        postTarget = "bar",
-        formFields = Map("baz1" -> "baz2")
+  val SUT = app.injector.instanceOf[UpscanInitiateConnector]
+
+  given Request[?] = FakeRequest()
+
+  val upscanInitiateResponse = UpscanInitiateResponse(
+    fileReference = UpscanFileReference("foo"),
+    postTarget = "bar",
+    formFields = Map("T1" -> "V1")
+  )
+  
+  "UpscanInitiateConnector.initiateV2 must hit the correct endpoint" in {
+    
+    stubFor(
+      WireMock.post(urlEqualTo("/upscan/v2/initiate"))
+        .willReturn(
+        aResponse()
+          .withStatus(200)
       )
+    )
+      val response = SUT.initiateV2("1234")(using HeaderCarrier()).futureValue
 
-      when(mockAppConfig.initiateV2Url).thenReturn("http://localhost:8080/initiate")
-      when(mockAppConfig.callbackEndpointTarget).thenReturn("http://localhost:8080/callback")
-      when(mockHttpClient.post(any[java.net.URL])(any[HeaderCarrier])).thenReturn(mockRequestBuilder)
-      when(mockRequestBuilder.withBody(any())(any(), any(), any())).thenReturn(mockRequestBuilder)
-      when(mockRequestBuilder.setHeader(any())).thenReturn(mockRequestBuilder)
-      when(mockRequestBuilder.execute[UpscanInitiateResponse](any(), any()))
-        .thenReturn(Future.successful(upscanInitiateResponse))
-
-      val result = connector.initiateV2("fakeUploadId")(using HeaderCarrier()).futureValue
-
-      result mustBe an[UpscanInitiateResponse]
-    }
+      response mustBe UpscanInitiateResponse
+//      verify(
+//        1,
+//        postRequestedFor(urlEqualTo("/grs-stub/start"))
+//          .withRequestBody(equalTo(Json.toJson(testInput).toString))
+//      )
+    
   }
+//  
+//  "UpscanInitiateConnector must" - {
+//    "initiateV2" in {
+//      val mockHttpClient     = mock[HttpClientV2]
+//      val mockAppConfig      = mock[AppConfig]
+//      val mockRequestBuilder = mock[RequestBuilder]
+//      val connector          = new UpscanInitiateConnector(mockHttpClient, mockAppConfig)
+//
+//      val upscanInitiateResponse = UpscanInitiateResponse(
+//        fileReference = UpscanFileReference("foo"),
+//        postTarget = "bar",
+//        formFields = Map("baz1" -> "baz2")
+//      )
+//
+//      when(mockAppConfig.initiateV2Url).thenReturn("http://localhost:8080/initiate")
+//      when(mockAppConfig.callbackEndpointTarget).thenReturn("http://localhost:8080/callback")
+//      when(mockHttpClient.post(any[java.net.URL])(any[HeaderCarrier])).thenReturn(mockRequestBuilder)
+//      when(mockRequestBuilder.withBody(any())(any(), any(), any())).thenReturn(mockRequestBuilder)
+//      when(mockRequestBuilder.setHeader(any())).thenReturn(mockRequestBuilder)
+//      when(mockRequestBuilder.execute[UpscanInitiateResponse](any(), any()))
+//        .thenReturn(Future.successful(upscanInitiateResponse))
+//
+//      val result = connector.initiateV2("fakeUploadId")(using HeaderCarrier()).futureValue
+//
+//      result mustBe an[UpscanInitiateResponse]
+//    }
+//  }
 }
