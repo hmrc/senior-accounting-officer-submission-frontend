@@ -34,21 +34,18 @@ class UpscanService @Inject() (
 )(using ExecutionContext) {
 
   def fileUploadState(uploadId: String)(using hc: HeaderCarrier): Future[State] =
-    for {
-      stateOrDownloadUrl                                   <- checkMongo(uploadId)
-      stateOrDownloadResponse: Either[State, HttpResponse] <-
-        stateOrDownloadUrl match {
-          case l @ Left(_) =>
-            Future.successful(l.asInstanceOf[Left[State, HttpResponse]])
-          case Right(url) =>
-            downloadConnector.download(url).map(Right.apply)
-        }
-    } yield stateOrDownloadResponse.map {
-      case HttpResponse(OK, body, _) =>
-        State.Result(body)
-      case httpResponse =>
-        State.DownloadFromUpscanFailed(httpResponse)
-    }.merge
+    checkMongo(uploadId).flatMap {
+      _.fold(
+        state => Future.successful(state),
+        url =>
+          downloadConnector.download(url).map {
+            case HttpResponse(OK, body, _) =>
+              State.Result(body)
+            case httpResponse =>
+              State.DownloadFromUpscanFailed(httpResponse)
+          }
+      )
+    }
 
   private def checkMongo(uploadId: String): Future[Either[State, String]] =
     repository.findByUploadId(UploadId(uploadId)).map {

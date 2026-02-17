@@ -30,8 +30,8 @@ class UpscanDownloadConnectorISpec extends ISpecBase {
     "upscan-download.host" -> wireMockBaseUrlAsString
   )
 
-  "UpscanDownloadConnector.download make a GET call to the target URL and must return a HttpResponse" when {
-    "the response status is 200" in {
+  "A GET call from UpscanDownloadConnector.download to the target URL" must {
+    "return a HttpResponse when the response status is 200" in {
       mockUpscanDownload(targetUrl = testUrl, status = OK, body = testBody)
 
       val result: HttpResponse = SUT.download(testUrl).futureValue
@@ -40,7 +40,7 @@ class UpscanDownloadConnectorISpec extends ISpecBase {
       result.body mustBe testBody
     }
 
-    "the response status is 4xx" in {
+    "return a HttpResponse when the response status is 4xx" in {
       mockUpscanDownload(targetUrl = testUrl, status = BAD_REQUEST, body = testBody)
 
       val result: HttpResponse = SUT.download(testUrl).futureValue
@@ -49,7 +49,7 @@ class UpscanDownloadConnectorISpec extends ISpecBase {
       result.body mustBe testBody
     }
 
-    "the response status is 5xx" in {
+    "return a HttpResponse when the response status is 5xx" in {
       mockUpscanDownload(targetUrl = testUrl, status = INTERNAL_SERVER_ERROR, body = testBody)
 
       val result: HttpResponse = SUT.download(testUrl).futureValue

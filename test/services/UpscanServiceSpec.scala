@@ -61,140 +61,131 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     .build()
 
   "UpscanService.fileUploadState" - {
-    "when there are no file upload" - {
-      "must return State.NoUploadId" in {
-        when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
-          Future.successful(None)
-        )
+    "must return State.NoUploadId when the uploadId does not exist in Mongo" in {
+      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+        Future.successful(None)
+      )
 
-        val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(testUploadId).futureValue
 
-        result mustBe State.NoUploadId
+      result mustBe State.NoUploadId
 
-        verifyFindByUploadId(times(1))
-        verify(mockUpscanDownloadConnector, times(0)).download(meq(testUploadId))(using any())
-      }
-
+      verifyFindByUploadId(times(1))
+      verify(mockUpscanDownloadConnector, times(0)).download(meq(testUploadId))(using any())
     }
 
-    "when file upload is in progress" - {
-      "must return State.NoUploadId" in {
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    "must return State.NoUploadId when the file upload is in progress" in {
+      applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
-          Future.successful(
-            Some(
-              FileUploadState(
-                new ObjectId(),
-                UploadId(testUploadId),
-                UpscanFileReference(""),
-                UploadStatus.InProgress
-              )
+      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+        Future.successful(
+          Some(
+            FileUploadState(
+              new ObjectId(),
+              UploadId(testUploadId),
+              UpscanFileReference(""),
+              UploadStatus.InProgress
             )
           )
         )
+      )
 
-        val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(testUploadId).futureValue
 
-        result mustBe State.WaitingForUpscan
+      result mustBe State.WaitingForUpscan
 
-        verifyFindByUploadId(times(1))
-        verify(mockUpscanDownloadConnector, times(0)).download(meq(testUploadId))(using any())
-      }
+      verifyFindByUploadId(times(1))
+      verify(mockUpscanDownloadConnector, times(0)).download(meq(testUploadId))(using any())
     }
 
-    "when file upload has failed" - {
-      "must return State.UploadToUpscanFailed" in {
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    "must return State.UploadToUpscanFailed when the file upload has failed" in {
+      applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
-          Future.successful(
-            Some(
-              FileUploadState(
-                new ObjectId(),
-                UploadId(testUploadId),
-                UpscanFileReference(""),
-                UploadStatus.Failed
-              )
+      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+        Future.successful(
+          Some(
+            FileUploadState(
+              new ObjectId(),
+              UploadId(testUploadId),
+              UpscanFileReference(""),
+              UploadStatus.Failed
             )
           )
         )
+      )
 
-        val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(testUploadId).futureValue
 
-        result mustBe State.UploadToUpscanFailed
+      result mustBe State.UploadToUpscanFailed
 
-        verifyFindByUploadId(times(1))
-        verify(mockUpscanDownloadConnector, times(0)).download(meq(testUploadId))(using any())
-      }
+      verifyFindByUploadId(times(1))
+      verify(mockUpscanDownloadConnector, times(0)).download(meq(testUploadId))(using any())
     }
 
-    "when file upload is completed must get the file from upscan" - {
-      "when the download is successful must return State.Result" in {
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    "must return State.Result when the file upload is completed and the file is downloaded from upscan successfully" in {
+      applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
-          Future.successful(
-            Some(
-              FileUploadState(
-                new ObjectId(),
-                UploadId(testUploadId),
-                UpscanFileReference(""),
-                UploadStatus.UploadedSuccessfully(
-                  name = "",
-                  mimeType = "",
-                  downloadUrl = testDownloadUrl,
-                  size = None
-                )
+      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+        Future.successful(
+          Some(
+            FileUploadState(
+              new ObjectId(),
+              UploadId(testUploadId),
+              UpscanFileReference(""),
+              UploadStatus.UploadedSuccessfully(
+                name = "",
+                mimeType = "",
+                downloadUrl = testDownloadUrl,
+                size = None
               )
             )
           )
         )
-        val testResponse = HttpResponse(status = OK, body = testFileContent)
-        when(mockUpscanDownloadConnector.download(any())(using any())).thenReturn(
-          Future.successful(testResponse)
-        )
+      )
+      val testResponse = HttpResponse(status = OK, body = testFileContent)
+      when(mockUpscanDownloadConnector.download(any())(using any())).thenReturn(
+        Future.successful(testResponse)
+      )
 
-        val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(testUploadId).futureValue
 
-        result mustBe State.Result(testFileContent)
+      result mustBe State.Result(testFileContent)
 
-        verifyFindByUploadId(times(1))
-        verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
-      }
+      verifyFindByUploadId(times(1))
+      verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
+    }
 
-      "when the download fails must return State.DownloadFromUpscanFailed" in {
-        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    "must return State.DownloadFromUpscanFailed when the file upload is completed but the file download from upscan fails" in {
+      applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
-          Future.successful(
-            Some(
-              FileUploadState(
-                new ObjectId(),
-                UploadId(testUploadId),
-                UpscanFileReference(""),
-                UploadStatus.UploadedSuccessfully(
-                  name = "",
-                  mimeType = "",
-                  downloadUrl = testDownloadUrl,
-                  size = None
-                )
+      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+        Future.successful(
+          Some(
+            FileUploadState(
+              new ObjectId(),
+              UploadId(testUploadId),
+              UpscanFileReference(""),
+              UploadStatus.UploadedSuccessfully(
+                name = "",
+                mimeType = "",
+                downloadUrl = testDownloadUrl,
+                size = None
               )
             )
           )
         )
-        val testResponse = HttpResponse(status = BAD_REQUEST, body = testFileContent)
-        when(mockUpscanDownloadConnector.download(any())(using any())).thenReturn(
-          Future.successful(testResponse)
-        )
+      )
+      val testResponse = HttpResponse(status = BAD_REQUEST, body = testFileContent)
+      when(mockUpscanDownloadConnector.download(any())(using any())).thenReturn(
+        Future.successful(testResponse)
+      )
 
-        val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(testUploadId).futureValue
 
-        result mustBe State.DownloadFromUpscanFailed(testResponse)
+      result mustBe State.DownloadFromUpscanFailed(testResponse)
 
-        verifyFindByUploadId(times(1))
-        verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
-      }
+      verifyFindByUploadId(times(1))
+      verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
     }
   }
 
