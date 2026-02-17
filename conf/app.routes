@@ -15,7 +15,7 @@ GET         /notification/template/download                           controller
 
 GET         /notification/upload                                      controllers.NotificationUploadFormController.onPageLoad()
 GET         /notification/upload/error                                controllers.NotificationUploadErrorController.onPageLoad()
-GET         /notification/upload/success                              controllers.NotificationUploadSuccessController.onPageLoad()
+GET         /notification/upload/success                              controllers.NotificationUploadSuccessController.onPageLoad(uploadId: String)
 
 GET         /notification/guidance                                    controllers.NotificationGuidanceController.onPageLoad()
 POST        /notification/guidance                                    controllers.NotificationGuidanceController.onSubmit()

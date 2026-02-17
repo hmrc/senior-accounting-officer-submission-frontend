@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package config
+package connectors
 
-import base.SpecBase
-import play.api.Application
+import config.AppConfig
+import uk.gov.hmrc.http.HttpReads.Implicits.*
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
-class AppConfigSpec extends SpecBase {
+import scala.concurrent.{ExecutionContext, Future}
 
-  val application: Application = applicationBuilder().build()
+import javax.inject.Inject
 
-  lazy val config: AppConfig = application.injector.instanceOf[AppConfig]
-  "initiateV2Url must" - {
-    "return correct intitate end point" in {
-      config.upscanInitiateV2Url mustBe "http://localhost:9570/upscan/v2/initiate"
-    }
+class UpscanDownloadConnector @Inject() (
+    httpClient: HttpClientV2,
+    appConfig: AppConfig
+)(using ExecutionContext) {
 
-    "return correct callback end point" in {
-      config.upscanCallbackTarget mustBe "http://localhost:10058/internal/upscan-callback"
-    }
-  }
+  def download(url: String)(using HeaderCarrier): Future[HttpResponse] =
+    httpClient
+      .get(url"${appConfig.upscanDownloadHost + url}")
+      .execute[HttpResponse]
 
 }

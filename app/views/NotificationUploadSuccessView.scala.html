@@ -21,7 +21,12 @@
 
 @()(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("notificationUploadSuccess.title"))) {
+
+@refreshHeader = {
+   <meta http-equiv="refresh" content="1"/>
+}
+
+@layout(pageTitle = titleNoForm(messages("notificationUploadSuccess.title")), additionalHeadBlock = Some(refreshHeader)) {
 
     <h1 class="govuk-heading-xl">@messages("notificationUploadSuccess.heading")</h1>
 }

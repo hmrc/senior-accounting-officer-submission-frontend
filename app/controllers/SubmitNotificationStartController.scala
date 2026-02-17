@@ -16,15 +16,15 @@
 
 package controllers
 
-import controllers.Execution.trampoline
 import controllers.actions.*
-import models.SubmitNotificationStage
-import models.UserAnswers
+import models.{SubmitNotificationStage, UserAnswers}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmitNotificationStartView
+
+import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
@@ -35,7 +35,8 @@ class SubmitNotificationStartController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: SubmitNotificationStartView,
     sessionRepository: SessionRepository
-) extends FrontendBaseController
+)(using ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData) async { implicit request =>

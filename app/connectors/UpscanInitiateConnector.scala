@@ -37,17 +37,15 @@ class UpscanInitiateConnector @Inject() (
   // TODO - investigate if we need the uploadId in the successRedirect
   def initiateV2(uploadId: String)(using HeaderCarrier): Future[UpscanInitiateResponse] = {
     val request = UpscanInitiateRequestV2(
-      callbackUrl = appConfig.callbackEndpointTarget,
-      successRedirect =
-        Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad() + s"?uploadId=$uploadId"),
+      callbackUrl = appConfig.upscanCallbackTarget,
+      successRedirect = Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad(uploadId)),
       errorRedirect = Some(appConfig.host + routes.NotificationUploadErrorController.onPageLoad())
     )
 
     httpClient
-      .post(url"${appConfig.initiateV2Url}")
+      .post(url"${appConfig.upscanInitiateV2Url}")
       .withBody(Json.toJson(request))
       .execute[UpscanInitiateResponse]
   }
 
 }
- 

@@ -23,6 +23,7 @@ import org.mongodb.scala.model.*
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Updates.{set, setOnInsert}
 import play.api.libs.json.*
+import uk.gov.hmrc.mdc.Mdc
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
@@ -48,16 +49,18 @@ class UpscanSessionRepository @Inject() (
 
   override lazy val requiresTtlIndex: Boolean = false
 
-  def insert(details: FileUploadState): Future[Unit] =
+  def insert(details: FileUploadState): Future[Unit] = Mdc.preservingMdc {
     collection
       .insertOne(details)
       .toFuture()
       .map(_ => ())
+  }
 
-  def findByUploadId(uploadId: UploadId): Future[Option[FileUploadState]] =
+  def findByUploadId(uploadId: UploadId): Future[Option[FileUploadState]] = Mdc.preservingMdc {
     collection.find(equal("uploadId", Codecs.toBson(uploadId))).headOption()
+  }
 
-  def updateStatus(reference: UpscanFileReference, newStatus: UploadStatus): Future[UploadStatus] =
+  def updateStatus(reference: UpscanFileReference, newStatus: UploadStatus): Future[UploadStatus] = Mdc.preservingMdc {
     collection
       .findOneAndUpdate(
         filter = equal("reference", Codecs.toBson(reference)),
@@ -70,4 +73,5 @@ class UpscanSessionRepository @Inject() (
       )
       .toFuture()
       .map(_.status)
+  }
 }

@@ -33,8 +33,7 @@ object UpscanInitiateResponse {
     (JsPath \ "reference").read[UpscanFileReference] and
       (JsPath \ "uploadRequest" \ "href").read[String] and
       (JsPath \ "uploadRequest" \ "fields").read[Map[String, String]]
-    )(UpscanInitiateResponse.apply _)
-
+  )(UpscanInitiateResponse.apply _)
 
   given Format[UpscanInitiateResponse] = (
     (JsPath \ "reference").format[UpscanFileReference] and
