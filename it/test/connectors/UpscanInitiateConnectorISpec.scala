@@ -33,7 +33,9 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
     "microservice.services.senior-accounting-officer-submission-frontend.port" -> wireMockPort
   )
 
-  val SUT = app.injector.instanceOf[UpscanInitiateConnector]
+  given HeaderCarrier = HeaderCarrier()
+  
+  lazy val SUT = app.injector.instanceOf[UpscanInitiateConnector]
 
   given Request[?] = FakeRequest()
 
@@ -49,7 +51,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
           )
       )
       
-      val response: UpscanInitiateResponse = SUT.initiateV2(fakeUploadId)(using HeaderCarrier()).futureValue
+      val response: UpscanInitiateResponse = SUT.initiateV2(fakeUploadId).futureValue
 
       Json.toJson(response) mustBe Json.toJson(fakeUpscanInitiateResponse)
       
@@ -70,7 +72,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
               .withStatus(500)
           )
       )
-      val response = SUT.initiateV2(fakeUploadId)(using HeaderCarrier()).failed.futureValue
+      val response = SUT.initiateV2(fakeUploadId).failed.futureValue
       response mustBe a[uk.gov.hmrc.http.UpstreamErrorResponse]
     }
   }
