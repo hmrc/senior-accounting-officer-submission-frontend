@@ -17,9 +17,8 @@
 package models
 
 import base.SpecBase
-import models.UploadStatus
 import play.api.libs.json.{JsError, JsString, Json}
-import repository.UserSessionRepository.given
+import repositories.UpscanSessionRepository.given
 
 class UserSessionRepositoryMongoFormatSpec extends SpecBase {
 

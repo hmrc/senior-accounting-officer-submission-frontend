@@ -44,7 +44,7 @@ class SubmitNotificationStartController @Inject() (
     } yield {
       userAnswers match {
         case Some(_) => Ok(view(SubmitNotificationStage.ShowAllLinks))
-        case None =>
+        case None    =>
           sessionRepository.set(UserAnswers(request.userId))
           Ok(view(SubmitNotificationStage.ShowAllLinks))
       }

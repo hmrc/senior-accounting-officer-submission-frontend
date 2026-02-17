@@ -20,7 +20,7 @@ import models.*
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import repository.UserSessionRepository
+import repositories.UpscanSessionRepository
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -31,7 +31,7 @@ class MongoBackedUploadProgressTrackerSpec
     with DefaultPlayMongoRepositorySupport[FileUploadState]
     with IntegrationPatience {
 
-  override val repository: UserSessionRepository = UserSessionRepository(mongoComponent)
+  override val repository: UpscanSessionRepository = UpscanSessionRepository(mongoComponent)
 
   val progressTracker: UpscanMongoBackedUploadProgressTracker = UpscanMongoBackedUploadProgressTracker(repository)
 

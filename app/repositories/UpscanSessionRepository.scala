@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package repositories                
+package repositories
 
 import com.mongodb.client.model
 import models.*
@@ -32,64 +32,67 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.{Inject, Singleton}
 
-private object UpscanSessionRepository:
+object UpscanSessionRepository {
 
   private val statusType           = "statusType"
   private val InProgress           = "InProgress"
   private val Failed               = "Failed"
   private val UploadedSuccessfully = "UploadedSuccessfully"
 
-  given Format[UploadStatus] =
+  given Format[UploadStatus] = {
 
     given Format[UploadStatus.UploadedSuccessfully] = Json.format[UploadStatus.UploadedSuccessfully]
 
     val read: Reads[UploadStatus] = {
       case jsObject: JsObject =>
         jsObject.value.get(statusType) match
-          case Some(JsString(InProgress)) => JsSuccess(UploadStatus.InProgress)
-          case Some(JsString(Failed)) => JsSuccess(UploadStatus.Failed)
+          case Some(JsString(InProgress))           => JsSuccess(UploadStatus.InProgress)
+          case Some(JsString(Failed))               => JsSuccess(UploadStatus.Failed)
           case Some(JsString(UploadedSuccessfully)) => Json.fromJson[UploadStatus.UploadedSuccessfully](jsObject)
-          case Some(value) => JsError(s"Unexpected value of statusType: $value")
-          case None => JsError("Missing statusType field")
+          case Some(value)                          => JsError(s"Unexpected value of statusType: $value")
+          case None                                 => JsError("Missing statusType field")
       case other => JsError(s"Expected a JsObject but got ${other.getClass.getSimpleName}")
     }
 
-    val write: Writes[UploadStatus] =
-      (p: UploadStatus) =>
-        p fold (
-          ifInProgress = JsObject(Map(statusType -> JsString(InProgress))),
-          ifFailed = JsObject(Map(statusType -> JsString(Failed))),
-          ifSuccess = s =>
-            Json.toJson(s).as[JsObject]
-              + (statusType -> JsString(UploadedSuccessfully))
-        )
+    val write: Writes[UploadStatus] = { (p: UploadStatus) =>
+      p fold (
+        ifInProgress = JsObject(Map(statusType -> JsString(InProgress))),
+        ifFailed = JsObject(Map(statusType -> JsString(Failed))),
+        ifSuccess = s =>
+          Json.toJson(s).as[JsObject]
+            + (statusType -> JsString(UploadedSuccessfully))
+      )
+    }
 
     Format(read, write)
+  }
 
   private given Format[UploadId] = Json.valueFormat[UploadId]
 
-  private[repositories] val mongoFormat: Format[FileUploadState] =   
+  val mongoFormat: Format[FileUploadState] = {
     given Format[ObjectId] = MongoFormats.objectIdFormat
     ((__ \ "_id").format[ObjectId]
       ~ (__ \ "uploadId").format[UploadId]
       ~ (__ \ "reference").format[UpscanFileReference]
       ~ (__ \ "status").format[UploadStatus])(FileUploadState.apply, Tuple.fromProductTyped _)
+  }
+}
 
 @Singleton
 class UpscanSessionRepository @Inject() (
-                                        mongoComponent: MongoComponent
-                                      )(using
-                                        ExecutionContext
-                                      ) extends PlayMongoRepository[FileUploadState](
-  collectionName = "upscan-result-tracker",
-  mongoComponent = mongoComponent,
-  domainFormat = UpscanSessionRepository.mongoFormat,
-  indexes = Seq(
-    IndexModel(Indexes.ascending("uploadId"), IndexOptions().unique(true)),
-    IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true))
-  ),
-  replaceIndexes = true
-):
+    mongoComponent: MongoComponent
+)(using
+    ExecutionContext
+) extends PlayMongoRepository[FileUploadState](
+      collectionName = "upscan-result-tracker",
+      mongoComponent = mongoComponent,
+      domainFormat = UpscanSessionRepository.mongoFormat,
+      indexes = Seq(
+        IndexModel(Indexes.ascending("uploadId"), IndexOptions().unique(true)),
+        IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true))
+      ),
+      replaceIndexes = true
+    ):
   import UpscanSessionRepository.given
 
   override lazy val requiresTtlIndex: Boolean = false

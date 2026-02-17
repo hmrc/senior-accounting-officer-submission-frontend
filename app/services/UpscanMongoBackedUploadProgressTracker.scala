@@ -21,6 +21,7 @@ import org.bson.types.ObjectId
 import repositories.UpscanSessionRepository
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import javax.inject.Inject
 
 class UpscanMongoBackedUploadProgressTracker @Inject() (

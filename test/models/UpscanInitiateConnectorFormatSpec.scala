@@ -18,7 +18,7 @@ package models
 
 import base.SpecBase
 import models.*
-import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
+import play.api.libs.json.*
 
 class UpscanInitiateConnectorFormatSpec extends SpecBase {
 
