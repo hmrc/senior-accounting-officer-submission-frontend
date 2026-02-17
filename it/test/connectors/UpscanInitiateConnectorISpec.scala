@@ -17,9 +17,8 @@
 package connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import connectors.UpscanInitiateConnectorISpec.*
-import models.{UpscanFileReference, UpscanInitiateResponse}
+import models.{UpscanFileReference, UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.Json
 import play.api.mvc.Request
 import play.api.test.FakeRequest
@@ -29,8 +28,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 class UpscanInitiateConnectorISpec extends ISpecBase {
 
   override def additionalConfigs: Map[String, Any] = Map(
-    "microservice.services.upscan-initiate.port" -> wireMockPort,
-    "microservice.services.senior-accounting-officer-submission-frontend.port" -> wireMockPort
+    "microservice.services.upscan-initiate.port" -> wireMockPort
   )
 
   given HeaderCarrier = HeaderCarrier()
@@ -58,9 +56,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
       verify(
         1,
         postRequestedFor(urlEqualTo("/upscan/v2/initiate"))
-          .withRequestBody(matchingJsonPath("$.callbackUrl", containing("/upscan-callback")))
-          .withRequestBody(matchingJsonPath("$.successRedirect", containing(s"/upload/success?uploadId=$fakeUploadId")))
-          .withRequestBody(matchingJsonPath("$.errorRedirect", containing(s"/upload/error")))
+          .withRequestBody(equalToJson(Json.toJson(expectedRequest).toString))
       )
     }
     
@@ -85,5 +81,10 @@ object UpscanInitiateConnectorISpec {
     fileReference = UpscanFileReference("foo"),
     postTarget = "bar",
     formFields = Map("T1" -> "V1")
+  )
+  val expectedRequest = UpscanInitiateRequestV2(
+    callbackUrl = "http://localhost:10058/internal/upscan-callback",
+    successRedirect = Some(s"http://localhost:10058/senior-accounting-officer/submission/notification/upload/success?uploadId=$fakeUploadId"),
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload/error")
   )
 }
