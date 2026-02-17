@@ -44,7 +44,7 @@ class UpscanSessionRepository @Inject() (
         IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true))
       ),
       replaceIndexes = true
-    ):
+    ) {
 
   override lazy val requiresTtlIndex: Boolean = false
 
@@ -70,3 +70,4 @@ class UpscanSessionRepository @Inject() (
       )
       .toFuture()
       .map(_.status)
+}

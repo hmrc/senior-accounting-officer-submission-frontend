@@ -19,7 +19,6 @@ package models
 import org.bson.types.ObjectId
 import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
-import play.api.libs.json.Format
 import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
 
 final case class FileUploadState(
