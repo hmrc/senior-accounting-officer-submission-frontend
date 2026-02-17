@@ -17,7 +17,7 @@
 package models
 
 import play.api.libs.functional.syntax.*
-import play.api.libs.json.{JsPath, Reads}
+import play.api.libs.json.{Format, JsPath, Reads}
 
 /** The response received from upscan when the initiate api is called to initiate a file upload
   */
@@ -28,9 +28,17 @@ final case class UpscanInitiateResponse(
 )
 
 object UpscanInitiateResponse {
+
   given Reads[UpscanInitiateResponse] = (
     (JsPath \ "reference").read[UpscanFileReference] and
       (JsPath \ "uploadRequest" \ "href").read[String] and
       (JsPath \ "uploadRequest" \ "fields").read[Map[String, String]]
-  )(UpscanInitiateResponse.apply _)
+    )(UpscanInitiateResponse.apply _)
+
+
+  given Format[UpscanInitiateResponse] = (
+    (JsPath \ "reference").format[UpscanFileReference] and
+      (JsPath \ "uploadRequest" \ "href").format[String] and
+      (JsPath \ "uploadRequest" \ "fields").format[Map[String, String]]
+  )(UpscanInitiateResponse.apply _, o => Tuple.fromProductTyped(o))
 }
