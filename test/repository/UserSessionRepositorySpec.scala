@@ -18,6 +18,7 @@ package repository
 
 import base.SpecBase
 import models.*
+import models.FileUploadState.mongoFormat
 import org.bson.types.ObjectId
 import org.mongodb.scala.model.*
 import org.scalatest.concurrent.ScalaFutures
@@ -92,16 +93,16 @@ class UserSessionRepositorySpec
       val input =
         FileUploadState(ObjectId.get(), UploadId.generate(), UpscanFileReference("ABC"), UploadStatus.InProgress)
 
-      val serialized = UpscanSessionRepository.mongoFormat.writes(input)
-      val output     = UpscanSessionRepository.mongoFormat.reads(serialized)
+      val serialized = mongoFormat.writes(input)
+      val output     = mongoFormat.reads(serialized)
 
       output.get mustBe input
 
     "serialize and deserialize Failed status" in:
       val input = FileUploadState(ObjectId.get(), UploadId.generate(), UpscanFileReference("ABC"), UploadStatus.Failed)
 
-      val serialized = UpscanSessionRepository.mongoFormat.writes(input)
-      val output     = UpscanSessionRepository.mongoFormat.reads(serialized)
+      val serialized = mongoFormat.writes(input)
+      val output     = mongoFormat.reads(serialized)
 
       output.get mustBe input
 
@@ -113,8 +114,8 @@ class UserSessionRepositorySpec
         UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = None)
       )
 
-      val serialized = UpscanSessionRepository.mongoFormat.writes(input)
-      val output     = UpscanSessionRepository.mongoFormat.reads(serialized)
+      val serialized = mongoFormat.writes(input)
+      val output     = mongoFormat.reads(serialized)
 
       output.get mustBe input
 
@@ -126,8 +127,8 @@ class UserSessionRepositorySpec
         UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = Some(123456))
       )
 
-      val serialized = UpscanSessionRepository.mongoFormat.writes(input)
-      val output     = UpscanSessionRepository.mongoFormat.reads(serialized)
+      val serialized = mongoFormat.writes(input)
+      val output     = mongoFormat.reads(serialized)
 
       output.get mustBe input
   }

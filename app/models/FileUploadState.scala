@@ -17,6 +17,10 @@
 package models
 
 import org.bson.types.ObjectId
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
+import play.api.libs.json.Format
+import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
 
 final case class FileUploadState(
     id: ObjectId,
@@ -24,3 +28,13 @@ final case class FileUploadState(
     reference: UpscanFileReference,
     status: UploadStatus
 )
+
+object FileUploadState {
+  val mongoFormat: Format[FileUploadState] = {
+    given Format[ObjectId] = MongoFormats.objectIdFormat
+    ((__ \ "_id").format[ObjectId]
+      ~ (__ \ "uploadId").format[UploadId]
+      ~ (__ \ "reference").format[UpscanFileReference]
+      ~ (__ \ "status").format[UploadStatus])(FileUploadState.apply, Tuple.fromProductTyped _)
+  }
+}

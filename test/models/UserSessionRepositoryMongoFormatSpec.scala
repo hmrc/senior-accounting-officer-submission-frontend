@@ -18,7 +18,6 @@ package models
 
 import base.SpecBase
 import play.api.libs.json.{JsError, JsString, Json}
-import repositories.UpscanSessionRepository.given
 
 class UserSessionRepositoryMongoFormatSpec extends SpecBase {
 
