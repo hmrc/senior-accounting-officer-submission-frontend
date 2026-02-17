@@ -16,6 +16,7 @@
 
 package controllers
 
+import controllers.Execution.trampoline
 import controllers.actions.*
 import models.SubmitNotificationStage
 import models.UserAnswers
@@ -37,8 +38,16 @@ class SubmitNotificationStartController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData) { implicit request =>
-    sessionRepository.set(UserAnswers(request.userId))
-    Ok(view(SubmitNotificationStage.ShowAllLinks))
+  def onPageLoad: Action[AnyContent] = (identify andThen getData) async { implicit request =>
+    for {
+      userAnswers <- sessionRepository.get(request.userId)
+    } yield {
+      userAnswers match {
+        case Some(_) => Ok(view(SubmitNotificationStage.ShowAllLinks))
+        case None    =>
+          sessionRepository.set(UserAnswers(request.userId))
+          Ok(view(SubmitNotificationStage.ShowAllLinks))
+      }
+    }
   }
 }

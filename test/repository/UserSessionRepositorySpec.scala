@@ -18,10 +18,12 @@ package repository
 
 import base.SpecBase
 import models.*
+import models.FileUploadState.mongoFormat
 import org.bson.types.ObjectId
 import org.mongodb.scala.model.*
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
+import repositories.UpscanSessionRepository
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -32,7 +34,7 @@ class UserSessionRepositorySpec
     with ScalaFutures
     with MockitoSugar {
 
-  override val repository: UserSessionRepository = new UserSessionRepository((mongoComponent))
+  override val repository: UpscanSessionRepository = new UpscanSessionRepository((mongoComponent))
 
   "UserSessionRepository must" - {
     "insert, findByUploadId, and updateStatus" in {
@@ -91,16 +93,16 @@ class UserSessionRepositorySpec
       val input =
         FileUploadState(ObjectId.get(), UploadId.generate(), UpscanFileReference("ABC"), UploadStatus.InProgress)
 
-      val serialized = UserSessionRepository.mongoFormat.writes(input)
-      val output     = UserSessionRepository.mongoFormat.reads(serialized)
+      val serialized = mongoFormat.writes(input)
+      val output     = mongoFormat.reads(serialized)
 
       output.get mustBe input
 
     "serialize and deserialize Failed status" in:
       val input = FileUploadState(ObjectId.get(), UploadId.generate(), UpscanFileReference("ABC"), UploadStatus.Failed)
 
-      val serialized = UserSessionRepository.mongoFormat.writes(input)
-      val output     = UserSessionRepository.mongoFormat.reads(serialized)
+      val serialized = mongoFormat.writes(input)
+      val output     = mongoFormat.reads(serialized)
 
       output.get mustBe input
 
@@ -112,8 +114,8 @@ class UserSessionRepositorySpec
         UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = None)
       )
 
-      val serialized = UserSessionRepository.mongoFormat.writes(input)
-      val output     = UserSessionRepository.mongoFormat.reads(serialized)
+      val serialized = mongoFormat.writes(input)
+      val output     = mongoFormat.reads(serialized)
 
       output.get mustBe input
 
@@ -125,8 +127,8 @@ class UserSessionRepositorySpec
         UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = Some(123456))
       )
 
-      val serialized = UserSessionRepository.mongoFormat.writes(input)
-      val output     = UserSessionRepository.mongoFormat.reads(serialized)
+      val serialized = mongoFormat.writes(input)
+      val output     = mongoFormat.reads(serialized)
 
       output.get mustBe input
   }

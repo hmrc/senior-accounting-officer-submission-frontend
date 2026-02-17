@@ -16,6 +16,8 @@
 
 package models
 
+import play.api.libs.json.Format
+import play.api.libs.json.Json
 import play.api.mvc.QueryStringBindable
 
 import java.util.UUID
@@ -28,4 +30,6 @@ object UploadId {
 
   implicit def queryBinder(implicit stringBinder: QueryStringBindable[String]): QueryStringBindable[UploadId] =
     stringBinder.transform(UploadId(_), _.value)
+
+  given Format[UploadId] = Json.valueFormat[UploadId]
 }

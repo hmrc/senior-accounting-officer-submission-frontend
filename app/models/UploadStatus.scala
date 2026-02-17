@@ -16,6 +16,8 @@
 
 package models
 
+import play.api.libs.json.*
+
 sealed trait UploadStatus {
   def fold[T](
       ifInProgress: => T,
@@ -45,4 +47,37 @@ object UploadStatus {
       downloadUrl: String,
       size: Option[Long]
   ) extends UploadStatus
+
+  private val statusType           = "statusType"
+  private val inProgress           = "InProgress"
+  private val failed               = "Failed"
+  private val uploadedSuccessfully = "UploadedSuccessfully"
+
+  given Format[UploadStatus.UploadedSuccessfully] = Json.format[UploadStatus.UploadedSuccessfully]
+
+  given Format[UploadStatus] = {
+
+    val read: Reads[UploadStatus] = {
+      case jsObject: JsObject =>
+        jsObject.value.get(statusType) match
+          case Some(JsString(`inProgress`))           => JsSuccess(UploadStatus.InProgress)
+          case Some(JsString(`failed`))               => JsSuccess(UploadStatus.Failed)
+          case Some(JsString(`uploadedSuccessfully`)) => Json.fromJson[UploadStatus.UploadedSuccessfully](jsObject)
+          case Some(value)                            => JsError(s"Unexpected value of statusType: $value")
+          case None                                   => JsError("Missing statusType field")
+      case other => JsError(s"Expected a JsObject but got ${other.getClass.getSimpleName}")
+    }
+
+    val write: Writes[UploadStatus] = { (p: UploadStatus) =>
+      p fold (
+        ifInProgress = JsObject(Map(statusType -> JsString(`inProgress`))),
+        ifFailed = JsObject(Map(statusType -> JsString(`failed`))),
+        ifSuccess = s =>
+          Json.toJson(s).as[JsObject]
+            + (statusType -> JsString(`uploadedSuccessfully`))
+      )
+    }
+
+    Format(read, write)
+  }
 }
