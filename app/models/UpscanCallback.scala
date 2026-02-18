@@ -26,11 +26,24 @@ sealed trait UpscanCallback {
   def reference: UpscanFileReference
 }
 
+final case class UpscanFileMetadata(
+    uploadTimestamp: Instant,
+    checksum: String,
+    fileMimeType: String,
+    fileName: String,
+    size: Long
+)
+
 final case class UpscanSuccessCallback(
     reference: UpscanFileReference,
     downloadUrl: URL,
     uploadDetails: UpscanFileMetadata
 ) extends UpscanCallback
+
+final case class UpscanFailureDetails(
+    failureReason: String,
+    message: String
+)
 
 final case class UpscanFailureCallback(
     reference: UpscanFileReference,
@@ -58,16 +71,3 @@ object UpscanCallback {
         case JsDefined(value)              => JsError(s"Invalid type discriminator: $value")
         case _                             => JsError(s"Missing type discriminator")
 }
-
-final case class UpscanFileMetadata(
-    uploadTimestamp: Instant,
-    checksum: String,
-    fileMimeType: String,
-    fileName: String,
-    size: Long
-)
-
-final case class UpscanFailureDetails(
-    failureReason: String,
-    message: String
-)
