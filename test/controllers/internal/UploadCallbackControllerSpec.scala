@@ -41,7 +41,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        when(mockUpscanCallbackDispatcher.processUpscanCallback(any())).thenReturn(Future.successful(()))
+        when(mockUpscanCallbackDispatcher.processUpscanCallback(any())).thenReturn(Future.successful(true))
 
         val json = Json.parse(
           """
@@ -78,7 +78,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        when(mockUpscanCallbackDispatcher.processUpscanCallback(any())).thenReturn(Future.successful(()))
+        when(mockUpscanCallbackDispatcher.processUpscanCallback(any())).thenReturn(Future.successful(true))
 
         val json = Json.parse(
           """

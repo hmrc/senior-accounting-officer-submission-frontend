@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import config.AppConfig
 import connectors.UpscanInitiateConnector
-import models.{UploadId, UpscanFileReference, UpscanInitiateResponse}
+import models.{FileUploadState, UpscanFileReference, UpscanInitiateResponse}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
@@ -27,8 +27,8 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import play.twirl.api.Html
-import services.UpscanUploadProgressTracker
 import uk.gov.hmrc.http.HeaderCarrier
+import repositories.UpscanSessionRepository
 import views.html.NotificationUploadFormView
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -40,7 +40,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
     "return OK and the correct view for a GET" in {
       val mockAppConfig                  = mock[AppConfig]
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockUploadProgressTracker      = mock[UpscanUploadProgressTracker]
+      val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
       val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
@@ -54,8 +54,8 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         )
       ).thenReturn(Future.successful(upscanInitiateResponse))
 
-      when(mockUploadProgressTracker.initialiseUpload(any[UploadId], any[UpscanFileReference]))
-        .thenReturn(Future.successful(()))
+      when(mockUpscanSessionRepository.insert(any[FileUploadState]))
+        .thenReturn(Future.successful(true))
 
       when(mockAppConfig.hubBaseUrl).thenReturn("http://localhost:10000/senior-accounting-officer")
 
@@ -63,7 +63,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         .overrides(
           bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
-          bind[UpscanUploadProgressTracker].toInstance(mockUploadProgressTracker),
+          bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
           bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
         )
         .build()
@@ -83,7 +83,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       given ec: ExecutionContext         = scala.concurrent.ExecutionContext.Implicits.global
       val mockAppConfig                  = mock[AppConfig]
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockUploadProgressTracker      = mock[UpscanUploadProgressTracker]
+      val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
       when(mockAppConfig.cacheTtl).thenReturn(900L)
@@ -98,7 +98,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         .overrides(
           bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
-          bind[UpscanUploadProgressTracker].toInstance(mockUploadProgressTracker),
+          bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
           bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
         )
         .build()
@@ -118,7 +118,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
     "return an error when upload progress tracker fails" in {
       val mockAppConfig                  = mock[AppConfig]
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockUploadProgressTracker      = mock[UpscanUploadProgressTracker]
+      val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
       when(mockAppConfig.cacheTtl).thenReturn(900L)
@@ -132,14 +132,14 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       )
         .thenReturn(Future.successful(upscanInitiateResponse))
 
-      when(mockUploadProgressTracker.initialiseUpload(any[UploadId], any[UpscanFileReference]))
+      when(mockUpscanSessionRepository.insert(any[FileUploadState]))
         .thenReturn(Future.failed(new RuntimeException("Database connection failed")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
           bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
-          bind[UpscanUploadProgressTracker].toInstance(mockUploadProgressTracker),
+          bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
           bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
         )
         .build()
