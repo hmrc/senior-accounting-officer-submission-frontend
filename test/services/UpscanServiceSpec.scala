@@ -83,7 +83,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
             FileUploadState(
               new ObjectId(),
               UploadId(testUploadId),
-              UpscanFileReference(""),
+              UpscanFileReference(testFileReference),
               UploadStatus.InProgress
             )
           )
@@ -107,7 +107,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
             FileUploadState(
               new ObjectId(),
               UploadId(testUploadId),
-              UpscanFileReference(""),
+              UpscanFileReference(testFileReference),
               UploadStatus.Failed
             )
           )
@@ -131,7 +131,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
             FileUploadState(
               new ObjectId(),
               UploadId(testUploadId),
-              UpscanFileReference(""),
+              UpscanFileReference(testFileReference),
               UploadStatus.UploadedSuccessfully(
                 name = "",
                 mimeType = "",
@@ -149,7 +149,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
       val result = SUT.fileUploadState(testUploadId).futureValue
 
-      result mustBe State.Result(testFileContent)
+      result mustBe State.Result(UpscanFileReference(testFileReference), testFileContent)
 
       verifyFindByUploadId(times(1))
       verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
@@ -164,7 +164,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
             FileUploadState(
               new ObjectId(),
               UploadId(testUploadId),
-              UpscanFileReference(""),
+              UpscanFileReference(testFileReference),
               UploadStatus.UploadedSuccessfully(
                 name = "",
                 mimeType = "",
@@ -199,4 +199,5 @@ object UpscanServiceSpec {
   val testUploadId: String    = UUID.randomUUID().toString
   val testDownloadUrl: String = "/test/url"
   val testFileContent: String = Random.nextString(10)
+  val testFileReference: String = Random.nextString(10)
 }

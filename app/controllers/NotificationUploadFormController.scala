@@ -35,7 +35,6 @@ class NotificationUploadFormController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     mcc: MessagesControllerComponents,
-    appConfig: AppConfig,
     notificationUploadFormView: NotificationUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
     uploadProgressTracker: UpscanUploadProgressTracker

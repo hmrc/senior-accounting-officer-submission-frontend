@@ -151,7 +151,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         when(mockUpscanService.fileUploadState(any())(using any())).thenReturn(
-          Future.successful(State.Result(testFileContent))
+          Future.successful(State.Result(UpscanFileReference(testFileReference), testFileContent))
         )
 
         running(application) {
@@ -175,4 +175,5 @@ object NotificationUploadSuccessControllerSpec {
   val testUploadId: String    = UUID.randomUUID().toString
   val testDownloadUrl: String = "/test/url"
   val testFileContent: String = Random.nextString(10)
+  val testFileReference: String = Random.nextString(10)
 }

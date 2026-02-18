@@ -24,8 +24,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmitNotificationStartView
 
-import scala.concurrent.ExecutionContext
-
+import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.Inject
 
 class SubmitNotificationStartController @Inject() (
@@ -42,13 +41,10 @@ class SubmitNotificationStartController @Inject() (
   def onPageLoad: Action[AnyContent] = (identify andThen getData) async { implicit request =>
     for {
       userAnswers <- sessionRepository.get(request.userId)
-    } yield {
-      userAnswers match {
-        case Some(_) => Ok(view(SubmitNotificationStage.ShowAllLinks))
-        case None    =>
-          sessionRepository.set(UserAnswers(request.userId))
-          Ok(view(SubmitNotificationStage.ShowAllLinks))
+      result <- userAnswers match {
+        case Some(_) => Future.successful(Ok(view(SubmitNotificationStage.ShowAllLinks)))
+        case None => sessionRepository.set(UserAnswers(request.userId)).map(_ => Ok(view(SubmitNotificationStage.ShowAllLinks)))
       }
-    }
+    } yield result
   }
 }
