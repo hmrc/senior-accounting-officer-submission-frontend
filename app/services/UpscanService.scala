@@ -51,12 +51,9 @@ class UpscanService @Inject() (
     repository.findByUploadId(UploadId(uploadId)).map {
       case Some(FileUploadState(_, _, _, InProgress, _)) =>
         Left(State.WaitingForUpscan)
-      case Some(FileUploadState(_, _, _, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
-        Right(downloadUrl)
-      case Some(FileUploadState(_, _, _, Failed, _)) =>
-      case Some(FileUploadState(_, _, reference, UploadedSuccessfully(_, _, downloadUrl, _))) =>
+      case Some(FileUploadState(_, _, reference, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
         Right((reference, downloadUrl))
-      case Some(FileUploadState(_, _, _, Failed)) =>
+      case Some(FileUploadState(_, _, _, Failed, _)) =>
         Left(State.UploadToUpscanFailed)
       case _ =>
         Left(State.NoUploadId)

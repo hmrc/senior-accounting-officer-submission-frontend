@@ -16,7 +16,6 @@
 
 package controllers
 
-import config.AppConfig
 import connectors.UpscanInitiateConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.*
