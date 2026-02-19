@@ -19,6 +19,7 @@ package connectors
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import connectors.UpscanInitiateConnectorISpec.*
 import models.{UpscanFileReference, UpscanInitiateRequestV2, UpscanInitiateResponse}
+import play.api.http.HeaderNames
 import play.api.libs.json.Json
 import play.api.mvc.Request
 import play.api.test.FakeRequest
@@ -56,6 +57,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
       verify(
         1,
         postRequestedFor(urlEqualTo("/upscan/v2/initiate"))
+          .withHeader(HeaderNames.USER_AGENT, equalTo("senior-accounting-officer-submission-frontend"))
           .withRequestBody(equalToJson(Json.toJson(expectedRequest).toString))
       )
     }

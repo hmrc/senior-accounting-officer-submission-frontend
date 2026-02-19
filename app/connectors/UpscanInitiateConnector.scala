@@ -19,6 +19,7 @@ package connectors
 import config.AppConfig
 import controllers.routes
 import models.{UpscanInitiateRequestV2, UpscanInitiateResponse}
+import play.api.http.HeaderNames
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue
 import uk.gov.hmrc.http.HttpReads.Implicits.*
@@ -26,7 +27,6 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.Inject
 
 class UpscanInitiateConnector @Inject() (
@@ -45,6 +45,7 @@ class UpscanInitiateConnector @Inject() (
     httpClient
       .post(url"${appConfig.upscanInitiateV2Url}")
       .withBody(Json.toJson(request))
+      .setHeader(HeaderNames.USER_AGENT -> appConfig.upscanOurUserAgent)
       .execute[UpscanInitiateResponse]
   }
 

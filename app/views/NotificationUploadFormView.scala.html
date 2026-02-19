@@ -14,7 +14,10 @@
  * limitations under the License.
  *@
 
+@import config.AppConfig
+
 @this(
+        appConfig: AppConfig,
         layout: templates.Layout,
         govukButton: GovukButton
 )
@@ -26,6 +29,8 @@
     <h1 class="govuk-heading-xl">@messages("notificationUploadForm.heading")</h1>
     @* ---- populating the form action with the initiate response post target --- *@
     <form action="@upscanInitiateResponse.postTarget" method="post" enctype="multipart/form-data">
+
+        <input type="hidden" name="consumingService" value="@appConfig.upscanOurUserAgent"/>
 
         @* ---- populating the form with hidden fields returned with the initiate response --- *@
         @for(field <- upscanInitiateResponse.formFields) {
