@@ -19,9 +19,10 @@ package controllers
 import connectors.UpscanInitiateConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.*
+import org.bson.types.ObjectId
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.UpscanUploadProgressTracker
+import repositories.UpscanSessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NotificationUploadFormView
 
@@ -36,7 +37,7 @@ class NotificationUploadFormController @Inject() (
     mcc: MessagesControllerComponents,
     notificationUploadFormView: NotificationUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
-    uploadProgressTracker: UpscanUploadProgressTracker
+    upscanSessionRepository: UpscanSessionRepository
 )(implicit ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
@@ -45,9 +46,13 @@ class NotificationUploadFormController @Inject() (
     val uploadId = UploadId.generate()
     for
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2(uploadId.value)
-      _                      <- uploadProgressTracker.initialiseUpload(
-        uploadId,
-        UpscanFileReference(upscanInitiateResponse.fileReference.reference)
+      _                      <- upscanSessionRepository.insert(
+        FileUploadState(
+          ObjectId.get(),
+          uploadId,
+          UpscanFileReference(upscanInitiateResponse.fileReference.reference),
+          UploadStatus.InProgress
+        )
       )
     yield Ok(notificationUploadFormView(upscanInitiateResponse))
   }

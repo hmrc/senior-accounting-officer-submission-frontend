@@ -68,11 +68,11 @@ class UpscanSessionRepository @Inject() (
       .map(_ => true)
   }
 
-  def insert(details: FileUploadState): Future[Unit] = Mdc.preservingMdc {
+  def insert(details: FileUploadState): Future[Boolean] = Mdc.preservingMdc {
     collection
       .insertOne(details)
       .toFuture()
-      .map(_ => ())
+      .map(_ => true)
   }
 
   def findByUploadId(uploadId: UploadId): Future[Option[FileUploadState]] = Mdc.preservingMdc {
