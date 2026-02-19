@@ -14,18 +14,22 @@
  * limitations under the License.
  */
 
-package repository
+package repositories
 
 import base.SpecBase
+import config.AppConfig
 import models.*
 import models.FileUploadState.mongoFormat
 import org.bson.types.ObjectId
+import org.mockito.Mockito.when
 import org.mongodb.scala.model.*
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatestplus.mockito.MockitoSugar
-import repositories.UpscanSessionRepository
+import org.scalatestplus.mockito.MockitoSugar.mock
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
+import java.time.temporal.ChronoUnit
+import java.time.{Clock, Instant, ZoneId}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class UserSessionRepositorySpec
@@ -34,17 +38,23 @@ class UserSessionRepositorySpec
     with ScalaFutures
     with MockitoSugar {
 
-  override val repository: UpscanSessionRepository = new UpscanSessionRepository((mongoComponent))
+  private val mockAppConfig = mock[AppConfig]
+  when(mockAppConfig.cacheTtl) thenReturn 1L
+
+  private val instant                              = Instant.now.truncatedTo(ChronoUnit.MILLIS)
+  private val stubClock: Clock                     = Clock.fixed(instant, ZoneId.systemDefault)
+  override val repository: UpscanSessionRepository = UpscanSessionRepository(mockAppConfig, mongoComponent, stubClock)
 
   "UserSessionRepository must" - {
     "insert, findByUploadId, and updateStatus" in {
       val uploadId  = UploadId.generate()
       val reference = UpscanFileReference("foo")
       val details   = FileUploadState(
-        id = ObjectId.get(),
+        `_id` = ObjectId.get(),
         uploadId = uploadId,
         reference = reference,
-        status = UploadStatus.InProgress
+        status = UploadStatus.InProgress,
+        instant
       )
 
       // Insert and find
@@ -91,7 +101,13 @@ class UserSessionRepositorySpec
 
     "serialize and deserialize InProgress status" in:
       val input =
-        FileUploadState(ObjectId.get(), UploadId.generate(), UpscanFileReference("ABC"), UploadStatus.InProgress)
+        FileUploadState(
+          ObjectId.get(),
+          UploadId.generate(),
+          UpscanFileReference("ABC"),
+          UploadStatus.InProgress,
+          instant
+        )
 
       val serialized = mongoFormat.writes(input)
       val output     = mongoFormat.reads(serialized)
@@ -99,7 +115,8 @@ class UserSessionRepositorySpec
       output.get mustBe input
 
     "serialize and deserialize Failed status" in:
-      val input = FileUploadState(ObjectId.get(), UploadId.generate(), UpscanFileReference("ABC"), UploadStatus.Failed)
+      val input =
+        FileUploadState(ObjectId.get(), UploadId.generate(), UpscanFileReference("ABC"), UploadStatus.Failed, instant)
 
       val serialized = mongoFormat.writes(input)
       val output     = mongoFormat.reads(serialized)
@@ -111,7 +128,8 @@ class UserSessionRepositorySpec
         ObjectId.get(),
         UploadId.generate(),
         UpscanFileReference("ABC"),
-        UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = None)
+        UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = None),
+        instant
       )
 
       val serialized = mongoFormat.writes(input)
@@ -124,7 +142,8 @@ class UserSessionRepositorySpec
         ObjectId.get(),
         UploadId.generate(),
         UpscanFileReference("ABC"),
-        UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = Some(123456))
+        UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = Some(123456)),
+        instant
       )
 
       val serialized = mongoFormat.writes(input)

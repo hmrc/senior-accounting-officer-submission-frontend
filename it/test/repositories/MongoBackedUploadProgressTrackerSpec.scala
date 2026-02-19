@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package services
+package repositories
 
+import config.AppConfig
 import models.*
+import org.mockito.Mockito.when
 import org.scalatest.concurrent.IntegrationPatience
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import repositories.UpscanSessionRepository
+import org.scalatestplus.mockito.MockitoSugar.mock
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import services.UpscanMongoBackedUploadProgressTracker
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 
+import java.time.temporal.ChronoUnit
+import java.time.{Clock, Instant, ZoneId}
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class MongoBackedUploadProgressTrackerSpec
@@ -31,9 +37,15 @@ class MongoBackedUploadProgressTrackerSpec
     with DefaultPlayMongoRepositorySupport[FileUploadState]
     with IntegrationPatience {
 
-  override val repository: UpscanSessionRepository = UpscanSessionRepository(mongoComponent)
+  private val mockAppConfig = mock[AppConfig]
+  when(mockAppConfig.cacheTtl) thenReturn 1L
 
-  val progressTracker: UpscanMongoBackedUploadProgressTracker = UpscanMongoBackedUploadProgressTracker(repository)
+  private val instant                              = Instant.now.truncatedTo(ChronoUnit.MILLIS)
+  private val stubClock: Clock                     = Clock.fixed(instant, ZoneId.systemDefault)
+  override val repository: UpscanSessionRepository = UpscanSessionRepository(mockAppConfig, mongoComponent, stubClock)
+
+  lazy val progressTracker: UpscanMongoBackedUploadProgressTracker =
+    UpscanMongoBackedUploadProgressTracker(repository)
 
   "MongoBackedUploadProgressTracker" should {
     "coordinate workflow" in {

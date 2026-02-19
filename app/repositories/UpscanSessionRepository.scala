@@ -17,6 +17,7 @@
 package repositories
 
 import com.mongodb.client.model
+import config.AppConfig
 import models.*
 import org.bson.types.ObjectId
 import org.mongodb.scala.model.*
@@ -27,13 +28,16 @@ import uk.gov.hmrc.mdc.Mdc
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
+import java.time.{Clock, Instant}
+import java.util.concurrent.TimeUnit
 import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.{Inject, Singleton}
 
 @Singleton
 class UpscanSessionRepository @Inject() (
-    mongoComponent: MongoComponent
+    appConfig: AppConfig,
+    mongoComponent: MongoComponent,
+    clock: Clock
 )(using
     ExecutionContext
 ) extends PlayMongoRepository[FileUploadState](
@@ -42,12 +46,26 @@ class UpscanSessionRepository @Inject() (
       domainFormat = FileUploadState.mongoFormat,
       indexes = Seq(
         IndexModel(Indexes.ascending("uploadId"), IndexOptions().unique(true)),
-        IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true))
+        IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true)),
+        IndexModel(
+          Indexes.ascending("lastUpdated"),
+          IndexOptions()
+            .name("lastUpdatedIdx")
+            .expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
+        )
       ),
       replaceIndexes = true
     ) {
 
-  override lazy val requiresTtlIndex: Boolean = false
+  def keepAlive(id: UploadId): Future[Boolean] = Mdc.preservingMdc {
+    collection
+      .updateOne(
+        filter = Filters.equal("uploadId", id.value),
+        update = Updates.set("lastUpdated", Instant.now(clock))
+      )
+      .toFuture()
+      .map(_ => true)
+  }
 
   def insert(details: FileUploadState): Future[Unit] = Mdc.preservingMdc {
     collection
@@ -57,7 +75,9 @@ class UpscanSessionRepository @Inject() (
   }
 
   def findByUploadId(uploadId: UploadId): Future[Option[FileUploadState]] = Mdc.preservingMdc {
-    collection.find(equal("uploadId", Codecs.toBson(uploadId))).headOption()
+    keepAlive(uploadId).flatMap( _ =>
+      collection.find(equal("uploadId", Codecs.toBson(uploadId))).headOption()
+    )
   }
 
   def updateStatus(reference: UpscanFileReference, newStatus: UploadStatus): Future[UploadStatus] = Mdc.preservingMdc {
@@ -67,7 +87,8 @@ class UpscanSessionRepository @Inject() (
         update = Updates.combine(
           set("status", Codecs.toBson(newStatus)),
           setOnInsert("uploadId", Codecs.toBson(UploadId.generate())),
-          setOnInsert("_id", ObjectId.get())
+          setOnInsert("_id", ObjectId.get()),
+          setOnInsert("lastUpdated", Instant.now(clock))
         ),
         options = FindOneAndUpdateOptions().upsert(true).returnDocument(model.ReturnDocument.AFTER)
       )

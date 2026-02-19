@@ -17,23 +17,23 @@
 package models
 
 import org.bson.types.ObjectId
-import play.api.libs.functional.syntax.*
 import play.api.libs.json.*
-import uk.gov.hmrc.mongo.play.json.formats.MongoFormats
+import uk.gov.hmrc.mongo.play.json.formats.{MongoFormats, MongoJavatimeFormats}
+
+import java.time.Instant
 
 final case class FileUploadState(
-    id: ObjectId,
+    `_id`: ObjectId,
     uploadId: UploadId,
     reference: UpscanFileReference,
-    status: UploadStatus
+    status: UploadStatus,
+    lastUpdated: Instant = Instant.now
 )
 
 object FileUploadState {
   val mongoFormat: Format[FileUploadState] = {
     given Format[ObjectId] = MongoFormats.objectIdFormat
-    ((__ \ "_id").format[ObjectId]
-      ~ (__ \ "uploadId").format[UploadId]
-      ~ (__ \ "reference").format[UpscanFileReference]
-      ~ (__ \ "status").format[UploadStatus])(FileUploadState.apply, Tuple.fromProductTyped _)
+    given Format[Instant] = MongoJavatimeFormats.instantFormat
+    Json.format[FileUploadState]
   }
 }
