@@ -32,7 +32,7 @@ import java.time.temporal.ChronoUnit
 import java.time.{Clock, Instant, ZoneId}
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class UserSessionRepositorySpec
+class UpscanSessionRepositorySpec
     extends SpecBase
     with DefaultPlayMongoRepositorySupport[FileUploadState]
     with ScalaFutures
@@ -45,7 +45,7 @@ class UserSessionRepositorySpec
   private val stubClock: Clock                     = Clock.fixed(instant, ZoneId.systemDefault)
   override val repository: UpscanSessionRepository = UpscanSessionRepository(mockAppConfig, mongoComponent, stubClock)
 
-  "UserSessionRepository must" - {
+  "UpscanSessionRepository must" - {
     "insert, findByUploadId, and updateStatus" in {
       val uploadId  = UploadId.generate()
       val reference = UpscanFileReference("foo")
