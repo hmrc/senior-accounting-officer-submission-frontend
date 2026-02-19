@@ -19,9 +19,36 @@
         govukButton: GovukButton
 )
 
-@()(using request: Request[?], messages: Messages)
+@(upscanInitiateResponse: models.UpscanInitiateResponse)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationUploadForm.title"))) {
 
     <h1 class="govuk-heading-xl">@messages("notificationUploadForm.heading")</h1>
+    @* ---- populating the form action with the initiate response post target --- *@
+    <form action="@upscanInitiateResponse.postTarget" method="post" enctype="multipart/form-data">
+
+        @* ---- populating the form with hidden fields returned with the initiate response --- *@
+        @for(field <- upscanInitiateResponse.formFields) {
+            <input type="hidden" name="@field._1" value="@field._2"/>
+        }
+
+        <div class="js-visible mt-3">
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="file-input">
+                    <span class="">File to upload</span>
+                </label>
+                <input
+                    type="file"
+                    id="file-input"
+                    name="file"
+                    class="govuk-file-upload"
+                    accept=".xlsx,.xls,.csv"/>
+            </div>
+        </div>
+
+        <div class="section">
+            <button id="submit" class="govuk-button"> Upload </button>
+        </div>
+
+    </form>
 }

@@ -17,27 +17,141 @@
 package controllers
 
 import base.SpecBase
+import config.AppConfig
+import connectors.UpscanInitiateConnector
+import models.{FileUploadState, UpscanFileReference, UpscanInitiateResponse}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{times, verify, when}
+import org.scalatestplus.mockito.MockitoSugar
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import play.twirl.api.Html
+import uk.gov.hmrc.http.HeaderCarrier
+import repositories.UpscanSessionRepository
 import views.html.NotificationUploadFormView
 
-class NotificationUploadFormControllerSpec extends SpecBase {
+import scala.concurrent.{ExecutionContext, Future}
 
-  "NotificationUploadForm Controller" - {
+class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
-    "must return OK and the correct view for a GET" in {
+  "NotificationUploadFormController must" - {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    "return OK and the correct view for a GET" in {
+      val mockAppConfig                  = mock[AppConfig]
+      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
+      val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
+      val mockNotificationUploadFormView = mock[NotificationUploadFormView]
+
+      val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
+
+      when(mockAppConfig.cacheTtl).thenReturn(900L)
+      when(mockNotificationUploadFormView.apply(any())(using any(), any())).thenReturn(Html(""))
+
+      when(
+        mockUpscanInitiateConnector.initiateV2(any[String])(using
+          any[HeaderCarrier]()
+        )
+      ).thenReturn(Future.successful(upscanInitiateResponse))
+
+      when(mockUpscanSessionRepository.insert(any[FileUploadState]))
+        .thenReturn(Future.successful(true))
+
+      when(mockAppConfig.hubBaseUrl).thenReturn("http://localhost:10000/senior-accounting-officer")
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(
+          bind[AppConfig].toInstance(mockAppConfig),
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
+          bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
+        )
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[NotificationUploadFormView]
-
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+
+        verify(mockNotificationUploadFormView, times(1)).apply(any())(using any(), any())
+      }
+    }
+
+    "return an error when upscan initiate connector fails" in {
+      given ec: ExecutionContext         = scala.concurrent.ExecutionContext.Implicits.global
+      val mockAppConfig                  = mock[AppConfig]
+      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
+      val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
+      val mockNotificationUploadFormView = mock[NotificationUploadFormView]
+
+      when(mockAppConfig.cacheTtl).thenReturn(900L)
+
+      when(
+        mockUpscanInitiateConnector.initiateV2(any[String])(using
+          any[HeaderCarrier]
+        )
+      ).thenReturn(Future.failed(new RuntimeException("Upscan service unavailable")))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(
+          bind[AppConfig].toInstance(mockAppConfig),
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
+          bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
+        )
+        .build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        result.failed.futureValue mustBe an[RuntimeException]
+
+      }
+
+    }
+
+    "return an error when upload progress tracker fails" in {
+      val mockAppConfig                  = mock[AppConfig]
+      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
+      val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
+      val mockNotificationUploadFormView = mock[NotificationUploadFormView]
+
+      when(mockAppConfig.cacheTtl).thenReturn(900L)
+
+      val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
+
+      when(
+        mockUpscanInitiateConnector.initiateV2(any[String])(using
+          any[HeaderCarrier]()
+        )
+      )
+        .thenReturn(Future.successful(upscanInitiateResponse))
+
+      when(mockUpscanSessionRepository.insert(any[FileUploadState]))
+        .thenReturn(Future.failed(new RuntimeException("Database connection failed")))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(
+          bind[AppConfig].toInstance(mockAppConfig),
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
+          bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
+        )
+        .build()
+
+      running(application) {
+
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        result.failed.futureValue mustBe an[RuntimeException]
+
       }
     }
 
@@ -54,6 +168,5 @@ class NotificationUploadFormControllerSpec extends SpecBase {
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
-
   }
 }

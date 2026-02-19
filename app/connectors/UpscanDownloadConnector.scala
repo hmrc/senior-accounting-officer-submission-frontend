@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package config
+package connectors
 
-import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.test.FakeRequest
+import config.AppConfig
+import uk.gov.hmrc.http.HttpReads.Implicits.*
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
-class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
+import scala.concurrent.{ExecutionContext, Future}
 
-  private val fakeRequest = FakeRequest("GET", "/")
+import javax.inject.Inject
 
-  private val handler = app.injector.instanceOf[ErrorHandler]
+class UpscanDownloadConnector @Inject() (
+    httpClient: HttpClientV2,
+    appConfig: AppConfig
+)(using ExecutionContext) {
 
-  "standardErrorTemplate must" - {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
-      html.contentType mustBe "text/html"
-    }
-  }
+  def download(url: String)(using HeaderCarrier): Future[HttpResponse] =
+    httpClient
+      .get(url"${appConfig.upscanDownloadHost + url}")
+      .execute[HttpResponse]
+
 }

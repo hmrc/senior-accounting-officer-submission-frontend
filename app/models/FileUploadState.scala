@@ -14,22 +14,26 @@
  * limitations under the License.
  */
 
-package config
+package models
 
-import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.test.FakeRequest
+import org.bson.types.ObjectId
+import play.api.libs.json.*
+import uk.gov.hmrc.mongo.play.json.formats.{MongoFormats, MongoJavatimeFormats}
 
-class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
+import java.time.Instant
 
-  private val fakeRequest = FakeRequest("GET", "/")
+final case class FileUploadState(
+    `_id`: ObjectId,
+    uploadId: UploadId,
+    reference: UpscanFileReference,
+    status: UploadStatus,
+    lastUpdated: Instant = Instant.now
+)
 
-  private val handler = app.injector.instanceOf[ErrorHandler]
-
-  "standardErrorTemplate must" - {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
-      html.contentType mustBe "text/html"
-    }
+object FileUploadState {
+  val mongoFormat: Format[FileUploadState] = {
+    given Format[ObjectId] = MongoFormats.objectIdFormat
+    given Format[Instant]  = MongoJavatimeFormats.instantFormat
+    Json.format[FileUploadState]
   }
 }

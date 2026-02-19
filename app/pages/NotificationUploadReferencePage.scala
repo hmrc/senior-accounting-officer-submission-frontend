@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package config
+package pages
 
-import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.test.FakeRequest
+import models.UpscanFileReference
+import play.api.libs.json.JsPath
 
-class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
+case object NotificationUploadReferencePage extends QuestionPage[UpscanFileReference] {
 
-  private val fakeRequest = FakeRequest("GET", "/")
+  override def path: JsPath = JsPath \ toString
 
-  private val handler = app.injector.instanceOf[ErrorHandler]
-
-  "standardErrorTemplate must" - {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
-      html.contentType mustBe "text/html"
-    }
-  }
+  override def toString: String = "notificationUploadReference"
 }

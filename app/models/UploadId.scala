@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package config
+package models
 
-import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.test.FakeRequest
+import play.api.libs.json.Format
+import play.api.libs.json.Json
+import play.api.mvc.QueryStringBindable
 
-class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
+import java.util.UUID
 
-  private val fakeRequest = FakeRequest("GET", "/")
+final case class UploadId(value: String) extends AnyVal
 
-  private val handler = app.injector.instanceOf[ErrorHandler]
+object UploadId {
+  def generate(): UploadId =
+    UploadId(UUID.randomUUID().toString)
 
-  "standardErrorTemplate must" - {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
-      html.contentType mustBe "text/html"
-    }
-  }
+  implicit def queryBinder(implicit stringBinder: QueryStringBindable[String]): QueryStringBindable[UploadId] =
+    stringBinder.transform(UploadId(_), _.value)
+
+  given Format[UploadId] = Json.valueFormat[UploadId]
 }

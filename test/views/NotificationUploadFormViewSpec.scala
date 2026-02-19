@@ -17,6 +17,7 @@
 package views
 
 import base.ViewSpecBase
+import models.{UpscanFileReference, UpscanInitiateResponse}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.NotificationUploadFormViewSpec.*
@@ -24,7 +25,7 @@ import views.html.NotificationUploadFormView
 
 class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadFormView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT().toString)
+  private def generateView(): Document = Jsoup.parse(SUT(upscanInitiateResponse).toString)
 
   "NotificationUploadFormView" - {
     val doc: Document = generateView()
@@ -37,11 +38,26 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       hasError = false
     )
 
-    doc.createTestsWithOrWithoutError(hasError = false)
+    "must contain hidden fields" in {
+      val hiddenFields = doc.select("input[type=hidden]")
+      hiddenFields.size() mustBe 2
+      hiddenFields.get(0).attr("name") mustBe "test1"
+      hiddenFields.get(1).attr("name") mustBe "test2"
+      hiddenFields.get(0).attr("value") mustBe "testValue1"
+      hiddenFields.get(1).attr("value") mustBe "testValue2"
+    }
   }
 }
 
 object NotificationUploadFormViewSpec {
-  val pageHeading = "notificationUploadForm"
-  val pageTitle   = "notificationUploadForm"
+  val pageHeading                                    = "notificationUploadForm"
+  val pageTitle                                      = "notificationUploadForm"
+  val upscanInitiateResponse: UpscanInitiateResponse = UpscanInitiateResponse(
+    fileReference = UpscanFileReference("testReference"),
+    postTarget = "formPostTarget",
+    formFields = Map(
+      "test1" -> "testValue1",
+      "test2" -> "testValue2"
+    )
+  )
 }

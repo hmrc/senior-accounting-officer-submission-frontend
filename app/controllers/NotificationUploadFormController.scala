@@ -16,25 +16,44 @@
 
 package controllers
 
-import controllers.actions.*
-import play.api.i18n.{I18nSupport, MessagesApi}
+import connectors.UpscanInitiateConnector
+import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import models.*
+import org.bson.types.ObjectId
+import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import repositories.UpscanSessionRepository
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NotificationUploadFormView
+
+import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
 class NotificationUploadFormController @Inject() (
-    override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    val controllerComponents: MessagesControllerComponents,
-    view: NotificationUploadFormView
-) extends FrontendBaseController
+    mcc: MessagesControllerComponents,
+    notificationUploadFormView: NotificationUploadFormView,
+    upscanInitiateConnector: UpscanInitiateConnector,
+    upscanSessionRepository: UpscanSessionRepository
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
+    val uploadId = UploadId.generate()
+    for
+      upscanInitiateResponse <- upscanInitiateConnector.initiateV2(uploadId.value)
+      _                      <- upscanSessionRepository.insert(
+        FileUploadState(
+          ObjectId.get(),
+          uploadId,
+          UpscanFileReference(upscanInitiateResponse.fileReference.reference),
+          UploadStatus.InProgress
+        )
+      )
+    yield Ok(notificationUploadFormView(upscanInitiateResponse))
   }
 }

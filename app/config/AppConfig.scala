@@ -16,13 +16,16 @@
 
 package config
 
+import controllers.internal.routes
 import play.api.Configuration
 import play.api.mvc.RequestHeader
+import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfig @Inject() (config: Configuration) {
+class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration) {
+
   val cacheTtl: Long = config.get[Int]("mongodb.timeToLiveInSeconds")
 
   val welshLanguageSupportEnabled: Boolean =
@@ -41,6 +44,11 @@ class AppConfig @Inject() (config: Configuration) {
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
   val loginContinueUrl: String = hubBaseUrl
+
+  lazy val upscanInitiateV2Url: String  = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
+  lazy val upscanDownloadHost: String   = config.get[String]("upscan-download.host")
+  lazy val upscanCallbackTarget: String =
+    s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback()}"
 
   private def getValue(key: String): String =
     sys.props.getOrElse(key, config.get[String](key))

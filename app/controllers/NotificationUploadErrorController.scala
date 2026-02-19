@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,34 +17,24 @@
 package controllers
 
 import controllers.actions.*
-import models.{SubmitNotificationStage, UserAnswers}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.SubmitNotificationStartView
+import views.html.NotificationUploadErrorView
 
-import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.Inject
 
-class SubmitNotificationStartController @Inject() (
+class NotificationUploadErrorController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: SubmitNotificationStartView,
-    sessionRepository: SessionRepository
-)(using ExecutionContext)
-    extends FrontendBaseController
+    view: NotificationUploadErrorView
+) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData) async { implicit request =>
-    for {
-      userAnswers <- sessionRepository.get(request.userId)
-      result <- userAnswers match {
-        case Some(_) => Future.successful(Ok(view(SubmitNotificationStage.ShowAllLinks)))
-        case None => sessionRepository.set(UserAnswers(request.userId)).map(_ => Ok(view(SubmitNotificationStage.ShowAllLinks)))
-      }
-    } yield result
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Ok(view())
   }
 }

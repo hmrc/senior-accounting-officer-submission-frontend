@@ -14,22 +14,30 @@
  * limitations under the License.
  */
 
-package config
+package utils
 
-import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import play.api.test.FakeRequest
+import play.api.libs.json.*
 
-class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
+import scala.util.Try
 
-  private val fakeRequest = FakeRequest("GET", "/")
+import java.net.URL
 
-  private val handler = app.injector.instanceOf[ErrorHandler]
+object HttpUrlFormat {
 
-  "standardErrorTemplate must" - {
-    "render HTML" in {
-      val html = handler.standardErrorTemplate("title", "heading", "message")(fakeRequest).futureValue
-      html.contentType mustBe "text/html"
+  given format: Format[URL] =
+    new Format[URL] {
+      override def reads(json: JsValue): JsResult[URL] =
+        json
+          .validate[String]
+          .flatMap(parseUrl(_).fold(invalidUrlError)(JsSuccess(_)))
+
+      private def parseUrl(s: String): Option[URL] =
+        Try(URL(s)).toOption
+
+      private def invalidUrlError: JsError =
+        JsError(Seq(JsPath() -> Seq(JsonValidationError("error.expected.url"))))
+
+      override def writes(o: URL): JsValue =
+        JsString(o.toString)
     }
-  }
 }
