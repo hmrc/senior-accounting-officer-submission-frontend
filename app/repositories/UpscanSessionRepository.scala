@@ -72,7 +72,7 @@ class UpscanSessionRepository @Inject() (
     collection
       .insertOne(details)
       .toFuture()
-      .map(_.wasAcknowledged())
+      .map(_ => true)
   }
 
   def findByUploadId(uploadId: UploadId): Future[Option[FileUploadState]] = Mdc.preservingMdc {
