@@ -18,7 +18,7 @@ package services
 
 import connectors.UpscanDownloadConnector
 import models.UploadStatus.*
-import models.{FileUploadState, UploadId}
+import models.{FileUploadState, UploadId, UpscanFileReference}
 import play.api.http.Status.OK
 import repositories.UpscanSessionRepository
 import services.UpscanService.*
@@ -37,22 +37,22 @@ class UpscanService @Inject() (
     checkMongo(uploadId).flatMap {
       _.fold(
         state => Future.successful(state),
-        url =>
+        (reference, url) =>
           downloadConnector.download(url).map {
             case HttpResponse(OK, body, _) =>
-              State.Result(body)
+              State.Result(reference, body)
             case httpResponse =>
               State.DownloadFromUpscanFailed(httpResponse)
           }
       )
     }
 
-  private def checkMongo(uploadId: String): Future[Either[State, String]] =
+  private def checkMongo(uploadId: String): Future[Either[State, (UpscanFileReference, String)]] =
     repository.findByUploadId(UploadId(uploadId)).map {
       case Some(FileUploadState(_, _, _, InProgress, _)) =>
         Left(State.WaitingForUpscan)
-      case Some(FileUploadState(_, _, _, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
-        Right(downloadUrl)
+      case Some(FileUploadState(_, _, reference, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
+        Right((reference, downloadUrl))
       case Some(FileUploadState(_, _, _, Failed, _)) =>
         Left(State.UploadToUpscanFailed)
       case _ =>
@@ -66,6 +66,6 @@ object UpscanService {
     case WaitingForUpscan                                 extends State
     case UploadToUpscanFailed                             extends State
     case DownloadFromUpscanFailed(response: HttpResponse) extends State
-    case Result(fileContent: String)                      extends State
+    case Result(reference: UpscanFileReference, fileContent: String) extends State
   }
 }

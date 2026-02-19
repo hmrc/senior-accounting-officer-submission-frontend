@@ -16,7 +16,6 @@
 
 package controllers
 
-import config.AppConfig
 import connectors.UpscanInitiateConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.*
@@ -35,7 +34,6 @@ class NotificationUploadFormController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     mcc: MessagesControllerComponents,
-    appConfig: AppConfig,
     notificationUploadFormView: NotificationUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
     uploadProgressTracker: UpscanUploadProgressTracker

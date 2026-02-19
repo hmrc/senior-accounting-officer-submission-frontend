@@ -17,15 +17,17 @@
 package controllers
 
 import controllers.actions.*
+import pages.NotificationUploadReferencePage
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.*
+import repositories.SessionRepository
 import services.UpscanService
 import services.UpscanService.State
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationUploadSuccessView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
@@ -36,6 +38,7 @@ class NotificationUploadSuccessController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     upscanService: UpscanService,
+    sessionRepository: SessionRepository,
     view: NotificationUploadSuccessView
 )(using ExecutionContext)
     extends FrontendBaseController
@@ -43,18 +46,21 @@ class NotificationUploadSuccessController @Inject() (
 
   def onPageLoad(uploadId: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      upscanService.fileUploadState(uploadId).map {
+      upscanService.fileUploadState(uploadId).flatMap {
         case State.NoUploadId =>
-          Redirect(routes.JourneyRecoveryController.onPageLoad())
+          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case State.WaitingForUpscan =>
-          Ok(view())
+          Future.successful(Ok(view()))
         case State.UploadToUpscanFailed =>
           ???
         case State.DownloadFromUpscanFailed(response) =>
           ???
-        case State.Result(fileContent) =>
+        case State.Result(reference, fileContent) =>
           Logger(getClass).info(fileContent)
-          Redirect(routes.SubmitNotificationStartController.onPageLoad())
+          Future
+            .fromTry(request.userAnswers.set(NotificationUploadReferencePage, reference))
+            .flatMap(sessionRepository.set)
+            .map(_ => Redirect(routes.SubmitNotificationStartController.onPageLoad()))
       }
   }
 
