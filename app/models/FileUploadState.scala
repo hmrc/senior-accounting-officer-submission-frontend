@@ -33,7 +33,7 @@ final case class FileUploadState(
 object FileUploadState {
   val mongoFormat: Format[FileUploadState] = {
     given Format[ObjectId] = MongoFormats.objectIdFormat
-    given Format[Instant] = MongoJavatimeFormats.instantFormat
+    given Format[Instant]  = MongoJavatimeFormats.instantFormat
     Json.format[FileUploadState]
   }
 }

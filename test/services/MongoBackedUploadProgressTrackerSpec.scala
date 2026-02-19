@@ -30,9 +30,10 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import repositories.UpscanSessionRepository
 
+import scala.concurrent.Future
+
 import java.time.temporal.ChronoUnit
 import java.time.{Clock, Instant, ZoneId}
-import scala.concurrent.Future
 
 class MongoBackedUploadProgressTrackerSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 

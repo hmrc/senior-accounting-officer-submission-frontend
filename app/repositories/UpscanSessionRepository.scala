@@ -28,9 +28,10 @@ import uk.gov.hmrc.mdc.Mdc
 import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
+import scala.concurrent.{ExecutionContext, Future}
+
 import java.time.{Clock, Instant}
 import java.util.concurrent.TimeUnit
-import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -75,9 +76,7 @@ class UpscanSessionRepository @Inject() (
   }
 
   def findByUploadId(uploadId: UploadId): Future[Option[FileUploadState]] = Mdc.preservingMdc {
-    keepAlive(uploadId).flatMap( _ =>
-      collection.find(equal("uploadId", Codecs.toBson(uploadId))).headOption()
-    )
+    keepAlive(uploadId).flatMap(_ => collection.find(equal("uploadId", Codecs.toBson(uploadId))).headOption())
   }
 
   def updateStatus(reference: UpscanFileReference, newStatus: UploadStatus): Future[UploadStatus] = Mdc.preservingMdc {
