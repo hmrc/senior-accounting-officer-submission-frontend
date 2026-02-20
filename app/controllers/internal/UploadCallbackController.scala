@@ -39,7 +39,7 @@ class UploadCallbackController @Inject() (
     Action.async(parse.json) { request =>
       given Request[JsValue] = request
 
-      logger.info(s"Received callback notification [${Json.stringify(request.body)}]")
+      //logger.info(s"Received callback notification [${Json.stringify(request.body)}]")
       withJsonBody[UpscanCallback] { feedback =>
         upscanCallbackDispatcher.processUpscanCallback(feedback).map(_ => Ok)
       }
