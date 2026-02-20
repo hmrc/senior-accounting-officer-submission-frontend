@@ -35,7 +35,7 @@
         </div>
 
         @govukButton(
-            ButtonViewModel(messages("submitNotification.button").toText)
+            ButtonViewModel(messages("submitNotification.button").toText).withAttribute("id", "submit")
         )
     }
 }
