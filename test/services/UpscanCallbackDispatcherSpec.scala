@@ -70,7 +70,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
 
       capturedStatus.name mustBe "test.pdf"
       capturedStatus.mimeType mustBe "application/pdf"
-      capturedStatus.downloadUrl mustBe "/download"
+      capturedStatus.downloadUrl mustBe "http://localhost:8080/download"
       capturedStatus.size mustBe Some(123)
 
     }
