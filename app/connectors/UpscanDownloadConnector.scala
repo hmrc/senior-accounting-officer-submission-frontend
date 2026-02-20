@@ -17,12 +17,12 @@
 package connectors
 
 import config.AppConfig
+import play.api.http.HeaderNames
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.Inject
 
 class UpscanDownloadConnector @Inject() (
@@ -33,6 +33,7 @@ class UpscanDownloadConnector @Inject() (
   def download(url: String)(using HeaderCarrier): Future[HttpResponse] =
     httpClient
       .get(url"${appConfig.upscanDownloadHost + url}")
+      .setHeader(HeaderNames.USER_AGENT -> appConfig.upscanOurUserAgent)
       .execute[HttpResponse]
 
 }
