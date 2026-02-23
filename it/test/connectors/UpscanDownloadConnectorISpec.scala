@@ -16,7 +16,9 @@
 
 package connectors
 
+import com.github.tomakehurst.wiremock.client.WireMock.*
 import connectors.UpscanDownloadConnectorISpec.*
+import play.api.http.HeaderNames
 import play.api.http.Status.*
 import support.ISpecBase
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -38,6 +40,12 @@ class UpscanDownloadConnectorISpec extends ISpecBase {
 
       result.status mustBe OK
       result.body mustBe testBody
+
+      verify(
+        1,
+        getRequestedFor(urlEqualTo(testUrl))
+          .withHeader(HeaderNames.USER_AGENT, equalTo("senior-accounting-officer-submission-frontend"))
+      )
     }
 
     "return a HttpResponse when the response status is 4xx" in {
