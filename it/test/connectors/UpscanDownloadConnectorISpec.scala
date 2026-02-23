@@ -21,14 +21,14 @@ import play.api.http.Status.*
 import support.ISpecBase
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 
+import java.net.URI
+
 class UpscanDownloadConnectorISpec extends ISpecBase {
 
   lazy val SUT: UpscanDownloadConnector = app.injector.instanceOf[UpscanDownloadConnector]
   given HeaderCarrier                   = HeaderCarrier()
 
-  override def additionalConfigs: Map[String, Any] = Map(
-    "upscan-download.host" -> wireMockBaseUrlAsString
-  )
+  def testUrl = s"$wireMockBaseUrlAsString/test/download/url"
 
   "A GET call from UpscanDownloadConnector.download to the target URL" must {
     "return a HttpResponse when the response status is 200" in {
@@ -62,14 +62,14 @@ class UpscanDownloadConnectorISpec extends ISpecBase {
 
 object UpscanDownloadConnectorISpec {
 
-  val testUrl  = "/test/download/url"
   val testBody = "{}"
 
   import com.github.tomakehurst.wiremock.client.WireMock.*
 
-  def mockUpscanDownload(targetUrl: String, status: Int, body: String): Unit =
+  def mockUpscanDownload(targetUrl: String, status: Int, body: String): Unit = {
+    val relativeUrl = URI(targetUrl).getPath
     stubFor(
-      get(urlEqualTo(targetUrl))
+      get(urlEqualTo(relativeUrl))
         .willReturn(
           aResponse()
             .withHeader("content-type", "application/json")
@@ -77,4 +77,6 @@ object UpscanDownloadConnectorISpec {
             .withStatus(status)
         )
     )
+  }
+
 }
