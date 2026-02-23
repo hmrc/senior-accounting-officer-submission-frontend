@@ -17,7 +17,6 @@
 package views
 
 import base.ViewSpecBase
-import config.AppConfig
 import models.{UpscanFileReference, UpscanInitiateResponse}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -27,8 +26,6 @@ import views.html.NotificationUploadFormView
 class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadFormView] {
 
   private def generateView(): Document = Jsoup.parse(SUT(upscanInitiateResponse).toString)
-
-  def upscanOurUserAgent: String = app.injector.instanceOf[AppConfig].upscanOurUserAgent
 
   "NotificationUploadFormView" - {
     val doc: Document = generateView()
@@ -41,15 +38,13 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       hasError = false
     )
 
-    "must contain the consumingService and formFields as hidden form fields" in {
-      val hiddenFields = doc.select("form input[type=hidden]")
-      hiddenFields.size() mustBe 3
-      hiddenFields.get(0).attr("name") mustBe "consumingService"
-      hiddenFields.get(1).attr("name") mustBe "test1"
-      hiddenFields.get(2).attr("name") mustBe "test2"
-      hiddenFields.get(0).attr("value") mustBe upscanOurUserAgent
-      hiddenFields.get(1).attr("value") mustBe "testValue1"
-      hiddenFields.get(2).attr("value") mustBe "testValue2"
+    "must contain hidden fields" in {
+      val hiddenFields = doc.select("input[type=hidden]")
+      hiddenFields.size() mustBe 2
+      hiddenFields.get(0).attr("name") mustBe "test1"
+      hiddenFields.get(1).attr("name") mustBe "test2"
+      hiddenFields.get(0).attr("value") mustBe "testValue1"
+      hiddenFields.get(1).attr("value") mustBe "testValue2"
     }
   }
 }
