@@ -33,7 +33,7 @@ class UpscanCallbackDispatcher @Inject() (sessionStorage: UpscanSessionRepositor
           UploadStatus.UploadedSuccessfully(
             name = s.uploadDetails.fileName,
             mimeType = s.uploadDetails.fileMimeType,
-            downloadUrl = s.downloadUrl.toString(),
+            downloadUrl = s.downloadUrl,
             size = Some(s.uploadDetails.size)
           )
         case _: UpscanFailureCallback =>

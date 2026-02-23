@@ -17,9 +17,7 @@
 package models
 
 import play.api.libs.json.*
-import utils.HttpUrlFormat
 
-import java.net.URL
 import java.time.Instant
 
 sealed trait UpscanCallback {
@@ -36,7 +34,7 @@ final case class UpscanFileMetadata(
 
 final case class UpscanSuccessCallback(
     reference: UpscanFileReference,
-    downloadUrl: URL,
+    downloadUrl: String,
     uploadDetails: UpscanFileMetadata
 ) extends UpscanCallback
 
@@ -56,10 +54,7 @@ object UpscanCallback {
 
   given Reads[UpscanFailureDetails] = Json.reads[UpscanFailureDetails]
 
-  given Reads[UpscanSuccessCallback] = {
-    given Format[URL] = HttpUrlFormat.format
-    Json.reads[UpscanSuccessCallback]
-  }
+  given Reads[UpscanSuccessCallback] = Json.reads[UpscanSuccessCallback]
 
   given Reads[UpscanFailureCallback] = Json.reads[UpscanFailureCallback]
 
