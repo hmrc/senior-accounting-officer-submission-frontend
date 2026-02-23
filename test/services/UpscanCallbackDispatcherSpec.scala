@@ -27,7 +27,6 @@ import repositories.UpscanSessionRepository
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-import java.net.URL
 import java.time.Instant
 
 class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
@@ -40,7 +39,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
 
       val callback = UpscanSuccessCallback(
         reference = UpscanFileReference("foo"),
-        downloadUrl = new URL("http://localhost:8080/download"),
+        downloadUrl = "http://localhost:8080/download",
         uploadDetails = UpscanFileMetadata(
           uploadTimestamp = Instant.now(),
           checksum = "bar",

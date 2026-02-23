@@ -62,10 +62,10 @@ class UpscanService @Inject() (
 
 object UpscanService {
   enum State {
-    case NoUploadId                                       extends State
-    case WaitingForUpscan                                 extends State
-    case UploadToUpscanFailed                             extends State
-    case DownloadFromUpscanFailed(response: HttpResponse) extends State
+    case NoUploadId                                                  extends State
+    case WaitingForUpscan                                            extends State
+    case UploadToUpscanFailed                                        extends State
+    case DownloadFromUpscanFailed(response: HttpResponse)            extends State
     case Result(reference: UpscanFileReference, fileContent: String) extends State
   }
 }

@@ -16,7 +16,6 @@
 
 package connectors
 
-import config.AppConfig
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
@@ -26,13 +25,12 @@ import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.Inject
 
 class UpscanDownloadConnector @Inject() (
-    httpClient: HttpClientV2,
-    appConfig: AppConfig
+    httpClient: HttpClientV2
 )(using ExecutionContext) {
 
   def download(url: String)(using HeaderCarrier): Future[HttpResponse] =
     httpClient
-      .get(url"${appConfig.upscanDownloadHost + url}")
+      .get(url"$url")
       .execute[HttpResponse]
 
 }
