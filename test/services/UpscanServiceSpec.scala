@@ -39,6 +39,7 @@ import scala.concurrent.Future
 import scala.util.Random
 
 import java.util.UUID
+import views.NotificationConfirmationViewSpec.testReferenceNumber
 
 class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
@@ -62,27 +63,26 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
   "UpscanService.fileUploadState" - {
     "must return State.NoUploadId when the uploadId does not exist in Mongo" in {
-      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+      when(mockUpscanSessionRepository.find(any())).thenReturn(
         Future.successful(None)
       )
 
-      val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
 
       result mustBe State.NoUploadId
 
-      verifyFindByUploadId(times(1))
-      verify(mockUpscanDownloadConnector, times(0)).download(meq(testUploadId))(using any())
+      verifyFindByReference(times(1))
+      verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
 
     "must return State.NoUploadId when the file upload is in progress" in {
       applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+      when(mockUpscanSessionRepository.find(any())).thenReturn(
         Future.successful(
           Some(
             FileUploadState(
               new ObjectId(),
-              UploadId(testUploadId),
               UpscanFileReference(testFileReference),
               UploadStatus.InProgress
             )
@@ -90,23 +90,22 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         )
       )
 
-      val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
 
       result mustBe State.WaitingForUpscan
 
-      verifyFindByUploadId(times(1))
-      verify(mockUpscanDownloadConnector, times(0)).download(meq(testUploadId))(using any())
+      verifyFindByReference(times(1))
+      verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
 
     "must return State.UploadToUpscanFailed when the file upload has failed" in {
       applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+      when(mockUpscanSessionRepository.find(any())).thenReturn(
         Future.successful(
           Some(
             FileUploadState(
               new ObjectId(),
-              UploadId(testUploadId),
               UpscanFileReference(testFileReference),
               UploadStatus.Failed
             )
@@ -114,23 +113,22 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         )
       )
 
-      val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
 
       result mustBe State.UploadToUpscanFailed
 
-      verifyFindByUploadId(times(1))
-      verify(mockUpscanDownloadConnector, times(0)).download(meq(testUploadId))(using any())
+      verifyFindByReference(times(1))
+      verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
 
     "must return State.Result when the file upload is completed and the file is downloaded from upscan successfully" in {
       applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+      when(mockUpscanSessionRepository.find(any())).thenReturn(
         Future.successful(
           Some(
             FileUploadState(
               new ObjectId(),
-              UploadId(testUploadId),
               UpscanFileReference(testFileReference),
               UploadStatus.UploadedSuccessfully(
                 name = "",
@@ -147,23 +145,22 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         Future.successful(testResponse)
       )
 
-      val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
 
       result mustBe State.Result(UpscanFileReference(testFileReference), testFileContent)
 
-      verifyFindByUploadId(times(1))
+      verifyFindByReference(times(1))
       verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
     }
 
     "must return State.DownloadFromUpscanFailed when the file upload is completed but the file download from upscan fails" in {
       applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      when(mockUpscanSessionRepository.findByUploadId(any())).thenReturn(
+      when(mockUpscanSessionRepository.find(any())).thenReturn(
         Future.successful(
           Some(
             FileUploadState(
               new ObjectId(),
-              UploadId(testUploadId),
               UpscanFileReference(testFileReference),
               UploadStatus.UploadedSuccessfully(
                 name = "",
@@ -180,24 +177,22 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         Future.successful(testResponse)
       )
 
-      val result = SUT.fileUploadState(testUploadId).futureValue
+      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
 
       result mustBe State.DownloadFromUpscanFailed(testResponse)
 
-      verifyFindByUploadId(times(1))
+      verifyFindByReference(times(1))
       verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
     }
   }
 
-  def verifyFindByUploadId(mode: VerificationMode): Unit =
-    // because UploadId extends AnyVal it's actually a String at runtime
-    verify(mockUpscanSessionRepository, mode).findByUploadId(meq(testUploadId.asInstanceOf[UploadId]))
+  def verifyFindByReference(mode: VerificationMode): Unit =
+    verify(mockUpscanSessionRepository, mode).find(UpscanFileReference(meq(testFileReference)))
 
 }
 
 object UpscanServiceSpec {
-  val testUploadId: String    = UUID.randomUUID().toString
-  val testDownloadUrl: String = "/test/url"
-  val testFileContent: String = Random.nextString(10)
+  val testDownloadUrl: String   = "/test/url"
+  val testFileContent: String   = Random.nextString(10)
   val testFileReference: String = Random.nextString(10)
 }

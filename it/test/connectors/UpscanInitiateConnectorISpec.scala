@@ -33,14 +33,14 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
   )
 
   given HeaderCarrier = HeaderCarrier()
-  
+
   lazy val SUT = app.injector.instanceOf[UpscanInitiateConnector]
 
   given Request[?] = FakeRequest()
 
   "UpscanInitiateConnector.initiateV2" must {
     "successfully initiate an upscan v2 upload" in {
-      
+
       stubFor(
         post(urlEqualTo("/upscan/v2/initiate"))
           .willReturn(
@@ -49,11 +49,11 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
               .withBody(Json.toJson(fakeUpscanInitiateResponse).toString)
           )
       )
-      
-      val response: UpscanInitiateResponse = SUT.initiateV2(fakeUploadId).futureValue
+
+      val response: UpscanInitiateResponse = SUT.initiateV2().futureValue
 
       Json.toJson(response) mustBe Json.toJson(fakeUpscanInitiateResponse)
-      
+
       verify(
         1,
         postRequestedFor(urlEqualTo("/upscan/v2/initiate"))
@@ -61,7 +61,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
           .withRequestBody(equalToJson(Json.toJson(expectedRequest).toString))
       )
     }
-    
+
     "fail to initiate when upscan returns an error" in {
       stubFor(
         post(urlEqualTo("/upscan/v2/initiate"))
@@ -70,7 +70,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
               .withStatus(500)
           )
       )
-      val response = SUT.initiateV2(fakeUploadId).failed.futureValue
+      val response = SUT.initiateV2().failed.futureValue
       response mustBe a[uk.gov.hmrc.http.UpstreamErrorResponse]
     }
   }
@@ -78,15 +78,16 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
 }
 
 object UpscanInitiateConnectorISpec {
-  val fakeUploadId = "12345678"
-  val fakeUpscanInitiateResponse= UpscanInitiateResponse(
+  val fakeUpscanInitiateResponse = UpscanInitiateResponse(
     fileReference = UpscanFileReference("foo"),
     postTarget = "bar",
     formFields = Map("T1" -> "V1")
   )
   val expectedRequest = UpscanInitiateRequestV2(
     callbackUrl = "http://localhost:10058/internal/upscan-callback",
-    successRedirect = Some(s"http://localhost:10058/senior-accounting-officer/submission/notification/upload/success?uploadId=$fakeUploadId"),
+    successRedirect = Some(
+      s"http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"
+    ),
     errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload/error")
   )
 }

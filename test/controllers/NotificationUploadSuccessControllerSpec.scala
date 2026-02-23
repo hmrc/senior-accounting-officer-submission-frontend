@@ -35,8 +35,6 @@ import views.html.NotificationUploadSuccessView
 import scala.concurrent.{ExecutionException, Future}
 import scala.util.Random
 
-import java.util.UUID
-
 class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEach {
   val mockUpscanService: UpscanService = mock[UpscanService]
 
@@ -61,7 +59,8 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(testUploadId).url)
+          val request =
+            FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(Some(testFileReference)).url)
 
           val result = route(application, request).value
 
@@ -70,7 +69,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).get mustEqual routes.JourneyRecoveryController.onPageLoad().url
 
-          verify(mockUpscanService, times(1)).fileUploadState(meq(testUploadId))(using any())
+          verify(mockUpscanService, times(1)).fileUploadState(UpscanFileReference(meq(testFileReference)))(using any())
         }
       }
 
@@ -85,7 +84,8 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
         )
 
         running(application) {
-          val request = FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(testUploadId).url)
+          val request =
+            FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(Some(testFileReference)).url)
 
           val result = route(application, request).value
 
@@ -94,7 +94,9 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           status(result) mustEqual OK
           contentAsString(result) mustEqual view()(using request, messages(application)).toString
 
-          verify(mockUpscanService, times(1)).fileUploadState(meq(testUploadId))(using any())
+          verify(mockUpscanService, times(1)).fileUploadState(UpscanFileReference(meq(testFileReference)))(using
+            any()
+          )
         }
       }
     }
@@ -108,8 +110,9 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
         )
 
         running(application) {
-          val request = FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(testUploadId).url)
-          val result  = route(application, request).value
+          val request =
+            FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(Some(testFileReference)).url)
+          val result = route(application, request).value
 
           val exception = intercept[ExecutionException] {
             await(result)
@@ -117,7 +120,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
           exception.getCause mustBe an[NotImplementedError]
 
-          verify(mockUpscanService, times(1)).fileUploadState(meq(testUploadId))(using any())
+          verify(mockUpscanService, times(1)).fileUploadState(UpscanFileReference(meq(testFileReference)))(using any())
         }
       }
     }
@@ -131,7 +134,8 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
         )
 
         running(application) {
-          val request = FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(testUploadId).url)
+          val request =
+            FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(Some(testFileReference)).url)
 
           val result = route(application, request).value
 
@@ -141,7 +145,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
           exception.getCause mustBe an[NotImplementedError]
 
-          verify(mockUpscanService, times(1)).fileUploadState(meq(testUploadId))(using any())
+          verify(mockUpscanService, times(1)).fileUploadState(UpscanFileReference(meq(testFileReference)))(using any())
         }
       }
     }
@@ -155,7 +159,8 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
         )
 
         running(application) {
-          val request = FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(testUploadId).url)
+          val request =
+            FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(Some(testFileReference)).url)
 
           val result = route(application, request).value
 
@@ -164,7 +169,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).get mustBe routes.SubmitNotificationStartController.onPageLoad().url
 
-          verify(mockUpscanService, times(1)).fileUploadState(meq(testUploadId))(using any())
+          verify(mockUpscanService, times(1)).fileUploadState(UpscanFileReference(meq(testFileReference)))(using any())
         }
       }
     }
@@ -172,8 +177,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 }
 
 object NotificationUploadSuccessControllerSpec {
-  val testUploadId: String    = UUID.randomUUID().toString
-  val testDownloadUrl: String = "/test/url"
-  val testFileContent: String = Random.nextString(10)
+  val testDownloadUrl: String   = "/test/url"
+  val testFileContent: String   = Random.nextString(10)
   val testFileReference: String = Random.nextString(10)
 }

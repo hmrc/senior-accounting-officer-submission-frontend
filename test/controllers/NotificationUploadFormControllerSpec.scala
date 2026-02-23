@@ -49,7 +49,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       when(mockNotificationUploadFormView.apply(any())(using any(), any())).thenReturn(Html(""))
 
       when(
-        mockUpscanInitiateConnector.initiateV2(any[String])(using
+        mockUpscanInitiateConnector.initiateV2()(using
           any[HeaderCarrier]()
         )
       ).thenReturn(Future.successful(upscanInitiateResponse))
@@ -89,7 +89,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       when(mockAppConfig.cacheTtl).thenReturn(900L)
 
       when(
-        mockUpscanInitiateConnector.initiateV2(any[String])(using
+        mockUpscanInitiateConnector.initiateV2()(using
           any[HeaderCarrier]
         )
       ).thenReturn(Future.failed(new RuntimeException("Upscan service unavailable")))
@@ -126,7 +126,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
 
       when(
-        mockUpscanInitiateConnector.initiateV2(any[String])(using
+        mockUpscanInitiateConnector.initiateV2()(using
           any[HeaderCarrier]()
         )
       )
