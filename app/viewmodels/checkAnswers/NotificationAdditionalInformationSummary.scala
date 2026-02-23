@@ -20,7 +20,6 @@ import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.NotificationAdditionalInformationPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
@@ -34,7 +33,7 @@ object NotificationAdditionalInformationSummary {
     
     SummaryListRowViewModel(
       key = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,
-      value = ValueViewModel(HtmlContent(HtmlFormat.escape(additionalInformation))),
+      value = ValueViewModel(HtmlContent(additionalInformation)),
       actions = Seq(
         ActionItemViewModel(
           messages("site.change").toText,
