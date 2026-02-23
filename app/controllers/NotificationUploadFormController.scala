@@ -43,13 +43,11 @@ class NotificationUploadFormController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
-    val uploadId = UploadId.generate()
     for
-      upscanInitiateResponse <- upscanInitiateConnector.initiateV2(uploadId.value)
+      upscanInitiateResponse <- upscanInitiateConnector.initiateV2()
       _                      <- upscanSessionRepository.insert(
         FileUploadState(
           ObjectId.get(),
-          uploadId,
           UpscanFileReference(upscanInitiateResponse.fileReference.reference),
           UploadStatus.InProgress
         )

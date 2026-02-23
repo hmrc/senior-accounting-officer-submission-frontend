@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions.*
+import models.UpscanFileReference
 import pages.NotificationUploadReferencePage
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -28,7 +29,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationUploadSuccessView
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.Inject
 
 class NotificationUploadSuccessController @Inject() (
@@ -44,9 +44,9 @@ class NotificationUploadSuccessController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(uploadId: String): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onPageLoad(key: Option[String]): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      upscanService.fileUploadState(uploadId).flatMap {
+      upscanService.fileUploadState(UpscanFileReference(key.get)).flatMap {
         case State.NoUploadId =>
           Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case State.WaitingForUpscan =>

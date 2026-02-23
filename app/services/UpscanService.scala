@@ -18,7 +18,7 @@ package services
 
 import connectors.UpscanDownloadConnector
 import models.UploadStatus.*
-import models.{FileUploadState, UploadId, UpscanFileReference}
+import models.{FileUploadState, UpscanFileReference}
 import play.api.http.Status.OK
 import repositories.UpscanSessionRepository
 import services.UpscanService.*
@@ -33,8 +33,8 @@ class UpscanService @Inject() (
     downloadConnector: UpscanDownloadConnector
 )(using ExecutionContext) {
 
-  def fileUploadState(uploadId: String)(using hc: HeaderCarrier): Future[State] =
-    checkMongo(uploadId).flatMap {
+  def fileUploadState(reference: UpscanFileReference)(using hc: HeaderCarrier): Future[State] =
+    checkMongo(reference).flatMap {
       _.fold(
         state => Future.successful(state),
         (reference, url) =>
@@ -47,15 +47,16 @@ class UpscanService @Inject() (
       )
     }
 
-  private def checkMongo(uploadId: String): Future[Either[State, (UpscanFileReference, String)]] =
-    repository.findByUploadId(UploadId(uploadId)).map {
-      case Some(FileUploadState(_, _, _, InProgress, _)) =>
+  private def checkMongo(reference: UpscanFileReference): Future[Either[State, (UpscanFileReference, String)]] =
+    repository.find(reference).map {
+      case Some(FileUploadState(_, _, InProgress, _)) =>
         Left(State.WaitingForUpscan)
-      case Some(FileUploadState(_, _, reference, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
+      case Some(FileUploadState( _, reference, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
         Right((reference, downloadUrl))
-      case Some(FileUploadState(_, _, _, Failed, _)) =>
+      case Some(FileUploadState(_, _, Failed, _)) =>
         Left(State.UploadToUpscanFailed)
       case _ =>
+        //TODO remove this extra case
         Left(State.NoUploadId)
     }
 }
