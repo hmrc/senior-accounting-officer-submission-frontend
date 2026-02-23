@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.NotificationAdditionalInformationPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
@@ -30,10 +31,10 @@ object NotificationAdditionalInformationSummary {
   def row(answers: UserAnswers)(using messages: Messages): SummaryListRow = {
     val additionalInformation =
       answers.getNullable(NotificationAdditionalInformationPage).getOrElse("")
-
+    
     SummaryListRowViewModel(
       key = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,
-      value = ValueViewModel(HtmlFormat.escape(additionalInformation).toText),
+      value = ValueViewModel(HtmlContent(HtmlFormat.escape(additionalInformation))),
       actions = Seq(
         ActionItemViewModel(
           messages("site.change").toText,
