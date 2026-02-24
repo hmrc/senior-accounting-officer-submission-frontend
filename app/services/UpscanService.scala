@@ -37,22 +37,23 @@ class UpscanService @Inject() (
     checkMongo(reference).flatMap {
       _.fold(
         state => Future.successful(state),
-        (reference, url) =>
+        { case InterimResult(reference, url) =>
           downloadConnector.download(url).map {
             case HttpResponse(OK, body, _) =>
               State.Result(reference, body)
             case httpResponse =>
               State.DownloadFromUpscanFailed(httpResponse)
           }
+        }
       )
     }
-// TODO: don't use a tuple as the return type
-  private def checkMongo(reference: String): Future[Either[State, (String, String)]] =
+
+  private def checkMongo(reference: String): Future[Either[State, InterimResult]] =
     repository.find(reference).map {
       case Some(FileUploadState(_, _, InProgress, _)) =>
         Left(State.WaitingForUpscan)
       case Some(FileUploadState(_, reference, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
-        Right((reference, downloadUrl))
+        Right(InterimResult(reference, downloadUrl))
       case Some(FileUploadState(_, _, Failed, _)) =>
         Left(State.UploadToUpscanFailed)
       case _ =>
@@ -62,6 +63,9 @@ class UpscanService @Inject() (
 }
 
 object UpscanService {
+
+  private final case class InterimResult(reference: String, fileContent: String)
+
   enum State {
     case NoUploadId                                       extends State
     case WaitingForUpscan                                 extends State
