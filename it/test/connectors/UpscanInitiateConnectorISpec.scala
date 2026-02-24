@@ -86,7 +86,7 @@ object UpscanInitiateConnectorISpec {
   val expectedRequest = UpscanInitiateRequestV2(
     callbackUrl = "http://localhost:10058/internal/upscan-callback",
     successRedirect = Some(
-      s"http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"
+      "http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"
     ),
     errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload/error")
   )
