@@ -43,7 +43,8 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
-      val upscanInitiateResponse = UpscanInitiateResponse("foo", "bar", Map("foo2" -> "foo2Val"))
+      val upscanInitiateResponse =
+        UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
       when(mockAppConfig.cacheTtl).thenReturn(900L)
       when(mockNotificationUploadFormView.apply(any())(using any(), any())).thenReturn(Html(""))
@@ -123,7 +124,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockAppConfig.cacheTtl).thenReturn(900L)
 
-      val upscanInitiateResponse = UpscanInitiateResponse("foo", "bar", Map("foo2" -> "foo2Val"))
+      val upscanInitiateResponse = UpscanInitiateResponse("foo", "bar", Map(elems = "foo2" -> "foo2Val"))
 
       when(
         mockUpscanInitiateConnector.initiateV2()(using
