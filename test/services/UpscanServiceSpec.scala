@@ -38,9 +38,6 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import scala.concurrent.Future
 import scala.util.Random
 
-import java.util.UUID
-import views.NotificationConfirmationViewSpec.testReferenceNumber
-
 class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
   val mockUpscanSessionRepository: UpscanSessionRepository = mock[UpscanSessionRepository]
