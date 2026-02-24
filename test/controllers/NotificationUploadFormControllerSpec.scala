@@ -124,7 +124,8 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockAppConfig.cacheTtl).thenReturn(900L)
 
-      val upscanInitiateResponse = UpscanInitiateResponse("foo", "bar", Map(elems = "foo2" -> "foo2Val"))
+      val upscanInitiateResponse =
+        UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
       when(
         mockUpscanInitiateConnector.initiateV2()(using
