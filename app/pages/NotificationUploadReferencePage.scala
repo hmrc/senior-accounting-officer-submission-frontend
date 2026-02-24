@@ -16,10 +16,9 @@
 
 package pages
 
-import models.UpscanFileReference
 import play.api.libs.json.JsPath
 
-case object NotificationUploadReferencePage extends QuestionPage[UpscanFileReference] {
+case object NotificationUploadReferencePage extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ toString
 

@@ -43,7 +43,7 @@ class UpscanDownloadConnectorISpec extends ISpecBase {
 
       verify(
         1,
-        getRequestedFor(urlEqualTo(testUrl))
+        getRequestedFor(urlEqualTo(URI(testUrl).getPath))
           .withHeader(HeaderNames.USER_AGENT, equalTo("senior-accounting-officer-submission-frontend"))
       )
     }

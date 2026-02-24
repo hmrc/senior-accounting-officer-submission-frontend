@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import config.AppConfig
 import connectors.UpscanInitiateConnector
-import models.{FileUploadState, UpscanFileReference, UpscanInitiateResponse}
+import models.{FileUploadState, UpscanInitiateResponse}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
@@ -43,13 +43,14 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
-      val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
+      val upscanInitiateResponse =
+        UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
       when(mockAppConfig.cacheTtl).thenReturn(900L)
       when(mockNotificationUploadFormView.apply(any())(using any(), any())).thenReturn(Html(""))
 
       when(
-        mockUpscanInitiateConnector.initiateV2(any[String])(using
+        mockUpscanInitiateConnector.initiateV2()(using
           any[HeaderCarrier]()
         )
       ).thenReturn(Future.successful(upscanInitiateResponse))
@@ -89,7 +90,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       when(mockAppConfig.cacheTtl).thenReturn(900L)
 
       when(
-        mockUpscanInitiateConnector.initiateV2(any[String])(using
+        mockUpscanInitiateConnector.initiateV2()(using
           any[HeaderCarrier]
         )
       ).thenReturn(Future.failed(new RuntimeException("Upscan service unavailable")))
@@ -123,10 +124,11 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
       when(mockAppConfig.cacheTtl).thenReturn(900L)
 
-      val upscanInitiateResponse = UpscanInitiateResponse(UpscanFileReference("foo"), "bar", Map("foo2" -> "foo2Val"))
+      val upscanInitiateResponse =
+        UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
       when(
-        mockUpscanInitiateConnector.initiateV2(any[String])(using
+        mockUpscanInitiateConnector.initiateV2()(using
           any[HeaderCarrier]()
         )
       )

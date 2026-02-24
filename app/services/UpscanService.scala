@@ -18,7 +18,7 @@ package services
 
 import connectors.UpscanDownloadConnector
 import models.UploadStatus.*
-import models.{FileUploadState, UploadId, UpscanFileReference}
+import models.FileUploadState
 import play.api.http.Status.OK
 import repositories.UpscanSessionRepository
 import services.UpscanService.*
@@ -33,39 +33,43 @@ class UpscanService @Inject() (
     downloadConnector: UpscanDownloadConnector
 )(using ExecutionContext) {
 
-  def fileUploadState(uploadId: String)(using hc: HeaderCarrier): Future[State] =
-    checkMongo(uploadId).flatMap {
+  def fileUploadState(reference: String)(using hc: HeaderCarrier): Future[State] =
+    checkMongo(reference).flatMap {
       _.fold(
         state => Future.successful(state),
-        (reference, url) =>
+        { case InterimResult(reference, url) =>
           downloadConnector.download(url).map {
             case HttpResponse(OK, body, _) =>
               State.Result(reference, body)
             case httpResponse =>
               State.DownloadFromUpscanFailed(httpResponse)
           }
+        }
       )
     }
 
-  private def checkMongo(uploadId: String): Future[Either[State, (UpscanFileReference, String)]] =
-    repository.findByUploadId(UploadId(uploadId)).map {
-      case Some(FileUploadState(_, _, _, InProgress, _)) =>
+  private def checkMongo(reference: String): Future[Either[State, InterimResult]] =
+    repository.find(reference).map {
+      case Some(FileUploadState(_, _, InProgress, _)) =>
         Left(State.WaitingForUpscan)
-      case Some(FileUploadState(_, _, reference, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
-        Right((reference, downloadUrl))
-      case Some(FileUploadState(_, _, _, Failed, _)) =>
+      case Some(FileUploadState(_, reference, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
+        Right(InterimResult(reference, downloadUrl))
+      case Some(FileUploadState(_, _, Failed, _)) =>
         Left(State.UploadToUpscanFailed)
       case _ =>
-        Left(State.NoUploadId)
+        Left(State.NoReference)
     }
 }
 
 object UpscanService {
+
+  private final case class InterimResult(reference: String, fileContent: String)
+
   enum State {
-    case NoUploadId                                                  extends State
-    case WaitingForUpscan                                            extends State
-    case UploadToUpscanFailed                                        extends State
-    case DownloadFromUpscanFailed(response: HttpResponse)            extends State
-    case Result(reference: UpscanFileReference, fileContent: String) extends State
+    case NoReference                                      extends State
+    case WaitingForUpscan                                 extends State
+    case UploadToUpscanFailed                             extends State
+    case DownloadFromUpscanFailed(response: HttpResponse) extends State
+    case Result(reference: String, fileContent: String)   extends State
   }
 }

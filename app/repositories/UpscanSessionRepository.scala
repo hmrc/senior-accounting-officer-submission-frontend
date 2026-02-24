@@ -46,7 +46,6 @@ class UpscanSessionRepository @Inject() (
       mongoComponent = mongoComponent,
       domainFormat = FileUploadState.mongoFormat,
       indexes = Seq(
-        IndexModel(Indexes.ascending("uploadId"), IndexOptions().unique(true)),
         IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true)),
         IndexModel(
           Indexes.ascending("lastUpdated"),
@@ -58,10 +57,10 @@ class UpscanSessionRepository @Inject() (
       replaceIndexes = true
     ) {
 
-  def keepAlive(id: UploadId): Future[Boolean] = Mdc.preservingMdc {
+  def keepAlive(reference: String): Future[Boolean] = Mdc.preservingMdc {
     collection
       .updateOne(
-        filter = Filters.equal("uploadId", id.value),
+        filter = Filters.equal("reference", reference),
         update = Updates.set("lastUpdated", Instant.now(clock))
       )
       .toFuture()
@@ -75,17 +74,16 @@ class UpscanSessionRepository @Inject() (
       .map(_ => true)
   }
 
-  def findByUploadId(uploadId: UploadId): Future[Option[FileUploadState]] = Mdc.preservingMdc {
-    keepAlive(uploadId).flatMap(_ => collection.find(equal("uploadId", Codecs.toBson(uploadId))).headOption())
+  def find(reference: String): Future[Option[FileUploadState]] = Mdc.preservingMdc {
+    keepAlive(reference).flatMap(_ => collection.find(equal("reference", Codecs.toBson(reference))).headOption())
   }
 
-  def updateStatus(reference: UpscanFileReference, newStatus: UploadStatus): Future[UploadStatus] = Mdc.preservingMdc {
+  def updateStatus(reference: String, newStatus: UploadStatus): Future[UploadStatus] = Mdc.preservingMdc {
     collection
       .findOneAndUpdate(
         filter = equal("reference", Codecs.toBson(reference)),
         update = Updates.combine(
           set("status", Codecs.toBson(newStatus)),
-          setOnInsert("uploadId", Codecs.toBson(UploadId.generate())),
           setOnInsert("_id", ObjectId.get()),
           setOnInsert("lastUpdated", Instant.now(clock))
         ),
