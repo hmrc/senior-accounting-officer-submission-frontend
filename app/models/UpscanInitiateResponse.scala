@@ -17,7 +17,7 @@
 package models
 
 import play.api.libs.functional.syntax.*
-import play.api.libs.json.{Format, JsPath, Reads}
+import play.api.libs.json.{Format, JsPath}
 
 /** The response received from upscan when the initiate api is called to initiate a file upload
   */
