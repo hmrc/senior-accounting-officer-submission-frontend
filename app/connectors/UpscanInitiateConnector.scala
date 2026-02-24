@@ -34,7 +34,6 @@ class UpscanInitiateConnector @Inject() (
     appConfig: AppConfig
 )(using ExecutionContext) {
 
-  // TODO - investigate if we need the uploadId in the successRedirect
   def initiateV2()(using HeaderCarrier): Future[UpscanInitiateResponse] = {
     val request = UpscanInitiateRequestV2(
       callbackUrl = appConfig.upscanCallbackTarget,
