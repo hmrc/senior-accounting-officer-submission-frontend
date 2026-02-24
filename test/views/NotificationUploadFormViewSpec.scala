@@ -17,7 +17,7 @@
 package views
 
 import base.ViewSpecBase
-import models.{UpscanFileReference, UpscanInitiateResponse}
+import models.UpscanInitiateResponse
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.NotificationUploadFormViewSpec.*
@@ -53,7 +53,7 @@ object NotificationUploadFormViewSpec {
   val pageHeading                                    = "notificationUploadForm"
   val pageTitle                                      = "notificationUploadForm"
   val upscanInitiateResponse: UpscanInitiateResponse = UpscanInitiateResponse(
-    fileReference = UpscanFileReference("testReference"),
+    fileReference = "testReference",
     postTarget = "formPostTarget",
     formFields = Map(
       "test1" -> "testValue1",

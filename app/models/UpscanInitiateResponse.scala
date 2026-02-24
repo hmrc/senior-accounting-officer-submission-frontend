@@ -22,7 +22,7 @@ import play.api.libs.json.{Format, JsPath, Reads}
 /** The response received from upscan when the initiate api is called to initiate a file upload
   */
 final case class UpscanInitiateResponse(
-    fileReference: UpscanFileReference,
+    fileReference: String,
     postTarget: String,
     formFields: Map[String, String]
 )
@@ -30,13 +30,13 @@ final case class UpscanInitiateResponse(
 object UpscanInitiateResponse {
 
   given Reads[UpscanInitiateResponse] = (
-    (JsPath \ "reference").read[UpscanFileReference] and
+    (JsPath \ "reference").read[String] and
       (JsPath \ "uploadRequest" \ "href").read[String] and
       (JsPath \ "uploadRequest" \ "fields").read[Map[String, String]]
   )(UpscanInitiateResponse.apply _)
 
   given Format[UpscanInitiateResponse] = (
-    (JsPath \ "reference").format[UpscanFileReference] and
+    (JsPath \ "reference").format[String] and
       (JsPath \ "uploadRequest" \ "href").format[String] and
       (JsPath \ "uploadRequest" \ "fields").format[Map[String, String]]
   )(UpscanInitiateResponse.apply _, o => Tuple.fromProductTyped(o))

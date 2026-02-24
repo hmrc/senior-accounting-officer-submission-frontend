@@ -57,10 +57,10 @@ class UpscanSessionRepository @Inject() (
       replaceIndexes = true
     ) {
 
-  def keepAlive(id: UpscanFileReference): Future[Boolean] = Mdc.preservingMdc {
+  def keepAlive(reference: String): Future[Boolean] = Mdc.preservingMdc {
     collection
       .updateOne(
-        filter = Filters.equal("reference", id.reference),
+        filter = Filters.equal("reference", reference),
         update = Updates.set("lastUpdated", Instant.now(clock))
       )
       .toFuture()
@@ -74,11 +74,11 @@ class UpscanSessionRepository @Inject() (
       .map(_ => true)
   }
 
-  def find(reference: UpscanFileReference): Future[Option[FileUploadState]] = Mdc.preservingMdc {
+  def find(reference: String): Future[Option[FileUploadState]] = Mdc.preservingMdc {
     keepAlive(reference).flatMap(_ => collection.find(equal("reference", Codecs.toBson(reference))).headOption())
   }
 
-  def updateStatus(reference: UpscanFileReference, newStatus: UploadStatus): Future[UploadStatus] = Mdc.preservingMdc {
+  def updateStatus(reference: String, newStatus: UploadStatus): Future[UploadStatus] = Mdc.preservingMdc {
     collection
       .findOneAndUpdate(
         filter = equal("reference", Codecs.toBson(reference)),

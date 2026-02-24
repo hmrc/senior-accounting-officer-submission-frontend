@@ -41,7 +41,7 @@ class UpscanInitiateConnectorFormatSpec extends SpecBase {
   )
 
   val upscanInitiateResponseModel: UpscanInitiateResponse = UpscanInitiateResponse(
-    fileReference = UpscanFileReference("ref-123"),
+    fileReference = "ref-123",
     postTarget = "upload-url",
     formFields = Map(
       "field1" -> "value1",

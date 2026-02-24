@@ -47,7 +47,7 @@ class UpscanSessionRepositorySpec
 
   "UpscanSessionRepository must" - {
     "insert, findByUploadId, and updateStatus" in {
-      val reference = UpscanFileReference("foo")
+      val reference = "foo"
       val details   = FileUploadState(
         _id = ObjectId.get(),
         reference = reference,
@@ -74,22 +74,22 @@ class UpscanSessionRepositorySpec
     }
 
     "return None when findByUploadId is called with a non-existent id" in {
-      val reference = UpscanFileReference("foo")
+      val reference = "foo"
       val result    = repository.find(reference).futureValue
       result mustBe None
     }
 
     "upsert a new document when updateStatus is called with a non-existent reference" in {
-      val reference = UpscanFileReference("bar")
+      val reference = "bar"
       val newStatus = UploadStatus.Failed
 
-      repository.collection.find(Filters.equal("reference", reference.reference)).headOption().futureValue mustBe None
+      repository.collection.find(Filters.equal("reference", reference)).headOption().futureValue mustBe None
 
       val updated = repository.updateStatus(reference, newStatus).futureValue
       updated mustBe newStatus
 
       val found = repository.collection
-        .find(Filters.equal("reference", reference.reference))
+        .find(Filters.equal("reference", reference))
         .headOption()
         .futureValue
       found must not be empty
@@ -101,7 +101,7 @@ class UpscanSessionRepositorySpec
       val input =
         FileUploadState(
           _id = ObjectId.get(),
-          reference = UpscanFileReference("ABC"),
+          reference = "ABC",
           status = UploadStatus.InProgress,
           lastUpdated = instant
         )
@@ -114,7 +114,7 @@ class UpscanSessionRepositorySpec
 
     "serialize and deserialize Failed status" in {
       val input =
-        FileUploadState(ObjectId.get(), UpscanFileReference("ABC"), UploadStatus.Failed, instant)
+        FileUploadState(ObjectId.get(), "ABC", UploadStatus.Failed, instant)
 
       val serialized = mongoFormat.writes(input)
       val output     = mongoFormat.reads(serialized)
@@ -125,7 +125,7 @@ class UpscanSessionRepositorySpec
     "serialize and deserialize UploadedSuccessfully status when size is unknown" in {
       val input = FileUploadState(
         _id = ObjectId.get(),
-        reference = UpscanFileReference("ABC"),
+        reference = "ABC",
         status = UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = None),
         lastUpdated = instant
       )
@@ -139,7 +139,7 @@ class UpscanSessionRepositorySpec
     "serialize and deserialize UploadedSuccessfully status when size is known" in {
       val input = FileUploadState(
         _id = ObjectId.get(),
-        reference = UpscanFileReference("ABC"),
+        reference = "ABC",
         status = UploadStatus.UploadedSuccessfully("foo.txt", "text/plain", "http:localhost:8080", size = Some(123456)),
         lastUpdated = instant
       )

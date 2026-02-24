@@ -67,7 +67,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         Future.successful(None)
       )
 
-      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
+      val result = SUT.fileUploadState(testFileReference).futureValue
 
       result mustBe State.NoUploadId
 
@@ -83,14 +83,14 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
           Some(
             FileUploadState(
               new ObjectId(),
-              UpscanFileReference(testFileReference),
+              testFileReference,
               UploadStatus.InProgress
             )
           )
         )
       )
 
-      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
+      val result = SUT.fileUploadState(testFileReference).futureValue
 
       result mustBe State.WaitingForUpscan
 
@@ -106,14 +106,14 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
           Some(
             FileUploadState(
               new ObjectId(),
-              UpscanFileReference(testFileReference),
+              testFileReference,
               UploadStatus.Failed
             )
           )
         )
       )
 
-      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
+      val result = SUT.fileUploadState(testFileReference).futureValue
 
       result mustBe State.UploadToUpscanFailed
 
@@ -129,7 +129,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
           Some(
             FileUploadState(
               new ObjectId(),
-              UpscanFileReference(testFileReference),
+              testFileReference,
               UploadStatus.UploadedSuccessfully(
                 name = "",
                 mimeType = "",
@@ -145,9 +145,9 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         Future.successful(testResponse)
       )
 
-      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
+      val result = SUT.fileUploadState(testFileReference).futureValue
 
-      result mustBe State.Result(UpscanFileReference(testFileReference), testFileContent)
+      result mustBe State.Result(testFileReference, testFileContent)
 
       verifyFindByReference(times(1))
       verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
@@ -161,7 +161,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
           Some(
             FileUploadState(
               new ObjectId(),
-              UpscanFileReference(testFileReference),
+              testFileReference,
               UploadStatus.UploadedSuccessfully(
                 name = "",
                 mimeType = "",
@@ -177,7 +177,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         Future.successful(testResponse)
       )
 
-      val result = SUT.fileUploadState(UpscanFileReference(testFileReference)).futureValue
+      val result = SUT.fileUploadState(testFileReference).futureValue
 
       result mustBe State.DownloadFromUpscanFailed(testResponse)
 
@@ -187,7 +187,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
   }
 
   def verifyFindByReference(mode: VerificationMode): Unit =
-    verify(mockUpscanSessionRepository, mode).find(UpscanFileReference(meq(testFileReference)))
+    verify(mockUpscanSessionRepository, mode).find(meq(testFileReference))
 
 }
 

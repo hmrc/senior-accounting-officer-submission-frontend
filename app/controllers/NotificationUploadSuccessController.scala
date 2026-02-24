@@ -17,7 +17,6 @@
 package controllers
 
 import controllers.actions.*
-import models.UpscanFileReference
 import pages.NotificationUploadReferencePage
 import play.api.Logger
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -46,7 +45,7 @@ class NotificationUploadSuccessController @Inject() (
 
   def onPageLoad(key: Option[String]): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      upscanService.fileUploadState(UpscanFileReference(key.get)).flatMap {
+      upscanService.fileUploadState(key.get).flatMap {
         case State.NoUploadId =>
           Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case State.WaitingForUpscan =>

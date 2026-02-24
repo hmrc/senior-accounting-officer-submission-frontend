@@ -38,7 +38,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val dispatcher                  = new UpscanCallbackDispatcher(mockUpscanSessionRepository)
 
       val callback = UpscanSuccessCallback(
-        reference = UpscanFileReference("foo"),
+        reference = "foo",
         downloadUrl = "http://localhost:8080/download",
         uploadDetails = UpscanFileMetadata(
           uploadTimestamp = Instant.now(),
@@ -61,7 +61,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
       verify(mockUpscanSessionRepository, times(1))
-        .updateStatus(referenceCaptor.capture().asInstanceOf[UpscanFileReference], statusCaptor.capture())
+        .updateStatus(referenceCaptor.capture().asInstanceOf[String], statusCaptor.capture())
 
       referenceCaptor.getValue.toString mustBe "foo"
 
@@ -79,7 +79,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val dispatcher                  = new UpscanCallbackDispatcher(mockUpscanSessionRepository)
 
       val callback = UpscanFailureCallback(
-        reference = UpscanFileReference("foo"),
+        reference = "foo",
         failureDetails = UpscanFailureDetails(
           failureReason = "QUARANTINE",
           message = "This file has a virus"
@@ -94,7 +94,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
       verify(mockUpscanSessionRepository, times(1))
-        .updateStatus(referenceCaptor.capture().asInstanceOf[UpscanFileReference], statusCaptor.capture())
+        .updateStatus(referenceCaptor.capture().asInstanceOf[String], statusCaptor.capture())
 
       referenceCaptor.getValue.toString mustBe "foo"
       statusCaptor.getValue mustBe UploadStatus.Failed

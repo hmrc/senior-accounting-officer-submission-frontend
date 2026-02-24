@@ -18,7 +18,7 @@ package connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import connectors.UpscanInitiateConnectorISpec.*
-import models.{UpscanFileReference, UpscanInitiateRequestV2, UpscanInitiateResponse}
+import models.{UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.http.HeaderNames
 import play.api.libs.json.Json
 import play.api.mvc.Request
@@ -79,7 +79,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
 
 object UpscanInitiateConnectorISpec {
   val fakeUpscanInitiateResponse = UpscanInitiateResponse(
-    fileReference = UpscanFileReference("foo"),
+    fileReference = "foo",
     postTarget = "bar",
     formFields = Map("T1" -> "V1")
   )

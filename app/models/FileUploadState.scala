@@ -24,7 +24,7 @@ import java.time.Instant
 
 final case class FileUploadState(
     `_id`: ObjectId,
-    reference: UpscanFileReference,
+    reference: String,
     status: UploadStatus,
     lastUpdated: Instant = Instant.now
 )

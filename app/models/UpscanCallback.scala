@@ -21,7 +21,7 @@ import play.api.libs.json.*
 import java.time.Instant
 
 sealed trait UpscanCallback {
-  def reference: UpscanFileReference
+  def reference: String
 }
 
 final case class UpscanFileMetadata(
@@ -33,7 +33,7 @@ final case class UpscanFileMetadata(
 )
 
 final case class UpscanSuccessCallback(
-    reference: UpscanFileReference,
+    reference: String,
     downloadUrl: String,
     uploadDetails: UpscanFileMetadata
 ) extends UpscanCallback
@@ -44,7 +44,7 @@ final case class UpscanFailureDetails(
 )
 
 final case class UpscanFailureCallback(
-    reference: UpscanFileReference,
+    reference: String,
     failureDetails: UpscanFailureDetails
 ) extends UpscanCallback
 
