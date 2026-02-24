@@ -45,25 +45,21 @@ class NotificationUploadSuccessController @Inject() (
 
   def onPageLoad(key: Option[String]): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      key.fold {
-        Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-      } { value =>
-        upscanService.fileUploadState(value).flatMap {
-          case State.NoReference =>
-            Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-          case State.WaitingForUpscan =>
-            Future.successful(Ok(view()))
-          case State.UploadToUpscanFailed =>
-            ???
-          case State.DownloadFromUpscanFailed(response) =>
-            ???
-          case State.Result(reference, fileContent) =>
-            Logger(getClass).info(fileContent)
-            Future
-              .fromTry(request.userAnswers.set(NotificationUploadReferencePage, reference))
-              .flatMap(sessionRepository.set)
-              .map(_ => Redirect(routes.SubmitNotificationStartController.onPageLoad()))
-        }
+      upscanService.fileUploadState(key).flatMap {
+        case State.NoReference =>
+          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case State.WaitingForUpscan =>
+          Future.successful(Ok(view()))
+        case State.UploadToUpscanFailed =>
+          ???
+        case State.DownloadFromUpscanFailed(response) =>
+          ???
+        case State.Result(reference, fileContent) =>
+          Logger(getClass).info(fileContent)
+          Future
+            .fromTry(request.userAnswers.set(NotificationUploadReferencePage, reference))
+            .flatMap(sessionRepository.set)
+            .map(_ => Redirect(routes.SubmitNotificationStartController.onPageLoad()))
       }
     }
 

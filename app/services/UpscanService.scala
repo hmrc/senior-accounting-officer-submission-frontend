@@ -33,7 +33,10 @@ class UpscanService @Inject() (
     downloadConnector: UpscanDownloadConnector
 )(using ExecutionContext) {
 
-  def fileUploadState(reference: String)(using hc: HeaderCarrier): Future[State] =
+  def fileUploadState(reference: Option[String])(using hc: HeaderCarrier): Future[State] =
+    reference.fold(Future.successful(State.NoReference))(fileUploadStateByReference)
+
+  private def fileUploadStateByReference(reference: String)(using hc: HeaderCarrier): Future[State] =
     checkMongo(reference).flatMap {
       _.fold(
         state => Future.successful(state),
