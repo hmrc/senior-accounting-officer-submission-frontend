@@ -28,6 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationUploadSuccessView
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import javax.inject.Inject
 
 class NotificationUploadSuccessController @Inject() (

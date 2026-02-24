@@ -17,8 +17,8 @@
 package services
 
 import connectors.UpscanDownloadConnector
-import models.UploadStatus.*
 import models.FileUploadState
+import models.UploadStatus.*
 import play.api.http.Status.OK
 import repositories.UpscanSessionRepository
 import services.UpscanService.*

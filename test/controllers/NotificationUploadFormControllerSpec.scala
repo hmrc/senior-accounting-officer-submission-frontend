@@ -27,8 +27,8 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import play.twirl.api.Html
-import uk.gov.hmrc.http.HeaderCarrier
 import repositories.UpscanSessionRepository
+import uk.gov.hmrc.http.HeaderCarrier
 import views.html.NotificationUploadFormView
 
 import scala.concurrent.{ExecutionContext, Future}
