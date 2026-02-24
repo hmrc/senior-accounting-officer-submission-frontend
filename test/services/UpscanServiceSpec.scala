@@ -62,20 +62,20 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     .build()
 
   "UpscanService.fileUploadState" - {
-    "must return State.NoUploadId when the uploadId does not exist in Mongo" in {
+    "must return State.NoReference when the uploadId does not exist in Mongo" in {
       when(mockUpscanSessionRepository.find(any())).thenReturn(
         Future.successful(None)
       )
 
       val result = SUT.fileUploadState(testFileReference).futureValue
 
-      result mustBe State.NoUploadId
+      result mustBe State.NoReference
 
       verifyFindByReference(times(1))
       verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
 
-    "must return State.NoUploadId when the file upload is in progress" in {
+    "must return State.NoReference when the file upload is in progress" in {
       applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       when(mockUpscanSessionRepository.find(any())).thenReturn(

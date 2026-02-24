@@ -46,7 +46,7 @@ class NotificationUploadSuccessController @Inject() (
   def onPageLoad(key: Option[String]): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       upscanService.fileUploadState(key.get).flatMap {
-        case State.NoUploadId =>
+        case State.NoReference =>
           Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case State.WaitingForUpscan =>
           Future.successful(Ok(view()))

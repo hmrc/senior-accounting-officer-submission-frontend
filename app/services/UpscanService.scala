@@ -57,8 +57,7 @@ class UpscanService @Inject() (
       case Some(FileUploadState(_, _, Failed, _)) =>
         Left(State.UploadToUpscanFailed)
       case _ =>
-        // TODO rename this enum
-        Left(State.NoUploadId)
+        Left(State.NoReference)
     }
 }
 
@@ -67,7 +66,7 @@ object UpscanService {
   private final case class InterimResult(reference: String, fileContent: String)
 
   enum State {
-    case NoUploadId                                       extends State
+    case NoReference                                      extends State
     case WaitingForUpscan                                 extends State
     case UploadToUpscanFailed                             extends State
     case DownloadFromUpscanFailed(response: HttpResponse) extends State

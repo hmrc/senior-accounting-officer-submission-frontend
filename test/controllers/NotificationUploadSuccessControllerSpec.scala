@@ -50,10 +50,10 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
   "NotificationUploadSuccess Controller" - {
 
-    "when UpscanService returns State.NoUploadId" - {
+    "when UpscanService returns State.NoReference" - {
       "must return Redirect to Journey recovery" in {
         when(mockUpscanService.fileUploadState(any())(using any())).thenReturn(
-          Future.successful(State.NoUploadId)
+          Future.successful(State.NoReference)
         )
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
