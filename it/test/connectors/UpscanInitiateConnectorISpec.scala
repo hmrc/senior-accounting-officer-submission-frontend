@@ -79,7 +79,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
 
 object UpscanInitiateConnectorISpec {
   val fakeUpscanInitiateResponse = UpscanInitiateResponse(
-    fileReference = "foo",
+    reference = "foo",
     postTarget = "bar",
     formFields = Map("T1" -> "V1")
   )

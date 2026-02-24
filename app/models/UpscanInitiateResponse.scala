@@ -22,7 +22,7 @@ import play.api.libs.json.{Format, JsPath, Reads}
 /** The response received from upscan when the initiate api is called to initiate a file upload
   */
 final case class UpscanInitiateResponse(
-    fileReference: String,
+    reference: String,
     postTarget: String,
     formFields: Map[String, String]
 )

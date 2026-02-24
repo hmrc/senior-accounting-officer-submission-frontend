@@ -53,7 +53,7 @@ object NotificationUploadFormViewSpec {
   val pageHeading                                    = "notificationUploadForm"
   val pageTitle                                      = "notificationUploadForm"
   val upscanInitiateResponse: UpscanInitiateResponse = UpscanInitiateResponse(
-    fileReference = "testReference",
+    reference = "testReference",
     postTarget = "formPostTarget",
     formFields = Map(
       "test1" -> "testValue1",

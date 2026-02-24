@@ -48,7 +48,7 @@ class NotificationUploadFormController @Inject() (
       _                      <- upscanSessionRepository.insert(
         FileUploadState(
           ObjectId.get(),
-          upscanInitiateResponse.fileReference,
+          upscanInitiateResponse.reference,
           UploadStatus.InProgress
         )
       )
