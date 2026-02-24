@@ -28,13 +28,6 @@ final case class UpscanInitiateResponse(
 )
 
 object UpscanInitiateResponse {
-
-  given Reads[UpscanInitiateResponse] = (
-    (JsPath \ "reference").read[String] and
-      (JsPath \ "uploadRequest" \ "href").read[String] and
-      (JsPath \ "uploadRequest" \ "fields").read[Map[String, String]]
-  )(UpscanInitiateResponse.apply _)
-
   given Format[UpscanInitiateResponse] = (
     (JsPath \ "reference").format[String] and
       (JsPath \ "uploadRequest" \ "href").format[String] and
