@@ -278,11 +278,11 @@ object TestPoiController {
         val row = {
           Option(sheet.getRow(rowIndex)).getOrElse(sheet.createRow(rowIndex))
         }
-        rowFormats.zipWithIndex.foreach((format, index) =>
+        rowFormats.zipWithIndex.foreach((format, index) => {
           val cell = Option(row.getCell(index)).getOrElse(row.createCell(index))
           cell.setCellStyle(format.cellStyle)
           format.formula.map(f => cell.setCellFormula(sheet.copyFormula(f, 0, rowIndex - firstRowIndex)))
-        )
+        })
 
         row.getCell(Column.CompanyName.index).setCellValue(rowData.companyName)
         row.getCell(Column.Utr.index).setCellValue(rowData.utr)
@@ -420,13 +420,13 @@ object TestPoiController {
       val sheet    = workbook.getSheetAt(0)
       val cdf      = sheet.getSheetConditionalFormatting
       val cdfTotal = cdf.getNumConditionalFormattings
-      (0 until cdfTotal).foreach(i =>
+      (0 until cdfTotal).foreach(i => {
         val rule = cdf.getConditionalFormattingAt(i)
         rule.setFormattingRanges(rule.getFormattingRanges.map { range =>
           range.setLastRow(firstRowIndex + dataSize - 1)
           range
         })
-      )
+      })
     }
 
     def updateDropdownConfigs(dataSize: Int): Unit = {

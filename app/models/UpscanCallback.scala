@@ -60,9 +60,10 @@ object UpscanCallback {
 
   given Reads[UpscanCallback] =
     (json: JsValue) =>
-      json \ "fileStatus" match
+      json \ "fileStatus" match {
         case JsDefined(JsString("READY"))  => json.validate[UpscanSuccessCallback]
         case JsDefined(JsString("FAILED")) => json.validate[UpscanFailureCallback]
         case JsDefined(value)              => JsError(s"Invalid type discriminator: $value")
         case _                             => JsError(s"Missing type discriminator")
+      }
 }
