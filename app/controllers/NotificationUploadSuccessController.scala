@@ -44,9 +44,9 @@ class NotificationUploadSuccessController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(key: Option[String]): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      upscanService.fileUploadState(key.get).flatMap {
+  def onPageLoad(key: Option[String]): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      upscanService.fileUploadState(key).flatMap {
         case State.NoReference =>
           Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case State.WaitingForUpscan =>
@@ -62,6 +62,6 @@ class NotificationUploadSuccessController @Inject() (
             .flatMap(sessionRepository.set)
             .map(_ => Redirect(routes.SubmitNotificationStartController.onPageLoad()))
       }
-  }
+    }
 
 }
