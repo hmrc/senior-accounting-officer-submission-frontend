@@ -47,7 +47,7 @@ object UploadStatus {
     val write: Writes[UploadStatus] = Writes {
       case InProgress => Json.obj("statusType" -> "InProgress")
       case Failed => Json.obj("statusType" -> "Failed")
-      case s: UploadedSuccessfully => Json.toJsObject(s) ++ Json.obj("statusType" -> "UploadedSuccessfully")
+      case success: UploadedSuccessfully => Json.toJsObject(success) ++ Json.obj("statusType" -> "UploadedSuccessfully")
     }
     Format(read, write)
   }
