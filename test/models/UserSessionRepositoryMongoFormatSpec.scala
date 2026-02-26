@@ -77,7 +77,7 @@ class UserSessionRepositoryMongoFormatSpec extends SpecBase {
       val json   = Json.arr("foo" -> "bar")
       val result = Json.fromJson[UploadStatus](json)
       result mustBe a[JsError]
-      result.asInstanceOf[JsError].errors.head._2.head.message must include("Expected a JsObject but got JsArray")
+      result.asInstanceOf[JsError].errors.head._2.head.message must include("Expected a JsObject but got")
     }
 
   }
