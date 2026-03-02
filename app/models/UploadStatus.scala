@@ -22,7 +22,7 @@ sealed trait UploadStatus
 object UploadStatus {
 
   case object InProgress extends UploadStatus
-  case object Failed extends UploadStatus
+  case object Failed     extends UploadStatus
   final case class UploadedSuccessfully(
       name: String,
       mimeType: String,
@@ -34,19 +34,19 @@ object UploadStatus {
 
   given Format[UploadStatus] = {
     val read: Reads[UploadStatus] = {
-      case json:JsObject =>
+      case json: JsObject =>
         (json \ "statusType").validate[String].flatMap {
-          case "InProgress" => JsSuccess(InProgress)
-          case "Failed" => JsSuccess(Failed)
+          case "InProgress"           => JsSuccess(InProgress)
+          case "Failed"               => JsSuccess(Failed)
           case "UploadedSuccessfully" => json.validate[UploadedSuccessfully]
-          case other => JsError(s"Unexpected statusType: $other")
+          case other                  => JsError(s"Unexpected statusType: $other")
         }
       case other => JsError(s"Expected a JsObject but got: ${other.getClass.getSimpleName}")
     }
 
     val write: Writes[UploadStatus] = Writes {
-      case InProgress => Json.obj("statusType" -> "InProgress")
-      case Failed => Json.obj("statusType" -> "Failed")
+      case InProgress                    => Json.obj("statusType" -> "InProgress")
+      case Failed                        => Json.obj("statusType" -> "Failed")
       case success: UploadedSuccessfully => Json.toJsObject(success) ++ Json.obj("statusType" -> "UploadedSuccessfully")
     }
     Format(read, write)

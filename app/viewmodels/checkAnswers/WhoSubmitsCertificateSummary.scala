@@ -30,7 +30,6 @@ object WhoSubmitsCertificateSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(WhoSubmitsCertificatePage).map { answer =>
-
       val value = ValueViewModel(
         HtmlContent(
           HtmlFormat.escape(messages(s"whoSubmitsCertificate.$answer"))

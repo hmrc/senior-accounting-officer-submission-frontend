@@ -50,7 +50,6 @@ class CertificateSubmissionDeclarationController @Inject() (
   val form: Form[CertificateSubmissionDeclaration] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-
     val preparedForm = request.userAnswers.get(CertificateSubmissionDeclarationPage) match {
       case None        => form
       case Some(value) => form.fill(value)
