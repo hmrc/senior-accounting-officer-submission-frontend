@@ -52,7 +52,6 @@ class NotificationAdditionalInformationController @Inject() (
   val form: Form[Option[String]] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-
     val preparedForm = request.userAnswers.getNullable(NotificationAdditionalInformationPage) match {
       case None  => form
       case value => form.fill(value)

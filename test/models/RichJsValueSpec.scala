@@ -91,7 +91,6 @@ class RichJsValueSpec
     "must add a value to an empty JsArray" in {
 
       forAll(nonEmptyAlphaStr) { newValue =>
-
         val value = Json.arr()
 
         val path = JsPath \ 0
@@ -103,7 +102,6 @@ class RichJsValueSpec
     "must add a value to the end of a JsArray" in {
 
       forAll(nonEmptyAlphaStr, nonEmptyAlphaStr) { (oldValue, newValue) =>
-
         val value = Json.arr(oldValue)
 
         val path = JsPath \ 1
@@ -115,7 +113,6 @@ class RichJsValueSpec
     "must change a value in an existing JsArray" in {
 
       forAll(nonEmptyAlphaStr, nonEmptyAlphaStr, nonEmptyAlphaStr) { (firstValue, secondValue, newValue) =>
-
         val value = Json.arr(firstValue, secondValue)
 
         val path = JsPath \ 0

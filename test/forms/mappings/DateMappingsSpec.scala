@@ -59,7 +59,6 @@ class DateMappingsSpec
   "must bind valid dates with months provided as numbers" in {
 
     forAll(validData -> "valid date") { date =>
-
       val data = Map(
         "value.day"   -> date.getDayOfMonth.toString,
         "value.month" -> date.getMonthValue.toString,
@@ -75,7 +74,6 @@ class DateMappingsSpec
   "must bind valid dates with months provided as numbers with leading zeroes" in {
 
     forAll(validData -> "valid date") { date =>
-
       val data = Map(
         "value.day"   -> date.getDayOfMonth.toString,
         "value.month" -> s"0${date.getMonthValue.toString}",
@@ -91,7 +89,6 @@ class DateMappingsSpec
   "must bind valid dates with months provided as full names in upper case" in {
 
     forAll(validData -> "valid date") { date =>
-
       val data = Map(
         "value.day"   -> date.getDayOfMonth.toString,
         "value.month" -> date.getMonth.toString,
@@ -107,7 +104,6 @@ class DateMappingsSpec
   "must bind valid dates with months provided as full names in lower case" in {
 
     forAll(validData -> "valid date") { date =>
-
       val data = Map(
         "value.day"   -> date.getDayOfMonth.toString,
         "value.month" -> date.getMonth.toString.toLowerCase,
@@ -123,7 +119,6 @@ class DateMappingsSpec
   "must bind valid dates with months provided as three characters in upper case" in {
 
     forAll(validData -> "valid date") { date =>
-
       val data = Map(
         "value.day"   -> date.getDayOfMonth.toString,
         "value.month" -> date.getMonth.toString.take(3),
@@ -139,7 +134,6 @@ class DateMappingsSpec
   "must bind valid dates with months provided as three characters in lower case" in {
 
     forAll(validData -> "valid date") { date =>
-
       val data = Map(
         "value.day"   -> date.getDayOfMonth.toString,
         "value.month" -> date.getMonth.toString.take(3).toLowerCase,
@@ -162,7 +156,6 @@ class DateMappingsSpec
   "must fail to bind a date with a missing day" in {
 
     forAll(validData -> "valid date", missingField -> "missing field") { (date, field) =>
-
       val initialData = Map(
         "value.month" -> date.getMonthValue.toString,
         "value.year"  -> date.getYear.toString
@@ -181,7 +174,6 @@ class DateMappingsSpec
   "must fail to bind a date with an invalid day" in {
 
     forAll(validData -> "valid date", invalidField -> "invalid field") { (date, field) =>
-
       val data = Map(
         "value.day"   -> field,
         "value.month" -> date.getMonthValue.toString,
@@ -199,7 +191,6 @@ class DateMappingsSpec
   "must fail to bind a date with a missing month" in {
 
     forAll(validData -> "valid date", missingField -> "missing field") { (date, field) =>
-
       val initialData = Map(
         "value.day"  -> date.getDayOfMonth.toString,
         "value.year" -> date.getYear.toString
@@ -218,7 +209,6 @@ class DateMappingsSpec
   "must fail to bind a date with an invalid month" in {
 
     forAll(validData -> "valid data", invalidField -> "invalid field") { (date, field) =>
-
       val data = Map(
         "value.day"   -> date.getDayOfMonth.toString,
         "value.month" -> field,
@@ -236,7 +226,6 @@ class DateMappingsSpec
   "must fail to bind a date with a missing year" in {
 
     forAll(validData -> "valid date", missingField -> "missing field") { (date, field) =>
-
       val initialData = Map(
         "value.day"   -> date.getDayOfMonth.toString,
         "value.month" -> date.getMonthValue.toString
@@ -255,7 +244,6 @@ class DateMappingsSpec
   "must fail to bind a date with an invalid year" in {
 
     forAll(validData -> "valid data", invalidField -> "invalid field") { (date, field) =>
-
       val data = Map(
         "value.day"   -> date.getDayOfMonth.toString,
         "value.month" -> date.getMonthValue.toString,
@@ -274,7 +262,6 @@ class DateMappingsSpec
 
     forAll(validData -> "valid date", missingField -> "missing day", missingField -> "missing month") {
       (date, dayOpt, monthOpt) =>
-
         val day = dayOpt.fold(Map.empty[String, String]) { value =>
           Map("value.day" -> value)
         }
@@ -301,7 +288,6 @@ class DateMappingsSpec
 
     forAll(validData -> "valid date", missingField -> "missing day", missingField -> "missing year") {
       (date, dayOpt, yearOpt) =>
-
         val day = dayOpt.fold(Map.empty[String, String]) { value =>
           Map("value.day" -> value)
         }
@@ -328,7 +314,6 @@ class DateMappingsSpec
 
     forAll(validData -> "valid date", missingField -> "missing month", missingField -> "missing year") {
       (date, monthOpt, yearOpt) =>
-
         val month = monthOpt.fold(Map.empty[String, String]) { value =>
           Map("value.month" -> value)
         }
@@ -355,7 +340,6 @@ class DateMappingsSpec
 
     forAll(validData -> "valid date", invalidField -> "invalid day", invalidField -> "invalid month") {
       (date, day, month) =>
-
         val data = Map(
           "value.day"   -> day,
           "value.month" -> month,
@@ -372,7 +356,6 @@ class DateMappingsSpec
 
     forAll(validData -> "valid date", invalidField -> "invalid day", invalidField -> "invalid year") {
       (date, day, year) =>
-
         val data = Map(
           "value.day"   -> day,
           "value.month" -> date.getMonthValue.toString,
@@ -389,7 +372,6 @@ class DateMappingsSpec
 
     forAll(validData -> "valid date", invalidField -> "invalid month", invalidField -> "invalid year") {
       (date, month, year) =>
-
         val data = Map(
           "value.day"   -> date.getDayOfMonth.toString,
           "value.month" -> month,
@@ -406,7 +388,6 @@ class DateMappingsSpec
 
     forAll(invalidField -> "valid day", invalidField -> "invalid month", invalidField -> "invalid year") {
       (day, month, year) =>
-
         val data = Map(
           "value.day"   -> day,
           "value.month" -> month,
@@ -437,7 +418,6 @@ class DateMappingsSpec
   "must unbind a date" in {
 
     forAll(validData -> "valid date") { date =>
-
       val filledForm = form.fill(date)
 
       filledForm("value.day").value.value mustEqual date.getDayOfMonth.toString
