@@ -60,10 +60,8 @@ lazy val it =
     .dependsOn(microservice % "test->test")
 
 val scalafixSettings: Seq[Setting[?]] = Seq(
-  semanticdbEnabled := true, // enable SemanticDB
-  scalacOptions += {
-    "-Wall"
-  }
+  semanticdbEnabled := true,
 )
 
+addCommandAlias("checkLint", "scalafmtSbtCheck;scalafmtCheckAll")
 addCommandAlias("lint", "scalafixAll;scalafmtAll")
