@@ -64,4 +64,4 @@ val scalafixSettings: Seq[Setting[?]] = Seq(
 )
 
 addCommandAlias("checkLint", "scalafmtSbtCheck;scalafmtCheckAll")
-addCommandAlias("lint", "scalafixAll;scalafmtAll")
+addCommandAlias("lint", "scalafixAll;scalafmtSbt;scalafmtAll")
