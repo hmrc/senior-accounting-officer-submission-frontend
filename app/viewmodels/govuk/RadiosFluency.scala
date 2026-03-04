@@ -18,7 +18,6 @@ package viewmodels.govuk
 
 import play.api.data.Field
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.FormGroup
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
@@ -113,9 +112,7 @@ trait RadiosFluency {
 
     def withParagraph(text: String): Radios =
       radios.withFormGroup(
-        radios.formGroup.copy(beforeInput =
-          Some(HtmlContent(s"""<p class="govuk-body">${HtmlFormat.escape(text)}</p>"""))
-        )
+        radios.formGroup.copy(beforeInput = Some(HtmlContent(s"""<p class="govuk-body">$text</p>""")))
       )
   }
 }
