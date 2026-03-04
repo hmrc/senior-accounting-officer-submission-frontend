@@ -30,7 +30,7 @@ class RadiosFluencySpec extends AnyFreeSpec with Matchers with OptionValues {
       val inputText = """company's details <script>alert("x")</script>"""
       val radios    = Radios(name = "value", formGroup = FormGroup())
 
-      val result      = radios.withParagraph(inputText)
+      val result       = radios.withParagraph(inputText)
       val renderedHtml = result.formGroup.beforeInput.value.asHtml.body
 
       renderedHtml must include("company&#x27;s")
