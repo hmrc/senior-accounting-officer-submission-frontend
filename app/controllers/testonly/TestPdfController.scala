@@ -18,252 +18,173 @@ package controllers.testonly
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
 import controllers.testonly.OpenHtmlToPdfService.*
-import org.apache.pdfbox.pdmodel.*
+import controllers.testonly.TestPdfController.*
 import org.apache.pekko.actor.ActorSystem
-import org.apache.pekko.stream.IOResult
 import org.apache.pekko.stream.scaladsl.{Source, StreamConverters}
 import org.apache.pekko.util.ByteString
 import play.api.Logger
+import play.api.data.Form
+import play.api.data.Forms.text
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
+import views.html.testonly.OpenHtmlToPdfView
 
-import scala.concurrent.{ExecutionContext, Future, blocking}
-
-import java.io.{File, PipedInputStream, PipedOutputStream}
-import java.util.GregorianCalendar
+import java.io.*
 import javax.inject.Inject
+import scala.concurrent.{ExecutionContext, Future, blocking}
+import scala.util.Try
 
 class TestPdfController @Inject() (
     mcc: MessagesControllerComponents,
     openHtmlToPdfService: OpenHtmlToPdfService,
-    apacheFopService: ApacheFopService
-)(implicit val ec: ExecutionContext, system: ActorSystem)
+    view: OpenHtmlToPdfView
+)(implicit val ec: ExecutionContext, actorSystem: ActorSystem)
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def testPdf(): Action[AnyContent] = Action { implicit request =>
-//    val document = openHtmlToPdfService.testPdf()
-//    val dataContent = document.asSource
-
-    val dataContent = apacheFopService.testPdf()
-
-    Ok.chunked(dataContent, inline = false, fileName = Some("test.pdf"))
+  def testPdf(rows: Int): Action[AnyContent] = Action { implicit request =>
+    val html    = OpenHtmlToPdfService.testHtml(rows)
+    val content = openHtmlToPdfService.builderFor(html).asSource
+    Ok.chunked(
+      content,
+      inline = false,
+      fileName = Some("test.pdf")
+    )
   }
 
-}
+  def onSubmit(): Action[AnyContent] = Action { implicit request =>
+    emptyForm()
+      .bindFromRequest()
+      .fold(
+        _ => Ok(view(emptyForm())),
+        html => {
+          val builder = openHtmlToPdfService.builderFor(html)
 
-class ApacheFopService @Inject() (implicit val ec: ExecutionContext, system: ActorSystem) {
+          val pdfBuffer = ByteArrayOutputStream()
+          builder.toStream(pdfBuffer)
 
-  import org.apache.fop.apps.*
-  import javax.xml.transform.{Source as _, *}
-  import javax.xml.transform.stream.StreamSource
-  import javax.xml.transform.sax.SAXResult
-  import org.apache.xmlgraphics.util.MimeConstants
-  import java.io.StringReader
+          Try(builder.run()).toEither.fold(
+            throwable => {
+              val stringWriter = new StringWriter
+              val printWriter  = new PrintWriter(stringWriter)
+              throwable.printStackTrace(printWriter)
 
-  private val userAgentBlock: FOUserAgent => Unit = { foUserAgent =>
-    foUserAgent.setAccessibility(true)
-    foUserAgent.setPdfUAEnabled(true)
-    foUserAgent.setAuthor("HMRC forms service")
-    foUserAgent.setProducer("HMRC forms services")
-    foUserAgent.setCreator("HMRC forms services")
-    foUserAgent.setSubject("SAO Notification Confirmation")
-    foUserAgent.setTitle("SAO Notification Confirmation")
-  }
+              val errorMessageBuffer = stringWriter.getBuffer // stack trace as a string
+              val contentBuffer      = {
+                StringBuffer()
+                  .append("---------------------- [Error] --------------------------\n")
+                  .append(errorMessageBuffer)
+                  .append("\n---------------------- [End Error] --------------------------\n")
+                  .append("\n---------------------- [HTML] --------------------------\n")
+                  .append(html)
+                  .append("\n---------------------- [End HTML] --------------------------\n")
+              }
+              Try(pdfBuffer.close())
+              Try(stringWriter.close())
+              Try(printWriter.close())
+              val errStream = new ByteArrayInputStream(contentBuffer.toString.getBytes)
+              Ok.chunked(
+                StreamConverters.fromInputStream(() => errStream),
+                inline = false,
+                fileName = Some("error.txt")
+              )
+            },
+            _ => {
+              val pdfBytes = pdfBuffer.toByteArray
 
-  private def xslTransformations: String = {
-    s"""<?xml version="1.0" encoding="UTF-8"?>
-      |<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-      |                xmlns:fo="http://www.w3.org/1999/XSL/Format">
-      |
-      |    <!-- Root template -->
-      |    <xsl:template match="/">
-      |        <fo:root 
-      |          xmlns:fo="http://www.w3.org/1999/XSL/Format" 
-      |          xmlns:fox="http://xmlgraphics.apache.org/fop/extensions"
-      |          xml:lang="en-GB"
-      |          font-family="Helvetica, sans-serif"
-      |        >
-      |            <fo:layout-master-set>
-      |                <fo:simple-page-master
-      |                  master-name="A4"
-      |                  page-height="29.7cm"
-      |                  page-width="21cm"
-      |                  margin-top="1cm"
-      |                  margin-bottom="1cm"
-      |                  margin-left="2cm"
-      |                  margin-right="2cm"
-      |                >
-      |                  <fo:region-body margin-top="3cm" margin-bottom="2cm"/>
-      |                  <fo:region-before extent="3cm"/>
-      |                </fo:simple-page-master>
-      |            </fo:layout-master-set>
-      |            
-      |            <fo:bookmark-tree>
-      |               <fo:bookmark internal-destination="h1_1">
-      |                 <fo:bookmark-title>This is a Heading</fo:bookmark-title>
-      |               </fo:bookmark>
-      |               <fo:bookmark internal-destination="h1_2">
-      |                 <fo:bookmark-title>Appendix A: Tables</fo:bookmark-title>
-      |               </fo:bookmark>
-      |            </fo:bookmark-tree>
-      |                
-      |            <fo:page-sequence master-reference="A4">
-      |                $header
-      |                <fo:flow flow-name="xsl-region-body">
-      |                    <fo:block role="H1" font-size="24pt" font-weight="bold" margin-bottom="20pt"  id="h1_1" >This is a Heading</fo:block>
-      |                    <fo:block role="P" font-size="16pt" margin-bottom="8pt">This is a paragraph</fo:block>
-      |                   
-      |                    <fo:block role="H1" font-size="24pt" font-weight="bold" id="h1_2" page-break-before="always" margin-bottom="20pt">Appendix A: Tables</fo:block>
-      |                    $booklist
-      |
-      |                    $table
-      |                </fo:flow>
-      |            </fo:page-sequence>
-      |        </fo:root>
-      |        
-      |
-      |    </xsl:template>
-      |</xsl:stylesheet>
-      |""".stripMargin
-  }
-
-  def header: String =
-    s"""
-      |   <fo:static-content flow-name="xsl-region-before" role="Artifact" >
-      |        <fo:block role="Artifact">
-      |           <fo:external-graphic
-      |             role="Artifact"
-      |             content-width="148px" content-height="20px"
-      |             src="url(${getClass.getResource("/fop/gov-uk-logo.png").toURI.toString})"
-      |             padding-right="1cm"
-      |           />
-      |           <fo:block role="Artifact" font-size="16pt" font-weight="bold" margin-bottom="1mm">SAO Notification Confirmation</fo:block>
-      |         </fo:block>
-      |    </fo:static-content>
-      |""".stripMargin
-
-  def booklist: String =
-    """
-      |                    <fo:block role="H2" font-size="24pt" font-weight="bold" margin-bottom="20pt">List of Books</fo:block>
-      |                    <fo:block role="H3" font-size="18pt" margin-bottom="12pt">Books:</fo:block>
-      |
-      |                    <!-- Loop through each book and format its details -->
-      |                    <xsl:for-each select="books/book">
-      |                        <fo:block role="P" font-size="16pt" margin-bottom="8pt">
-      |                            <xsl:value-of select="title"/> by <xsl:value-of select="author"/> (Year: <xsl:value-of select="year"/>)
-      |                        </fo:block>
-      |                    </xsl:for-each>
-      |""".stripMargin
-
-  def table: String =
-    """<fo:table width="100%" table-layout="fixed">
-      |  <fo:table-column xmlns:fox="http://xmlgraphics.apache.org/fop/extensions" fox:header="true" column-width="proportional-column-width(1)"/>
-      |  <fo:table-column column-width="proportional-column-width(1)"/>
-      |  <fo:table-column column-width="proportional-column-width(1)"/>
-      |  <fo:table-header font-weight="bold">
-      |    <fo:table-row>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
-      |        <fo:block>Header Scope = Both</fo:block>
-      |      </fo:table-cell>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
-      |        <fo:block>Header Scope = Column</fo:block>
-      |      </fo:table-cell>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
-      |        <fo:block>Header Scope = Column</fo:block>
-      |      </fo:table-cell>
-      |    </fo:table-row>
-      |  </fo:table-header>
-      |  <fo:table-body>
-      |    <fo:table-row>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt" font-weight="bold">
-      |        <fo:block>Header Scope = Row</fo:block>
-      |      </fo:table-cell>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
-      |        <fo:block>Cell 1.1</fo:block>
-      |      </fo:table-cell>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
-      |        <fo:block>Cell 1.2</fo:block>
-      |      </fo:table-cell>
-      |    </fo:table-row>
-      |    <fo:table-row>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt" font-weight="bold">
-      |        <fo:block>Header Scope = Row</fo:block>
-      |      </fo:table-cell>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
-      |        <fo:block>Cell 2.1</fo:block>
-      |      </fo:table-cell>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
-      |        <fo:block>Cell 2.2</fo:block>
-      |      </fo:table-cell>
-      |    </fo:table-row>
-      |    <fo:table-row>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt" role="TD">
-      |        <fo:block>Non-header</fo:block>
-      |      </fo:table-cell>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
-      |        <fo:block>Cell 3.1</fo:block>
-      |      </fo:table-cell>
-      |      <fo:table-cell border="1pt solid black" padding-left="1pt">
-      |        <fo:block>Cell 3.2</fo:block>
-      |      </fo:table-cell>
-      |    </fo:table-row>
-      |  </fo:table-body>
-      |</fo:table>""".stripMargin
-
-  private def inputXml: String =
-    """<?xml version="1.0" encoding="UTF-8"?>
-      |<books>
-      |    <book>
-      |        <title>Spring Boot in Action</title>
-      |        <author>Craig Walls</author>
-      |        <year>2022</year>
-      |    </book>
-      |    <book>
-      |        <title>Java: The Complete Reference</title>
-      |        <author>Herbert Schildt</author>
-      |        <year>2023</year>
-      |    </book>
-      |</books>
-      |""".stripMargin
-
-  def testPdf(): Source[ByteString, Future[IOResult]] = {
-    val fopFactory  = FopFactory.newInstance(new File(getClass.getResource("/fop/fop.xconf").toURI))
-    val foUserAgent = fopFactory.newFOUserAgent()
-    userAgentBlock(foUserAgent)
-
-    val pos   = new PipedOutputStream
-    def fop() = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, pos)
-
-    val factory     = TransformerFactory.newInstance
-    val transformer = factory.newTransformer(new StreamSource(new StringReader(xslTransformations)))
-    val src         = new StreamSource(new StringReader(inputXml))
-
-    StreamConverters.fromInputStream(() => {
-      val inputStream                    = new PipedInputStream(pos)
-      given blockingEc: ExecutionContext =
-        system.dispatchers.lookup("pekko.stream.materializer.blocking-io-dispatcher")
-
-      Future {
-        blocking {
-          val res = new SAXResult(fop().getDefaultHandler)
-          transformer.transform(src, res)
+              Ok.chunked(
+                StreamConverters.fromInputStream(() => ByteArrayInputStream(pdfBytes)),
+                inline = false,
+                fileName = Some("test.pdf")
+              )
+            }
+          )
         }
-      }.recoverWith { e =>
-        TestPdfController.logger.error("FOP error", e)
-        throw e
-      }.onComplete { _ =>
-        pos.close()
-      }
-
-      inputStream
-    })
+      )
   }
+
+  def openHtml(): Action[AnyContent] = Action { implicit request =>
+    Ok(view(emptyForm()))
+  }
+
+  def example(rows: Int): Action[AnyContent] = Action { implicit request =>
+    Ok(OpenHtmlToPdfService.testHtml(rows))
+  }
+
 }
 
-class OpenHtmlToPdfService {
-  def testPdf(): PdfRendererBuilder = {
+object TestPdfController {
+
+  object Notification {
+    final case class Row(
+        companyName: String,
+        utr: String,
+        crn: String,
+        companyType: "PLC" | "LTD",
+        status: "Active" | "Dormant" | "Administration" | "Liquidation",
+        financialYearEndDate: String
+    )
+  }
+
+  private def emptyForm(): Form[String] =
+    Form(
+      "value" -> text()
+    )
+
+  val logger: Logger = Logger(TestPdfController.getClass)
+
+  def genTestCompanies(total: Int): Seq[Notification.Row] = {
+    (1 to total).map {
+      case index if (index & 1) == 0 =>
+        Notification.Row(
+          companyName =
+            s"TEST NAME OF THE COMPANY WITH THE LONGEST NAME SO FAR INCORPORATED AT THE REGISTRY OF COMPANIES IN ENGLAND AND WALES AND ENCOMPASSING THE REGISTRIES BASED IN SCOTLAND $index",
+          utr = "0123456789",
+          crn = "9876543210",
+          companyType = "LTD",
+          status = "Administration",
+          financialYearEndDate = "31/01/2025"
+        )
+      case index =>
+        Notification.Row(
+          companyName = s"Company $index",
+          utr = "0123456789",
+          crn = "9876543210",
+          companyType = "PLC",
+          status = "Active",
+          financialYearEndDate = "31/01/2025"
+        )
+    }
+  }
+
+  extension (builder: PdfRendererBuilder) {
+    def asSource(using system: ActorSystem): Source[ByteString, ?] = StreamConverters
+      .fromInputStream(() => {
+        given blockingEc: ExecutionContext =
+          system.dispatchers.lookup("pekko.stream.materializer.blocking-io-dispatcher")
+
+        val pos = new PipedOutputStream
+
+        // Set the output stream
+        builder.toStream(pos)
+
+        Future {
+          blocking {
+            // Run the conversion
+            builder.run()
+          }
+        }.onComplete { _ =>
+          pos.close()
+        }
+        new PipedInputStream(pos)
+      })
+  }
+
+}
+
+private[testonly] class OpenHtmlToPdfService {
+  def builderFor(content: String): PdfRendererBuilder = {
 
     val builder = new PdfRendererBuilder
     builder.withProducer("HMRC forms services")
@@ -291,49 +212,19 @@ class OpenHtmlToPdfService {
 
     // 2. Point to your source (file, URI, or string)
     builder.withHtmlContent(
-      OpenHtmlToPdfService.testHtml,
+      content,
       this.getClass.getResource("/pdf/").toURI.toString
     )
 
     builder
   }
+
 }
 
-object OpenHtmlToPdfService {
-
-  def tables(data: Seq[Notification.Row]): String = {
-    s"""
-       | <table>
-       |  <caption>Notification Details</caption>
-       |  <thead>
-       |    <tr><th colspan="6"><h2>Submissions<span class="continued"></span></h2></th></tr>
-       |    <tr>
-       |      <th>Company</th>
-       |      <th>UTR</th>
-       |      <th>CRN</th>
-       |      <th>Company type</th>
-       |      <th>Company status</th>
-       |      <th>Financial year end date</th>
-       |    </tr>
-       |  </thead>
-       |  ${data.foldLeft("")((concat, row) => s"""
-          | $concat
-          |<tbody>
-          |  <tr>
-          |    <td>${row.companyName}</td>
-          |    <td>${row.crn}</td>
-          |    <td>${row.utr}</td>
-          |    <td>${row.companyType}</td>
-          |    <td>${row.status}</td>
-          |    <td>${row.financialYearEndDate}</td>
-          |  </tr>
-          |</tbody>
-          |""".stripMargin)}
-       | </table>""".stripMargin
-  }
+private[testonly] object OpenHtmlToPdfService {
 
   // <html lang="en-GB"> changes the PDF language metadata, otherwise it's EN-US by default
-  def testHtml: String = {
+  def testHtml(rows: Int): String = {
     s"""
        |<!DOCTYPE html>
        |<html lang="en-GB">
@@ -449,7 +340,7 @@ object OpenHtmlToPdfService {
        |
        |<tables-page>
        |  <h1 id="tables">Appendix A: Tables</h1>
-       |  ${tables(TestPdfController.genTestCompanies(30))}
+       |  ${tables(TestPdfController.genTestCompanies(rows))}
        |</tables-page>
        |
        |</body>
@@ -457,96 +348,32 @@ object OpenHtmlToPdfService {
        |""".stripMargin
   }
 
-  extension (document: PDDocument) {
-
-    def setMetaData(date: GregorianCalendar) = {
-      val pdd = document.getDocumentInformation
-      pdd.setAuthor("HMRC")
-      pdd.setTitle("SAO Notification")
-      pdd.setCreator("HMRC")
-      pdd.setSubject("SAO Notification Confirmation")
-      pdd.setCreationDate(date)
-      pdd.setModificationDate(date)
-      pdd.setKeywords("sample notification pdf")
-    }
-
-    def asSource(using system: ActorSystem): Source[ByteString, ?] = StreamConverters.fromInputStream(() => {
-      given blockingEc: ExecutionContext =
-        system.dispatchers.lookup("pekko.stream.materializer.blocking-io-dispatcher")
-
-      val pos = new PipedOutputStream
-      Future {
-        blocking {
-          document.save(pos)
-        }
-      }.onComplete { _ =>
-        pos.close()
-        document.close()
-      }
-      new PipedInputStream(pos)
-    })
+  private def tables(rows: Seq[Notification.Row]): String = {
+    s"""
+       | <table>
+       |  <caption>Notification Details</caption>
+       |  <thead>
+       |    <tr><th colspan="6"><h2>Submissions<span class="continued"></span></h2></th></tr>
+       |    <tr>
+       |      <th>Company</th>
+       |      <th>UTR</th>
+       |      <th>CRN</th>
+       |      <th>Company type</th>
+       |      <th>Company status</th>
+       |      <th>Financial year end date</th>
+       |    </tr>
+       |  </thead>${rows.foldLeft("")((concat, row) => s"""|$concat
+         |  <tbody>
+         |    <tr>
+         |      <td>${row.companyName}</td>
+         |      <td>${row.crn}</td>
+         |      <td>${row.utr}</td>
+         |      <td>${row.companyType}</td>
+         |      <td>${row.status}</td>
+         |      <td>${row.financialYearEndDate}</td>
+         |    </tr>
+         |  </tbody>""".stripMargin)}
+       | </table>""".stripMargin
   }
 
-  extension (builder: PdfRendererBuilder) {
-    def asSource(using system: ActorSystem): Source[ByteString, ?] = StreamConverters
-      .fromInputStream(() => {
-        given blockingEc: ExecutionContext =
-          system.dispatchers.lookup("pekko.stream.materializer.blocking-io-dispatcher")
-
-        val pos = new PipedOutputStream
-
-        // 3. Set the output stream
-        builder.toStream(pos)
-
-        Future {
-          blocking {
-            // 4. Run the conversion
-            builder.run()
-          }
-        }.onComplete { _ =>
-          pos.close()
-        }
-        new PipedInputStream(pos)
-      })
-  }
-}
-
-object TestPdfController {
-  val logger: Logger = Logger(TestPdfController.getClass)
-
-  def genTestCompanies(total: Int): Seq[Notification.Row] = {
-    (1 to total).map {
-      case index if (index & 1) == 0 =>
-        Notification.Row(
-          companyName =
-            s"TEST NAME OF THE COMPANY WITH THE LONGEST NAME SO FAR INCORPORATED AT THE REGISTRY OF COMPANIES IN ENGLAND AND WALES AND ENCOMPASSING THE REGISTRIES BASED IN SCOTLAND $index",
-          utr = "0123456789",
-          crn = "9876543210",
-          companyType = "LTD",
-          status = "Administration",
-          financialYearEndDate = "31/01/2025"
-        )
-      case index =>
-        Notification.Row(
-          companyName = s"Company $index",
-          utr = "0123456789",
-          crn = "9876543210",
-          companyType = "PLC",
-          status = "Active",
-          financialYearEndDate = "31/01/2025"
-        )
-    }
-  }
-
-}
-
-object Notification {
-  final case class Row(
-      companyName: String,
-      utr: String,
-      crn: String,
-      companyType: "PLC" | "LTD",
-      status: "Active" | "Dormant" | "Administration" | "Liquidation",
-      financialYearEndDate: String
-  )
 }
