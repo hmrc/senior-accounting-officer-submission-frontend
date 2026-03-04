@@ -40,7 +40,7 @@ lazy val microservice = (project in file("."))
         "src=test/.*&id=E176:s",
       ).mkString(",")
     ),
-    Compile/ unmanagedResourceDirectories += baseDirectory.value / "resources",
+    Compile / unmanagedResourceDirectories += baseDirectory.value / "resources",
     libraryDependencies ++= AppDependencies(),
     retrieveManaged          := true,
     pipelineStages           := Seq(digest, gzip),
@@ -61,10 +61,8 @@ lazy val it =
     .dependsOn(microservice % "test->test")
 
 val scalafixSettings: Seq[Setting[?]] = Seq(
-  semanticdbEnabled := true, // enable SemanticDB
-  scalacOptions += {
-    "-Wall"
-  }
+  semanticdbEnabled := true
 )
 
-addCommandAlias("lint", "scalafixAll;scalafmtAll")
+addCommandAlias("checkLint", "scalafmtSbtCheck;scalafmtCheckAll")
+addCommandAlias("lint", "scalafixAll;scalafmtSbt;scalafmtAll")

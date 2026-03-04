@@ -49,7 +49,6 @@ class IsThisTheSaoOnCertificateController @Inject() (
   val form: Form[Boolean] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-
     val preparedForm = request.userAnswers.get(IsThisTheSaoOnCertificatePage) match {
       case None        => form
       case Some(value) => form.fill(value)

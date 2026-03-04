@@ -30,7 +30,6 @@ object CertificateSubmissionDeclarationSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(CertificateSubmissionDeclarationPage).map { answer =>
-
       val value = HtmlFormat.escape(answer.sao).toString + "<br/>" + HtmlFormat.escape(answer.proxy).toString
 
       SummaryListRowViewModel(

@@ -59,12 +59,21 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     .build()
 
   "UpscanService.fileUploadState" - {
+    "must return State.NoReference when no reference is received" in {
+      val result = SUT.fileUploadState(None).futureValue
+
+      result mustBe State.NoReference
+
+      verify(mockUpscanSessionRepository, times(0)).find(any())
+      verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
+    }
+
     "must return State.NoReference when the uploadId does not exist in Mongo" in {
       when(mockUpscanSessionRepository.find(any())).thenReturn(
         Future.successful(None)
       )
 
-      val result = SUT.fileUploadState(testFileReference).futureValue
+      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
 
       result mustBe State.NoReference
 
@@ -87,7 +96,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         )
       )
 
-      val result = SUT.fileUploadState(testFileReference).futureValue
+      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
 
       result mustBe State.WaitingForUpscan
 
@@ -110,7 +119,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         )
       )
 
-      val result = SUT.fileUploadState(testFileReference).futureValue
+      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
 
       result mustBe State.UploadToUpscanFailed
 
@@ -142,7 +151,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         Future.successful(testResponse)
       )
 
-      val result = SUT.fileUploadState(testFileReference).futureValue
+      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
 
       result mustBe State.Result(testFileReference, testFileContent)
 
@@ -174,7 +183,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         Future.successful(testResponse)
       )
 
-      val result = SUT.fileUploadState(testFileReference).futureValue
+      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
 
       result mustBe State.DownloadFromUpscanFailed(testResponse)
 

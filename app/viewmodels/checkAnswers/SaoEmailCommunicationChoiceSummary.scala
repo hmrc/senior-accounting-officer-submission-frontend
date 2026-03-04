@@ -29,7 +29,6 @@ object SaoEmailCommunicationChoiceSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(SaoEmailCommunicationChoicePage).map { answer =>
-
       val value = if answer then "site.yes" else "site.no"
 
       SummaryListRowViewModel(
