@@ -24,6 +24,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.NotificationAdditionalInformationPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 
 class NotificationAdditionalInformationSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages                   = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -42,12 +43,12 @@ class NotificationAdditionalInformationSummarySpec extends SpecBase with GuiceOn
         val testUserAnswersWithValue        =
           testUserAnswers.set(NotificationAdditionalInformationPage, Some(testAdditionalInformationAnswer)).get
         val SUT = NotificationAdditionalInformationSummary.row(testUserAnswersWithValue)
-        SUT.value.content mustBe testAdditionalInformationAnswer.toText
+        SUT.value.content mustBe Text(testAdditionalInformationAnswer)
       }
 
       "must be blank when user answers does not contain additional information" in {
         val SUT = NotificationAdditionalInformationSummary.row(testUserAnswers)
-        SUT.value.content mustBe "".toText
+        SUT.value.content mustBe Text("")
       }
     }
 

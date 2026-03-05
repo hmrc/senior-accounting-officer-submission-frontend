@@ -25,6 +25,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmitNotificationStartView
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import javax.inject.Inject
 
 class SubmitNotificationStartController @Inject() (
