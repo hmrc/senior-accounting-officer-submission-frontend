@@ -31,13 +31,12 @@ lazy val microservice = (project in file("."))
     ),
     scalacOptions ++= Seq(
       "-feature",
-      "-Wconf:id=E176:s",
       "-Wconf:" + Seq(
         "cat=deprecation:w",
         "cat=feature:w",
         "src=target/.*:s",
         "src=test/.*&id=E175:s",
-        "src=test/.*&id=E176:s",
+        "src=test/.*&id=E176:s"
       ).mkString(",")
     ),
     Compile / unmanagedResourceDirectories += baseDirectory.value / "resources",

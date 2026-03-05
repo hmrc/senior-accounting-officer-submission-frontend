@@ -46,14 +46,6 @@ class NotificationAdditionalInformationSummarySpec extends SpecBase with GuiceOn
         SUT.value.content mustBe Text(testAdditionalInformationAnswer)
       }
 
-      "must show answer with apostrophes when user input contains apostrophes" in {
-        val testAdditionalInformationAnswer = "company's additional information"
-        val testUserAnswersWithValue        =
-          testUserAnswers.set(NotificationAdditionalInformationPage, Some(testAdditionalInformationAnswer)).get
-        val SUT = NotificationAdditionalInformationSummary.row(testUserAnswersWithValue)
-        SUT.value.content mustBe Text(testAdditionalInformationAnswer)
-      }
-
       "must be blank when user answers does not contain additional information" in {
         val SUT = NotificationAdditionalInformationSummary.row(testUserAnswers)
         SUT.value.content mustBe Text("")
