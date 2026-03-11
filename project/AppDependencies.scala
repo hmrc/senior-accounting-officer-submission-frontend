@@ -11,11 +11,12 @@ object AppDependencies {
   private val poiVersion       = "5.5.1"
 
   val compile: Seq[ModuleID] = Seq(
-    "uk.gov.hmrc"       %% "bootstrap-frontend-play-30" % bootstrapVersion,
-    "uk.gov.hmrc"       %% "play-frontend-hmrc-play-30" % hmrcPlayFrontend,
-    "uk.gov.hmrc.mongo" %% "hmrc-mongo-play-30"         % hmrcMongoVersion,
-    "org.apache.poi"     % "poi"                        % poiVersion,
-    "org.apache.poi"     % "poi-ooxml"                  % poiVersion
+    "uk.gov.hmrc"            %% "bootstrap-frontend-play-30" % bootstrapVersion,
+    "uk.gov.hmrc"            %% "play-frontend-hmrc-play-30" % hmrcPlayFrontend,
+    "uk.gov.hmrc.mongo"      %% "hmrc-mongo-play-30"         % hmrcMongoVersion,
+    "org.apache.poi"          % "poi"                        % poiVersion,
+    "org.apache.poi"          % "poi-ooxml"                  % poiVersion,
+    "io.github.openhtmltopdf" % "openhtmltopdf-pdfbox"       % "1.1.37"
   )
 
   val test: Seq[ModuleID] = Seq(
