@@ -70,11 +70,11 @@ class TestPdfController @Inject() (
               val printWriter  = new PrintWriter(stringWriter)
               throwable.printStackTrace(printWriter)
 
-              val errorMessageBuffer = stringWriter.getBuffer // stack trace as a string
+              val stackTraceAsString = stringWriter.getBuffer
               val contentBuffer      = {
                 StringBuffer()
                   .append("---------------------- [Error] --------------------------\n")
-                  .append(errorMessageBuffer)
+                  .append(stackTraceAsString)
                   .append("\n---------------------- [End Error] --------------------------\n")
                   .append("\n---------------------- [HTML] --------------------------\n")
                   .append(html)
