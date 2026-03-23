@@ -54,6 +54,8 @@ class NotificationUploadSuccessController @Inject() (
         case State.UploadToUpscanFailed =>
           ???
         case State.DownloadFromUpscanFailed(response) =>
+          // TODO: This is where we handle the error. Should redirect
+          // to error page.
           ???
         case State.Result(reference, fileContent) =>
           Logger(getClass).info(fileContent)
