@@ -16,18 +16,12 @@
 
 package viewmodels.checkAnswers
 
-import base.SpecBase
 import controllers.routes
 import models.CheckMode
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import org.jsoup.nodes.Element
 import pages.SaoEmailCommunicationChoicePage
-import play.api.i18n.{Messages, MessagesApi}
-import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
-import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
 
-class SaoEmailCommunicationChoiceSummarySpec extends SpecBase with GuiceOneAppPerSuite {
-  given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
+class SaoEmailCommunicationChoiceSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
 
   "SaoEmailCommunicationChoiceSummary.row" - {
 
@@ -43,57 +37,29 @@ class SaoEmailCommunicationChoiceSummarySpec extends SpecBase with GuiceOneAppPe
       def testUserAnswers(answer: Boolean) =
         emptyUserAnswers.set(SaoEmailCommunicationChoicePage, answer).get
 
-      def SUT(answer: Boolean = true) = SaoEmailCommunicationChoiceSummary.row(testUserAnswers(answer)).get
+      def renderedRow(answer: Boolean): Element =
+        renderSummaryRow(SaoEmailCommunicationChoiceSummary.row(testUserAnswers(answer)).get)
 
-      "must have expected key" in {
-        SUT().key mustBe Key(
-          HtmlContent("""<span data-test-id="email-communication-key">Email communications</span>""")
-        )
+      "must render the expected key text" in {
+        renderedRow(answer = true).renderedKeyText mustBe "Email communications"
       }
 
-      "expected value" - {
-        "must show 'Yes' when user answers is true" in {
-          SUT(answer = true).value.content mustBe HtmlContent(
-            """<span data-test-id="email-communication-value">Yes</span>"""
-          )
-        }
-
-        "must show 'No' when user answers is false" in {
-          SUT(answer = false).value.content mustBe HtmlContent(
-            """<span data-test-id="email-communication-value">No</span>"""
-          )
-        }
+      "must render 'Yes' when the answer is true" in {
+        renderedRow(answer = true).renderedValueText mustBe "Yes"
       }
 
-      "expected action" - {
-        def actions = SUT().actions
+      "must render 'No' when the answer is false" in {
+        renderedRow(answer = false).renderedValueText mustBe "No"
+      }
 
-        "must only have one action" in {
-          withClue("must be 1 action\n") {
-            actions.size mustBe 1
-          }
-          withClue("must be 1 item in the action\n") {
-            actions.head.items.size mustBe 1
-          }
-        }
+      "must render the expected action link" in {
+        val action = renderedRow(answer = true).renderedActionLink
 
-        def action = actions.head.items.head
-
-        "must have expected text" in {
-          action.content mustBe "Change".toText
-        }
-
-        "must have expected url" in {
-          action.href mustBe routes.SaoEmailCommunicationChoiceController
-            .onPageLoad(CheckMode)
-            .url
-        }
-
-        "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "SaoEmailCommunicationChoice"
-        }
+        action.attr("href") mustBe routes.SaoEmailCommunicationChoiceController.onPageLoad(CheckMode).url
+        action.select("span.govuk-visually-hidden").text() mustBe "SaoEmailCommunicationChoice"
+        action.select("span.govuk-visually-hidden").remove()
+        action.text() mustBe "Change"
       }
     }
   }
-
 }

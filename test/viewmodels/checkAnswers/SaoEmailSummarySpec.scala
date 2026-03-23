@@ -16,18 +16,12 @@
 
 package viewmodels.checkAnswers
 
-import base.SpecBase
 import controllers.routes
 import models.CheckMode
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import org.jsoup.nodes.Element
 import pages.SaoEmailPage
-import play.api.i18n.{Messages, MessagesApi}
-import uk.gov.hmrc.govukfrontend.views.Aliases.HtmlContent
-import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
 
-class SaoEmailSummarySpec extends SpecBase with GuiceOneAppPerSuite {
-  given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
+class SaoEmailSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
 
   "SaoEmailSummary.row" - {
 
@@ -43,49 +37,25 @@ class SaoEmailSummarySpec extends SpecBase with GuiceOneAppPerSuite {
       def testUserAnswers(answer: String) =
         emptyUserAnswers.set(SaoEmailPage, answer).get
 
-      def SUT(answer: String = "") = SaoEmailSummary.row(testUserAnswers(answer)).get
+      def renderedRow(answer: String): Element =
+        renderSummaryRow(SaoEmailSummary.row(testUserAnswers(answer)).get)
 
-      "must have expected key" in {
-        SUT().key mustBe Key(HtmlContent("""<span data-test-id="email-address-key">Email address</span>"""))
+      "must render the expected key text" in {
+        renderedRow("user@test.com").renderedKeyText mustBe "Email address"
       }
 
-      "expected value" - {
-        "must show 'testSaoEmail' when user answers is 'testSaoEmail'" in {
-          SUT(answer = "testSaoEmail").value.content mustBe HtmlContent(
-            """<span data-test-id="email-address-value">testSaoEmail</span>"""
-          )
-        }
+      "must render the supplied value" in {
+        renderedRow("testSaoEmail").renderedValueText mustBe "testSaoEmail"
       }
 
-      "expected action" - {
-        def actions = SUT().actions
+      "must render the expected action link" in {
+        val action = renderedRow("user@test.com").renderedActionLink
 
-        "must only have one action" in {
-          withClue("must be 1 action\n") {
-            actions.size mustBe 1
-          }
-          withClue("must be 1 item in the action\n") {
-            actions.head.items.size mustBe 1
-          }
-        }
-
-        def action = actions.head.items.head
-
-        "must have expected text" in {
-          action.content mustBe "Change".toText
-        }
-
-        "must have expected url" in {
-          action.href mustBe routes.SaoEmailController
-            .onPageLoad(CheckMode)
-            .url
-        }
-
-        "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "SaoEmail"
-        }
+        action.attr("href") mustBe routes.SaoEmailController.onPageLoad(CheckMode).url
+        action.select("span.govuk-visually-hidden").text() mustBe "SaoEmail"
+        action.select("span.govuk-visually-hidden").remove()
+        action.text() mustBe "Change"
       }
     }
   }
-
 }

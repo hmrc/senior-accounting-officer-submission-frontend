@@ -16,18 +16,12 @@
 
 package viewmodels.checkAnswers
 
-import base.SpecBase
 import controllers.routes
 import models.CheckMode
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import org.jsoup.nodes.Element
 import pages.SaoNamePage
-import play.api.i18n.{Messages, MessagesApi}
-import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Key
 
-class SaoNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
-  given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
+class SaoNameSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
 
   "SaoNameSummary.row" - {
 
@@ -43,49 +37,33 @@ class SaoNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
       def testUserAnswers(answer: String) =
         emptyUserAnswers.set(SaoNamePage, answer).get
 
-      def SUT(answer: String = "") = SaoNameSummary.row(testUserAnswers(answer)).get
+      def renderedRow(answer: String): Element =
+        renderSummaryRow(SaoNameSummary.row(testUserAnswers(answer)).get)
 
-      "must have expected key" in {
-        SUT().key mustBe Key(HtmlContent(s"""<span data-test-id="full-name-key">Full name</span>"""))
+      "must render the expected key text" in {
+        renderedRow("testSaoName").renderedKeyText mustBe "Full name"
       }
 
-      "expected value" - {
-        "must show 'testSaoName' when user answers is 'testSaoName'" in {
-          SUT(answer = "testSaoName").value.content mustBe HtmlContent(
-            """<span data-test-id="full-name-value">testSaoName</span>"""
-          )
-        }
+      "must render the supplied value" in {
+        renderedRow("testSaoName").renderedValueText mustBe "testSaoName"
       }
 
-      "expected action" - {
-        def actions = SUT().actions
+      "must render special characters without double escaping" in {
+        val row = renderedRow("O'Hara & Jones")
 
-        "must only have one action" in {
-          withClue("must be 1 action\n") {
-            actions.size mustBe 1
-          }
-          withClue("must be 1 item in the action\n") {
-            actions.head.items.size mustBe 1
-          }
-        }
+        row.renderedValueText mustBe "O'Hara & Jones"
+        row.renderedValueHtml must not include "&amp;#x27;"
+        row.renderedValueHtml must not include "&amp;amp;"
+      }
 
-        def action = actions.head.items.head
+      "must render the expected action link" in {
+        val action = renderedRow("testSaoName").renderedActionLink
 
-        "must have expected text" in {
-          action.content mustBe "Change".toText
-        }
-
-        "must have expected url" in {
-          action.href mustBe routes.SaoNameController
-            .onPageLoad(CheckMode)
-            .url
-        }
-
-        "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "SaoName"
-        }
+        action.attr("href") mustBe routes.SaoNameController.onPageLoad(CheckMode).url
+        action.select("span.govuk-visually-hidden").text() mustBe "SaoName"
+        action.select("span.govuk-visually-hidden").remove()
+        action.text() mustBe "Change"
       }
     }
   }
-
 }
