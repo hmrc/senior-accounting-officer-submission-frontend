@@ -49,11 +49,16 @@ class NotificationUploadSuccessController @Inject() (
       upscanService.fileUploadState(key).flatMap {
         case State.NoReference =>
           Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-        case State.WaitingForUpscan =>
+        case State.WaitingForUpscan(lastUpdated) =>
+          // TODO: put some code here that checks the db on when the file
+          // was submitted to upscan. if the file is taking too long,
+          // redirect to error page with appropriate message.
+          println(lastUpdated)
+
           Future.successful(Ok(view()))
         case State.UploadToUpscanFailed(message) =>
-          // TODO: This is where we handle the error. Should redirect
-          // to error page.
+          // This is where we handle the error. Should redirect to
+          // error page.
           Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad(message)))
         case State.DownloadFromUpscanFailed(response) =>
           ???
