@@ -44,31 +44,28 @@ class NotificationUploadSuccessController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(key: Option[String]): Action[AnyContent] =
+  def onPageLoad(key: Option[String], remainingAttempts: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      upscanService.fileUploadState(key).flatMap {
-        case State.NoReference =>
-          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-        case State.WaitingForUpscan(lastUpdated) =>
-          // TODO: put some code here that checks the db on when the file
-          // was submitted to upscan. if the file is taking too long,
-          // redirect to error page with appropriate message.
-          println(lastUpdated)
-
-          Future.successful(Ok(view()))
-        case State.UploadToUpscanFailed(message) =>
-          // This is where we handle the error. Should redirect to
-          // error page.
-          Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad(message)))
-        case State.DownloadFromUpscanFailed(response) =>
-          ???
-        case State.Result(reference, fileContent) =>
-          Logger(getClass).info(fileContent)
-          Future
-            .fromTry(request.userAnswers.set(NotificationUploadReferencePage, reference))
-            .flatMap(sessionRepository.set)
-            .map(_ => Redirect(routes.SubmitNotificationStartController.onPageLoad()))
-      }
+      if remainingAttempts > 0 then
+        upscanService.fileUploadState(key).flatMap {
+          case State.NoReference =>
+            Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          case State.WaitingForUpscan =>
+            Future.successful(Ok(view(key, remainingAttempts - 1)))
+          case State.UploadToUpscanFailed(message) =>
+            // This is where we handle the error. Should redirect to
+            // error page.
+            Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad(message)))
+          case State.DownloadFromUpscanFailed(response) =>
+            ???
+          case State.Result(reference, fileContent) =>
+            Logger(getClass).info(fileContent)
+            Future
+              .fromTry(request.userAnswers.set(NotificationUploadReferencePage, reference))
+              .flatMap(sessionRepository.set)
+              .map(_ => Redirect(routes.SubmitNotificationStartController.onPageLoad()))
+        }
+      else Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad("oops out of time")))
     }
 
 }
