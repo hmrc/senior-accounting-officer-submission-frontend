@@ -16,69 +16,52 @@
 
 package viewmodels.checkAnswers
 
-import base.SpecBase
 import controllers.routes
 import models.CheckMode
 import models.UserAnswers
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import org.jsoup.nodes.Element
 import pages.NotificationAdditionalInformationPage
-import play.api.i18n.{Messages, MessagesApi}
-import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 
-class NotificationAdditionalInformationSummarySpec extends SpecBase with GuiceOneAppPerSuite {
-  given Messages                   = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
+class NotificationAdditionalInformationSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
   val testUserAnswers: UserAnswers = emptyUserAnswers
   val testDate: String             = testUserAnswers.getFinancialYearEndDate
 
   "NotificationAdditionalInformationSummary.row" - {
-    "must have expected key" in {
-      val SUT = NotificationAdditionalInformationSummary.row(testUserAnswers)
-      SUT.key mustBe "Additional information".toKey
+    "must render the expected key text" in {
+      renderSummaryRow(NotificationAdditionalInformationSummary.row(testUserAnswers)).renderedKeyText mustBe
+        "Additional information"
     }
 
-    "expected value" - {
-      "must show answer when user answers contains additional information" in {
-        val testAdditionalInformationAnswer = "apple"
-        val testUserAnswersWithValue        =
-          testUserAnswers.set(NotificationAdditionalInformationPage, Some(testAdditionalInformationAnswer)).get
-        val SUT = NotificationAdditionalInformationSummary.row(testUserAnswersWithValue)
-        SUT.value.content mustBe Text(testAdditionalInformationAnswer)
-      }
-
-      "must be blank when user answers does not contain additional information" in {
-        val SUT = NotificationAdditionalInformationSummary.row(testUserAnswers)
-        SUT.value.content mustBe Text("")
-      }
+    "must render the supplied value" in {
+      val row = renderRow("apple")
+      row.renderedValueText mustBe "apple"
     }
 
-    "expected action" - {
-      def actions = NotificationAdditionalInformationSummary.row(testUserAnswers).actions
+    "must render an empty value when no answer is present" in {
+      renderSummaryRow(NotificationAdditionalInformationSummary.row(testUserAnswers)).renderedValueText mustBe ""
+    }
 
-      "must only have one action" in {
-        withClue("must be 1 action\n") {
-          actions.size mustBe 1
-        }
-        withClue("must be 1 item in the action\n") {
-          actions.head.items.size mustBe 1
-        }
-      }
+    "must render special characters without double escaping" in {
+      val row = renderRow("O'Hara & Jones & Co")
 
-      def action = actions.head.items.head
+      row.renderedValueText mustBe "O'Hara & Jones & Co"
+      row.renderedValueHtml must not include "&amp;#x27;"
+      row.renderedValueHtml must not include "&amp;amp;"
+    }
 
-      "must have expected text" in {
-        action.content mustBe "Change".toText
-      }
+    "must render the expected action link" in {
+      val action = renderSummaryRow(NotificationAdditionalInformationSummary.row(testUserAnswers)).renderedActionLink
 
-      "must have expected url" in {
-        action.href mustBe routes.NotificationAdditionalInformationController
-          .onPageLoad(CheckMode)
-          .url
-      }
+      action.attr("href") mustBe routes.NotificationAdditionalInformationController.onPageLoad(CheckMode).url
+      action.select("span.govuk-visually-hidden").text() mustBe
+        s"the additional information supplied for the notification (Financial year end $testDate)"
+      action.select("span.govuk-visually-hidden").remove()
+      action.text() mustBe "Change"
+    }
 
-      "must have expected hidden text" in {
-        action.visuallyHiddenText.get mustBe s"the additional information supplied for the notification (Financial year end $testDate)"
-      }
+    def renderRow(answer: String): Element = {
+      val answers = testUserAnswers.set(NotificationAdditionalInformationPage, Some(answer)).get
+      renderSummaryRow(NotificationAdditionalInformationSummary.row(answers))
     }
   }
 }
