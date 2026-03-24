@@ -32,32 +32,34 @@ class IsThisTheSaoOnCertificateSummarySpec extends CheckYourAnswersSummaryRender
 
     "when there is a user answer for IsThisTheSaoOnCertificatePage" - {
       def testUserAnswers(answer: Boolean) =
-        emptyUserAnswers.set(IsThisTheSaoOnCertificatePage, answer).get
+        emptyUserAnswers.set(IsThisTheSaoOnCertificatePage, answer).success.value
 
       "must render the expected key text" in {
         renderSummaryRow(
-          IsThisTheSaoOnCertificateSummary.row(testUserAnswers(answer = true)).get
+          IsThisTheSaoOnCertificateSummary.row(testUserAnswers(answer = true)).value
         ).renderedKeyText mustBe
           "Is Jackson Brown named as the Senior Accounting Officer (SAO) on this certificate?"
       }
 
       "must render 'Yes' when the answer is true" in {
         renderSummaryRow(
-          IsThisTheSaoOnCertificateSummary.row(testUserAnswers(answer = true)).get
+          IsThisTheSaoOnCertificateSummary.row(testUserAnswers(answer = true)).value
         ).renderedValueText mustBe
           "Yes"
       }
 
       "must render 'No' when the answer is false" in {
         renderSummaryRow(
-          IsThisTheSaoOnCertificateSummary.row(testUserAnswers(answer = false)).get
+          IsThisTheSaoOnCertificateSummary.row(testUserAnswers(answer = false)).value
         ).renderedValueText mustBe
           "No"
       }
 
       "must render the expected action link" in {
         val action =
-          renderSummaryRow(IsThisTheSaoOnCertificateSummary.row(testUserAnswers(answer = true)).get).renderedActionLink
+          renderSummaryRow(
+            IsThisTheSaoOnCertificateSummary.row(testUserAnswers(answer = true)).value
+          ).renderedActionLink
 
         action.attr("href") mustBe routes.IsThisTheSaoOnCertificateController.onPageLoad(CheckMode).url
         action.select("span.govuk-visually-hidden").text() mustBe "IsThisTheSaoOnCertificate"

@@ -39,15 +39,12 @@ trait CheckYourAnswersSummaryRenderingSupport extends SpecBase with GuiceOneAppP
     Jsoup
       .parse(certificateCheckYourAnswersView(SummaryList(rows = Seq(row))).toString)
       .select(".govuk-summary-list__row")
-      .get(0)
+      .first()
 
   extension (row: Element) {
-    def renderedKeyText: String = row.select("dt.govuk-summary-list__key").text()
-
-    def renderedValueText: String = row.select("dd.govuk-summary-list__value").text()
-
-    def renderedValueHtml: String = row.select("dd.govuk-summary-list__value").html()
-
-    def renderedActionLink: Element = row.select("dd.govuk-summary-list__actions a").get(0)
+    def renderedKeyText: String     = row.select("dt.govuk-summary-list__key").text()
+    def renderedValueText: String   = row.select("dd.govuk-summary-list__value").text()
+    def renderedValueHtml: String   = row.select("dd.govuk-summary-list__value").html()
+    def renderedActionLink: Element = row.select("dd.govuk-summary-list__actions a").first()
   }
 }

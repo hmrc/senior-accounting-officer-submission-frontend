@@ -32,32 +32,32 @@ class WhoSubmitsCertificateSummarySpec extends CheckYourAnswersSummaryRenderingS
 
     "when there is a user answer for WhoSubmitsCertificatePage" - {
       def testUserAnswers(answer: WhoSubmitsCertificate) =
-        emptyUserAnswers.set(WhoSubmitsCertificatePage, answer).get
+        emptyUserAnswers.set(WhoSubmitsCertificatePage, answer).success.value
 
       "must render the expected key text" in {
         renderSummaryRow(
-          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Sao)).get
+          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Sao)).value
         ).renderedKeyText mustBe
           "Who is submitting the certificate?"
       }
 
       "must render the SAO value" in {
         renderSummaryRow(
-          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Sao)).get
+          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Sao)).value
         ).renderedValueText mustBe
           "I am the Senior Accounting Officer"
       }
 
       "must render the proxy value" in {
         renderSummaryRow(
-          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Proxy)).get
+          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Proxy)).value
         ).renderedValueText mustBe
           "I am authorised to submit the certificate on behalf of the Senior Accounting Officer"
       }
 
       "must render the expected action link" in {
         val action = renderSummaryRow(
-          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Sao)).get
+          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Sao)).value
         ).renderedActionLink
 
         action.attr("href") mustBe routes.WhoSubmitsCertificateController.onPageLoad(CheckMode).url

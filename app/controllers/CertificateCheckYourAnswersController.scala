@@ -26,8 +26,6 @@ import services.CertificateCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateCheckYourAnswersView
 
-import scala.concurrent.ExecutionContext
-
 import javax.inject.Inject
 
 class CertificateCheckYourAnswersController @Inject() (
@@ -39,8 +37,7 @@ class CertificateCheckYourAnswersController @Inject() (
     view: CertificateCheckYourAnswersView,
     navigator: Navigator,
     certificateCheckYourAnswersService: CertificateCheckYourAnswersService
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController
+) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>

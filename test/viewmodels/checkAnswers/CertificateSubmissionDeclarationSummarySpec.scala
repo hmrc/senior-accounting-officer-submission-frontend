@@ -21,24 +21,21 @@ import models.{CertificateSubmissionDeclaration, CheckMode}
 import pages.CertificateSubmissionDeclarationPage
 
 class CertificateSubmissionDeclarationSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
-
   "CertificateSubmissionDeclarationSummary.row" - {
-
     "when there is no answer for CertificateSubmissionDeclarationPage" - {
       "must return None" in {
         CertificateSubmissionDeclarationSummary.row(emptyUserAnswers) mustBe None
       }
     }
-
     "when there is a user answer for CertificateSubmissionDeclarationPage" - {
       def testUserAnswers(answer: CertificateSubmissionDeclaration) =
-        emptyUserAnswers.set(CertificateSubmissionDeclarationPage, answer).get
+        emptyUserAnswers.set(CertificateSubmissionDeclarationPage, answer).success.value
 
       "must render the expected key text" in {
         renderSummaryRow(
           CertificateSubmissionDeclarationSummary
             .row(testUserAnswers(CertificateSubmissionDeclaration("SAO", "Proxy")))
-            .get
+            .value
         ).renderedKeyText mustBe "CertificateSubmissionDeclaration"
       }
 
@@ -46,7 +43,7 @@ class CertificateSubmissionDeclarationSummarySpec extends CheckYourAnswersSummar
         renderSummaryRow(
           CertificateSubmissionDeclarationSummary
             .row(testUserAnswers(CertificateSubmissionDeclaration("value 1", "value 2")))
-            .get
+            .value
         ).renderedValueText mustBe "value 1 value 2"
       }
 
@@ -54,9 +51,8 @@ class CertificateSubmissionDeclarationSummarySpec extends CheckYourAnswersSummar
         val row = renderSummaryRow(
           CertificateSubmissionDeclarationSummary
             .row(testUserAnswers(CertificateSubmissionDeclaration("O'Hara", "Jones & Co")))
-            .get
+            .value
         )
-
         row.renderedValueText mustBe "O'Hara Jones & Co"
         row.renderedValueHtml must not include "&amp;#x27;"
         row.renderedValueHtml must not include "&amp;amp;"
@@ -66,9 +62,8 @@ class CertificateSubmissionDeclarationSummarySpec extends CheckYourAnswersSummar
         val action = renderSummaryRow(
           CertificateSubmissionDeclarationSummary
             .row(testUserAnswers(CertificateSubmissionDeclaration("SAO", "Proxy")))
-            .get
+            .value
         ).renderedActionLink
-
         action.attr("href") mustBe routes.CertificateSubmissionDeclarationController.onPageLoad(CheckMode).url
         action.select("span.govuk-visually-hidden").text() mustBe "certificateSubmissionDeclaration.change.hidden"
         action.select("span.govuk-visually-hidden").remove()
