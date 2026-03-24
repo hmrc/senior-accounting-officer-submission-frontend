@@ -19,9 +19,11 @@
         govukButton: GovukButton
 )
 
-@()(using request: Request[?], messages: Messages)
+@(message: String)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationUploadError.title"))) {
 
     <h1 class="govuk-heading-xl">@messages("notificationUploadError.heading")</h1>
+
+    <p>@message</p>
 }

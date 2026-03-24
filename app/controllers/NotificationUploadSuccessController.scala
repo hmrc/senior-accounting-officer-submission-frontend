@@ -51,11 +51,11 @@ class NotificationUploadSuccessController @Inject() (
           Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case State.WaitingForUpscan =>
           Future.successful(Ok(view()))
-        case State.UploadToUpscanFailed =>
-          ???
-        case State.DownloadFromUpscanFailed(response) =>
+        case State.UploadToUpscanFailed(message) =>
           // TODO: This is where we handle the error. Should redirect
           // to error page.
+          Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad(message)))
+        case State.DownloadFromUpscanFailed(response) =>
           ???
         case State.Result(reference, fileContent) =>
           Logger(getClass).info(fileContent)

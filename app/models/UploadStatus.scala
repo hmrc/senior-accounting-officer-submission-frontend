@@ -21,8 +21,8 @@ import play.api.libs.json.*
 sealed trait UploadStatus
 object UploadStatus {
 
-  case object InProgress extends UploadStatus
-  case object Failed     extends UploadStatus
+  case object InProgress                   extends UploadStatus
+  final case class Failed(message: String) extends UploadStatus
   final case class UploadedSuccessfully(
       name: String,
       mimeType: String,
@@ -31,13 +31,14 @@ object UploadStatus {
   ) extends UploadStatus
 
   given OFormat[UploadStatus.UploadedSuccessfully] = Json.format[UploadStatus.UploadedSuccessfully]
+  given OFormat[UploadStatus.Failed]               = Json.format[UploadStatus.Failed]
 
   given Format[UploadStatus] = {
     val read: Reads[UploadStatus] = {
       case json: JsObject =>
         (json \ "statusType").validate[String].flatMap {
           case "InProgress"           => JsSuccess(InProgress)
-          case "Failed"               => JsSuccess(Failed)
+          case "Failed"               => json.validate[Failed]
           case "UploadedSuccessfully" => json.validate[UploadedSuccessfully]
           case other                  => JsError(s"Unexpected statusType: $other")
         }
@@ -46,7 +47,7 @@ object UploadStatus {
 
     val write: Writes[UploadStatus] = Writes {
       case InProgress                    => Json.obj("statusType" -> "InProgress")
-      case Failed                        => Json.obj("statusType" -> "Failed")
+      case failed: Failed                => Json.toJsObject(failed) ++ Json.obj("statusType" -> "Failed")
       case success: UploadedSuccessfully => Json.toJsObject(success) ++ Json.obj("statusType" -> "UploadedSuccessfully")
     }
     Format(read, write)
