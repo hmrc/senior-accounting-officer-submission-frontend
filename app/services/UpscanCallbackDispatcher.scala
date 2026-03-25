@@ -42,5 +42,4 @@ class UpscanCallbackDispatcher @Inject() (sessionStorage: UpscanSessionRepositor
 
     sessionStorage.updateStatus(callback.reference, uploadStatus).map(_ => true)
   }
-
 }

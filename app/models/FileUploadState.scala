@@ -26,7 +26,8 @@ final case class FileUploadState(
     `_id`: ObjectId,
     reference: String,
     status: UploadStatus,
-    lastUpdated: Instant = Instant.now
+    lastUpdated: Instant = Instant.now,
+    uploadTime: Instant
 )
 
 object FileUploadState {

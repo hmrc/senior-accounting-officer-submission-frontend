@@ -29,6 +29,7 @@ import views.html.NotificationUploadFormView
 import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
+import java.time.Instant
 
 class NotificationUploadFormController @Inject() (
     identify: IdentifierAction,
@@ -49,7 +50,8 @@ class NotificationUploadFormController @Inject() (
         FileUploadState(
           ObjectId.get(),
           upscanInitiateResponse.reference,
-          UploadStatus.InProgress
+          UploadStatus.InProgress,
+          uploadTime = Instant.now
         )
       )
     yield Ok(notificationUploadFormView(upscanInitiateResponse))

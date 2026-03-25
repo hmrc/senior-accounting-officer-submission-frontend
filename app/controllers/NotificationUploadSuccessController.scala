@@ -30,6 +30,9 @@ import views.html.NotificationUploadSuccessView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import repositories.UpscanSessionRepository
+import java.time.Instant
+import scala.util.{Success, Failure}
 
 class NotificationUploadSuccessController @Inject() (
     override val messagesApi: MessagesApi,
@@ -39,33 +42,45 @@ class NotificationUploadSuccessController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     upscanService: UpscanService,
     sessionRepository: SessionRepository,
+    upscanSessionRepository: UpscanSessionRepository,
     view: NotificationUploadSuccessView
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(key: Option[String], remainingAttempts: Int): Action[AnyContent] =
+  def onPageLoad(key: Option[String]): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      if remainingAttempts > 0 then
-        upscanService.fileUploadState(key).flatMap {
-          case State.NoReference =>
-            Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-          case State.WaitingForUpscan =>
-            Future.successful(Ok(view(key, remainingAttempts - 1)))
-          case State.UploadToUpscanFailed(message) =>
-            // This is where we handle the error. Should redirect to
-            // error page.
-            Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad(message)))
-          case State.DownloadFromUpscanFailed(response) =>
-            ???
-          case State.Result(reference, fileContent) =>
-            Logger(getClass).info(fileContent)
-            Future
-              .fromTry(request.userAnswers.set(NotificationUploadReferencePage, reference))
-              .flatMap(sessionRepository.set)
-              .map(_ => Redirect(routes.SubmitNotificationStartController.onPageLoad()))
+      (key match {
+        case Some(key) => upscanSessionRepository.find(key)
+        case None      => Future.successful(None)
+      }).map {
+        case Some(fus) => fus.uploadTime
+        case None      => Instant.now
+      }.flatMap(uploadTime =>
+        if uploadTime.plusSeconds(60).isBefore(Instant.now) then {
+          Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad("oops out of time")))
+        } else {
+          upscanService.fileUploadState(key).flatMap {
+            case State.NoReference =>
+              Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+            case State.WaitingForUpscan =>
+              // do the time check here
+              uploadTime.plusSeconds(10).isAfter(Instant.now)
+              Future.successful(Ok(view(key)))
+            case State.UploadToUpscanFailed(message) =>
+              // This is where we handle the error. Should redirect to
+              // error page.
+              Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad(message)))
+            case State.DownloadFromUpscanFailed(response) =>
+              ???
+            case State.Result(reference, fileContent) =>
+              Logger(getClass).info(fileContent)
+              Future
+                .fromTry(request.userAnswers.set(NotificationUploadReferencePage, reference))
+                .flatMap(sessionRepository.set)
+                .map(_ => Redirect(routes.SubmitNotificationStartController.onPageLoad()))
+          }
         }
-      else Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad("oops out of time")))
+      )
     }
-
 }

@@ -19,11 +19,11 @@
     govukButton: GovukButton
 )
 
-@(key: Option[String], remainingAttempts: Int)(using request: Request[?], messages: Messages)
+@(key: Option[String])(using request: Request[?], messages: Messages)
 
 
 @refreshHeader = {
-    <meta http-equiv="refresh" content="1;url=@routes.NotificationUploadSuccessController.onPageLoad(key, remainingAttempts)"/>
+    <meta http-equiv="refresh" content="1;url=@routes.NotificationUploadSuccessController.onPageLoad(key)"/>
 }
 
 @layout(pageTitle = titleNoForm(messages("notificationUploadSuccess.title")), additionalHeadBlock = Some(refreshHeader)) {

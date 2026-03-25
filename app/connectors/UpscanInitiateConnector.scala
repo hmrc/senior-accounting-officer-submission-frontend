@@ -37,7 +37,7 @@ class UpscanInitiateConnector @Inject() (
   def initiateV2()(using HeaderCarrier): Future[UpscanInitiateResponse] = {
     val request = UpscanInitiateRequestV2(
       callbackUrl = appConfig.upscanCallbackTarget,
-      successRedirect = Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad(key = None, 10)),
+      successRedirect = Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad(key = None)),
       errorRedirect = Some(appConfig.host + routes.NotificationUploadErrorController.onPageLoad(""))
     )
 
