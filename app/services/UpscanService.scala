@@ -53,11 +53,11 @@ class UpscanService @Inject() (
 
   private def checkMongo(reference: String): Future[Either[State, InterimResult]] =
     repository.find(reference).map {
-      case Some(FileUploadState(_, _, InProgress, _)) =>
+      case Some(FileUploadState(_, _, _, InProgress, _)) =>
         Left(State.WaitingForUpscan)
-      case Some(FileUploadState(_, reference, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
+      case Some(FileUploadState(_, reference, _, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
         Right(InterimResult(reference, downloadUrl))
-      case Some(FileUploadState(_, _, Failed, _)) =>
+      case Some(FileUploadState(_, _, _, Failed, _)) =>
         Left(State.UploadToUpscanFailed)
       case _ =>
         Left(State.NoReference)

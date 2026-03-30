@@ -21,7 +21,7 @@ import config.AppConfig
 import models.*
 import org.bson.types.ObjectId
 import org.mongodb.scala.model.*
-import org.mongodb.scala.model.Filters.equal
+import org.mongodb.scala.model.Filters.{equal, exists}
 import org.mongodb.scala.model.Updates.{set, setOnInsert}
 import play.api.libs.json.*
 import uk.gov.hmrc.mdc.Mdc
@@ -29,7 +29,6 @@ import uk.gov.hmrc.mongo.MongoComponent
 import uk.gov.hmrc.mongo.play.json.{Codecs, PlayMongoRepository}
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import java.time.{Clock, Instant}
 import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
@@ -47,6 +46,7 @@ class UpscanSessionRepository @Inject() (
       domainFormat = FileUploadState.mongoFormat,
       indexes = Seq(
         IndexModel(Indexes.ascending("reference"), IndexOptions().unique(true)),
+        IndexModel(Indexes.ascending("userSessionId"), IndexOptions().unique(true)),
         IndexModel(
           Indexes.ascending("lastUpdated"),
           IndexOptions()
@@ -68,10 +68,23 @@ class UpscanSessionRepository @Inject() (
   }
 
   def insert(details: FileUploadState): Future[Boolean] = Mdc.preservingMdc {
-    collection
-      .insertOne(details)
-      .toFuture()
-      .map(_ => true)
+    collection.find(equal("userSessionId", details.userSessionId)).headOption().flatMap {
+        case Some(existing) =>
+          collection
+            .replaceOne(
+              filter = equal("_id", existing.`_id`),
+              replacement = details.copy(`_id` = existing.`_id`),
+              options = ReplaceOptions().upsert(true)
+            )
+            .toFuture()
+            .map(_ => true)
+        case None =>
+          collection.
+            insertOne(details).toFuture().map(_ => true)
+      }
+
+
+
   }
 
   def find(reference: String): Future[Option[FileUploadState]] = Mdc.preservingMdc {
