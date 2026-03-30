@@ -49,6 +49,7 @@ class NotificationUploadFormController @Inject() (
         FileUploadState(
           ObjectId.get(),
           upscanInitiateResponse.reference,
+          request.userId,
           UploadStatus.InProgress
         )
       )
