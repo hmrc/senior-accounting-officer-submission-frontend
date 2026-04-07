@@ -52,7 +52,6 @@ class SessionRepository @Inject() (
           Indexes.ascending("lastUpdated"),
           IndexOptions()
             .name("lastUpdatedIdx")
-            // The journey document owns upload state, so the upload lifecycle expires with the same TTL as user answers.
             .expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
         )
       )
