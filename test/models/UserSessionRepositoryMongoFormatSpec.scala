@@ -79,5 +79,21 @@ class UserSessionRepositoryMongoFormatSpec extends SpecBase {
       result mustBe a[JsError]
     }
 
+    "correctly write and read NotificationUploadState" in {
+      val state = NotificationUploadState(
+        reference = "upscan-reference",
+        status = UploadStatus.InProgress
+      )
+
+      val json = Json.toJson(state)
+
+      json mustBe Json.obj(
+        "reference" -> "upscan-reference",
+        "status"    -> Json.obj("statusType" -> "InProgress")
+      )
+
+      Json.fromJson[NotificationUploadState](json).get mustBe state
+    }
+
   }
 }

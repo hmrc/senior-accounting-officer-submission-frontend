@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,13 @@
 
 package models
 
-import org.bson.types.ObjectId
-import play.api.libs.json.*
-import uk.gov.hmrc.mongo.play.json.formats.{MongoFormats, MongoJavatimeFormats}
+import play.api.libs.json.{Format, Json}
 
-import java.time.Instant
-
-final case class FileUploadState(
-    `_id`: ObjectId,
+final case class NotificationUploadState(
     reference: String,
-    status: UploadStatus,
-    lastUpdated: Instant = Instant.now
+    status: UploadStatus
 )
 
-object FileUploadState {
-  val mongoFormat: Format[FileUploadState] = {
-    given Format[ObjectId] = MongoFormats.objectIdFormat
-    given Format[Instant]  = MongoJavatimeFormats.instantFormat
-    Json.format[FileUploadState]
-  }
+object NotificationUploadState {
+  given Format[NotificationUploadState] = Json.format[NotificationUploadState]
 }

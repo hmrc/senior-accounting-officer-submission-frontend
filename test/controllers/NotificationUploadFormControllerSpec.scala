@@ -17,17 +17,16 @@
 package controllers
 
 import base.SpecBase
-import config.AppConfig
 import connectors.UpscanInitiateConnector
-import models.{FileUploadState, UpscanInitiateResponse}
-import org.mockito.ArgumentMatchers.any
+import models.{NotificationUploadState, UploadStatus, UpscanInitiateResponse}
+import org.mockito.ArgumentMatchers.{any, argThat}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import play.twirl.api.Html
-import repositories.UpscanSessionRepository
+import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.NotificationUploadFormView
 
@@ -38,15 +37,13 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
   "NotificationUploadFormController must" - {
 
     "return OK and the correct view for a GET" in {
-      val mockAppConfig                  = mock[AppConfig]
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
+      val mockSessionRepository          = mock[SessionRepository]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
       val upscanInitiateResponse =
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
-      when(mockAppConfig.cacheTtl).thenReturn(900L)
       when(mockNotificationUploadFormView.apply(any())(using any(), any())).thenReturn(Html(""))
 
       when(
@@ -55,16 +52,13 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         )
       ).thenReturn(Future.successful(upscanInitiateResponse))
 
-      when(mockUpscanSessionRepository.insert(any[FileUploadState]))
+      when(mockSessionRepository.set(any()))
         .thenReturn(Future.successful(true))
-
-      when(mockAppConfig.hubBaseUrl).thenReturn("http://localhost:10000/senior-accounting-officer")
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
-          bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
-          bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
+          bind[SessionRepository].toInstance(mockSessionRepository),
           bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
         )
         .build()
@@ -82,12 +76,9 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
     "return an error when upscan initiate connector fails" in {
       given ec: ExecutionContext         = scala.concurrent.ExecutionContext.Implicits.global
-      val mockAppConfig                  = mock[AppConfig]
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
+      val mockSessionRepository          = mock[SessionRepository]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
-
-      when(mockAppConfig.cacheTtl).thenReturn(900L)
 
       when(
         mockUpscanInitiateConnector.initiateV2()(using
@@ -97,9 +88,8 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
-          bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
-          bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
+          bind[SessionRepository].toInstance(mockSessionRepository),
           bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
         )
         .build()
@@ -117,12 +107,9 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "return an error when upload progress tracker fails" in {
-      val mockAppConfig                  = mock[AppConfig]
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockUpscanSessionRepository    = mock[UpscanSessionRepository]
+      val mockSessionRepository          = mock[SessionRepository]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
-
-      when(mockAppConfig.cacheTtl).thenReturn(900L)
 
       val upscanInitiateResponse =
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
@@ -134,14 +121,13 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       )
         .thenReturn(Future.successful(upscanInitiateResponse))
 
-      when(mockUpscanSessionRepository.insert(any[FileUploadState]))
+      when(mockSessionRepository.set(any()))
         .thenReturn(Future.failed(new RuntimeException("Database connection failed")))
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(
-          bind[AppConfig].toInstance(mockAppConfig),
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
-          bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
+          bind[SessionRepository].toInstance(mockSessionRepository),
           bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
         )
         .build()
@@ -168,6 +154,47 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "store the Upscan reference in user answers as soon as the upload is initiated" in {
+      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
+      val mockSessionRepository          = mock[SessionRepository]
+      val mockNotificationUploadFormView = mock[NotificationUploadFormView]
+
+      val upscanInitiateResponse =
+        UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
+
+      when(mockNotificationUploadFormView.apply(any())(using any(), any())).thenReturn(Html(""))
+      when(mockUpscanInitiateConnector.initiateV2()(using any[HeaderCarrier]()))
+        .thenReturn(Future.successful(upscanInitiateResponse))
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
+        )
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+
+        verify(mockSessionRepository, times(1)).set(
+          argThat { (answers: models.UserAnswers) =>
+            answers.id == emptyUserAnswers.id &&
+            answers
+              .get(pages.NotificationUploadStatePage)
+              .contains(
+                NotificationUploadState(reference = "foo", status = UploadStatus.InProgress)
+              )
+          }
+        )
       }
     }
   }

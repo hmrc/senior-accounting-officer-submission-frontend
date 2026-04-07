@@ -21,16 +21,14 @@ import connectors.UpscanDownloadConnector
 import models.*
 import org.mockito.ArgumentMatchers.{eq as meq, *}
 import org.mockito.Mockito.*
-import org.mockito.verification.VerificationMode
-import org.mongodb.scala.bson.ObjectId
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import pages.NotificationUploadStatePage
 import play.api.Application
 import play.api.http.Status.{BAD_REQUEST, OK}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import repositories.UpscanSessionRepository
 import services.UpscanService.State
 import services.UpscanServiceSpec.*
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -40,12 +38,10 @@ import scala.util.Random
 
 class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
-  val mockUpscanSessionRepository: UpscanSessionRepository = mock[UpscanSessionRepository]
   val mockUpscanDownloadConnector: UpscanDownloadConnector = mock[UpscanDownloadConnector]
   given HeaderCarrier                                      = HeaderCarrier()
 
   override def beforeEach(): Unit = {
-    reset(mockUpscanSessionRepository)
     reset(mockUpscanDownloadConnector)
   }
 
@@ -53,152 +49,113 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
   override lazy val app: Application = GuiceApplicationBuilder()
     .overrides(
-      bind[UpscanSessionRepository].toInstance(mockUpscanSessionRepository),
       bind[UpscanDownloadConnector].toInstance(mockUpscanDownloadConnector)
     )
     .build()
 
   "UpscanService.fileUploadState" - {
     "must return State.NoReference when no reference is received" in {
-      val result = SUT.fileUploadState(None).futureValue
+      val result = SUT.fileUploadState(emptyUserAnswers, None).futureValue
 
       result mustBe State.NoReference
 
-      verify(mockUpscanSessionRepository, times(0)).find(any())
       verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
 
-    "must return State.NoReference when the uploadId does not exist in Mongo" in {
-      when(mockUpscanSessionRepository.find(any())).thenReturn(
-        Future.successful(None)
-      )
-
-      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
+    "must return State.NoReference when no upload state is stored in user answers" in {
+      val result = SUT.fileUploadState(emptyUserAnswers, Some(testFileReference)).futureValue
 
       result mustBe State.NoReference
 
-      verifyFindByReference(times(1))
       verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
 
-    "must return State.NoReference when the file upload is in progress" in {
-      applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    "must return State.NoReference when the provided reference does not match the stored upload reference" in {
+      val userAnswers = userAnswersWithUploadStatus(UploadStatus.InProgress)
+      val result      = SUT.fileUploadState(userAnswers, Some("different-reference")).futureValue
 
-      when(mockUpscanSessionRepository.find(any())).thenReturn(
-        Future.successful(
-          Some(
-            FileUploadState(
-              new ObjectId(),
-              testFileReference,
-              UploadStatus.InProgress
-            )
-          )
-        )
-      )
+      result mustBe State.NoReference
 
-      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
+      verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
+    }
+
+    "must return State.WaitingForUpscan when the file upload is in progress" in {
+      val result =
+        SUT.fileUploadState(userAnswersWithUploadStatus(UploadStatus.InProgress), Some(testFileReference)).futureValue
 
       result mustBe State.WaitingForUpscan
 
-      verifyFindByReference(times(1))
       verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
 
     "must return State.UploadToUpscanFailed when the file upload has failed" in {
-      applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      when(mockUpscanSessionRepository.find(any())).thenReturn(
-        Future.successful(
-          Some(
-            FileUploadState(
-              new ObjectId(),
-              testFileReference,
-              UploadStatus.Failed
-            )
-          )
-        )
-      )
-
-      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
+      val result =
+        SUT.fileUploadState(userAnswersWithUploadStatus(UploadStatus.Failed), Some(testFileReference)).futureValue
 
       result mustBe State.UploadToUpscanFailed
 
-      verifyFindByReference(times(1))
       verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
 
     "must return State.Result when the file upload is completed and the file is downloaded from upscan successfully" in {
-      applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      when(mockUpscanSessionRepository.find(any())).thenReturn(
-        Future.successful(
-          Some(
-            FileUploadState(
-              new ObjectId(),
-              testFileReference,
-              UploadStatus.UploadedSuccessfully(
-                name = "",
-                mimeType = "",
-                downloadUrl = testDownloadUrl,
-                size = None
-              )
-            )
-          )
-        )
-      )
       val testResponse = HttpResponse(status = OK, body = testFileContent)
       when(mockUpscanDownloadConnector.download(any())(using any())).thenReturn(
         Future.successful(testResponse)
       )
 
-      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
+      val result = SUT
+        .fileUploadState(
+          userAnswersWithUploadStatus(
+            UploadStatus.UploadedSuccessfully(
+              name = "",
+              mimeType = "",
+              downloadUrl = testDownloadUrl,
+              size = None
+            )
+          ),
+          Some(testFileReference)
+        )
+        .futureValue
 
       result mustBe State.Result(testFileReference, testFileContent)
 
-      verifyFindByReference(times(1))
       verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
     }
 
     "must return State.DownloadFromUpscanFailed when the file upload is completed but the file download from upscan fails" in {
-      applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      when(mockUpscanSessionRepository.find(any())).thenReturn(
-        Future.successful(
-          Some(
-            FileUploadState(
-              new ObjectId(),
-              testFileReference,
-              UploadStatus.UploadedSuccessfully(
-                name = "",
-                mimeType = "",
-                downloadUrl = testDownloadUrl,
-                size = None
-              )
-            )
-          )
-        )
-      )
       val testResponse = HttpResponse(status = BAD_REQUEST, body = testFileContent)
       when(mockUpscanDownloadConnector.download(any())(using any())).thenReturn(
         Future.successful(testResponse)
       )
 
-      val result = SUT.fileUploadState(Some(testFileReference)).futureValue
+      val result = SUT
+        .fileUploadState(
+          userAnswersWithUploadStatus(
+            UploadStatus.UploadedSuccessfully(
+              name = "",
+              mimeType = "",
+              downloadUrl = testDownloadUrl,
+              size = None
+            )
+          ),
+          Some(testFileReference)
+        )
+        .futureValue
 
       result mustBe State.DownloadFromUpscanFailed(testResponse)
 
-      verifyFindByReference(times(1))
       verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
     }
   }
-
-  def verifyFindByReference(mode: VerificationMode): Unit =
-    verify(mockUpscanSessionRepository, mode).find(meq(testFileReference))
-
 }
 
 object UpscanServiceSpec {
   val testDownloadUrl: String   = "/test/url"
   val testFileContent: String   = Random.nextString(10)
   val testFileReference: String = Random.nextString(10)
+
+  def userAnswersWithUploadStatus(status: UploadStatus): UserAnswers =
+    UserAnswers("id")
+      .set(NotificationUploadStatePage, NotificationUploadState(testFileReference, status))
+      .get
 }

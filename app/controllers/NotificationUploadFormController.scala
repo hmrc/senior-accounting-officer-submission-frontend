@@ -19,14 +19,14 @@ package controllers
 import connectors.UpscanInitiateConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import models.*
-import org.bson.types.ObjectId
+import pages.NotificationUploadStatePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.UpscanSessionRepository
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.NotificationUploadFormView
 
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
@@ -37,7 +37,7 @@ class NotificationUploadFormController @Inject() (
     mcc: MessagesControllerComponents,
     notificationUploadFormView: NotificationUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
-    upscanSessionRepository: UpscanSessionRepository
+    sessionRepository: SessionRepository
 )(implicit ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
@@ -45,13 +45,16 @@ class NotificationUploadFormController @Inject() (
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
     for
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2()
-      _                      <- upscanSessionRepository.insert(
-        FileUploadState(
-          ObjectId.get(),
-          upscanInitiateResponse.reference,
-          UploadStatus.InProgress
+      updatedAnswers         <- Future.fromTry(
+        request.userAnswers.set(
+          NotificationUploadStatePage,
+          NotificationUploadState(
+            reference = upscanInitiateResponse.reference,
+            status = UploadStatus.InProgress
+          )
         )
       )
+      _ <- sessionRepository.set(updatedAnswers)
     yield Ok(notificationUploadFormView(upscanInitiateResponse))
   }
 }

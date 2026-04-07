@@ -26,6 +26,16 @@ Run the frontend locally using
 This service is localed on http://localhost:10058/senior-accounting-officer/submission/, however the user journeys begin from
 `SENIOR_ACCOUNTING_OFFICER_HUB_FRONTEND` on http://localhost:10056/senior-accounting-officer/
 
+## Upload state persistence
+
+Upscan notification upload state is stored in the main `user-answers` journey document under `data.notificationUpload`.
+
+The upload reference is written when upload initiation succeeds, before the form is rendered back to the user.
+
+Upscan callback processing updates the same `user-answers` document by reference, so there is no separate upload tracker collection.
+
+The upload state inherits the same TTL policy as the journey document because it is stored in `user-answers`. A returning user can still continue and submit the journey as long as that journey document has not expired.
+
 # ADR
 This project uses ADR to [adr-tools](https://github.com/npryce/adr-tools) to record architecture decisions.
 After installing the tool ensure to execute

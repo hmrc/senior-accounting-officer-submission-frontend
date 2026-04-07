@@ -17,12 +17,13 @@
 package repositories
 
 import config.AppConfig
-import models.UserAnswers
+import models.{UploadStatus, UserAnswers}
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model.*
 import play.api.libs.json.Format
 import uk.gov.hmrc.mdc.Mdc
 import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.Codecs
 import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
 import uk.gov.hmrc.mongo.play.json.formats.MongoJavatimeFormats
 
@@ -31,8 +32,6 @@ import scala.concurrent.{ExecutionContext, Future}
 import java.time.{Clock, Instant}
 import java.util.concurrent.TimeUnit
 import javax.inject.{Inject, Singleton}
-
-//TODO will need to reference the upscan ID from here once its implemented
 
 @Singleton
 class SessionRepository @Inject() (
@@ -46,9 +45,14 @@ class SessionRepository @Inject() (
       domainFormat = UserAnswers.format,
       indexes = Seq(
         IndexModel(
+          Indexes.ascending("data.notificationUpload.reference"),
+          IndexOptions().name("notificationUploadReferenceIdx").unique(true).sparse(true)
+        ),
+        IndexModel(
           Indexes.ascending("lastUpdated"),
           IndexOptions()
             .name("lastUpdatedIdx")
+            // The journey document owns upload state, so the upload lifecycle expires with the same TTL as user answers.
             .expireAfter(appConfig.cacheTtl, TimeUnit.SECONDS)
         )
       )
@@ -95,5 +99,18 @@ class SessionRepository @Inject() (
       .deleteOne(byId(id))
       .toFuture()
       .map(_ => true)
+  }
+
+  def updateUploadStatus(reference: String, newStatus: UploadStatus): Future[Boolean] = Mdc.preservingMdc {
+    collection
+      .updateOne(
+        filter = Filters.equal("data.notificationUpload.reference", Codecs.toBson(reference)),
+        update = Updates.combine(
+          Updates.set("data.notificationUpload.status", Codecs.toBson(newStatus)),
+          Updates.set("lastUpdated", Instant.now(clock))
+        )
+      )
+      .toFuture()
+      .map(_.getMatchedCount > 0)
   }
 }
