@@ -17,14 +17,14 @@
 package services
 
 import models.*
-import repositories.UpscanSessionRepository
+import repositories.SessionRepository
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 import javax.inject.Inject
 
-class UpscanCallbackDispatcher @Inject() (sessionStorage: UpscanSessionRepository)(using ExecutionContext) {
+class UpscanCallbackDispatcher @Inject() (sessionStorage: SessionRepository)(using ExecutionContext) {
 
   def processUpscanCallback(callback: UpscanCallback): Future[Boolean] = {
     val uploadStatus =
@@ -40,7 +40,7 @@ class UpscanCallbackDispatcher @Inject() (sessionStorage: UpscanSessionRepositor
           UploadStatus.Failed
       }
 
-    sessionStorage.updateStatus(callback.reference, uploadStatus).map(_ => true)
+    sessionStorage.updateUploadStatus(callback.reference, uploadStatus).map(_ => true)
   }
 
 }

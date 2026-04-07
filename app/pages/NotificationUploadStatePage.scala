@@ -16,11 +16,12 @@
 
 package pages
 
+import models.NotificationUploadState
 import play.api.libs.json.JsPath
 
-case object NotificationUploadReferencePage extends QuestionPage[String] {
+case object NotificationUploadStatePage extends QuestionPage[NotificationUploadState] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "notificationUploadReference"
+  override def toString: String = "notificationUpload"
 }

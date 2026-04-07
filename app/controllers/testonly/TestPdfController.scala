@@ -30,10 +30,11 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.testonly.OpenHtmlToPdfView
 
-import java.io.*
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.util.Try
+
+import java.io.*
+import javax.inject.Inject
 
 class TestPdfController @Inject() (
     mcc: MessagesControllerComponents,

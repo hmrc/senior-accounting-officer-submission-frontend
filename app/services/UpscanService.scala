@@ -17,10 +17,10 @@
 package services
 
 import connectors.UpscanDownloadConnector
-import models.FileUploadState
 import models.UploadStatus.*
+import models.{NotificationUploadState, UserAnswers}
+import pages.NotificationUploadStatePage
 import play.api.http.Status.OK
-import repositories.UpscanSessionRepository
 import services.UpscanService.*
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 
@@ -29,19 +29,25 @@ import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.Inject
 
 class UpscanService @Inject() (
-    repository: UpscanSessionRepository,
     downloadConnector: UpscanDownloadConnector
 )(using ExecutionContext) {
 
-  def fileUploadState(reference: Option[String])(using hc: HeaderCarrier): Future[State] =
-    reference.fold(Future.successful(State.NoReference))(fileUploadStateByReference)
+  def fileUploadState(userAnswers: UserAnswers, reference: Option[String])(using hc: HeaderCarrier): Future[State] =
+    userAnswers.get(NotificationUploadStatePage).fold(Future.successful(State.NoReference)) { uploadState =>
+      reference match {
+        case Some(expectedReference) if uploadState.reference != expectedReference =>
+          Future.successful(State.NoReference)
+        case _ =>
+          fileUploadState(uploadState)
+      }
+    }
 
-  private def fileUploadStateByReference(reference: String)(using hc: HeaderCarrier): Future[State] =
-    checkMongo(reference).flatMap {
+  private def fileUploadState(uploadState: NotificationUploadState)(using hc: HeaderCarrier): Future[State] =
+    checkUploadState(uploadState).flatMap {
       _.fold(
         state => Future.successful(state),
-        { case InterimResult(reference, url) =>
-          downloadConnector.download(url).map {
+        { case InterimResult(reference, downloadUrl) =>
+          downloadConnector.download(downloadUrl).map {
             case HttpResponse(OK, body, _) =>
               State.Result(reference, body)
             case httpResponse =>
@@ -51,16 +57,16 @@ class UpscanService @Inject() (
       )
     }
 
-  private def checkMongo(reference: String): Future[Either[State, InterimResult]] =
-    repository.find(reference).map {
-      case Some(FileUploadState(_, _, InProgress, _)) =>
-        Left(State.WaitingForUpscan)
-      case Some(FileUploadState(_, reference, UploadedSuccessfully(_, _, downloadUrl, _), _)) =>
-        Right(InterimResult(reference, downloadUrl))
-      case Some(FileUploadState(_, _, Failed, _)) =>
-        Left(State.UploadToUpscanFailed)
-      case _ =>
-        Left(State.NoReference)
+  private def checkUploadState(uploadState: NotificationUploadState): Future[Either[State, InterimResult]] =
+    Future.successful {
+      uploadState.status match {
+        case InProgress =>
+          Left(State.WaitingForUpscan)
+        case UploadedSuccessfully(_, _, downloadUrl, _) =>
+          Right(InterimResult(uploadState.reference, downloadUrl))
+        case Failed =>
+          Left(State.UploadToUpscanFailed)
+      }
     }
 }
 

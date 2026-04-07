@@ -17,7 +17,8 @@
 package repositories
 
 import config.AppConfig
-import models.UserAnswers
+import models.{NotificationUploadState, UploadStatus, UserAnswers}
+import pages.NotificationUploadStatePage
 import org.mockito.Mockito.when
 import org.mongodb.scala.model.Filters
 import org.scalactic.source.Position
@@ -146,6 +147,46 @@ class SessionRepositoryISpec
     }
 
     mustPreserveMdc(repository.keepAlive(userAnswers.id))
+  }
+
+  ".updateUploadStatus" - {
+
+    "when there is a journey with a matching upload reference" - {
+
+      "must update the upload status in user answers and refresh lastUpdated" in {
+
+        val userAnswersWithUpload = UserAnswers("id")
+          .set(NotificationUploadStatePage, NotificationUploadState("upscan-ref", UploadStatus.InProgress))
+          .get
+          .copy(lastUpdated = Instant.ofEpochSecond(1))
+
+        insert(userAnswersWithUpload).futureValue
+
+        val newStatus = UploadStatus.UploadedSuccessfully(
+          name = "test.csv",
+          mimeType = "text/csv",
+          downloadUrl = "http://localhost:8080/download",
+          size = Some(123L)
+        )
+
+        repository.updateUploadStatus("upscan-ref", newStatus).futureValue mustBe true
+
+        val updated = repository.get(userAnswersWithUpload.id).futureValue.value
+
+        updated.get(NotificationUploadStatePage).value.status mustBe newStatus
+        updated.lastUpdated mustBe instant
+      }
+    }
+
+    "when there is no matching upload reference" - {
+
+      "must return false" in {
+
+        repository.updateUploadStatus("missing-ref", UploadStatus.Failed).futureValue mustBe false
+      }
+    }
+
+    mustPreserveMdc(repository.updateUploadStatus("upscan-ref", UploadStatus.Failed))
   }
 
   private def mustPreserveMdc[A](f: => Future[A])(using pos: Position): Unit =

@@ -22,7 +22,7 @@ import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{eq as _, *}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
-import repositories.UpscanSessionRepository
+import repositories.SessionRepository
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -34,8 +34,8 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
   "UpscanCallbackDispatcher must" - {
 
     "handle a ReadyCallbackBody" in {
-      val mockUpscanSessionRepository = mock[UpscanSessionRepository]
-      val dispatcher                  = new UpscanCallbackDispatcher(mockUpscanSessionRepository)
+      val mockSessionRepository = mock[SessionRepository]
+      val dispatcher            = new UpscanCallbackDispatcher(mockSessionRepository)
 
       val callback = UpscanSuccessCallback(
         reference = "foo",
@@ -49,19 +49,15 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
         )
       )
 
-      when(mockUpscanSessionRepository.updateStatus(any(), any())).thenReturn(
-        Future.successful(
-          UploadStatus.UploadedSuccessfully("test.csv", "application/csv", "/download", Some(123))
-        )
-      )
+      when(mockSessionRepository.updateUploadStatus(any(), any())).thenReturn(Future.successful(true))
 
       dispatcher.processUpscanCallback(callback).futureValue mustBe true
 
       val referenceCaptor = ArgumentCaptor.forClass(classOf[AnyRef])
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
-      verify(mockUpscanSessionRepository, times(1))
-        .updateStatus(referenceCaptor.capture().asInstanceOf[String], statusCaptor.capture())
+      verify(mockSessionRepository, times(1))
+        .updateUploadStatus(referenceCaptor.capture().asInstanceOf[String], statusCaptor.capture())
 
       referenceCaptor.getValue.toString mustBe "foo"
 
@@ -75,8 +71,8 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
     }
 
     "handle a FailedCallbackBody" in {
-      val mockUpscanSessionRepository = mock[UpscanSessionRepository]
-      val dispatcher                  = new UpscanCallbackDispatcher(mockUpscanSessionRepository)
+      val mockSessionRepository = mock[SessionRepository]
+      val dispatcher            = new UpscanCallbackDispatcher(mockSessionRepository)
 
       val callback = UpscanFailureCallback(
         reference = "foo",
@@ -86,15 +82,15 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
         )
       )
 
-      when(mockUpscanSessionRepository.updateStatus(any(), any())).thenReturn(Future.successful(UploadStatus.Failed))
+      when(mockSessionRepository.updateUploadStatus(any(), any())).thenReturn(Future.successful(true))
 
       dispatcher.processUpscanCallback(callback).futureValue mustBe true
 
       val referenceCaptor = ArgumentCaptor.forClass(classOf[AnyRef])
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
-      verify(mockUpscanSessionRepository, times(1))
-        .updateStatus(referenceCaptor.capture().asInstanceOf[String], statusCaptor.capture())
+      verify(mockSessionRepository, times(1))
+        .updateUploadStatus(referenceCaptor.capture().asInstanceOf[String], statusCaptor.capture())
 
       referenceCaptor.getValue.toString mustBe "foo"
       statusCaptor.getValue mustBe UploadStatus.Failed
