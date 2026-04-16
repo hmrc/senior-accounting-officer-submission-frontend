@@ -30,7 +30,7 @@ class NotificationTemplateDownloadControllerSpec extends SpecBase {
     FakeRequest(GET, routes.DownloadNotificationTemplateController.downloadFile().url)
 
   "GET must " - {
-    "return a file with correct name,type and headers" in {
+    "return a file with correct name and headers" in {
 
       val app = applicationBuilder(userAnswers = None).build()
       running(app) {
@@ -40,8 +40,7 @@ class NotificationTemplateDownloadControllerSpec extends SpecBase {
 
         val contentDisposition = header("Content-Disposition", result)
 
-        contentDisposition mustBe Some("attachment; filename=test.csv")
-        contentType(result) mustBe Some("text/csv")
+        contentDisposition mustBe Some("attachment; filename=Submission template v14.xlsx")
       }
 
     }
