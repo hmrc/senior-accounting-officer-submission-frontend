@@ -16,14 +16,25 @@
 
 @this(
         layout: templates.Layout,
-        govukButton: GovukButton
+        govukButton: GovukButton,
+        govukFileUpload: GovukFileUpload
 )
 
 @(upscanInitiateResponse: models.UpscanInitiateResponse)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationUploadForm.title"))) {
+    <span class="govuk-caption-l">@messages("notificationUploadForm.caption")</span>
 
-    <h1 class="govuk-heading-xl">@messages("notificationUploadForm.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("notificationUploadForm.heading")</h1>
+
+    <p class="govuk-body">@messages("notificationUploadForm.paragraph1")</p>
+
+    <p class="govuk-body"><a target="_blank" href=@routes.NotificationGuidanceController.onPageLoad()>@messages("notificationUploadForm.paragraph2")</a></p>
+
+    <div class="govuk-inset-text">
+        @messages("notificationUploadForm.inset.text")
+    </div>
+
     @* ---- populating the form action with the initiate response post target --- *@
     <form action="@upscanInitiateResponse.postTarget" method="post" enctype="multipart/form-data">
 
@@ -32,22 +43,19 @@
             <input type="hidden" name="@field._1" value="@field._2"/>
         }
 
-        <div class="js-visible mt-3">
-            <div class="govuk-form-group">
-                <label class="govuk-label" for="file-input">
-                    <span class="">File to upload</span>
-                </label>
-                <input
-                    type="file"
-                    id="file-input"
-                    name="file"
-                    class="govuk-file-upload"
-                    accept=".xlsx,.xls,.csv"/>
-            </div>
-        </div>
+        @govukFileUpload(FileUpload(
+            name = "file",
+            id = "file-input",
+            label = Label(
+                isPageHeading = true,
+                classes = "govuk-label govuk-label--m",
+                content = Text(messages("notificationUploadForm.upload.label"))
+            ),
+            javascript = Some(true)
+        ))
 
         <div class="section">
-            <button id="submit" class="govuk-button"> Upload </button>
+            <button id="submit" class="govuk-button"> @messages("site.continue") </button>
         </div>
 
     </form>

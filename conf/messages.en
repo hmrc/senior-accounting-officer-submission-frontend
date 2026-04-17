@@ -93,7 +93,12 @@ template.guidance.subheading6.list1.item1 = Upload your template again with cert
 template.guidance.subheading6.list1.item2 = Complete the certificate journey and sign the declaration.
 
 notificationUploadForm.title = notificationUploadForm
-notificationUploadForm.heading = notificationUploadForm
+notificationUploadForm.heading = Upload a submission template
+notificationUploadForm.caption = Submit a notification and certificate
+notificationUploadForm.paragraph1 = The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.
+notificationUploadForm.paragraph2 = Read guidance on how to complete the submission template (opens in new tab)
+notificationUploadForm.inset.text = If your group has more than one SAO, you must submit a separate notification for each SAO. After you complete one submission, you can start another.
+notificationUploadForm.upload.label = Upload a file
 
 notificationGuidance.title = Submit a notification
 notificationGuidance.heading = Submit a notification
