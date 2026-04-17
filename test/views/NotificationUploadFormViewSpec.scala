@@ -38,6 +38,8 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       hasError = false
     )
 
+    doc.createTestsWithOrWithoutError(hasError = false)
+
     "must contain hidden fields" in {
       val hiddenFields = doc.select("input[type=hidden]")
       hiddenFields.size() mustBe 2
@@ -46,12 +48,36 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       hiddenFields.get(0).attr("value") mustBe "testValue1"
       hiddenFields.get(1).attr("value") mustBe "testValue2"
     }
+
+    doc.createTestsWithParagraphs(paragraphs)
+
+    doc.createTestForInsetText(insetText)
+
+    "must contain file upload input element" in {
+      doc.select(s"input#$uploadFormInputId.govuk-file-upload").size() mustBe 1
+    }
+
+    "must contain label for file upload input element" in {
+      doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""").size() mustBe 1
+      doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""").text() mustBe uploadFormLabel
+    }
   }
 }
 
 object NotificationUploadFormViewSpec {
-  val pageHeading                                    = "notificationUploadForm"
-  val pageTitle                                      = "notificationUploadForm"
+  val pageHeading = "Upload a submission template"
+  val pageTitle   = "Upload a submission template for your notification"
+
+  val paragraphs = List(
+    "The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.",
+    "Read guidance on how to complete the submission template (opens in new tab)"
+  )
+  val insetText =
+    "If your group has more than one SAO, you must submit a separate notification for each SAO. After you complete one submission, you can start another."
+
+  val uploadFormLabel   = "Upload a file"
+  val uploadFormInputId = "file-input"
+
   val upscanInitiateResponse: UpscanInitiateResponse = UpscanInitiateResponse(
     reference = "testReference",
     postTarget = "formPostTarget",

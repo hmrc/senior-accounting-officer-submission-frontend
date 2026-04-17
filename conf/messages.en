@@ -92,7 +92,7 @@ template.guidance.subheading6 = Complete certificate at a different time.
 template.guidance.subheading6.list1.item1 = Upload your template again with certificate information filled out.
 template.guidance.subheading6.list1.item2 = Complete the certificate journey and sign the declaration.
 
-notificationUploadForm.title = notificationUploadForm
+notificationUploadForm.title = Upload a submission template for your notification
 notificationUploadForm.heading = Upload a submission template
 notificationUploadForm.caption = Submit a notification and certificate
 notificationUploadForm.paragraph1 = The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.
