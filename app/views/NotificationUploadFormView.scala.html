@@ -15,21 +15,44 @@
  *@
 
 @this(
-        layout: templates.Layout,
-        govukButton: GovukButton,
-        govukFileUpload: GovukFileUpload
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukButton: GovukButton,
+    govukFileUpload: GovukFileUpload,
+    govukErrorMessage: GovukErrorMessage,
+    govukErrorSummary: GovukErrorSummary
 )
 
-@(upscanInitiateResponse: models.UpscanInitiateResponse)(using request: Request[?], messages: Messages)
+@(upscanInitiateResponse: models.UpscanInitiateResponse, errorMessage: Option[String] = None)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationUploadForm.title"))) {
+
+    @errorMessage.collect { m =>
+        @govukErrorSummary(
+            ErrorSummary(
+                title = Text(messages("error.summary.title")),
+                errorList = List(
+                    ErrorLink(
+                        href = Some("#file-input"),
+                        content = Text(m)
+                    )
+                )
+            )
+        )
+    }
+
     <span class="govuk-caption-l">@messages("notificationUploadForm.caption")</span>
 
     <h1 class="govuk-heading-l">@messages("notificationUploadForm.heading")</h1>
 
     <p class="govuk-body">@messages("notificationUploadForm.paragraph1")</p>
 
-    <p class="govuk-body"><a target="_blank" href=@routes.NotificationGuidanceController.onPageLoad()>@messages("notificationUploadForm.paragraph2")</a></p>
+    <p class="govuk-body">
+        <a target="_blank"
+           href=@routes.NotificationGuidanceController.onPageLoad()>
+            @messages("notificationUploadForm.paragraph2")
+        </a>
+    </p>
 
     <div class="govuk-inset-text">
         @messages("notificationUploadForm.inset.text")
@@ -41,18 +64,19 @@
         @* ---- populating the form with hidden fields returned with the initiate response --- *@
         @for(field <- upscanInitiateResponse.formFields) {
             <input type="hidden" name="@field._1" value="@field._2"/>
-        }
+            }
 
-        @govukFileUpload(FileUpload(
-            name = "file",
-            id = "file-input",
-            label = Label(
-                isPageHeading = false,
-                classes = "govuk-label govuk-label--m",
-                content = Text(messages("notificationUploadForm.upload.label"))
-            ),
-            javascript = Some(true)
-        ))
+            @govukFileUpload(FileUpload(
+                name = "file",
+                id = "file-input",
+                label = Label(
+                    isPageHeading = false,
+                    classes = "govuk-label govuk-label--m",
+                    content = Text(messages("notificationUploadForm.upload.label"))
+                ),
+                javascript = Some(true),
+                errorMessage = errorMessage.collect{m => ErrorMessage(content = Text(m))}
+            ))
 
         <div class="section">
             <button id="submit" class="govuk-button"> @messages("site.continue") </button>
