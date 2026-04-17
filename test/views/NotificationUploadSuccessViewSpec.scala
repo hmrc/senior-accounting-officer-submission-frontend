@@ -40,6 +40,10 @@ class NotificationUploadSuccessViewSpec extends ViewSpecBase[NotificationUploadS
     doc.createTestsWithOrWithoutError(hasError = false)
 
     doc.createTestsWithParagraphs(paragraphs)
+
+    "must have a spinner" in {
+      doc.select("div.loader").size() mustBe 1
+    }
   }
 }
 
