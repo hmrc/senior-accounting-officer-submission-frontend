@@ -15,18 +15,25 @@
  *@
 
 @this(
-        layout: templates.Layout,
-        govukButton: GovukButton
+    layout: templates.Layout,
+    govukButton: GovukButton
 )
 
 @()(using request: Request[?], messages: Messages)
 
 
 @refreshHeader = {
-   <meta http-equiv="refresh" content="1"/>
+    <meta http-equiv="refresh" content="1"/>
 }
+
+<link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" />
 
 @layout(pageTitle = titleNoForm(messages("notificationUploadSuccess.title")), additionalHeadBlock = Some(refreshHeader)) {
 
-    <h1 class="govuk-heading-xl">@messages("notificationUploadSuccess.heading")</h1>
+    <div class="loader"></div>
+    <!-- TODO: slightly smaller gap here than in prototype, why? -->
+    <h1 class="govuk-heading-l govuk-!-text-align-centre">@messages("notificationUploadSuccess.heading")</h1>
+
+    <p class="govuk-body-m govuk-!-text-align-centre">@messages("notificationUploadSuccess.paragraph1")</p>
+
 }
