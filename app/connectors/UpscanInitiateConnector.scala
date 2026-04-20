@@ -38,7 +38,7 @@ class UpscanInitiateConnector @Inject() (
     val request = UpscanInitiateRequestV2(
       callbackUrl = appConfig.upscanCallbackTarget,
       successRedirect = Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad(key = None)),
-      errorRedirect = Some(appConfig.host + routes.NotificationUploadErrorController.onPageLoad())
+      errorRedirect = Some(appConfig.host + routes.NotificationUploadFormController.onPageLoad())
     )
 
     httpClient
