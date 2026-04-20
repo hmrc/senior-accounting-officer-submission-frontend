@@ -65,9 +65,9 @@
             ),
             javascript = Some(true),
             errorMessage = form.errors.headOption.collect{
-                fe => ErrorMessage(
+                formError => ErrorMessage(
                     content = Text(
-                        fe.messages.headOption.fold("")(m => m)
+                        formError.messages.headOption.fold("")(identity)
                     )
                 )
             }
