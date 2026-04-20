@@ -67,8 +67,9 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       }
 
       "must contain label for file upload input element" in {
-        doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""").size() mustBe 1
-        doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""").text() mustBe uploadFormLabel
+        val label = doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""")
+        label.size() mustBe 1
+        label.text() mustBe uploadFormLabel
       }
     }
 
@@ -103,8 +104,9 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       }
 
       "must contain label for file upload input element" in {
-        doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""").size() mustBe 1
-        doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""").text() mustBe uploadFormLabel
+        val label = doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""")
+        label.size() mustBe 1
+        label.text() mustBe uploadFormLabel
       }
     }
   }
