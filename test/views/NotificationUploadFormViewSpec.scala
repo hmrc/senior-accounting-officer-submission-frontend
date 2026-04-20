@@ -25,7 +25,7 @@ import views.html.NotificationUploadFormView
 
 class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadFormView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(upscanInitiateResponse).toString)
+  private def generateView(): Document = Jsoup.parse(SUT(upscanInitiateResponse, None).toString)
 
   "NotificationUploadFormView" - {
     val doc: Document = generateView()

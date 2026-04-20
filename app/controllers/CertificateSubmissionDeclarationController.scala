@@ -18,8 +18,7 @@ package controllers
 
 import controllers.actions.*
 import forms.CertificateSubmissionDeclarationFormProvider
-import models.CertificateSubmissionDeclaration
-import models.Mode
+import models.{CertificateSubmissionDeclaration, Mode}
 import navigation.Navigator
 import pages.CertificateSubmissionDeclarationPage
 import play.api.data.Form

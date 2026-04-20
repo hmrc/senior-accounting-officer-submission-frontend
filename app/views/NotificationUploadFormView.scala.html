@@ -23,7 +23,7 @@
     govukErrorSummary: GovukErrorSummary
 )
 
-@(upscanInitiateResponse: models.UpscanInitiateResponse, errorMessage: Option[String] = None)(using request: Request[?], messages: Messages)
+@(upscanInitiateResponse: models.UpscanInitiateResponse, errorMessage: Option[String])(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationUploadForm.title"))) {
 

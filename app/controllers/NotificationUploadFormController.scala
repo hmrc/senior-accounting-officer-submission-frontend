@@ -55,6 +55,6 @@ class NotificationUploadFormController @Inject() (
         )
       )
       _ <- sessionRepository.set(updatedAnswers)
-    yield Ok(notificationUploadFormView(upscanInitiateResponse))
+    yield Ok(notificationUploadFormView(upscanInitiateResponse, None))
   }
 }
