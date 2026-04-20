@@ -27,7 +27,7 @@
 
 @layout(pageTitle = title(form, messages("notificationUploadForm.title"))) {
 
-    @formHelper(action = Call("POST", upscanInitiateResponse.postTarget)) {
+    @formHelper(action = Call("POST", upscanInitiateResponse.postTarget), args = Symbol("enctype") -> "multipart/form-data") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
