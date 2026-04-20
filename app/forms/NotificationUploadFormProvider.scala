@@ -22,5 +22,5 @@ import play.api.data.Form
 import javax.inject.Inject
 
 class NotificationUploadFormProvider @Inject() extends Mappings {
-  def apply(): Form[String] = Form("value" -> text().verifying())
+  def apply(): Form[String] = Form("value" -> text())
 }
