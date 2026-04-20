@@ -23,64 +23,58 @@
     govukErrorSummary: GovukErrorSummary
 )
 
-@(upscanInitiateResponse: models.UpscanInitiateResponse, errorMessage: Option[String])(using request: Request[?], messages: Messages)
+@(form: Form[?], upscanInitiateResponse: models.UpscanInitiateResponse)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("notificationUploadForm.title"))) {
+@layout(pageTitle = title(form, messages("notificationUploadForm.title"))) {
 
-    @errorMessage.collect { m =>
-        @govukErrorSummary(
-            ErrorSummary(
-                title = Text(messages("error.summary.title")),
-                errorList = List(
-                    ErrorLink(
-                        href = Some("#file-input"),
-                        content = Text(m)
-                    )
-                )
-            )
-        )
-    }
+    @formHelper(action = Call("POST", upscanInitiateResponse.postTarget)) {
 
-    <span class="govuk-caption-l">@messages("notificationUploadForm.caption")</span>
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
 
-    <h1 class="govuk-heading-l">@messages("notificationUploadForm.heading")</h1>
+        <span class="govuk-caption-l">@messages("notificationUploadForm.caption")</span>
 
-    <p class="govuk-body">@messages("notificationUploadForm.paragraph1")</p>
+        <h1 class="govuk-heading-l">@messages("notificationUploadForm.heading")</h1>
 
-    <p class="govuk-body">
-        <a target="_blank"
-           href=@routes.NotificationGuidanceController.onPageLoad()>
-            @messages("notificationUploadForm.paragraph2")
-        </a>
-    </p>
+        <p class="govuk-body">@messages("notificationUploadForm.paragraph1")</p>
 
-    <div class="govuk-inset-text">
-        @messages("notificationUploadForm.inset.text")
-    </div>
+        <p class="govuk-body">
+            <a target="_blank"
+               href=@routes.NotificationGuidanceController.onPageLoad()>
+                @messages("notificationUploadForm.paragraph2")
+            </a>
+        </p>
 
-    @* ---- populating the form action with the initiate response post target --- *@
-    <form action="@upscanInitiateResponse.postTarget" method="post" enctype="multipart/form-data">
+        <div class="govuk-inset-text">
+            @messages("notificationUploadForm.inset.text")
+        </div>
 
         @* ---- populating the form with hidden fields returned with the initiate response --- *@
         @for(field <- upscanInitiateResponse.formFields) {
             <input type="hidden" name="@field._1" value="@field._2"/>
-            }
+        }
 
-            @govukFileUpload(FileUpload(
-                name = "file",
-                id = "file-input",
-                label = Label(
-                    isPageHeading = false,
-                    classes = "govuk-label govuk-label--m",
-                    content = Text(messages("notificationUploadForm.upload.label"))
-                ),
-                javascript = Some(true),
-                errorMessage = errorMessage.collect{m => ErrorMessage(content = Text(m))}
-            ))
+        @govukFileUpload(FileUpload(
+            name = "file",
+            id = "file-input",
+            label = Label(
+                isPageHeading = false,
+                classes = "govuk-label govuk-label--m",
+                content = Text(messages("notificationUploadForm.upload.label"))
+            ),
+            javascript = Some(true),
+            errorMessage = form.errors.headOption.collect{
+                fe => ErrorMessage(
+                    content = Text(
+                        fe.messages.headOption.fold("")(m => m)
+                    )
+                )
+            }
+        ))
 
         <div class="section">
             <button id="submit" class="govuk-button"> @messages("site.continue") </button>
         </div>
-
-    </form>
+    }
 }

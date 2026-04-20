@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import connectors.UpscanInitiateConnector
 import models.{NotificationUploadState, UploadStatus, UpscanInitiateResponse}
-import org.mockito.ArgumentMatchers.{any, argThat, eq as meq}
+import org.mockito.ArgumentMatchers.{any, argThat}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
@@ -44,7 +44,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       val upscanInitiateResponse =
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
-      when(mockNotificationUploadFormView.apply(any(), meq(None))(using any(), any())).thenReturn(Html(""))
+      when(mockNotificationUploadFormView.apply(any(), any())(using any(), any())).thenReturn(Html(""))
 
       when(
         mockUpscanInitiateConnector.initiateV2()(using
@@ -70,7 +70,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual OK
 
-        verify(mockNotificationUploadFormView, times(1)).apply(any(), meq(None))(using any(), any())
+        verify(mockNotificationUploadFormView, times(1)).apply(any(), any())(using any(), any())
       }
     }
 
@@ -165,7 +165,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       val upscanInitiateResponse =
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
-      when(mockNotificationUploadFormView.apply(any(), meq(None))(using any(), any())).thenReturn(Html(""))
+      when(mockNotificationUploadFormView.apply(any(), any())(using any(), any())).thenReturn(Html(""))
       when(mockUpscanInitiateConnector.initiateV2()(using any[HeaderCarrier]()))
         .thenReturn(Future.successful(upscanInitiateResponse))
       when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))

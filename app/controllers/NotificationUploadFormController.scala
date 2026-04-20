@@ -18,6 +18,7 @@ package controllers
 
 import connectors.UpscanInitiateConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import forms.NotificationUploadFormProvider
 import models.*
 import pages.NotificationUploadStatePage
 import play.api.i18n.I18nSupport
@@ -43,6 +44,7 @@ class NotificationUploadFormController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
+    val form = NotificationUploadFormProvider()()
     for
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2()
       updatedAnswers         <- Future.fromTry(
@@ -55,6 +57,6 @@ class NotificationUploadFormController @Inject() (
         )
       )
       _ <- sessionRepository.set(updatedAnswers)
-    yield Ok(notificationUploadFormView(upscanInitiateResponse, None))
+    yield Ok(notificationUploadFormView(form, upscanInitiateResponse))
   }
 }
