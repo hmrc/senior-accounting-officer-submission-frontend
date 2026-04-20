@@ -16,7 +16,6 @@
 
 @this(
     layout: templates.Layout,
-    formHelper: FormWithCSRF,
     govukButton: GovukButton,
     govukFileUpload: GovukFileUpload,
     govukErrorMessage: GovukErrorMessage,
@@ -27,7 +26,7 @@
 
 @layout(pageTitle = title(form, messages("notificationUploadForm.title"))) {
 
-    @formHelper(action = Call("POST", upscanInitiateResponse.postTarget), args = Symbol("enctype") -> "multipart/form-data") {
+    <form action="@upscanInitiateResponse.postTarget" method="post" enctype="multipart/form-data">
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -77,5 +76,5 @@
         <div class="section">
             <button id="submit" class="govuk-button"> @messages("site.continue") </button>
         </div>
-    }
+    </form>
 }
