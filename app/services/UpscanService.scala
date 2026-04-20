@@ -17,6 +17,7 @@
 package services
 
 import connectors.UpscanDownloadConnector
+import models.upload.{ParsedSubmissionRow, TemplateParseError, TemplateParseResult}
 import models.UploadStatus.*
 import models.{NotificationUploadState, UserAnswers}
 import pages.NotificationUploadStatePage
@@ -29,7 +30,8 @@ import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.Inject
 
 class UpscanService @Inject() (
-    downloadConnector: UpscanDownloadConnector
+    downloadConnector: UpscanDownloadConnector,
+    uploadTemplateCsvParser: UploadTemplateCsvParser
 )(using ExecutionContext) {
 
   def fileUploadState(userAnswers: UserAnswers, reference: Option[String])(using hc: HeaderCarrier): Future[State] =
@@ -49,7 +51,12 @@ class UpscanService @Inject() (
         { case InterimResult(reference, downloadUrl) =>
           downloadConnector.download(downloadUrl).map {
             case HttpResponse(OK, body, _) =>
-              State.Result(reference, body)
+              uploadTemplateCsvParser.parse(body) match {
+                case TemplateParseResult.Valid(rows) =>
+                  State.Result(reference, rows)
+                case TemplateParseResult.Invalid(errors) =>
+                  State.ValidationFailed(errors)
+              }
             case httpResponse =>
               State.DownloadFromUpscanFailed(httpResponse)
           }
@@ -79,6 +86,7 @@ object UpscanService {
     case WaitingForUpscan                                 extends State
     case UploadToUpscanFailed                             extends State
     case DownloadFromUpscanFailed(response: HttpResponse) extends State
-    case Result(reference: String, fileContent: String)   extends State
+    case ValidationFailed(errors: Seq[TemplateParseError]) extends State
+    case Result(reference: String, rows: Seq[ParsedSubmissionRow]) extends State
   }
 }
