@@ -73,7 +73,7 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
     }
 
     "Page with error" - {
-      val doc: Document = generateView(form.withError("file-input", errorMessage))
+      val doc: Document = generateView(form.withError(uploadFormInputId, errorMessage))
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
