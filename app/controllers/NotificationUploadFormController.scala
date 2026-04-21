@@ -38,14 +38,15 @@ class NotificationUploadFormController @Inject() (
     mcc: MessagesControllerComponents,
     notificationUploadFormView: NotificationUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
-    sessionRepository: SessionRepository
+    sessionRepository: SessionRepository,
+    formProvider: NotificationUploadFormProvider
 )(implicit ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
-    val form = NotificationUploadFormProvider()()
-    for
+    val form = formProvider()
+    for {
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2()
       updatedAnswers         <- Future.fromTry(
         request.userAnswers.set(
@@ -57,6 +58,6 @@ class NotificationUploadFormController @Inject() (
         )
       )
       _ <- sessionRepository.set(updatedAnswers)
-    yield Ok(notificationUploadFormView(form, upscanInitiateResponse))
+    } yield Ok(notificationUploadFormView(form, upscanInitiateResponse))
   }
 }

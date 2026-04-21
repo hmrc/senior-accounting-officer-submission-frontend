@@ -26,7 +26,9 @@
 
 @layout(pageTitle = title(form, messages("notificationUploadForm.title"))) {
 
-    <form action="@upscanInitiateResponse.postTarget" method="post" enctype="multipart/form-data">
+    <form method="POST"
+          action=@upscanInitiateResponse.postTarget
+          enctype="multipart/form-data">
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -63,7 +65,7 @@
                 content = Text(messages("notificationUploadForm.upload.label"))
             ),
             javascript = Some(true),
-            errorMessage = form.error("file-input").collect{
+            errorMessage = form.error("file").collect{
                 formError => ErrorMessage(
                     content = Text(
                         formError.messages.headOption.fold("")(identity)
