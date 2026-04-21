@@ -18,7 +18,6 @@ package controllers.internal
 
 import models.*
 import play.api.Logging
-import play.api.libs.json.*
 import play.api.mvc.*
 import services.UpscanCallbackDispatcher
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -35,12 +34,8 @@ class UploadCallbackController @Inject() (
     extends FrontendController(mcc)
     with Logging {
 
-  val callback: Action[JsValue] =
-    Action.async(parse.json) { request =>
-      given Request[JsValue] = request
-
-      withJsonBody[UpscanCallback] { feedback =>
-        upscanCallbackDispatcher.processUpscanCallback(feedback).map(_ => Ok)
-      }
-    }
+  def callback: Action[UpscanCallback] = Action.async(parse.json[UpscanCallback]) { request =>
+    val upscanCallback = request.body
+    upscanCallbackDispatcher.processUpscanCallback(upscanCallback).map(_ => NoContent)
+  }
 }

@@ -46,12 +46,14 @@ class UpscanService @Inject() (
     checkUploadState(uploadState).flatMap {
       _.fold(
         state => Future.successful(state),
-        { case InterimResult(reference, downloadUrl) =>
-          downloadConnector.download(downloadUrl).map {
-            case HttpResponse(OK, body, _) =>
-              State.Result(reference, body)
-            case httpResponse =>
-              State.DownloadFromUpscanFailed(httpResponse)
+        {
+          case InterimResult(reference, downloadUrl) => {
+            downloadConnector.download(downloadUrl).map {
+              case HttpResponse(OK, body, _) =>
+                State.Result(reference, body)
+              case httpResponse =>
+                State.DownloadFromUpscanFailed(httpResponse)
+            }
           }
         }
       )
@@ -64,8 +66,8 @@ class UpscanService @Inject() (
           Left(State.WaitingForUpscan)
         case UploadedSuccessfully(_, _, downloadUrl, _) =>
           Right(InterimResult(uploadState.reference, downloadUrl))
-        case Failed =>
-          Left(State.UploadToUpscanFailed)
+        case Failed(failureReason, message) =>
+          Left(State.UploadToUpscanFailed(failureReason, message))
       }
     }
 }
@@ -75,10 +77,10 @@ object UpscanService {
   private final case class InterimResult(reference: String, fileContent: String)
 
   enum State {
-    case NoReference                                      extends State
-    case WaitingForUpscan                                 extends State
-    case UploadToUpscanFailed                             extends State
-    case DownloadFromUpscanFailed(response: HttpResponse) extends State
-    case Result(reference: String, fileContent: String)   extends State
+    case NoReference                                                  extends State
+    case WaitingForUpscan                                             extends State
+    case UploadToUpscanFailed(failureReason: String, message: String) extends State
+    case DownloadFromUpscanFailed(response: HttpResponse)             extends State
+    case Result(reference: String, fileContent: String)               extends State
   }
 }

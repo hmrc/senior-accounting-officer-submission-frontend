@@ -30,6 +30,7 @@ import views.html.NotificationUploadFormView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import models.UploadStatus.Failed
 
 class NotificationUploadFormController @Inject() (
     identify: IdentifierAction,
@@ -45,7 +46,16 @@ class NotificationUploadFormController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
-    val form = formProvider()
+    val form = request.userAnswers.get(NotificationUploadStatePage).fold(formProvider()) {
+      case NotificationUploadState(_, UploadStatus.Failed("QUARANTINE", _)) =>
+        formProvider().withError("file", "virus")
+      case NotificationUploadState(_, UploadStatus.Failed("REJECTED", _)) =>
+        formProvider().withError("file", "rejected")
+      case NotificationUploadState(_, UploadStatus.Failed("UNKNOWN", _)) =>
+        formProvider().withError("file", "unknown")
+      case _ => formProvider().withError("file", "Unkown upscan error")
+    }
+
     for {
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2()
       updatedAnswers         <- Future.fromTry(
