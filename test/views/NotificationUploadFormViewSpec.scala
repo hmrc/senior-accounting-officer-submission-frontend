@@ -17,41 +17,115 @@
 package views
 
 import base.ViewSpecBase
+import forms.NotificationUploadFormProvider
 import models.UpscanInitiateResponse
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import play.api.data.Form
 import views.NotificationUploadFormViewSpec.*
 import views.html.NotificationUploadFormView
 
 class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadFormView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(upscanInitiateResponse).toString)
+  private val formProvider       = app.injector.instanceOf[NotificationUploadFormProvider]
+  private val form: Form[String] = formProvider()
+
+  private def generateView(form: Form[String]): Document = {
+    val view = SUT(form, upscanInitiateResponse)
+    Jsoup.parse(view.toString)
+  }
 
   "NotificationUploadFormView" - {
-    val doc: Document = generateView()
+    "Page with no error" - {
+      val doc: Document = generateView(form)
 
-    doc.createTestsWithStandardPageElements(
-      pageTitle = pageTitle,
-      pageHeading = pageHeading,
-      showBackLink = true,
-      showIsThisPageNotWorkingProperlyLink = true,
-      hasError = false
-    )
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
 
-    "must contain hidden fields" in {
-      val hiddenFields = doc.select("input[type=hidden]")
-      hiddenFields.size() mustBe 2
-      hiddenFields.get(0).attr("name") mustBe "test1"
-      hiddenFields.get(1).attr("name") mustBe "test2"
-      hiddenFields.get(0).attr("value") mustBe "testValue1"
-      hiddenFields.get(1).attr("value") mustBe "testValue2"
+      doc.createTestsWithOrWithoutError(hasError = false)
+
+      "must contain hidden fields" in {
+        val hiddenFields = doc.select("input[type=hidden]")
+        hiddenFields.size() mustBe 2
+        hiddenFields.get(0).attr("name") mustBe "test1"
+        hiddenFields.get(1).attr("name") mustBe "test2"
+        hiddenFields.get(0).attr("value") mustBe "testValue1"
+        hiddenFields.get(1).attr("value") mustBe "testValue2"
+      }
+
+      doc.createTestsWithParagraphs(paragraphs)
+
+      doc.createTestForInsetText(insetText)
+
+      "must contain file upload input element" in {
+        doc.select(s"input#$uploadFormInputId.govuk-file-upload").size() mustBe 1
+      }
+
+      "must contain label for file upload input element" in {
+        val label = doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""")
+        label.size() mustBe 1
+        label.text() mustBe uploadFormLabel
+      }
+    }
+
+    "Page with error" - {
+      val doc: Document = generateView(form.withError(uploadFormInputId, errorMessage))
+
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = true
+      )
+
+      doc.createTestsWithOrWithoutError(hasError = true)
+
+      "must contain hidden fields" in {
+        val hiddenFields = doc.select("input[type=hidden]")
+        hiddenFields.size() mustBe 2
+        hiddenFields.get(0).attr("name") mustBe "test1"
+        hiddenFields.get(1).attr("name") mustBe "test2"
+        hiddenFields.get(0).attr("value") mustBe "testValue1"
+        hiddenFields.get(1).attr("value") mustBe "testValue2"
+      }
+
+      doc.createTestsWithParagraphs(paragraphs)
+
+      doc.createTestForInsetText(insetText)
+
+      "must contain file upload input element" in {
+        doc.select(s"input#$uploadFormInputId.govuk-file-upload").size() mustBe 1
+      }
+
+      "must contain label for file upload input element" in {
+        val label = doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""")
+        label.size() mustBe 1
+        label.text() mustBe uploadFormLabel
+      }
     }
   }
 }
 
 object NotificationUploadFormViewSpec {
-  val pageHeading                                    = "notificationUploadForm"
-  val pageTitle                                      = "notificationUploadForm"
+  val pageHeading = "Upload a submission template"
+  val pageTitle   = "Upload a submission template for your notification"
+
+  val paragraphs: List[String] = List(
+    "The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.",
+    "Read guidance on how to complete the submission template (opens in new tab)"
+  )
+  val insetText =
+    "If your group has more than one SAO, you must submit a separate notification for each SAO. After you complete one submission, you can start another."
+
+  val uploadFormLabel   = "Upload a file"
+  val uploadFormInputId = "file-input"
+
   val upscanInitiateResponse: UpscanInitiateResponse = UpscanInitiateResponse(
     reference = "testReference",
     postTarget = "formPostTarget",
@@ -60,4 +134,6 @@ object NotificationUploadFormViewSpec {
       "test2" -> "testValue2"
     )
   )
+
+  val errorMessage = "Example error message"
 }

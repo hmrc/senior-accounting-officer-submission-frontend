@@ -18,6 +18,7 @@ package controllers
 
 import connectors.UpscanInitiateConnector
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import forms.NotificationUploadFormProvider
 import models.*
 import pages.NotificationUploadStatePage
 import play.api.i18n.I18nSupport
@@ -37,13 +38,15 @@ class NotificationUploadFormController @Inject() (
     mcc: MessagesControllerComponents,
     notificationUploadFormView: NotificationUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
-    sessionRepository: SessionRepository
+    sessionRepository: SessionRepository,
+    formProvider: NotificationUploadFormProvider
 )(implicit ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
-    for
+    val form = formProvider()
+    for {
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2()
       updatedAnswers         <- Future.fromTry(
         request.userAnswers.set(
@@ -55,6 +58,6 @@ class NotificationUploadFormController @Inject() (
         )
       )
       _ <- sessionRepository.set(updatedAnswers)
-    yield Ok(notificationUploadFormView(upscanInitiateResponse))
+    } yield Ok(notificationUploadFormView(form, upscanInitiateResponse))
   }
 }
