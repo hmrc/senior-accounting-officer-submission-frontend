@@ -26,6 +26,10 @@
     @value.getOrElse("-")
 }
 
+@asDisplayCrn(value: Option[models.upload.CompanyCrn]) = {
+    @value.map(_.value).getOrElse("-")
+}
+
 @layout(pageTitle = titleNoForm(messages("uploadTemplateDebug.title"))) {
 
     <span class="govuk-caption-m">@messages("uploadTemplateDebug.caption")</span>
@@ -58,11 +62,11 @@
                 @for(row <- debugData.rows) {
                     <tr class="govuk-table__row">
                         <td class="govuk-table__cell">@row.notification.companyName</td>
-                        <td class="govuk-table__cell">@row.notification.companyUtr</td>
-                        <td class="govuk-table__cell">@row.notification.companyCrn</td>
+                        <td class="govuk-table__cell">@row.notification.companyUtr.value</td>
+                        <td class="govuk-table__cell">@asDisplayCrn(row.notification.companyCrn)</td>
                         <td class="govuk-table__cell">@row.notification.companyType</td>
                         <td class="govuk-table__cell">@row.notification.companyStatus</td>
-                        <td class="govuk-table__cell">@row.notification.financialYearEndDate</td>
+                        <td class="govuk-table__cell">@row.notification.financialYearEndDateDisplay</td>
                     </tr>
                 }
             }

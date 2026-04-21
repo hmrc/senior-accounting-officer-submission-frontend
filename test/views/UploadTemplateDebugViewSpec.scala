@@ -18,6 +18,7 @@ package views
 
 import base.ViewSpecBase
 import models.upload.*
+import java.time.LocalDate
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.UploadTemplateDebugViewSpec.*
@@ -62,16 +63,16 @@ object UploadTemplateDebugViewSpec {
   val pageHeading = "Review the companies in your notification"
   val pageTitle   = "Review the companies in your notification"
 
-  val debugData = UploadTemplateDebugData(
+  val debugData: UploadTemplateDebugData = UploadTemplateDebugData(
     rows = Seq(
       ParsedSubmissionRow(
         notification = NotificationFields(
           companyName = "Acme Plc",
-          companyUtr = "0123456789",
-          companyCrn = "12345678",
-          companyType = "PLC",
-          companyStatus = "Active",
-          financialYearEndDate = "31/12/2025"
+          companyUtr = CompanyUtr("0123456789"),
+          companyCrn = Some(CompanyCrn("12345678")),
+          companyType = CompanyType.PLC,
+          companyStatus = CompanyStatus.Active,
+          financialYearEndDate = LocalDate.of(2025, 12, 31)
         ),
         certificate = CertificateFields(
           corporationTax = true,
@@ -84,7 +85,7 @@ object UploadTemplateDebugViewSpec {
           customsDuties = false,
           exciseDuties = false,
           bankLevy = false,
-          certificateType = Some("Qualified"),
+          certificateType = Some(CertificateType.Qualified),
           additionalInformation = Some("Example")
         )
       )

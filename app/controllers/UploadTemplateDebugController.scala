@@ -39,16 +39,20 @@ class UploadTemplateDebugController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    request.userAnswers.get(UploadTemplateDebugPage).fold(
-      Redirect(routes.JourneyRecoveryController.onPageLoad())
-    ) { debugData =>
-      Ok(view(debugData))
-    }
+    request.userAnswers
+      .get(UploadTemplateDebugPage)
+      .fold(
+        Redirect(routes.JourneyRecoveryController.onPageLoad())
+      ) { debugData =>
+        Ok(view(debugData))
+      }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    request.userAnswers.get(UploadTemplateDebugPage).fold(
-      Redirect(routes.JourneyRecoveryController.onPageLoad())
-    )(_ => Redirect(navigator.nextPage(UploadTemplateDebugPage, NormalMode, request.userAnswers)))
+    request.userAnswers
+      .get(UploadTemplateDebugPage)
+      .fold(
+        Redirect(routes.JourneyRecoveryController.onPageLoad())
+      )(_ => Redirect(navigator.nextPage(UploadTemplateDebugPage, NormalMode, request.userAnswers)))
   }
 }

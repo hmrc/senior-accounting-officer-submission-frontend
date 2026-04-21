@@ -18,8 +18,8 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
-import models.{CheckMode, NormalMode, UserAnswers}
 import models.upload.UploadTemplateDebugData
+import models.{CheckMode, NormalMode, UserAnswers}
 import pages.*
 
 class NavigatorSpec extends SpecBase {

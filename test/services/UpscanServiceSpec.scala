@@ -36,6 +36,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 
 import scala.concurrent.Future
 import scala.util.Random
+import java.time.LocalDate
 
 class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
 
@@ -103,15 +104,15 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
     "must return State.Result when the file upload is completed and the file is downloaded from upscan successfully" in {
       val testResponse = HttpResponse(status = OK, body = testFileContent)
-      val parsedRows = Seq(
+      val parsedRows   = Seq(
         ParsedSubmissionRow(
           notification = NotificationFields(
             companyName = "Test Company",
-            companyUtr = "0123456789",
-            companyCrn = "12345678",
-            companyType = "PLC",
-            companyStatus = "Active",
-            financialYearEndDate = "31/12/2025"
+            companyUtr = CompanyUtr("0123456789"),
+            companyCrn = Some(CompanyCrn("12345678")),
+            companyType = CompanyType.PLC,
+            companyStatus = CompanyStatus.Active,
+            financialYearEndDate = LocalDate.of(2025, 12, 31)
           ),
           certificate = CertificateFields(
             corporationTax = false,
@@ -156,7 +157,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
     "must return State.ValidationFailed when the downloaded CSV is invalid" in {
       val testResponse = HttpResponse(status = OK, body = testFileContent)
-      val parseErrors = Seq(
+      val parseErrors  = Seq(
         TemplateParseError(
           line = 8,
           column = Some("Company UTR"),

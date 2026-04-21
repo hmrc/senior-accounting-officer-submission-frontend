@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.upload.*
+import java.time.LocalDate
 import navigation.{FakeNavigator, Navigator}
 import pages.UploadTemplateDebugPage
 import play.api.inject.bind
@@ -35,11 +36,11 @@ class UploadTemplateDebugControllerSpec extends SpecBase {
       ParsedSubmissionRow(
         notification = NotificationFields(
           companyName = "Acme Plc",
-          companyUtr = "0123456789",
-          companyCrn = "12345678",
-          companyType = "PLC",
-          companyStatus = "Active",
-          financialYearEndDate = "31/12/2025"
+          companyUtr = CompanyUtr("0123456789"),
+          companyCrn = Some(CompanyCrn("12345678")),
+          companyType = CompanyType.PLC,
+          companyStatus = CompanyStatus.Active,
+          financialYearEndDate = LocalDate.of(2025, 12, 31)
         ),
         certificate = CertificateFields(
           corporationTax = true,
@@ -52,7 +53,7 @@ class UploadTemplateDebugControllerSpec extends SpecBase {
           customsDuties = false,
           exciseDuties = false,
           bankLevy = false,
-          certificateType = Some("Qualified"),
+          certificateType = Some(CertificateType.Qualified),
           additionalInformation = Some("Example")
         )
       )

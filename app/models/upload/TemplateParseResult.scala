@@ -19,6 +19,6 @@ package models.upload
 sealed trait TemplateParseResult
 
 object TemplateParseResult {
-  final case class Valid(rows: Seq[ParsedSubmissionRow]) extends TemplateParseResult
+  final case class Valid(rows: Seq[ParsedSubmissionRow])    extends TemplateParseResult
   final case class Invalid(errors: Seq[TemplateParseError]) extends TemplateParseResult
 }

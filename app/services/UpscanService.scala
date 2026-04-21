@@ -17,8 +17,8 @@
 package services
 
 import connectors.UpscanDownloadConnector
-import models.upload.{ParsedSubmissionRow, TemplateParseError, TemplateParseResult}
 import models.UploadStatus.*
+import models.upload.{ParsedSubmissionRow, TemplateParseError, TemplateParseResult}
 import models.{NotificationUploadState, UserAnswers}
 import pages.NotificationUploadStatePage
 import play.api.http.Status.OK
@@ -82,11 +82,11 @@ object UpscanService {
   private final case class InterimResult(reference: String, fileContent: String)
 
   enum State {
-    case NoReference                                      extends State
-    case WaitingForUpscan                                 extends State
-    case UploadToUpscanFailed                             extends State
-    case DownloadFromUpscanFailed(response: HttpResponse) extends State
-    case ValidationFailed(errors: Seq[TemplateParseError]) extends State
+    case NoReference                                               extends State
+    case WaitingForUpscan                                          extends State
+    case UploadToUpscanFailed                                      extends State
+    case DownloadFromUpscanFailed(response: HttpResponse)          extends State
+    case ValidationFailed(errors: Seq[TemplateParseError])         extends State
     case Result(reference: String, rows: Seq[ParsedSubmissionRow]) extends State
   }
 }

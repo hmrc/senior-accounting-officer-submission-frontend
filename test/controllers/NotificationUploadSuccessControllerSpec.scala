@@ -39,7 +39,7 @@ import scala.concurrent.Future
 import scala.util.Random
 
 class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEach {
-  val mockUpscanService: UpscanService = mock[UpscanService]
+  val mockUpscanService: UpscanService         = mock[UpscanService]
   val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
   override def beforeEach(): Unit = {
@@ -246,7 +246,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
 object NotificationUploadSuccessControllerSpec {
   val parsedRows: Seq[ParsedSubmissionRow] = Seq.empty
-  val testDownloadUrl: String   = "/test/url"
-  val testFileContent: String   = Random.nextString(10)
-  val testFileReference: String = Random.nextString(10)
+  val testDownloadUrl: String              = "/test/url"
+  val testFileContent: String              = Random.nextString(10)
+  val testFileReference: String            = Random.nextString(10)
 }
