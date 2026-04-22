@@ -90,9 +90,11 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
     "must return State.UploadToUpscanFailed when the file upload has failed" in {
       val result =
-        SUT.fileUploadState(userAnswersWithUploadStatus(UploadStatus.Failed), Some(testFileReference)).futureValue
+        SUT
+          .fileUploadState(userAnswersWithUploadStatus(UploadStatus.Failed("reason")), Some(testFileReference))
+          .futureValue
 
-      result mustBe State.UploadToUpscanFailed
+      result mustBe State.UploadToUpscanFailed("reason")
 
       verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
