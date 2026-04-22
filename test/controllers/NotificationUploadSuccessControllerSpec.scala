@@ -126,11 +126,11 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
     }
 
     "when UpscanService returns State.UploadToUpscanFailed" - {
-      "must throw NotImplementedError" in {
+      "must redirect to NotificationUploadFormController" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         when(mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using any())).thenReturn(
-          Future.successful(State.UploadToUpscanFailed)
+          Future.successful(State.UploadToUpscanFailed("reason"))
         )
 
         running(application) {
@@ -138,11 +138,8 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
             FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(Some(testFileReference)).url)
           val result = route(application, request).value
 
-          val exception = intercept[ExecutionException] {
-            await(result)
-          }
-
-          exception.getCause mustBe an[NotImplementedError]
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).get mustEqual routes.NotificationUploadFormController.onPageLoad().url
 
           verify(mockUpscanService, times(1)).fileUploadState(any[UserAnswers], meq(Some(testFileReference)))(using
             any()
