@@ -27,8 +27,6 @@ import javax.inject.Inject
 class UpscanCallbackDispatcher @Inject() (sessionStorage: SessionRepository)(using ExecutionContext) {
 
   def processUpscanCallback(callback: UpscanCallback): Future[Boolean] = {
-    println("jacobwozere")
-    println(callback)
     val uploadStatus =
       callback match {
         case s: UpscanSuccessCallback =>
