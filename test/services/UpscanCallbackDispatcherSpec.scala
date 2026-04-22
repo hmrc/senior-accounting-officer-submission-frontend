@@ -74,10 +74,12 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
       val mockSessionRepository = mock[SessionRepository]
       val dispatcher            = new UpscanCallbackDispatcher(mockSessionRepository)
 
+      val failureReason = "QUARANTINE"
+
       val callback = UpscanFailureCallback(
         reference = "foo",
         failureDetails = UpscanFailureDetails(
-          failureReason = "QUARANTINE",
+          failureReason = failureReason,
           message = "This file has a virus"
         )
       )
@@ -93,7 +95,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
         .updateUploadStatus(referenceCaptor.capture().asInstanceOf[String], statusCaptor.capture())
 
       referenceCaptor.getValue.toString mustBe "foo"
-      statusCaptor.getValue mustBe UploadStatus.Failed
+      statusCaptor.getValue mustBe UploadStatus.Failed(failureReason)
 
     }
   }
