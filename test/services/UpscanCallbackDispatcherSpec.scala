@@ -70,7 +70,7 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
 
     }
 
-    def errorTest(reason: String, expectedStatus: UploadStatus): Unit = {
+    def testFailureCallback(reason: String, expectedStatus: UploadStatus): Unit = {
 
       val mockSessionRepository = mock[SessionRepository]
       val dispatcher            = new UpscanCallbackDispatcher(mockSessionRepository)
@@ -101,15 +101,15 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
     }
 
     "handle a UpscanFailureCallback with reason QUARANTINE" in {
-      errorTest("QUARANTINE", UploadStatus.Quarantined)
+      testFailureCallback("QUARANTINE", UploadStatus.Quarantined)
     }
 
     "handle a UpscanFailureCallback with reason REJECTED" in {
-      errorTest("REJECTED", UploadStatus.Rejected)
+      testFailureCallback("REJECTED", UploadStatus.Rejected)
     }
 
     "handle a UpscanFailureCallback with reason UNKNOWN" in {
-      errorTest("UNKNOWN", UploadStatus.UnknownFailure)
+      testFailureCallback("UNKNOWN", UploadStatus.UnknownFailure)
     }
   }
 }
