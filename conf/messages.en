@@ -99,6 +99,9 @@ notificationUploadForm.paragraph1 = The template must be uploaded in CSV format.
 notificationUploadForm.paragraph2 = Read guidance on how to complete the submission template (opens in new tab)
 notificationUploadForm.inset.text = If your group has more than one SAO, you must submit a separate notification for each SAO. After you complete one submission, you can start another.
 notificationUploadForm.upload.label = Upload a file
+notificationUploadForm.upload.error.quarantine = The selected file contains a virus
+notificationUploadForm.upload.error.rejected = The selected file must be a CSV
+notificationUploadForm.upload.error.unknown = The selected file could not be uploaded – try again
 
 notificationGuidance.title = Submit a notification
 notificationGuidance.heading = Submit a notification

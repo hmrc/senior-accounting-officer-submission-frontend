@@ -68,7 +68,7 @@
             errorMessage = form.error("file").collect{
                 formError => ErrorMessage(
                     content = Text(
-                        formError.messages.headOption.fold("")(identity)
+                        messages(formError.messages.headOption.fold("")(identity))
                     )
                 )
             },

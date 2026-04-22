@@ -27,6 +27,8 @@ import javax.inject.Inject
 class UpscanCallbackDispatcher @Inject() (sessionStorage: SessionRepository)(using ExecutionContext) {
 
   def processUpscanCallback(callback: UpscanCallback): Future[Boolean] = {
+    println("jacobwozere")
+    println(callback)
     val uploadStatus =
       callback match {
         case s: UpscanSuccessCallback =>
@@ -36,8 +38,12 @@ class UpscanCallbackDispatcher @Inject() (sessionStorage: SessionRepository)(usi
             downloadUrl = s.downloadUrl,
             size = Some(s.uploadDetails.size)
           )
-        case f: UpscanFailureCallback =>
-          UploadStatus.Failed(reason = f.failureDetails.failureReason)
+        case UpscanFailureCallback(_, UpscanFailureDetails("QUARANTINE", _)) =>
+          UploadStatus.Quarantined
+        case UpscanFailureCallback(_, UpscanFailureDetails("REJECTED", _)) =>
+          UploadStatus.Rejected
+        case UpscanFailureCallback(_, UpscanFailureDetails(_, _)) =>
+          UploadStatus.UnknownFailure
       }
 
     sessionStorage.updateUploadStatus(callback.reference, uploadStatus).map(_ => true)
