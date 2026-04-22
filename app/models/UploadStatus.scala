@@ -24,8 +24,7 @@ object UploadStatus {
   case object InProgress extends UploadStatus
 
   final case class Failed(
-      failureReason: String,
-      message: String
+      reason: String
   ) extends UploadStatus
 
   final case class UploadedSuccessfully(

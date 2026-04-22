@@ -35,7 +35,6 @@ class UploadCallbackController @Inject() (
     with Logging {
 
   def callback: Action[UpscanCallback] = Action.async(parse.json[UpscanCallback]) { request =>
-    val upscanCallback = request.body
-    upscanCallbackDispatcher.processUpscanCallback(upscanCallback).map(_ => NoContent)
+    upscanCallbackDispatcher.processUpscanCallback(request.body).map(_ => NoContent)
   }
 }

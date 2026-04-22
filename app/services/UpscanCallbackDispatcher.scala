@@ -37,7 +37,7 @@ class UpscanCallbackDispatcher @Inject() (sessionStorage: SessionRepository)(usi
             size = Some(s.uploadDetails.size)
           )
         case f: UpscanFailureCallback =>
-          UploadStatus.Failed(failureReason = f.failureDetails.failureReason, message = f.failureDetails.message)
+          UploadStatus.Failed(reason = f.failureDetails.failureReason)
       }
 
     sessionStorage.updateUploadStatus(callback.reference, uploadStatus).map(_ => true)

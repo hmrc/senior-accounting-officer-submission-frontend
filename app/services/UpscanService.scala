@@ -66,8 +66,8 @@ class UpscanService @Inject() (
           Left(State.WaitingForUpscan)
         case UploadedSuccessfully(_, _, downloadUrl, _) =>
           Right(InterimResult(uploadState.reference, downloadUrl))
-        case Failed(failureReason, message) =>
-          Left(State.UploadToUpscanFailed(failureReason, message))
+        case Failed(reason) =>
+          Left(State.UploadToUpscanFailed(reason))
       }
     }
 }
@@ -77,10 +77,10 @@ object UpscanService {
   private final case class InterimResult(reference: String, fileContent: String)
 
   enum State {
-    case NoReference                                                  extends State
-    case WaitingForUpscan                                             extends State
-    case UploadToUpscanFailed(failureReason: String, message: String) extends State
-    case DownloadFromUpscanFailed(response: HttpResponse)             extends State
-    case Result(reference: String, fileContent: String)               extends State
+    case NoReference                                      extends State
+    case WaitingForUpscan                                 extends State
+    case UploadToUpscanFailed(reason: String)             extends State
+    case DownloadFromUpscanFailed(response: HttpResponse) extends State
+    case Result(reference: String, fileContent: String)   extends State
   }
 }

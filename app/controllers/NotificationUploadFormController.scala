@@ -47,11 +47,11 @@ class NotificationUploadFormController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
     val form = request.userAnswers.get(NotificationUploadStatePage).fold(formProvider()) {
-      case NotificationUploadState(_, UploadStatus.Failed("QUARANTINE", _)) =>
+      case NotificationUploadState(_, UploadStatus.Failed("QUARANTINE")) =>
         formProvider().withError("file", "virus")
-      case NotificationUploadState(_, UploadStatus.Failed("REJECTED", _)) =>
+      case NotificationUploadState(_, UploadStatus.Failed("REJECTED")) =>
         formProvider().withError("file", "rejected")
-      case NotificationUploadState(_, UploadStatus.Failed("UNKNOWN", _)) =>
+      case NotificationUploadState(_, UploadStatus.Failed("UNKNOWN")) =>
         formProvider().withError("file", "unknown")
       case _ => formProvider().withError("file", "Unkown upscan error")
     }
