@@ -32,9 +32,9 @@ class UserSessionRepositoryMongoFormatSpec extends SpecBase {
     }
 
     "correctly write and read UploadStatus.Failed" in {
-      val status: UploadStatus = UploadStatus.Failed
+      val status: UploadStatus = UploadStatus.Failed("reason")
       val json                 = Json.toJson(status)
-      json mustBe Json.obj("statusType" -> "Failed")
+      json mustBe Json.obj("reason" -> "reason", "statusType" -> "Failed")
       val result = Json.fromJson[UploadStatus](json)
       result.get mustBe status
     }
