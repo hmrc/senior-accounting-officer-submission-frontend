@@ -125,26 +125,43 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
       }
     }
 
-    "when UpscanService returns State.UploadToUpscanFailed" - {
-      "must redirect to NotificationUploadFormController" in {
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    def testFileUploadStateCausesUploadFormRedirect(inState: State): Unit = {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        when(mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using any())).thenReturn(
-          Future.successful(State.UploadToUpscanFailed("reason"))
+      when(mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using any())).thenReturn(
+        Future.successful(inState)
+      )
+
+      running(application) {
+        val request =
+          FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(Some(testFileReference)).url)
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).get mustEqual routes.NotificationUploadFormController.onPageLoad().url
+
+        verify(mockUpscanService, times(1)).fileUploadState(any[UserAnswers], meq(Some(testFileReference)))(using
+          any()
         )
+      }
+    }
 
-        running(application) {
-          val request =
-            FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(Some(testFileReference)).url)
-          val result = route(application, request).value
+    "when UpscanService returns State.QuarantinedByUpscan" - {
+      "must redirect to NotificationUploadFormController" in {
+        testFileUploadStateCausesUploadFormRedirect(State.QuarantinedByUpscan)
+      }
+    }
 
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).get mustEqual routes.NotificationUploadFormController.onPageLoad().url
+    "when UpscanService returns State.RejectedByUpscan" - {
+      "must redirect to NotificationUploadFormController" in {
+        testFileUploadStateCausesUploadFormRedirect(State.RejectedByUpscan)
 
-          verify(mockUpscanService, times(1)).fileUploadState(any[UserAnswers], meq(Some(testFileReference)))(using
-            any()
-          )
-        }
+      }
+    }
+
+    "when UpscanService returns State.UnknownUpscanError" - {
+      "must redirect to NotificationUploadFormController" in {
+        testFileUploadStateCausesUploadFormRedirect(State.UnknownUpscanError)
       }
     }
 
