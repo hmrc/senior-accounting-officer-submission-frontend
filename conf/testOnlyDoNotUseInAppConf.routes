@@ -10,16 +10,21 @@
 # Failing to follow this rule may result in test routes deployed in production.
 
 # Add all the application routes to the prod.routes file
-->          /                                                                                 prod.Routes
+->          /                                                                                              prod.Routes
 
-GET         /senior-accounting-officer/submission/test-only/poi                               controllers.testonly.TestPoiController.testUiPage()
-POST        /senior-accounting-officer/submission/test-only/poi                               controllers.testonly.TestPoiController.onSubmit()
-GET         /senior-accounting-officer/submission/test-only/poi/xssf                          controllers.testonly.TestPoiController.testXssf(rows:Int ?= 1000, impl: String ?= "D")
-GET         /senior-accounting-officer/submission/test-only/poi/sxssf                         controllers.testonly.TestPoiController.testSxssf(rows:Int ?= 1000, impl: String ?= "D")
-GET         /senior-accounting-officer/submission/test-only/poi/deferred-sxssf                controllers.testonly.TestPoiController.testDeferredSxssf(rows:Int ?= 1000, impl: String ?= "D")
+GET         /senior-accounting-officer/submission/test-only/poi                                            controllers.testonly.TestPoiController.testUiPage()
+POST        /senior-accounting-officer/submission/test-only/poi                                            controllers.testonly.TestPoiController.onSubmit()
+GET         /senior-accounting-officer/submission/test-only/poi/xssf                                       controllers.testonly.TestPoiController.testXssf(rows:Int ?= 1000, impl: String ?= "D")
+GET         /senior-accounting-officer/submission/test-only/poi/sxssf                                      controllers.testonly.TestPoiController.testSxssf(rows:Int ?= 1000, impl: String ?= "D")
+GET         /senior-accounting-officer/submission/test-only/poi/deferred-sxssf                             controllers.testonly.TestPoiController.testDeferredSxssf(rows:Int ?= 1000, impl: String ?= "D")
 
 
-GET         /senior-accounting-officer/submission/test-only/pdf                               controllers.testonly.TestPdfController.testPdf(rows:Int ?= 6000)
-GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.openHtml()
-POST        /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.onSubmit()
-GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf/example      controllers.testonly.TestPdfController.example(rows:Int ?= 10)
+GET         /senior-accounting-officer/submission/test-only/pdf                                            controllers.testonly.TestPdfController.testPdf(rows:Int ?= 6000)
+GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf                           controllers.testonly.TestPdfController.openHtml()
+POST        /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf                           controllers.testonly.TestPdfController.onSubmit()
+GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf/example                   controllers.testonly.TestPdfController.example(rows:Int ?= 10)
+
+GET         /senior-accounting-officer/submission/test-only/object-store                                   controllers.testonly.TestObjectStoreController.downloadPdfPage()
+GET         /senior-accounting-officer/submission/test-only/object-store/setup-local-internal-auth         controllers.testonly.TestObjectStoreController.setUpLocalInternalAuthToken()
+GET         /senior-accounting-officer/submission/test-only/object-store/upload                            controllers.testonly.TestObjectStoreController.uploadToObjectStore()
+GET         /senior-accounting-officer/submission/test-only/object-store/download                          controllers.testonly.TestObjectStoreController.downloadFromObjectStore()
