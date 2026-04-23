@@ -235,3 +235,9 @@ notificationUploadError.heading = notificationUploadError
 notificationUploadSuccess.title = Upload a submission template for your notification
 notificationUploadSuccess.heading = Your submission template is uploading
 notificationUploadSuccess.paragraph1 = This may take a few minutes
+
+notificationMoreThanOneSao.title = notificationMoreThanOneSao
+notificationMoreThanOneSao.heading = notificationMoreThanOneSao
+notificationMoreThanOneSao.checkYourAnswersLabel = notificationMoreThanOneSao
+notificationMoreThanOneSao.error.required = Select yes if notificationMoreThanOneSao
+notificationMoreThanOneSao.change.hidden = NotificationMoreThanOneSao

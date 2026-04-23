@@ -77,3 +77,8 @@ POST        /certificate/change-declaration                           controller
 
 GET         /certificate/confirmation                                 controllers.CertificateConfirmationController.onPageLoad()
 
+
+GET        /notificationMoreThanOneSao                        controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
+POST       /notificationMoreThanOneSao                        controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeNotificationMoreThanOneSao                  controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeNotificationMoreThanOneSao                  controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
