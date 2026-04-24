@@ -183,7 +183,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
     }
 
     "when UpscanService returns State.DownloadFromUpscanFailed" - {
-      "must redirect to Notification upload error page" in {
+      "must redirect to notification upload form page" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         when(
@@ -201,7 +201,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustBe routes.NotificationUploadErrorController.onPageLoad().url
+          redirectLocation(result).value mustBe routes.NotificationUploadFormController.onPageLoad().url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             any[UserAnswers],
@@ -212,7 +212,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
     }
 
     "when UpscanService returns State.ValidationFailed" - {
-      "must redirect to notification upload error page" in {
+      "must redirect to notification upload form page" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         when(
@@ -241,7 +241,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustBe routes.NotificationUploadErrorController.onPageLoad().url
+          redirectLocation(result).value mustBe routes.NotificationUploadFormController.onPageLoad().url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             any[UserAnswers],
