@@ -17,11 +17,13 @@
 package controllers
 
 import controllers.actions.*
-import models.upload.ParsedSubmissionRow
-import models.upload.TemplateParseError
+import models.requests.DataRequest
+import models.upload.UploadTemplateTableData
+import pages.UploadTemplateTablePage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.*
+import repositories.SessionRepository
 import services.UpscanService
 import services.UpscanService.State
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -37,6 +39,7 @@ class NotificationUploadSuccessController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
+    sessionRepository: SessionRepository,
     upscanService: UpscanService,
     view: NotificationUploadSuccessView
 )(using ExecutionContext)
@@ -61,71 +64,26 @@ class NotificationUploadSuccessController @Inject() (
           logger.warn(s"Failed to download uploaded template from Upscan: ${response.status}")
           Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
         case State.ValidationFailed(errors) =>
-          logValidationErrors(errors)
-          Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
+          logger.warn(s"Uploaded template failed validation with ${errors.size} error(s)")
+          saveTableDataAndRedirect(
+            UploadTemplateTableData(rows = Seq.empty, errors = errors),
+            routes.UploadTemplateTableErrorController.onPageLoad()
+          )
         case State.Result(reference, rows) =>
-          logParsedRows(reference, rows)
-          Future.successful(Redirect(routes.SubmitNotificationStartController.onPageLoad()))
+          logger.info(s"Uploaded template parsed successfully, reference: $reference, rows: ${rows.size}")
+          saveTableDataAndRedirect(
+            UploadTemplateTableData(rows = rows, errors = Seq.empty),
+            routes.UploadTemplateTableController.onPageLoad()
+          )
       }
     }
 
-  private def logValidationErrors(errors: Seq[TemplateParseError]): Unit = {
-    val widths = Seq(6, 24, 26, 70)
-    val header = formatTableLine(widths, Seq("line", "column", "code", "message"))
-    val lines  = errors.map { error =>
-      formatTableLine(
-        widths,
-        Seq(
-          error.line.toString,
-          error.column.getOrElse("-"),
-          error.code,
-          error.message
-        )
-      )
-    }
-    logger.warn(
-      s"""Uploaded template failed validation with ${errors.size} error(s)
-         |$header
-         |${"-" * header.length}
-         |${lines.mkString("\n")}""".stripMargin
-    )
-  }
-
-  private def logParsedRows(reference: String, rows: Seq[ParsedSubmissionRow]): Unit = {
-    val widths = Seq(5, 36, 12, 10, 6, 16, 12, 28)
-    val header = formatTableLine(
-      widths,
-      Seq("row", "companyName", "utr", "crn", "type", "status", "financialYearEndDate", "certificateType")
-    )
-    val lines = rows.zipWithIndex.map { case (row, index) =>
-      formatTableLine(
-        widths,
-        Seq(
-          (index + 1).toString,
-          row.notification.companyName,
-          row.notification.companyUtr.value,
-          row.notification.companyCrn.map(_.value).getOrElse("-"),
-          row.notification.companyType.toString,
-          row.notification.companyStatus.toString,
-          row.notification.financialYearEndDateDisplay,
-          row.certificate.certificateType.map(_.toString).getOrElse("-")
-        )
-      )
-    }
-    logger.info(
-      s"""Uploaded template parsed successfully, reference=$reference, rows=${rows.size}
-         |$header
-         |${"-" * header.length}
-         |${lines.mkString("\n")}""".stripMargin
-    )
-  }
-
-  private def formatTableLine(widths: Seq[Int], values: Seq[String]): String =
-    values.zip(widths).map { case (value, width) => formatCell(value, width) }.mkString(" | ")
-
-  private def formatCell(value: String, width: Int): String = {
-    val normalized = Option(value).map(_.replaceAll("\\s+", " ").trim).filter(_.nonEmpty).getOrElse("-")
-    val truncated  = if normalized.length <= width then normalized else s"${normalized.take(width - 3)}..."
-    truncated + (" " * (width - truncated.length))
-  }
+  private def saveTableDataAndRedirect(
+      tableData: UploadTemplateTableData,
+      redirectTo: Call
+  )(using request: DataRequest[AnyContent]): Future[Result] =
+    for {
+      updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadTemplateTablePage, tableData))
+      _              <- sessionRepository.set(updatedAnswers)
+    } yield Redirect(redirectTo)
 }

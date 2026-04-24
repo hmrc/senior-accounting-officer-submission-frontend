@@ -18,6 +18,7 @@ package navigation
 
 import controllers.routes
 import models.*
+import models.upload.UploadTemplateTableData
 import pages.*
 import play.api.mvc.Call
 
@@ -73,6 +74,17 @@ class Navigator @Inject() () {
       _ => ??? // TODO: link to /notification/one-sao/submit-notification-task-two
     case MoreSaoSubmitNotificationFullNamePage =>
       _ => ??? // TODO: link to /notification/more-sao/email
+    case UploadTemplateTablePage =>
+      userAnswers =>
+        userAnswers
+          .get(UploadTemplateTablePage)
+          .map {
+            case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
+              routes.NotificationUploadFormController.onPageLoad()
+            case _ =>
+            routes.SubmitNotificationStartController.onPageLoad()
+          }
+          .getOrElse(routes.JourneyRecoveryController.onPageLoad())
     case _ =>
       _ => ???
   }
