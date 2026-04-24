@@ -231,10 +231,42 @@ certificateConfirmation.heading = certificateConfirmation
 
 notificationUploadError.title = notificationUploadError
 notificationUploadError.heading = notificationUploadError
+notificationUploadError.validation.invalidSectionRow = The upload template section row is invalid.
+notificationUploadError.validation.headerMismatch = The upload template headers do not match.
+notificationUploadError.validation.missingRequiredValue = A required value is missing in the uploaded template.
+notificationUploadError.validation.invalidEnumValue = A value in the uploaded template is not valid.
+notificationUploadError.validation.invalidCertificateType = Certificate type must be Qualified, Unqualified or blank.
 
 notificationUploadSuccess.title = Upload a submission template for your notification
 notificationUploadSuccess.heading = Your submission template is uploading
 notificationUploadSuccess.paragraph1 = This may take a few minutes
+
+uploadTemplateTable.title = Review the companies in your notification
+uploadTemplateTable.caption = Submit a notification
+uploadTemplateTable.heading = Review the companies in your notification
+uploadTemplateTable.paragraph1 = This list is taken from the notification details in the submission template you uploaded.
+uploadTemplateTable.paragraph2 = There were {0} companies in this upload for the financial year.
+uploadTemplateTable.paragraph3WithLink = If this is not correct, <a class="govuk-link" href="{0}">upload an updated submission template</a> before continuing.
+uploadTemplateTable.parsedData.heading = Notification companies
+uploadTemplateTable.parsedData.empty = No parsed rows.
+uploadTemplateTable.continue = Continue
+uploadTemplateTable.table.companyName = Company name
+uploadTemplateTable.table.companyUtr = UTR
+uploadTemplateTable.table.companyCrn = CRN
+uploadTemplateTable.table.companyType = Type
+uploadTemplateTable.table.companyStatus = Status
+uploadTemplateTable.table.financialYearEndDate = Financial year end
+
+uploadTemplateTableError.title = There is a problem with your file
+uploadTemplateTableError.caption = Submit a notification
+uploadTemplateTableError.heading = Fix the errors in your file
+uploadTemplateTableError.paragraph1 = Correct the errors listed below, save the template, and upload it again.
+uploadTemplateTableError.errors.none = No parse errors.
+uploadTemplateTableError.errors.line = Line
+uploadTemplateTableError.errors.column = Column
+uploadTemplateTableError.errors.code = Code
+uploadTemplateTableError.errors.message = Message
+uploadTemplateTableError.continue = Upload another file
 
 uploadTemplateCsvParser.error.templateFile = The selected file must use the template
 uploadTemplateCsvParser.error.companyName = Enter a valid company name. Maximum 105 characters.

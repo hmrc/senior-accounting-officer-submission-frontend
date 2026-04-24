@@ -29,6 +29,7 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import repositories.SessionRepository
 import services.UpscanService
 import services.UpscanService.State
 import uk.gov.hmrc.http.HttpResponse
@@ -38,16 +39,20 @@ import scala.concurrent.Future
 import scala.util.Random
 
 class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEach {
-  val mockUpscanService: UpscanService = mock[UpscanService]
+  val mockUpscanService: UpscanService         = mock[UpscanService]
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
   override def beforeEach(): Unit = {
     reset(mockUpscanService)
+    reset(mockSessionRepository)
+    when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
   }
 
   override def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder = super
     .applicationBuilder(userAnswers = Some(emptyUserAnswers))
     .overrides(
-      bind[UpscanService].toInstance(mockUpscanService)
+      bind[UpscanService].toInstance(mockUpscanService),
+      bind[SessionRepository].toInstance(mockSessionRepository)
     )
 
   "NotificationUploadSuccess Controller" - {
@@ -212,7 +217,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
     }
 
     "when UpscanService returns State.ValidationFailed" - {
-      "must redirect to notification upload form page" in {
+      "must redirect to upload table error page" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         when(
@@ -241,18 +246,19 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustBe routes.NotificationUploadFormController.onPageLoad().url
+          redirectLocation(result).value mustBe routes.UploadTemplateTableErrorController.onPageLoad().url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             any[UserAnswers],
             meq(Some(testFileReference))
           )(using any())
+          verify(mockSessionRepository, times(1)).set(any())
         }
       }
     }
 
     "when UpscanService returns State.Result" - {
-      "must redirect to submit notification start page" in {
+      "must redirect to upload table page" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
         when(
@@ -272,12 +278,13 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           application.injector.instanceOf[NotificationUploadSuccessView]
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).get mustBe routes.SubmitNotificationStartController.onPageLoad().url
+          redirectLocation(result).get mustBe routes.UploadTemplateTableController.onPageLoad().url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             any[UserAnswers],
             meq(Some(testFileReference))
           )(using any())
+          verify(mockSessionRepository, times(1)).set(any())
         }
       }
     }

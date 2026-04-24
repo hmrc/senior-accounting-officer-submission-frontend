@@ -18,6 +18,7 @@ package navigation
 
 import controllers.routes
 import models.*
+import models.upload.UploadTemplateTableData
 import pages.*
 import play.api.mvc.Call
 
@@ -62,6 +63,17 @@ class Navigator @Inject() () {
       _ => routes.CertificateConfirmationController.onPageLoad()
     case NotificationConfirmationPage =>
       _ => routes.SubmitCertificateStartController.onPageLoad()
+    case UploadTemplateTablePage =>
+      userAnswers =>
+        userAnswers
+          .get(UploadTemplateTablePage)
+          .map {
+            case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
+              routes.NotificationUploadFormController.onPageLoad()
+            case _ =>
+              routes.SubmitNotificationStartController.onPageLoad()
+          }
+          .getOrElse(routes.JourneyRecoveryController.onPageLoad())
     case _ =>
       _ => ???
   }
