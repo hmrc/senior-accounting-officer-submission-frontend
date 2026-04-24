@@ -59,23 +59,17 @@ trait RadiosFluency {
         field: Field,
         legend: Legend,
         isInline: Boolean = true,
-        hintContentYes: String = "",
-        hintContentNo: String = ""
     )(using messages: Messages): Radios =
       yesNo(
         field = field,
         fieldset = FieldsetViewModel(legend),
         isInline = isInline,
-        hintContentYes = hintContentYes,
-        hintContentNo = hintContentNo
       )
 
     def yesNo(
         field: Field,
         fieldset: Fieldset,
         isInline: Boolean,
-        hintContentYes: String,
-        hintContentNo: String
     )(using messages: Messages): Radios = {
 
       val items = Seq(
@@ -83,13 +77,11 @@ trait RadiosFluency {
           id = Some(field.id),
           value = Some("true"),
           content = Text(messages("site.yes")),
-          hint = Some(Hint(content = Text(hintContentYes)))
         ),
         RadioItem(
           id = Some(s"${field.id}-no"),
           value = Some("false"),
           content = Text(messages("site.no")),
-          hint = Some(Hint(content = Text(hintContentNo)))
         )
       )
       if (isInline) {
@@ -99,15 +91,12 @@ trait RadiosFluency {
           items = items
         ).inline()
       } else {
-
         apply(
           field = field,
           fieldset = fieldset,
           items = items
         )
       }
-
-
     }
   }
 
@@ -130,6 +119,11 @@ trait RadiosFluency {
 
     def inline(): Radios =
       radios.withCssClass("govuk-radios--inline")
+
+    def withButtonHints(hints: List[String]): Radios = {
+      radios.copy(items = radios.items.zip(hints).map((radio, hint) => radio.copy(hint = Some(Hint(content = Text(hint)))))
+      )
+    }
 
     def withParagraph(text: String): Radios =
       radios.withFormGroup(

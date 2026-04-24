@@ -36,10 +36,8 @@
             RadiosViewModel.yesNo(
                 field = form("value"),
                 legend = LegendViewModel(messages("notificationMoreThanOneSao.heading").toText).asPageHeading(LegendSize.Large),
-                isInline = false,
-                hintContentYes = messages("notificationMoreThanOneSao.yes"),
-                hintContentNo = messages("notificationMoreThanOneSao.no"),
-            )
+                isInline = false
+            ).withButtonHints(List(messages("notificationMoreThanOneSao.yes"), messages("notificationMoreThanOneSao.no")))
         )
 
         @govukButton(
