@@ -76,4 +76,3 @@ GET         /certificate/change-declaration                           controller
 POST        /certificate/change-declaration                           controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/confirmation                                 controllers.CertificateConfirmationController.onPageLoad()
-
