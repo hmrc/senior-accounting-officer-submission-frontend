@@ -17,6 +17,7 @@
 package controllers
 
 import connectors.UpscanInitiateConnector
+import controllers.NotificationUploadFormController.fileInputField
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.NotificationUploadFormProvider
 import models.*
@@ -30,7 +31,6 @@ import views.html.NotificationUploadFormView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import controllers.NotificationUploadFormController.fileInputField
 
 class NotificationUploadFormController @Inject() (
     identify: IdentifierAction,

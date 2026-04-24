@@ -51,5 +51,5 @@ object NotificationUploadSuccessViewSpec {
   val pageHeading = "Your submission template is uploading"
   val pageTitle   = "Upload a submission template for your notification"
 
-  val paragraphs = List("This may take a few minutes")
+  val paragraphs: List[String] = List("This may take a few minutes")
 }
