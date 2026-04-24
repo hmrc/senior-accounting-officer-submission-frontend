@@ -88,6 +88,6 @@ object UpscanInitiateConnectorISpec {
     successRedirect = Some(
       "http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"
     ),
-    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload/error")
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload")
   )
 }
