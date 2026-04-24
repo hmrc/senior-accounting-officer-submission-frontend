@@ -36,8 +36,12 @@ class UpscanCallbackDispatcher @Inject() (sessionStorage: SessionRepository)(usi
             downloadUrl = s.downloadUrl,
             size = Some(s.uploadDetails.size)
           )
-        case _: UpscanFailureCallback =>
-          UploadStatus.Failed
+        case UpscanFailureCallback(_, UpscanFailureDetails("QUARANTINE", _)) =>
+          UploadStatus.Quarantined
+        case UpscanFailureCallback(_, UpscanFailureDetails("REJECTED", _)) =>
+          UploadStatus.Rejected
+        case UpscanFailureCallback(_, UpscanFailureDetails(_, _)) =>
+          UploadStatus.UnknownFailure
       }
 
     sessionStorage.updateUploadStatus(callback.reference, uploadStatus).map(_ => true)

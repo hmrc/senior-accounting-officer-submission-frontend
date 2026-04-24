@@ -30,6 +30,7 @@ import views.html.NotificationUploadFormView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import controllers.NotificationUploadFormController.fileInputField
 
 class NotificationUploadFormController @Inject() (
     identify: IdentifierAction,
@@ -45,7 +46,19 @@ class NotificationUploadFormController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
-    val form = formProvider()
+    val form = request.userAnswers.get(NotificationUploadStatePage).fold(formProvider()) {
+      case NotificationUploadState(_, UploadStatus.Quarantined) =>
+        formProvider().withError(
+          fileInputField,
+          "notificationUploadForm.upload.error.quarantine"
+        )
+      case NotificationUploadState(_, UploadStatus.Rejected) =>
+        formProvider().withError(fileInputField, "notificationUploadForm.upload.error.rejected")
+      case NotificationUploadState(_, UploadStatus.UnknownFailure) =>
+        formProvider().withError(fileInputField, "notificationUploadForm.upload.error.unknown")
+      case _ => formProvider()
+    }
+
     for {
       upscanInitiateResponse <- upscanInitiateConnector.initiateV2()
       updatedAnswers         <- Future.fromTry(
@@ -60,4 +73,8 @@ class NotificationUploadFormController @Inject() (
       _ <- sessionRepository.set(updatedAnswers)
     } yield Ok(notificationUploadFormView(form, upscanInitiateResponse))
   }
+}
+
+object NotificationUploadFormController {
+  val fileInputField = "file"
 }

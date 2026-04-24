@@ -88,11 +88,35 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
       verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }
 
-    "must return State.UploadToUpscanFailed when the file upload has failed" in {
+    "must return State.QuarantinedByUpscan when the file is quarantined" in {
       val result =
-        SUT.fileUploadState(userAnswersWithUploadStatus(UploadStatus.Failed), Some(testFileReference)).futureValue
+        SUT
+          .fileUploadState(userAnswersWithUploadStatus(UploadStatus.Quarantined), Some(testFileReference))
+          .futureValue
 
-      result mustBe State.UploadToUpscanFailed
+      result mustBe State.QuarantinedByUpscan
+
+      verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
+    }
+
+    "must return State.RejectedByUpscan when the file is rejected" in {
+      val result =
+        SUT
+          .fileUploadState(userAnswersWithUploadStatus(UploadStatus.Rejected), Some(testFileReference))
+          .futureValue
+
+      result mustBe State.RejectedByUpscan
+
+      verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
+    }
+
+    "must return State.UnknownUpscanError when the file is rejected" in {
+      val result =
+        SUT
+          .fileUploadState(userAnswersWithUploadStatus(UploadStatus.UnknownFailure), Some(testFileReference))
+          .futureValue
+
+      result mustBe State.UnknownUpscanError
 
       verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
     }

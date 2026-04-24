@@ -182,11 +182,11 @@ class SessionRepositoryISpec
 
       "must return false" in {
 
-        repository.updateUploadStatus("missing-ref", UploadStatus.Failed).futureValue mustBe false
+        repository.updateUploadStatus("missing-ref", UploadStatus.Quarantined).futureValue mustBe false
       }
     }
 
-    mustPreserveMdc(repository.updateUploadStatus("upscan-ref", UploadStatus.Failed))
+    mustPreserveMdc(repository.updateUploadStatus("upscan-ref", UploadStatus.Quarantined))
   }
 
   private def mustPreserveMdc[A](f: => Future[A])(using pos: Position): Unit =
