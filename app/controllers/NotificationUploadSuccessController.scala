@@ -60,10 +60,10 @@ class NotificationUploadSuccessController @Inject() (
           Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
         case State.DownloadFromUpscanFailed(response) =>
           logger.warn(s"Failed to download uploaded template from Upscan: ${response.status}")
-          Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad()))
+          Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
         case State.ValidationFailed(errors) =>
           logValidationErrors(errors)
-          Future.successful(Redirect(routes.NotificationUploadErrorController.onPageLoad()))
+          Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
         case State.Result(reference, rows) =>
           logParsedRows(reference, rows)
           Future.successful(Redirect(routes.SubmitNotificationStartController.onPageLoad()))
