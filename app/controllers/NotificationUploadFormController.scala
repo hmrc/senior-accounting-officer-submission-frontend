@@ -47,7 +47,6 @@ class NotificationUploadFormController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
     val form = request.userAnswers.get(NotificationUploadStatePage).fold(formProvider()) {
-      // TODO: write tests to check the error attached to the form
       case NotificationUploadState(_, UploadStatus.Quarantined) =>
         formProvider().withError(
           fileInputField,

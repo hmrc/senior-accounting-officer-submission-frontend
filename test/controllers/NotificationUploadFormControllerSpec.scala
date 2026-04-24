@@ -31,6 +31,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import views.html.NotificationUploadFormView
 
 import scala.concurrent.{ExecutionContext, Future}
+import play.api.data.Form
+import pages.NotificationUploadStatePage
 
 class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
@@ -196,6 +198,87 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
           }
         )
       }
+    }
+
+    def testErrorMessagePassed(
+        uploadStatus: UploadStatus,
+        expectedMessageKey: String
+    ): Unit = {
+      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
+      val mockSessionRepository          = mock[SessionRepository]
+      val mockNotificationUploadFormView = mock[NotificationUploadFormView]
+
+      val upscanInitiateResponse =
+        UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
+
+      when(mockNotificationUploadFormView.apply(any(), any())(using any(), any())).thenReturn(Html(""))
+      when(mockUpscanInitiateConnector.initiateV2()(using any[HeaderCarrier]()))
+        .thenReturn(Future.successful(upscanInitiateResponse))
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+
+      val application = applicationBuilder(userAnswers =
+        Some(
+          emptyUserAnswers
+            .set(NotificationUploadStatePage, NotificationUploadState("foo", uploadStatus))
+            .get
+        )
+      )
+        .overrides(
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
+        )
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+
+        verify(mockNotificationUploadFormView, times(1))(
+          argThat { (form: Form[String]) =>
+            {
+              form.errors("file").size == 1
+              form.errors("file").head.message == expectedMessageKey
+            }
+          },
+          any()
+        )(using any(), any())
+
+        verify(mockSessionRepository, times(1)).set(
+          argThat { (answers: models.UserAnswers) =>
+            answers.id == emptyUserAnswers.id &&
+            answers
+              .get(pages.NotificationUploadStatePage)
+              .contains(
+                NotificationUploadState(reference = "foo", status = UploadStatus.InProgress)
+              )
+          }
+        )
+      }
+    }
+
+    "pass the view a form with a quarantine error message when the quarantine state is found in the database" in {
+      testErrorMessagePassed(
+        UploadStatus.Quarantined,
+        "notificationUploadForm.upload.error.quarantine"
+      )
+    }
+
+    "pass the view a form with a rejected error message when the rejected state is found in the database" in {
+      testErrorMessagePassed(
+        UploadStatus.Rejected,
+        "notificationUploadForm.upload.error.rejected"
+      )
+    }
+
+    "pass the view a form with a unknown error message when the unknown failure state is found in the database" in {
+      testErrorMessagePassed(
+        UploadStatus.UnknownFailure,
+        "notificationUploadForm.upload.error.unknown"
+      )
     }
   }
 }
