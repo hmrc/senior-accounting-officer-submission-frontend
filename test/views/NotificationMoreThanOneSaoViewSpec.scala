@@ -1,3 +1,18 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 package views
 
@@ -41,8 +56,8 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
-              radio(value = yesKey, label = yesLabel),
-              radio(value = noKey, label = noLabel),
+              radio(value = yesKey, label = yesLabel, hint = Some(yesHint)),
+              radio(value = noKey, label = noLabel, hint = Some(noHint)),
             ),
             isChecked = None,
             hasError = false
@@ -72,10 +87,10 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
-              radio(value = yesKey, label = yesLabel),
-              radio(value = noKey, label = noLabel),
+              radio(value = yesKey, label = yesLabel, hint = Some(yesHint)),
+              radio(value = noKey, label = noLabel, hint = Some(noHint)),
             ),
-            isChecked = Some(radio(value = yesKey, label = yesLabel)),
+            isChecked = Some(radio(value = yesKey, label = yesLabel, hint = Some(yesHint))),
             hasError = false
           )
 
@@ -103,8 +118,8 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
-              radio(value = yesKey, label = yesLabel),
-              radio(value = noKey, label = noLabel),
+              radio(value = yesKey, label = yesLabel, hint=Some(yesHint)),
+              radio(value = noKey, label = noLabel, hint=Some(noHint)),
             ),
             isChecked = None,
             hasError = true
@@ -127,10 +142,12 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
 }
 
 object NotificationMoreThanOneSaoViewSpec {
-  val pageHeading = "notificationMoreThanOneSao"
-  val pageTitle = "notificationMoreThanOneSao"
+  val pageHeading = "Was there more than one SAO during the financial year?"
+  val pageTitle = "Submit a notification - Was there more than one SAO during the financial year?"
   val yesKey = "true"
   val yesLabel = "Yes"
   val noKey = "false"
   val noLabel = "No"
+  val yesHint = "There was more than one SAO, the SAO changed during the financial year"
+  val noHint = "Only one person held the role for the entire financial year"
 }
