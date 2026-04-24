@@ -38,10 +38,18 @@ class NotificationUploadSuccessViewSpec extends ViewSpecBase[NotificationUploadS
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithParagraphs(paragraphs)
+
+    "must have a spinner" in {
+      doc.select("div.loader").size() mustBe 1
+    }
   }
 }
 
 object NotificationUploadSuccessViewSpec {
-  val pageHeading = "notificationUploadSuccess"
-  val pageTitle   = "notificationUploadSuccess"
+  val pageHeading = "Your submission template is uploading"
+  val pageTitle   = "Upload a submission template for your notification"
+
+  val paragraphs = List("This may take a few minutes")
 }
