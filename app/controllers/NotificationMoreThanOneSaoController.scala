@@ -49,10 +49,7 @@ class NotificationMoreThanOneSaoController @Inject() (
   val form: Form[Boolean] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(NotificationMoreThanOneSaoPage) match {
-      case None        => form
-      case Some(value) => form.fill(value)
-    }
+    val preparedForm = request.userAnswers.get(NotificationMoreThanOneSaoPage).fold(form)(form.fill)
 
     Ok(view(preparedForm, mode))
   }
