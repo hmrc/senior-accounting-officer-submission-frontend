@@ -26,7 +26,7 @@ class NotificationMoreThanOneSaoFormProviderSpec extends BooleanFieldBehaviours 
 
   val form = new NotificationMoreThanOneSaoFormProvider()()
 
-  ".value" - {
+  ".value input field" - {
 
     val fieldName = "value"
 

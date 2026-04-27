@@ -178,7 +178,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMoreThanOneSaoPage,
           NormalMode,
-          UserAnswers("id").set(NotificationMoreThanOneSaoPage, false).get
+          UserAnswers("id").set(NotificationMoreThanOneSaoPage, false).success.value
         ) mustBe routes.SaoNameController.onPageLoad(NormalMode)
       }
 
@@ -187,7 +187,7 @@ class NavigatorSpec extends SpecBase {
           navigator.nextPage(
             NotificationMoreThanOneSaoPage,
             NormalMode,
-            UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).get
+            UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
           )
         }
       }
