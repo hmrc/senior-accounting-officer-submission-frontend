@@ -23,10 +23,10 @@ import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
-import play.api.Configuration
 import play.api.libs.json.Json
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.{Configuration, Logger}
 import uk.gov.hmrc.http.HttpReads.Implicits.readRaw
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
@@ -51,6 +51,8 @@ class TestObjectStoreController @Inject() (
     downloadPdfView: TestDownloadPdfView
 )(using ec: ExecutionContext, as: ActorSystem, mat: Materializer)
     extends FrontendController(mcc) {
+
+  private def logger = Logger(getClass)
 
   // configure the local internal auth for us to talk to object store
   def setUpLocalInternalAuthToken(): Action[AnyContent] = Action.async { implicit request =>
@@ -83,7 +85,11 @@ class TestObjectStoreController @Inject() (
         content = content,
         owner = service
       )
-      .map(r => Ok(r.toString))
+      // this returns the computed md5 for the file we've just uploaded (that'll be required for calling SDES)
+      .map { r =>
+        logger.error(s"[uploadToObjectStore.md5]=${r.contentMd5.value}")
+        Ok(r.toString)
+      }
   }
 
   def downloadFromObjectStore(): Action[AnyContent] = Action.async { implicit request =>
