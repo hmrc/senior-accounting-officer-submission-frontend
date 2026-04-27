@@ -459,7 +459,7 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
             .map(element => s"label[for=${element.attr("id")}]")
             .mkString(",")
       }
-      val hintCssSelector = "div.govuk-hint"
+      val hintCssSelector = "div.govuk-hint.govuk-radios__hint"
 
       def fieldsetElement = target.resolve.select("fieldset.govuk-fieldset")
 
