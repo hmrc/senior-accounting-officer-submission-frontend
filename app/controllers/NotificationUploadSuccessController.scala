@@ -96,7 +96,7 @@ class NotificationUploadSuccessController @Inject() (
     val widths = Seq(5, 36, 12, 10, 6, 16, 12, 28)
     val header = formatTableLine(
       widths,
-      Seq("row", "companyName", "utr", "crn", "type", "status", "fyEndDate", "certificateType")
+      Seq("row", "companyName", "utr", "crn", "type", "status", "financialYearEndDate", "certificateType")
     )
     val lines = rows.zipWithIndex.map { case (row, index) =>
       formatTableLine(
