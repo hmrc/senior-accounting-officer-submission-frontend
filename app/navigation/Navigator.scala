@@ -75,13 +75,12 @@ class Navigator @Inject() () {
       userAnswers =>
         userAnswers
           .get(UploadTemplateTablePage)
-          .map {
+          .fold(routes.JourneyRecoveryController.onPageLoad()) {
             case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
               routes.NotificationUploadFormController.onPageLoad()
             case _ =>
             routes.SubmitNotificationStartController.onPageLoad()
           }
-          .getOrElse(routes.JourneyRecoveryController.onPageLoad())
     case _ =>
       _ => ???
   }
