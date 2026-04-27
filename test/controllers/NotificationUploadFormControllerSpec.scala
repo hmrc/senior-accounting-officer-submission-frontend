@@ -22,6 +22,8 @@ import models.{NotificationUploadState, UploadStatus, UpscanInitiateResponse}
 import org.mockito.ArgumentMatchers.{any, argThat}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
+import pages.NotificationUploadStatePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -31,8 +33,6 @@ import uk.gov.hmrc.http.HeaderCarrier
 import views.html.NotificationUploadFormView
 
 import scala.concurrent.{ExecutionContext, Future}
-import play.api.data.Form
-import pages.NotificationUploadStatePage
 
 class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 

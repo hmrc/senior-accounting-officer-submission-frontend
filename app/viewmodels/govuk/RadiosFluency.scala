@@ -57,7 +57,7 @@ trait RadiosFluency {
 
     def yesNo(
         field: Field,
-        legend: Legend,
+        legend: Legend
     )(using messages: Messages): Radios =
       yesNo(
         field = field,
@@ -66,7 +66,7 @@ trait RadiosFluency {
 
     def yesNo(
         field: Field,
-        fieldset: Fieldset,
+        fieldset: Fieldset
     )(using messages: Messages): Radios = {
 
       val items = Seq(
@@ -81,7 +81,7 @@ trait RadiosFluency {
           content = Text(messages("site.no"))
         )
       )
-      
+
       apply(
         field = field,
         fieldset = fieldset,
