@@ -17,7 +17,7 @@ object AppDependencies {
     "uk.gov.hmrc.mongo"       %% "hmrc-mongo-play-30"          % hmrcMongoVersion,
     "org.apache.poi"           % "poi"                         % poiVersion,
     "org.apache.poi"           % "poi-ooxml"                   % poiVersion,
-    "com.github.tototoshi"   %% "scala-csv"                  % scalaCsvVersion,
+    "com.github.tototoshi"    %% "scala-csv"                   % scalaCsvVersion,
     "io.github.openhtmltopdf"  % "openhtmltopdf-pdfbox"        % "1.1.37",
     "uk.gov.hmrc.objectstore" %% "object-store-client-play-30" % "2.5.0"
   )
