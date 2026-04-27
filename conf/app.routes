@@ -20,11 +20,11 @@ GET         /notification/guidance                                    controller
 POST        /notification/guidance                                    controllers.NotificationGuidanceController.onSubmit()
 
 
-GET         /notification/more-than-one-sao                               controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
-POST        /notification/more-than-one-sao                               controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
+GET         /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
 
-GET         /notification/change-more-than-one-sao                  controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
-POST        /notification/change-more-than-one-sao                  controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
+GET         /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/additional-information                      controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/additional-information                      controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
