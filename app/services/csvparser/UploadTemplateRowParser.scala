@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package services.CSVParser
+package services.csvparser
 
 import models.upload.*
 import models.upload.TemplateParseResult.{Invalid, Valid}
-import services.CSVParser.UploadTemplateCsvSchema.*
+import services.csvparser.UploadTemplateCsvSchema.*
 
 import javax.inject.Inject
 
@@ -50,17 +50,14 @@ class UploadTemplateRowParser @Inject() (
       rowErrorMessages: UploadTemplateRowErrorMessages,
       templateFileErrorMessage: String
   ): TemplateParseResult = {
-    val rowBuilder   = Vector.newBuilder[ParsedSubmissionRow]
-    val errorBuilder = Vector.newBuilder[TemplateParseError]
+    val parsedRows =
+      rows.zipWithIndex.drop(DataStartIndex).map { case (rawRow, idx) =>
+        parseDataRow(rawRow, idx + 1, rowErrorMessages, templateFileErrorMessage)
+      }
 
-    rows.iterator.zipWithIndex.drop(DataStartIndex).foreach { case (rawRow, idx) =>
-      val rowResult = parseDataRow(rawRow, idx + 1, rowErrorMessages, templateFileErrorMessage)
-      rowResult.row.foreach(rowBuilder += _)
-      errorBuilder ++= rowResult.errors
-    }
+    val errors = parsedRows.flatMap(_.errors)
 
-    val errors = errorBuilder.result()
-    if errors.nonEmpty then Invalid(errors) else Valid(rowBuilder.result())
+    if errors.nonEmpty then Invalid(errors) else Valid(parsedRows.flatMap(_.row))
   }
 
   private def parseDataRow(
@@ -98,7 +95,7 @@ class UploadTemplateRowParser @Inject() (
         extraColumnErrors ++ companyResult.errors ++ taxResult.errors ++ certResult.errors
 
       if rowErrors.nonEmpty then ParsedRowResult(None, rowErrors)
-      else {
+      else
         val parsedRow =
           for {
             company  <- companyResult.fields
@@ -128,22 +125,7 @@ class UploadTemplateRowParser @Inject() (
             )
           )
 
-        parsedRow match {
-          case Some(value) => ParsedRowResult(Some(value), Vector.empty)
-          case None        =>
-            ParsedRowResult(
-              row = None,
-              errors = Vector(
-                TemplateParseError(
-                  line = lineNumber,
-                  column = None,
-                  code = "internal_parser_error",
-                  message = s"Line $lineNumber could not be parsed due to an internal parser state mismatch."
-                )
-              )
-            )
-        }
-      }
+        ParsedRowResult(row = parsedRow, errors = Vector.empty)
     }
   }
 

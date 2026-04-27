@@ -17,8 +17,8 @@
 package services
 
 import base.SpecBase
-import services.CSVParser.UploadTemplateCsvSchema.*
-import services.CSVParser.UploadTemplateStructureValidator
+import services.csvparser.UploadTemplateCsvSchema.*
+import services.csvparser.UploadTemplateStructureValidator
 
 class UploadTemplateStructureValidatorSpec extends SpecBase {
 

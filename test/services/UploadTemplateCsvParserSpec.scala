@@ -20,7 +20,7 @@ import base.SpecBase
 import models.upload.*
 import models.upload.TemplateParseResult.{Invalid, Valid}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import services.CSVParser.UploadTemplateCsvParser
+import services.csvparser.UploadTemplateCsvParser
 
 import java.time.LocalDate
 

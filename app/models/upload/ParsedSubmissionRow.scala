@@ -18,9 +18,10 @@ package models.upload
 
 import play.api.libs.json.*
 
+import scala.util.Try
+
 import java.time.LocalDate
 import java.time.format.DateTimeFormatterBuilder
-import java.time.format.DateTimeParseException
 import java.time.format.ResolverStyle
 import java.time.temporal.ChronoField
 
@@ -56,10 +57,8 @@ object NotificationFields {
   given Format[LocalDate] = Format(
     Reads {
       case JsString(value) =>
-        try JsSuccess(LocalDate.parse(value, JsonDateFormatter))
-        catch {
-          case _: DateTimeParseException => JsError(s"Invalid date value: $value")
-        }
+        Try(LocalDate.parse(value, JsonDateFormatter))
+          .fold(_ => JsError(s"Invalid date value: $value"), JsSuccess(_))
       case _ =>
         JsError("Expected JSON string")
     },

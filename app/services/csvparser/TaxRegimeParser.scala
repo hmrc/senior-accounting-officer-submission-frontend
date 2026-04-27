@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package services.CSVParser
+package services.csvparser
 
 import models.upload.TemplateParseError
-import services.CSVParser.UploadTemplateCsvSchema.*
+import services.csvparser.UploadTemplateCsvSchema.*
 
 import javax.inject.Inject
 
