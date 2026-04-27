@@ -182,7 +182,7 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.SaoNameController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMoreThanOneSaoPage and the user selected Yes, must go to Sao name page" in {
+      "when on NotificationMoreThanOneSaoPage and the user selected Yes, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
             NotificationMoreThanOneSaoPage,
