@@ -31,7 +31,7 @@ import play.api.http.Status.{BAD_REQUEST, OK}
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import services.CSVParser.UploadTemplateCsvParser
+import services.csvparser.UploadTemplateCsvParser
 import services.UpscanService.State
 import services.UpscanServiceSpec.*
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}

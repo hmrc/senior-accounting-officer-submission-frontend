@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package services.CSVParser
+package services.csvparser
 
 import com.univocity.parsers.csv.{CsvParser, CsvParserSettings}
 import models.upload.TemplateParseError
 import models.upload.TemplateParseResult
 import models.upload.TemplateParseResult.Invalid
 import play.api.i18n.{Messages, MessagesApi}
-import services.CSVParser.UploadTemplateCsvSchema.*
+import services.csvparser.UploadTemplateCsvSchema.*
 
 import scala.jdk.CollectionConverters.*
 import scala.util.Try

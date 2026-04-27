@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package services.CSVParser
+package services.csvparser
 
 import models.upload.*
-import services.CSVParser.UploadTemplateCsvSchema.*
+import services.csvparser.UploadTemplateCsvSchema.*
 
 import java.time.LocalDate
-import java.time.format.DateTimeParseException
+import scala.util.Try
+
 import javax.inject.Inject
 
 final case class ParsedCompanyFields(
@@ -199,9 +200,9 @@ class CompanyFieldParser @Inject() () {
       value: String,
       rowErrorMessages: UploadTemplateRowErrorMessages
   ): (Option[LocalDate], Vector[TemplateParseError]) =
-    try (Some(LocalDate.parse(value, FinancialYearEndDateFormatter)), Vector.empty)
-    catch {
-      case _: DateTimeParseException =>
+    Try(LocalDate.parse(value, FinancialYearEndDateFormatter)).toOption
+      .map(parsed => (Some(parsed), Vector.empty))
+      .getOrElse(
         (
           None,
           Vector(
@@ -213,5 +214,5 @@ class CompanyFieldParser @Inject() () {
             )
           )
         )
-    }
+      )
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package services.CSVParser
+package services.csvparser
 
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
