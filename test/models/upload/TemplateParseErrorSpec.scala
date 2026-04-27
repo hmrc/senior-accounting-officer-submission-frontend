@@ -17,7 +17,7 @@
 package models.upload
 
 import base.SpecBase
-import play.api.libs.json.Json
+import play.api.libs.json.{JsSuccess, Json}
 
 class TemplateParseErrorSpec extends SpecBase {
 
@@ -31,7 +31,7 @@ class TemplateParseErrorSpec extends SpecBase {
         message = "Company UTR must be 10 digits"
       )
 
-      Json.toJson(error).validate[TemplateParseError].get mustBe error
+      Json.toJson(error).validate[TemplateParseError] mustBe JsSuccess(error)
     }
 
     "must round-trip without a column value" in {
@@ -42,7 +42,7 @@ class TemplateParseErrorSpec extends SpecBase {
         message = "The selected file must use the template"
       )
 
-      Json.toJson(error).validate[TemplateParseError].get mustBe error
+      Json.toJson(error).validate[TemplateParseError] mustBe JsSuccess(error)
     }
   }
 }
