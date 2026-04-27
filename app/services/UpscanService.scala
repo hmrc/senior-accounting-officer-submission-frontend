@@ -22,8 +22,8 @@ import models.upload.{ParsedSubmissionRow, TemplateParseError, TemplateParseResu
 import models.{NotificationUploadState, UserAnswers}
 import pages.NotificationUploadStatePage
 import play.api.http.Status.OK
-import services.csvparser.UploadTemplateCsvParser
 import services.UpscanService.*
+import services.csvparser.UploadTemplateCsvParser
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
