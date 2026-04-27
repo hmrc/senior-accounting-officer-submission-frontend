@@ -208,6 +208,14 @@ class NavigatorSpec extends SpecBase {
           userAnswers
         ) mustBe routes.NotificationUploadFormController.onPageLoad()
       }
+
+      "when on UploadTemplateTablePage with no upload data, must go to journey recovery page" in {
+        navigator.nextPage(
+          UploadTemplateTablePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.JourneyRecoveryController.onPageLoad()
+      }
     }
 
     "in Check mode" - {
