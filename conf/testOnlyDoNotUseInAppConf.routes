@@ -24,7 +24,16 @@ GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf
 POST        /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf                           controllers.testonly.TestPdfController.onSubmit()
 GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf/example                   controllers.testonly.TestPdfController.example(rows:Int ?= 10)
 
-GET         /senior-accounting-officer/submission/test-only/object-store                                   controllers.testonly.TestObjectStoreController.downloadPdfPage()
 GET         /senior-accounting-officer/submission/test-only/object-store/setup-local-internal-auth         controllers.testonly.TestObjectStoreController.setUpLocalInternalAuthToken()
 GET         /senior-accounting-officer/submission/test-only/object-store/upload                            controllers.testonly.TestObjectStoreController.uploadToObjectStore()
 GET         /senior-accounting-officer/submission/test-only/object-store/download                          controllers.testonly.TestObjectStoreController.downloadFromObjectStore()
+GET         /senior-accounting-officer/submission/test-only/object-store/html-link                         controllers.testonly.TestObjectStoreController.downloadPdfPage()
+
+GET         /senior-accounting-officer/submission/test-only/sdes/file-ready                                controllers.testonly.TestSdesController.fileReady()
+
+# this is the POC route of what we will want to put on our stubs
++nocsrf
+POST        /notification/fileready                                                                        controllers.testonly.TestSdesController.sdesProxyStub()
+
++nocsrf
+POST        /internal/test-only/sdes/call-back                                                             controllers.testonly.TestSdesController.callBack()
