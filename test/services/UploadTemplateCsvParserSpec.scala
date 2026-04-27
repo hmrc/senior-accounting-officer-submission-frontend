@@ -227,6 +227,24 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
       }
     }
 
+    "must return errors when a descriptive row is missing" in {
+      val csv = toCsv(
+        descriptiveRows.take(5) ++
+          Seq(sectionRow, UploadTemplateCsvParser.ExpectedHeaders, validQualifiedDataRow)
+      )
+
+      val result = parser.parse(csv)
+
+      result match {
+        case Invalid(errors) =>
+          errors.exists(_.code == "invalid_section_row") mustBe true
+          errors.exists(_.code == "header_mismatch") mustBe true
+          errors.map(_.line).distinct must contain allOf (7, 8)
+        case _ =>
+          fail("Expected parser to fail when a descriptive row is missing")
+      }
+    }
+
     "must return errors when headers do not exactly match" in {
       val badHeaders = UploadTemplateCsvParser.ExpectedHeaders.updated(1, "Company UTR BAD")
 
