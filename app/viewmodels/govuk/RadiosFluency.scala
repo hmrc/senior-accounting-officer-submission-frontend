@@ -58,18 +58,15 @@ trait RadiosFluency {
     def yesNo(
         field: Field,
         legend: Legend,
-        isInline: Boolean = true
     )(using messages: Messages): Radios =
       yesNo(
         field = field,
-        fieldset = FieldsetViewModel(legend),
-        isInline = isInline
+        fieldset = FieldsetViewModel(legend)
       )
 
     def yesNo(
         field: Field,
         fieldset: Fieldset,
-        isInline: Boolean
     )(using messages: Messages): Radios = {
 
       val items = Seq(
@@ -84,19 +81,12 @@ trait RadiosFluency {
           content = Text(messages("site.no"))
         )
       )
-      if isInline then {
-        apply(
-          field = field,
-          fieldset = fieldset,
-          items = items
-        ).inline()
-      } else {
-        apply(
-          field = field,
-          fieldset = fieldset,
-          items = items
-        )
-      }
+      
+      apply(
+        field = field,
+        fieldset = fieldset,
+        items = items
+      ).inline()
     }
   }
 
