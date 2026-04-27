@@ -17,20 +17,17 @@
 package views
 
 import base.ViewSpecBase
+import forms.NotificationMoreThanOneSaoFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import forms.NotificationMoreThanOneSaoFormProvider
-import models.{NormalMode, CheckMode, Mode}
-import pages.NotificationMoreThanOneSaoPage
-import views.html.NotificationMoreThanOneSaoView
 import views.NotificationMoreThanOneSaoViewSpec.*
-
+import views.html.NotificationMoreThanOneSaoView
 
 class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreThanOneSaoView] {
 
-  private val formProvider = app.injector.instanceOf[NotificationMoreThanOneSaoFormProvider]
+  private val formProvider        = app.injector.instanceOf[NotificationMoreThanOneSaoFormProvider]
   private val form: Form[Boolean] = formProvider()
 
   private def generateView(form: Form[Boolean], mode: Mode): Document = {
@@ -57,7 +54,7 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
             name = "value",
             radios = List(
               radio(value = yesKey, label = yesLabel, hint = Some(yesHint)),
-              radio(value = noKey, label = noLabel, hint = Some(noHint)),
+              radio(value = noKey, label = noLabel, hint = Some(noHint))
             ),
             isChecked = None,
             hasError = false
@@ -88,7 +85,7 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
             name = "value",
             radios = List(
               radio(value = yesKey, label = yesLabel, hint = Some(yesHint)),
-              radio(value = noKey, label = noLabel, hint = Some(noHint)),
+              radio(value = noKey, label = noLabel, hint = Some(noHint))
             ),
             isChecked = Some(radio(value = yesKey, label = yesLabel, hint = Some(yesHint))),
             hasError = false
@@ -118,8 +115,8 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
-              radio(value = yesKey, label = yesLabel, hint=Some(yesHint)),
-              radio(value = noKey, label = noLabel, hint=Some(noHint)),
+              radio(value = yesKey, label = yesLabel, hint = Some(yesHint)),
+              radio(value = noKey, label = noLabel, hint = Some(noHint))
             ),
             isChecked = None,
             hasError = true
@@ -143,11 +140,11 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
 
 object NotificationMoreThanOneSaoViewSpec {
   val pageHeading = "Was there more than one SAO during the financial year?"
-  val pageTitle = "Submit a notification - Was there more than one SAO during the financial year?"
-  val yesKey = "true"
-  val yesLabel = "Yes"
-  val noKey = "false"
-  val noLabel = "No"
-  val yesHint = "There was more than one SAO, the SAO changed during the financial year"
-  val noHint = "Only one person held the role for the entire financial year"
+  val pageTitle   = "Submit a notification - Was there more than one SAO during the financial year?"
+  val yesKey      = "true"
+  val yesLabel    = "Yes"
+  val noKey       = "false"
+  val noLabel     = "No"
+  val yesHint     = "There was more than one SAO, the SAO changed during the financial year"
+  val noHint      = "Only one person held the role for the entire financial year"
 }

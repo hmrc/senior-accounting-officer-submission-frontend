@@ -22,7 +22,7 @@ import play.api.data.FormError
 class NotificationMoreThanOneSaoFormProviderSpec extends BooleanFieldBehaviours {
 
   val requiredKey = "notificationMoreThanOneSao.error.required"
-  val invalidKey = "error.boolean"
+  val invalidKey  = "error.boolean"
 
   val form = new NotificationMoreThanOneSaoFormProvider()()
 

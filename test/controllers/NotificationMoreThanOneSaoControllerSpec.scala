@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.NotificationMoreThanOneSaoPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -35,12 +36,13 @@ import scala.concurrent.Future
 
 class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new NotificationMoreThanOneSaoFormProvider()
-  val form = formProvider()
+  val formProvider        = new NotificationMoreThanOneSaoFormProvider()
+  val form: Form[Boolean] = formProvider()
 
-  lazy val notificationMoreThanOneSaoRoute = routes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url
+  lazy val notificationMoreThanOneSaoRoute: String =
+    routes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url
 
   "NotificationMoreThanOneSao Controller" - {
 
@@ -74,7 +76,10 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

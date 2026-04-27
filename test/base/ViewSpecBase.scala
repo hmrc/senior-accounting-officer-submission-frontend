@@ -486,8 +486,8 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         }
       }
 
-      val hints = radios.map(_.hint).collect{
-        case Some(hint) => hint
+      val hints = radios.map(_.hint).collect { case Some(hint) =>
+        hint
       }
       createTestWithCountOfElement(
         selector = hintCssSelector,
@@ -771,7 +771,8 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
 
   }
 
-  @inline def radio(value: String, label: String, hint: Option[String] = None): RadioButton = RadioButton(value = value, label = label, hint = hint)
+  @inline def radio(value: String, label: String, hint: Option[String] = None): RadioButton =
+    RadioButton(value = value, label = label, hint = hint)
 
 }
 

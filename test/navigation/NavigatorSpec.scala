@@ -173,6 +173,24 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("id")
         ) mustBe routes.SubmitCertificateStartController.onPageLoad()
       }
+
+      "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
+        navigator.nextPage(
+          NotificationMoreThanOneSaoPage,
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreThanOneSaoPage, false).get
+        ) mustBe routes.SaoNameController.onPageLoad(NormalMode)
+      }
+
+      "when on NotificationMoreThanOneSaoPage and the user selected Yes, must go to Sao name page" in {
+        intercept[NotImplementedError] {
+          navigator.nextPage(
+            NotificationMoreThanOneSaoPage,
+            NormalMode,
+            UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).get
+          )
+        }
+      }
     }
 
     "in Check mode" - {
