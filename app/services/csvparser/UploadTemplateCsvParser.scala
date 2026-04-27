@@ -16,14 +16,13 @@
 
 package services.csvparser
 
-import com.univocity.parsers.csv.{CsvParser, CsvParserSettings}
+import com.github.tototoshi.csv.CSVReader
 import models.upload.TemplateParseError
 import models.upload.TemplateParseResult
 import models.upload.TemplateParseResult.Invalid
 import play.api.i18n.{Messages, MessagesApi}
 import services.csvparser.UploadTemplateCsvSchema.*
 
-import scala.jdk.CollectionConverters.*
 import scala.util.Try
 
 import java.io.StringReader
@@ -80,18 +79,11 @@ class UploadTemplateCsvParser @Inject() (
   }
 
   private def parseCsvRows(csv: String): Vector[CsvRow] = {
-    val settings = CsvParserSettings()
-    settings.setLineSeparatorDetectionEnabled(true)
-    settings.setReadInputOnSeparateThread(false)
-    settings.setNullValue("")
-    settings.setEmptyValue("")
-    settings.setMaxColumns(64)
-    settings.setMaxCharsPerColumn(100000)
-
-    val parser    = CsvParser(settings)
     val sanitized = csv.stripPrefix("\uFEFF")
+    val reader    = CSVReader.open(StringReader(sanitized))
 
-    parser.parseAll(StringReader(sanitized)).asScala.iterator.map(_.toVector).toVector
+    try reader.all().iterator.map(_.toVector).toVector
+    finally reader.close()
   }
 }
 

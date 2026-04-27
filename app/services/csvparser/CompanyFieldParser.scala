@@ -19,9 +19,9 @@ package services.csvparser
 import models.upload.*
 import services.csvparser.UploadTemplateCsvSchema.*
 
-import java.time.LocalDate
 import scala.util.Try
 
+import java.time.LocalDate
 import javax.inject.Inject
 
 final case class ParsedCompanyFields(
