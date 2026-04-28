@@ -17,7 +17,9 @@
 package controllers
 
 import controllers.actions.*
-import play.api.Logger
+import models.upload.ParsedSubmissionRow
+import models.upload.TemplateParseError
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.*
 import services.UpscanService
@@ -39,7 +41,8 @@ class NotificationUploadSuccessController @Inject() (
     view: NotificationUploadSuccessView
 )(using ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with Logging {
 
   def onPageLoad(key: Option[String]): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
@@ -55,11 +58,74 @@ class NotificationUploadSuccessController @Inject() (
         case State.UnknownUpscanError =>
           Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
         case State.DownloadFromUpscanFailed(response) =>
-          ???
-        case State.Result(reference, fileContent) =>
-          Logger(getClass).info(fileContent)
+          logger.warn(s"Failed to download uploaded template from Upscan: ${response.status}")
+          Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
+        case State.ValidationFailed(errors) =>
+          logValidationErrors(errors)
+          Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
+        case State.Result(reference, rows) =>
+          logParsedRows(reference, rows)
           Future.successful(Redirect(routes.SubmitNotificationStartController.onPageLoad()))
       }
     }
 
+  private def logValidationErrors(errors: Seq[TemplateParseError]): Unit = {
+    val widths = Seq(6, 24, 26, 70)
+    val header = formatTableLine(widths, Seq("line", "column", "code", "message"))
+    val lines  = errors.map { error =>
+      formatTableLine(
+        widths,
+        Seq(
+          error.line.toString,
+          error.column.getOrElse("-"),
+          error.code,
+          error.message
+        )
+      )
+    }
+    logger.warn(
+      s"""Uploaded template failed validation with ${errors.size} error(s)
+         |$header
+         |${"-" * header.length}
+         |${lines.mkString("\n")}""".stripMargin
+    )
+  }
+
+  private def logParsedRows(reference: String, rows: Seq[ParsedSubmissionRow]): Unit = {
+    val widths = Seq(5, 36, 12, 10, 6, 16, 12, 28)
+    val header = formatTableLine(
+      widths,
+      Seq("row", "companyName", "utr", "crn", "type", "status", "financialYearEndDate", "certificateType")
+    )
+    val lines = rows.zipWithIndex.map { case (row, index) =>
+      formatTableLine(
+        widths,
+        Seq(
+          (index + 1).toString,
+          row.notification.companyName,
+          row.notification.companyUtr.value,
+          row.notification.companyCrn.map(_.value).getOrElse("-"),
+          row.notification.companyType.toString,
+          row.notification.companyStatus.toString,
+          row.notification.financialYearEndDateDisplay,
+          row.certificate.certificateType.map(_.toString).getOrElse("-")
+        )
+      )
+    }
+    logger.info(
+      s"""Uploaded template parsed successfully, reference=$reference, rows=${rows.size}
+         |$header
+         |${"-" * header.length}
+         |${lines.mkString("\n")}""".stripMargin
+    )
+  }
+
+  private def formatTableLine(widths: Seq[Int], values: Seq[String]): String =
+    values.zip(widths).map { case (value, width) => formatCell(value, width) }.mkString(" | ")
+
+  private def formatCell(value: String, width: Int): String = {
+    val normalized = Option(value).map(_.replaceAll("\\s+", " ").trim).filter(_.nonEmpty).getOrElse("-")
+    val truncated  = if normalized.length <= width then normalized else s"${normalized.take(width - 3)}..."
+    truncated + (" " * (width - truncated.length))
+  }
 }

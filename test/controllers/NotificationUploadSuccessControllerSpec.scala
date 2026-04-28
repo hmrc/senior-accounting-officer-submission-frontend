@@ -19,6 +19,8 @@ package controllers
 import base.SpecBase
 import controllers.NotificationUploadSuccessControllerSpec.*
 import models.*
+import models.upload.ParsedSubmissionRow
+import models.upload.TemplateParseError
 import org.mockito.ArgumentMatchers.{eq as meq, *}
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
@@ -32,7 +34,7 @@ import services.UpscanService.State
 import uk.gov.hmrc.http.HttpResponse
 import views.html.NotificationUploadSuccessView
 
-import scala.concurrent.{ExecutionException, Future}
+import scala.concurrent.Future
 import scala.util.Random
 
 class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEach {
@@ -52,7 +54,11 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
     "when UpscanService returns State.NoReference" - {
       "must return Redirect to Journey recovery" in {
-        when(mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using any())).thenReturn(
+        when(
+          mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using
+            any()
+          )
+        ).thenReturn(
           Future.successful(State.NoReference)
         )
 
@@ -69,9 +75,10 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).get mustEqual routes.JourneyRecoveryController.onPageLoad().url
 
-          verify(mockUpscanService, times(1)).fileUploadState(any[UserAnswers], meq(Some(testFileReference)))(using
-            any()
-          )
+          verify(mockUpscanService, times(1)).fileUploadState(
+            any[UserAnswers],
+            meq(Some(testFileReference))
+          )(using any())
         }
       }
 
@@ -79,7 +86,9 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
     "when no key is provided" - {
       "must return Redirect to Journey recovery" in {
-        when(mockUpscanService.fileUploadState(any[UserAnswers], meq(None))(using any())).thenReturn(
+        when(
+          mockUpscanService.fileUploadState(any[UserAnswers], meq(None))(using any())
+        ).thenReturn(
           Future.successful(State.NoReference)
         )
 
@@ -94,7 +103,10 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).get mustEqual routes.JourneyRecoveryController.onPageLoad().url
 
-          verify(mockUpscanService, times(1)).fileUploadState(any[UserAnswers], meq(None))(using any())
+          verify(mockUpscanService, times(1)).fileUploadState(
+            any[UserAnswers],
+            meq(None)
+          )(using any())
         }
       }
     }
@@ -103,7 +115,11 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
       "must return OK and the correct view for a GET" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        when(mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using any())).thenReturn(
+        when(
+          mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using
+            any()
+          )
+        ).thenReturn(
           Future.successful(State.WaitingForUpscan)
         )
 
@@ -118,9 +134,10 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           status(result) mustEqual OK
           contentAsString(result) mustEqual view()(using request, messages(application)).toString
 
-          verify(mockUpscanService, times(1)).fileUploadState(any[UserAnswers], meq(Some(testFileReference)))(using
-            any()
-          )
+          verify(mockUpscanService, times(1)).fileUploadState(
+            any[UserAnswers],
+            meq(Some(testFileReference))
+          )(using any())
         }
       }
     }
@@ -166,10 +183,14 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
     }
 
     "when UpscanService returns State.DownloadFromUpscanFailed" - {
-      "must throw NotImplementedError" in {
+      "must redirect to notification upload form page" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        when(mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using any())).thenReturn(
+        when(
+          mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using
+            any()
+          )
+        ).thenReturn(
           Future.successful(State.DownloadFromUpscanFailed(HttpResponse(status = BAD_REQUEST, body = testFileContent)))
         )
 
@@ -179,25 +200,67 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
           val result = route(application, request).value
 
-          val exception = intercept[ExecutionException] {
-            await(result)
-          }
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustBe routes.NotificationUploadFormController.onPageLoad().url
 
-          exception.getCause mustBe an[NotImplementedError]
+          verify(mockUpscanService, times(1)).fileUploadState(
+            any[UserAnswers],
+            meq(Some(testFileReference))
+          )(using any())
+        }
+      }
+    }
 
-          verify(mockUpscanService, times(1)).fileUploadState(any[UserAnswers], meq(Some(testFileReference)))(using
+    "when UpscanService returns State.ValidationFailed" - {
+      "must redirect to notification upload form page" in {
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        when(
+          mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using
             any()
           )
+        ).thenReturn(
+          Future.successful(
+            State.ValidationFailed(
+              Seq(
+                TemplateParseError(
+                  line = 8,
+                  column = Some("Company UTR"),
+                  code = "header_mismatch",
+                  message = "invalid header"
+                )
+              )
+            )
+          )
+        )
+
+        running(application) {
+          val request =
+            FakeRequest(GET, routes.NotificationUploadSuccessController.onPageLoad(Some(testFileReference)).url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustBe routes.NotificationUploadFormController.onPageLoad().url
+
+          verify(mockUpscanService, times(1)).fileUploadState(
+            any[UserAnswers],
+            meq(Some(testFileReference))
+          )(using any())
         }
       }
     }
 
     "when UpscanService returns State.Result" - {
-      "must redirect to Notification start page" in {
+      "must redirect to submit notification start page" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-        when(mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using any())).thenReturn(
-          Future.successful(State.Result(testFileReference, testFileContent))
+        when(
+          mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using
+            any()
+          )
+        ).thenReturn(
+          Future.successful(State.Result(testFileReference, parsedRows))
         )
 
         running(application) {
@@ -211,9 +274,10 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).get mustBe routes.SubmitNotificationStartController.onPageLoad().url
 
-          verify(mockUpscanService, times(1)).fileUploadState(any[UserAnswers], meq(Some(testFileReference)))(using
-            any()
-          )
+          verify(mockUpscanService, times(1)).fileUploadState(
+            any[UserAnswers],
+            meq(Some(testFileReference))
+          )(using any())
         }
       }
     }
@@ -221,7 +285,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 }
 
 object NotificationUploadSuccessControllerSpec {
-  val testDownloadUrl: String   = "/test/url"
-  val testFileContent: String   = Random.nextString(10)
-  val testFileReference: String = Random.nextString(10)
+  val parsedRows: Seq[ParsedSubmissionRow] = Seq.empty
+  val testFileContent: String              = Random.nextString(10)
+  val testFileReference: String            = Random.nextString(10)
 }

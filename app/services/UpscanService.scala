@@ -18,10 +18,12 @@ package services
 
 import connectors.UpscanDownloadConnector
 import models.UploadStatus.*
+import models.upload.{ParsedSubmissionRow, TemplateParseError, TemplateParseResult}
 import models.{NotificationUploadState, UserAnswers}
 import pages.NotificationUploadStatePage
 import play.api.http.Status.OK
 import services.UpscanService.*
+import services.csvparser.UploadTemplateCsvParser
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -29,10 +31,14 @@ import scala.concurrent.{ExecutionContext, Future}
 import javax.inject.Inject
 
 class UpscanService @Inject() (
-    downloadConnector: UpscanDownloadConnector
+    downloadConnector: UpscanDownloadConnector,
+    uploadTemplateCsvParser: UploadTemplateCsvParser
 )(using ExecutionContext) {
 
-  def fileUploadState(userAnswers: UserAnswers, reference: Option[String])(using hc: HeaderCarrier): Future[State] =
+  def fileUploadState(
+      userAnswers: UserAnswers,
+      reference: Option[String]
+  )(using hc: HeaderCarrier): Future[State] =
     userAnswers.get(NotificationUploadStatePage).fold(Future.successful(State.NoReference)) { uploadState =>
       reference match {
         case Some(expectedReference) if uploadState.reference != expectedReference =>
@@ -46,14 +52,17 @@ class UpscanService @Inject() (
     checkUploadState(uploadState).flatMap {
       _.fold(
         state => Future.successful(state),
-        {
-          case InterimResult(reference, downloadUrl) => {
-            downloadConnector.download(downloadUrl).map {
-              case HttpResponse(OK, body, _) =>
-                State.Result(reference, body)
-              case httpResponse =>
-                State.DownloadFromUpscanFailed(httpResponse)
-            }
+        { case InterimResult(reference, downloadUrl) =>
+          downloadConnector.download(downloadUrl).map {
+            case HttpResponse(OK, body, _) =>
+              uploadTemplateCsvParser.parse(body) match {
+                case TemplateParseResult.Valid(rows) =>
+                  State.Result(reference, rows)
+                case TemplateParseResult.Invalid(errors) =>
+                  State.ValidationFailed(errors)
+              }
+            case httpResponse =>
+              State.DownloadFromUpscanFailed(httpResponse)
           }
         }
       )
@@ -81,12 +90,13 @@ object UpscanService {
   private final case class InterimResult(reference: String, fileContent: String)
 
   enum State {
-    case NoReference                                      extends State
-    case WaitingForUpscan                                 extends State
-    case QuarantinedByUpscan                              extends State
-    case RejectedByUpscan                                 extends State
-    case UnknownUpscanError                               extends State
-    case DownloadFromUpscanFailed(response: HttpResponse) extends State
-    case Result(reference: String, fileContent: String)   extends State
+    case NoReference                                               extends State
+    case WaitingForUpscan                                          extends State
+    case QuarantinedByUpscan                                       extends State
+    case RejectedByUpscan                                          extends State
+    case UnknownUpscanError                                        extends State
+    case DownloadFromUpscanFailed(response: HttpResponse)          extends State
+    case ValidationFailed(errors: Seq[TemplateParseError])         extends State
+    case Result(reference: String, rows: Seq[ParsedSubmissionRow]) extends State
   }
 }
