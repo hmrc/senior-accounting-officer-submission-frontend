@@ -24,7 +24,5 @@ import javax.inject.Inject
 class NotificationMoreThanOneSaoFormProvider @Inject() extends Mappings {
 
   def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("notificationMoreThanOneSao.error.required")
-    )
+    Form("value" -> boolean("notificationMoreThanOneSao.error.required"))
 }

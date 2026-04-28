@@ -52,9 +52,7 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request = FakeRequest(GET, notificationMoreThanOneSaoRoute)
-
         val result = route(application, request).value
-
         val view = application.injector.instanceOf[NotificationMoreThanOneSaoView]
 
         status(result) mustEqual OK
@@ -65,14 +63,11 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = UserAnswers(userAnswersId).set(NotificationMoreThanOneSaoPage, true).success.value
-
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, notificationMoreThanOneSaoRoute)
-
         val view = application.injector.instanceOf[NotificationMoreThanOneSaoView]
-
         val result = route(application, request).value
 
         status(result) mustEqual OK
@@ -101,7 +96,6 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
         val request =
           FakeRequest(POST, notificationMoreThanOneSaoRoute)
             .withFormUrlEncodedBody(("value", "true"))
-
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
@@ -119,9 +113,7 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
-
         val view = application.injector.instanceOf[NotificationMoreThanOneSaoView]
-
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
@@ -135,7 +127,6 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request = FakeRequest(GET, notificationMoreThanOneSaoRoute)
-
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
@@ -151,7 +142,6 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
         val request =
           FakeRequest(POST, notificationMoreThanOneSaoRoute)
             .withFormUrlEncodedBody(("value", "true"))
-
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
