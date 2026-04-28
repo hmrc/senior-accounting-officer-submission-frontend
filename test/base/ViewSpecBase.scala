@@ -459,6 +459,7 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
             .map(element => s"label[for=${element.attr("id")}]")
             .mkString(",")
       }
+      val hintCssSelector = "div.govuk-hint.govuk-radios__hint"
 
       def fieldsetElement = target.resolve.select("fieldset.govuk-fieldset")
 
@@ -484,6 +485,21 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
           }
         }
       }
+
+      val hints = radios.map(_.hint).collect { case Some(hint) =>
+        hint
+      }
+
+      createTestWithCountOfElement(
+        selector = hintCssSelector,
+        count = hints.size,
+        description = "radio button hint"
+      )
+      createTestsWithOrderOfElements(
+        selector = hintCssSelector,
+        texts = hints,
+        description = "radio button hint"
+      )
 
       createTestWithCountOfElement(
         selector = labelCssSelector,
@@ -756,7 +772,8 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
 
   }
 
-  @inline def radio(value: String, label: String): RadioButton = RadioButton(value = value, label = label)
+  @inline def radio(value: String, label: String, hint: Option[String] = None): RadioButton =
+    RadioButton(value = value, label = label, hint = hint)
 
 }
 
@@ -767,6 +784,6 @@ object ViewSpecBase {
   val excludeHelpLinkAndErrorMessageParagraphsSelector =
     "p:not(:has(a.hmrc-report-technical-issue), .govuk-error-message)"
 
-  final case class RadioButton(value: String, label: String)
+  final case class RadioButton(value: String, label: String, hint: Option[String])
   final case class DateFieldValues(day: String, month: String, year: String)
 }

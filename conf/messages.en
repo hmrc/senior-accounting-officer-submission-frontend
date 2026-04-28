@@ -235,3 +235,11 @@ notificationUploadError.heading = notificationUploadError
 notificationUploadSuccess.title = Upload a submission template for your notification
 notificationUploadSuccess.heading = Your submission template is uploading
 notificationUploadSuccess.paragraph1 = This may take a few minutes
+
+notificationMoreThanOneSao.title = Submit a notification - Was there more than one SAO during the financial year?
+notificationMoreThanOneSao.heading = Was there more than one SAO during the financial year?
+notificationMoreThanOneSao.checkYourAnswersLabel = notificationMoreThanOneSao
+notificationMoreThanOneSao.error.required = Select ‘Yes’ if there was more than one SAO because the SAO changed during the financial year
+notificationMoreThanOneSao.change.hidden = NotificationMoreThanOneSao
+notificationMoreThanOneSao.yes = There was more than one SAO, the SAO changed during the financial year
+notificationMoreThanOneSao.no = Only one person held the role for the entire financial year

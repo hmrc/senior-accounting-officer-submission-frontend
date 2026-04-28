@@ -110,6 +110,12 @@ trait RadiosFluency {
     def inline(): Radios =
       radios.withCssClass("govuk-radios--inline")
 
+    def withButtonHints(hints: List[String]): Radios = {
+      radios.copy(items =
+        radios.items.zip(hints).map((radio, hint) => radio.copy(hint = Some(Hint(content = Text(hint)))))
+      )
+    }
+
     def withParagraph(text: String): Radios =
       radios.withFormGroup(
         radios.formGroup.copy(beforeInput = Some(HtmlContent(s"""<p class="govuk-body">$text</p>""")))
