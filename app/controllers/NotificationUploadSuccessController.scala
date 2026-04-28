@@ -19,7 +19,7 @@ package controllers
 import controllers.actions.*
 import models.upload.ParsedSubmissionRow
 import models.upload.TemplateParseError
-import play.api.Logger
+import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.*
 import services.UpscanService
@@ -41,9 +41,8 @@ class NotificationUploadSuccessController @Inject() (
     view: NotificationUploadSuccessView
 )(using ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
-
-  private val logger = Logger(getClass)
+    with I18nSupport
+    with Logging {
 
   def onPageLoad(key: Option[String]): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
