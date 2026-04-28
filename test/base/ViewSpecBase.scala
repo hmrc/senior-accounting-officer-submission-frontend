@@ -486,8 +486,8 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         }
       }
 
-      val hints = radios.map(_.hint).collect {
-        case Some(hint) => hint
+      val hints = radios.map(_.hint).collect { case Some(hint) =>
+        hint
       }
 
       createTestWithCountOfElement(
