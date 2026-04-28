@@ -286,7 +286,6 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
 object NotificationUploadSuccessControllerSpec {
   val parsedRows: Seq[ParsedSubmissionRow] = Seq.empty
-  val testDownloadUrl: String              = "/test/url"
   val testFileContent: String              = Random.nextString(10)
   val testFileReference: String            = Random.nextString(10)
 }

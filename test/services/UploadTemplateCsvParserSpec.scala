@@ -349,7 +349,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
       }
     }
 
-    "must handle BOM, commas and new lines in quoted fields" in {
+    "must handle byte order correctly, commas and new lines in quoted fields" in {
       val quotedRow = validQualifiedDataRow.updated(17, "Line1, with comma\nLine2")
 
       val csv = "\uFEFF" + toCsv(

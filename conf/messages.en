@@ -245,7 +245,7 @@ notificationMoreThanOneSao.yes = There was more than one SAO, the SAO changed du
 notificationMoreThanOneSao.no = Only one person held the role for the entire financial year
 
 uploadTemplateCsvParser.error.templateFile = The selected file must use the template
-uploadTemplateCsvParser.error.companyName = Enter a valid company name. Maximum 105 characters.
+uploadTemplateCsvParser.error.companyName = Enter a valid company name. It must be 105 characters or less.
 uploadTemplateCsvParser.error.companyUtr = Enter a valid Company UTR. It must be 10 digits long.
 uploadTemplateCsvParser.error.companyCrn = Enter a valid Company Registration Number (CRN). It must be 8 characters
 uploadTemplateCsvParser.error.companyType = Select or enter a valid company type, for example PLC or LTD
