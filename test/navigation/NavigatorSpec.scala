@@ -179,7 +179,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreThanOneSaoPage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, false).success.value
-        ) mustBe routes.SaoNameController.onPageLoad(NormalMode)
+        ) mustBe routes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected Yes, must throw an exception" in {
@@ -188,6 +188,16 @@ class NavigatorSpec extends SpecBase {
             NotificationMoreThanOneSaoPage,
             NormalMode,
             UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+          )
+        }
+      }
+
+      "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {
+        intercept[NotImplementedError] {
+          navigator.nextPage(
+            OneSaoSubmitNotificationFullNamePage,
+            NormalMode,
+            UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
           )
         }
       }
