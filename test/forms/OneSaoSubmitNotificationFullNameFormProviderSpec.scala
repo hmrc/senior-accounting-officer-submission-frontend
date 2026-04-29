@@ -22,12 +22,12 @@ import play.api.data.FormError
 class OneSaoSubmitNotificationFullNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "oneSaoSubmitNotificationFullName.error.required"
-  val lengthKey = "oneSaoSubmitNotificationFullName.error.length"
-  val maxLength = 100
+  val lengthKey   = "oneSaoSubmitNotificationFullName.error.length"
+  val maxLength   = 254
 
   val form = new OneSaoSubmitNotificationFullNameFormProvider()()
 
-  ".value" - {
+  ".value input field" - {
 
     val fieldName = "value"
 
@@ -54,12 +54,12 @@ class OneSaoSubmitNotificationFullNameFormProviderSpec extends StringFieldBehavi
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter oneSaoSubmitNotificationFullName"
+      message = "Enter the name of the SAO"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "OneSaoSubmitNotificationFullName must be 100 characters or less"
+      message = "The name you enter must be 254 characters or less"
     )
   }
 }
