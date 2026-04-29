@@ -60,6 +60,8 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
             hasError = false
           )
 
+          doc.createTestsForInputWidth()
+
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
@@ -90,6 +92,8 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
             hint = None,
             hasError = false
           )
+
+          doc.createTestsForInputWidth()
 
           doc.createTestsWithLargeCaption(pageCaption)
 
@@ -122,6 +126,8 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
             hasError = true
           )
 
+          doc.createTestsForInputWidth()
+
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
@@ -136,11 +142,20 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
       }
     }
   }
+
+  extension (doc: => Document) {
+    def createTestsForInputWidth(): Unit = {
+      "must have input with expected class 'govuk-input--width-20'" in {
+        doc.getMainContent.select("input.govuk-input--width-20").size() mustBe 1
+      }
+    }
+  }
 }
 
 object OneSaoSubmitNotificationFullNameViewSpec {
   val pageHeading    = "What is the name of the SAO?"
   val pageTitle      = "Submit a notification - SAO full name"
   val pageCaption    = "Submit a notification"
+
   val testInputValue = "Firstname Lastname"
 }
