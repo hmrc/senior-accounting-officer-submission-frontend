@@ -32,15 +32,17 @@ import repositories.SessionRepository
 import views.html.OneSaoSubmitNotificationFullNameView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class OneSaoSubmitNotificationFullNameControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new OneSaoSubmitNotificationFullNameFormProvider()
-  val form = formProvider()
+  val formProvider       = new OneSaoSubmitNotificationFullNameFormProvider()
+  val form: Form[String] = formProvider()
 
-  lazy val oneSaoSubmitNotificationFullNameRoute = routes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode).url
+  lazy val oneSaoSubmitNotificationFullNameRoute: String =
+    routes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode).url
 
   "OneSaoSubmitNotificationFullName Controller" - {
 
@@ -74,7 +76,10 @@ class OneSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

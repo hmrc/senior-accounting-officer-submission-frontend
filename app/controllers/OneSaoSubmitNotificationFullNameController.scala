@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.*
 import forms.OneSaoSubmitNotificationFullNameFormProvider
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.OneSaoSubmitNotificationFullNamePage
@@ -30,43 +29,46 @@ import views.html.OneSaoSubmitNotificationFullNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class OneSaoSubmitNotificationFullNameController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: OneSaoSubmitNotificationFullNameFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: OneSaoSubmitNotificationFullNameView
-                                    )(using ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+import javax.inject.Inject
+import play.api.data.Form
 
-  val form = formProvider()
+class OneSaoSubmitNotificationFullNameController @Inject() (
+    override val messagesApi: MessagesApi,
+    sessionRepository: SessionRepository,
+    navigator: Navigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    formProvider: OneSaoSubmitNotificationFullNameFormProvider,
+    val controllerComponents: MessagesControllerComponents,
+    view: OneSaoSubmitNotificationFullNameView
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  val form: Form[String] = formProvider()
 
-      val preparedForm = request.userAnswers.get(OneSaoSubmitNotificationFullNamePage) match {
-        case None => form
-        case Some(value) => form.fill(value)
-      }
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    val preparedForm = request.userAnswers.get(OneSaoSubmitNotificationFullNamePage) match {
+      case None        => form
+      case Some(value) => form.fill(value)
+    }
 
-      Ok(view(preparedForm, mode))
+    Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(OneSaoSubmitNotificationFullNamePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(OneSaoSubmitNotificationFullNamePage, mode, updatedAnswers))
-      )
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(OneSaoSubmitNotificationFullNamePage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(OneSaoSubmitNotificationFullNamePage, mode, updatedAnswers))
+        )
   }
 }

@@ -17,15 +17,13 @@
 package views
 
 import base.ViewSpecBase
+import forms.OneSaoSubmitNotificationFullNameFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import models.{NormalMode, CheckMode, Mode}
-import pages.OneSaoSubmitNotificationFullNamePage
-import forms.OneSaoSubmitNotificationFullNameFormProvider
-import views.html.OneSaoSubmitNotificationFullNameView
 import views.OneSaoSubmitNotificationFullNameViewSpec.*
+import views.html.OneSaoSubmitNotificationFullNameView
 
 class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmitNotificationFullNameView] {
 
@@ -153,9 +151,9 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
 }
 
 object OneSaoSubmitNotificationFullNameViewSpec {
-  val pageHeading    = "What is the name of the SAO?"
-  val pageTitle      = "Submit a notification - SAO full name"
-  val pageCaption    = "Submit a notification"
+  val pageHeading = "What is the name of the SAO?"
+  val pageTitle   = "Submit a notification - SAO full name"
+  val pageCaption = "Submit a notification"
 
   val testInputValue = "Firstname Lastname"
 }
