@@ -27,10 +27,9 @@ import forms.OneSaoSubmitNotificationFullNameFormProvider
 import views.html.OneSaoSubmitNotificationFullNameView
 import views.OneSaoSubmitNotificationFullNameViewSpec.*
 
-
 class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmitNotificationFullNameView] {
 
-  private val formProvider = app.injector.instanceOf[OneSaoSubmitNotificationFullNameFormProvider]
+  private val formProvider       = app.injector.instanceOf[OneSaoSubmitNotificationFullNameFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
@@ -61,6 +60,8 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
             hasError = false
           )
 
+          doc.createTestsWithLargeCaption(pageCaption)
+
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.OneSaoSubmitNotificationFullNameController.onSubmit(mode),
             buttonText = "Continue"
@@ -89,6 +90,8 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
             hint = None,
             hasError = false
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.OneSaoSubmitNotificationFullNameController.onSubmit(mode),
@@ -119,6 +122,8 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
             hasError = true
           )
 
+          doc.createTestsWithLargeCaption(pageCaption)
+
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.OneSaoSubmitNotificationFullNameController.onSubmit(mode),
             buttonText = "Continue"
@@ -134,7 +139,8 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
 }
 
 object OneSaoSubmitNotificationFullNameViewSpec {
-  val pageHeading = "oneSaoSubmitNotificationFullName"
-  val pageTitle = "oneSaoSubmitNotificationFullName"
-  val testInputValue = "myTestInputValue"
+  val pageHeading    = "What is the name of the SAO?"
+  val pageTitle      = "Submit a notification - SAO full name"
+  val pageCaption    = "Submit a notification"
+  val testInputValue = "Firstname Lastname"
 }
