@@ -104,7 +104,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
         val submitNotificationTag = statusTags.get(2)
 
         provideSaoDetailsTag.text() mustBe completedText
-        provideSaoDetailsTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--green"
+        provideSaoDetailsTag.getElementsByTag("strong").size() mustBe 0
         uploadNotificationTag.text() mustBe notStartedText
         uploadNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
         submitNotificationTag.text() mustBe cannotStartText
@@ -143,9 +143,9 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
         val submitNotificationTag = statusTags.get(2)
 
         provideSaoDetailsTag.text() mustBe completedText
-        provideSaoDetailsTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--green"
+        provideSaoDetailsTag.getElementsByTag("strong").size() mustBe 0
         uploadNotificationTag.text() mustBe completedText
-        uploadNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--green"
+        uploadNotificationTag.getElementsByTag("strong").size() mustBe 0
         submitNotificationTag.text() mustBe notStartedText
         submitNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
       }
