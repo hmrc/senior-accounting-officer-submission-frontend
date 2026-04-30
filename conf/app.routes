@@ -28,8 +28,8 @@ POST        /notification/change-more-than-one-sao                    controller
 GET         /notification/who-was-the-sao-before                      controllers.WhoWasTheSaoBeforeController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/who-was-the-sao-before                      controllers.WhoWasTheSaoBeforeController.onSubmit(mode: Mode = NormalMode)
 
-GET         /changeWhoWasTheSaoBefore                                 controllers.WhoWasTheSaoBeforeController.onPageLoad(mode: Mode = CheckMode)
-POST        /changeWhoWasTheSaoBefore                                 controllers.WhoWasTheSaoBeforeController.onSubmit(mode: Mode = CheckMode)
+GET         /notification/change-who-was-the-sao-before               controllers.WhoWasTheSaoBeforeController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/change-who-was-the-sao-before               controllers.WhoWasTheSaoBeforeController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/additional-information                      controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/additional-information                      controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)

@@ -28,8 +28,6 @@
 
 @layout(pageTitle = title(form, messages("whoWasTheSaoBefore.title"))) {
 
-
-
     @formHelper(action = routes.WhoWasTheSaoBeforeController.onSubmit(mode)) {
 
         @if(form.errors.nonEmpty) {
