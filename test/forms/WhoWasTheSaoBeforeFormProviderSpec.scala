@@ -23,7 +23,7 @@ class WhoWasTheSaoBeforeFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "whoWasTheSaoBefore.error.required"
   val lengthKey   = "whoWasTheSaoBefore.error.length"
-  val maxLength   = 100
+  val maxLength   = 254
 
   val form = new WhoWasTheSaoBeforeFormProvider()()
 
