@@ -19,12 +19,17 @@ GET         /notification/upload/success                              controller
 GET         /notification/guidance                                    controllers.NotificationGuidanceController.onPageLoad()
 POST        /notification/guidance                                    controllers.NotificationGuidanceController.onSubmit()
 
-
 GET         /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
 
 GET         /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
+
+GET         /notification/who-was-the-sao-before                      controllers.WhoWasTheSaoBeforeController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/who-was-the-sao-before                      controllers.WhoWasTheSaoBeforeController.onSubmit(mode: Mode = NormalMode)
+
+GET         /changeWhoWasTheSaoBefore                                 controllers.WhoWasTheSaoBeforeController.onPageLoad(mode: Mode = CheckMode)
+POST        /changeWhoWasTheSaoBefore                                 controllers.WhoWasTheSaoBeforeController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/additional-information                      controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/additional-information                      controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
@@ -83,4 +88,3 @@ GET         /certificate/change-declaration                           controller
 POST        /certificate/change-declaration                           controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/confirmation                                 controllers.CertificateConfirmationController.onPageLoad()
-
