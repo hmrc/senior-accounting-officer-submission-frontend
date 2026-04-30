@@ -84,3 +84,5 @@ POST        /certificate/change-declaration                           controller
 
 GET         /certificate/confirmation                                 controllers.CertificateConfirmationController.onPageLoad()
 
+
+GET        /submitNotificationTask                       controllers.SubmitNotificationTaskController.onPageLoad()
