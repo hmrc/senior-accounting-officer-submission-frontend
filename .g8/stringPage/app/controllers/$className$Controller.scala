@@ -25,14 +25,14 @@ class $className$Controller @Inject()(
                                         val controllerComponents: MessagesControllerComponents,
                                         view: $className$View
                                     )(using ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
-  private val form = formProvider()
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    val form = formProvider()
     val preparedForm = request.userAnswers.get($className$Page).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val form = formProvider()
     form.bindFromRequest().fold(
       formWithErrors =>
         Future.successful(BadRequest(view(formWithErrors, mode))),
