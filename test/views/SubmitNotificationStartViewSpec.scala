@@ -18,13 +18,13 @@ package views
 
 import base.ViewSpecBase
 import controllers.routes
+import models.NormalMode
 import models.SubmitNotificationStage
 import models.SubmitNotificationStage.{SubmitNotificationInfo, UploadSubmissionTemplateDetails}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.SubmitNotificationStartViewSpec.*
 import views.html.SubmitNotificationStartView
-import models.NormalMode
 
 class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationStartView] {
 
