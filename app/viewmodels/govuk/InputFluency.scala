@@ -32,7 +32,7 @@ trait InputFluency {
 
     def apply(
         field: Field,
-        label: Label,
+        label: Label
     )(using messages: Messages): Input =
       Input(
         id = field.id,
@@ -67,7 +67,7 @@ trait InputFluency {
 
     def describedBy(value: String): Input =
       input.copy(describedBy = Some(value))
-      
+
     def withHint(hint: Hint): Input =
       input.copy(hint = Some(hint))
 

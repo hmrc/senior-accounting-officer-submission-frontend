@@ -17,20 +17,17 @@
 package views
 
 import base.ViewSpecBase
+import forms.WhoWasTheSaoBeforeFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import models.{NormalMode, CheckMode, Mode}
-import pages.WhoWasTheSaoBeforePage
-import forms.WhoWasTheSaoBeforeFormProvider
-import views.html.WhoWasTheSaoBeforeView
 import views.WhoWasTheSaoBeforeViewSpec.*
-
+import views.html.WhoWasTheSaoBeforeView
 
 class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
 
-  private val formProvider = app.injector.instanceOf[WhoWasTheSaoBeforeFormProvider]
+  private val formProvider       = app.injector.instanceOf[WhoWasTheSaoBeforeFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
@@ -147,9 +144,9 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
 }
 
 object WhoWasTheSaoBeforeViewSpec {
-  val pageHeading = "Who was the SAO before Jackson Brown?"
-  val pageCaption = "Submit a notification"
-  val pageHint = "This is the person who held the role before Jackson Brown"
-  val pageTitle = "Senior Accounting Officer full name"
+  val pageHeading    = "Who was the SAO before Jackson Brown?"
+  val pageCaption    = "Submit a notification"
+  val pageHint       = "This is the person who held the role before Jackson Brown"
+  val pageTitle      = "Senior Accounting Officer full name"
   val testInputValue = "test name"
 }

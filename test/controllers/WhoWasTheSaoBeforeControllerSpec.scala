@@ -32,15 +32,16 @@ import repositories.SessionRepository
 import views.html.WhoWasTheSaoBeforeView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new WhoWasTheSaoBeforeFormProvider()
-  val form = formProvider()
+  val formProvider       = new WhoWasTheSaoBeforeFormProvider()
+  val form: Form[String] = formProvider()
 
-  lazy val whoWasTheSaoBeforeRoute = routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode).url
+  lazy val whoWasTheSaoBeforeRoute: String = routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode).url
 
   "WhoWasTheSaoBefore Controller" - {
 
@@ -74,7 +75,10 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

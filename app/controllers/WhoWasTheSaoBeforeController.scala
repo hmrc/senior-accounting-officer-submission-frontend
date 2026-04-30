@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.*
 import forms.WhoWasTheSaoBeforeFormProvider
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.WhoWasTheSaoBeforePage
@@ -30,39 +29,43 @@ import views.html.WhoWasTheSaoBeforeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class WhoWasTheSaoBeforeController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: WhoWasTheSaoBeforeFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: WhoWasTheSaoBeforeView
-                                    )(using ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+import javax.inject.Inject
+import play.api.data.Form
 
-  val form = formProvider()
+class WhoWasTheSaoBeforeController @Inject() (
+    override val messagesApi: MessagesApi,
+    sessionRepository: SessionRepository,
+    navigator: Navigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    formProvider: WhoWasTheSaoBeforeFormProvider,
+    val controllerComponents: MessagesControllerComponents,
+    view: WhoWasTheSaoBeforeView
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      val preparedForm = request.userAnswers.get(WhoWasTheSaoBeforePage).fold(form)(form.fill)
+  val form: Form[String] = formProvider()
 
-      Ok(view(preparedForm, mode))
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    val preparedForm = request.userAnswers.get(WhoWasTheSaoBeforePage).fold(form)(form.fill)
+
+    Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
 
-      form.bindFromRequest().fold(
-        formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, mode))),
-
-        value =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(WhoWasTheSaoBeforePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(WhoWasTheSaoBeforePage, mode, updatedAnswers))
-      )
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhoWasTheSaoBeforePage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(WhoWasTheSaoBeforePage, mode, updatedAnswers))
+        )
   }
 }

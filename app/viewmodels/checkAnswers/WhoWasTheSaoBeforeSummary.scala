@@ -20,24 +20,24 @@ import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.WhoWasTheSaoBeforePage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
+import viewmodels.govuk.summarylist.*
 
-object WhoWasTheSaoBeforeSummary  {
+object WhoWasTheSaoBeforeSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(WhoWasTheSaoBeforePage).map {
-      answer =>
-
-        SummaryListRowViewModel(
-          key     = messages("whoWasTheSaoBefore.checkYourAnswersLabel").toKey,
-          value   = ValueViewModel(answer.toText),
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.WhoWasTheSaoBeforeController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("whoWasTheSaoBefore.change.hidden"))
+    answers.get(WhoWasTheSaoBeforePage).map { answer =>
+      SummaryListRowViewModel(
+        key = messages("whoWasTheSaoBefore.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(answer.toText),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.WhoWasTheSaoBeforeController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("whoWasTheSaoBefore.change.hidden"))
         )
+      )
     }
 }
