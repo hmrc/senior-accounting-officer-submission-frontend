@@ -123,7 +123,7 @@ class $className$ControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "redirect to Journey Recovery for a POST if no existing data is found" in {
-      
+
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {

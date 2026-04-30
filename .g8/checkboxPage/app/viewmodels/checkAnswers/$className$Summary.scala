@@ -10,12 +10,11 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
 
-object $className$Summary  {
+object $className$Summary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get($className$Page).map {
       answers =>
-
         val value = ValueViewModel(
           HtmlContent(
             answers.map {
@@ -24,7 +23,6 @@ object $className$Summary  {
             .mkString(",<br>")
           )
         )
-
         SummaryListRowViewModel(
           key     = messages("$className;format="decap"$.checkYourAnswersLabel").toKey,
           value   = value,
