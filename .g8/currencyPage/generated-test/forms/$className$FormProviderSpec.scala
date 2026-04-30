@@ -69,7 +69,7 @@ class $className$FormProviderSpec extends CurrencyFieldBehaviours {
       key = invalidNumericKey,
       message = "Enter your $className;format="decap"$ using up to two decimal places"
     )
-    
+
     createTestWithErrorMessageAssertion(
       key = aboveMaximumKey,
       message = "$className$ must be {0} or less"

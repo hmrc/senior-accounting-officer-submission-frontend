@@ -9,14 +9,13 @@ import utils.DateTimeFormats.dateTimeFormat
 import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
 
-object $className$Summary  {
+object $className$Summary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get($className$Page).map {
       answer =>
 
         given Lang = messages.lang
-
         SummaryListRowViewModel(
           key     = messages("$className;format="decap"$.checkYourAnswersLabel").toKey,
           value   = ValueViewModel(answer.format(dateTimeFormat()).toText),
