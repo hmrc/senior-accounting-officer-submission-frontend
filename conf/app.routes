@@ -20,27 +20,28 @@ GET         /notification/guidance                                    controller
 POST        /notification/guidance                                    controllers.NotificationGuidanceController.onSubmit()
 
 
-GET         /notification/more-than-one-sao                                   controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
-POST        /notification/more-than-one-sao                                   controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
-
-GET         /notification/change-more-than-one-sao                            controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
-POST        /notification/change-more-than-one-sao                            controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
-
-GET         /notification/additional-information                              controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
-POST        /notification/additional-information                              controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
-GET         /notification/change-additional-information                       controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
-POST        /notification/change-additional-information                       controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
-
 GET         /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
 
 GET         /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
 
+GET         /notification/who-was-the-sao-before                      controllers.WhoWasTheSaoBeforeController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/who-was-the-sao-before                      controllers.WhoWasTheSaoBeforeController.onSubmit(mode: Mode = NormalMode)
+
+GET         /notification/change-who-was-the-sao-before               controllers.WhoWasTheSaoBeforeController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/change-who-was-the-sao-before               controllers.WhoWasTheSaoBeforeController.onSubmit(mode: Mode = CheckMode)
+
 GET         /notification/additional-information                      controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/additional-information                      controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
 GET         /notification/change-additional-information               controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/change-additional-information               controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
+
+GET         /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
+
+GET         /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onPageLoad()
 POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit()
@@ -54,10 +55,15 @@ POST        /notification/confirmation                                controller
 GET         /certificate/start                                        controllers.SubmitCertificateStartController.onPageLoad()
 POST        /certificate/start                                        controllers.SubmitCertificateStartController.onSubmit()
 
-GET         /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-is-this-the-sao                       controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-is-this-the-sao                       controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)
+GET         /notification/one-sao/submit-notification-full-name               controllers.OneSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/one-sao/submit-notification-full-name               controllers.OneSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
+GET         /notification/one-sao/change-submit-notification-full-name        controllers.OneSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/one-sao/change-submit-notification-full-name        controllers.OneSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
+
+GET         /certificate/is-this-the-sao                                      controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/is-this-the-sao                                      controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-is-this-the-sao                               controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-is-this-the-sao                               controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/sao-name                                     controllers.SaoNameController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/sao-name                                     controllers.SaoNameController.onSubmit(mode: Mode = NormalMode)
