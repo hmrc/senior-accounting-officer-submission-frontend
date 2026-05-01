@@ -258,3 +258,9 @@ oneSaoSubmitNotificationFullName.checkYourAnswersLabel = oneSaoSubmitNotificatio
 oneSaoSubmitNotificationFullName.error.required = Enter the name of the SAO
 oneSaoSubmitNotificationFullName.error.length = The name you enter must be 254 characters or less
 oneSaoSubmitNotificationFullName.change.hidden = OneSaoSubmitNotificationFullName
+
+moreSaoSubmitNotificationFirstStartDate.title = moreSaoSubmitNotificationFirstStartDate
+moreSaoSubmitNotificationFirstStartDate.heading = moreSaoSubmitNotificationFirstStartDate
+moreSaoSubmitNotificationFirstStartDate.checkYourAnswersLabel = moreSaoSubmitNotificationFirstStartDate
+moreSaoSubmitNotificationFirstStartDate.error.required = Select yes if moreSaoSubmitNotificationFirstStartDate
+moreSaoSubmitNotificationFirstStartDate.change.hidden = MoreSaoSubmitNotificationFirstStartDate
