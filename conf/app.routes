@@ -94,7 +94,7 @@ POST        /certificate/change-declaration                           controller
 
 GET         /certificate/confirmation                                         controllers.CertificateConfirmationController.onPageLoad()
 
-GET        /moreSaoSubmitNotificationFullName                        controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
-POST       /moreSaoSubmitNotificationFullName                        controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
-GET        /changeMoreSaoSubmitNotificationFullName                  controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeMoreSaoSubmitNotificationFullName                  controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
+GET        /notification/more-sao/submit-notification-full-name                        controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /notification/more-sao/submit-notification-full-name                        controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
+GET        /notification/more-sao/change-submitNotification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /notification/more-sao/change-submit-notification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
