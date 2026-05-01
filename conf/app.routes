@@ -36,12 +36,6 @@ POST        /notification/additional-information                      controller
 GET         /notification/change-additional-information               controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/change-additional-information               controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
-GET         /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
-POST        /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
-
-GET         /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
-POST        /notification/change-more-than-one-sao                    controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
-
 GET         /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onPageLoad()
 POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit()
 
