@@ -19,7 +19,6 @@ GET         /notification/upload/success                              controller
 GET         /notification/guidance                                    controllers.NotificationGuidanceController.onPageLoad()
 POST        /notification/guidance                                    controllers.NotificationGuidanceController.onSubmit()
 
-
 GET         /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
 
