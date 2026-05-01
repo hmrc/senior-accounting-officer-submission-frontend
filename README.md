@@ -26,6 +26,10 @@ Run the frontend locally using
 This service is localed on http://localhost:10058/senior-accounting-officer/submission/, however the user journeys begin from
 `SENIOR_ACCOUNTING_OFFICER_HUB_FRONTEND` on http://localhost:10056/senior-accounting-officer/
 
+## Scaffolding new pages
+To scaffold a new page, run `g8Scaffold <page_type_parameter>` in sbt shell. you can see the available scaffolds in the `.g8` directory. 
+Now execute the `migrate.sh` shell script to move the generated code into the correct place, do a `sbt clean compile` to ensure the new routes are available.
+
 ## Upload state persistence
 
 Upscan notification upload state is stored in the main `user-answers` journey document under `data.notificationUpload`.
