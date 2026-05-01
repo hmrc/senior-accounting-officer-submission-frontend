@@ -16,8 +16,6 @@
 
 package controllers
 
-import java.time.{LocalDate, ZoneOffset}
-
 import base.SpecBase
 import forms.MoreSaoSubmitNotificationFirstStartDateFormProvider
 import models.{NormalMode, UserAnswers}
@@ -36,20 +34,23 @@ import views.html.MoreSaoSubmitNotificationFirstStartDateView
 
 import scala.concurrent.Future
 
+import java.time.{LocalDate, ZoneOffset}
+
 class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase with MockitoSugar {
 
   private given messages: Messages = stubMessages()
 
   private val formProvider = new MoreSaoSubmitNotificationFirstStartDateFormProvider()
-  private def form = formProvider()
+  private def form         = formProvider()
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val validAnswer = LocalDate.now(ZoneOffset.UTC)
+  val validAnswer: LocalDate = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val moreSaoSubmitNotificationFirstStartDateRoute = routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(NormalMode).url
+  lazy val moreSaoSubmitNotificationFirstStartDateRoute: String =
+    routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(NormalMode).url
 
-  override val emptyUserAnswers = UserAnswers(userAnswersId)
+  override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, moreSaoSubmitNotificationFirstStartDateRoute)
@@ -80,7 +81,8 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(MoreSaoSubmitNotificationFirstStartDatePage, validAnswer).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(MoreSaoSubmitNotificationFirstStartDatePage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -90,7 +92,10 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
         val result = route(application, getRequest()).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(using getRequest(), messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(using
+          getRequest(),
+          messages(application)
+        ).toString
       }
     }
 

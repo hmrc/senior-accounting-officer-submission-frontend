@@ -22,23 +22,24 @@ import pages.MoreSaoSubmitNotificationFirstStartDatePage
 import play.api.i18n.{Lang, Messages}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import utils.DateTimeFormats.dateTimeFormat
-import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
+import viewmodels.govuk.summarylist.*
 
 object MoreSaoSubmitNotificationFirstStartDateSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(MoreSaoSubmitNotificationFirstStartDatePage).map {
-      answer =>
-
-        given Lang = messages.lang
-        SummaryListRowViewModel(
-          key     = messages("moreSaoSubmitNotificationFirstStartDate.checkYourAnswersLabel").toKey,
-          value   = ValueViewModel(answer.format(dateTimeFormat()).toText),
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("moreSaoSubmitNotificationFirstStartDate.change.hidden"))
+    answers.get(MoreSaoSubmitNotificationFirstStartDatePage).map { answer =>
+      given Lang = messages.lang
+      SummaryListRowViewModel(
+        key = messages("moreSaoSubmitNotificationFirstStartDate.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(answer.format(dateTimeFormat()).toText),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("moreSaoSubmitNotificationFirstStartDate.change.hidden"))
         )
+      )
     }
 }

@@ -43,7 +43,8 @@ class MoreSaoSubmitNotificationFirstStartDateSummarySpec extends SpecBase with G
       def testUserAnswers(answer: LocalDate) =
         emptyUserAnswers.set(MoreSaoSubmitNotificationFirstStartDatePage, answer).get
 
-      def SUT(answer: LocalDate = LocalDate.now) = MoreSaoSubmitNotificationFirstStartDateSummary.row(testUserAnswers(answer)).get
+      def SUT(answer: LocalDate = LocalDate.now) =
+        MoreSaoSubmitNotificationFirstStartDateSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
         SUT().key mustBe "MoreSaoSubmitNotificationFirstStartDate".toKey

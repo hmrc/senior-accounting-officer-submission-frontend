@@ -17,17 +17,16 @@
 package views
 
 import base.ViewSpecBase
+import base.ViewSpecBase.DateFieldValues
+import forms.MoreSaoSubmitNotificationFirstStartDateFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import play.api.inject.Injector
-import models.{NormalMode, CheckMode, Mode}
-import pages.MoreSaoSubmitNotificationFirstStartDatePage
-import forms.MoreSaoSubmitNotificationFirstStartDateFormProvider
-import views.html.MoreSaoSubmitNotificationFirstStartDateView
 import views.MoreSaoSubmitNotificationFirstStartDateViewSpec.*
+import views.html.MoreSaoSubmitNotificationFirstStartDateView
+
 import java.time.LocalDate
-import base.ViewSpecBase.DateFieldValues
 
 class MoreSaoSubmitNotificationFirstStartDateViewSpec
     extends ViewSpecBase[MoreSaoSubmitNotificationFirstStartDateView] {

@@ -20,6 +20,7 @@ import base.SpecBase
 import controllers.routes
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.*
+
 import java.time.LocalDate
 
 class NavigatorSpec extends SpecBase {

@@ -28,10 +28,10 @@ class MoreSaoSubmitNotificationFirstStartDateFormProvider @Inject() extends Mapp
   def apply()(using messages: Messages): Form[LocalDate] =
     Form(
       "value" -> localDate(
-        invalidKey     = "moreSaoSubmitNotificationFirstStartDate.error.invalid",
+        invalidKey = "moreSaoSubmitNotificationFirstStartDate.error.invalid",
         allRequiredKey = "moreSaoSubmitNotificationFirstStartDate.error.required.all",
         twoRequiredKey = "moreSaoSubmitNotificationFirstStartDate.error.required.two",
-        requiredKey    = "moreSaoSubmitNotificationFirstStartDate.error.required"
+        requiredKey = "moreSaoSubmitNotificationFirstStartDate.error.required"
       )
     )
 }
