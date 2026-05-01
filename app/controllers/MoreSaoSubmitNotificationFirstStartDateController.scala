@@ -17,53 +17,53 @@
 package controllers
 
 import controllers.actions.*
-import forms.OneSaoSubmitNotificationFullNameFormProvider
+import forms.MoreSaoSubmitNotificationFirstStartDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.OneSaoSubmitNotificationFullNamePage
-import play.api.data.Form
+import pages.MoreSaoSubmitNotificationFirstStartDatePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.OneSaoSubmitNotificationFullNameView
+import views.html.MoreSaoSubmitNotificationFirstStartDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class OneSaoSubmitNotificationFullNameController @Inject() (
+class MoreSaoSubmitNotificationFirstStartDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: OneSaoSubmitNotificationFullNameFormProvider,
+    formProvider: MoreSaoSubmitNotificationFirstStartDateFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: OneSaoSubmitNotificationFullNameView
+    view: MoreSaoSubmitNotificationFirstStartDateView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  val form: Form[String] = formProvider()
-
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(OneSaoSubmitNotificationFullNamePage).fold(form)(form.fill)
+    val form         = formProvider()
+    val preparedForm = request.userAnswers.get(MoreSaoSubmitNotificationFirstStartDatePage).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val form = formProvider()
       form
         .bindFromRequest()
         .fold(
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(OneSaoSubmitNotificationFullNamePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(OneSaoSubmitNotificationFullNamePage, mode, updatedAnswers))
+              updatedAnswers <- Future
+                .fromTry(request.userAnswers.set(MoreSaoSubmitNotificationFirstStartDatePage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(MoreSaoSubmitNotificationFirstStartDatePage, mode, updatedAnswers))
         )
   }
 }

@@ -17,67 +17,83 @@
 package controllers
 
 import base.SpecBase
-import forms.OneSaoSubmitNotificationFullNameFormProvider
+import forms.MoreSaoSubmitNotificationFirstStartDateFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.OneSaoSubmitNotificationFullNamePage
-import play.api.data.Form
+import pages.MoreSaoSubmitNotificationFirstStartDatePage
+import play.api.i18n.Messages
 import play.api.inject.bind
-import play.api.mvc.Call
+import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.OneSaoSubmitNotificationFullNameView
+import views.html.MoreSaoSubmitNotificationFirstStartDateView
 
 import scala.concurrent.Future
 
-class OneSaoSubmitNotificationFullNameControllerSpec extends SpecBase with MockitoSugar {
+import java.time.{LocalDate, ZoneOffset}
+
+class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase with MockitoSugar {
+
+  private given messages: Messages = stubMessages()
+
+  private val formProvider = new MoreSaoSubmitNotificationFirstStartDateFormProvider()
+  private def form         = formProvider()
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider       = new OneSaoSubmitNotificationFullNameFormProvider()
-  val form: Form[String] = formProvider()
+  val validAnswer: LocalDate = LocalDate.now(ZoneOffset.UTC)
 
-  lazy val oneSaoSubmitNotificationFullNameRoute: String =
-    routes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode).url
+  lazy val moreSaoSubmitNotificationFirstStartDateRoute: String =
+    routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(NormalMode).url
 
-  "OneSaoSubmitNotificationFullName Controller" - {
+  override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
+
+  def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
+    FakeRequest(GET, moreSaoSubmitNotificationFirstStartDateRoute)
+
+  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+    FakeRequest(POST, moreSaoSubmitNotificationFirstStartDateRoute)
+      .withFormUrlEncodedBody(
+        "value.day"   -> validAnswer.getDayOfMonth.toString,
+        "value.month" -> validAnswer.getMonthValue.toString,
+        "value.year"  -> validAnswer.getYear.toString
+      )
+
+  "MoreSaoSubmitNotificationFirstStartDate Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, oneSaoSubmitNotificationFullNameRoute)
+        val result = route(application, getRequest()).value
 
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[OneSaoSubmitNotificationFullNameView]
+        val view = application.injector.instanceOf[MoreSaoSubmitNotificationFirstStartDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode)(using getRequest(), messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(OneSaoSubmitNotificationFullNamePage, "answer").success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(MoreSaoSubmitNotificationFirstStartDatePage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, oneSaoSubmitNotificationFullNameRoute)
+        val view = application.injector.instanceOf[MoreSaoSubmitNotificationFirstStartDateView]
 
-        val view = application.injector.instanceOf[OneSaoSubmitNotificationFullNameView]
-
-        val result = route(application, request).value
+        val result = route(application, getRequest()).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
-          request,
+        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(using
+          getRequest(),
           messages(application)
         ).toString
       }
@@ -98,11 +114,7 @@ class OneSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mocki
           .build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, oneSaoSubmitNotificationFullNameRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
-
-        val result = route(application, request).value
+        val result = route(application, postRequest()).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
@@ -113,14 +125,14 @@ class OneSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mocki
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
+      val request =
+        FakeRequest(POST, moreSaoSubmitNotificationFirstStartDateRoute)
+          .withFormUrlEncodedBody(("value", "invalid value"))
+
       running(application) {
-        val request =
-          FakeRequest(POST, oneSaoSubmitNotificationFullNameRoute)
-            .withFormUrlEncodedBody(("value", ""))
+        val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val boundForm = form.bind(Map("value" -> ""))
-
-        val view = application.injector.instanceOf[OneSaoSubmitNotificationFullNameView]
+        val view = application.injector.instanceOf[MoreSaoSubmitNotificationFirstStartDateView]
 
         val result = route(application, request).value
 
@@ -134,9 +146,7 @@ class OneSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mocki
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, oneSaoSubmitNotificationFullNameRoute)
-
-        val result = route(application, request).value
+        val result = route(application, getRequest()).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
@@ -148,11 +158,7 @@ class OneSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mocki
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, oneSaoSubmitNotificationFullNameRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
-
-        val result = route(application, request).value
+        val result = route(application, postRequest()).value
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url

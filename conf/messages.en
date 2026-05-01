@@ -258,3 +258,14 @@ oneSaoSubmitNotificationFullName.checkYourAnswersLabel = oneSaoSubmitNotificatio
 oneSaoSubmitNotificationFullName.error.required = Enter the name of the SAO
 oneSaoSubmitNotificationFullName.error.length = The name you enter must be 254 characters or less
 oneSaoSubmitNotificationFullName.change.hidden = OneSaoSubmitNotificationFullName
+
+moreSaoSubmitNotificationFirstStartDate.title = Submit a notification
+moreSaoSubmitNotificationFirstStartDate.heading = What date did Jackson Brown become the SAO?
+moreSaoSubmitNotificationFirstStartDate.caption = Submit a notification
+moreSaoSubmitNotificationFirstStartDate.hint = For example 01 6 2024
+moreSaoSubmitNotificationFirstStartDate.checkYourAnswersLabel = MoreSaoSubmitNotificationFirstStartDate
+moreSaoSubmitNotificationFirstStartDate.error.required.all = The date must be a real date
+moreSaoSubmitNotificationFirstStartDate.error.required.two = The date must include {0} and {1}
+moreSaoSubmitNotificationFirstStartDate.error.required = The date must include {0}
+moreSaoSubmitNotificationFirstStartDate.error.invalid = Enter the date in the correct format
+moreSaoSubmitNotificationFirstStartDate.change.hidden = MoreSaoSubmitNotificationFirstStartDate
