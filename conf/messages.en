@@ -259,7 +259,7 @@ oneSaoSubmitNotificationFullName.error.required = Enter the name of the SAO
 oneSaoSubmitNotificationFullName.error.length = The name you enter must be 254 characters or less
 oneSaoSubmitNotificationFullName.change.hidden = OneSaoSubmitNotificationFullName
 
-hoWasTheSaoBefore.title = Senior Accounting Officer full name
+whoWasTheSaoBefore.title = Senior Accounting Officer full name
 whoWasTheSaoBefore.heading = Who was the SAO before Jackson Brown?
 whoWasTheSaoBefore.caption = Submit a notification
 whoWasTheSaoBefore.hint = This is the person who held the role before Jackson Brown
