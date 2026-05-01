@@ -261,16 +261,17 @@ uploadTemplateTable.table.companyType = Type
 uploadTemplateTable.table.companyStatus = Status
 uploadTemplateTable.table.financialYearEndDate = Financial year end
 
-uploadTemplateTableError.title = There is a problem with your file
+uploadTemplateTableError.title = There is a problem with your submission template file
 uploadTemplateTableError.caption = Submit a notification
-uploadTemplateTableError.heading = Fix the errors in your file
-uploadTemplateTableError.paragraph1 = Correct the errors listed below, save the template, and upload it again.
+uploadTemplateTableError.heading = There is a problem with your submission template file
+uploadTemplateTableError.paragraph1WithLink = Review and correct the errors in your template before you upload another file. We only display the first 50 rows where there is an error. <a {0}>Read guidance on how to complete the submission template (opens in new tab)</a>.
+uploadTemplateTableError.problems.heading = Problems with your file
+uploadTemplateTableError.problems.summary = Your file has {0} errors. At least one company has missing information or is not in the correct format.
 uploadTemplateTableError.errors.none = No parse errors.
-uploadTemplateTableError.errors.line = Line
+uploadTemplateTableError.errors.line = Row number
 uploadTemplateTableError.errors.column = Column
-uploadTemplateTableError.errors.code = Code
-uploadTemplateTableError.errors.message = Message
-uploadTemplateTableError.continue = Upload another file
+uploadTemplateTableError.errors.message = Errors to Correct
+uploadTemplateTableError.continue = Return to file upload
 
 uploadTemplateCsvParser.error.templateFile = The selected file must use the template
 uploadTemplateCsvParser.error.companyName = Enter a valid company name. It must be 105 characters or less

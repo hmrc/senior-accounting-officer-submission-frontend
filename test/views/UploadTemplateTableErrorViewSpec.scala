@@ -23,6 +23,8 @@ import org.jsoup.nodes.Document
 import views.UploadTemplateTableErrorViewSpec.*
 import views.html.UploadTemplateTableErrorView
 
+import scala.jdk.CollectionConverters.*
+
 class UploadTemplateTableErrorViewSpec extends ViewSpecBase[UploadTemplateTableErrorView] {
 
   private def generateView(): Document = Jsoup.parse(SUT(tableData).toString)
@@ -40,28 +42,51 @@ class UploadTemplateTableErrorViewSpec extends ViewSpecBase[UploadTemplateTableE
 
     "must render error table columns and content" in {
       val headings = doc.select("th.govuk-table__header").eachText()
-      headings must contain allOf ("Line", "Column", "Code", "Message")
-      doc.select("tbody.govuk-table__body tr").size() must be >= 1
+      headings must contain allOf ("Row number", "Column", "Errors to Correct")
+      headings must not contain "Code"
+
+      val tableRows = doc.select("tbody.govuk-table__body tr")
+      tableRows.size() mustBe 2
+      tableRows.first().select("td").first().text() mustBe "9"
+      tableRows.first().select("td").first().attr("rowspan") mustBe "2"
+      doc.select("tbody.govuk-table__body").text() must include("Enter a valid Company UTR. It must be 10 digits long")
+      doc.select("tbody.govuk-table__body").text() must include(
+        "Enter a valid Company CRN. It must be 8 characters long"
+      )
     }
 
-    "must render upload another file button" in {
+    "must render the problem summary and guidance link" in {
+      doc.text() must include("Your file has 2 errors.")
+      val link = doc.select("a.govuk-link").asScala.find(_.text().contains("Read guidance")).value
+      link.attr("href") mustBe controllers.routes.TemplateGuidanceController.onPageLoad().url
+      link.attr("target") mustBe "_blank"
+    }
+
+    "must render return to file upload button" in {
       doc.select("#continue").size() mustBe 1
+      doc.select("#continue").text() mustBe "Return to file upload"
     }
   }
 }
 
 object UploadTemplateTableErrorViewSpec {
-  val pageHeading = "Fix the errors in your file"
-  val pageTitle   = "There is a problem with your file"
+  val pageHeading = "There is a problem with your submission template file"
+  val pageTitle   = "There is a problem with your submission template file"
 
   val tableData: UploadTemplateTableData = UploadTemplateTableData(
     rows = Seq.empty,
     errors = Seq(
       TemplateParseError(
         line = 9,
-        column = Some("Company UTR"),
-        code = "missing_required_value",
-        message = "Line 9 Company UTR is required."
+        column = Some("UTR"),
+        code = "invalid_company_utr",
+        message = "Enter a valid Company UTR. It must be 10 digits long"
+      ),
+      TemplateParseError(
+        line = 9,
+        column = Some("CRN"),
+        code = "invalid_company_crn",
+        message = "Enter a valid Company CRN. It must be 8 characters long"
       )
     )
   )
