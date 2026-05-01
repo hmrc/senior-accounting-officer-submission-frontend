@@ -68,6 +68,8 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
         }
 
         "when the form is filled in" - {
@@ -99,6 +101,8 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
         }
 
         "when the form has errors" - {
@@ -130,6 +134,8 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
           doc.createTestsWithOrWithoutError(
             hasError = true
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
         }
       }
     }
@@ -147,4 +153,5 @@ object NotificationMoreThanOneSaoViewSpec {
   val noLabel     = "No"
   val yesHint     = "There was more than one SAO, the SAO changed during the financial year"
   val noHint      = "Only one person held the role for the entire financial year"
+  val pageCaption = "Submit a notification"
 }

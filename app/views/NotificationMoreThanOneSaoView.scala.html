@@ -28,9 +28,12 @@
 
     @formHelper(action = routes.NotificationMoreThanOneSaoController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
+
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+
+        <span class="govuk-caption-l">Submit a notification</span>
 
         @govukRadios(
             RadiosViewModel.yesNo(
