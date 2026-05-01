@@ -18,6 +18,7 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
+import models.upload.UploadTemplateTableData
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.*
 
@@ -200,6 +201,48 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
           )
         }
+      }
+
+      "when on UploadTemplateTablePage with no parsing errors, must go to submit notification start page" in {
+        val userAnswers =
+          UserAnswers("id")
+            .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
+            .success
+            .value
+
+        navigator.nextPage(
+          UploadTemplateTablePage,
+          NormalMode,
+          userAnswers
+        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+      }
+
+      "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {
+        val userAnswers =
+          UserAnswers("id")
+            .set(
+              UploadTemplateTablePage,
+              UploadTemplateTableData(
+                rows = Seq.empty,
+                errors = Seq(models.upload.TemplateParseError(9, Some("Company UTR"), "missing_required_value", "x"))
+              )
+            )
+            .success
+            .value
+
+        navigator.nextPage(
+          UploadTemplateTablePage,
+          NormalMode,
+          userAnswers
+        ) mustBe routes.NotificationUploadFormController.onPageLoad()
+      }
+
+      "when on UploadTemplateTablePage with no upload data, must go to journey recovery page" in {
+        navigator.nextPage(
+          UploadTemplateTablePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
     }
 
