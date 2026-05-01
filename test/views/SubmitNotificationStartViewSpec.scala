@@ -18,6 +18,7 @@ package views
 
 import base.ViewSpecBase
 import controllers.routes
+import models.NormalMode
 import models.SubmitNotificationStage
 import models.SubmitNotificationStage.{SubmitNotificationInfo, UploadSubmissionTemplateDetails}
 import org.jsoup.Jsoup
@@ -30,6 +31,46 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
   private def generateView(stage: SubmitNotificationStage): Document = Jsoup.parse(SUT(stage).toString)
 
   "SubmitNotificationStartView" - {
+
+    "SubmitNotificationStartView with 'provide sao details' stage" - {
+
+      val doc: Document = generateView(SubmitNotificationStage.ProvideSaoDetails)
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
+
+      doc.createTestsWithParagraphs(paragraphs)
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+
+      doc.getMainContent
+        .select("a.govuk-link")
+        .get(0)
+        .createTestWithLink(
+          linkText = provideSaoDetailsLinkText,
+          destinationUrl = routes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url
+        )
+
+      "must show the correct statuses" in {
+        val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
+        statusTags.size() mustBe 3
+
+        val provideSaoDetailsTag  = statusTags.get(0)
+        val uploadNotificationTag = statusTags.get(1)
+        val submitNotificationTag = statusTags.get(2)
+
+        provideSaoDetailsTag.text() mustBe notStartedText
+        provideSaoDetailsTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
+        uploadNotificationTag.text() mustBe cannotStartText
+        uploadNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--grey"
+        submitNotificationTag.text() mustBe cannotStartText
+        submitNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--grey"
+      }
+    }
 
     "SubmitNotificationStartView with 'upload template' stage" - {
 
@@ -46,25 +87,9 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      "must have link to template guidance" - {
-        def getTemplateGuidanceLink = doc.getMainContent
-          .select("a.govuk-link")
-          .get(0)
-
-        "link must open in a new tab" in {
-          getTemplateGuidanceLink.attr("target") mustBe "_blank"
-        }
-
-        getTemplateGuidanceLink
-          .createTestWithLink(
-            linkText = guidanceLinkText,
-            destinationUrl = routes.TemplateGuidanceController.onPageLoad().url
-          )
-      }
-
       doc.getMainContent
         .select("a.govuk-link")
-        .get(1)
+        .get(0)
         .createTestWithLink(
           linkText = uploadTemplateLinkText,
           destinationUrl = routes.NotificationUploadFormController.onPageLoad().url
@@ -72,14 +97,17 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 
       "must show the correct statuses" in {
         val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
-        statusTags.size() mustBe 2
+        statusTags.size() mustBe 3
 
-        val uploadNotificationTag = statusTags.get(0)
-        val submitNotificationTag = statusTags.get(1)
+        val provideSaoDetailsTag  = statusTags.get(0)
+        val uploadNotificationTag = statusTags.get(1)
+        val submitNotificationTag = statusTags.get(2)
 
-        uploadNotificationTag.text() mustBe "Not started"
+        provideSaoDetailsTag.text() mustBe completedText
+        provideSaoDetailsTag.getElementsByTag("strong").size() mustBe 0
+        uploadNotificationTag.text() mustBe notStartedText
         uploadNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
-        submitNotificationTag.text() mustBe "Cannot start yet"
+        submitNotificationTag.text() mustBe cannotStartText
         submitNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--grey"
       }
     }
@@ -98,25 +126,9 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      "must have link to template guidance" - {
-        def getTemplateGuidanceLink = doc.getMainContent
-          .select("a.govuk-link")
-          .get(0)
-
-        "link must open in a new tab" in {
-          getTemplateGuidanceLink.attr("target") mustBe "_blank"
-        }
-
-        getTemplateGuidanceLink
-          .createTestWithLink(
-            linkText = guidanceLinkText,
-            destinationUrl = routes.TemplateGuidanceController.onPageLoad().url
-          )
-      }
-
       doc.getMainContent
         .select("a.govuk-link")
-        .get(1)
+        .get(0)
         .createTestWithLink(
           linkText = submitNotificationLinkText,
           destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
@@ -124,14 +136,17 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 
       "must show the correct statuses" in {
         val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
-        statusTags.size() mustBe 2
+        statusTags.size() mustBe 3
 
-        val uploadNotificationTag = statusTags.get(0)
-        val submitNotificationTag = statusTags.get(1)
+        val provideSaoDetailsTag  = statusTags.get(0)
+        val uploadNotificationTag = statusTags.get(1)
+        val submitNotificationTag = statusTags.get(2)
 
-        uploadNotificationTag.text() mustBe "Completed"
-        uploadNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--green"
-        submitNotificationTag.text() mustBe "Not started"
+        provideSaoDetailsTag.text() mustBe completedText
+        provideSaoDetailsTag.getElementsByTag("strong").size() mustBe 0
+        uploadNotificationTag.text() mustBe completedText
+        uploadNotificationTag.getElementsByTag("strong").size() mustBe 0
+        submitNotificationTag.text() mustBe notStartedText
         submitNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
       }
     }
@@ -142,11 +157,13 @@ object SubmitNotificationStartViewSpec {
   val pageHeading             = "Submit a notification"
   val pageTitle               = "Submit a notification"
   val paragraphs: Seq[String] = Seq(
-    "To submit a notification, you’ll need to:",
-    "If you need help, read the submission template guidance (opens in new tab)."
+    "Submit a notification for each Senior Accounting Officer (SAO) in your group. Each notification must include the SAO’s name and all the entities they were responsible for during the financial year."
   )
-  val guidanceLinkText           = "read the submission template guidance (opens in new tab)"
+  val provideSaoDetailsLinkText  = "Provide the SAO’s details"
   val uploadTemplateLinkText     = "Upload a submission template"
   val submitNotificationLinkText = "Submit a notification"
 
+  val notStartedText  = "Not started"
+  val cannotStartText = "Cannot start yet"
+  val completedText   = "Completed"
 }

@@ -19,6 +19,7 @@ GET         /notification/upload/success                              controller
 GET         /notification/guidance                                    controllers.NotificationGuidanceController.onPageLoad()
 POST        /notification/guidance                                    controllers.NotificationGuidanceController.onSubmit()
 
+
 GET         /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/more-than-one-sao                           controllers.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
 
@@ -48,10 +49,15 @@ POST        /notification/confirmation                                controller
 GET         /certificate/start                                        controllers.SubmitCertificateStartController.onPageLoad()
 POST        /certificate/start                                        controllers.SubmitCertificateStartController.onSubmit()
 
-GET         /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-is-this-the-sao                       controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-is-this-the-sao                       controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)
+GET         /notification/one-sao/submit-notification-full-name               controllers.OneSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/one-sao/submit-notification-full-name               controllers.OneSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
+GET         /notification/one-sao/change-submit-notification-full-name        controllers.OneSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/one-sao/change-submit-notification-full-name        controllers.OneSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
+
+GET         /certificate/is-this-the-sao                                      controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/is-this-the-sao                                      controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-is-this-the-sao                               controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-is-this-the-sao                               controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/sao-name                                     controllers.SaoNameController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/sao-name                                     controllers.SaoNameController.onSubmit(mode: Mode = NormalMode)
@@ -88,3 +94,4 @@ GET         /certificate/change-declaration                           controller
 POST        /certificate/change-declaration                           controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/confirmation                                 controllers.CertificateConfirmationController.onPageLoad()
+
