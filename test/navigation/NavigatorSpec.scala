@@ -21,6 +21,8 @@ import controllers.routes
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.*
 
+import java.time.LocalDate
+
 class NavigatorSpec extends SpecBase {
 
   val navigator = new Navigator
@@ -198,6 +200,16 @@ class NavigatorSpec extends SpecBase {
             OneSaoSubmitNotificationFullNamePage,
             NormalMode,
             UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
+          )
+        }
+      }
+
+      "when on MoreSaoSubmitNotificationFirstStartDatePage, must throw an exception" in {
+        intercept[NotImplementedError] {
+          navigator.nextPage(
+            MoreSaoSubmitNotificationFirstStartDatePage,
+            NormalMode,
+            UserAnswers("id").set(MoreSaoSubmitNotificationFirstStartDatePage, LocalDate.of(2026, 5, 1)).success.value
           )
         }
       }
