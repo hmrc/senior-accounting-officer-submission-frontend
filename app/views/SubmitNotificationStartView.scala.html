@@ -27,21 +27,14 @@
 
     <p class="govuk-body">@messages("submitNotificationStart.paragraph1")</p>
 
-    <ul class="govuk-list govuk-list--bullet">
-     <li>@messages("submitNotificationStart.list1.item1")</li>
-     <li>@messages("submitNotificationStart.list1.item2")</li>
-    </ul>
-
-    <p class="govuk-body">
-      @Html(
-          messages(
-              "submitNotificationStart.paragraph2WithLink",
-              templateGuidanceLinkAttributes
-          )
-      )
-    </p>
-
     <ul class="govuk-task-list">
+        @row(
+            linkText = messages("submitNotificationStart.provideSaoDetailsLinkText"),
+            href = routes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode),
+            statusName = "provide-sao-details",
+            status = currentStage.provideSaoDetailsStatus
+        )
+
         @row(
             linkText = messages("submitNotificationStart.uploadNotificationLinkText"),
             href = routes.NotificationUploadFormController.onPageLoad(),
@@ -83,9 +76,7 @@
                 </strong>
             }
             case SubmitNotificationStatus.Completed => {
-                <strong class="govuk-tag govuk-tag--green">
-                    @messages("submitNotificationStart.row.status.completed")
-                </strong>
+                @messages("submitNotificationStart.row.status.completed")
             }
         }
     </div>

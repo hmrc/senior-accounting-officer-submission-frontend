@@ -23,17 +23,25 @@ enum SubmitNotificationStatus {
 }
 
 enum SubmitNotificationStage(
-    val uploadNotificationTemplateStatus: SubmitNotificationStatus = NotStarted,
+    val provideSaoDetailsStatus: SubmitNotificationStatus = NotStarted,
+    val uploadNotificationTemplateStatus: SubmitNotificationStatus = CannotStartYet,
     val submitNotificationStatus: SubmitNotificationStatus = CannotStartYet
 ) {
-  case UploadSubmissionTemplateDetails extends SubmitNotificationStage()
+  case ProvideSaoDetails extends SubmitNotificationStage()
+  case UploadSubmissionTemplateDetails
+      extends SubmitNotificationStage(
+        provideSaoDetailsStatus = Completed,
+        uploadNotificationTemplateStatus = NotStarted,
+        submitNotificationStatus = CannotStartYet
+      )
   case SubmitNotificationInfo
       extends SubmitNotificationStage(
+        provideSaoDetailsStatus = Completed,
         uploadNotificationTemplateStatus = Completed,
         submitNotificationStatus = NotStarted
       )
 
-  // Todo : To be removed when screen is lockdown
+  // TODO : To be removed when screen is lockdown
   case ShowAllLinks
       extends SubmitNotificationStage(
         uploadNotificationTemplateStatus = NotStarted,
