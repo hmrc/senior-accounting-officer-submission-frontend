@@ -88,8 +88,3 @@ GET         /certificate/change-declaration                                   co
 POST        /certificate/change-declaration                                   controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/confirmation                                         controllers.CertificateConfirmationController.onPageLoad()
-
-GET        /moreSaoSubmitNotificationFirstStartDate                        controllers.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /moreSaoSubmitNotificationFirstStartDate                        controllers.MoreSaoSubmitNotificationFirstStartDateController.onSubmit(mode: Mode = NormalMode)
-GET        /changeMoreSaoSubmitNotificationFirstStartDate                  controllers.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeMoreSaoSubmitNotificationFirstStartDate                  controllers.MoreSaoSubmitNotificationFirstStartDateController.onSubmit(mode: Mode = CheckMode)
