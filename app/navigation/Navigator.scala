@@ -70,6 +70,8 @@ class Navigator @Inject() () {
         }
     case OneSaoSubmitNotificationFullNamePage =>
       _ => ??? // TODO: link to /notification/one-sao/submit-notification-task-two
+    case MoreSaoSubmitNotificationFirstStartDatePage =>
+      _ => ??? // TODO: link to /notification/more-sao/submit-notification-second-full-name
     case _ =>
       _ => ???
   }
