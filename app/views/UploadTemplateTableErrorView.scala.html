@@ -26,34 +26,49 @@
     @value.getOrElse("-")
 }
 
+@groupedErrors = @{
+    tableData.errors
+        .groupBy(_.line)
+        .toSeq
+        .sortBy(_._1)
+        .take(50)
+}
+
 @layout(pageTitle = titleNoForm(messages("uploadTemplateTableError.title"))) {
 
-    <span class="govuk-caption-m">@messages("uploadTemplateTableError.caption")</span>
-    <h1 class="govuk-heading-xl">@messages("uploadTemplateTableError.heading")</h1>
-    <p class="govuk-body">@messages("uploadTemplateTableError.paragraph1")</p>
+    <h1 class="govuk-heading-l">@messages("uploadTemplateTableError.heading")</h1>
+
+    <p class="govuk-body">
+        @Html(messages("uploadTemplateTableError.paragraph1WithLink", templateGuidanceLinkAttributes))
+    </p>
+
+    <h2 class="govuk-heading-m">@messages("uploadTemplateTableError.problems.heading")</h2>
+    <p class="govuk-body">@messages("uploadTemplateTableError.problems.summary", tableData.errors.size.toString)</p>
 
     <table class="govuk-table govuk-!-font-size-16">
         <thead class="govuk-table__head">
             <tr class="govuk-table__row">
                 <th scope="col" class="govuk-table__header">@messages("uploadTemplateTableError.errors.line")</th>
                 <th scope="col" class="govuk-table__header">@messages("uploadTemplateTableError.errors.column")</th>
-                <th scope="col" class="govuk-table__header">@messages("uploadTemplateTableError.errors.code")</th>
                 <th scope="col" class="govuk-table__header">@messages("uploadTemplateTableError.errors.message")</th>
             </tr>
         </thead>
         <tbody class="govuk-table__body">
-            @if(tableData.errors.isEmpty) {
+            @if(groupedErrors.isEmpty) {
                 <tr class="govuk-table__row">
-                    <td class="govuk-table__cell" colspan="4">@messages("uploadTemplateTableError.errors.none")</td>
+                    <td class="govuk-table__cell" colspan="3">@messages("uploadTemplateTableError.errors.none")</td>
                 </tr>
             } else {
-                @for(error <- tableData.errors) {
-                    <tr class="govuk-table__row">
-                        <td class="govuk-table__cell">@error.line</td>
-                        <td class="govuk-table__cell">@asDisplay(error.column)</td>
-                        <td class="govuk-table__cell">@error.code</td>
-                        <td class="govuk-table__cell">@error.message</td>
-                    </tr>
+                @for((line, errorsForLine) <- groupedErrors) {
+                    @for((error, index) <- errorsForLine.zipWithIndex) {
+                        <tr class="govuk-table__row">
+                            @if(index == 0) {
+                                <td class="govuk-table__cell" rowspan="@errorsForLine.size">@line</td>
+                            }
+                            <td class="govuk-table__cell">@asDisplay(error.column)</td>
+                            <td class="govuk-table__cell">@error.message</td>
+                        </tr>
+                    }
                 }
             }
         </tbody>
@@ -64,4 +79,8 @@
             ButtonViewModel(messages("uploadTemplateTableError.continue").toText).withAttribute("id", "continue")
         )
     }
+}
+
+@templateGuidanceLinkAttributes = @{
+    s"""href="${routes.TemplateGuidanceController.onPageLoad()}" class="govuk-link" target="_blank""""
 }
