@@ -267,6 +267,7 @@ whoWasTheSaoBefore.checkYourAnswersLabel = whoWasTheSaoBefore
 whoWasTheSaoBefore.error.required = Enter the name of the previous SAO
 whoWasTheSaoBefore.error.length = The name you enter must be 254 characters or less
 whoWasTheSaoBefore.change.hidden = WhoWasTheSaoBefore
+
 moreSaoSubmitNotificationFullName.title = Submit a notification - SAO full name
 moreSaoSubmitNotificationFullName.caption = Submit a notification
 moreSaoSubmitNotificationFullName.heading = Senior Accounting Officer details
