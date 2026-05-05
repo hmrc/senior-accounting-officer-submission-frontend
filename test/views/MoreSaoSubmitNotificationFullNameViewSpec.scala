@@ -17,13 +17,13 @@
 package views
 
 import base.ViewSpecBase
+import forms.MoreSaoSubmitNotificationFullNameFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import forms.MoreSaoSubmitNotificationFullNameFormProvider
-import views.html.MoreSaoSubmitNotificationFullNameView
 import views.MoreSaoSubmitNotificationFullNameViewSpec.*
-import models.Mode
+import views.html.MoreSaoSubmitNotificationFullNameView
 
 class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubmitNotificationFullNameView] {
 
@@ -151,10 +151,10 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
 }
 
 object MoreSaoSubmitNotificationFullNameViewSpec {
-  val pageHeading = "Senior Accounting Officer details"
-  val pageTitle   = "Submit a notification - SAO full name"
-  val pageCaption = "Submit a notification"
-  val paragraphs  = List(
+  val pageHeading              = "Senior Accounting Officer details"
+  val pageTitle                = "Submit a notification - SAO full name"
+  val pageCaption              = "Submit a notification"
+  val paragraphs: List[String] = List(
     "You told us more than one SAO held the role during the financial year. Enter the name of the last person who held the role. We’ll then ask you for details of the others who held the role earlier in the year."
   )
   val pageLabel = "What is the name of the last SAO?"

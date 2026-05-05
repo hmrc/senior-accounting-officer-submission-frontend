@@ -20,23 +20,24 @@ import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.MoreSaoSubmitNotificationFullNamePage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
+import viewmodels.govuk.summarylist.*
 
 object MoreSaoSubmitNotificationFullNameSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(MoreSaoSubmitNotificationFullNamePage).map {
-      answer =>
-        SummaryListRowViewModel(
-          key     = messages("moreSaoSubmitNotificationFullName.checkYourAnswersLabel").toKey,
-          value   = ValueViewModel(answer.toText),
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("moreSaoSubmitNotificationFullName.change.hidden"))
+    answers.get(MoreSaoSubmitNotificationFullNamePage).map { answer =>
+      SummaryListRowViewModel(
+        key = messages("moreSaoSubmitNotificationFullName.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(answer.toText),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("moreSaoSubmitNotificationFullName.change.hidden"))
         )
+      )
     }
 }

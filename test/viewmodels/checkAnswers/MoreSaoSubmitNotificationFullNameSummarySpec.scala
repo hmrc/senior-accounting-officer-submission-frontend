@@ -49,7 +49,9 @@ class MoreSaoSubmitNotificationFullNameSummarySpec extends SpecBase with GuiceOn
 
       "expected value" - {
         "must show 'testMoreSaoSubmitNotificationFullName' when user answers is 'testMoreSaoSubmitNotificationFullName'" in {
-          SUT(answer = "testMoreSaoSubmitNotificationFullName").value.content mustBe "testMoreSaoSubmitNotificationFullName".toText
+          SUT(answer =
+            "testMoreSaoSubmitNotificationFullName"
+          ).value.content mustBe "testMoreSaoSubmitNotificationFullName".toText
         }
       }
 
