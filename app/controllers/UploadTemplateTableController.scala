@@ -17,6 +17,8 @@
 package controllers
 
 import controllers.actions.*
+import models.NormalMode
+import navigation.Navigator
 import pages.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -31,7 +33,8 @@ class UploadTemplateTableController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: UploadTemplateTableView
+    view: UploadTemplateTableView,
+    navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
@@ -46,10 +49,6 @@ class UploadTemplateTableController @Inject() (
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    request.userAnswers
-      .get(UploadTemplateTablePage)
-      .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
-      )(_ => Redirect(routes.SubmitNotificationStartController.onPageLoad()))
+    Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
   }
 }

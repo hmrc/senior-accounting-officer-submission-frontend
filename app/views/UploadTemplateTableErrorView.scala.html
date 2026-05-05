@@ -26,12 +26,14 @@
     @value.getOrElse("-")
 }
 
-@groupedErrors = @{
+@maximumLinesWithErrorsToDisplay = @{ 50 }
+
+@linesWithErrors = @{
     tableData.errors
         .groupBy(_.line)
         .toSeq
-        .sortBy(_._1)
-        .take(50)
+        .sortBy { case (line, _) => line }
+        .take(maximumLinesWithErrorsToDisplay)
 }
 
 @layout(pageTitle = titleNoForm(messages("uploadTemplateTableError.title"))) {
@@ -54,12 +56,12 @@
             </tr>
         </thead>
         <tbody class="govuk-table__body">
-            @if(groupedErrors.isEmpty) {
+            @if(linesWithErrors.isEmpty) {
                 <tr class="govuk-table__row">
                     <td class="govuk-table__cell" colspan="3">@messages("uploadTemplateTableError.errors.none")</td>
                 </tr>
             } else {
-                @for((line, errorsForLine) <- groupedErrors) {
+                @for((line, errorsForLine) <- linesWithErrors) {
                     @for((error, index) <- errorsForLine.zipWithIndex) {
                         <tr class="govuk-table__row">
                             @if(index == 0) {

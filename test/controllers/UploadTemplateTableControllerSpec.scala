@@ -18,7 +18,11 @@ package controllers
 
 import base.SpecBase
 import models.upload.*
+import navigation.{FakeNavigator, Navigator}
 import pages.UploadTemplateTablePage
+import play.api.http.HeaderNames
+import play.api.inject.bind
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.UploadTemplateTableView
@@ -26,6 +30,8 @@ import views.html.UploadTemplateTableView
 import java.time.LocalDate
 
 class UploadTemplateTableControllerSpec extends SpecBase {
+
+  def onwardRoute: Call = Call("GET", "/foo")
 
   private val tableData = UploadTemplateTableData(
     rows = Seq(
@@ -76,8 +82,10 @@ class UploadTemplateTableControllerSpec extends SpecBase {
       }
     }
 
-    "must redirect to submit notification start page for a POST" in {
-      val application = applicationBuilder(userAnswers = Some(populatedAnswers)).build()
+    "must redirect to the next page for a POST" in {
+      val application = applicationBuilder(userAnswers = Some(populatedAnswers))
+        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .build()
 
       running(application) {
         val request = FakeRequest(POST, routes.UploadTemplateTableController.onSubmit().url)
@@ -85,7 +93,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.SubmitNotificationStartController.onPageLoad().url
+        header(HeaderNames.LOCATION, result) mustEqual Some(onwardRoute.url)
       }
     }
 
