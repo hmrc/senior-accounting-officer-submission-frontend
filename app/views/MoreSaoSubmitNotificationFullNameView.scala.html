@@ -34,12 +34,17 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <span class="govuk-caption-l">@messages("moreSaoSubmitNotificationFullName.caption")</span>
+        <h1 class="govuk-heading-l">@messages("moreSaoSubmitNotificationFullName.heading")</h1>
+
+        <p class="govuk-body">@messages("moreSaoSubmitNotificationFullName.paragraph1")</p>
+
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("moreSaoSubmitNotificationFullName.heading").toText).asPageHeading(LabelSize.Large)
+                label = LabelViewModel(messages("moreSaoSubmitNotificationFullName.label").toText).withCssClass("govuk-label--m")
             )
-            .withWidth(Full)
+            .withWidth(Fixed20)
         )
 
         @govukButton(

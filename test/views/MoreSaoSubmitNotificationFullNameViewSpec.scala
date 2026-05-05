@@ -19,18 +19,15 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import models.{NormalMode, CheckMode, Mode}
-import pages.MoreSaoSubmitNotificationFullNamePage
 import forms.MoreSaoSubmitNotificationFullNameFormProvider
 import views.html.MoreSaoSubmitNotificationFullNameView
 import views.MoreSaoSubmitNotificationFullNameViewSpec.*
-
+import models.Mode
 
 class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubmitNotificationFullNameView] {
 
-  private val formProvider = app.injector.instanceOf[MoreSaoSubmitNotificationFullNameFormProvider]
+  private val formProvider       = app.injector.instanceOf[MoreSaoSubmitNotificationFullNameFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
@@ -55,11 +52,15 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageHeading,
+            label = pageLabel,
             value = "",
             hint = None,
             hasError = false
           )
+
+          doc.createTestsWithParagraphs(paragraphs)
+
+          doc.createTestsForInputWidth()
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.MoreSaoSubmitNotificationFullNameController.onSubmit(mode),
@@ -84,11 +85,15 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageHeading,
+            label = pageLabel,
             value = testInputValue,
             hint = None,
             hasError = false
           )
+
+          doc.createTestsWithParagraphs(paragraphs)
+
+          doc.createTestsForInputWidth()
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.MoreSaoSubmitNotificationFullNameController.onSubmit(mode),
@@ -113,11 +118,15 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageHeading,
+            label = pageLabel,
             value = "",
             hint = None,
             hasError = true
           )
+
+          doc.createTestsWithParagraphs(paragraphs)
+
+          doc.createTestsForInputWidth()
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.MoreSaoSubmitNotificationFullNameController.onSubmit(mode),
@@ -131,10 +140,24 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
       }
     }
   }
+
+  extension (doc: => Document) {
+    def createTestsForInputWidth(): Unit = {
+      "must have input with expected class 'govuk-input--width-20'" in {
+        doc.getMainContent.select("input.govuk-input--width-20").size() mustBe 1
+      }
+    }
+  }
 }
 
 object MoreSaoSubmitNotificationFullNameViewSpec {
-  val pageHeading = "moreSaoSubmitNotificationFullName"
-  val pageTitle = "moreSaoSubmitNotificationFullName"
+  val pageHeading = "Senior Accounting Officer details"
+  val pageTitle   = "Submit a notification - SAO full name"
+  val pageCaption = "Submit a notification"
+  val paragraphs  = List(
+    "You told us more than one SAO held the role during the financial year. Enter the name of the last person who held the role. We’ll then ask you for details of the others who held the role earlier in the year."
+  )
+  val pageLabel = "What is the name of the last SAO?"
+
   val testInputValue = "myTestInputValue"
 }
