@@ -65,11 +65,14 @@ class Navigator @Inject() () {
     case NotificationMoreThanOneSaoPage =>
       userAnswers =>
         userAnswers.get(NotificationMoreThanOneSaoPage) match {
+          case Some(true)  => routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
           case Some(false) => routes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
           case _           => ???
         }
     case OneSaoSubmitNotificationFullNamePage =>
       _ => ??? // TODO: link to /notification/one-sao/submit-notification-task-two
+    case MoreSaoSubmitNotificationFullNamePage =>
+      _ => ??? // TODO: link to /notification/more-sao/email
     case _ =>
       _ => ???
   }
