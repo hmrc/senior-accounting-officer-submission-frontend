@@ -107,3 +107,8 @@ GET        /notification/more-sao/submit-notification-full-name                 
 POST       /notification/more-sao/submit-notification-full-name                        controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
 GET        /notification/more-sao/change-submitNotification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /notification/more-sao/change-submit-notification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
+
+GET        /moreSaoSubmitNotificationSecondStartDate                  controllers.MoreSaoSubmitNotificationSecondStartDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /moreSaoSubmitNotificationSecondStartDate                  controllers.MoreSaoSubmitNotificationSecondStartDateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeMoreSaoSubmitNotificationSecondStartDate                        controllers.MoreSaoSubmitNotificationSecondStartDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeMoreSaoSubmitNotificationSecondStartDate                        controllers.MoreSaoSubmitNotificationSecondStartDateController.onSubmit(mode: Mode = CheckMode)
