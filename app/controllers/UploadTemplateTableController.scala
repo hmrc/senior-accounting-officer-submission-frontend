@@ -19,7 +19,7 @@ package controllers
 import controllers.actions.*
 import models.NormalMode
 import navigation.Navigator
-import pages.UploadTemplateTablePage
+import pages.{OneSaoSubmitNotificationFullNamePage, UploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -39,12 +39,20 @@ class UploadTemplateTableController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    val nextPage = Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+
     request.userAnswers
       .get(UploadTemplateTablePage)
       .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
+        nextPage
       ) { tableData =>
-        Ok(view(tableData))
+        request.userAnswers
+          .get(OneSaoSubmitNotificationFullNamePage)
+          .fold(
+            nextPage
+          ) { saoName =>
+            Ok(view(tableData, saoName))
+          }
       }
   }
 

@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import models.upload.*
 import navigation.{FakeNavigator, Navigator}
-import pages.UploadTemplateTablePage
+import pages.{OneSaoSubmitNotificationFullNamePage, UploadTemplateTablePage}
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -63,7 +63,14 @@ class UploadTemplateTableControllerSpec extends SpecBase {
     errors = Seq.empty
   )
 
-  private val populatedAnswers = emptyUserAnswers.set(UploadTemplateTablePage, tableData).success.value
+  private val saoName          = "Jane Smith"
+  private val populatedAnswers = emptyUserAnswers
+    .set(UploadTemplateTablePage, tableData)
+    .success
+    .value
+    .set(OneSaoSubmitNotificationFullNamePage, saoName)
+    .success
+    .value
 
   "UploadTemplateTable Controller" - {
 
@@ -78,7 +85,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[UploadTemplateTableView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(tableData)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(tableData, saoName)(using request, messages(application)).toString
       }
     }
 
@@ -97,8 +104,10 @@ class UploadTemplateTableControllerSpec extends SpecBase {
       }
     }
 
-    "must redirect to Journey Recovery for GET when table data is missing" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+    "must redirect using the navigator for GET when table data is missing" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.UploadTemplateTableController.onPageLoad().url)
@@ -106,7 +115,23 @@ class UploadTemplateTableControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
+    }
+
+    "must redirect using the navigator for GET when SAO name is missing" in {
+      val answers     = emptyUserAnswers.set(UploadTemplateTablePage, tableData).success.value
+      val application = applicationBuilder(userAnswers = Some(answers))
+        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.UploadTemplateTableController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
 
