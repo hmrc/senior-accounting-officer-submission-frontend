@@ -92,4 +92,9 @@ POST        /certificate/declaration                                  controller
 GET         /certificate/change-declaration                           controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = CheckMode)
 POST        /certificate/change-declaration                           controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/confirmation                                 controllers.CertificateConfirmationController.onPageLoad()
+GET         /certificate/confirmation                                         controllers.CertificateConfirmationController.onPageLoad()
+
+GET        /notification/more-sao/submit-notification-full-name                        controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /notification/more-sao/submit-notification-full-name                        controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
+GET        /notification/more-sao/change-submitNotification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /notification/more-sao/change-submit-notification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
