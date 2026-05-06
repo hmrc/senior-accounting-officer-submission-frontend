@@ -1,0 +1,1009 @@
+"Senior Accounting Officer  Submission template. List all the companies in your group. Complete one row per company. You can add as many rows as needed.
+",,,,,,,,,,,,,,,,,
+How to complete this template ,,,,,,,,,,,,,,,,,
+"1. Notification columns (A to F): Enter company details in the correct format. For company type and status, use the drop down to select one",,,,,,,,,,,,,,,,,
+"2. Certificate columns (G to R): Mark tax regimes with an x where the company did not have appropriate tax accounting arrangements and leave all others blank. The certificate type will show as Qualified automatically if any regime is marked. If none are marked, enter Unqualified in the certificate type column.",,,,,,,,,,,,,,,,,
+3. Additional information (column R): You must add an explanation if the certificate is qualified and a tax regime is marked x. There is no character limit. You can write as much information as you would normally provide in an email to HMRC.,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,
+,Notification,,,,,Certificate,,,,,,,,,,,
+Company name,Company UTR,Company CRN,Company type,Company status,Financial year end date,Corporation tax,Value added tax,PAYE,Insurance premium tax,Stamp duty land tax,Stamp duty reserve tax,Petroleum revenue tax,Customs Duties,Excise Duties,Bank Levy,Certificate type,Additional information
+Z Massive Valid Company 0001,1000000001,00000001,LTD,Dormant,02/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0002,1000000002,00000002,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0003,1000000003,00000003,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0004,1000000004,00000004,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0005,1000000005,00000005,LTD,Dormant,06/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 5
+Z Massive Valid Company 0006,1000000006,00000006,PLC,Administration,07/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0007,1000000007,00000007,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0008,1000000008,00000008,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0009,1000000009,00000009,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0010,1000000010,00000010,LTD,Administration,11/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 10
+Z Massive Valid Company 0011,1000000011,00000011,LTD,Liquidation,12/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0012,1000000012,00000012,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0013,1000000013,00000013,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0014,1000000014,00000014,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0015,1000000015,00000015,PLC,Liquidation,16/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 15
+Z Massive Valid Company 0016,1000000016,00000016,LTD,Active,17/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0017,1000000017,00000017,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0018,1000000018,00000018,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0019,1000000019,00000019,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0020,1000000020,00000020,LTD,Active,21/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 20
+Z Massive Valid Company 0021,1000000021,00000021,PLC,Dormant,22/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0022,1000000022,00000022,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0023,1000000023,00000023,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0024,1000000024,00000024,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0025,1000000025,00000025,LTD,Dormant,26/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 25
+Z Massive Valid Company 0026,1000000026,00000026,LTD,Administration,27/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0027,1000000027,00000027,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0028,1000000028,00000028,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0029,1000000029,00000029,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0030,1000000030,00000030,PLC,Administration,03/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 30
+Z Massive Valid Company 0031,1000000031,00000031,LTD,Liquidation,04/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0032,1000000032,00000032,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0033,1000000033,00000033,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0034,1000000034,00000034,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0035,1000000035,00000035,LTD,Liquidation,08/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 35
+Z Massive Valid Company 0036,1000000036,00000036,PLC,Active,09/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0037,1000000037,00000037,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0038,1000000038,00000038,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0039,1000000039,00000039,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0040,1000000040,00000040,LTD,Active,13/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 40
+Z Massive Valid Company 0041,1000000041,00000041,LTD,Dormant,14/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0042,1000000042,00000042,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0043,1000000043,00000043,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0044,1000000044,00000044,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0045,1000000045,00000045,PLC,Dormant,18/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 45
+Z Massive Valid Company 0046,1000000046,00000046,LTD,Administration,19/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0047,1000000047,00000047,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0048,1000000048,00000048,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0049,1000000049,00000049,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0050,1000000050,00000050,LTD,Administration,23/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 50
+Z Massive Valid Company 0051,1000000051,00000051,PLC,Liquidation,24/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0052,1000000052,00000052,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0053,1000000053,00000053,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0054,1000000054,00000054,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0055,1000000055,00000055,LTD,Liquidation,28/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 55
+Z Massive Valid Company 0056,1000000056,00000056,LTD,Active,01/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0057,1000000057,00000057,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0058,1000000058,00000058,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0059,1000000059,00000059,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0060,1000000060,00000060,PLC,Active,05/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 60
+Z Massive Valid Company 0061,1000000061,00000061,LTD,Dormant,06/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0062,1000000062,00000062,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0063,1000000063,00000063,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0064,1000000064,00000064,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0065,1000000065,00000065,LTD,Dormant,10/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 65
+Z Massive Valid Company 0066,1000000066,00000066,PLC,Administration,11/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0067,1000000067,00000067,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0068,1000000068,00000068,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0069,1000000069,00000069,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0070,1000000070,00000070,LTD,Administration,15/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 70
+Z Massive Valid Company 0071,1000000071,00000071,LTD,Liquidation,16/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0072,1000000072,00000072,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0073,1000000073,00000073,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0074,1000000074,00000074,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0075,1000000075,00000075,PLC,Liquidation,20/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 75
+Z Massive Valid Company 0076,1000000076,00000076,LTD,Active,21/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0077,1000000077,00000077,LTD,Dormant,22/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0078,1000000078,00000078,PLC,Administration,23/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0079,1000000079,00000079,LTD,Liquidation,24/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0080,1000000080,00000080,LTD,Active,25/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 80
+Z Massive Valid Company 0081,1000000081,00000081,PLC,Dormant,26/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0082,1000000082,00000082,LTD,Administration,27/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0083,1000000083,00000083,LTD,Liquidation,28/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0084,1000000084,00000084,PLC,Active,01/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0085,1000000085,00000085,LTD,Dormant,02/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 85
+Z Massive Valid Company 0086,1000000086,00000086,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0087,1000000087,00000087,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0088,1000000088,00000088,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0089,1000000089,00000089,LTD,Dormant,06/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0090,1000000090,00000090,PLC,Administration,07/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 90
+Z Massive Valid Company 0091,1000000091,00000091,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0092,1000000092,00000092,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0093,1000000093,00000093,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0094,1000000094,00000094,LTD,Administration,11/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0095,1000000095,00000095,LTD,Liquidation,12/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 95
+Z Massive Valid Company 0096,1000000096,00000096,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0097,1000000097,00000097,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0098,1000000098,00000098,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0099,1000000099,00000099,PLC,Liquidation,16/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0100,1000000100,00000100,LTD,Active,17/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 100
+Z Massive Valid Company 0101,1000000101,00000101,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0102,1000000102,00000102,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0103,1000000103,00000103,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0104,1000000104,00000104,LTD,Active,21/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0105,1000000105,00000105,PLC,Dormant,22/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 105
+Z Massive Valid Company 0106,1000000106,00000106,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0107,1000000107,00000107,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0108,1000000108,00000108,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0109,1000000109,00000109,LTD,Dormant,26/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0110,1000000110,00000110,LTD,Administration,27/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 110
+Z Massive Valid Company 0111,1000000111,00000111,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0112,1000000112,00000112,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0113,1000000113,00000113,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0114,1000000114,00000114,PLC,Administration,03/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0115,1000000115,00000115,LTD,Liquidation,04/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 115
+Z Massive Valid Company 0116,1000000116,00000116,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0117,1000000117,00000117,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0118,1000000118,00000118,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0119,1000000119,00000119,LTD,Liquidation,08/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0120,1000000120,00000120,PLC,Active,09/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 120
+Z Massive Valid Company 0121,1000000121,00000121,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0122,1000000122,00000122,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0123,1000000123,00000123,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0124,1000000124,00000124,LTD,Active,13/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0125,1000000125,00000125,LTD,Dormant,14/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 125
+Z Massive Valid Company 0126,1000000126,00000126,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0127,1000000127,00000127,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0128,1000000128,00000128,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0129,1000000129,00000129,PLC,Dormant,18/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0130,1000000130,00000130,LTD,Administration,19/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 130
+Z Massive Valid Company 0131,1000000131,00000131,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0132,1000000132,00000132,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0133,1000000133,00000133,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0134,1000000134,00000134,LTD,Administration,23/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0135,1000000135,00000135,PLC,Liquidation,24/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 135
+Z Massive Valid Company 0136,1000000136,00000136,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0137,1000000137,00000137,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0138,1000000138,00000138,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0139,1000000139,00000139,LTD,Liquidation,28/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0140,1000000140,00000140,LTD,Active,01/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 140
+Z Massive Valid Company 0141,1000000141,00000141,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0142,1000000142,00000142,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0143,1000000143,00000143,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0144,1000000144,00000144,PLC,Active,05/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0145,1000000145,00000145,LTD,Dormant,06/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 145
+Z Massive Valid Company 0146,1000000146,00000146,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0147,1000000147,00000147,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0148,1000000148,00000148,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0149,1000000149,00000149,LTD,Dormant,10/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0150,1000000150,00000150,PLC,Administration,11/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 150
+Z Massive Valid Company 0151,1000000151,00000151,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0152,1000000152,00000152,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0153,1000000153,00000153,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0154,1000000154,00000154,LTD,Administration,15/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0155,1000000155,00000155,LTD,Liquidation,16/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 155
+Z Massive Valid Company 0156,1000000156,00000156,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0157,1000000157,00000157,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0158,1000000158,00000158,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0159,1000000159,00000159,PLC,Liquidation,20/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0160,1000000160,00000160,LTD,Active,21/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 160
+Z Massive Valid Company 0161,1000000161,00000161,LTD,Dormant,22/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0162,1000000162,00000162,PLC,Administration,23/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0163,1000000163,00000163,LTD,Liquidation,24/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0164,1000000164,00000164,LTD,Active,25/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0165,1000000165,00000165,PLC,Dormant,26/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 165
+Z Massive Valid Company 0166,1000000166,00000166,LTD,Administration,27/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0167,1000000167,00000167,LTD,Liquidation,28/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0168,1000000168,00000168,PLC,Active,01/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0169,1000000169,00000169,LTD,Dormant,02/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0170,1000000170,00000170,LTD,Administration,03/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 170
+Z Massive Valid Company 0171,1000000171,00000171,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0172,1000000172,00000172,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0173,1000000173,00000173,LTD,Dormant,06/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0174,1000000174,00000174,PLC,Administration,07/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0175,1000000175,00000175,LTD,Liquidation,08/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 175
+Z Massive Valid Company 0176,1000000176,00000176,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0177,1000000177,00000177,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0178,1000000178,00000178,LTD,Administration,11/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0179,1000000179,00000179,LTD,Liquidation,12/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0180,1000000180,00000180,PLC,Active,13/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 180
+Z Massive Valid Company 0181,1000000181,00000181,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0182,1000000182,00000182,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0183,1000000183,00000183,PLC,Liquidation,16/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0184,1000000184,00000184,LTD,Active,17/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0185,1000000185,00000185,LTD,Dormant,18/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 185
+Z Massive Valid Company 0186,1000000186,00000186,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0187,1000000187,00000187,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0188,1000000188,00000188,LTD,Active,21/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0189,1000000189,00000189,PLC,Dormant,22/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0190,1000000190,00000190,LTD,Administration,23/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 190
+Z Massive Valid Company 0191,1000000191,00000191,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0192,1000000192,00000192,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0193,1000000193,00000193,LTD,Dormant,26/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0194,1000000194,00000194,LTD,Administration,27/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0195,1000000195,00000195,PLC,Liquidation,28/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 195
+Z Massive Valid Company 0196,1000000196,00000196,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0197,1000000197,00000197,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0198,1000000198,00000198,PLC,Administration,03/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0199,1000000199,00000199,LTD,Liquidation,04/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0200,1000000200,00000200,LTD,Active,05/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 200
+Z Massive Valid Company 0201,1000000201,00000201,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0202,1000000202,00000202,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0203,1000000203,00000203,LTD,Liquidation,08/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0204,1000000204,00000204,PLC,Active,09/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0205,1000000205,00000205,LTD,Dormant,10/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 205
+Z Massive Valid Company 0206,1000000206,00000206,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0207,1000000207,00000207,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0208,1000000208,00000208,LTD,Active,13/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0209,1000000209,00000209,LTD,Dormant,14/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0210,1000000210,00000210,PLC,Administration,15/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 210
+Z Massive Valid Company 0211,1000000211,00000211,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0212,1000000212,00000212,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0213,1000000213,00000213,PLC,Dormant,18/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0214,1000000214,00000214,LTD,Administration,19/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0215,1000000215,00000215,LTD,Liquidation,20/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 215
+Z Massive Valid Company 0216,1000000216,00000216,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0217,1000000217,00000217,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0218,1000000218,00000218,LTD,Administration,23/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0219,1000000219,00000219,PLC,Liquidation,24/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0220,1000000220,00000220,LTD,Active,25/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 220
+Z Massive Valid Company 0221,1000000221,00000221,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0222,1000000222,00000222,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0223,1000000223,00000223,LTD,Liquidation,28/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0224,1000000224,00000224,LTD,Active,01/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0225,1000000225,00000225,PLC,Dormant,02/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 225
+Z Massive Valid Company 0226,1000000226,00000226,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0227,1000000227,00000227,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0228,1000000228,00000228,PLC,Active,05/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0229,1000000229,00000229,LTD,Dormant,06/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0230,1000000230,00000230,LTD,Administration,07/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 230
+Z Massive Valid Company 0231,1000000231,00000231,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0232,1000000232,00000232,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0233,1000000233,00000233,LTD,Dormant,10/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0234,1000000234,00000234,PLC,Administration,11/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0235,1000000235,00000235,LTD,Liquidation,12/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 235
+Z Massive Valid Company 0236,1000000236,00000236,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0237,1000000237,00000237,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0238,1000000238,00000238,LTD,Administration,15/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0239,1000000239,00000239,LTD,Liquidation,16/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0240,1000000240,00000240,PLC,Active,17/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 240
+Z Massive Valid Company 0241,1000000241,00000241,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0242,1000000242,00000242,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0243,1000000243,00000243,PLC,Liquidation,20/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0244,1000000244,00000244,LTD,Active,21/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0245,1000000245,00000245,LTD,Dormant,22/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 245
+Z Massive Valid Company 0246,1000000246,00000246,PLC,Administration,23/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0247,1000000247,00000247,LTD,Liquidation,24/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0248,1000000248,00000248,LTD,Active,25/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0249,1000000249,00000249,PLC,Dormant,26/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0250,1000000250,00000250,LTD,Administration,27/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 250
+Z Massive Valid Company 0251,1000000251,00000251,LTD,Liquidation,28/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0252,1000000252,00000252,PLC,Active,01/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0253,1000000253,00000253,LTD,Dormant,02/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0254,1000000254,00000254,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0255,1000000255,00000255,PLC,Liquidation,04/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 255
+Z Massive Valid Company 0256,1000000256,00000256,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0257,1000000257,00000257,LTD,Dormant,06/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0258,1000000258,00000258,PLC,Administration,07/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0259,1000000259,00000259,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0260,1000000260,00000260,LTD,Active,09/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 260
+Z Massive Valid Company 0261,1000000261,00000261,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0262,1000000262,00000262,LTD,Administration,11/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0263,1000000263,00000263,LTD,Liquidation,12/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0264,1000000264,00000264,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0265,1000000265,00000265,LTD,Dormant,14/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 265
+Z Massive Valid Company 0266,1000000266,00000266,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0267,1000000267,00000267,PLC,Liquidation,16/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0268,1000000268,00000268,LTD,Active,17/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0269,1000000269,00000269,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0270,1000000270,00000270,PLC,Administration,19/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 270
+Z Massive Valid Company 0271,1000000271,00000271,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0272,1000000272,00000272,LTD,Active,21/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0273,1000000273,00000273,PLC,Dormant,22/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0274,1000000274,00000274,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0275,1000000275,00000275,LTD,Liquidation,24/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 275
+Z Massive Valid Company 0276,1000000276,00000276,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0277,1000000277,00000277,LTD,Dormant,26/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0278,1000000278,00000278,LTD,Administration,27/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0279,1000000279,00000279,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0280,1000000280,00000280,LTD,Active,01/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 280
+Z Massive Valid Company 0281,1000000281,00000281,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0282,1000000282,00000282,PLC,Administration,03/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0283,1000000283,00000283,LTD,Liquidation,04/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0284,1000000284,00000284,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0285,1000000285,00000285,PLC,Dormant,06/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 285
+Z Massive Valid Company 0286,1000000286,00000286,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0287,1000000287,00000287,LTD,Liquidation,08/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0288,1000000288,00000288,PLC,Active,09/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0289,1000000289,00000289,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0290,1000000290,00000290,LTD,Administration,11/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 290
+Z Massive Valid Company 0291,1000000291,00000291,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0292,1000000292,00000292,LTD,Active,13/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0293,1000000293,00000293,LTD,Dormant,14/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0294,1000000294,00000294,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0295,1000000295,00000295,LTD,Liquidation,16/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 295
+Z Massive Valid Company 0296,1000000296,00000296,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0297,1000000297,00000297,PLC,Dormant,18/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0298,1000000298,00000298,LTD,Administration,19/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0299,1000000299,00000299,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0300,1000000300,00000300,PLC,Active,21/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 300
+Z Massive Valid Company 0301,1000000301,00000301,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0302,1000000302,00000302,LTD,Administration,23/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0303,1000000303,00000303,PLC,Liquidation,24/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0304,1000000304,00000304,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0305,1000000305,00000305,LTD,Dormant,26/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 305
+Z Massive Valid Company 0306,1000000306,00000306,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0307,1000000307,00000307,LTD,Liquidation,28/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0308,1000000308,00000308,LTD,Active,01/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0309,1000000309,00000309,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0310,1000000310,00000310,LTD,Administration,03/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 310
+Z Massive Valid Company 0311,1000000311,00000311,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0312,1000000312,00000312,PLC,Active,05/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0313,1000000313,00000313,LTD,Dormant,06/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0314,1000000314,00000314,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0315,1000000315,00000315,PLC,Liquidation,08/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 315
+Z Massive Valid Company 0316,1000000316,00000316,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0317,1000000317,00000317,LTD,Dormant,10/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0318,1000000318,00000318,PLC,Administration,11/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0319,1000000319,00000319,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0320,1000000320,00000320,LTD,Active,13/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 320
+Z Massive Valid Company 0321,1000000321,00000321,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0322,1000000322,00000322,LTD,Administration,15/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0323,1000000323,00000323,LTD,Liquidation,16/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0324,1000000324,00000324,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0325,1000000325,00000325,LTD,Dormant,18/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 325
+Z Massive Valid Company 0326,1000000326,00000326,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0327,1000000327,00000327,PLC,Liquidation,20/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0328,1000000328,00000328,LTD,Active,21/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0329,1000000329,00000329,LTD,Dormant,22/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0330,1000000330,00000330,PLC,Administration,23/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 330
+Z Massive Valid Company 0331,1000000331,00000331,LTD,Liquidation,24/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0332,1000000332,00000332,LTD,Active,25/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0333,1000000333,00000333,PLC,Dormant,26/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0334,1000000334,00000334,LTD,Administration,27/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0335,1000000335,00000335,LTD,Liquidation,28/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 335
+Z Massive Valid Company 0336,1000000336,00000336,PLC,Active,01/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0337,1000000337,00000337,LTD,Dormant,02/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0338,1000000338,00000338,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0339,1000000339,00000339,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0340,1000000340,00000340,LTD,Active,05/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 340
+Z Massive Valid Company 0341,1000000341,00000341,LTD,Dormant,06/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0342,1000000342,00000342,PLC,Administration,07/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0343,1000000343,00000343,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0344,1000000344,00000344,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0345,1000000345,00000345,PLC,Dormant,10/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 345
+Z Massive Valid Company 0346,1000000346,00000346,LTD,Administration,11/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0347,1000000347,00000347,LTD,Liquidation,12/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0348,1000000348,00000348,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0349,1000000349,00000349,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0350,1000000350,00000350,LTD,Administration,15/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 350
+Z Massive Valid Company 0351,1000000351,00000351,PLC,Liquidation,16/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0352,1000000352,00000352,LTD,Active,17/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0353,1000000353,00000353,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0354,1000000354,00000354,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0355,1000000355,00000355,LTD,Liquidation,20/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 355
+Z Massive Valid Company 0356,1000000356,00000356,LTD,Active,21/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0357,1000000357,00000357,PLC,Dormant,22/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0358,1000000358,00000358,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0359,1000000359,00000359,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0360,1000000360,00000360,PLC,Active,25/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 360
+Z Massive Valid Company 0361,1000000361,00000361,LTD,Dormant,26/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0362,1000000362,00000362,LTD,Administration,27/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0363,1000000363,00000363,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0364,1000000364,00000364,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0365,1000000365,00000365,LTD,Dormant,02/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 365
+Z Massive Valid Company 0366,1000000366,00000366,PLC,Administration,03/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0367,1000000367,00000367,LTD,Liquidation,04/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0368,1000000368,00000368,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0369,1000000369,00000369,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0370,1000000370,00000370,LTD,Administration,07/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 370
+Z Massive Valid Company 0371,1000000371,00000371,LTD,Liquidation,08/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0372,1000000372,00000372,PLC,Active,09/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0373,1000000373,00000373,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0374,1000000374,00000374,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0375,1000000375,00000375,PLC,Liquidation,12/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 375
+Z Massive Valid Company 0376,1000000376,00000376,LTD,Active,13/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0377,1000000377,00000377,LTD,Dormant,14/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0378,1000000378,00000378,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0379,1000000379,00000379,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0380,1000000380,00000380,LTD,Active,17/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 380
+Z Massive Valid Company 0381,1000000381,00000381,PLC,Dormant,18/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0382,1000000382,00000382,LTD,Administration,19/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0383,1000000383,00000383,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0384,1000000384,00000384,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0385,1000000385,00000385,LTD,Dormant,22/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 385
+Z Massive Valid Company 0386,1000000386,00000386,LTD,Administration,23/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0387,1000000387,00000387,PLC,Liquidation,24/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0388,1000000388,00000388,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0389,1000000389,00000389,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0390,1000000390,00000390,PLC,Administration,27/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 390
+Z Massive Valid Company 0391,1000000391,00000391,LTD,Liquidation,28/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0392,1000000392,00000392,LTD,Active,01/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0393,1000000393,00000393,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0394,1000000394,00000394,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0395,1000000395,00000395,LTD,Liquidation,04/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 395
+Z Massive Valid Company 0396,1000000396,00000396,PLC,Active,05/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0397,1000000397,00000397,LTD,Dormant,06/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0398,1000000398,00000398,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0399,1000000399,00000399,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0400,1000000400,00000400,LTD,Active,09/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 400
+Z Massive Valid Company 0401,1000000401,00000401,LTD,Dormant,10/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0402,1000000402,00000402,PLC,Administration,11/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0403,1000000403,00000403,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0404,1000000404,00000404,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0405,1000000405,00000405,PLC,Dormant,14/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 405
+Z Massive Valid Company 0406,1000000406,00000406,LTD,Administration,15/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0407,1000000407,00000407,LTD,Liquidation,16/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0408,1000000408,00000408,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0409,1000000409,00000409,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0410,1000000410,00000410,LTD,Administration,19/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 410
+Z Massive Valid Company 0411,1000000411,00000411,PLC,Liquidation,20/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0412,1000000412,00000412,LTD,Active,21/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0413,1000000413,00000413,LTD,Dormant,22/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0414,1000000414,00000414,PLC,Administration,23/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0415,1000000415,00000415,LTD,Liquidation,24/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 415
+Z Massive Valid Company 0416,1000000416,00000416,LTD,Active,25/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0417,1000000417,00000417,PLC,Dormant,26/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0418,1000000418,00000418,LTD,Administration,27/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0419,1000000419,00000419,LTD,Liquidation,28/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0420,1000000420,00000420,PLC,Active,01/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 420
+Z Massive Valid Company 0421,1000000421,00000421,LTD,Dormant,02/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0422,1000000422,00000422,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0423,1000000423,00000423,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0424,1000000424,00000424,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0425,1000000425,00000425,LTD,Dormant,06/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 425
+Z Massive Valid Company 0426,1000000426,00000426,PLC,Administration,07/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0427,1000000427,00000427,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0428,1000000428,00000428,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0429,1000000429,00000429,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0430,1000000430,00000430,LTD,Administration,11/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 430
+Z Massive Valid Company 0431,1000000431,00000431,LTD,Liquidation,12/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0432,1000000432,00000432,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0433,1000000433,00000433,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0434,1000000434,00000434,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0435,1000000435,00000435,PLC,Liquidation,16/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 435
+Z Massive Valid Company 0436,1000000436,00000436,LTD,Active,17/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0437,1000000437,00000437,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0438,1000000438,00000438,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0439,1000000439,00000439,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0440,1000000440,00000440,LTD,Active,21/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 440
+Z Massive Valid Company 0441,1000000441,00000441,PLC,Dormant,22/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0442,1000000442,00000442,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0443,1000000443,00000443,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0444,1000000444,00000444,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0445,1000000445,00000445,LTD,Dormant,26/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 445
+Z Massive Valid Company 0446,1000000446,00000446,LTD,Administration,27/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0447,1000000447,00000447,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0448,1000000448,00000448,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0449,1000000449,00000449,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0450,1000000450,00000450,PLC,Administration,03/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 450
+Z Massive Valid Company 0451,1000000451,00000451,LTD,Liquidation,04/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0452,1000000452,00000452,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0453,1000000453,00000453,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0454,1000000454,00000454,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0455,1000000455,00000455,LTD,Liquidation,08/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 455
+Z Massive Valid Company 0456,1000000456,00000456,PLC,Active,09/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0457,1000000457,00000457,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0458,1000000458,00000458,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0459,1000000459,00000459,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0460,1000000460,00000460,LTD,Active,13/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 460
+Z Massive Valid Company 0461,1000000461,00000461,LTD,Dormant,14/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0462,1000000462,00000462,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0463,1000000463,00000463,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0464,1000000464,00000464,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0465,1000000465,00000465,PLC,Dormant,18/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 465
+Z Massive Valid Company 0466,1000000466,00000466,LTD,Administration,19/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0467,1000000467,00000467,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0468,1000000468,00000468,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0469,1000000469,00000469,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0470,1000000470,00000470,LTD,Administration,23/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 470
+Z Massive Valid Company 0471,1000000471,00000471,PLC,Liquidation,24/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0472,1000000472,00000472,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0473,1000000473,00000473,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0474,1000000474,00000474,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0475,1000000475,00000475,LTD,Liquidation,28/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 475
+Z Massive Valid Company 0476,1000000476,00000476,LTD,Active,01/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0477,1000000477,00000477,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0478,1000000478,00000478,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0479,1000000479,00000479,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0480,1000000480,00000480,PLC,Active,05/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 480
+Z Massive Valid Company 0481,1000000481,00000481,LTD,Dormant,06/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0482,1000000482,00000482,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0483,1000000483,00000483,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0484,1000000484,00000484,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0485,1000000485,00000485,LTD,Dormant,10/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 485
+Z Massive Valid Company 0486,1000000486,00000486,PLC,Administration,11/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0487,1000000487,00000487,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0488,1000000488,00000488,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0489,1000000489,00000489,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0490,1000000490,00000490,LTD,Administration,15/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 490
+Z Massive Valid Company 0491,1000000491,00000491,LTD,Liquidation,16/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0492,1000000492,00000492,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0493,1000000493,00000493,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0494,1000000494,00000494,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0495,1000000495,00000495,PLC,Liquidation,20/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 495
+Z Massive Valid Company 0496,1000000496,00000496,LTD,Active,21/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0497,1000000497,00000497,LTD,Dormant,22/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0498,1000000498,00000498,PLC,Administration,23/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0499,1000000499,00000499,LTD,Liquidation,24/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0500,1000000500,00000500,LTD,Active,25/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 500
+Z Massive Valid Company 0501,1000000501,00000501,PLC,Dormant,26/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0502,1000000502,00000502,LTD,Administration,27/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0503,1000000503,00000503,LTD,Liquidation,28/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0504,1000000504,00000504,PLC,Active,01/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0505,1000000505,00000505,LTD,Dormant,02/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 505
+Z Massive Valid Company 0506,1000000506,00000506,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0507,1000000507,00000507,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0508,1000000508,00000508,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0509,1000000509,00000509,LTD,Dormant,06/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0510,1000000510,00000510,PLC,Administration,07/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 510
+Z Massive Valid Company 0511,1000000511,00000511,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0512,1000000512,00000512,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0513,1000000513,00000513,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0514,1000000514,00000514,LTD,Administration,11/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0515,1000000515,00000515,LTD,Liquidation,12/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 515
+Z Massive Valid Company 0516,1000000516,00000516,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0517,1000000517,00000517,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0518,1000000518,00000518,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0519,1000000519,00000519,PLC,Liquidation,16/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0520,1000000520,00000520,LTD,Active,17/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 520
+Z Massive Valid Company 0521,1000000521,00000521,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0522,1000000522,00000522,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0523,1000000523,00000523,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0524,1000000524,00000524,LTD,Active,21/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0525,1000000525,00000525,PLC,Dormant,22/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 525
+Z Massive Valid Company 0526,1000000526,00000526,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0527,1000000527,00000527,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0528,1000000528,00000528,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0529,1000000529,00000529,LTD,Dormant,26/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0530,1000000530,00000530,LTD,Administration,27/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 530
+Z Massive Valid Company 0531,1000000531,00000531,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0532,1000000532,00000532,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0533,1000000533,00000533,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0534,1000000534,00000534,PLC,Administration,03/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0535,1000000535,00000535,LTD,Liquidation,04/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 535
+Z Massive Valid Company 0536,1000000536,00000536,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0537,1000000537,00000537,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0538,1000000538,00000538,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0539,1000000539,00000539,LTD,Liquidation,08/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0540,1000000540,00000540,PLC,Active,09/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 540
+Z Massive Valid Company 0541,1000000541,00000541,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0542,1000000542,00000542,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0543,1000000543,00000543,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0544,1000000544,00000544,LTD,Active,13/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0545,1000000545,00000545,LTD,Dormant,14/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 545
+Z Massive Valid Company 0546,1000000546,00000546,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0547,1000000547,00000547,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0548,1000000548,00000548,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0549,1000000549,00000549,PLC,Dormant,18/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0550,1000000550,00000550,LTD,Administration,19/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 550
+Z Massive Valid Company 0551,1000000551,00000551,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0552,1000000552,00000552,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0553,1000000553,00000553,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0554,1000000554,00000554,LTD,Administration,23/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0555,1000000555,00000555,PLC,Liquidation,24/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 555
+Z Massive Valid Company 0556,1000000556,00000556,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0557,1000000557,00000557,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0558,1000000558,00000558,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0559,1000000559,00000559,LTD,Liquidation,28/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0560,1000000560,00000560,LTD,Active,01/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 560
+Z Massive Valid Company 0561,1000000561,00000561,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0562,1000000562,00000562,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0563,1000000563,00000563,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0564,1000000564,00000564,PLC,Active,05/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0565,1000000565,00000565,LTD,Dormant,06/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 565
+Z Massive Valid Company 0566,1000000566,00000566,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0567,1000000567,00000567,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0568,1000000568,00000568,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0569,1000000569,00000569,LTD,Dormant,10/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0570,1000000570,00000570,PLC,Administration,11/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 570
+Z Massive Valid Company 0571,1000000571,00000571,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0572,1000000572,00000572,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0573,1000000573,00000573,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0574,1000000574,00000574,LTD,Administration,15/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0575,1000000575,00000575,LTD,Liquidation,16/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 575
+Z Massive Valid Company 0576,1000000576,00000576,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0577,1000000577,00000577,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0578,1000000578,00000578,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0579,1000000579,00000579,PLC,Liquidation,20/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0580,1000000580,00000580,LTD,Active,21/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 580
+Z Massive Valid Company 0581,1000000581,00000581,LTD,Dormant,22/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0582,1000000582,00000582,PLC,Administration,23/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0583,1000000583,00000583,LTD,Liquidation,24/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0584,1000000584,00000584,LTD,Active,25/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0585,1000000585,00000585,PLC,Dormant,26/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 585
+Z Massive Valid Company 0586,1000000586,00000586,LTD,Administration,27/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0587,1000000587,00000587,LTD,Liquidation,28/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0588,1000000588,00000588,PLC,Active,01/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0589,1000000589,00000589,LTD,Dormant,02/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0590,1000000590,00000590,LTD,Administration,03/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 590
+Z Massive Valid Company 0591,1000000591,00000591,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0592,1000000592,00000592,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0593,1000000593,00000593,LTD,Dormant,06/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0594,1000000594,00000594,PLC,Administration,07/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0595,1000000595,00000595,LTD,Liquidation,08/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 595
+Z Massive Valid Company 0596,1000000596,00000596,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0597,1000000597,00000597,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0598,1000000598,00000598,LTD,Administration,11/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0599,1000000599,00000599,LTD,Liquidation,12/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0600,1000000600,00000600,PLC,Active,13/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 600
+Z Massive Valid Company 0601,1000000601,00000601,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0602,1000000602,00000602,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0603,1000000603,00000603,PLC,Liquidation,16/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0604,1000000604,00000604,LTD,Active,17/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0605,1000000605,00000605,LTD,Dormant,18/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 605
+Z Massive Valid Company 0606,1000000606,00000606,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0607,1000000607,00000607,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0608,1000000608,00000608,LTD,Active,21/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0609,1000000609,00000609,PLC,Dormant,22/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0610,1000000610,00000610,LTD,Administration,23/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 610
+Z Massive Valid Company 0611,1000000611,00000611,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0612,1000000612,00000612,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0613,1000000613,00000613,LTD,Dormant,26/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0614,1000000614,00000614,LTD,Administration,27/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0615,1000000615,00000615,PLC,Liquidation,28/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 615
+Z Massive Valid Company 0616,1000000616,00000616,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0617,1000000617,00000617,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0618,1000000618,00000618,PLC,Administration,03/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0619,1000000619,00000619,LTD,Liquidation,04/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0620,1000000620,00000620,LTD,Active,05/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 620
+Z Massive Valid Company 0621,1000000621,00000621,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0622,1000000622,00000622,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0623,1000000623,00000623,LTD,Liquidation,08/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0624,1000000624,00000624,PLC,Active,09/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0625,1000000625,00000625,LTD,Dormant,10/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 625
+Z Massive Valid Company 0626,1000000626,00000626,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0627,1000000627,00000627,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0628,1000000628,00000628,LTD,Active,13/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0629,1000000629,00000629,LTD,Dormant,14/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0630,1000000630,00000630,PLC,Administration,15/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 630
+Z Massive Valid Company 0631,1000000631,00000631,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0632,1000000632,00000632,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0633,1000000633,00000633,PLC,Dormant,18/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0634,1000000634,00000634,LTD,Administration,19/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0635,1000000635,00000635,LTD,Liquidation,20/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 635
+Z Massive Valid Company 0636,1000000636,00000636,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0637,1000000637,00000637,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0638,1000000638,00000638,LTD,Administration,23/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0639,1000000639,00000639,PLC,Liquidation,24/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0640,1000000640,00000640,LTD,Active,25/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 640
+Z Massive Valid Company 0641,1000000641,00000641,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0642,1000000642,00000642,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0643,1000000643,00000643,LTD,Liquidation,28/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0644,1000000644,00000644,LTD,Active,01/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0645,1000000645,00000645,PLC,Dormant,02/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 645
+Z Massive Valid Company 0646,1000000646,00000646,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0647,1000000647,00000647,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0648,1000000648,00000648,PLC,Active,05/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0649,1000000649,00000649,LTD,Dormant,06/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0650,1000000650,00000650,LTD,Administration,07/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 650
+Z Massive Valid Company 0651,1000000651,00000651,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0652,1000000652,00000652,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0653,1000000653,00000653,LTD,Dormant,10/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0654,1000000654,00000654,PLC,Administration,11/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0655,1000000655,00000655,LTD,Liquidation,12/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 655
+Z Massive Valid Company 0656,1000000656,00000656,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0657,1000000657,00000657,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0658,1000000658,00000658,LTD,Administration,15/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0659,1000000659,00000659,LTD,Liquidation,16/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0660,1000000660,00000660,PLC,Active,17/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 660
+Z Massive Valid Company 0661,1000000661,00000661,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0662,1000000662,00000662,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0663,1000000663,00000663,PLC,Liquidation,20/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0664,1000000664,00000664,LTD,Active,21/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0665,1000000665,00000665,LTD,Dormant,22/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 665
+Z Massive Valid Company 0666,1000000666,00000666,PLC,Administration,23/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0667,1000000667,00000667,LTD,Liquidation,24/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0668,1000000668,00000668,LTD,Active,25/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0669,1000000669,00000669,PLC,Dormant,26/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0670,1000000670,00000670,LTD,Administration,27/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 670
+Z Massive Valid Company 0671,1000000671,00000671,LTD,Liquidation,28/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0672,1000000672,00000672,PLC,Active,01/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0673,1000000673,00000673,LTD,Dormant,02/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0674,1000000674,00000674,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0675,1000000675,00000675,PLC,Liquidation,04/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 675
+Z Massive Valid Company 0676,1000000676,00000676,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0677,1000000677,00000677,LTD,Dormant,06/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0678,1000000678,00000678,PLC,Administration,07/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0679,1000000679,00000679,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0680,1000000680,00000680,LTD,Active,09/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 680
+Z Massive Valid Company 0681,1000000681,00000681,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0682,1000000682,00000682,LTD,Administration,11/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0683,1000000683,00000683,LTD,Liquidation,12/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0684,1000000684,00000684,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0685,1000000685,00000685,LTD,Dormant,14/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 685
+Z Massive Valid Company 0686,1000000686,00000686,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0687,1000000687,00000687,PLC,Liquidation,16/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0688,1000000688,00000688,LTD,Active,17/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0689,1000000689,00000689,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0690,1000000690,00000690,PLC,Administration,19/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 690
+Z Massive Valid Company 0691,1000000691,00000691,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0692,1000000692,00000692,LTD,Active,21/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0693,1000000693,00000693,PLC,Dormant,22/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0694,1000000694,00000694,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0695,1000000695,00000695,LTD,Liquidation,24/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 695
+Z Massive Valid Company 0696,1000000696,00000696,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0697,1000000697,00000697,LTD,Dormant,26/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0698,1000000698,00000698,LTD,Administration,27/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0699,1000000699,00000699,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0700,1000000700,00000700,LTD,Active,01/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 700
+Z Massive Valid Company 0701,1000000701,00000701,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0702,1000000702,00000702,PLC,Administration,03/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0703,1000000703,00000703,LTD,Liquidation,04/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0704,1000000704,00000704,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0705,1000000705,00000705,PLC,Dormant,06/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 705
+Z Massive Valid Company 0706,1000000706,00000706,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0707,1000000707,00000707,LTD,Liquidation,08/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0708,1000000708,00000708,PLC,Active,09/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0709,1000000709,00000709,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0710,1000000710,00000710,LTD,Administration,11/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 710
+Z Massive Valid Company 0711,1000000711,00000711,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0712,1000000712,00000712,LTD,Active,13/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0713,1000000713,00000713,LTD,Dormant,14/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0714,1000000714,00000714,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0715,1000000715,00000715,LTD,Liquidation,16/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 715
+Z Massive Valid Company 0716,1000000716,00000716,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0717,1000000717,00000717,PLC,Dormant,18/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0718,1000000718,00000718,LTD,Administration,19/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0719,1000000719,00000719,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0720,1000000720,00000720,PLC,Active,21/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 720
+Z Massive Valid Company 0721,1000000721,00000721,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0722,1000000722,00000722,LTD,Administration,23/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0723,1000000723,00000723,PLC,Liquidation,24/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0724,1000000724,00000724,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0725,1000000725,00000725,LTD,Dormant,26/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 725
+Z Massive Valid Company 0726,1000000726,00000726,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0727,1000000727,00000727,LTD,Liquidation,28/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0728,1000000728,00000728,LTD,Active,01/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0729,1000000729,00000729,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0730,1000000730,00000730,LTD,Administration,03/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 730
+Z Massive Valid Company 0731,1000000731,00000731,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0732,1000000732,00000732,PLC,Active,05/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0733,1000000733,00000733,LTD,Dormant,06/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0734,1000000734,00000734,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0735,1000000735,00000735,PLC,Liquidation,08/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 735
+Z Massive Valid Company 0736,1000000736,00000736,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0737,1000000737,00000737,LTD,Dormant,10/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0738,1000000738,00000738,PLC,Administration,11/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0739,1000000739,00000739,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0740,1000000740,00000740,LTD,Active,13/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 740
+Z Massive Valid Company 0741,1000000741,00000741,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0742,1000000742,00000742,LTD,Administration,15/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0743,1000000743,00000743,LTD,Liquidation,16/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0744,1000000744,00000744,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0745,1000000745,00000745,LTD,Dormant,18/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 745
+Z Massive Valid Company 0746,1000000746,00000746,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0747,1000000747,00000747,PLC,Liquidation,20/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0748,1000000748,00000748,LTD,Active,21/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0749,1000000749,00000749,LTD,Dormant,22/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0750,1000000750,00000750,PLC,Administration,23/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 750
+Z Massive Valid Company 0751,1000000751,00000751,LTD,Liquidation,24/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0752,1000000752,00000752,LTD,Active,25/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0753,1000000753,00000753,PLC,Dormant,26/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0754,1000000754,00000754,LTD,Administration,27/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0755,1000000755,00000755,LTD,Liquidation,28/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 755
+Z Massive Valid Company 0756,1000000756,00000756,PLC,Active,01/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0757,1000000757,00000757,LTD,Dormant,02/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0758,1000000758,00000758,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0759,1000000759,00000759,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0760,1000000760,00000760,LTD,Active,05/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 760
+Z Massive Valid Company 0761,1000000761,00000761,LTD,Dormant,06/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0762,1000000762,00000762,PLC,Administration,07/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0763,1000000763,00000763,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0764,1000000764,00000764,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0765,1000000765,00000765,PLC,Dormant,10/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 765
+Z Massive Valid Company 0766,1000000766,00000766,LTD,Administration,11/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0767,1000000767,00000767,LTD,Liquidation,12/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0768,1000000768,00000768,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0769,1000000769,00000769,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0770,1000000770,00000770,LTD,Administration,15/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 770
+Z Massive Valid Company 0771,1000000771,00000771,PLC,Liquidation,16/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0772,1000000772,00000772,LTD,Active,17/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0773,1000000773,00000773,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0774,1000000774,00000774,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0775,1000000775,00000775,LTD,Liquidation,20/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 775
+Z Massive Valid Company 0776,1000000776,00000776,LTD,Active,21/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0777,1000000777,00000777,PLC,Dormant,22/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0778,1000000778,00000778,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0779,1000000779,00000779,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0780,1000000780,00000780,PLC,Active,25/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 780
+Z Massive Valid Company 0781,1000000781,00000781,LTD,Dormant,26/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0782,1000000782,00000782,LTD,Administration,27/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0783,1000000783,00000783,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0784,1000000784,00000784,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0785,1000000785,00000785,LTD,Dormant,02/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 785
+Z Massive Valid Company 0786,1000000786,00000786,PLC,Administration,03/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0787,1000000787,00000787,LTD,Liquidation,04/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0788,1000000788,00000788,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0789,1000000789,00000789,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0790,1000000790,00000790,LTD,Administration,07/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 790
+Z Massive Valid Company 0791,1000000791,00000791,LTD,Liquidation,08/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0792,1000000792,00000792,PLC,Active,09/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0793,1000000793,00000793,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0794,1000000794,00000794,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0795,1000000795,00000795,PLC,Liquidation,12/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 795
+Z Massive Valid Company 0796,1000000796,00000796,LTD,Active,13/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0797,1000000797,00000797,LTD,Dormant,14/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0798,1000000798,00000798,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0799,1000000799,00000799,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0800,1000000800,00000800,LTD,Active,17/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 800
+Z Massive Valid Company 0801,1000000801,00000801,PLC,Dormant,18/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0802,1000000802,00000802,LTD,Administration,19/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0803,1000000803,00000803,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0804,1000000804,00000804,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0805,1000000805,00000805,LTD,Dormant,22/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 805
+Z Massive Valid Company 0806,1000000806,00000806,LTD,Administration,23/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0807,1000000807,00000807,PLC,Liquidation,24/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0808,1000000808,00000808,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0809,1000000809,00000809,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0810,1000000810,00000810,PLC,Administration,27/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 810
+Z Massive Valid Company 0811,1000000811,00000811,LTD,Liquidation,28/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0812,1000000812,00000812,LTD,Active,01/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0813,1000000813,00000813,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0814,1000000814,00000814,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0815,1000000815,00000815,LTD,Liquidation,04/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 815
+Z Massive Valid Company 0816,1000000816,00000816,PLC,Active,05/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0817,1000000817,00000817,LTD,Dormant,06/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0818,1000000818,00000818,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0819,1000000819,00000819,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0820,1000000820,00000820,LTD,Active,09/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 820
+Z Massive Valid Company 0821,1000000821,00000821,LTD,Dormant,10/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0822,1000000822,00000822,PLC,Administration,11/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0823,1000000823,00000823,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0824,1000000824,00000824,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0825,1000000825,00000825,PLC,Dormant,14/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 825
+Z Massive Valid Company 0826,1000000826,00000826,LTD,Administration,15/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0827,1000000827,00000827,LTD,Liquidation,16/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0828,1000000828,00000828,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0829,1000000829,00000829,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0830,1000000830,00000830,LTD,Administration,19/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 830
+Z Massive Valid Company 0831,1000000831,00000831,PLC,Liquidation,20/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0832,1000000832,00000832,LTD,Active,21/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0833,1000000833,00000833,LTD,Dormant,22/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0834,1000000834,00000834,PLC,Administration,23/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0835,1000000835,00000835,LTD,Liquidation,24/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 835
+Z Massive Valid Company 0836,1000000836,00000836,LTD,Active,25/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0837,1000000837,00000837,PLC,Dormant,26/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0838,1000000838,00000838,LTD,Administration,27/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0839,1000000839,00000839,LTD,Liquidation,28/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0840,1000000840,00000840,PLC,Active,01/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 840
+Z Massive Valid Company 0841,1000000841,00000841,LTD,Dormant,02/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0842,1000000842,00000842,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0843,1000000843,00000843,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0844,1000000844,00000844,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0845,1000000845,00000845,LTD,Dormant,06/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 845
+Z Massive Valid Company 0846,1000000846,00000846,PLC,Administration,07/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0847,1000000847,00000847,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0848,1000000848,00000848,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0849,1000000849,00000849,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0850,1000000850,00000850,LTD,Administration,11/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 850
+Z Massive Valid Company 0851,1000000851,00000851,LTD,Liquidation,12/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0852,1000000852,00000852,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0853,1000000853,00000853,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0854,1000000854,00000854,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0855,1000000855,00000855,PLC,Liquidation,16/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 855
+Z Massive Valid Company 0856,1000000856,00000856,LTD,Active,17/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0857,1000000857,00000857,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0858,1000000858,00000858,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0859,1000000859,00000859,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0860,1000000860,00000860,LTD,Active,21/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 860
+Z Massive Valid Company 0861,1000000861,00000861,PLC,Dormant,22/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0862,1000000862,00000862,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0863,1000000863,00000863,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0864,1000000864,00000864,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0865,1000000865,00000865,LTD,Dormant,26/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 865
+Z Massive Valid Company 0866,1000000866,00000866,LTD,Administration,27/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0867,1000000867,00000867,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0868,1000000868,00000868,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0869,1000000869,00000869,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0870,1000000870,00000870,PLC,Administration,03/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 870
+Z Massive Valid Company 0871,1000000871,00000871,LTD,Liquidation,04/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0872,1000000872,00000872,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0873,1000000873,00000873,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0874,1000000874,00000874,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0875,1000000875,00000875,LTD,Liquidation,08/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 875
+Z Massive Valid Company 0876,1000000876,00000876,PLC,Active,09/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0877,1000000877,00000877,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0878,1000000878,00000878,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0879,1000000879,00000879,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0880,1000000880,00000880,LTD,Active,13/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 880
+Z Massive Valid Company 0881,1000000881,00000881,LTD,Dormant,14/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0882,1000000882,00000882,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0883,1000000883,00000883,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0884,1000000884,00000884,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0885,1000000885,00000885,PLC,Dormant,18/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 885
+Z Massive Valid Company 0886,1000000886,00000886,LTD,Administration,19/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0887,1000000887,00000887,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0888,1000000888,00000888,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0889,1000000889,00000889,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0890,1000000890,00000890,LTD,Administration,23/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 890
+Z Massive Valid Company 0891,1000000891,00000891,PLC,Liquidation,24/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0892,1000000892,00000892,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0893,1000000893,00000893,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0894,1000000894,00000894,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0895,1000000895,00000895,LTD,Liquidation,28/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 895
+Z Massive Valid Company 0896,1000000896,00000896,LTD,Active,01/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0897,1000000897,00000897,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0898,1000000898,00000898,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0899,1000000899,00000899,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0900,1000000900,00000900,PLC,Active,05/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 900
+Z Massive Valid Company 0901,1000000901,00000901,LTD,Dormant,06/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0902,1000000902,00000902,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0903,1000000903,00000903,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0904,1000000904,00000904,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0905,1000000905,00000905,LTD,Dormant,10/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 905
+Z Massive Valid Company 0906,1000000906,00000906,PLC,Administration,11/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0907,1000000907,00000907,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0908,1000000908,00000908,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0909,1000000909,00000909,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0910,1000000910,00000910,LTD,Administration,15/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 910
+Z Massive Valid Company 0911,1000000911,00000911,LTD,Liquidation,16/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0912,1000000912,00000912,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0913,1000000913,00000913,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0914,1000000914,00000914,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0915,1000000915,00000915,PLC,Liquidation,20/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 915
+Z Massive Valid Company 0916,1000000916,00000916,LTD,Active,21/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0917,1000000917,00000917,LTD,Dormant,22/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0918,1000000918,00000918,PLC,Administration,23/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0919,1000000919,00000919,LTD,Liquidation,24/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0920,1000000920,00000920,LTD,Active,25/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 920
+Z Massive Valid Company 0921,1000000921,00000921,PLC,Dormant,26/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0922,1000000922,00000922,LTD,Administration,27/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0923,1000000923,00000923,LTD,Liquidation,28/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0924,1000000924,00000924,PLC,Active,01/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0925,1000000925,00000925,LTD,Dormant,02/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 925
+Z Massive Valid Company 0926,1000000926,00000926,LTD,Administration,03/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0927,1000000927,00000927,PLC,Liquidation,04/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0928,1000000928,00000928,LTD,Active,05/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0929,1000000929,00000929,LTD,Dormant,06/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0930,1000000930,00000930,PLC,Administration,07/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 930
+Z Massive Valid Company 0931,1000000931,00000931,LTD,Liquidation,08/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0932,1000000932,00000932,LTD,Active,09/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0933,1000000933,00000933,PLC,Dormant,10/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0934,1000000934,00000934,LTD,Administration,11/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0935,1000000935,00000935,LTD,Liquidation,12/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 935
+Z Massive Valid Company 0936,1000000936,00000936,PLC,Active,13/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0937,1000000937,00000937,LTD,Dormant,14/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0938,1000000938,00000938,LTD,Administration,15/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0939,1000000939,00000939,PLC,Liquidation,16/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0940,1000000940,00000940,LTD,Active,17/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 940
+Z Massive Valid Company 0941,1000000941,00000941,LTD,Dormant,18/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0942,1000000942,00000942,PLC,Administration,19/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0943,1000000943,00000943,LTD,Liquidation,20/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0944,1000000944,00000944,LTD,Active,21/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0945,1000000945,00000945,PLC,Dormant,22/10/2025,x,,,,,,,,,,Qualified,Qualified reason for company 945
+Z Massive Valid Company 0946,1000000946,00000946,LTD,Administration,23/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0947,1000000947,00000947,LTD,Liquidation,24/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0948,1000000948,00000948,PLC,Active,25/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0949,1000000949,00000949,LTD,Dormant,26/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0950,1000000950,00000950,LTD,Administration,27/03/2025,x,,,,,,,,,,Qualified,Qualified reason for company 950
+Z Massive Valid Company 0951,1000000951,00000951,PLC,Liquidation,28/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0952,1000000952,00000952,LTD,Active,01/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0953,1000000953,00000953,LTD,Dormant,02/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0954,1000000954,00000954,PLC,Administration,03/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0955,1000000955,00000955,LTD,Liquidation,04/08/2025,x,,,,,,,,,,Qualified,Qualified reason for company 955
+Z Massive Valid Company 0956,1000000956,00000956,LTD,Active,05/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0957,1000000957,00000957,PLC,Dormant,06/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0958,1000000958,00000958,LTD,Administration,07/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0959,1000000959,00000959,LTD,Liquidation,08/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0960,1000000960,00000960,PLC,Active,09/01/2025,x,,,,,,,,,,Qualified,Qualified reason for company 960
+Z Massive Valid Company 0961,1000000961,00000961,LTD,Dormant,10/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0962,1000000962,00000962,LTD,Administration,11/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0963,1000000963,00000963,PLC,Liquidation,12/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0964,1000000964,00000964,LTD,Active,13/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0965,1000000965,00000965,LTD,Dormant,14/06/2025,x,,,,,,,,,,Qualified,Qualified reason for company 965
+Z Massive Valid Company 0966,1000000966,00000966,PLC,Administration,15/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0967,1000000967,00000967,LTD,Liquidation,16/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0968,1000000968,00000968,LTD,Active,17/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0969,1000000969,00000969,PLC,Dormant,18/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0970,1000000970,00000970,LTD,Administration,19/11/2025,x,,,,,,,,,,Qualified,Qualified reason for company 970
+Z Massive Valid Company 0971,1000000971,00000971,LTD,Liquidation,20/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0972,1000000972,00000972,PLC,Active,21/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0973,1000000973,00000973,LTD,Dormant,22/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0974,1000000974,00000974,LTD,Administration,23/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0975,1000000975,00000975,PLC,Liquidation,24/04/2025,x,,,,,,,,,,Qualified,Qualified reason for company 975
+Z Massive Valid Company 0976,1000000976,00000976,LTD,Active,25/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0977,1000000977,00000977,LTD,Dormant,26/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0978,1000000978,00000978,PLC,Administration,27/07/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0979,1000000979,00000979,LTD,Liquidation,28/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0980,1000000980,00000980,LTD,Active,01/09/2025,x,,,,,,,,,,Qualified,Qualified reason for company 980
+Z Massive Valid Company 0981,1000000981,00000981,PLC,Dormant,02/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0982,1000000982,00000982,LTD,Administration,03/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0983,1000000983,00000983,LTD,Liquidation,04/12/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0984,1000000984,00000984,PLC,Active,05/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0985,1000000985,00000985,LTD,Dormant,06/02/2025,x,,,,,,,,,,Qualified,Qualified reason for company 985
+Z Massive Valid Company 0986,1000000986,00000986,LTD,Administration,07/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0987,1000000987,00000987,PLC,Liquidation,08/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0988,1000000988,00000988,LTD,Active,09/05/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0989,1000000989,00000989,LTD,Dormant,10/06/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0990,1000000990,00000990,PLC,Administration,11/07/2025,x,,,,,,,,,,Qualified,Qualified reason for company 990
+Z Massive Valid Company 0991,1000000991,00000991,LTD,Liquidation,12/08/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0992,1000000992,00000992,LTD,Active,13/09/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0993,1000000993,00000993,PLC,Dormant,14/10/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0994,1000000994,00000994,LTD,Administration,15/11/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0995,1000000995,00000995,LTD,Liquidation,16/12/2025,x,,,,,,,,,,Qualified,Qualified reason for company 995
+Z Massive Valid Company 0996,1000000996,00000996,PLC,Active,17/01/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0997,1000000997,00000997,LTD,Dormant,18/02/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0998,1000000998,00000998,LTD,Administration,19/03/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 0999,1000000999,00000999,PLC,Liquidation,20/04/2025,,,,,,,,,,,Unqualified,
+Z Massive Valid Company 1000,1000001000,00001000,LTD,Active,21/05/2025,x,,,,,,,,,,Qualified,Qualified reason for company 1000

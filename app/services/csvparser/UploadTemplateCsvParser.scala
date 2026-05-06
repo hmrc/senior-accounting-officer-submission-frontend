@@ -23,7 +23,7 @@ import models.upload.TemplateParseResult.Invalid
 import play.api.i18n.{Messages, MessagesApi}
 import services.csvparser.UploadTemplateCsvSchema.*
 
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 import java.io.StringReader
 import javax.inject.Inject
@@ -52,18 +52,8 @@ class UploadTemplateCsvParser @Inject() (
   )
 
   def parse(csv: String, messages: Messages = messagesApi.preferred(Seq.empty)): TemplateParseResult = {
-    Try {
-      val rows   = parseCsvRows(csv)
-      val errors =
-        structureValidator.validateSectionRow(rows.lift(SectionRowIndex), templateFileErrorMessage(messages)) ++
-          structureValidator.validateHeaderRow(rows.lift(HeaderRowIndex), templateFileErrorMessage(messages))
-
-      errors match {
-        case Nil      => rowParser.parseDataRows(rows, rowErrorMessages(messages), templateFileErrorMessage(messages))
-        case nonEmpty => Invalid(nonEmpty)
-      }
-    }.fold(
-      err =>
+    Try(parseCsvRows(csv)) match {
+      case Failure(err) =>
         Invalid(
           Seq(
             TemplateParseError(
@@ -73,9 +63,18 @@ class UploadTemplateCsvParser @Inject() (
               s"Unable to parse CSV content: ${err.getMessage}"
             )
           )
-        ),
-      identity
-    )
+        )
+
+      case Success(rows) =>
+        val errors =
+          structureValidator.validateSectionRow(rows.lift(SectionRowIndex), templateFileErrorMessage(messages)) ++
+            structureValidator.validateHeaderRow(rows.lift(HeaderRowIndex), templateFileErrorMessage(messages))
+
+        errors match {
+          case Nil      => rowParser.parseDataRows(rows, rowErrorMessages(messages), templateFileErrorMessage(messages))
+          case nonEmpty => Invalid(nonEmpty)
+        }
+    }
   }
 
   private def parseCsvRows(csv: String): Vector[CsvRow] = {
