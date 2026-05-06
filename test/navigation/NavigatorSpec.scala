@@ -184,10 +184,18 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMoreThanOneSaoPage and the user selected Yes, must throw an exception" in {
+      "when on NotificationMoreThanOneSaoPage and the user selected Yes, must go to multiple sao name page" in {
+        navigator.nextPage(
+          NotificationMoreThanOneSaoPage,
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+        ) mustBe routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+      }
+
+      "when on MoreSaoSubmitNotificationFullNameController, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
-            NotificationMoreThanOneSaoPage,
+            MoreSaoSubmitNotificationFullNamePage,
             NormalMode,
             UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
           )
