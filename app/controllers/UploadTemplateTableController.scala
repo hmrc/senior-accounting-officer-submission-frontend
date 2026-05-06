@@ -39,21 +39,12 @@ class UploadTemplateTableController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val nextPage = Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
-
-    request.userAnswers
-      .get(UploadTemplateTablePage)
-      .fold(
-        nextPage
-      ) { tableData =>
-        request.userAnswers
-          .get(OneSaoSubmitNotificationFullNamePage)
-          .fold(
-            nextPage
-          ) { saoName =>
-            Ok(view(tableData, saoName))
-          }
-      }
+    (
+      for {
+        tableData <- request.userAnswers.get(UploadTemplateTablePage)
+        saoName   <- request.userAnswers.get(OneSaoSubmitNotificationFullNamePage)
+      } yield Ok(view(tableData, saoName))
+    ).getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
