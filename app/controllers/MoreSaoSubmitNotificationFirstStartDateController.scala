@@ -20,7 +20,7 @@ import controllers.actions.*
 import forms.MoreSaoSubmitNotificationFirstStartDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.MoreSaoSubmitNotificationFirstStartDatePage
+import pages.{MoreSaoSubmitNotificationFirstStartDatePage, MoreSaoSubmitNotificationFullNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -48,16 +48,18 @@ class MoreSaoSubmitNotificationFirstStartDateController @Inject() (
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.get(MoreSaoSubmitNotificationFirstStartDatePage).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
+    val saoName      = request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage).get // don't use get
+    Ok(view(saoName, preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider()
+      val form    = formProvider()
+      val saoName = request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage).get // don't use get
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+          formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
           value =>
             for {
               updatedAnswers <- Future

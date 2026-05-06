@@ -192,14 +192,12 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
       }
 
-      "when on MoreSaoSubmitNotificationFullNameController, must throw an exception" in {
-        intercept[NotImplementedError] {
-          navigator.nextPage(
-            MoreSaoSubmitNotificationFullNamePage,
-            NormalMode,
-            UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-          )
-        }
+      "when on MoreSaoSubmitNotificationFullNameController, must go to more sao submit notification first date page" in {
+        navigator.nextPage(
+          MoreSaoSubmitNotificationFullNamePage,
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+        ) mustBe routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(NormalMode)
       }
 
       "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {

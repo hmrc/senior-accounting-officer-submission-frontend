@@ -22,7 +22,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
+@(saoName: String, form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("moreSaoSubmitNotificationFirstStartDate.title"))) {
 
@@ -37,7 +37,7 @@
         @govukDateInput(
             DateViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("moreSaoSubmitNotificationFirstStartDate.heading").toText).asPageHeading(LegendSize.Large)
+                legend = LegendViewModel(messages("moreSaoSubmitNotificationFirstStartDate.heading", saoName).toText).asPageHeading(LegendSize.Large)
             )
             .withHint(HintViewModel(messages("moreSaoSubmitNotificationFirstStartDate.hint").toText))
         )

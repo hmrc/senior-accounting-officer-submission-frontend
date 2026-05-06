@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.MoreSaoSubmitNotificationFirstStartDatePage
+import pages.{MoreSaoSubmitNotificationFirstStartDatePage, MoreSaoSubmitNotificationFullNamePage}
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -46,11 +46,15 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
   def onwardRoute: Call = Call("GET", "/foo")
 
   val validAnswer: LocalDate = LocalDate.now(ZoneOffset.UTC)
+  val saoName: String        = "Firstname Lastname"
 
   lazy val moreSaoSubmitNotificationFirstStartDateRoute: String =
     routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(NormalMode).url
 
-  override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
+  val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+    .set(MoreSaoSubmitNotificationFullNamePage, saoName)
+    .success
+    .value
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, moreSaoSubmitNotificationFirstStartDateRoute)
@@ -67,7 +71,7 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val result = route(application, getRequest()).value
@@ -75,16 +79,17 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
         val view = application.injector.instanceOf[MoreSaoSubmitNotificationFirstStartDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(using getRequest(), messages(application)).toString
+        contentAsString(result) mustEqual view(saoName, form, NormalMode)(using
+          getRequest(),
+          messages(application)
+        ).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers =
-        UserAnswers(userAnswersId).set(MoreSaoSubmitNotificationFirstStartDatePage, validAnswer).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      val userAnswersWithDate = userAnswers.set(MoreSaoSubmitNotificationFirstStartDatePage, validAnswer).success.value
+      val application         = applicationBuilder(userAnswers = Some(userAnswersWithDate)).build()
 
       running(application) {
         val view = application.injector.instanceOf[MoreSaoSubmitNotificationFirstStartDateView]
@@ -92,7 +97,7 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
         val result = route(application, getRequest()).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, form.fill(validAnswer), NormalMode)(using
           getRequest(),
           messages(application)
         ).toString
@@ -106,7 +111,7 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -123,7 +128,12 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val userAnswers =
+        UserAnswers(userAnswersId)
+          .set(MoreSaoSubmitNotificationFullNamePage, saoName)
+          .success
+          .value
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, moreSaoSubmitNotificationFirstStartDateRoute)
@@ -137,7 +147,10 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

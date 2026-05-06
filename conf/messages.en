@@ -269,7 +269,7 @@ whoWasTheSaoBefore.error.length = The name you enter must be 254 characters or l
 whoWasTheSaoBefore.change.hidden = WhoWasTheSaoBefore
 
 moreSaoSubmitNotificationFirstStartDate.title = Submit a notification
-moreSaoSubmitNotificationFirstStartDate.heading = What date did Jackson Brown become the SAO?
+moreSaoSubmitNotificationFirstStartDate.heading = What date did {0} become the SAO?
 moreSaoSubmitNotificationFirstStartDate.caption = Submit a notification
 moreSaoSubmitNotificationFirstStartDate.hint = For example 01 6 2024
 moreSaoSubmitNotificationFirstStartDate.checkYourAnswersLabel = MoreSaoSubmitNotificationFirstStartDate

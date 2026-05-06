@@ -74,7 +74,7 @@ class Navigator @Inject() () {
     case MoreSaoSubmitNotificationFirstStartDatePage =>
       _ => ??? // TODO: link to /notification/more-sao/submit-notification-second-full-name
     case MoreSaoSubmitNotificationFullNamePage =>
-      _ => ??? // TODO: link to /notification/more-sao/email
+      _ => routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(NormalMode)
     case _ =>
       _ => ???
   }

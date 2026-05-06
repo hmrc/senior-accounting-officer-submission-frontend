@@ -35,7 +35,7 @@ class MoreSaoSubmitNotificationFirstStartDateViewSpec
   private val form: Form[LocalDate] = formProvider()
 
   private def generateView(form: Form[LocalDate], mode: Mode): Document = {
-    val view = SUT(form, mode)
+    val view = SUT("Firstname Lastname", form, mode)
     Jsoup.parse(view.toString)
   }
 
@@ -124,7 +124,7 @@ class MoreSaoSubmitNotificationFirstStartDateViewSpec
 }
 
 object MoreSaoSubmitNotificationFirstStartDateViewSpec {
-  val pageHeading = "What date did Jackson Brown become the SAO?"
+  val pageHeading = "What date did Firstname Lastname become the SAO?"
   val pageTitle   = "Submit a notification"
   val pageCaption = "Submit a notification"
   val pageHint    = "For example 01 6 2024"
