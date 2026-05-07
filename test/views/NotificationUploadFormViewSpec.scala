@@ -72,9 +72,6 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
         label.text() mustBe uploadFormLabel
       }
 
-      "must link back to the notification task list" in {
-        doc.select("a.govuk-back-link").attr("href") must endWith("/notification/start")
-      }
     }
 
     "Page with error" - {

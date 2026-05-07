@@ -39,6 +39,7 @@ class UploadTemplateTableController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    // TODO turn this into a service to keep the controller clean & update logic to be 1/1 sao or 2/2 sao (the last one entered)
     (
       for {
         tableData <- request.userAnswers.get(UploadTemplateTablePage)

@@ -30,7 +30,6 @@
 
 @(pageTitle: String,
   showBackLink: Boolean = true,
-  explicitBackLink: Option[BackLink] = None,
   timeout: Boolean = true,
   showSignOut: Boolean = true,
   showHmrcBanner: Boolean = false,
@@ -74,7 +73,7 @@
         phaseBanner = Some(betaBanner(appConfig.feedbackUrl))
     ),
     isWelshTranslationAvailable = appConfig.welshLanguageSupportEnabled,
-    backLink = explicitBackLink.orElse(if (showBackLink) Some(BackLink.mimicsBrowserBackButtonViaJavaScript) else None)
+    backLink = if (showBackLink) Some(BackLink.mimicsBrowserBackButtonViaJavaScript) else None
 ))(content)
 
 @{

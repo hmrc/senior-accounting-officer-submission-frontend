@@ -68,9 +68,6 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       uploadLink.attr("href") must endWith("/notification/upload")
     }
 
-    "must link back to the upload page" in {
-      doc.select("a.govuk-back-link").attr("href") must endWith("/notification/upload")
-    }
   }
 }
 
