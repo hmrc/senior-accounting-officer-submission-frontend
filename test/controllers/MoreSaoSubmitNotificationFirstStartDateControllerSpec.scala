@@ -86,6 +86,17 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
       }
     }
 
+    "must redirect to journey recovery when sao name is not found in the database" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val result = route(application, getRequest()).value
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswersWithDate = userAnswers.set(MoreSaoSubmitNotificationFirstStartDatePage, validAnswer).success.value
@@ -169,6 +180,18 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
       val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val result = route(application, postRequest()).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to Journey Recovery for a POST if sao name not found in the database" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
         val result = route(application, postRequest()).value

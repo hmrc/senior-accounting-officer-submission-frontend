@@ -48,24 +48,32 @@ class MoreSaoSubmitNotificationFirstStartDateController @Inject() (
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.get(MoreSaoSubmitNotificationFirstStartDatePage).fold(form)(form.fill)
-    val saoName      = request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage).get // don't use get
-    Ok(view(saoName, preparedForm, mode))
+    request.userAnswers
+      .get(MoreSaoSubmitNotificationFullNamePage)
+      .fold(
+        Redirect(routes.JourneyRecoveryController.onPageLoad())
+      )(saoName => Ok(view(saoName, preparedForm, mode)))
+
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form    = formProvider()
-      val saoName = request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage).get // don't use get
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(MoreSaoSubmitNotificationFirstStartDatePage, value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(MoreSaoSubmitNotificationFirstStartDatePage, mode, updatedAnswers))
-        )
+      val form = formProvider()
+      request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage) match {
+        case Some(saoName) =>
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
+              value =>
+                for {
+                  updatedAnswers <- Future
+                    .fromTry(request.userAnswers.set(MoreSaoSubmitNotificationFirstStartDatePage, value))
+                  _ <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(navigator.nextPage(MoreSaoSubmitNotificationFirstStartDatePage, mode, updatedAnswers))
+            )
+
+        case None => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+      }
   }
 }
