@@ -17,37 +17,37 @@
 package controllers
 
 import controllers.actions.*
-import forms.MoreSaoSubmitNotificationSecondStartDateFormProvider
+import forms.NotificationMultiSaoSecondStartDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.MoreSaoSubmitNotificationSecondStartDatePage
+import pages.NotificationMultiSaoSecondStartDatePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.MoreSaoSubmitNotificationSecondStartDateView
+import views.html.NotificationMultiSaoSecondStartDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class MoreSaoSubmitNotificationSecondStartDateController @Inject() (
+class NotificationMultiSaoSecondStartDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: MoreSaoSubmitNotificationSecondStartDateFormProvider,
+    formProvider: NotificationMultiSaoSecondStartDateFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: MoreSaoSubmitNotificationSecondStartDateView
+    view: NotificationMultiSaoSecondStartDateView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(MoreSaoSubmitNotificationSecondStartDatePage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(NotificationMultiSaoSecondStartDatePage).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -61,9 +61,9 @@ class MoreSaoSubmitNotificationSecondStartDateController @Inject() (
           value =>
             for {
               updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(MoreSaoSubmitNotificationSecondStartDatePage, value))
+                .fromTry(request.userAnswers.set(NotificationMultiSaoSecondStartDatePage, value))
               _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(MoreSaoSubmitNotificationSecondStartDatePage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(NotificationMultiSaoSecondStartDatePage, mode, updatedAnswers))
         )
   }
 }

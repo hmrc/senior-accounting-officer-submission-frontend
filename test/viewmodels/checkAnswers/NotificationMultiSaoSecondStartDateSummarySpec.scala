@@ -20,34 +20,34 @@ import base.SpecBase
 import controllers.routes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.MoreSaoSubmitNotificationSecondStartDatePage
+import pages.NotificationMultiSaoSecondStartDatePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
 import java.time.LocalDate
 
-class MoreSaoSubmitNotificationSecondStartDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationMultiSaoSecondStartDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  "MoreSaoSubmitNotificationSecondStartDateSummary.row" - {
+  "NotificationMultiSaoSecondStartDateSummary.row" - {
 
-    "when there is no answer for MoreSaoSubmitNotificationSecondStartDatePage" - {
+    "when there is no answer for NotificationMultiSaoSecondStartDatePage" - {
       "must return None" in {
-        def SUT = MoreSaoSubmitNotificationSecondStartDateSummary.row(emptyUserAnswers)
+        def SUT = NotificationMultiSaoSecondStartDateSummary.row(emptyUserAnswers)
 
         SUT mustBe None
       }
     }
 
-    "when there is a user answer for MoreSaoSubmitNotificationSecondStartDatePage" - {
+    "when there is a user answer for NotificationMultiSaoSecondStartDatePage" - {
       def testUserAnswers(answer: LocalDate) =
-        emptyUserAnswers.set(MoreSaoSubmitNotificationSecondStartDatePage, answer).get
+        emptyUserAnswers.set(NotificationMultiSaoSecondStartDatePage, answer).get
 
       def SUT(answer: LocalDate = LocalDate.now) =
-        MoreSaoSubmitNotificationSecondStartDateSummary.row(testUserAnswers(answer)).get
+        NotificationMultiSaoSecondStartDateSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "MoreSaoSubmitNotificationSecondStartDate".toKey
+        SUT().key mustBe "NotificationMultiSaoSecondStartDate".toKey
       }
 
       "expected value" - {
@@ -75,13 +75,13 @@ class MoreSaoSubmitNotificationSecondStartDateSummarySpec extends SpecBase with 
         }
 
         "must have expected url" in {
-          action.href mustBe routes.MoreSaoSubmitNotificationSecondStartDateController
+          action.href mustBe routes.NotificationMultiSaoSecondStartDateController
             .onPageLoad(CheckMode)
             .url
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "MoreSaoSubmitNotificationSecondStartDate"
+          action.visuallyHiddenText.get mustBe "NotificationMultiSaoSecondStartDate"
         }
       }
     }

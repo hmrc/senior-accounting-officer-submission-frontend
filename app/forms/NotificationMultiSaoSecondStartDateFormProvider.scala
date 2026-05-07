@@ -23,19 +23,15 @@ import play.api.i18n.Messages
 import java.time.LocalDate
 import javax.inject.Inject
 
-class MoreSaoSubmitNotificationSecondStartDateFormProvider @Inject() extends Mappings {
+class NotificationMultiSaoSecondStartDateFormProvider @Inject() extends Mappings {
 
   def apply()(using messages: Messages): Form[LocalDate] =
     Form(
       "value" -> localDate(
-        // LDS ignore
-        invalidKey = "moreSaoSubmitNotificationSecondStartDate.error.invalid",
-        // LDS ignore
-        allRequiredKey = "moreSaoSubmitNotificationSecondStartDate.error.required.all",
-        // LDS ignore
-        twoRequiredKey = "moreSaoSubmitNotificationSecondStartDate.error.required.two",
-        // LDS ignore
-        requiredKey = "moreSaoSubmitNotificationSecondStartDate.error.required"
+        invalidKey = "notificationMultiSaoSecondStartDate.error.invalid",
+        allRequiredKey = "notificationMultiSaoSecondStartDate.error.required.all",
+        twoRequiredKey = "notificationMultiSaoSecondStartDate.error.required.two",
+        requiredKey = "notificationMultiSaoSecondStartDate.error.required"
       )
     )
 }

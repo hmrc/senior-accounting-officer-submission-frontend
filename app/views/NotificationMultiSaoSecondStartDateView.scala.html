@@ -24,9 +24,9 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("moreSaoSubmitNotificationSecondStartDate.title"))) {
+@layout(pageTitle = title(form, messages("notificationMultiSaoSecondStartDate.title"))) {
 
-    @formHelper(action = routes.MoreSaoSubmitNotificationSecondStartDateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.NotificationMultiSaoSecondStartDateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
@@ -35,9 +35,9 @@
         @govukDateInput(
             DateViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("moreSaoSubmitNotificationSecondStartDate.heading").toText).asPageHeading(LegendSize.Large)
+                legend = LegendViewModel(messages("notificationMultiSaoSecondStartDate.heading").toText).asPageHeading(LegendSize.Large)
             )
-            .withHint(HintViewModel(messages("moreSaoSubmitNotificationSecondStartDate.hint").toText))
+            .withHint(HintViewModel(messages("notificationMultiSaoSecondStartDate.hint").toText))
         )
 
         @govukButton(

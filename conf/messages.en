@@ -331,3 +331,13 @@ moreSaoSubmitNotificationSecondStartDate.error.required.two = The date must incl
 moreSaoSubmitNotificationSecondStartDate.error.required = The date must include {0}
 moreSaoSubmitNotificationSecondStartDate.error.invalid = Enter the date in the correct format
 moreSaoSubmitNotificationSecondStartDate.change.hidden = MoreSaoSubmitNotificationSecondStartDate
+
+notificationMultiSaoSecondStartDate.title = Submit a notification – Senior Accounting Officer notification and certificate
+notificationMultiSaoSecondStartDate.heading = When did Ashley Ross's responsibility as the SAO start?
+notificationMultiSaoSecondStartDate.hint = For example 01 6 2024
+notificationMultiSaoSecondStartDate.checkYourAnswersLabel = NotificationMultiSaoSecondStartDate
+notificationMultiSaoSecondStartDate.error.required.all = The date must be a real date
+notificationMultiSaoSecondStartDate.error.required.two = The date must include {0} and {1}
+notificationMultiSaoSecondStartDate.error.required = The date must include {0}
+notificationMultiSaoSecondStartDate.error.invalid = Enter the date in the correct format
+notificationMultiSaoSecondStartDate.change.hidden = NotificationMultiSaoSecondStartDate

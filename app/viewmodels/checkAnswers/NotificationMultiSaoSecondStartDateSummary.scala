@@ -18,27 +18,27 @@ package viewmodels.checkAnswers
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.MoreSaoSubmitNotificationSecondStartDatePage
+import pages.NotificationMultiSaoSecondStartDatePage
 import play.api.i18n.{Lang, Messages}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import utils.DateTimeFormats.dateTimeFormat
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
-object MoreSaoSubmitNotificationSecondStartDateSummary {
+object NotificationMultiSaoSecondStartDateSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(MoreSaoSubmitNotificationSecondStartDatePage).map { answer =>
+    answers.get(NotificationMultiSaoSecondStartDatePage).map { answer =>
       given Lang = messages.lang
       SummaryListRowViewModel(
-        key = messages("moreSaoSubmitNotificationSecondStartDate.checkYourAnswersLabel").toKey,
+        key = messages("notificationMultiSaoSecondStartDate.checkYourAnswersLabel").toKey,
         value = ValueViewModel(answer.format(dateTimeFormat()).toText),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            routes.MoreSaoSubmitNotificationSecondStartDateController.onPageLoad(CheckMode).url
+            routes.NotificationMultiSaoSecondStartDateController.onPageLoad(CheckMode).url
           )
-            .withVisuallyHiddenText(messages("moreSaoSubmitNotificationSecondStartDate.change.hidden"))
+            .withVisuallyHiddenText(messages("notificationMultiSaoSecondStartDate.change.hidden"))
         )
       )
     }
