@@ -24,9 +24,10 @@
 
 @(form: Form[?], upscanInitiateResponse: models.UpscanInitiateResponse)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("notificationUploadForm.title")), showBackLink = false) {
-
-    <a href="@routes.SubmitNotificationStartController.onPageLoad()" class="govuk-back-link">@messages("site.back")</a>
+@layout(
+    pageTitle = title(form, messages("notificationUploadForm.title")),
+    explicitBackLink = Some(BackLink.withDefaultText(routes.SubmitNotificationStartController.onPageLoad().url))
+) {
 
     <form method="POST"
           action=@upscanInitiateResponse.postTarget

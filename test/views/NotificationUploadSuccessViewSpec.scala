@@ -44,6 +44,11 @@ class NotificationUploadSuccessViewSpec extends ViewSpecBase[NotificationUploadS
     "must have a spinner" in {
       doc.select("div.loader").size() mustBe 1
     }
+
+    "must refresh the page without adding a browser history entry" in {
+      doc.select("script").html() must include("window.location.replace(window.location.pathname)")
+      doc.select("script").html() must not include "window.location.href"
+    }
   }
 }
 
