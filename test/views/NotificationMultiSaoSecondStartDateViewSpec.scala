@@ -28,8 +28,7 @@ import views.html.NotificationMultiSaoSecondStartDateView
 
 import java.time.LocalDate
 
-class NotificationMultiSaoSecondStartDateViewSpec
-    extends ViewSpecBase[NotificationMultiSaoSecondStartDateView] {
+class NotificationMultiSaoSecondStartDateViewSpec extends ViewSpecBase[NotificationMultiSaoSecondStartDateView] {
 
   private val formProvider          = app.injector.instanceOf[NotificationMultiSaoSecondStartDateFormProvider]
   private val form: Form[LocalDate] = formProvider()
@@ -132,7 +131,7 @@ class NotificationMultiSaoSecondStartDateViewSpec
 }
 
 object NotificationMultiSaoSecondStartDateViewSpec {
-  val pageHeading = "When did Ashley Ross's responsibility as the SAO start?"
+  val pageHeading = "When did Ashley Ross’s responsibility as the SAO start?"
   val pageTitle   = "Submit a notification – Senior Accounting Officer notification and certificate"
   val pageCaption = "Submit a notification"
   val pageHint    = "For example 01 6 2024"

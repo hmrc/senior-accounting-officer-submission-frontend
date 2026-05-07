@@ -108,7 +108,7 @@ POST       /notification/more-sao/submit-notification-full-name                 
 GET        /notification/more-sao/change-submitNotification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
 POST       /notification/more-sao/change-submit-notification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
 
-GET        /notificationMultiSaoSecondStartDate                  controllers.NotificationMultiSaoSecondStartDateController.onPageLoad(mode: Mode = NormalMode)
-POST       /notificationMultiSaoSecondStartDate                  controllers.NotificationMultiSaoSecondStartDateController.onSubmit(mode: Mode = NormalMode)
-GET        /changeNotificationMultiSaoSecondStartDate                        controllers.NotificationMultiSaoSecondStartDateController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeNotificationMultiSaoSecondStartDate                        controllers.NotificationMultiSaoSecondStartDateController.onSubmit(mode: Mode = CheckMode)
+GET         /notification/multi-sao-second-start-date                 controllers.NotificationMultiSaoSecondStartDateController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/multi-sao-second-start-date                 controllers.NotificationMultiSaoSecondStartDateController.onSubmit(mode: Mode = NormalMode)
+GET         /notification/change-multi-sao-second-start-date          controllers.NotificationMultiSaoSecondStartDateController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/change-multi-sao-second-start-date          controllers.NotificationMultiSaoSecondStartDateController.onSubmit(mode: Mode = CheckMode)
