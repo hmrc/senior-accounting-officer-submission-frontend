@@ -333,7 +333,7 @@ moreSaoSubmitNotificationSecondStartDate.error.invalid = Enter the date in the c
 moreSaoSubmitNotificationSecondStartDate.change.hidden = MoreSaoSubmitNotificationSecondStartDate
 
 notificationMultiSaoSecondStartDate.title = Submit a notification – Senior Accounting Officer notification and certificate
-notificationMultiSaoSecondStartDate.heading = When did Ashley Ross’s responsibility as the SAO start?
+notificationMultiSaoSecondStartDate.heading = When did {0}’s responsibility as the SAO start?
 notificationMultiSaoSecondStartDate.caption = Submit a notification
 notificationMultiSaoSecondStartDate.hint = For example 01 6 2024
 notificationMultiSaoSecondStartDate.checkYourAnswersLabel = NotificationMultiSaoSecondStartDate

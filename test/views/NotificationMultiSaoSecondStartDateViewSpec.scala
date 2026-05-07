@@ -34,7 +34,7 @@ class NotificationMultiSaoSecondStartDateViewSpec extends ViewSpecBase[Notificat
   private val form: Form[LocalDate] = formProvider()
 
   private def generateView(form: Form[LocalDate], mode: Mode): Document = {
-    val view = SUT(form, mode)
+    val view = SUT(saoName, form, mode)
     Jsoup.parse(view.toString)
   }
 
@@ -131,8 +131,10 @@ class NotificationMultiSaoSecondStartDateViewSpec extends ViewSpecBase[Notificat
 }
 
 object NotificationMultiSaoSecondStartDateViewSpec {
-  val pageHeading = "When did Ashley Ross’s responsibility as the SAO start?"
+  val pageHeading = "When did Firstname Lastname’s responsibility as the SAO start?"
   val pageTitle   = "Submit a notification – Senior Accounting Officer notification and certificate"
   val pageCaption = "Submit a notification"
   val pageHint    = "For example 01 6 2024"
+
+  val saoName = "Firstname Lastname"
 }

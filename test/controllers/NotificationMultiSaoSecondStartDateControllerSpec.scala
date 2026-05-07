@@ -18,11 +18,13 @@ package controllers
 
 import base.SpecBase
 import forms.NotificationMultiSaoSecondStartDateFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
+import models.UserAnswers
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.MoreSaoSubmitNotificationFullNamePage
 import pages.NotificationMultiSaoSecondStartDatePage
 import play.api.i18n.Messages
 import play.api.inject.bind
@@ -50,7 +52,10 @@ class NotificationMultiSaoSecondStartDateControllerSpec extends SpecBase with Mo
   lazy val notificationMultiSaoSecondStartDateRoute: String =
     routes.NotificationMultiSaoSecondStartDateController.onPageLoad(NormalMode).url
 
-  override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
+  val saoName = "Firstname Lastname"
+
+  val userAnswersWithSaoName: UserAnswers =
+    emptyUserAnswers.set(MoreSaoSubmitNotificationFullNamePage, saoName).success.value
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, notificationMultiSaoSecondStartDateRoute)
@@ -67,7 +72,7 @@ class NotificationMultiSaoSecondStartDateControllerSpec extends SpecBase with Mo
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       running(application) {
         val result = route(application, getRequest()).value
@@ -75,14 +80,29 @@ class NotificationMultiSaoSecondStartDateControllerSpec extends SpecBase with Mo
         val view = application.injector.instanceOf[NotificationMultiSaoSecondStartDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(using getRequest(), messages(application)).toString
+        contentAsString(result) mustEqual view(saoName, form, NormalMode)(using
+          getRequest(),
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must redirect to the journey recovery page when user answers does not have sao name" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val result = route(application, getRequest()).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(NotificationMultiSaoSecondStartDatePage, validAnswer).success.value
+        userAnswersWithSaoName.set(NotificationMultiSaoSecondStartDatePage, validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -92,7 +112,7 @@ class NotificationMultiSaoSecondStartDateControllerSpec extends SpecBase with Mo
         val result = route(application, getRequest()).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, form.fill(validAnswer), NormalMode)(using
           getRequest(),
           messages(application)
         ).toString
@@ -100,6 +120,28 @@ class NotificationMultiSaoSecondStartDateControllerSpec extends SpecBase with Mo
     }
 
     "must redirect to the next page when valid data is submitted" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswersWithSaoName))
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(application) {
+        val result = route(application, postRequest()).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
+    }
+
+    "must redirect to the journey recovery page when no sao name is available" in {
 
       val mockSessionRepository = mock[SessionRepository]
 
@@ -117,13 +159,13 @@ class NotificationMultiSaoSecondStartDateControllerSpec extends SpecBase with Mo
         val result = route(application, postRequest()).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       val request =
         FakeRequest(POST, notificationMultiSaoSecondStartDateRoute)
@@ -137,7 +179,10 @@ class NotificationMultiSaoSecondStartDateControllerSpec extends SpecBase with Mo
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

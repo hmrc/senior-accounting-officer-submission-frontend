@@ -20,6 +20,7 @@ import controllers.actions.*
 import forms.NotificationMultiSaoSecondStartDateFormProvider
 import models.Mode
 import navigation.Navigator
+import pages.MoreSaoSubmitNotificationFullNamePage
 import pages.NotificationMultiSaoSecondStartDatePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -48,22 +49,30 @@ class NotificationMultiSaoSecondStartDateController @Inject() (
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.get(NotificationMultiSaoSecondStartDatePage).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
+    request.userAnswers
+      .get(MoreSaoSubmitNotificationFullNamePage) match {
+      case Some(saoName) => Ok(view(saoName, preparedForm, mode))
+      case None          => Redirect(routes.JourneyRecoveryController.onPageLoad())
+    }
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(NotificationMultiSaoSecondStartDatePage, value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMultiSaoSecondStartDatePage, mode, updatedAnswers))
-        )
+      request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage) match {
+        case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case Some(saoName) =>
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
+              value =>
+                for {
+                  updatedAnswers <- Future
+                    .fromTry(request.userAnswers.set(NotificationMultiSaoSecondStartDatePage, value))
+                  _ <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(navigator.nextPage(NotificationMultiSaoSecondStartDatePage, mode, updatedAnswers))
+            )
+      }
   }
 }
