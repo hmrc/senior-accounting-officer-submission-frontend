@@ -201,6 +201,16 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
       }
 
+      "when on NotificationMultiSaoSecondStartDatePage, must throw an exception" in {
+        intercept[NotImplementedError] {
+          navigator.nextPage(
+            NotificationMultiSaoSecondStartDatePage,
+            NormalMode,
+            UserAnswers("id")
+          )
+        }
+      }
+
       "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
