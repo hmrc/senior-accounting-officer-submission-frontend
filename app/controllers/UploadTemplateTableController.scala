@@ -19,9 +19,10 @@ package controllers
 import controllers.actions.*
 import models.NormalMode
 import navigation.Navigator
-import pages.{OneSaoSubmitNotificationFullNamePage, UploadTemplateTablePage}
+import pages.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.UploadTemplatePlaybackService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.UploadTemplateTableView
 
@@ -34,18 +35,17 @@ class UploadTemplateTableController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: UploadTemplateTableView,
+    playbackService: UploadTemplatePlaybackService,
     navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    // TODO turn this into a service to keep the controller clean & update logic to be 1/1 sao or 2/2 sao (the last one entered)
-    (
-      for {
-        tableData <- request.userAnswers.get(UploadTemplateTablePage)
-        saoName   <- request.userAnswers.get(OneSaoSubmitNotificationFullNamePage)
-      } yield Ok(view(tableData, saoName))
-    ).getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+    playbackService
+      .getPlayback(request.userAnswers)
+      .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { playback =>
+        Ok(view(playback.tableData, playback.saoName))
+      }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
