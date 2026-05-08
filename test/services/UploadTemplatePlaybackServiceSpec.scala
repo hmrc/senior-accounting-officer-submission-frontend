@@ -19,6 +19,7 @@ package services
 import base.SpecBase
 import models.upload.*
 import pages.*
+import services.UploadTemplatePlaybackService.Playback
 
 import java.time.LocalDate
 
@@ -70,7 +71,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .success
         .value
 
-      service.getPlayback(answers) mustBe Some(UploadTemplatePlayback(tableData, "Jane Smith"))
+      service.getPlayback(answers) mustBe Some(Playback(tableData, "Jane Smith"))
     }
 
     "must return table data and the last SAO name when there was more than one SAO" in {
@@ -88,7 +89,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .success
         .value
 
-      service.getPlayback(answers) mustBe Some(UploadTemplatePlayback(tableData, "John Smith"))
+      service.getPlayback(answers) mustBe Some(Playback(tableData, "John Smith"))
     }
 
     "must return None when table data is missing" in {

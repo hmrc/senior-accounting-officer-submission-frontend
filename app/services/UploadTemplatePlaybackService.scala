@@ -22,16 +22,20 @@ import pages.*
 
 import javax.inject.{Inject, Singleton}
 
-final case class UploadTemplatePlayback(tableData: UploadTemplateTableData, saoName: String)
+object UploadTemplatePlaybackService {
+  final case class Playback(tableData: UploadTemplateTableData, saoName: String)
+}
 
 @Singleton
 class UploadTemplatePlaybackService @Inject() () {
 
-  def getPlayback(userAnswers: UserAnswers): Option[UploadTemplatePlayback] =
+  import UploadTemplatePlaybackService.Playback
+
+  def getPlayback(userAnswers: UserAnswers): Option[Playback] =
     for {
       tableData <- userAnswers.get(UploadTemplateTablePage)
       saoName   <- getSaoName(userAnswers)
-    } yield UploadTemplatePlayback(tableData, saoName)
+    } yield Playback(tableData, saoName)
 
   private def getSaoName(userAnswers: UserAnswers): Option[String] =
     userAnswers.get(NotificationMoreThanOneSaoPage).flatMap {
