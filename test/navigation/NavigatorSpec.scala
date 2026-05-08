@@ -191,15 +191,81 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
       }
 
-      "when on MoreSaoSubmitNotificationFullNameController, must throw an exception" in {
-        intercept[NotImplementedError] {
+      "when on MoreSaoSubmitNotificationFullNamePage, must go to last sao start date page" in {
+        navigator.nextPage(
+          MoreSaoSubmitNotificationFullNamePage,
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+        ) mustBe routes.NotificationLastSaoStartDateController.onPageLoad(NormalMode)
+      }
+
+      "when on NotificationLastSaoStartDatePage, must go to previous sao[0] name page" in {
+        navigator.nextPage(
+          NotificationLastSaoStartDatePage,
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+        ) mustBe routes.NotificationPreviousSaoNameController.onPageLoad(NormalMode, 0)
+      }
+
+      (0 to 1).foreach(testIndex =>
+        s"when on NotificationPreviousSaoNamePage[$testIndex], must go to previous sao[$testIndex] start date page" in {
           navigator.nextPage(
-            MoreSaoSubmitNotificationFullNamePage,
+            NotificationPreviousSaoNamePage(index = testIndex),
             NormalMode,
             UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-          )
+          ) mustBe routes.NotificationPreviousSaoStartDateController.onPageLoad(NormalMode, testIndex)
         }
-      }
+
+        s"when on NotificationPreviousSaoStartDatePage[$testIndex], must go to previous sao[$testIndex] end date page" in {
+          navigator.nextPage(
+            NotificationPreviousSaoStartDatePage(index = testIndex),
+            NormalMode,
+            UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+          ) mustBe routes.NotificationPreviousSaoEndDateController.onPageLoad(NormalMode, testIndex)
+        }
+
+        s"when on NotificationPreviousSaoEndDatePage[$testIndex], must go to previous sao[$testIndex] have you added all? page" in {
+          navigator.nextPage(
+            NotificationPreviousSaoEndDatePage(index = testIndex),
+            NormalMode,
+            UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+          ) mustBe routes.NotificationPreviousSaoAddedAllController.onPageLoad(NormalMode, testIndex)
+        }
+
+        s"when on NotificationPreviousSaoAddedAllPage[$testIndex]" - {
+          "when the user answer is missing must go to Journey recovery page" in {
+            navigator.nextPage(
+              NotificationPreviousSaoAddedAllPage(index = testIndex),
+              NormalMode,
+              UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+            ) mustBe routes.JourneyRecoveryController.onPageLoad()
+          }
+
+          "when the user answered Yes must go to notification task list page" in {
+            navigator.nextPage(
+              NotificationPreviousSaoAddedAllPage(index = testIndex),
+              NormalMode,
+              (0 to testIndex).foldLeft(
+                UserAnswers("id")
+                  .set(NotificationMoreThanOneSaoPage, true)
+                  .get
+              )((ua, index) => ua.set(NotificationPreviousSaoAddedAllPage(index = index), true).get)
+            ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+          }
+
+          s"when the user answered no must go to notification previous[${testIndex + 1}] sao name page" in {
+            navigator.nextPage(
+              NotificationPreviousSaoAddedAllPage(index = testIndex),
+              NormalMode,
+              (0 to testIndex).foldLeft(
+                UserAnswers("id")
+                  .set(NotificationMoreThanOneSaoPage, true)
+                  .get
+              )((ua, index) => ua.set(NotificationPreviousSaoAddedAllPage(index = index), false).get)
+            ) mustBe routes.NotificationPreviousSaoNameController.onPageLoad(mode = NormalMode, testIndex + 1)
+          }
+        }
+      )
 
       "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {
         intercept[NotImplementedError] {

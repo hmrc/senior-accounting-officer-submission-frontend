@@ -73,7 +73,27 @@ class Navigator @Inject() () {
     case OneSaoSubmitNotificationFullNamePage =>
       _ => ??? // TODO: link to /notification/one-sao/submit-notification-task-two
     case MoreSaoSubmitNotificationFullNamePage =>
-      _ => ??? // TODO: link to /notification/more-sao/email
+      _ => routes.NotificationLastSaoStartDateController.onPageLoad(NormalMode)
+    case NotificationLastSaoStartDatePage =>
+      _ => routes.NotificationPreviousSaoNameController.onPageLoad(NormalMode, 0)
+    case NotificationPreviousSaoNamePage(index) =>
+      _ => routes.NotificationPreviousSaoStartDateController.onPageLoad(NormalMode, index)
+    case NotificationPreviousSaoStartDatePage(index) =>
+      _ => routes.NotificationPreviousSaoEndDateController.onPageLoad(NormalMode, index)
+    case NotificationPreviousSaoEndDatePage(index) =>
+      _ => routes.NotificationPreviousSaoAddedAllController.onPageLoad(NormalMode, index)
+    case page @ NotificationPreviousSaoAddedAllPage(index) =>
+      userAnswers =>
+        userAnswers
+          .get(page)
+          .fold(
+            routes.JourneyRecoveryController.onPageLoad()
+          ) {
+            case true =>
+              routes.SubmitNotificationStartController.onPageLoad()
+            case false =>
+              routes.NotificationPreviousSaoNameController.onPageLoad(NormalMode, index + 1)
+          }
     case UploadTemplateTablePage =>
       userAnswers =>
         userAnswers

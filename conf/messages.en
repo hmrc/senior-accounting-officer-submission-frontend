@@ -310,3 +310,46 @@ moreSaoSubmitNotificationFullName.checkYourAnswersLabel = moreSaoSubmitNotificat
 moreSaoSubmitNotificationFullName.error.required = Enter the name of the last SAO
 moreSaoSubmitNotificationFullName.error.length = The name you enter must be 254 characters or less
 moreSaoSubmitNotificationFullName.change.hidden = MoreSaoSubmitNotificationFullName
+
+notificationLastSaoStartDate.title = NotificationLastSaoStartDate
+notificationLastSaoStartDate.heading = NotificationLastSaoStartDate
+notificationLastSaoStartDate.hint = For example, 12 11 2007.
+notificationLastSaoStartDate.checkYourAnswersLabel = NotificationLastSaoStartDate
+notificationLastSaoStartDate.error.required.all = Enter the notificationLastSaoStartDate
+notificationLastSaoStartDate.error.required.two = The notificationLastSaoStartDate must include {0} and {1}
+notificationLastSaoStartDate.error.required = The notificationLastSaoStartDate must include {0}
+notificationLastSaoStartDate.error.invalid = Enter a real NotificationLastSaoStartDate
+notificationLastSaoStartDate.change.hidden = NotificationLastSaoStartDate
+
+notificationPreviousSaoAddedAll.title = notificationPreviousSaoAddedAll
+notificationPreviousSaoAddedAll.heading = notificationPreviousSaoAddedAll
+notificationPreviousSaoAddedAll.checkYourAnswersLabel = notificationPreviousSaoAddedAll
+notificationPreviousSaoAddedAll.error.required = Select yes if notificationPreviousSaoAddedAll
+notificationPreviousSaoAddedAll.change.hidden = NotificationPreviousSaoAddedAll
+
+notificationPreviousSaoEndDate.title = NotificationPreviousSaoEndDate
+notificationPreviousSaoEndDate.heading = NotificationPreviousSaoEndDate
+notificationPreviousSaoEndDate.hint = For example, 12 11 2007.
+notificationPreviousSaoEndDate.checkYourAnswersLabel = NotificationPreviousSaoEndDate
+notificationPreviousSaoEndDate.error.required.all = Enter the notificationPreviousSaoEndDate
+notificationPreviousSaoEndDate.error.required.two = The notificationPreviousSaoEndDate must include {0} and {1}
+notificationPreviousSaoEndDate.error.required = The notificationPreviousSaoEndDate must include {0}
+notificationPreviousSaoEndDate.error.invalid = Enter a real NotificationPreviousSaoEndDate
+notificationPreviousSaoEndDate.change.hidden = NotificationPreviousSaoEndDate
+
+notificationPreviousSaoName.title = notificationPreviousSaoName
+notificationPreviousSaoName.heading = notificationPreviousSaoName
+notificationPreviousSaoName.checkYourAnswersLabel = notificationPreviousSaoName
+notificationPreviousSaoName.error.required = Enter notificationPreviousSaoName
+notificationPreviousSaoName.error.length = NotificationPreviousSaoName must be 100 characters or less
+notificationPreviousSaoName.change.hidden = NotificationPreviousSaoName
+
+notificationPreviousSaoStartDate.title = NotificationPreviousSaoStartDate
+notificationPreviousSaoStartDate.heading = NotificationPreviousSaoStartDate
+notificationPreviousSaoStartDate.hint = For example, 12 11 2007.
+notificationPreviousSaoStartDate.checkYourAnswersLabel = NotificationPreviousSaoStartDate
+notificationPreviousSaoStartDate.error.required.all = Enter the notificationPreviousSaoStartDate
+notificationPreviousSaoStartDate.error.required.two = The notificationPreviousSaoStartDate must include {0} and {1}
+notificationPreviousSaoStartDate.error.required = The notificationPreviousSaoStartDate must include {0}
+notificationPreviousSaoStartDate.error.invalid = Enter a real NotificationPreviousSaoStartDate
+notificationPreviousSaoStartDate.change.hidden = NotificationPreviousSaoStartDate
