@@ -211,7 +211,7 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "when on UploadTemplateTablePage with no parsing errors, must go to submit notification start page" in {
+      "when on UploadTemplateTablePage with no parsing errors, must go to notification additional information page" in {
         val userAnswers =
           UserAnswers("id")
             .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
@@ -222,7 +222,7 @@ class NavigatorSpec extends SpecBase {
           UploadTemplateTablePage,
           NormalMode,
           userAnswers
-        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
       }
 
       "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {

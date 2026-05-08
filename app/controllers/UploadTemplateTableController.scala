@@ -19,7 +19,7 @@ package controllers
 import controllers.actions.*
 import models.NormalMode
 import navigation.Navigator
-import pages.UploadTemplateTablePage
+import pages.{OneSaoSubmitNotificationFullNamePage, UploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -39,13 +39,13 @@ class UploadTemplateTableController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    request.userAnswers
-      .get(UploadTemplateTablePage)
-      .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
-      ) { tableData =>
-        Ok(view(tableData))
-      }
+    // TODO turn this into a service to keep the controller clean & update logic to be 1/1 sao or 2/2 sao (the last one entered)
+    (
+      for {
+        tableData <- request.userAnswers.get(UploadTemplateTablePage)
+        saoName   <- request.userAnswers.get(OneSaoSubmitNotificationFullNamePage)
+      } yield Ok(view(tableData, saoName))
+    ).getOrElse(Redirect(routes.JourneyRecoveryController.onPageLoad()))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>

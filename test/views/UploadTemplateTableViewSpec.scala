@@ -23,11 +23,13 @@ import org.jsoup.nodes.Document
 import views.UploadTemplateTableViewSpec.*
 import views.html.UploadTemplateTableView
 
+import scala.jdk.CollectionConverters.*
+
 import java.time.LocalDate
 
 class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(tableData).toString)
+  private def generateView(): Document = Jsoup.parse(SUT(tableData, saoName).toString)
 
   "UploadTemplateTableView" - {
     val doc: Document = generateView()
@@ -57,12 +59,22 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
     "must render continue button" in {
       doc.select("#continue").size() mustBe 1
     }
+
+    "must render the SAO name, company count and upload link" in {
+      doc.text() must include(saoName)
+      doc.text() must include("There were 1 companies")
+      val uploadLink =
+        doc.select("a.govuk-link").asScala.find(_.text() == "upload an updated submission template").value
+      uploadLink.attr("href") must endWith("/notification/upload")
+    }
+
   }
 }
 
 object UploadTemplateTableViewSpec {
-  val pageHeading = "Review the companies in your notification"
-  val pageTitle   = "Review the companies in your notification"
+  val pageHeading = "Review the list of companies"
+  val pageTitle   = "Review the list of companies"
+  val saoName     = "Jane Smith"
 
   val tableData: UploadTemplateTableData = UploadTemplateTableData(
     rows = Seq(

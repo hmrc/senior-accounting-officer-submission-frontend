@@ -71,6 +71,7 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
         label.size() mustBe 1
         label.text() mustBe uploadFormLabel
       }
+
     }
 
     "Page with error" - {

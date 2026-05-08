@@ -20,7 +20,7 @@
         govukButton: GovukButton
 )
 
-@(tableData: models.upload.UploadTemplateTableData)(using request: Request[?], messages: Messages)
+@(tableData: models.upload.UploadTemplateTableData, saoName: String)(using request: Request[?], messages: Messages)
 
 @asDisplay(value: Option[String]) = {
     @value.getOrElse("-")
@@ -30,14 +30,15 @@
     @value.map(_.value).getOrElse("-")
 }
 
-@layout(pageTitle = titleNoForm(messages("uploadTemplateTable.title"))) {
+@uploadUrl = @{routes.NotificationUploadFormController.onPageLoad().url}
 
+@layout(pageTitle = titleNoForm(messages("uploadTemplateTable.title"))) {
     <span class="govuk-caption-m">@messages("uploadTemplateTable.caption")</span>
     <h1 class="govuk-heading-xl">@messages("uploadTemplateTable.heading")</h1>
-    <p class="govuk-body">@messages("uploadTemplateTable.paragraph1")</p>
+    <p class="govuk-body">@messages("uploadTemplateTable.paragraph1", saoName)</p>
     <p class="govuk-body">@messages("uploadTemplateTable.paragraph2", tableData.rows.size.toString)</p>
     <p class="govuk-body">
-        @Html(messages("uploadTemplateTable.paragraph3WithLink", routes.NotificationUploadFormController.onPageLoad().url))
+        @Html(messages("uploadTemplateTable.paragraph3WithLink", uploadUrl))
     </p>
 
     <h2 class="govuk-heading-m">@messages("uploadTemplateTable.parsedData.heading")</h2>
