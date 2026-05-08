@@ -40,18 +40,17 @@ class UploadTemplateTableErrorController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
-      request.userAnswers
-        .get(UploadTemplateTablePage)
-        .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad())
-        ) { tableData =>
-          Ok(view(tableData))
-        }
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) {
+      ensure(_.get(UploadTemplateTablePage)) { implicit request => tableData =>
+        Ok(view(tableData))
+      }
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
-      Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) {
+      ensure(_.get(UploadTemplateTablePage)) { implicit request => tableData =>
+        Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+      }
     }
+
 }
