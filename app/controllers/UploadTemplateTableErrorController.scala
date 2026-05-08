@@ -38,17 +38,16 @@ class UploadTemplateTableErrorController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    request.userAnswers
-      .get(UploadTemplateTablePage)
-      .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
-      ) { tableData =>
-        Ok(view(tableData))
-      }
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    ensure(_.get(UploadTemplateTablePage)) { implicit request => tableData =>
+      Ok(view(tableData))
+    }
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    ensure(_.get(UploadTemplateTablePage)) { implicit request => tableData =>
+      Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+    }
   }
+
 }
