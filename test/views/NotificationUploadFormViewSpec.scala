@@ -22,6 +22,7 @@ import models.UpscanInitiateResponse
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
+import controllers.routes
 import views.NotificationUploadFormViewSpec.*
 import views.html.NotificationUploadFormView
 
@@ -60,6 +61,13 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
 
       doc.createTestsWithParagraphs(paragraphs)
 
+      doc
+        .getElementById("template-guidance")
+        .createTestWithLink(
+          "Read guidance on how to complete the submission template (opens in new tab)",
+          routes.TemplateGuidanceController.onPageLoad().url
+        )
+
       doc.createTestForInsetText(insetText)
 
       "must contain file upload input element" in {
@@ -97,6 +105,13 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       }
 
       doc.createTestsWithParagraphs(paragraphs)
+
+      doc
+        .getElementById("template-guidance")
+        .createTestWithLink(
+          "Read guidance on how to complete the submission template (opens in new tab)",
+          routes.TemplateGuidanceController.onPageLoad().url
+        )
 
       doc.createTestForInsetText(insetText)
 
