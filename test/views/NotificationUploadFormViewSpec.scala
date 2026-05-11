@@ -17,12 +17,12 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import forms.NotificationUploadFormProvider
 import models.UpscanInitiateResponse
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import controllers.routes
 import views.NotificationUploadFormViewSpec.*
 import views.html.NotificationUploadFormView
 
