@@ -86,7 +86,7 @@ class Navigator @Inject() () {
             case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
               routes.NotificationUploadFormController.onPageLoad()
             case _ =>
-              routes.SubmitNotificationStartController.onPageLoad()
+              routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
           }
     case _ =>
       _ => ???

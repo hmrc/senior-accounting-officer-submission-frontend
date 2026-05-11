@@ -22,6 +22,7 @@ import navigation.Navigator
 import pages.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.UploadTemplatePlaybackService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.UploadTemplateTableView
 
@@ -34,17 +35,16 @@ class UploadTemplateTableController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: UploadTemplateTableView,
+    playbackService: UploadTemplatePlaybackService,
     navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    request.userAnswers
-      .get(UploadTemplateTablePage)
-      .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
-      ) { tableData =>
-        Ok(view(tableData))
+    playbackService
+      .getPlayback(request.userAnswers)
+      .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { playback =>
+        Ok(view(playback.tableData, playback.saoName))
       }
   }
 
