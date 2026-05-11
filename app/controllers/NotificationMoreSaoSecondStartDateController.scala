@@ -17,38 +17,38 @@
 package controllers
 
 import controllers.actions.*
-import forms.NotificationMultiSaoSecondStartDateFormProvider
+import forms.NotificationMoreSaoSecondStartDateFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.MoreSaoSubmitNotificationFullNamePage
-import pages.NotificationMultiSaoSecondStartDatePage
+import pages.NotificationMoreSaoSecondStartDatePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.NotificationMultiSaoSecondStartDateView
+import views.html.NotificationMoreSaoSecondStartDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class NotificationMultiSaoSecondStartDateController @Inject() (
+class NotificationMoreSaoSecondStartDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: NotificationMultiSaoSecondStartDateFormProvider,
+    formProvider: NotificationMoreSaoSecondStartDateFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationMultiSaoSecondStartDateView
+    view: NotificationMoreSaoSecondStartDateView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(NotificationMultiSaoSecondStartDatePage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondStartDatePage).fold(form)(form.fill)
     request.userAnswers
       .get(MoreSaoSubmitNotificationFullNamePage) match {
       case Some(saoName) => Ok(view(saoName, preparedForm, mode))
@@ -69,9 +69,9 @@ class NotificationMultiSaoSecondStartDateController @Inject() (
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(NotificationMultiSaoSecondStartDatePage, value))
+                    .fromTry(request.userAnswers.set(NotificationMoreSaoSecondStartDatePage, value))
                   _ <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(navigator.nextPage(NotificationMultiSaoSecondStartDatePage, mode, updatedAnswers))
+                } yield Redirect(navigator.nextPage(NotificationMoreSaoSecondStartDatePage, mode, updatedAnswers))
             )
       }
   }

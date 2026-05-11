@@ -201,10 +201,10 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMultiSaoSecondStartDatePage, must throw an exception" in {
+      "when on NotificationMoreSaoSecondStartDatePage, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
-            NotificationMultiSaoSecondStartDatePage,
+            NotificationMoreSaoSecondStartDatePage,
             NormalMode,
             UserAnswers("id")
           )

@@ -20,34 +20,34 @@ import base.SpecBase
 import controllers.routes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.NotificationMultiSaoSecondStartDatePage
+import pages.NotificationMoreSaoSecondStartDatePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
 import java.time.LocalDate
 
-class NotificationMultiSaoSecondStartDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationMoreSaoSecondStartDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  "NotificationMultiSaoSecondStartDateSummary.row" - {
+  "NotificationMoreSaoSecondStartDateSummary.row" - {
 
-    "when there is no answer for NotificationMultiSaoSecondStartDatePage" - {
+    "when there is no answer for NotificationMoreSaoSecondStartDatePage" - {
       "must return None" in {
-        def SUT = NotificationMultiSaoSecondStartDateSummary.row(emptyUserAnswers)
+        def SUT = NotificationMoreSaoSecondStartDateSummary.row(emptyUserAnswers)
 
         SUT mustBe None
       }
     }
 
-    "when there is a user answer for NotificationMultiSaoSecondStartDatePage" - {
+    "when there is a user answer for NotificationMoreSaoSecondStartDatePage" - {
       def testUserAnswers(answer: LocalDate) =
-        emptyUserAnswers.set(NotificationMultiSaoSecondStartDatePage, answer).get
+        emptyUserAnswers.set(NotificationMoreSaoSecondStartDatePage, answer).get
 
       def SUT(answer: LocalDate = LocalDate.now) =
-        NotificationMultiSaoSecondStartDateSummary.row(testUserAnswers(answer)).get
+        NotificationMoreSaoSecondStartDateSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "NotificationMultiSaoSecondStartDate".toKey
+        SUT().key mustBe "NotificationMoreSaoSecondStartDate".toKey
       }
 
       "expected value" - {
@@ -75,13 +75,13 @@ class NotificationMultiSaoSecondStartDateSummarySpec extends SpecBase with Guice
         }
 
         "must have expected url" in {
-          action.href mustBe routes.NotificationMultiSaoSecondStartDateController
+          action.href mustBe routes.NotificationMoreSaoSecondStartDateController
             .onPageLoad(CheckMode)
             .url
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMultiSaoSecondStartDate"
+          action.visuallyHiddenText.get mustBe "NotificationMoreSaoSecondStartDate"
         }
       }
     }

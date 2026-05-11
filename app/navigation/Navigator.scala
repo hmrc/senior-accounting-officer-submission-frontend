@@ -77,8 +77,8 @@ class Navigator @Inject() () {
     case NotificationMoreSaoFirstStartDatePage =>
       _ => routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
     case WhoWasTheSaoBeforePage =>
-      _ => routes.NotificationMultiSaoSecondStartDateController.onPageLoad(NormalMode)
-    case NotificationMultiSaoSecondStartDatePage =>
+      _ => routes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode)
+    case NotificationMoreSaoSecondStartDatePage =>
       _ => ??? // TODO: link to second end date page
     case UploadTemplateTablePage =>
       userAnswers =>
