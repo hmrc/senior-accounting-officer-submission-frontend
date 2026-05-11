@@ -20,7 +20,7 @@ import controllers.actions.*
 import forms.NotificationMoreSaoFirstStartDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.{NotificationMoreSaoFirstStartDatePage, MoreSaoSubmitNotificationFullNamePage}
+import pages.{MoreSaoSubmitNotificationFullNamePage, NotificationMoreSaoFirstStartDatePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

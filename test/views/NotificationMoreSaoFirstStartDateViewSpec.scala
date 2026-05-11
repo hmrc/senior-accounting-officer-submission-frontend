@@ -28,8 +28,7 @@ import views.html.NotificationMoreSaoFirstStartDateView
 
 import java.time.LocalDate
 
-class NotificationMoreSaoFirstStartDateViewSpec
-    extends ViewSpecBase[NotificationMoreSaoFirstStartDateView] {
+class NotificationMoreSaoFirstStartDateViewSpec extends ViewSpecBase[NotificationMoreSaoFirstStartDateView] {
 
   private val formProvider          = app.injector.instanceOf[NotificationMoreSaoFirstStartDateFormProvider]
   private val form: Form[LocalDate] = formProvider()
