@@ -17,37 +17,37 @@
 package controllers
 
 import controllers.actions.*
-import forms.MoreSaoSubmitNotificationFirstStartDateFormProvider
+import forms.NotificationMoreSaoFirstStartDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.{MoreSaoSubmitNotificationFirstStartDatePage, MoreSaoSubmitNotificationFullNamePage}
+import pages.{NotificationMoreSaoFirstStartDatePage, MoreSaoSubmitNotificationFullNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.MoreSaoSubmitNotificationFirstStartDateView
+import views.html.NotificationMoreSaoFirstStartDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class MoreSaoSubmitNotificationFirstStartDateController @Inject() (
+class NotificationMoreSaoFirstStartDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: MoreSaoSubmitNotificationFirstStartDateFormProvider,
+    formProvider: NotificationMoreSaoFirstStartDateFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: MoreSaoSubmitNotificationFirstStartDateView
+    view: NotificationMoreSaoFirstStartDateView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(MoreSaoSubmitNotificationFirstStartDatePage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(NotificationMoreSaoFirstStartDatePage).fold(form)(form.fill)
     request.userAnswers
       .get(MoreSaoSubmitNotificationFullNamePage)
       .fold(
@@ -68,9 +68,9 @@ class MoreSaoSubmitNotificationFirstStartDateController @Inject() (
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(MoreSaoSubmitNotificationFirstStartDatePage, value))
+                    .fromTry(request.userAnswers.set(NotificationMoreSaoFirstStartDatePage, value))
                   _ <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(navigator.nextPage(MoreSaoSubmitNotificationFirstStartDatePage, mode, updatedAnswers))
+                } yield Redirect(navigator.nextPage(NotificationMoreSaoFirstStartDatePage, mode, updatedAnswers))
             )
 
         case None => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))

@@ -198,7 +198,7 @@ class NavigatorSpec extends SpecBase {
           MoreSaoSubmitNotificationFullNamePage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-        ) mustBe routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(NormalMode)
+        ) mustBe routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
       }
 
       "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {
@@ -211,14 +211,12 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "when on MoreSaoSubmitNotificationFirstStartDatePage, must throw an exception" in {
-        intercept[NotImplementedError] {
+      "when on NotificationMoreSaoFirstStartDatePage, must go to who was the sao before page" in {
           navigator.nextPage(
-            MoreSaoSubmitNotificationFirstStartDatePage,
+            NotificationMoreSaoFirstStartDatePage,
             NormalMode,
-            UserAnswers("id").set(MoreSaoSubmitNotificationFirstStartDatePage, LocalDate.of(2026, 5, 1)).success.value
-          )
-        }
+            UserAnswers("id").set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2026, 5, 1)).success.value
+          ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
       }
       "when on UploadTemplateTablePage with no parsing errors, must go to submit notification start page" in {
         val userAnswers =

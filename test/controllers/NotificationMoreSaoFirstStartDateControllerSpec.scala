@@ -17,30 +17,30 @@
 package controllers
 
 import base.SpecBase
-import forms.MoreSaoSubmitNotificationFirstStartDateFormProvider
+import forms.NotificationMoreSaoFirstStartDateFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{MoreSaoSubmitNotificationFirstStartDatePage, MoreSaoSubmitNotificationFullNamePage}
+import pages.{NotificationMoreSaoFirstStartDatePage, MoreSaoSubmitNotificationFullNamePage}
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.MoreSaoSubmitNotificationFirstStartDateView
+import views.html.NotificationMoreSaoFirstStartDateView
 
 import scala.concurrent.Future
 
 import java.time.{LocalDate, ZoneOffset}
 
-class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase with MockitoSugar {
+class NotificationMoreSaoFirstStartDateControllerSpec extends SpecBase with MockitoSugar {
 
   private given messages: Messages = stubMessages()
 
-  private val formProvider = new MoreSaoSubmitNotificationFirstStartDateFormProvider()
+  private val formProvider = new NotificationMoreSaoFirstStartDateFormProvider()
   private def form         = formProvider()
 
   def onwardRoute: Call = Call("GET", "/foo")
@@ -48,8 +48,8 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
   val validAnswer: LocalDate = LocalDate.now(ZoneOffset.UTC)
   val saoName: String        = "Firstname Lastname"
 
-  lazy val moreSaoSubmitNotificationFirstStartDateRoute: String =
-    routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(NormalMode).url
+  lazy val NotificationMoreSaoFirstStartDateRoute: String =
+    routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode).url
 
   val userAnswers: UserAnswers = UserAnswers(userAnswersId)
     .set(MoreSaoSubmitNotificationFullNamePage, saoName)
@@ -57,17 +57,17 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
     .value
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, moreSaoSubmitNotificationFirstStartDateRoute)
+    FakeRequest(GET, NotificationMoreSaoFirstStartDateRoute)
 
   def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, moreSaoSubmitNotificationFirstStartDateRoute)
+    FakeRequest(POST, NotificationMoreSaoFirstStartDateRoute)
       .withFormUrlEncodedBody(
         "value.day"   -> validAnswer.getDayOfMonth.toString,
         "value.month" -> validAnswer.getMonthValue.toString,
         "value.year"  -> validAnswer.getYear.toString
       )
 
-  "MoreSaoSubmitNotificationFirstStartDate Controller" - {
+  "NotificationMoreSaoFirstStartDate Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -76,7 +76,7 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
       running(application) {
         val result = route(application, getRequest()).value
 
-        val view = application.injector.instanceOf[MoreSaoSubmitNotificationFirstStartDateView]
+        val view = application.injector.instanceOf[NotificationMoreSaoFirstStartDateView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(saoName, form, NormalMode)(using
@@ -99,11 +99,11 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswersWithDate = userAnswers.set(MoreSaoSubmitNotificationFirstStartDatePage, validAnswer).success.value
+      val userAnswersWithDate = userAnswers.set(NotificationMoreSaoFirstStartDatePage, validAnswer).success.value
       val application         = applicationBuilder(userAnswers = Some(userAnswersWithDate)).build()
 
       running(application) {
-        val view = application.injector.instanceOf[MoreSaoSubmitNotificationFirstStartDateView]
+        val view = application.injector.instanceOf[NotificationMoreSaoFirstStartDateView]
 
         val result = route(application, getRequest()).value
 
@@ -147,13 +147,13 @@ class MoreSaoSubmitNotificationFirstStartDateControllerSpec extends SpecBase wit
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, moreSaoSubmitNotificationFirstStartDateRoute)
+        FakeRequest(POST, NotificationMoreSaoFirstStartDateRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       running(application) {
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[MoreSaoSubmitNotificationFirstStartDateView]
+        val view = application.injector.instanceOf[NotificationMoreSaoFirstStartDateView]
 
         val result = route(application, request).value
 

@@ -20,9 +20,9 @@ import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-case object MoreSaoSubmitNotificationFirstStartDatePage extends QuestionPage[LocalDate] {
+case object NotificationMoreSaoFirstStartDatePage extends QuestionPage[LocalDate] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "moreSaoSubmitNotificationFirstStartDate"
+  override def toString: String = "NotificationMoreSaoFirstStartDate"
 }

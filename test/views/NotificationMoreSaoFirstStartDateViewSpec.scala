@@ -18,20 +18,20 @@ package views
 
 import base.ViewSpecBase
 import base.ViewSpecBase.DateFieldValues
-import forms.MoreSaoSubmitNotificationFirstStartDateFormProvider
+import forms.NotificationMoreSaoFirstStartDateFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.MoreSaoSubmitNotificationFirstStartDateViewSpec.*
-import views.html.MoreSaoSubmitNotificationFirstStartDateView
+import views.NotificationMoreSaoFirstStartDateViewSpec.*
+import views.html.NotificationMoreSaoFirstStartDateView
 
 import java.time.LocalDate
 
-class MoreSaoSubmitNotificationFirstStartDateViewSpec
-    extends ViewSpecBase[MoreSaoSubmitNotificationFirstStartDateView] {
+class NotificationMoreSaoFirstStartDateViewSpec
+    extends ViewSpecBase[NotificationMoreSaoFirstStartDateView] {
 
-  private val formProvider          = app.injector.instanceOf[MoreSaoSubmitNotificationFirstStartDateFormProvider]
+  private val formProvider          = app.injector.instanceOf[NotificationMoreSaoFirstStartDateFormProvider]
   private val form: Form[LocalDate] = formProvider()
 
   private def generateView(form: Form[LocalDate], mode: Mode): Document = {
@@ -39,7 +39,7 @@ class MoreSaoSubmitNotificationFirstStartDateViewSpec
     Jsoup.parse(view.toString)
   }
 
-  "MoreSaoSubmitNotificationFirstStartDateView" - {
+  "NotificationMoreSaoFirstStartDateView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -60,7 +60,7 @@ class MoreSaoSubmitNotificationFirstStartDateViewSpec
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.MoreSaoSubmitNotificationFirstStartDateController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoFirstStartDateController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -84,7 +84,7 @@ class MoreSaoSubmitNotificationFirstStartDateViewSpec
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.MoreSaoSubmitNotificationFirstStartDateController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoFirstStartDateController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -112,7 +112,7 @@ class MoreSaoSubmitNotificationFirstStartDateViewSpec
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.MoreSaoSubmitNotificationFirstStartDateController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoFirstStartDateController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -123,7 +123,7 @@ class MoreSaoSubmitNotificationFirstStartDateViewSpec
   }
 }
 
-object MoreSaoSubmitNotificationFirstStartDateViewSpec {
+object NotificationMoreSaoFirstStartDateViewSpec {
   val pageHeading = "What date did Firstname Lastname become the SAO?"
   val pageTitle   = "Submit a notification"
   val pageCaption = "Submit a notification"

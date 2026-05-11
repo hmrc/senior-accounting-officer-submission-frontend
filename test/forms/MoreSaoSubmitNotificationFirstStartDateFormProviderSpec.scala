@@ -22,15 +22,15 @@ import play.api.test.Helpers.stubMessages
 
 import java.time.{LocalDate, ZoneOffset}
 
-class MoreSaoSubmitNotificationFirstStartDateFormProviderSpec extends DateBehaviours {
+class NotificationMoreSaoFirstStartDateFormProviderSpec extends DateBehaviours {
 
   private given messages2: Messages = stubMessages()
-  val form                          = new MoreSaoSubmitNotificationFirstStartDateFormProvider()()
+  val form                          = new NotificationMoreSaoFirstStartDateFormProvider()()
 
-  val requiredAllKey = "moreSaoSubmitNotificationFirstStartDate.error.required.all"
-  val requiredTwoKey = "moreSaoSubmitNotificationFirstStartDate.error.required.two"
-  val requiredKey    = "moreSaoSubmitNotificationFirstStartDate.error.required"
-  val invalidKey     = "moreSaoSubmitNotificationFirstStartDate.error.invalid"
+  val requiredAllKey = "NotificationMoreSaoFirstStartDate.error.required.all"
+  val requiredTwoKey = "NotificationMoreSaoFirstStartDate.error.required.two"
+  val requiredKey    = "NotificationMoreSaoFirstStartDate.error.required"
+  val invalidKey     = "NotificationMoreSaoFirstStartDate.error.invalid"
 
   ".value" - {
 

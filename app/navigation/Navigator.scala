@@ -72,10 +72,12 @@ class Navigator @Inject() () {
         }
     case OneSaoSubmitNotificationFullNamePage =>
       _ => ??? // TODO: link to /notification/one-sao/submit-notification-task-two
-    case MoreSaoSubmitNotificationFirstStartDatePage =>
-      _ => ??? // TODO: link to /notification/more-sao/submit-notification-second-full-name
     case MoreSaoSubmitNotificationFullNamePage =>
-      _ => routes.MoreSaoSubmitNotificationFirstStartDateController.onPageLoad(NormalMode)
+      _ => routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
+    case NotificationMoreSaoFirstStartDatePage =>
+      _ => routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
+    case WhoWasTheSaoBeforePage =>
+      _ => ??? // TODO: link to /SAOD-732/more-sao/submit-notification-second-start-date
     case UploadTemplateTablePage =>
       userAnswers =>
         userAnswers

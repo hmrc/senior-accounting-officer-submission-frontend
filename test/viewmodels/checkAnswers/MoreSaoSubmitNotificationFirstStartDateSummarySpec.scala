@@ -20,34 +20,34 @@ import base.SpecBase
 import controllers.routes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.MoreSaoSubmitNotificationFirstStartDatePage
+import pages.NotificationMoreSaoFirstStartDatePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
 import java.time.LocalDate
 
-class MoreSaoSubmitNotificationFirstStartDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationMoreSaoFirstStartDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  "MoreSaoSubmitNotificationFirstStartDateSummary.row" - {
+  "NotificationMoreSaoFirstStartDateSummary.row" - {
 
-    "when there is no answer for MoreSaoSubmitNotificationFirstStartDatePage" - {
+    "when there is no answer for NotificationMoreSaoFirstStartDatePage" - {
       "must return None" in {
-        def SUT = MoreSaoSubmitNotificationFirstStartDateSummary.row(emptyUserAnswers)
+        def SUT = NotificationMoreSaoFirstStartDateSummary.row(emptyUserAnswers)
 
         SUT mustBe None
       }
     }
 
-    "when there is a user answer for MoreSaoSubmitNotificationFirstStartDatePage" - {
+    "when there is a user answer for NotificationMoreSaoFirstStartDatePage" - {
       def testUserAnswers(answer: LocalDate) =
-        emptyUserAnswers.set(MoreSaoSubmitNotificationFirstStartDatePage, answer).get
+        emptyUserAnswers.set(NotificationMoreSaoFirstStartDatePage, answer).get
 
       def SUT(answer: LocalDate = LocalDate.now) =
-        MoreSaoSubmitNotificationFirstStartDateSummary.row(testUserAnswers(answer)).get
+        NotificationMoreSaoFirstStartDateSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "MoreSaoSubmitNotificationFirstStartDate".toKey
+        SUT().key mustBe "NotificationMoreSaoFirstStartDate".toKey
       }
 
       "expected value" - {
@@ -75,13 +75,13 @@ class MoreSaoSubmitNotificationFirstStartDateSummarySpec extends SpecBase with G
         }
 
         "must have expected url" in {
-          action.href mustBe routes.MoreSaoSubmitNotificationFirstStartDateController
+          action.href mustBe routes.NotificationMoreSaoFirstStartDateController
             .onPageLoad(CheckMode)
             .url
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "MoreSaoSubmitNotificationFirstStartDate"
+          action.visuallyHiddenText.get mustBe "NotificationMoreSaoFirstStartDate"
         }
       }
     }
