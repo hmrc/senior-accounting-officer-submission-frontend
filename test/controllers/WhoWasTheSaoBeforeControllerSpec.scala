@@ -18,11 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.WhoWasTheSaoBeforeFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.MoreSaoSubmitNotificationFullNamePage
 import pages.WhoWasTheSaoBeforePage
 import play.api.data.Form
 import play.api.inject.bind
@@ -33,7 +34,6 @@ import repositories.SessionRepository
 import views.html.WhoWasTheSaoBeforeView
 
 import scala.concurrent.Future
-import pages.MoreSaoSubmitNotificationFullNamePage
 
 class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
@@ -46,7 +46,8 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
   val saoName = "Firstname Lastname"
 
-  val userAnswersWithSaoName = emptyUserAnswers.set(MoreSaoSubmitNotificationFullNamePage, saoName).success.value
+  val userAnswersWithSaoName: UserAnswers =
+    emptyUserAnswers.set(MoreSaoSubmitNotificationFullNamePage, saoName).success.value
 
   "WhoWasTheSaoBefore Controller" - {
 

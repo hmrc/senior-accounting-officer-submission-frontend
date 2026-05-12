@@ -20,6 +20,7 @@ import controllers.actions.*
 import forms.WhoWasTheSaoBeforeFormProvider
 import models.Mode
 import navigation.Navigator
+import pages.MoreSaoSubmitNotificationFullNamePage
 import pages.WhoWasTheSaoBeforePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,7 +32,6 @@ import views.html.WhoWasTheSaoBeforeView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import pages.MoreSaoSubmitNotificationFullNamePage
 
 class WhoWasTheSaoBeforeController @Inject() (
     override val messagesApi: MessagesApi,
