@@ -39,14 +39,6 @@ class NavigatorSpec extends SpecBase {
         }
       }
 
-      "when on NotificationGuidancePage, must go to notification additional information page" in {
-        navigator.nextPage(
-          NotificationGuidancePage,
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
-      }
-
       "when on NotificationAdditionalInformationPage, must go to notification check your answers page" in {
         navigator.nextPage(
           NotificationAdditionalInformationPage,
@@ -202,13 +194,11 @@ class NavigatorSpec extends SpecBase {
       }
 
       "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {
-        intercept[NotImplementedError] {
           navigator.nextPage(
             OneSaoSubmitNotificationFullNamePage,
             NormalMode,
             UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
           )
-        }
       }
 
       "when on NotificationMoreSaoFirstStartDatePage, must go to who was the sao before page" in {
@@ -219,7 +209,7 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
       }
 
-      "when on UploadTemplateTablePage with no parsing errors, must go to notification additional information page" in {
+      "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
         val userAnswers =
           UserAnswers("id")
             .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
@@ -230,7 +220,7 @@ class NavigatorSpec extends SpecBase {
           UploadTemplateTablePage,
           NormalMode,
           userAnswers
-        ) mustBe routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
+        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {

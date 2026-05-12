@@ -131,7 +131,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
         .get(0)
         .createTestWithLink(
           linkText = submitNotificationLinkText,
-          destinationUrl = routes.NotificationGuidanceController.onPageLoad().url
+          destinationUrl = routes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url
         )
 
       "must show the correct statuses" in {
