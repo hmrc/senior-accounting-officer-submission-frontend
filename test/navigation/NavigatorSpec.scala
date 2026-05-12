@@ -194,11 +194,11 @@ class NavigatorSpec extends SpecBase {
       }
 
       "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {
-          navigator.nextPage(
-            OneSaoSubmitNotificationFullNamePage,
-            NormalMode,
-            UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
-          )
+        navigator.nextPage(
+          OneSaoSubmitNotificationFullNamePage,
+          NormalMode,
+          UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
+        )
       }
 
       "when on NotificationMoreSaoFirstStartDatePage, must go to who was the sao before page" in {
