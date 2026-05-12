@@ -22,6 +22,8 @@ import models.upload.UploadTemplateTableData
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.*
 
+import java.time.LocalDate
+
 class NavigatorSpec extends SpecBase {
 
   val navigator = new Navigator
@@ -191,14 +193,12 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
       }
 
-      "when on MoreSaoSubmitNotificationFullNameController, must throw an exception" in {
-        intercept[NotImplementedError] {
-          navigator.nextPage(
-            MoreSaoSubmitNotificationFullNamePage,
-            NormalMode,
-            UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-          )
-        }
+      "when on MoreSaoSubmitNotificationFullNameController, must go to more sao submit notification first date page" in {
+        navigator.nextPage(
+          MoreSaoSubmitNotificationFullNamePage,
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+        ) mustBe routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
       }
 
       "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {
@@ -209,6 +209,14 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
           )
         }
+      }
+
+      "when on NotificationMoreSaoFirstStartDatePage, must go to who was the sao before page" in {
+        navigator.nextPage(
+          NotificationMoreSaoFirstStartDatePage,
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2026, 5, 1)).success.value
+        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
       }
 
       "when on UploadTemplateTablePage with no parsing errors, must go to notification additional information page" in {
