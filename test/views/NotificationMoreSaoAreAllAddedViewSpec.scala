@@ -17,30 +17,30 @@
 package views
 
 import base.ViewSpecBase
-import forms.WhoWasTheSaoBeforeFormProvider
+import forms.NotificationMoreSaoAreAllAddedFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.WhoWasTheSaoBeforeViewSpec.*
-import views.html.WhoWasTheSaoBeforeView
+import views.NotificationMoreSaoAreAllAddedViewSpec.*
+import views.html.NotificationMoreSaoAreAllAddedView
 
-class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
+class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMoreSaoAreAllAddedView] {
 
-  private val formProvider       = app.injector.instanceOf[WhoWasTheSaoBeforeFormProvider]
-  private val form: Form[String] = formProvider()
+  private val formProvider        = app.injector.instanceOf[NotificationMoreSaoAreAllAddedFormProvider]
+  private val form: Form[Boolean] = formProvider()
 
-  private def generateView(saoName: String, form: Form[String], mode: Mode): Document = {
-    val view = SUT(saoName, form, mode)
+  private def generateView(form: Form[Boolean], mode: Mode): Document = {
+    val view = SUT(form, mode)
     Jsoup.parse(view.toString)
   }
 
-  "WhoWasTheSaoBeforeView" - {
+  "NotificationMoreSaoAreAllAddedView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
         "when the form is not filled in" - {
-          val doc = generateView(saoName, form, mode)
+          val doc = generateView(form, mode)
 
           doc.createTestsWithStandardPageElements(
             pageTitle = pageTitle,
@@ -50,28 +50,28 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithRadioButtons(
             name = "value",
-            label = pageHeading,
-            value = "",
-            hint = Some(pageHint),
+            radios = List(
+              radio(value = yesKey, label = yesLabel),
+              radio(value = noKey, label = noLabel)
+            ),
+            isChecked = None,
             hasError = false
           )
-          doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode),
             buttonText = "Continue"
           )
 
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
-          doc.createTestsForInputWidth()
         }
 
         "when the form is filled in" - {
-          val doc = generateView(saoName, form.bind(Map("value" -> testInputValue)), mode)
+          val doc = generateView(form.bind(Map("value" -> yesKey)), mode)
 
           doc.createTestsWithStandardPageElements(
             pageTitle = pageTitle,
@@ -81,28 +81,28 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithRadioButtons(
             name = "value",
-            label = pageHeading,
-            value = testInputValue,
-            hint = Some(pageHint),
+            radios = List(
+              radio(value = yesKey, label = yesLabel),
+              radio(value = noKey, label = noLabel)
+            ),
+            isChecked = Some(radio(value = yesKey, label = yesLabel)),
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode),
             buttonText = "Continue"
           )
 
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
-
-          doc.createTestsForInputWidth()
         }
 
         "when the form has errors" - {
-          val doc = generateView(saoName, form.withError("value", "broken"), mode)
+          val doc = generateView(form.withError("value", "broken"), mode)
 
           doc.createTestsWithStandardPageElements(
             pageTitle = pageTitle,
@@ -112,42 +112,37 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
             hasError = true
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithRadioButtons(
             name = "value",
-            label = pageHeading,
-            value = "",
-            hint = Some(pageHint),
+            radios = List(
+              radio(value = yesKey, label = yesLabel),
+              radio(value = noKey, label = noLabel)
+            ),
+            isChecked = None,
             hasError = true
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode),
             buttonText = "Continue"
           )
 
           doc.createTestsWithOrWithoutError(
             hasError = true
           )
-          doc.createTestsForInputWidth()
         }
       }
     }
+
   }
 
-  extension (doc: => Document) {
-    def createTestsForInputWidth(): Unit = {
-      "must have input with expected class 'govuk-input--width-20'" in {
-        doc.getMainContent.select("input.govuk-input--width-20").size() mustBe 1
-      }
-    }
-  }
 }
 
-object WhoWasTheSaoBeforeViewSpec {
-  val pageHeading    = "Who was the SAO before Firstname Lastname?"
-  val pageCaption    = "Submit a notification"
-  val pageHint       = "This is the person who held the role before Firstname Lastname"
-  val pageTitle      = "Senior Accounting Officer full name"
-  val testInputValue = "test name"
-  val saoName        = "Firstname Lastname"
+object NotificationMoreSaoAreAllAddedViewSpec {
+  val pageHeading = "notificationMoreSaoAreAllAdded"
+  val pageTitle   = "notificationMoreSaoAreAllAdded"
+  val yesKey      = "true"
+  val yesLabel    = "Yes"
+  val noKey       = "false"
+  val noLabel     = "No"
 }

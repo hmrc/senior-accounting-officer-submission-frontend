@@ -26,9 +26,8 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class Navigator @Inject() () {
+
   private val normalRoutes: Page => UserAnswers => Call = {
-    case NotificationGuidancePage =>
-      _ => routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
     case NotificationAdditionalInformationPage =>
       _ => routes.ConfirmYourNotificationController.onPageLoad()
     case ConfirmYourNotificationPage =>
@@ -72,13 +71,15 @@ class Navigator @Inject() () {
           case _           => ???
         }
     case OneSaoSubmitNotificationFullNamePage =>
-      _ => ??? // TODO: link to /notification/one-sao/submit-notification-task-two
+      _ => routes.SubmitNotificationStartController.onPageLoad()
     case MoreSaoSubmitNotificationFullNamePage =>
       _ => routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
     case NotificationMoreSaoFirstStartDatePage =>
       _ => routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
     case WhoWasTheSaoBeforePage =>
-      _ => ??? // TODO: link to /SAOD-732/more-sao/submit-notification-second-start-date
+      _ => routes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode)
+    case NotificationMoreSaoSecondStartDatePage =>
+      _ => ??? // TODO: link to second end date page
     case UploadTemplateTablePage =>
       userAnswers =>
         userAnswers
@@ -86,8 +87,7 @@ class Navigator @Inject() () {
           .fold(routes.JourneyRecoveryController.onPageLoad()) {
             case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
               routes.NotificationUploadFormController.onPageLoad()
-            case _ =>
-              routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
+            case _ => routes.SubmitNotificationStartController.onPageLoad()
           }
     case _ =>
       _ => ???

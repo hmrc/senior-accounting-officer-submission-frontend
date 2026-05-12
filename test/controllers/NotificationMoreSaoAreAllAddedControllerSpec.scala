@@ -17,88 +17,66 @@
 package controllers
 
 import base.SpecBase
-import forms.WhoWasTheSaoBeforeFormProvider
-import models.NormalMode
-import models.UserAnswers
+import forms.NotificationMoreSaoAreAllAddedFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.MoreSaoSubmitNotificationFullNamePage
-import pages.WhoWasTheSaoBeforePage
-import play.api.data.Form
+import pages.NotificationMoreSaoAreAllAddedPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.WhoWasTheSaoBeforeView
+import views.html.NotificationMoreSaoAreAllAddedView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
-class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
+class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider       = new WhoWasTheSaoBeforeFormProvider()
-  val form: Form[String] = formProvider()
+  val formProvider        = new NotificationMoreSaoAreAllAddedFormProvider()
+  val form: Form[Boolean] = formProvider()
 
-  lazy val whoWasTheSaoBeforeRoute: String = routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode).url
+  lazy val notificationMoreSaoAreAllAddedRoute: String =
+    routes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode).url
 
-  val saoName = "Firstname Lastname"
-
-  val userAnswersWithSaoName: UserAnswers =
-    emptyUserAnswers.set(MoreSaoSubmitNotificationFullNamePage, saoName).success.value
-
-  "WhoWasTheSaoBefore Controller" - {
+  "NotificationMoreSaoAreAllAdded Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form, NormalMode)(using
-          request,
-          messages(application)
-        ).toString
-      }
-    }
-
-    "must redirect to journey recovery when last sao name is not in database" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
+        val request = FakeRequest(GET, notificationMoreSaoAreAllAddedRoute)
 
         val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        val view = application.injector.instanceOf[NotificationMoreSaoAreAllAddedView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = userAnswersWithSaoName.set(WhoWasTheSaoBeforePage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(NotificationMoreSaoAreAllAddedPage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
+        val request = FakeRequest(GET, notificationMoreSaoAreAllAddedRoute)
 
-        val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
+        val view = application.injector.instanceOf[NotificationMoreSaoAreAllAddedView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form.fill("answer"), NormalMode)(using
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(using
           request,
           messages(application)
         ).toString
@@ -112,7 +90,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswersWithSaoName))
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -121,8 +99,8 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whoWasTheSaoBeforeRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+          FakeRequest(POST, notificationMoreSaoAreAllAddedRoute)
+            .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 
@@ -133,24 +111,21 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
         val request =
-          FakeRequest(POST, whoWasTheSaoBeforeRoute)
+          FakeRequest(POST, notificationMoreSaoAreAllAddedRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
+        val view = application.injector.instanceOf[NotificationMoreSaoAreAllAddedView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using
-          request,
-          messages(application)
-        ).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
       }
     }
 
@@ -159,7 +134,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
+        val request = FakeRequest(GET, notificationMoreSaoAreAllAddedRoute)
 
         val result = route(application, request).value
 
@@ -174,8 +149,8 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whoWasTheSaoBeforeRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+          FakeRequest(POST, notificationMoreSaoAreAllAddedRoute)
+            .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
 

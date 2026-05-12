@@ -14,35 +14,30 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth.*
-
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
+    govukDateInput: GovukDateInput,
     govukButton: GovukButton
 )
 
-@(saoName: String, form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
+@(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("whoWasTheSaoBefore.title"))) {
+@layout(pageTitle = title(form, messages("notificationMoreSaoSecondEndDate.title"))) {
 
-    @formHelper(action = routes.WhoWasTheSaoBeforeController.onSubmit(mode)) {
+    @formHelper(action = routes.NotificationMoreSaoSecondEndDateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
+            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
-        <span class="govuk-caption-l">Submit a notification</span>
-
-        @govukInput(
-            InputViewModel(
-                field = form("value"),
-                label = LabelViewModel(messages("whoWasTheSaoBefore.heading", saoName).toText).asPageHeading(LabelSize.Large),
+        @govukDateInput(
+            DateViewModel(
+                field  = form("value"),
+                legend = LegendViewModel(messages("notificationMoreSaoSecondEndDate.heading").toText).asPageHeading(LegendSize.Large)
             )
-            .withWidth(Fixed20)
-            .withHint(Hint(content = Text(messages("whoWasTheSaoBefore.hint", saoName))))
+            .withHint(HintViewModel(messages("notificationMoreSaoSecondEndDate.hint").toText))
         )
 
         @govukButton(

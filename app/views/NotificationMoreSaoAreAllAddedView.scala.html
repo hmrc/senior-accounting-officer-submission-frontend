@@ -14,35 +14,29 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth.*
-
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
+    govukRadios: GovukRadios,
     govukButton: GovukButton
 )
 
-@(saoName: String, form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
+@(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("whoWasTheSaoBefore.title"))) {
+@layout(pageTitle = title(form, messages("notificationMoreSaoAreAllAdded.title"))) {
 
-    @formHelper(action = routes.WhoWasTheSaoBeforeController.onSubmit(mode)) {
+    @formHelper(action = routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <span class="govuk-caption-l">Submit a notification</span>
-
-        @govukInput(
-            InputViewModel(
+        @govukRadios(
+            RadiosViewModel.yesNo(
                 field = form("value"),
-                label = LabelViewModel(messages("whoWasTheSaoBefore.heading", saoName).toText).asPageHeading(LabelSize.Large),
+                legend = LegendViewModel(messages("notificationMoreSaoAreAllAdded.heading").toText).asPageHeading(LegendSize.Large)
             )
-            .withWidth(Fixed20)
-            .withHint(Hint(content = Text(messages("whoWasTheSaoBefore.hint", saoName))))
         )
 
         @govukButton(
