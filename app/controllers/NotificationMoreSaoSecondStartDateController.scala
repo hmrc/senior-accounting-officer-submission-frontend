@@ -31,6 +31,7 @@ import views.html.NotificationMoreSaoSecondStartDateView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import pages.WhoWasTheSaoBeforePage
 
 class NotificationMoreSaoSecondStartDateController @Inject() (
     override val messagesApi: MessagesApi,
@@ -50,7 +51,7 @@ class NotificationMoreSaoSecondStartDateController @Inject() (
     val form         = formProvider()
     val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondStartDatePage).fold(form)(form.fill)
     request.userAnswers
-      .get(MoreSaoSubmitNotificationFullNamePage) match {
+      .get(WhoWasTheSaoBeforePage) match {
       case Some(saoName) => Ok(view(saoName, preparedForm, mode))
       case None          => Redirect(routes.JourneyRecoveryController.onPageLoad())
     }
