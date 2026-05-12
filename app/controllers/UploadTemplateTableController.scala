@@ -17,22 +17,38 @@
 package controllers
 
 import controllers.actions.*
+import models.NormalMode
+import navigation.Navigator
+import pages.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.UploadTemplatePlaybackService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.TemplateGuidanceView
+import views.html.UploadTemplateTableView
 
 import javax.inject.Inject
 
-class TemplateGuidanceController @Inject() (
+class UploadTemplateTableController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: TemplateGuidanceView
+    view: UploadTemplateTableView,
+    playbackService: UploadTemplatePlaybackService,
+    navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = identify { implicit request =>
-    Ok(view())
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    playbackService
+      .getPlayback(request.userAnswers)
+      .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { playback =>
+        Ok(view(playback.tableData, playback.saoName))
+      }
+  }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
   }
 }

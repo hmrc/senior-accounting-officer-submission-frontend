@@ -26,26 +26,29 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("oneSaoSubmitNotificationFullName.title"))) {
+@layout(pageTitle = title(form, messages("moreSaoSubmitNotificationFullName.title"))) {
 
-    @formHelper(action = routes.OneSaoSubmitNotificationFullNameController.onSubmit(mode)) {
+    @formHelper(action = routes.MoreSaoSubmitNotificationFullNameController.onSubmit(mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <span class="govuk-caption-l">@messages("oneSaoSubmitNotificationFullName.caption")</span>
+        <span class="govuk-caption-l">@messages("moreSaoSubmitNotificationFullName.caption")</span>
+        <h1 class="govuk-heading-l">@messages("moreSaoSubmitNotificationFullName.heading")</h1>
+
+        <p class="govuk-body">@messages("moreSaoSubmitNotificationFullName.paragraph1")</p>
 
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("oneSaoSubmitNotificationFullName.heading").toText).asPageHeading(LabelSize.Large)
+                label = LabelViewModel(messages("moreSaoSubmitNotificationFullName.label").toText).withCssClass("govuk-label--m")
             )
             .withWidth(Fixed20)
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
+            ButtonViewModel(messages("site.continue").toText)
         )
     }
 }

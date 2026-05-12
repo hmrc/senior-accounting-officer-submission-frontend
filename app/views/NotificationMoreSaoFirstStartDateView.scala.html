@@ -14,34 +14,32 @@
  * limitations under the License.
  *@
 
-@import viewmodels.InputWidth.*
-
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
-    govukInput: GovukInput,
+    govukDateInput: GovukDateInput,
     govukButton: GovukButton
 )
 
-@(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
+@(saoName: String, form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("oneSaoSubmitNotificationFullName.title"))) {
+@layout(pageTitle = title(form, messages("notificationMoreSaoFirstStartDate.title"))) {
 
-    @formHelper(action = routes.OneSaoSubmitNotificationFullNameController.onSubmit(mode)) {
+    @formHelper(action = routes.NotificationMoreSaoFirstStartDateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
-            @govukErrorSummary(ErrorSummaryViewModel(form))
+            @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
-        <span class="govuk-caption-l">@messages("oneSaoSubmitNotificationFullName.caption")</span>
+        <span class="govuk-caption-l">@messages("notificationMoreSaoFirstStartDate.caption")</span>
 
-        @govukInput(
-            InputViewModel(
-                field = form("value"),
-                label = LabelViewModel(messages("oneSaoSubmitNotificationFullName.heading").toText).asPageHeading(LabelSize.Large)
+        @govukDateInput(
+            DateViewModel(
+                field  = form("value"),
+                legend = LegendViewModel(messages("notificationMoreSaoFirstStartDate.heading", saoName).toText).asPageHeading(LegendSize.Large)
             )
-            .withWidth(Fixed20)
+            .withHint(HintViewModel(messages("notificationMoreSaoFirstStartDate.hint").toText))
         )
 
         @govukButton(

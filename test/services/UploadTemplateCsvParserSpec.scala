@@ -32,6 +32,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
       companyName: String,
       companyType: CompanyType,
       companyStatus: CompanyStatus,
+      companyCrn: Option[CompanyCrn] = Some(CompanyCrn("12345678")),
       corporationTax: Boolean = true,
       certificateType: CertificateType,
       additionalInformation: Option[String]
@@ -40,7 +41,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
       notification = NotificationFields(
         companyName = companyName,
         companyUtr = CompanyUtr("0123456789"),
-        companyCrn = Some(CompanyCrn("12345678")),
+        companyCrn = companyCrn,
         companyType = companyType,
         companyStatus = companyStatus,
         financialYearEndDate = LocalDate.of(2025, 12, 31)
@@ -183,6 +184,31 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
       )
     }
 
+    "must parse a valid row when the company CRN is blank" in {
+      val rowWithBlankCrn = validUnqualifiedDataRow.updated(2, "")
+
+      val csv = toCsv(
+        descriptiveRows ++
+          Seq(sectionRow, UploadTemplateCsvParser.ExpectedHeaders, rowWithBlankCrn)
+      )
+
+      val result = parser.parse(csv)
+
+      result mustBe Valid(
+        Seq(
+          parsedRow(
+            companyName = "Beta Ltd",
+            companyType = CompanyType.LTD,
+            companyStatus = CompanyStatus.Dormant,
+            companyCrn = None,
+            corporationTax = false,
+            certificateType = CertificateType.Unqualified,
+            additionalInformation = None
+          )
+        )
+      )
+    }
+
     "must auto-set certificate type to qualified when tax regimes are marked and certificate type is blank" in {
       val autoQualifiedRow = validQualifiedDataRow.updated(16, "")
 
@@ -260,6 +286,44 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
           errors.forall(_.message == "The selected file must use the template") mustBe true
         case _ =>
           fail("Expected parser to fail when headers are invalid")
+      }
+    }
+
+    "must return an error when a data row contains unexpected extra data columns" in {
+      val rowWithExtraColumn = validQualifiedDataRow :+ "unexpected"
+
+      val csv = toCsv(
+        descriptiveRows ++ Seq(sectionRow, UploadTemplateCsvParser.ExpectedHeaders, rowWithExtraColumn)
+      )
+
+      val result = parser.parse(csv)
+
+      result match {
+        case Invalid(errors) =>
+          errors must contain(
+            TemplateParseError(
+              line = 9,
+              column = None,
+              code = "unexpected_data_columns",
+              message = "The selected file must use the template"
+            )
+          )
+        case _ =>
+          fail("Expected parser to fail when a row contains unexpected extra data columns")
+      }
+    }
+
+    "must return an invalid CSV error when CSV content cannot be parsed" in {
+      val result = parser.parse("\"unterminated")
+
+      result match {
+        case Invalid(errors) =>
+          errors.headOption.value.line mustBe 0
+          errors.headOption.value.column mustBe None
+          errors.headOption.value.code mustBe "invalid_csv"
+          errors.headOption.value.message must startWith("Unable to parse CSV content:")
+        case _ =>
+          fail("Expected parser to fail when CSV content cannot be parsed")
       }
     }
 

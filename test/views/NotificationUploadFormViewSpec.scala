@@ -17,6 +17,7 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import forms.NotificationUploadFormProvider
 import models.UpscanInitiateResponse
 import org.jsoup.Jsoup
@@ -60,6 +61,13 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
 
       doc.createTestsWithParagraphs(paragraphs)
 
+      doc
+        .getElementById("template-guidance")
+        .createTestWithLink(
+          "Read guidance on how to complete the submission template (opens in new tab)",
+          routes.TemplateGuidanceController.onPageLoad().url
+        )
+
       doc.createTestForInsetText(insetText)
 
       "must contain file upload input element" in {
@@ -71,6 +79,7 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
         label.size() mustBe 1
         label.text() mustBe uploadFormLabel
       }
+
     }
 
     "Page with error" - {
@@ -96,6 +105,13 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
       }
 
       doc.createTestsWithParagraphs(paragraphs)
+
+      doc
+        .getElementById("template-guidance")
+        .createTestWithLink(
+          "Read guidance on how to complete the submission template (opens in new tab)",
+          routes.TemplateGuidanceController.onPageLoad().url
+        )
 
       doc.createTestForInsetText(insetText)
 
