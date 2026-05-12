@@ -31,7 +31,7 @@ class WhoWasTheSaoBeforeSummarySpec extends SpecBase with GuiceOneAppPerSuite {
 
     "when there is no answer for WhoWasTheSaoBeforePage" - {
       "must return None" in {
-        def SUT = WhoWasTheSaoBeforeSummary.row(emptyUserAnswers)
+        def SUT = WhoWasTheSaoBeforeSummary.row(emptyUserAnswers, 0)
 
         SUT mustBe None
       }
@@ -39,9 +39,9 @@ class WhoWasTheSaoBeforeSummarySpec extends SpecBase with GuiceOneAppPerSuite {
 
     "when there is a user answer for WhoWasTheSaoBeforePage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(WhoWasTheSaoBeforePage, answer).get
+        emptyUserAnswers.set(WhoWasTheSaoBeforePage(0), answer).get
 
-      def SUT(answer: String = "") = WhoWasTheSaoBeforeSummary.row(testUserAnswers(answer)).get
+      def SUT(answer: String = "") = WhoWasTheSaoBeforeSummary.row(testUserAnswers(answer), 0).get
 
       "must have expected key" in {
         SUT().key mustBe "whoWasTheSaoBefore".toKey

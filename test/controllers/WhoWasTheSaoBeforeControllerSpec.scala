@@ -64,7 +64,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form, NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, form, NormalMode, 0)(using
           request,
           messages(application)
         ).toString
@@ -86,7 +86,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = userAnswersWithSaoName.set(WhoWasTheSaoBeforePage, "answer").success.value
+      val userAnswers = userAnswersWithSaoName.set(WhoWasTheSaoBeforePage(0), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -98,7 +98,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form.fill("answer"), NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, form.fill("answer"), NormalMode, 0)(using
           request,
           messages(application)
         ).toString
@@ -147,7 +147,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode, 0)(using
           request,
           messages(application)
         ).toString

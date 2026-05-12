@@ -34,7 +34,7 @@ class NotificationMoreSaoSecondStartDateViewSpec extends ViewSpecBase[Notificati
   private val form: Form[LocalDate] = formProvider()
 
   private def generateView(form: Form[LocalDate], mode: Mode): Document = {
-    val view = SUT(saoName, form, mode)
+    val view = SUT(saoName, form, mode, 0)
     Jsoup.parse(view.toString)
   }
 

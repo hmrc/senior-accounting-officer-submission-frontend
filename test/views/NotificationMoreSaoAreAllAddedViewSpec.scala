@@ -31,7 +31,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
   private val form: Form[Boolean] = formProvider()
 
   private def generateView(form: Form[Boolean], mode: Mode): Document = {
-    val view = SUT(form, mode)
+    val view = SUT(form, mode, 0)
     Jsoup.parse(view.toString)
   }
 

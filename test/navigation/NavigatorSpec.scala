@@ -204,7 +204,7 @@ class NavigatorSpec extends SpecBase {
       "when on NotificationMoreSaoSecondStartDatePage, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
-            NotificationMoreSaoSecondStartDatePage,
+            NotificationMoreSaoSecondStartDatePage(0),
             NormalMode,
             UserAnswers("id")
           )

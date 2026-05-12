@@ -31,7 +31,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
   private val form: Form[String] = formProvider()
 
   private def generateView(saoName: String, form: Form[String], mode: Mode): Document = {
-    val view = SUT(saoName, form, mode)
+    val view = SUT(saoName, form, mode, 0)
     Jsoup.parse(view.toString)
   }
 

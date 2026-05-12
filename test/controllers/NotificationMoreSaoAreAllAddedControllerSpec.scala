@@ -58,13 +58,13 @@ class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with Mockito
         val view = application.injector.instanceOf[NotificationMoreSaoAreAllAddedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, NormalMode, 0)(using request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NotificationMoreSaoAreAllAddedPage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(NotificationMoreSaoAreAllAddedPage(0), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -76,7 +76,7 @@ class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with Mockito
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(true), NormalMode)(using
+        contentAsString(result) mustEqual view(form.fill(true), NormalMode, 0)(using
           request,
           messages(application)
         ).toString
@@ -125,7 +125,7 @@ class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with Mockito
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, NormalMode, 0)(using request, messages(application)).toString
       }
     }
 
