@@ -24,7 +24,7 @@
 
 @(saoName: String, form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("NotificationMoreSaoFirstStartDate.title"))) {
+@layout(pageTitle = title(form, messages("notificationMoreSaoFirstStartDate.title"))) {
 
     @formHelper(action = routes.NotificationMoreSaoFirstStartDateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
@@ -32,14 +32,14 @@
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
-        <span class="govuk-caption-l">@messages("NotificationMoreSaoFirstStartDate.caption")</span>
+        <span class="govuk-caption-l">@messages("notificationMoreSaoFirstStartDate.caption")</span>
 
         @govukDateInput(
             DateViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("NotificationMoreSaoFirstStartDate.heading", saoName).toText).asPageHeading(LegendSize.Large)
+                legend = LegendViewModel(messages("notificationMoreSaoFirstStartDate.heading", saoName).toText).asPageHeading(LegendSize.Large)
             )
-            .withHint(HintViewModel(messages("NotificationMoreSaoFirstStartDate.hint").toText))
+            .withHint(HintViewModel(messages("notificationMoreSaoFirstStartDate.hint").toText))
         )
 
         @govukButton(

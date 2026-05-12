@@ -63,6 +63,8 @@ class NotificationMoreSaoFirstStartDateViewSpec extends ViewSpecBase[Notificatio
             buttonText = "Continue"
           )
 
+          doc.createTestMustShowHint(pageHint)
+
           doc.createTestsWithOrWithoutError(hasError = false)
         }
 
@@ -81,6 +83,8 @@ class NotificationMoreSaoFirstStartDateViewSpec extends ViewSpecBase[Notificatio
             values = DateFieldValues("1", "1", "2000"),
             hasError = false
           )
+
+          doc.createTestMustShowHint(pageHint)
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.NotificationMoreSaoFirstStartDateController.onSubmit(mode),

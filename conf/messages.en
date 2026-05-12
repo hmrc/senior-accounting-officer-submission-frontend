@@ -301,16 +301,16 @@ whoWasTheSaoBefore.error.required = Enter the name of the previous SAO
 whoWasTheSaoBefore.error.length = The name you enter must be 254 characters or less
 whoWasTheSaoBefore.change.hidden = WhoWasTheSaoBefore
 
-NotificationMoreSaoFirstStartDate.title = Submit a notification
-NotificationMoreSaoFirstStartDate.heading = What date did {0} become the SAO?
-NotificationMoreSaoFirstStartDate.caption = Submit a notification
-NotificationMoreSaoFirstStartDate.hint = For example 01 6 2024
-NotificationMoreSaoFirstStartDate.checkYourAnswersLabel = NotificationMoreSaoFirstStartDate
-NotificationMoreSaoFirstStartDate.error.required.all = The date must be a real date
-NotificationMoreSaoFirstStartDate.error.required.two = The date must include {0} and {1}
-NotificationMoreSaoFirstStartDate.error.required = The date must include {0}
-NotificationMoreSaoFirstStartDate.error.invalid = Enter the date in the correct format
-NotificationMoreSaoFirstStartDate.change.hidden = NotificationMoreSaoFirstStartDate
+notificationMoreSaoFirstStartDate.title = Submit a notification
+notificationMoreSaoFirstStartDate.heading = What date did {0} become the SAO?
+notificationMoreSaoFirstStartDate.caption = Submit a notification
+notificationMoreSaoFirstStartDate.hint = For example 01 6 2024
+notificationMoreSaoFirstStartDate.checkYourAnswersLabel = NotificationMoreSaoFirstStartDate
+notificationMoreSaoFirstStartDate.error.required.all = The date must be a real date
+notificationMoreSaoFirstStartDate.error.required.two = The date must include {0} and {1}
+notificationMoreSaoFirstStartDate.error.required = The date must include {0}
+notificationMoreSaoFirstStartDate.error.invalid = Enter the date in the correct format
+notificationMoreSaoFirstStartDate.change.hidden = NotificationMoreSaoFirstStartDate
 
 moreSaoSubmitNotificationFullName.title = Submit a notification - SAO full name
 moreSaoSubmitNotificationFullName.caption = Submit a notification

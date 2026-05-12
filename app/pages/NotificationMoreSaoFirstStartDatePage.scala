@@ -24,5 +24,5 @@ case object NotificationMoreSaoFirstStartDatePage extends QuestionPage[LocalDate
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "NotificationMoreSaoFirstStartDate"
+  override def toString: String = "notificationMoreSaoFirstStartDate"
 }

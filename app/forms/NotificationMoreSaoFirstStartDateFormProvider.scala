@@ -28,10 +28,10 @@ class NotificationMoreSaoFirstStartDateFormProvider @Inject() extends Mappings {
   def apply()(using messages: Messages): Form[LocalDate] =
     Form(
       "value" -> localDate(
-        invalidKey = "NotificationMoreSaoFirstStartDate.error.invalid",
-        allRequiredKey = "NotificationMoreSaoFirstStartDate.error.required.all",
-        twoRequiredKey = "NotificationMoreSaoFirstStartDate.error.required.two",
-        requiredKey = "NotificationMoreSaoFirstStartDate.error.required"
+        invalidKey = "notificationMoreSaoFirstStartDate.error.invalid",
+        allRequiredKey = "notificationMoreSaoFirstStartDate.error.required.all",
+        twoRequiredKey = "notificationMoreSaoFirstStartDate.error.required.two",
+        requiredKey = "notificationMoreSaoFirstStartDate.error.required"
       )
     )
 }

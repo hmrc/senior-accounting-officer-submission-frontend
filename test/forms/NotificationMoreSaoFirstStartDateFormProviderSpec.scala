@@ -27,10 +27,10 @@ class NotificationMoreSaoFirstStartDateFormProviderSpec extends DateBehaviours {
   private given messages2: Messages = stubMessages()
   val form                          = new NotificationMoreSaoFirstStartDateFormProvider()()
 
-  val requiredAllKey = "NotificationMoreSaoFirstStartDate.error.required.all"
-  val requiredTwoKey = "NotificationMoreSaoFirstStartDate.error.required.two"
-  val requiredKey    = "NotificationMoreSaoFirstStartDate.error.required"
-  val invalidKey     = "NotificationMoreSaoFirstStartDate.error.invalid"
+  val requiredAllKey = "notificationMoreSaoFirstStartDate.error.required.all"
+  val requiredTwoKey = "notificationMoreSaoFirstStartDate.error.required.two"
+  val requiredKey    = "notificationMoreSaoFirstStartDate.error.required"
+  val invalidKey     = "notificationMoreSaoFirstStartDate.error.invalid"
 
   ".value" - {
 

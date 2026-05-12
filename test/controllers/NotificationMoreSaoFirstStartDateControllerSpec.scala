@@ -48,7 +48,7 @@ class NotificationMoreSaoFirstStartDateControllerSpec extends SpecBase with Mock
   val validAnswer: LocalDate = LocalDate.now(ZoneOffset.UTC)
   val saoName: String        = "Firstname Lastname"
 
-  lazy val NotificationMoreSaoFirstStartDateRoute: String =
+  lazy val notificationMoreSaoFirstStartDateRoute: String =
     routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode).url
 
   val userAnswers: UserAnswers = UserAnswers(userAnswersId)
@@ -57,10 +57,10 @@ class NotificationMoreSaoFirstStartDateControllerSpec extends SpecBase with Mock
     .value
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, NotificationMoreSaoFirstStartDateRoute)
+    FakeRequest(GET, notificationMoreSaoFirstStartDateRoute)
 
   def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, NotificationMoreSaoFirstStartDateRoute)
+    FakeRequest(POST, notificationMoreSaoFirstStartDateRoute)
       .withFormUrlEncodedBody(
         "value.day"   -> validAnswer.getDayOfMonth.toString,
         "value.month" -> validAnswer.getMonthValue.toString,
@@ -147,7 +147,7 @@ class NotificationMoreSaoFirstStartDateControllerSpec extends SpecBase with Mock
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
-        FakeRequest(POST, NotificationMoreSaoFirstStartDateRoute)
+        FakeRequest(POST, notificationMoreSaoFirstStartDateRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       running(application) {

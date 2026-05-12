@@ -31,14 +31,14 @@ object NotificationMoreSaoFirstStartDateSummary {
     answers.get(NotificationMoreSaoFirstStartDatePage).map { answer =>
       given Lang = messages.lang
       SummaryListRowViewModel(
-        key = messages("NotificationMoreSaoFirstStartDate.checkYourAnswersLabel").toKey,
+        key = messages("notificationMoreSaoFirstStartDate.checkYourAnswersLabel").toKey,
         value = ValueViewModel(answer.format(dateTimeFormat()).toText),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
             routes.NotificationMoreSaoFirstStartDateController.onPageLoad(CheckMode).url
           )
-            .withVisuallyHiddenText(messages("NotificationMoreSaoFirstStartDate.change.hidden"))
+            .withVisuallyHiddenText(messages("notificationMoreSaoFirstStartDate.change.hidden"))
         )
       )
     }
