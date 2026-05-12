@@ -17,11 +17,17 @@
 package controllers
 
 import base.SpecBase
+import navigation.{FakeNavigator, Navigator}
+import play.api.http.HeaderNames
+import play.api.inject.*
+import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.ConfirmYourNotificationView
 
 class ConfirmYourNotificationControllerSpec extends SpecBase {
+
+  def onwardRoute: Call = Call("GET", "/foo")
 
   "ConfirmYourNotification Controller" - {
 
@@ -40,5 +46,23 @@ class ConfirmYourNotificationControllerSpec extends SpecBase {
         contentAsString(result) mustEqual view()(using request, messages(application)).toString
       }
     }
+
+    "must redirect to the next page for a POST" in {
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(POST, routes.ConfirmYourNotificationController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        header(HeaderNames.LOCATION, result) mustEqual Some(onwardRoute.url)
+      }
+
+    }
+
   }
 }

@@ -19,9 +19,8 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.ConfirmYourNotificationView
 import views.ConfirmYourNotificationViewSpec.*
+import views.html.ConfirmYourNotificationView
 
 class ConfirmYourNotificationViewSpec extends ViewSpecBase[ConfirmYourNotificationView] {
 
@@ -48,17 +47,19 @@ class ConfirmYourNotificationViewSpec extends ViewSpecBase[ConfirmYourNotificati
 
 object ConfirmYourNotificationViewSpec {
   val pageHeading = "Confirm your notification"
-  val pageTitle = "Confirm notification and submit"
+  val pageTitle   = "Confirm notification and submit"
   val pageCaption = "Submit a notification"
 
-  val pageParagraphs = Seq(
+  val pageParagraphs: Seq[String] = Seq(
     "This is an official notification to HMRC in relation to the Senior Accounting Officer requirement in accordance with Schedule 46 of the Finance Act 2009.",
-    "By submitting this notification, you confirm that:")
+    "By submitting this notification, you confirm that:"
+  )
 
-  val pageBullets = Seq(
+  val pageBullets: Seq[String] = Seq(
     "the information provided is complete and correct to the best of your knowledge",
     "you understand that if the company deliberately provides false or incomplete information, or fails to report changes, it may be liable for a penalty of £5,000."
   )
 
-  val pageInsetText = "If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels."
+  val pageInsetText =
+    "If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels."
 }

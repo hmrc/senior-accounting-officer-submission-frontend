@@ -26,13 +26,12 @@ import javax.inject.{Inject, Singleton}
 
 @Singleton
 class Navigator @Inject() () {
-
   private val normalRoutes: Page => UserAnswers => Call = {
     case NotificationGuidancePage =>
       _ => routes.NotificationAdditionalInformationController.onPageLoad(NormalMode)
-//    case NotificationAdditionalInformationPage =>
-//      _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationAdditionalInformationPage =>
+      _ => routes.ConfirmYourNotificationController.onPageLoad()
+    case ConfirmYourNotificationPage =>
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage =>
       _ => routes.SubmitNotificationController.onPageLoad()
