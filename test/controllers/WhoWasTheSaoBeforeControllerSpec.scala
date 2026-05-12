@@ -34,6 +34,7 @@ import repositories.SessionRepository
 import views.html.WhoWasTheSaoBeforeView
 
 import scala.concurrent.Future
+import models.UserAnswers
 
 class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
