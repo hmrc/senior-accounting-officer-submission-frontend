@@ -112,3 +112,13 @@ GET         /notification/multi-sao-second-start-date                 controller
 POST        /notification/multi-sao-second-start-date                 controllers.NotificationMoreSaoSecondStartDateController.onSubmit(mode: Mode = NormalMode)
 GET         /notification/change-multi-sao-second-start-date          controllers.NotificationMoreSaoSecondStartDateController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/change-multi-sao-second-start-date          controllers.NotificationMoreSaoSecondStartDateController.onSubmit(mode: Mode = CheckMode)
+
+GET        /notificationMoreSaoAreAllAdded                        controllers.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = NormalMode)
+POST       /notificationMoreSaoAreAllAdded                        controllers.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = NormalMode)
+GET        /changeNotificationMoreSaoAreAllAdded                  controllers.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeNotificationMoreSaoAreAllAdded                  controllers.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = CheckMode)
+
+GET        /notificationMoreSaoSecondEndDate                  controllers.NotificationMoreSaoSecondEndDateController.onPageLoad(mode: Mode = NormalMode)
+POST       /notificationMoreSaoSecondEndDate                  controllers.NotificationMoreSaoSecondEndDateController.onSubmit(mode: Mode = NormalMode)
+GET        /changeNotificationMoreSaoSecondEndDate                        controllers.NotificationMoreSaoSecondEndDateController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeNotificationMoreSaoSecondEndDate                        controllers.NotificationMoreSaoSecondEndDateController.onSubmit(mode: Mode = CheckMode)

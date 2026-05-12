@@ -332,3 +332,19 @@ notificationMoreSaoSecondStartDate.error.required.two = The date must include {0
 notificationMoreSaoSecondStartDate.error.required = The date must include {0}
 notificationMoreSaoSecondStartDate.error.invalid = Enter the date in the correct format
 notificationMoreSaoSecondStartDate.change.hidden = NotificationMoreSaoSecondStartDate
+
+notificationMoreSaoAreAllAdded.title = notificationMoreSaoAreAllAdded
+notificationMoreSaoAreAllAdded.heading = notificationMoreSaoAreAllAdded
+notificationMoreSaoAreAllAdded.checkYourAnswersLabel = notificationMoreSaoAreAllAdded
+notificationMoreSaoAreAllAdded.error.required = Select yes if notificationMoreSaoAreAllAdded
+notificationMoreSaoAreAllAdded.change.hidden = NotificationMoreSaoAreAllAdded
+
+notificationMoreSaoSecondEndDate.title = NotificationMoreSaoSecondEndDate
+notificationMoreSaoSecondEndDate.heading = NotificationMoreSaoSecondEndDate
+notificationMoreSaoSecondEndDate.hint = For example, 12 11 2007.
+notificationMoreSaoSecondEndDate.checkYourAnswersLabel = NotificationMoreSaoSecondEndDate
+notificationMoreSaoSecondEndDate.error.required.all = Enter the notificationMoreSaoSecondEndDate
+notificationMoreSaoSecondEndDate.error.required.two = The notificationMoreSaoSecondEndDate must include {0} and {1}
+notificationMoreSaoSecondEndDate.error.required = The notificationMoreSaoSecondEndDate must include {0}
+notificationMoreSaoSecondEndDate.error.invalid = Enter a real NotificationMoreSaoSecondEndDate
+notificationMoreSaoSecondEndDate.change.hidden = NotificationMoreSaoSecondEndDate
