@@ -60,7 +60,7 @@ class NotificationMoreSaoSecondStartDateController @Inject() (
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
-      request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage) match {
+      request.userAnswers.get(WhoWasTheSaoBeforePage) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
           form

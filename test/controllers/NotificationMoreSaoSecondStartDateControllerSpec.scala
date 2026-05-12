@@ -25,6 +25,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.MoreSaoSubmitNotificationFullNamePage
+import pages.WhoWasTheSaoBeforePage
 import pages.NotificationMoreSaoSecondStartDatePage
 import play.api.i18n.Messages
 import play.api.inject.bind
@@ -55,7 +56,7 @@ class NotificationMoreSaoSecondStartDateControllerSpec extends SpecBase with Moc
   val saoName = "Firstname Lastname"
 
   val userAnswersWithSaoName: UserAnswers =
-    emptyUserAnswers.set(MoreSaoSubmitNotificationFullNamePage, saoName).success.value
+    emptyUserAnswers.set(WhoWasTheSaoBeforePage, saoName).success.value
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, notificationMoreSaoSecondStartDateRoute)
