@@ -321,3 +321,14 @@ moreSaoSubmitNotificationFullName.checkYourAnswersLabel = moreSaoSubmitNotificat
 moreSaoSubmitNotificationFullName.error.required = Enter the name of the last SAO
 moreSaoSubmitNotificationFullName.error.length = The name you enter must be 254 characters or less
 moreSaoSubmitNotificationFullName.change.hidden = MoreSaoSubmitNotificationFullName
+
+notificationMoreSaoSecondStartDate.title = Submit a notification – Senior Accounting Officer notification and certificate
+notificationMoreSaoSecondStartDate.heading = When did {0}’s responsibility as the SAO start?
+notificationMoreSaoSecondStartDate.caption = Submit a notification
+notificationMoreSaoSecondStartDate.hint = For example 01 6 2024
+notificationMoreSaoSecondStartDate.checkYourAnswersLabel = NotificationMoreSaoSecondStartDate
+notificationMoreSaoSecondStartDate.error.required.all = The date must be a real date
+notificationMoreSaoSecondStartDate.error.required.two = The date must include {0} and {1}
+notificationMoreSaoSecondStartDate.error.required = The date must include {0}
+notificationMoreSaoSecondStartDate.error.invalid = Enter the date in the correct format
+notificationMoreSaoSecondStartDate.change.hidden = NotificationMoreSaoSecondStartDate
