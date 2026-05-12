@@ -19,6 +19,7 @@ package controllers
 import base.SpecBase
 import forms.WhoWasTheSaoBeforeFormProvider
 import models.NormalMode
+import models.UserAnswers
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -34,7 +35,6 @@ import repositories.SessionRepository
 import views.html.WhoWasTheSaoBeforeView
 
 import scala.concurrent.Future
-import models.UserAnswers
 
 class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 

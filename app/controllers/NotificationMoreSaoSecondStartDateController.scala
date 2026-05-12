@@ -20,8 +20,8 @@ import controllers.actions.*
 import forms.NotificationMoreSaoSecondStartDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.MoreSaoSubmitNotificationFullNamePage
 import pages.NotificationMoreSaoSecondStartDatePage
+import pages.WhoWasTheSaoBeforePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -31,7 +31,6 @@ import views.html.NotificationMoreSaoSecondStartDateView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import pages.WhoWasTheSaoBeforePage
 
 class NotificationMoreSaoSecondStartDateController @Inject() (
     override val messagesApi: MessagesApi,
