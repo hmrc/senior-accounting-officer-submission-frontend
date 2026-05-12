@@ -20,6 +20,7 @@ import controllers.actions.*
 import forms.WhoWasTheSaoBeforeFormProvider
 import models.Mode
 import navigation.Navigator
+import pages.MoreSaoSubmitNotificationFullNamePage
 import pages.WhoWasTheSaoBeforePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -50,22 +51,31 @@ class WhoWasTheSaoBeforeController @Inject() (
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val preparedForm = request.userAnswers.get(WhoWasTheSaoBeforePage).fold(form)(form.fill)
+    request.userAnswers
+      .get(MoreSaoSubmitNotificationFullNamePage)
+      .fold(
+        Redirect(routes.JourneyRecoveryController.onPageLoad())
+      )(saoName => Ok(view(saoName, preparedForm, mode)))
 
-    Ok(view(preparedForm, mode))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+      request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage) match {
+        case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case Some(saoName) =>
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
 
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhoWasTheSaoBeforePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(WhoWasTheSaoBeforePage, mode, updatedAnswers))
-        )
+              value =>
+                for {
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(WhoWasTheSaoBeforePage, value))
+                  _              <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(navigator.nextPage(WhoWasTheSaoBeforePage, mode, updatedAnswers))
+            )
+      }
+
   }
 }

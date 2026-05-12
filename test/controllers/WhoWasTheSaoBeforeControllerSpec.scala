@@ -18,11 +18,12 @@ package controllers
 
 import base.SpecBase
 import forms.WhoWasTheSaoBeforeFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.MoreSaoSubmitNotificationFullNamePage
 import pages.WhoWasTheSaoBeforePage
 import play.api.data.Form
 import play.api.inject.bind
@@ -33,6 +34,7 @@ import repositories.SessionRepository
 import views.html.WhoWasTheSaoBeforeView
 
 import scala.concurrent.Future
+import models.UserAnswers
 
 class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
@@ -43,11 +45,16 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val whoWasTheSaoBeforeRoute: String = routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode).url
 
+  val saoName = "Firstname Lastname"
+
+  val userAnswersWithSaoName: UserAnswers =
+    emptyUserAnswers.set(MoreSaoSubmitNotificationFullNamePage, saoName).success.value
+
   "WhoWasTheSaoBefore Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       running(application) {
         val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
@@ -57,13 +64,29 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(saoName, form, NormalMode)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must redirect to journey recovery when last sao name is not in database" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(WhoWasTheSaoBeforePage, "answer").success.value
+      val userAnswers = userAnswersWithSaoName.set(WhoWasTheSaoBeforePage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -75,7 +98,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, form.fill("answer"), NormalMode)(using
           request,
           messages(application)
         ).toString
@@ -89,7 +112,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithSaoName))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -110,7 +133,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       running(application) {
         val request =
@@ -124,7 +147,10 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 
