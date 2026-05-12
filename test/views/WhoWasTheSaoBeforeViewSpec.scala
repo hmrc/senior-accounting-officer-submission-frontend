@@ -30,8 +30,8 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
   private val formProvider       = app.injector.instanceOf[WhoWasTheSaoBeforeFormProvider]
   private val form: Form[String] = formProvider()
 
-  private def generateView(form: Form[String], mode: Mode): Document = {
-    val view = SUT(form, mode)
+  private def generateView(saoName: String, form: Form[String], mode: Mode): Document = {
+    val view = SUT(saoName, form, mode)
     Jsoup.parse(view.toString)
   }
 
@@ -40,7 +40,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
     Mode.values.foreach { mode =>
       s"when using $mode" - {
         "when the form is not filled in" - {
-          val doc = generateView(form, mode)
+          val doc = generateView(saoName, form, mode)
 
           doc.createTestsWithStandardPageElements(
             pageTitle = pageTitle,
@@ -71,7 +71,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
         }
 
         "when the form is filled in" - {
-          val doc = generateView(form.bind(Map("value" -> testInputValue)), mode)
+          val doc = generateView(saoName, form.bind(Map("value" -> testInputValue)), mode)
 
           doc.createTestsWithStandardPageElements(
             pageTitle = pageTitle,
@@ -102,7 +102,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
         }
 
         "when the form has errors" - {
-          val doc = generateView(form.withError("value", "broken"), mode)
+          val doc = generateView(saoName, form.withError("value", "broken"), mode)
 
           doc.createTestsWithStandardPageElements(
             pageTitle = pageTitle,
@@ -144,9 +144,10 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
 }
 
 object WhoWasTheSaoBeforeViewSpec {
-  val pageHeading    = "Who was the SAO before Jackson Brown?"
+  val pageHeading    = "Who was the SAO before Firstname Lastname?"
   val pageCaption    = "Submit a notification"
-  val pageHint       = "This is the person who held the role before Jackson Brown"
+  val pageHint       = "This is the person who held the role before Firstname Lastname"
   val pageTitle      = "Senior Accounting Officer full name"
   val testInputValue = "test name"
+  val saoName        = "Firstname Lastname"
 }
