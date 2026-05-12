@@ -1,0 +1,64 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package views
+
+import base.ViewSpecBase
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import play.api.i18n.Messages
+import views.html.ConfirmYourNotificationView
+import views.ConfirmYourNotificationViewSpec.*
+
+class ConfirmYourNotificationViewSpec extends ViewSpecBase[ConfirmYourNotificationView] {
+
+  private def generateView(): Document = Jsoup.parse(SUT().toString)
+
+  "ConfirmYourNotificationView" - {
+    val doc: Document = generateView()
+
+    doc.createTestsWithStandardPageElements(
+      pageTitle = pageTitle,
+      pageHeading = pageHeading,
+      showBackLink = true,
+      showIsThisPageNotWorkingProperlyLink = true,
+      hasError = false
+    )
+
+    doc.createTestsWithOrWithoutError(hasError = false)
+    doc.createTestsWithLargeCaption(pageCaption)
+    doc.createTestsWithParagraphs(pageParagraphs)
+    doc.createTestsWithBulletPoints(pageBullets)
+    doc.createTestForInsetText(pageInsetText)
+  }
+}
+
+object ConfirmYourNotificationViewSpec {
+  val pageHeading = "Confirm your notification"
+  val pageTitle = "Confirm notification and submit"
+  val pageCaption = "Submit a notification"
+
+  val pageParagraphs = Seq(
+    "This is an official notification to HMRC in relation to the Senior Accounting Officer requirement in accordance with Schedule 46 of the Finance Act 2009.",
+    "By submitting this notification, you confirm that:")
+
+  val pageBullets = Seq(
+    "the information provided is complete and correct to the best of your knowledge",
+    "you understand that if the company deliberately provides false or incomplete information, or fails to report changes, it may be liable for a penalty of £5,000."
+  )
+
+  val pageInsetText = "If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels."
+}
