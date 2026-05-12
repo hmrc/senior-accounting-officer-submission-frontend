@@ -22,11 +22,11 @@
     govukButton: GovukButton
 )
 
-@(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
+@(form: Form[?], mode: Mode, saoIndex: Int)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("notificationMoreSaoAreAllAdded.title"))) {
 
-    @formHelper(action = routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode, saoIndex), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

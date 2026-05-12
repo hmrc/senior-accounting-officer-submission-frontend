@@ -22,11 +22,11 @@
     govukButton: GovukButton
 )
 
-@(saoName: String, form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
+@(saoName: String, form: Form[?], mode: Mode, saoIndex: Int)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("notificationMoreSaoSecondStartDate.title"))) {
 
-    @formHelper(action = routes.NotificationMoreSaoSecondStartDateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.NotificationMoreSaoSecondStartDateController.onSubmit(mode, saoIndex), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))

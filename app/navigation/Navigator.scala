@@ -76,10 +76,19 @@ class Navigator @Inject() () {
       _ => routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
     case NotificationMoreSaoFirstStartDatePage =>
       _ => routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
-    case WhoWasTheSaoBeforePage =>
-      _ => routes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode)
-    case NotificationMoreSaoSecondStartDatePage =>
-      _ => ??? // TODO: link to second end date page
+    case WhoWasTheSaoBeforePage(saoIndex) =>
+      _ => routes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMoreSaoSecondStartDatePage(saoIndex) =>
+      _ => routes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMoreSaoSecondEndDatePage(saoIndex) =>
+      _ => routes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMoreSaoAreAllAddedPage(saoIndex) =>
+      userAnswers =>
+        userAnswers.get(NotificationMoreSaoAreAllAddedPage(saoIndex)) match {
+          case Some(true)  => routes.SubmitNotificationStartController.onPageLoad()
+          case Some(false) => routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, saoIndex + 1)
+          case _           => ???
+        }
     case UploadTemplateTablePage =>
       userAnswers =>
         userAnswers

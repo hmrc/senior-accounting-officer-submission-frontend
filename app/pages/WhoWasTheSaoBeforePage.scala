@@ -18,9 +18,11 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object WhoWasTheSaoBeforePage extends QuestionPage[String] {
+final case class WhoWasTheSaoBeforePage(saoIndex: Int) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ toString
+  val key = "whoWasTheSaoBefore"
 
-  override def toString: String = "whoWasTheSaoBefore"
+  override def path: JsPath = JsPath \ key \ saoIndex
+
+  override def toString: String = s"$key[$saoIndex]"
 }

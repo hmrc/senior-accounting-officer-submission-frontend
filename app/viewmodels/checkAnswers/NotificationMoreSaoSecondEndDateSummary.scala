@@ -27,8 +27,8 @@ import viewmodels.govuk.summarylist.*
 
 object NotificationMoreSaoSecondEndDateSummary {
 
-  def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMoreSaoSecondEndDatePage).map { answer =>
+  def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
+    answers.get(NotificationMoreSaoSecondEndDatePage(saoIndex)).map { answer =>
       given Lang = messages.lang
       SummaryListRowViewModel(
         key = messages("notificationMoreSaoSecondEndDate.checkYourAnswersLabel").toKey,

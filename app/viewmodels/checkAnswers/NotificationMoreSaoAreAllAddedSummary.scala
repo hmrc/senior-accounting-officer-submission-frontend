@@ -26,8 +26,8 @@ import viewmodels.govuk.summarylist.*
 
 object NotificationMoreSaoAreAllAddedSummary {
 
-  def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMoreSaoAreAllAddedPage).map { answer =>
+  def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
+    answers.get(NotificationMoreSaoAreAllAddedPage(saoIndex)).map { answer =>
       val value = if answer then "site.yes" else "site.no"
       SummaryListRowViewModel(
         key = messages("notificationMoreSaoAreAllAdded.checkYourAnswersLabel").toKey,
