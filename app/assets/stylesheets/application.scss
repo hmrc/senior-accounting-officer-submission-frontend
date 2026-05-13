@@ -14,3 +14,11 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.upload-template-errors-table .govuk-table__body .govuk-table__cell {
+  border-bottom: 0 !important;
+}
+
+.upload-template-errors-table__line-start .govuk-table__cell {
+  border-top: 1px solid $govuk-border-colour;
+}

@@ -36,7 +36,15 @@
         .take(maximumLinesWithErrorsToDisplay)
 }
 
-@layout(pageTitle = titleNoForm(messages("uploadTemplateTableError.title"))) {
+@stylesheet = {
+    <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" />
+}
+
+@layout(
+    showBackLink = false,
+    pageTitle = titleNoForm(messages("uploadTemplateTableError.title")),
+    additionalHeadBlock = Some(stylesheet)
+) {
 
     <h1 class="govuk-heading-l">@messages("uploadTemplateTableError.heading")</h1>
 
@@ -47,7 +55,7 @@
     <h2 class="govuk-heading-m">@messages("uploadTemplateTableError.problems.heading")</h2>
     <p class="govuk-body">@messages("uploadTemplateTableError.problems.summary", tableData.errors.size.toString)</p>
 
-    <table class="govuk-table govuk-!-font-size-16">
+    <table class="govuk-table govuk-!-font-size-16 upload-template-errors-table">
         <thead class="govuk-table__head">
             <tr class="govuk-table__row">
                 <th scope="col" class="govuk-table__header">@messages("uploadTemplateTableError.errors.line")</th>
@@ -61,9 +69,9 @@
                     <td class="govuk-table__cell" colspan="3">@messages("uploadTemplateTableError.errors.none")</td>
                 </tr>
             } else {
-                @for((line, errorsForLine) <- linesWithErrors) {
+                @for(((line, errorsForLine), lineIndex) <- linesWithErrors.zipWithIndex) {
                     @for((error, index) <- errorsForLine.zipWithIndex) {
-                        <tr class="govuk-table__row">
+                        <tr class="govuk-table__row@if(index == 0 && lineIndex > 0) { upload-template-errors-table__line-start}">
                             @if(index == 0) {
                                 <td class="govuk-table__cell" rowspan="@errorsForLine.size">@line</td>
                             }
