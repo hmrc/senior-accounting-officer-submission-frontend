@@ -57,6 +57,8 @@ class NotificationMoreSaoSecondStartDateControllerSpec extends SpecBase with Moc
   val userAnswersWithSaoName: UserAnswers =
     emptyUserAnswers.set(WhoWasTheSaoBeforePage(0), saoName).success.value
 
+  val saoIndex = 0
+
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, notificationMoreSaoSecondStartDateRoute)
 
@@ -80,7 +82,7 @@ class NotificationMoreSaoSecondStartDateControllerSpec extends SpecBase with Moc
         val view = application.injector.instanceOf[NotificationMoreSaoSecondStartDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form, NormalMode, 0)(using
+        contentAsString(result) mustEqual view(saoName, form, NormalMode, saoIndex)(using
           getRequest(),
           messages(application)
         ).toString
@@ -102,7 +104,7 @@ class NotificationMoreSaoSecondStartDateControllerSpec extends SpecBase with Moc
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        userAnswersWithSaoName.set(NotificationMoreSaoSecondStartDatePage(0), validAnswer).success.value
+        userAnswersWithSaoName.set(NotificationMoreSaoSecondStartDatePage(saoIndex), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -112,7 +114,7 @@ class NotificationMoreSaoSecondStartDateControllerSpec extends SpecBase with Moc
         val result = route(application, getRequest()).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form.fill(validAnswer), NormalMode, 0)(using
+        contentAsString(result) mustEqual view(saoName, form.fill(validAnswer), NormalMode, saoIndex)(using
           getRequest(),
           messages(application)
         ).toString
@@ -179,7 +181,7 @@ class NotificationMoreSaoSecondStartDateControllerSpec extends SpecBase with Moc
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode, 0)(using
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode, saoIndex)(using
           request,
           messages(application)
         ).toString
