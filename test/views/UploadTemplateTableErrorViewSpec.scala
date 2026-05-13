@@ -35,7 +35,7 @@ class UploadTemplateTableErrorViewSpec extends ViewSpecBase[UploadTemplateTableE
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
       pageHeading = pageHeading,
-      showBackLink = true,
+      showBackLink = false,
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
@@ -66,6 +66,27 @@ class UploadTemplateTableErrorViewSpec extends ViewSpecBase[UploadTemplateTableE
       doc.select("#continue").size() mustBe 1
       doc.select("#continue").text() mustBe "Return to file upload"
     }
+
+    "must render the errors table with row separators removed" in {
+      doc.select("table.upload-template-errors-table").size() mustBe 1
+    }
+
+    "must render separators only between different row numbers" in {
+      doc.select("tbody.govuk-table__body tr").get(0).hasClass("upload-template-errors-table__line-start") mustBe false
+      doc.select("tbody.govuk-table__body tr").get(1).hasClass("upload-template-errors-table__line-start") mustBe false
+
+      val docWithMultipleRows = Jsoup.parse(SUT(tableDataWithMultipleRows).toString)
+      val rows                = docWithMultipleRows.select("tbody.govuk-table__body tr")
+
+      rows.get(0).hasClass("upload-template-errors-table__line-start") mustBe false
+      rows.get(1).hasClass("upload-template-errors-table__line-start") mustBe false
+      rows.get(2).hasClass("upload-template-errors-table__line-start") mustBe true
+      rows.get(3).hasClass("upload-template-errors-table__line-start") mustBe false
+    }
+
+    "must load the stylesheet containing the errors table border override" in {
+      doc.select("""link[href*="stylesheets/application.css"]""").size() mustBe 1
+    }
   }
 }
 
@@ -84,6 +105,24 @@ object UploadTemplateTableErrorViewSpec {
       ),
       TemplateParseError(
         line = 9,
+        column = Some("CRN"),
+        code = "invalid_company_crn",
+        message = "Enter a valid Company CRN. It must be 8 characters long"
+      )
+    )
+  )
+
+  val tableDataWithMultipleRows: UploadTemplateTableData = UploadTemplateTableData(
+    rows = Seq.empty,
+    errors = tableData.errors ++ Seq(
+      TemplateParseError(
+        line = 10,
+        column = Some("UTR"),
+        code = "invalid_company_utr",
+        message = "Enter a valid Company UTR. It must be 10 digits long"
+      ),
+      TemplateParseError(
+        line = 10,
         column = Some("CRN"),
         code = "invalid_company_crn",
         message = "Enter a valid Company CRN. It must be 8 characters long"
