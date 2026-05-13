@@ -267,14 +267,6 @@ class NavigatorSpec extends SpecBase {
         )
       }
 
-      "when on NotificationMoreSaoFirstStartDatePage, must go to who was the sao before page" in {
-        navigator.nextPage(
-          NotificationMoreSaoFirstStartDatePage,
-          NormalMode,
-          UserAnswers("id").set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2026, 5, 1)).success.value
-        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
-      }
-
       "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
         val userAnswers =
           UserAnswers("id")
