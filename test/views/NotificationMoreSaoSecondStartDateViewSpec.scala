@@ -132,7 +132,7 @@ class NotificationMoreSaoSecondStartDateViewSpec extends ViewSpecBase[Notificati
 
 object NotificationMoreSaoSecondStartDateViewSpec {
   val pageHeading = "When did Firstname Lastname’s responsibility as the SAO start?"
-  val pageTitle   = "Submit a notification – Senior Accounting Officer notification and certificate"
+  val pageTitle   = "Submit a notification"
   val pageCaption = "Submit a notification"
   val pageHint    = "For example 01 6 2024"
 
