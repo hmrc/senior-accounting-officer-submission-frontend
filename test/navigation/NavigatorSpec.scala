@@ -201,14 +201,62 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMoreSaoSecondStartDatePage, must throw an exception" in {
+      "when on NotificationMoreSaoFirstStartDatePage, must go to who was the sao before page" in {
+        navigator.nextPage(
+          NotificationMoreSaoFirstStartDatePage,
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2026, 5, 1)).success.value
+        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
+      }
+
+      "when on WhoWasTheSaoBeforePage, must go to NotificationMoreSaoSecondStartDate" in {
+        navigator.nextPage(
+          WhoWasTheSaoBeforePage(0),
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, 0)
+      }
+
+      "when on NotificationMoreSaoSecondStartDatePage, must go to NotificationMoreSaoSecondEndDate page" in {
+        navigator.nextPage(
+          NotificationMoreSaoSecondStartDatePage(0),
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode)
+      }
+
+      "when on NotificationMoreSaoSecondEndDatePage, must go to NotificationMoreSaoAreAllAdded page" in {
+        navigator.nextPage(
+          NotificationMoreSaoSecondEndDatePage(0),
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode)
+      }
+
+      "when on NotificationMoreSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
-            NotificationMoreSaoSecondStartDatePage(0),
+            NotificationMoreSaoAreAllAddedPage(0),
             NormalMode,
             UserAnswers("id")
           )
         }
+      }
+
+      "when on NotificationMoreSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
+        navigator.nextPage(
+          NotificationMoreSaoAreAllAddedPage(0),
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), true).success.value
+        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+      }
+
+      "when on NotificationMoreSaoAreAllAddedPage, and the user answers no, must go to WhoWasTheSaoBefore page with an incremented saoIndex" in {
+        navigator.nextPage(
+          NotificationMoreSaoAreAllAddedPage(0),
+          NormalMode,
+          UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), false).success.value
+        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1)
       }
 
       "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {
