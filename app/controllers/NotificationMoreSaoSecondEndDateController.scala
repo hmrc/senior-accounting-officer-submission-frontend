@@ -45,24 +45,26 @@ class NotificationMoreSaoSecondEndDateController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val form         = formProvider()
-    val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondEndDatePage).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
+  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      val form         = formProvider()
+      val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondEndDatePage(saoIndex)).fold(form)(form.fill)
+      Ok(view(preparedForm, mode, saoIndex))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
       form
         .bindFromRequest()
         .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, saoIndex))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationMoreSaoSecondEndDatePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMoreSaoSecondEndDatePage, mode, updatedAnswers))
+              updatedAnswers <- Future
+                .fromTry(request.userAnswers.set(NotificationMoreSaoSecondEndDatePage(saoIndex), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(NotificationMoreSaoSecondEndDatePage(saoIndex), mode, updatedAnswers))
         )
   }
 }

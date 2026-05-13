@@ -46,33 +46,36 @@ class NotificationMoreSaoSecondStartDateController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val form         = formProvider()
-    val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondStartDatePage).fold(form)(form.fill)
-    request.userAnswers
-      .get(WhoWasTheSaoBeforePage) match {
-      case Some(saoName) => Ok(view(saoName, preparedForm, mode))
-      case None          => Redirect(routes.JourneyRecoveryController.onPageLoad())
-    }
+  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      val form         = formProvider()
+      val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondStartDatePage(saoIndex)).fold(form)(form.fill)
+      request.userAnswers
+        .get(WhoWasTheSaoBeforePage(saoIndex)) match {
+        case Some(saoName) => Ok(view(saoName, preparedForm, mode, saoIndex))
+        case None          => Redirect(routes.JourneyRecoveryController.onPageLoad())
+      }
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       val form = formProvider()
-      request.userAnswers.get(WhoWasTheSaoBeforePage) match {
+      request.userAnswers.get(WhoWasTheSaoBeforePage(saoIndex)) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
           form
             .bindFromRequest()
             .fold(
-              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
+              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode, saoIndex))),
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(NotificationMoreSaoSecondStartDatePage, value))
+                    .fromTry(request.userAnswers.set(NotificationMoreSaoSecondStartDatePage(saoIndex), value))
                   _ <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(navigator.nextPage(NotificationMoreSaoSecondStartDatePage, mode, updatedAnswers))
+                } yield Redirect(
+                  navigator.nextPage(NotificationMoreSaoSecondStartDatePage(saoIndex), mode, updatedAnswers)
+                )
             )
       }
-  }
+    }
 }

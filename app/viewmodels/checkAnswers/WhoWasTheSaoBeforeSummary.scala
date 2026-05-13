@@ -26,8 +26,8 @@ import viewmodels.govuk.summarylist.*
 
 object WhoWasTheSaoBeforeSummary {
 
-  def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(WhoWasTheSaoBeforePage).map { answer =>
+  def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
+    answers.get(WhoWasTheSaoBeforePage(saoIndex)).map { answer =>
       SummaryListRowViewModel(
         key = messages("whoWasTheSaoBefore.checkYourAnswersLabel").toKey,
         value = ValueViewModel(answer.toText),

@@ -20,9 +20,11 @@ import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-case object NotificationMoreSaoSecondEndDatePage extends QuestionPage[LocalDate] {
+final case class NotificationMoreSaoSecondEndDatePage(saoIndex: Int) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ toString
+  val key = "notificationMoreSaoSecondEndDate"
 
-  override def toString: String = "notificationMoreSaoSecondEndDate"
+  override def path: JsPath = JsPath \ key \ saoIndex
+
+  override def toString: String = s"$key[$saoIndex]"
 }

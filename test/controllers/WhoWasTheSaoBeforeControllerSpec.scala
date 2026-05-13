@@ -50,6 +50,8 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
   val userAnswersWithSaoName: UserAnswers =
     emptyUserAnswers.set(MoreSaoSubmitNotificationFullNamePage, saoName).success.value
 
+  val saoIndex = 0
+
   "WhoWasTheSaoBefore Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -64,7 +66,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form, NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, form, NormalMode, saoIndex)(using
           request,
           messages(application)
         ).toString
@@ -86,7 +88,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = userAnswersWithSaoName.set(WhoWasTheSaoBeforePage, "answer").success.value
+      val userAnswers = userAnswersWithSaoName.set(WhoWasTheSaoBeforePage(saoIndex), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -98,7 +100,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form.fill("answer"), NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, form.fill("answer"), NormalMode, saoIndex)(using
           request,
           messages(application)
         ).toString
@@ -147,7 +149,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode, saoIndex)(using
           request,
           messages(application)
         ).toString

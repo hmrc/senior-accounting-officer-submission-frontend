@@ -31,7 +31,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
   private val form: Form[Boolean] = formProvider()
 
   private def generateView(form: Form[Boolean], mode: Mode): Document = {
-    val view = SUT(form, mode)
+    val view = SUT(form, mode, saoIndex)
     Jsoup.parse(view.toString)
   }
 
@@ -61,7 +61,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -92,7 +92,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -123,7 +123,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoAreAllAddedController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -145,4 +145,5 @@ object NotificationMoreSaoAreAllAddedViewSpec {
   val yesLabel    = "Yes"
   val noKey       = "false"
   val noLabel     = "No"
+  val saoIndex    = 3
 }

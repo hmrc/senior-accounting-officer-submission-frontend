@@ -31,7 +31,7 @@ class NotificationMoreSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneAp
 
     "when there is no answer for NotificationMoreSaoAreAllAddedPage" - {
       "must return None" in {
-        def SUT = NotificationMoreSaoAreAllAddedSummary.row(emptyUserAnswers)
+        def SUT = NotificationMoreSaoAreAllAddedSummary.row(emptyUserAnswers, 0)
 
         SUT mustBe None
       }
@@ -39,9 +39,9 @@ class NotificationMoreSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneAp
 
     "when there is a user answer for NotificationMoreSaoAreAllAddedPage" - {
       def testUserAnswers(answer: Boolean) =
-        emptyUserAnswers.set(NotificationMoreSaoAreAllAddedPage, answer).get
+        emptyUserAnswers.set(NotificationMoreSaoAreAllAddedPage(0), answer).get
 
-      def SUT(answer: Boolean = true) = NotificationMoreSaoAreAllAddedSummary.row(testUserAnswers(answer)).get
+      def SUT(answer: Boolean = true) = NotificationMoreSaoAreAllAddedSummary.row(testUserAnswers(answer), 0).get
 
       "must have expected key" in {
         SUT().key mustBe "notificationMoreSaoAreAllAdded".toKey

@@ -31,7 +31,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
   private val form: Form[String] = formProvider()
 
   private def generateView(saoName: String, form: Form[String], mode: Mode): Document = {
-    val view = SUT(saoName, form, mode)
+    val view = SUT(saoName, form, mode, saoIndex)
     Jsoup.parse(view.toString)
   }
 
@@ -60,7 +60,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode),
+            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -90,7 +90,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode),
+            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -121,7 +121,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode),
+            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -150,4 +150,5 @@ object WhoWasTheSaoBeforeViewSpec {
   val pageTitle      = "Senior Accounting Officer full name"
   val testInputValue = "test name"
   val saoName        = "Firstname Lastname"
+  val saoIndex       = 3
 }

@@ -49,17 +49,18 @@ class WhoWasTheSaoBeforeController @Inject() (
 
   val form: Form[String] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(WhoWasTheSaoBeforePage).fold(form)(form.fill)
-    request.userAnswers
-      .get(MoreSaoSubmitNotificationFullNamePage)
-      .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
-      )(saoName => Ok(view(saoName, preparedForm, mode)))
+  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      val preparedForm = request.userAnswers.get(WhoWasTheSaoBeforePage(saoIndex)).fold(form)(form.fill)
+      request.userAnswers
+        .get(MoreSaoSubmitNotificationFullNamePage)
+        .fold(
+          Redirect(routes.JourneyRecoveryController.onPageLoad())
+        )(saoName => Ok(view(saoName, preparedForm, mode, saoIndex)))
 
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
@@ -67,13 +68,13 @@ class WhoWasTheSaoBeforeController @Inject() (
           form
             .bindFromRequest()
             .fold(
-              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
+              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode, saoIndex))),
 
               value =>
                 for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(WhoWasTheSaoBeforePage, value))
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(WhoWasTheSaoBeforePage(saoIndex), value))
                   _              <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(navigator.nextPage(WhoWasTheSaoBeforePage, mode, updatedAnswers))
+                } yield Redirect(navigator.nextPage(WhoWasTheSaoBeforePage(saoIndex), mode, updatedAnswers))
             )
       }
 

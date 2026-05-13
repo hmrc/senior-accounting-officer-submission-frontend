@@ -34,7 +34,7 @@ class NotificationMoreSaoSecondStartDateViewSpec extends ViewSpecBase[Notificati
   private val form: Form[LocalDate] = formProvider()
 
   private def generateView(form: Form[LocalDate], mode: Mode): Document = {
-    val view = SUT(saoName, form, mode)
+    val view = SUT(saoName, form, mode, saoIndex)
     Jsoup.parse(view.toString)
   }
 
@@ -59,7 +59,7 @@ class NotificationMoreSaoSecondStartDateViewSpec extends ViewSpecBase[Notificati
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.NotificationMoreSaoSecondStartDateController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoSecondStartDateController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -87,7 +87,7 @@ class NotificationMoreSaoSecondStartDateViewSpec extends ViewSpecBase[Notificati
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.NotificationMoreSaoSecondStartDateController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoSecondStartDateController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -115,7 +115,7 @@ class NotificationMoreSaoSecondStartDateViewSpec extends ViewSpecBase[Notificati
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.NotificationMoreSaoSecondStartDateController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoSecondStartDateController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -136,5 +136,6 @@ object NotificationMoreSaoSecondStartDateViewSpec {
   val pageCaption = "Submit a notification"
   val pageHint    = "For example 01 6 2024"
 
-  val saoName = "Firstname Lastname"
+  val saoName  = "Firstname Lastname"
+  val saoIndex = 3
 }

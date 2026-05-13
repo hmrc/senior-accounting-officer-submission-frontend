@@ -18,9 +18,11 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object NotificationMoreSaoAreAllAddedPage extends QuestionPage[Boolean] {
+final case class NotificationMoreSaoAreAllAddedPage(saoIndex: Int) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ toString
+  val key = "notificationMoreSaoAreAllAdded"
 
-  override def toString: String = "notificationMoreSaoAreAllAdded"
+  override def path: JsPath = JsPath \ key \ saoIndex
+
+  override def toString: String = s"$key[$saoIndex]"
 }

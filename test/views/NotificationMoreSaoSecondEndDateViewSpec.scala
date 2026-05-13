@@ -34,7 +34,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
   private val form: Form[LocalDate] = formProvider()
 
   private def generateView(form: Form[LocalDate], mode: Mode): Document = {
-    val view = SUT(form, mode)
+    val view = SUT(form, mode, saoIndex)
     Jsoup.parse(view.toString)
   }
 
@@ -59,7 +59,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.NotificationMoreSaoSecondEndDateController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoSecondEndDateController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -83,7 +83,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.NotificationMoreSaoSecondEndDateController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoSecondEndDateController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -107,7 +107,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.NotificationMoreSaoSecondEndDateController.onSubmit(mode),
+            action = controllers.routes.NotificationMoreSaoSecondEndDateController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -121,4 +121,5 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
 object NotificationMoreSaoSecondEndDateViewSpec {
   val pageHeading = "NotificationMoreSaoSecondEndDate"
   val pageTitle   = "NotificationMoreSaoSecondEndDate"
+  val saoIndex    = 3
 }

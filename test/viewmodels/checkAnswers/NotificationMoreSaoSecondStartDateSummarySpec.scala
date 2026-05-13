@@ -33,7 +33,7 @@ class NotificationMoreSaoSecondStartDateSummarySpec extends SpecBase with GuiceO
 
     "when there is no answer for NotificationMoreSaoSecondStartDatePage" - {
       "must return None" in {
-        def SUT = NotificationMoreSaoSecondStartDateSummary.row(emptyUserAnswers)
+        def SUT = NotificationMoreSaoSecondStartDateSummary.row(emptyUserAnswers, 0)
 
         SUT mustBe None
       }
@@ -41,10 +41,10 @@ class NotificationMoreSaoSecondStartDateSummarySpec extends SpecBase with GuiceO
 
     "when there is a user answer for NotificationMoreSaoSecondStartDatePage" - {
       def testUserAnswers(answer: LocalDate) =
-        emptyUserAnswers.set(NotificationMoreSaoSecondStartDatePage, answer).get
+        emptyUserAnswers.set(NotificationMoreSaoSecondStartDatePage(0), answer).get
 
       def SUT(answer: LocalDate = LocalDate.now) =
-        NotificationMoreSaoSecondStartDateSummary.row(testUserAnswers(answer)).get
+        NotificationMoreSaoSecondStartDateSummary.row(testUserAnswers(answer), 0).get
 
       "must have expected key" in {
         SUT().key mustBe "NotificationMoreSaoSecondStartDate".toKey

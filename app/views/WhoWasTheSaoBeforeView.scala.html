@@ -24,11 +24,11 @@
     govukButton: GovukButton
 )
 
-@(saoName: String, form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
+@(saoName: String, form: Form[?], mode: Mode, saoIndex: Int)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("whoWasTheSaoBefore.title"))) {
 
-    @formHelper(action = routes.WhoWasTheSaoBeforeController.onSubmit(mode)) {
+    @formHelper(action = routes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
