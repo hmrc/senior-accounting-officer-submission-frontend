@@ -259,12 +259,12 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1)
       }
 
-      "when on OneSaoSubmitNotificationFullNamePage, must throw an exception" in {
+      "when on OneSaoSubmitNotificationFullNamePage, must go to the submit notification start page" in {
         navigator.nextPage(
           OneSaoSubmitNotificationFullNamePage,
           NormalMode,
           UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
-        )
+        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
