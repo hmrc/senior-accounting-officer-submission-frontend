@@ -29,7 +29,9 @@ class Navigator @Inject() () {
 
   private val normalRoutes: Page => UserAnswers => Call = {
     case NotificationAdditionalInformationPage =>
-      _ => routes.NotificationCheckYourAnswersController.onPageLoad() // update in 739 to go to confirm notification
+      _ => routes.ConfirmYourNotificationController.onPageLoad()
+    case ConfirmYourNotificationPage =>
+      _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage =>
       _ => routes.SubmitNotificationController.onPageLoad()
     case SubmitNotificationPage =>

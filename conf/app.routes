@@ -49,6 +49,9 @@ POST        /notification/submit                                      controller
 GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad()
 POST        /notification/confirmation                                controllers.NotificationConfirmationController.onSubmit()
 
+GET         /notification/confirm-your-notification                   controllers.ConfirmYourNotificationController.onPageLoad()
+POST        /notification/confirm-your-notification                   controllers.ConfirmYourNotificationController.onSubmit()
+
 GET         /certificate/start                                        controllers.SubmitCertificateStartController.onPageLoad()
 POST        /certificate/start                                        controllers.SubmitCertificateStartController.onSubmit()
 
