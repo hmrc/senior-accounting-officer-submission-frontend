@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.NotificationMoreSaoSecondEndDatePage
+import pages.{MoreSaoSubmitNotificationFullNamePage, NotificationMoreSaoSecondEndDatePage, WhoWasTheSaoBeforePage}
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -33,7 +33,6 @@ import repositories.SessionRepository
 import views.html.NotificationMoreSaoSecondEndDateView
 
 import scala.concurrent.Future
-
 import java.time.{LocalDate, ZoneOffset}
 
 class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with MockitoSugar {
@@ -46,11 +45,12 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
   def onwardRoute: Call = Call("GET", "/foo")
 
   val validAnswer: LocalDate = LocalDate.now(ZoneOffset.UTC)
+  val saoName: String = "Firstname Lastname"
 
   lazy val notificationMoreSaoSecondEndDateRoute: String =
     routes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode).url
 
-  override val emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
+  val userAnswersWithSaoName: UserAnswers = emptyUserAnswers.set(WhoWasTheSaoBeforePage(0), saoName).success.value
 
   val saoIndex = 0
 
@@ -69,7 +69,7 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       running(application) {
         val result = route(application, getRequest()).value
@@ -77,17 +77,28 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
         val view = application.injector.instanceOf[NotificationMoreSaoSecondEndDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode, saoIndex)(using
+        contentAsString(result) mustEqual view(saoName, form, NormalMode, saoIndex)(using
           getRequest(),
           messages(application)
         ).toString
       }
     }
+    
+    "must redirect to the journey recovery page when user answers does not have sao name" in {
 
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val result = route(application, getRequest()).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+    
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers =
-        UserAnswers(userAnswersId).set(NotificationMoreSaoSecondEndDatePage(saoIndex), validAnswer).success.value
+      val userAnswers = userAnswersWithSaoName.set(NotificationMoreSaoSecondEndDatePage(saoIndex), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -97,7 +108,7 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
         val result = route(application, getRequest()).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(validAnswer), NormalMode, saoIndex)(using
+        contentAsString(result) mustEqual view(saoName, form.fill(validAnswer), NormalMode, saoIndex)(using
           getRequest(),
           messages(application)
         ).toString
@@ -111,7 +122,7 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithSaoName))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -128,7 +139,7 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       val request =
         FakeRequest(POST, notificationMoreSaoSecondEndDateRoute)
@@ -142,7 +153,7 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode, saoIndex)(using
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode, saoIndex)(using
           request,
           messages(application)
         ).toString

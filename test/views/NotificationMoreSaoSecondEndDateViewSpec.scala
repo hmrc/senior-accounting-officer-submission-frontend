@@ -34,7 +34,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
   private val form: Form[LocalDate] = formProvider()
 
   private def generateView(form: Form[LocalDate], mode: Mode): Document = {
-    val view = SUT(form, mode, saoIndex)
+    val view = SUT(saoName, form, mode, saoIndex)
     Jsoup.parse(view.toString)
   }
 
@@ -64,6 +64,10 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
           )
 
           doc.createTestsWithOrWithoutError(hasError = false)
+
+          doc.createTestsWithLargeCaption(pageCaption)
+
+          doc.createTestMustShowHint(pageHint)
         }
 
         "when the form is filled in" - {
@@ -88,6 +92,10 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
           )
 
           doc.createTestsWithOrWithoutError(hasError = false)
+
+          doc.createTestsWithLargeCaption(pageCaption)
+
+          doc.createTestMustShowHint(pageHint)
         }
 
         "when the form has errors" - {
@@ -112,6 +120,10 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
           )
 
           doc.createTestsWithOrWithoutError(hasError = true)
+
+          doc.createTestsWithLargeCaption(pageCaption)
+
+          doc.createTestMustShowHint(pageHint)
         }
       }
     }
@@ -119,7 +131,10 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
 }
 
 object NotificationMoreSaoSecondEndDateViewSpec {
-  val pageHeading = "NotificationMoreSaoSecondEndDate"
+  val pageHeading = "When did Firstname Lastname stop being the SAO?"
   val pageTitle   = "NotificationMoreSaoSecondEndDate"
   val saoIndex    = 3
+  val saoName  = "Firstname Lastname"
+  val pageCaption = "Submit a notification"
+  val pageHint    = "For example 01 6 2024"
 }
