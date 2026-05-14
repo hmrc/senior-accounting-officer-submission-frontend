@@ -83,7 +83,7 @@ class Navigator @Inject() () {
     case NotificationMoreSaoAreAllAddedPage(saoIndex) =>
       userAnswers =>
         userAnswers.get(NotificationMoreSaoAreAllAddedPage(saoIndex)) match {
-          case Some(true)  => routes.SubmitNotificationStartController.onPageLoad()
+          case Some(true)  => taskList
           case Some(false) => routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, saoIndex + 1)
           case _           => ???
         }
@@ -94,7 +94,7 @@ class Navigator @Inject() () {
           .fold(routes.JourneyRecoveryController.onPageLoad()) {
             case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
               routes.NotificationUploadFormController.onPageLoad()
-            case _ => routes.SubmitNotificationStartController.onPageLoad()
+            case _ => taskList
           }
     case _ =>
       _ => ???
@@ -125,4 +125,6 @@ class Navigator @Inject() () {
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }
+
+  def taskList: Call = routes.SubmitNotificationStartController.onPageLoad()
 }

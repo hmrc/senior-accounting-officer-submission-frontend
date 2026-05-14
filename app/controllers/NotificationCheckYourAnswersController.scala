@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.NormalMode
+import models.{NormalMode, SubmitNotificationStage}
 import navigation.Navigator
 import pages.NotificationCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -41,12 +41,20 @@ class NotificationCheckYourAnswersController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
+    if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
+      Redirect(navigator.taskList)
+    } else {
+      val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
 
-    Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
+      Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
+    }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers))
+    if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
+      Redirect(navigator.taskList)
+    } else {
+      Redirect(navigator.nextPage(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers))
+    }
   }
 }

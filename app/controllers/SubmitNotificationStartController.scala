@@ -42,11 +42,10 @@ class SubmitNotificationStartController @Inject() (
   def onPageLoad: Action[AnyContent] = (identify andThen getData) async { implicit request =>
     for {
       userAnswers <- sessionRepository.get(request.userId)
-      result      <- userAnswers match {
-        case Some(_) => Future.successful(Ok(view(SubmitNotificationStage.ShowAllLinks)))
-        case None    =>
-          sessionRepository.set(UserAnswers(request.userId)).map(_ => Ok(view(SubmitNotificationStage.ShowAllLinks)))
-      }
+      result      <- userAnswers.fold {
+        val answers = UserAnswers(request.userId)
+        sessionRepository.set(answers).map(_ => Ok(view(SubmitNotificationStage.from(answers))))
+      }(answers => Future.successful(Ok(view(SubmitNotificationStage.from(answers)))))
     } yield result
   }
 }

@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.NormalMode
+import models.{NormalMode, SubmitNotificationStage}
 import navigation.Navigator
 import pages.ConfirmYourNotificationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -39,11 +39,19 @@ class ConfirmYourNotificationController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
+    if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
+      Redirect(navigator.taskList)
+    } else {
+      Ok(view())
+    }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(ConfirmYourNotificationPage, NormalMode, request.userAnswers))
+    if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
+      Redirect(navigator.taskList)
+    } else {
+      Redirect(navigator.nextPage(ConfirmYourNotificationPage, NormalMode, request.userAnswers))
+    }
   }
 
 }

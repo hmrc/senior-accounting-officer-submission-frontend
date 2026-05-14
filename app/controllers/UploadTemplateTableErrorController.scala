@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.NormalMode
+import models.{NormalMode, SubmitNotificationStage}
 import navigation.Navigator
 import pages.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -39,16 +39,24 @@ class UploadTemplateTableErrorController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    request.userAnswers
-      .get(UploadTemplateTablePage)
-      .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
-      ) { tableData =>
-        Ok(view(tableData))
-      }
+    if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
+      Redirect(navigator.taskList)
+    } else {
+      request.userAnswers
+        .get(UploadTemplateTablePage)
+        .fold(
+          Redirect(routes.JourneyRecoveryController.onPageLoad())
+        ) { tableData =>
+          Ok(view(tableData))
+        }
+    }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+    if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
+      Redirect(navigator.taskList)
+    } else {
+      Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+    }
   }
 }
