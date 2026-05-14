@@ -28,6 +28,7 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
 
+import java.util.Locale
 import javax.inject.Inject
 
 class UpscanService @Inject() (
@@ -73,8 +74,10 @@ class UpscanService @Inject() (
       uploadState.status match {
         case InProgress =>
           Left(State.WaitingForUpscan)
-        case UploadedSuccessfully(_, _, downloadUrl, _) =>
+        case UploadedSuccessfully(name, _, downloadUrl, _) if name.toLowerCase(Locale.ROOT).endsWith(".csv") =>
           Right(InterimResult(uploadState.reference, downloadUrl))
+        case UploadedSuccessfully(_, _, _, _) =>
+          Left(State.RejectedByUpscan)
         case Quarantined =>
           Left(State.QuarantinedByUpscan)
         case Rejected =>
