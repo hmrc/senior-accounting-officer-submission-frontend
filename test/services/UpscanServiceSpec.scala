@@ -166,7 +166,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         .fileUploadState(
           userAnswersWithUploadStatus(
             UploadStatus.UploadedSuccessfully(
-              name = "",
+              name = "submission.csv",
               mimeType = "",
               downloadUrl = testDownloadUrl,
               size = None
@@ -202,7 +202,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         .fileUploadState(
           userAnswersWithUploadStatus(
             UploadStatus.UploadedSuccessfully(
-              name = "",
+              name = "submission.csv",
               mimeType = "",
               downloadUrl = testDownloadUrl,
               size = None
@@ -228,7 +228,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
         .fileUploadState(
           userAnswersWithUploadStatus(
             UploadStatus.UploadedSuccessfully(
-              name = "",
+              name = "submission.csv",
               mimeType = "",
               downloadUrl = testDownloadUrl,
               size = None
@@ -241,6 +241,27 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
       result mustBe State.DownloadFromUpscanFailed(testResponse)
 
       verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
+    }
+
+    "must return State.RejectedByUpscan when the uploaded file is not a CSV" in {
+      val result = SUT
+        .fileUploadState(
+          userAnswersWithUploadStatus(
+            UploadStatus.UploadedSuccessfully(
+              name = "submission.xlsx",
+              mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              downloadUrl = testDownloadUrl,
+              size = None
+            )
+          ),
+          Some(testFileReference)
+        )
+        .futureValue
+
+      result mustBe State.RejectedByUpscan
+
+      verify(mockUpscanDownloadConnector, times(0)).download(any())(using any())
+      verify(mockUploadTemplateCsvParser, times(0)).parse(any(), any[Messages])
     }
   }
 }
