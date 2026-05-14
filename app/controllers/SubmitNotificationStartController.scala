@@ -40,6 +40,16 @@ class SubmitNotificationStartController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData) async { implicit request =>
+    val submitNotificationStartTask = "uploadNotificationTemplate"
+
+//        for {
+//          userAnswers <- sessionRepository.get(request.userId)
+//          result      <- submitNotificationStartTask match {
+//            case "uploadNotificationTemplate" => Future.successful(Ok(view(SubmitNotificationStage.UploadSubmissionTemplateDetails)))
+//            case _    =>
+//              sessionRepository.set(UserAnswers(request.userId)).map(_ => Ok(view(SubmitNotificationStage.ShowAllLinks)))
+//          }
+//        } yield result
     for {
       userAnswers <- sessionRepository.get(request.userId)
       result      <- userAnswers match {

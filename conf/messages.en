@@ -37,9 +37,9 @@ timeout.signOut = Sign out
 submitNotificationStart.title = Submit a notification
 submitNotificationStart.heading = Submit a notification
 submitNotificationStart.paragraph1 = Submit a notification for each Senior Accounting Officer (SAO) in your group. Each notification must include the SAO’s name and all the entities they were responsible for during the financial year.
-submitNotificationStart.provideSaoDetailsLinkText = Provide the SAO’s details
-submitNotificationStart.uploadNotificationLinkText = Upload a submission template
-submitNotificationStart.submitNotificationLinkText = Submit a notification
+submitNotificationStart.provideSaoDetailsLinkText = Provide the SAO''s details
+submitNotificationStart.uploadNotificationLinkText = Upload the submission template
+submitNotificationStart.submitNotificationLinkText = Submit the notification
 
 submitNotificationStart.row.status.cannotStartYet = Cannot start yet
 submitNotificationStart.row.status.completed = Completed
