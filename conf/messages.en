@@ -339,7 +339,7 @@ notificationMoreSaoAreAllAdded.checkYourAnswersLabel = notificationMoreSaoAreAll
 notificationMoreSaoAreAllAdded.error.required = Select yes if notificationMoreSaoAreAllAdded
 notificationMoreSaoAreAllAdded.change.hidden = NotificationMoreSaoAreAllAdded
 
-notificationMoreSaoSecondEndDate.title = NotificationMoreSaoSecondEndDate
+notificationMoreSaoSecondEndDate.title = Submit a notification
 notificationMoreSaoSecondEndDate.caption = Submit a notification
 notificationMoreSaoSecondEndDate.heading = When did {0} stop being the SAO?
 notificationMoreSaoSecondEndDate.hint = For example 01 6 2024
