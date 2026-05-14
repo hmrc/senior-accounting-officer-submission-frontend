@@ -33,8 +33,6 @@ class Navigator @Inject() () {
     case ConfirmYourNotificationPage =>
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage =>
-      _ => routes.SubmitNotificationController.onPageLoad()
-    case SubmitNotificationPage =>
       _ => routes.NotificationConfirmationController.onPageLoad()
     case SubmitCertificateStartPage =>
       _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
