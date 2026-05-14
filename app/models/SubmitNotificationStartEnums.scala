@@ -17,6 +17,7 @@
 package models
 
 import models.SubmitNotificationStatus.{CannotStartYet, Completed, NotStarted}
+import pages.*
 
 enum SubmitNotificationStatus {
   case CannotStartYet, NotStarted, Completed
@@ -40,11 +41,37 @@ enum SubmitNotificationStage(
         uploadNotificationTemplateStatus = Completed,
         submitNotificationStatus = NotStarted
       )
+}
 
-  // TODO : To be removed when screen is lockdown
-  case ShowAllLinks
-      extends SubmitNotificationStage(
-        uploadNotificationTemplateStatus = NotStarted,
-        submitNotificationStatus = NotStarted
-      )
+object SubmitNotificationStage {
+
+  def from(userAnswers: UserAnswers): SubmitNotificationStage =
+    if !isProvideSaoDetailsComplete(userAnswers) then {
+      ProvideSaoDetails
+    } else if !isUploadNotificationTemplateComplete(userAnswers) then {
+      UploadSubmissionTemplateDetails
+    } else {
+      SubmitNotificationInfo
+    }
+
+  def canStartUploadNotificationTemplate(userAnswers: UserAnswers): Boolean =
+    isProvideSaoDetailsComplete(userAnswers)
+
+  def canStartSubmitNotification(userAnswers: UserAnswers): Boolean =
+    isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers)
+
+  private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean =
+    userAnswers.get(NotificationMoreThanOneSaoPage).exists {
+      case false =>
+        userAnswers.get(OneSaoSubmitNotificationFullNamePage).exists(_.trim.nonEmpty)
+      case true =>
+        userAnswers.get(MoreSaoSubmitNotificationFullNamePage).exists(_.trim.nonEmpty) &&
+        hasCompletedMoreSaoDetails(userAnswers)
+    }
+
+  private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
+    (0 to 50).exists(index => userAnswers.get(NotificationMoreSaoAreAllAddedPage(index)).contains(true))
+
+  private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
+    userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty)
 }

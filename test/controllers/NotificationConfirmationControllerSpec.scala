@@ -34,7 +34,7 @@ class NotificationConfirmationControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.NotificationConfirmationController.onPageLoad().url)
@@ -72,7 +72,7 @@ class NotificationConfirmationControllerSpec extends SpecBase {
     }
 
     "must redirect to the next page for a POST" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val application = applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
         .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
         .build()
 

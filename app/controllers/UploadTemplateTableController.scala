@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.NormalMode
+import models.{NormalMode, SubmitNotificationStage}
 import navigation.Navigator
 import pages.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -41,14 +41,22 @@ class UploadTemplateTableController @Inject() (
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    playbackService
-      .getPlayback(request.userAnswers)
-      .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { playback =>
-        Ok(view(playback.tableData, playback.saoName))
-      }
+    if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
+      Redirect(navigator.taskList)
+    } else {
+      playbackService
+        .getPlayback(request.userAnswers)
+        .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { playback =>
+          Ok(view(playback.tableData, playback.saoName))
+        }
+    }
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+    if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
+      Redirect(navigator.taskList)
+    } else {
+      Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+    }
   }
 }

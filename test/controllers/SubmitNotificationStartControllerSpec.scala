@@ -17,16 +17,22 @@
 package controllers
 
 import base.SpecBase
-import models.SubmitNotificationStage.ShowAllLinks
+import models.SubmitNotificationStage
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import repositories.SessionRepository
 import views.html.SubmitNotificationStartView
 
-class SubmitNotificationStartControllerSpec extends SpecBase {
+import scala.concurrent.Future
+
+class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
 
   "SubmitNotificationStart Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "must return OK and the initial task list view for a GET with no completed tasks" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -38,7 +44,55 @@ class SubmitNotificationStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[SubmitNotificationStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(ShowAllLinks)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(SubmitNotificationStage.ProvideSaoDetails)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must return OK and unlock the upload task when SAO details are complete" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(completedSaoDetailsAnswers)))
+
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.SubmitNotificationStartController.onPageLoad().url)
+
+        val result = route(application, request).value
+        val view   = application.injector.instanceOf[SubmitNotificationStartView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(SubmitNotificationStage.UploadSubmissionTemplateDetails)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must return OK and unlock the submit task when the upload is complete" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.get(userAnswersId))
+        .thenReturn(Future.successful(Some(completedNotificationUploadAnswers)))
+
+      val application = applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.SubmitNotificationStartController.onPageLoad().url)
+
+        val result = route(application, request).value
+        val view   = application.injector.instanceOf[SubmitNotificationStartView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(SubmitNotificationStage.SubmitNotificationInfo)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
   }

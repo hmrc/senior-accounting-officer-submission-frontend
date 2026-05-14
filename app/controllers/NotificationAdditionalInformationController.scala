@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.*
 import forms.NotificationAdditionalInformationFormProvider
-import models.Mode
+import models.{Mode, SubmitNotificationStage}
 import navigation.Navigator
 import pages.NotificationAdditionalInformationPage
 import play.api.data.Form
@@ -52,26 +52,34 @@ class NotificationAdditionalInformationController @Inject() (
   val form: Form[Option[String]] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.getNullable(NotificationAdditionalInformationPage) match {
-      case None  => form
-      case value => form.fill(value)
-    }
+    if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
+      Redirect(navigator.taskList)
+    } else {
+      val preparedForm =
+        request.userAnswers
+          .getNullable(NotificationAdditionalInformationPage)
+          .fold(form)(value => form.fill(Some(value)))
 
-    Ok(view(preparedForm, mode))
+      Ok(view(preparedForm, mode))
+    }
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
-        )
+      if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
+        Future.successful(Redirect(navigator.taskList))
+      } else {
+        form
+          .bindFromRequest()
+          .fold(
+            formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+            value =>
+              for {
+                updatedAnswers <- Future
+                  .fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
+                _ <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
+          )
+      }
   }
 }
