@@ -32,11 +32,14 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <span class="govuk-caption-l">@messages("notificationMoreSaoAreAllAdded.caption")</span>
+
+
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
                 legend = LegendViewModel(messages("notificationMoreSaoAreAllAdded.heading").toText).asPageHeading(LegendSize.Large)
-            )
+            ).vertical()
         )
 
         @govukButton(

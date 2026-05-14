@@ -334,7 +334,8 @@ notificationMoreSaoSecondStartDate.error.invalid = Enter the date in the correct
 notificationMoreSaoSecondStartDate.change.hidden = NotificationMoreSaoSecondStartDate
 
 notificationMoreSaoAreAllAdded.title = notificationMoreSaoAreAllAdded
-notificationMoreSaoAreAllAdded.heading = notificationMoreSaoAreAllAdded
+notificationMoreSaoAreAllAdded.heading = Have you added all the SAO for the financial year this notification relates to?
+notificationMoreSaoAreAllAdded.caption = Submit a notification
 notificationMoreSaoAreAllAdded.checkYourAnswersLabel = notificationMoreSaoAreAllAdded
 notificationMoreSaoAreAllAdded.error.required = Select yes if notificationMoreSaoAreAllAdded
 notificationMoreSaoAreAllAdded.change.hidden = NotificationMoreSaoAreAllAdded
