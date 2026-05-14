@@ -33,8 +33,6 @@ class Navigator @Inject() () {
     case ConfirmYourNotificationPage =>
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage =>
-      _ => routes.SubmitNotificationController.onPageLoad()
-    case SubmitNotificationPage =>
       _ => routes.NotificationConfirmationController.onPageLoad()
     case SubmitCertificateStartPage =>
       _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
@@ -62,7 +60,7 @@ class Navigator @Inject() () {
     case CertificateSubmissionDeclarationPage =>
       _ => routes.CertificateConfirmationController.onPageLoad()
     case NotificationConfirmationPage =>
-      _ => routes.SubmitCertificateStartController.onPageLoad()
+      _ => routes.SubmitNotificationStartController.onPageLoad()
     case NotificationMoreThanOneSaoPage =>
       userAnswers =>
         userAnswers.get(NotificationMoreThanOneSaoPage) match {

@@ -55,20 +55,20 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
-      "when on NotificationCheckYourAnswersPage, must go to submit notification page" in {
+      "when on NotificationCheckYourAnswersPage, must go to notification confirmation page" in {
         navigator.nextPage(
           NotificationCheckYourAnswersPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.SubmitNotificationController.onPageLoad()
+        ) mustBe routes.NotificationConfirmationController.onPageLoad()
       }
 
-      "when on SubmitNotificationPage, must go to notification confirmation page" in {
+      "when on ConfirmYourNotificationPage, must go to notification check your answers page" in {
         navigator.nextPage(
-          SubmitNotificationPage,
+          ConfirmYourNotificationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationConfirmationController.onPageLoad()
+        ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
       "when on SubmitCertificateStartPage, must go to is this SAO on certificate page" in {
@@ -169,12 +169,12 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.CertificateConfirmationController.onPageLoad()
       }
 
-      "when on NotificationConfirmationPage, must go to certificate start page" in {
+      "when on NotificationConfirmationPage, must go to notification task list" in {
         navigator.nextPage(
           NotificationConfirmationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.SubmitCertificateStartController.onPageLoad()
+        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
