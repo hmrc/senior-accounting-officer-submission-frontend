@@ -43,9 +43,6 @@ POST        /notification/change-additional-information               controller
 GET         /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onPageLoad()
 POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit()
 
-GET         /notification/submit                                      controllers.SubmitNotificationController.onPageLoad()
-POST        /notification/submit                                      controllers.SubmitNotificationController.onSubmit()
-
 GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad()
 POST        /notification/confirmation                                controllers.NotificationConfirmationController.onSubmit()
 
