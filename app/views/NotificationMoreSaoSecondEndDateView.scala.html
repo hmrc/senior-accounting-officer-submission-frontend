@@ -32,6 +32,8 @@
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
+<span class="govuk-caption-l">@messages("notificationMoreSaoSecondEndDate.caption")</span>
+
         @govukDateInput(
             DateViewModel(
                 field  = form("value"),

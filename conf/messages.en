@@ -340,8 +340,9 @@ notificationMoreSaoAreAllAdded.error.required = Select yes if notificationMoreSa
 notificationMoreSaoAreAllAdded.change.hidden = NotificationMoreSaoAreAllAdded
 
 notificationMoreSaoSecondEndDate.title = NotificationMoreSaoSecondEndDate
-notificationMoreSaoSecondEndDate.heading = NotificationMoreSaoSecondEndDate
-notificationMoreSaoSecondEndDate.hint = For example, 12 11 2007.
+notificationMoreSaoSecondEndDate.caption = Submit a notification
+notificationMoreSaoSecondEndDate.heading = When did {0} stop being the SAO?
+notificationMoreSaoSecondEndDate.hint = For example 01 6 2024
 notificationMoreSaoSecondEndDate.checkYourAnswersLabel = NotificationMoreSaoSecondEndDate
 notificationMoreSaoSecondEndDate.error.required.all = Enter the notificationMoreSaoSecondEndDate
 notificationMoreSaoSecondEndDate.error.required.two = The notificationMoreSaoSecondEndDate must include {0} and {1}
