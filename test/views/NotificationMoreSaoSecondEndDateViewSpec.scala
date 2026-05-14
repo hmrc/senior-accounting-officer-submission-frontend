@@ -134,7 +134,7 @@ object NotificationMoreSaoSecondEndDateViewSpec {
   val pageHeading = "When did Firstname Lastname stop being the SAO?"
   val pageTitle   = "Submit a notification"
   val saoIndex    = 3
-  val saoName  = "Firstname Lastname"
+  val saoName     = "Firstname Lastname"
   val pageCaption = "Submit a notification"
   val pageHint    = "For example 01 6 2024"
 }

@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.{MoreSaoSubmitNotificationFullNamePage, NotificationMoreSaoSecondEndDatePage, WhoWasTheSaoBeforePage}
+import pages.{NotificationMoreSaoSecondEndDatePage, WhoWasTheSaoBeforePage}
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -33,6 +33,7 @@ import repositories.SessionRepository
 import views.html.NotificationMoreSaoSecondEndDateView
 
 import scala.concurrent.Future
+
 import java.time.{LocalDate, ZoneOffset}
 
 class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with MockitoSugar {
@@ -45,7 +46,7 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
   def onwardRoute: Call = Call("GET", "/foo")
 
   val validAnswer: LocalDate = LocalDate.now(ZoneOffset.UTC)
-  val saoName: String = "Firstname Lastname"
+  val saoName: String        = "Firstname Lastname"
 
   lazy val notificationMoreSaoSecondEndDateRoute: String =
     routes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode).url
@@ -83,7 +84,7 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
         ).toString
       }
     }
-    
+
     "must redirect to the journey recovery page when user answers does not have sao name" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
@@ -95,10 +96,11 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
-    
+
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = userAnswersWithSaoName.set(NotificationMoreSaoSecondEndDatePage(saoIndex), validAnswer).success.value
+      val userAnswers =
+        userAnswersWithSaoName.set(NotificationMoreSaoSecondEndDatePage(saoIndex), validAnswer).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

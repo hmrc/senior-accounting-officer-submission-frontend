@@ -28,6 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.NotificationMoreSaoSecondEndDateView
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import javax.inject.Inject
 
 class NotificationMoreSaoSecondEndDateController @Inject() (
@@ -46,13 +47,16 @@ class NotificationMoreSaoSecondEndDateController @Inject() (
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form = formProvider()
+      val form         = formProvider()
       val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondEndDatePage(saoIndex)).fold(form)(form.fill)
       request.userAnswers
         .get(WhoWasTheSaoBeforePage(saoIndex)) match {
         case Some(saoName) => Ok(view(saoName, preparedForm, mode, saoIndex))
-        case None => Redirect(routes.JourneyRecoveryController
-          .onPageLoad())
+        case None          =>
+          Redirect(
+            routes.JourneyRecoveryController
+              .onPageLoad()
+          )
       }
   }
 
@@ -60,7 +64,7 @@ class NotificationMoreSaoSecondEndDateController @Inject() (
     implicit request =>
       val form = formProvider()
       request.userAnswers.get(WhoWasTheSaoBeforePage(saoIndex)) match {
-        case None => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
           form
             .bindFromRequest()
@@ -71,7 +75,9 @@ class NotificationMoreSaoSecondEndDateController @Inject() (
                   updatedAnswers <- Future
                     .fromTry(request.userAnswers.set(NotificationMoreSaoSecondEndDatePage(saoIndex), value))
                   _ <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(navigator.nextPage(NotificationMoreSaoSecondEndDatePage(saoIndex), mode, updatedAnswers))
+                } yield Redirect(
+                  navigator.nextPage(NotificationMoreSaoSecondEndDatePage(saoIndex), mode, updatedAnswers)
+                )
             )
       }
   }
