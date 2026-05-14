@@ -42,7 +42,7 @@ class UploadTemplateTableErrorViewSpec extends ViewSpecBase[UploadTemplateTableE
 
     "must render error table columns and content" in {
       val headings = doc.select("th.govuk-table__header").eachText()
-      headings must contain allOf ("Row number", "Column", "Errors to Correct")
+      headings must contain allOf ("Row", "Column", "Errors to Correct")
       headings must not contain "Code"
 
       val tableRows = doc.select("tbody.govuk-table__body tr")
