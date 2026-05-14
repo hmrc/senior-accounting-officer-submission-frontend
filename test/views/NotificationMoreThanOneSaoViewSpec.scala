@@ -50,6 +50,11 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
             hasError = false
           )
 
+          "must have a back link to the submit notification task list" in {
+            doc.getElementsByClass("govuk-back-link").attr("href") mustBe
+              controllers.routes.SubmitNotificationStartController.onPageLoad().url
+          }
+
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
