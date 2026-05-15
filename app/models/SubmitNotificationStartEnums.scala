@@ -18,6 +18,7 @@ package models
 
 import models.SubmitNotificationStatus.{CannotStartYet, Completed, NotStarted}
 import pages.*
+import play.api.libs.json.*
 
 enum SubmitNotificationStatus {
   case CannotStartYet, NotStarted, Completed
@@ -70,7 +71,9 @@ object SubmitNotificationStage {
     }
 
   private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
-    (0 to 50).exists(index => userAnswers.get(NotificationMoreSaoAreAllAddedPage(index)).contains(true))
+    (userAnswers.data \ NotificationMoreSaoAreAllAddedPage(0).key)
+      .asOpt[Seq[Boolean]]
+      .exists(_.contains(true))
 
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty)
