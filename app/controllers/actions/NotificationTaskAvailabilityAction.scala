@@ -16,9 +16,9 @@
 
 package controllers.actions
 
+import controllers.routes
 import models.SubmitNotificationStage
 import models.requests.DataRequest
-import navigation.Navigator
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionFilter, Result}
 
@@ -26,28 +26,26 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class RequireNotificationUploadUnlockedActionImpl @Inject() (navigator: Navigator)(implicit
-    val executionContext: ExecutionContext
-) extends RequireNotificationUploadUnlockedAction {
+class RequireNotificationUploadUnlockedActionImpl @Inject() (implicit val executionContext: ExecutionContext)
+    extends RequireNotificationUploadUnlockedAction {
 
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] =
     Future.successful {
       Option.unless(SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers)) {
-        Redirect(navigator.taskList)
+        Redirect(routes.SubmitNotificationStartController.onPageLoad())
       }
     }
 }
 
 trait RequireNotificationUploadUnlockedAction extends ActionFilter[DataRequest]
 
-class RequireSubmitNotificationUnlockedActionImpl @Inject() (navigator: Navigator)(implicit
-    val executionContext: ExecutionContext
-) extends RequireSubmitNotificationUnlockedAction {
+class RequireSubmitNotificationUnlockedActionImpl @Inject() (implicit val executionContext: ExecutionContext)
+    extends RequireSubmitNotificationUnlockedAction {
 
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] =
     Future.successful {
       Option.unless(SubmitNotificationStage.canStartSubmitNotification(request.userAnswers)) {
-        Redirect(navigator.taskList)
+        Redirect(routes.SubmitNotificationStartController.onPageLoad())
       }
     }
 }

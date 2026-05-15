@@ -20,7 +20,6 @@ import base.SpecBase
 import controllers.routes
 import models.UserAnswers
 import models.requests.DataRequest
-import navigation.Navigator
 import play.api.http.HeaderNames
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -30,14 +29,12 @@ import scala.concurrent.Future
 
 class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
-  private val navigator = new Navigator()
-
-  class UploadHarness extends RequireNotificationUploadUnlockedActionImpl(navigator) {
+  class UploadHarness extends RequireNotificationUploadUnlockedActionImpl {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
       filter(DataRequest(FakeRequest(), userAnswers.id, userAnswers))
   }
 
-  class SubmitHarness extends RequireSubmitNotificationUnlockedActionImpl(navigator) {
+  class SubmitHarness extends RequireSubmitNotificationUnlockedActionImpl {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
       filter(DataRequest(FakeRequest(), userAnswers.id, userAnswers))
   }

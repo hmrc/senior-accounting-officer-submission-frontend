@@ -18,12 +18,7 @@ package controllers
 
 import connectors.UpscanInitiateConnector
 import controllers.NotificationUploadFormController.fileInputField
-import controllers.actions.{
-  DataRequiredAction,
-  DataRetrievalAction,
-  IdentifierAction,
-  RequireNotificationUploadUnlockedAction
-}
+import controllers.actions.*
 import forms.NotificationUploadFormProvider
 import models.*
 import pages.NotificationUploadStatePage
