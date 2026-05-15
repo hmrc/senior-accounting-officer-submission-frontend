@@ -29,12 +29,12 @@ import scala.concurrent.Future
 
 class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
-  class UploadHarness extends RequireNotificationUploadUnlockedAction {
+  class UploadHarness extends RequireNotificationUploadUnlockedActionImpl {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
       filter(DataRequest(FakeRequest(), userAnswers.id, userAnswers))
   }
 
-  class SubmitHarness extends RequireSubmitNotificationUnlockedAction {
+  class SubmitHarness extends RequireSubmitNotificationUnlockedActionImpl {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
       filter(DataRequest(FakeRequest(), userAnswers.id, userAnswers))
   }
