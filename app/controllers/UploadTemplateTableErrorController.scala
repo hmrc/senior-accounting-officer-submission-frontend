@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.{NormalMode, SubmitNotificationStage}
+import models.NormalMode
 import navigation.Navigator
 import pages.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -32,16 +32,15 @@ class UploadTemplateTableErrorController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: UploadTemplateTableErrorView,
     navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
-      Redirect(navigator.taskList)
-    } else {
+  def onPageLoad(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
       request.userAnswers
         .get(UploadTemplateTablePage)
         .fold(
@@ -50,13 +49,9 @@ class UploadTemplateTableErrorController @Inject() (
           Ok(view(tableData))
         }
     }
-  }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
-      Redirect(navigator.taskList)
-    } else {
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
       Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
     }
-  }
 }

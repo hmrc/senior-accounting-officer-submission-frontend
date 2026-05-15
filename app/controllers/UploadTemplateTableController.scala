@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.{NormalMode, SubmitNotificationStage}
+import models.NormalMode
 import navigation.Navigator
 import pages.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -33,6 +33,7 @@ class UploadTemplateTableController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: UploadTemplateTableView,
     playbackService: UploadTemplatePlaybackService,
@@ -40,23 +41,17 @@ class UploadTemplateTableController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
-      Redirect(navigator.taskList)
-    } else {
+  def onPageLoad(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
       playbackService
         .getPlayback(request.userAnswers)
         .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { playback =>
           Ok(view(playback.tableData, playback.saoName))
         }
     }
-  }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
-      Redirect(navigator.taskList)
-    } else {
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
       Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
     }
-  }
 }

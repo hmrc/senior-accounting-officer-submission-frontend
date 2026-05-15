@@ -18,7 +18,12 @@ package controllers
 
 import connectors.UpscanInitiateConnector
 import controllers.NotificationUploadFormController.fileInputField
-import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
+import controllers.actions.{
+  DataRequiredAction,
+  DataRetrievalAction,
+  IdentifierAction,
+  RequireNotificationUploadUnlockedAction
+}
 import forms.NotificationUploadFormProvider
 import models.*
 import pages.NotificationUploadStatePage
@@ -36,6 +41,7 @@ class NotificationUploadFormController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
     mcc: MessagesControllerComponents,
     notificationUploadFormView: NotificationUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
@@ -45,10 +51,8 @@ class NotificationUploadFormController @Inject() (
     extends FrontendController(mcc)
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) async { implicit request =>
-    if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
-      Future.successful(Redirect(routes.SubmitNotificationStartController.onPageLoad()))
-    } else {
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
       val form = request.userAnswers.get(NotificationUploadStatePage).fold(formProvider()) {
         case NotificationUploadState(_, UploadStatus.Quarantined) =>
           formProvider().withError(
@@ -76,7 +80,6 @@ class NotificationUploadFormController @Inject() (
         _ <- sessionRepository.set(updatedAnswers)
       } yield Ok(notificationUploadFormView(form, upscanInitiateResponse))
     }
-  }
 }
 
 object NotificationUploadFormController {

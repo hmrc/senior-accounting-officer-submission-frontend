@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.*
 import forms.NotificationAdditionalInformationFormProvider
-import models.{Mode, SubmitNotificationStage}
+import models.Mode
 import navigation.Navigator
 import pages.NotificationAdditionalInformationPage
 import play.api.data.Form
@@ -42,6 +42,7 @@ class NotificationAdditionalInformationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     formProvider: NotificationAdditionalInformationFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationAdditionalInformationView
@@ -51,10 +52,8 @@ class NotificationAdditionalInformationController @Inject() (
 
   val form: Form[Option[String]] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
-      Redirect(navigator.taskList)
-    } else {
+  def onPageLoad(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       val preparedForm =
         request.userAnswers
           .getNullable(NotificationAdditionalInformationPage)
@@ -62,24 +61,19 @@ class NotificationAdditionalInformationController @Inject() (
 
       Ok(view(preparedForm, mode))
     }
-  }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
-        Future.successful(Redirect(navigator.taskList))
-      } else {
-        form
-          .bindFromRequest()
-          .fold(
-            formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-            value =>
-              for {
-                updatedAnswers <- Future
-                  .fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
-                _ <- sessionRepository.set(updatedAnswers)
-              } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
-          )
-      }
-  }
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+          value =>
+            for {
+              updatedAnswers <- Future
+                .fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
+        )
+    }
 }

@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.{NormalMode, SubmitNotificationStage}
+import models.NormalMode
 import navigation.Navigator
 import pages.NotificationCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -33,6 +33,7 @@ class NotificationCheckYourAnswersController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
     navigator: Navigator,
@@ -40,21 +41,15 @@ class NotificationCheckYourAnswersController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
-      Redirect(navigator.taskList)
-    } else {
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
 
       Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
     }
-  }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    if !SubmitNotificationStage.canStartSubmitNotification(request.userAnswers) then {
-      Redirect(navigator.taskList)
-    } else {
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       Redirect(navigator.nextPage(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers))
     }
-  }
 }

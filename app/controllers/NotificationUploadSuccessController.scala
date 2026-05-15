@@ -17,10 +17,8 @@
 package controllers
 
 import controllers.actions.*
-import models.SubmitNotificationStage
 import models.requests.DataRequest
 import models.upload.UploadTemplateTableData
-import navigation.Navigator
 import pages.UploadTemplateTablePage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -40,48 +38,44 @@ class NotificationUploadSuccessController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     sessionRepository: SessionRepository,
     upscanService: UpscanService,
-    view: NotificationUploadSuccessView,
-    navigator: Navigator
+    view: NotificationUploadSuccessView
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
     with Logging {
 
   def onPageLoad(key: Option[String]): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
-      if !SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers) then {
-        Future.successful(Redirect(navigator.taskList))
-      } else {
-        upscanService.fileUploadState(request.userAnswers, key).flatMap {
-          case State.NoReference =>
-            Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-          case State.WaitingForUpscan =>
-            Future.successful(Ok(view()))
-          case State.QuarantinedByUpscan =>
-            Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
-          case State.RejectedByUpscan =>
-            Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
-          case State.UnknownUpscanError =>
-            Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
-          case State.DownloadFromUpscanFailed(response) =>
-            logger.warn(s"Failed to download uploaded template from Upscan: ${response.status}")
-            Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
-          case State.ValidationFailed(errors) =>
-            logger.warn(s"Uploaded template failed validation with ${errors.size} error(s)")
-            saveTableDataAndRedirect(
-              UploadTemplateTableData(rows = Seq.empty, errors = errors),
-              routes.UploadTemplateTableErrorController.onPageLoad()
-            )
-          case State.Result(reference, rows) =>
-            logger.info(s"Uploaded template parsed successfully, reference: $reference, rows: ${rows.size}")
-            saveTableDataAndRedirect(
-              UploadTemplateTableData(rows = rows, errors = Seq.empty),
-              routes.UploadTemplateTableController.onPageLoad()
-            )
-        }
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
+      upscanService.fileUploadState(request.userAnswers, key).flatMap {
+        case State.NoReference =>
+          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case State.WaitingForUpscan =>
+          Future.successful(Ok(view()))
+        case State.QuarantinedByUpscan =>
+          Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
+        case State.RejectedByUpscan =>
+          Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
+        case State.UnknownUpscanError =>
+          Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
+        case State.DownloadFromUpscanFailed(response) =>
+          logger.warn(s"Failed to download uploaded template from Upscan: ${response.status}")
+          Future.successful(Redirect(routes.NotificationUploadFormController.onPageLoad()))
+        case State.ValidationFailed(errors) =>
+          logger.warn(s"Uploaded template failed validation with ${errors.size} error(s)")
+          saveTableDataAndRedirect(
+            UploadTemplateTableData(rows = Seq.empty, errors = errors),
+            routes.UploadTemplateTableErrorController.onPageLoad()
+          )
+        case State.Result(reference, rows) =>
+          logger.info(s"Uploaded template parsed successfully, reference: $reference, rows: ${rows.size}")
+          saveTableDataAndRedirect(
+            UploadTemplateTableData(rows = rows, errors = Seq.empty),
+            routes.UploadTemplateTableController.onPageLoad()
+          )
       }
     }
 
