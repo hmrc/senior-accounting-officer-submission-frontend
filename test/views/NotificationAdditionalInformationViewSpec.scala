@@ -61,6 +61,8 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             hasError = false
           )
 
+          doc.createTestsWithLargeCaption(pageCaption)
+
           doc.createTestsWithSubmissionButtons(
             action = controllers.routes.NotificationAdditionalInformationController.onSubmit(mode),
             buttonTexts = Seq("Continue", "Skip")
@@ -121,6 +123,8 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             hasError = true
           )
 
+          doc.createTestsWithLargeCaption(pageCaption)
+
           doc.createTestMustShowTextarea(
             name = "value",
             label = textAreaLabel,
@@ -179,6 +183,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
 }
 
 object NotificationAdditionalInformationViewSpec {
+  val pageCaption             = "Submit a notification"
   val pageHeading             = "Additional information"
   val pageTitle               = "Notification details"
   val testInputValue          = "myTestInputValue"
