@@ -121,7 +121,7 @@ object NotificationConfirmationViewSpec {
   val pageHeading                 = "Notification submitted"
   val pageTitle                   = "Confirmation page"
   val pageParagraphs: Seq[String] = Seq(
-    "ABC Limited has successfully submitted a notification to let HMRC know who the Senior Accounting Officer is and which company they are responsible for tax accounting arrangements.",
+    "We’ve sent a confirmation email to all the contacts you gave during registration.",
     "Submitted on 17 January 2025 at 14:15am (GMT).",
     "We’ve sent a confirmation email with your reference number to all the contacts you gave during registration.",
     "If you need to keep a record of your answers, you can:",
