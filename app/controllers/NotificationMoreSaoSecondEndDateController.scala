@@ -20,7 +20,7 @@ import controllers.actions.*
 import forms.NotificationMoreSaoSecondEndDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.NotificationMoreSaoSecondEndDatePage
+import pages.{NotificationMoreSaoSecondEndDatePage, WhoWasTheSaoBeforePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -49,22 +49,36 @@ class NotificationMoreSaoSecondEndDateController @Inject() (
     implicit request =>
       val form         = formProvider()
       val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondEndDatePage(saoIndex)).fold(form)(form.fill)
-      Ok(view(preparedForm, mode, saoIndex))
+      request.userAnswers
+        .get(WhoWasTheSaoBeforePage(saoIndex)) match {
+        case Some(saoName) => Ok(view(saoName, preparedForm, mode, saoIndex))
+        case None          =>
+          Redirect(
+            routes.JourneyRecoveryController
+              .onPageLoad()
+          )
+      }
   }
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode, saoIndex))),
-          value =>
-            for {
-              updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(NotificationMoreSaoSecondEndDatePage(saoIndex), value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMoreSaoSecondEndDatePage(saoIndex), mode, updatedAnswers))
-        )
+      request.userAnswers.get(WhoWasTheSaoBeforePage(saoIndex)) match {
+        case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case Some(saoName) =>
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode, saoIndex))),
+              value =>
+                for {
+                  updatedAnswers <- Future
+                    .fromTry(request.userAnswers.set(NotificationMoreSaoSecondEndDatePage(saoIndex), value))
+                  _ <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(
+                  navigator.nextPage(NotificationMoreSaoSecondEndDatePage(saoIndex), mode, updatedAnswers)
+                )
+            )
+      }
   }
 }
