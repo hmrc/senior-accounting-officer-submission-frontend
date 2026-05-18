@@ -36,7 +36,7 @@ class UploadTemplateTableErrorControllerSpec extends SpecBase {
     errors = Seq(TemplateParseError(9, Some("Company UTR"), "missing_required_value", "UTR is required"))
   )
 
-  private val populatedAnswers = emptyUserAnswers.set(UploadTemplateTablePage, tableData).success.value
+  private val populatedAnswers = completedSaoDetailsAnswers.set(UploadTemplateTablePage, tableData).success.value
 
   "UploadTemplateTableError Controller" - {
 
@@ -71,7 +71,7 @@ class UploadTemplateTableErrorControllerSpec extends SpecBase {
     }
 
     "must redirect to Journey Recovery for GET when table data is missing" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.UploadTemplateTableErrorController.onPageLoad().url)
@@ -84,7 +84,7 @@ class UploadTemplateTableErrorControllerSpec extends SpecBase {
     }
 
     "must redirect to Journey Recovery for POST when table data is missing" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
       running(application) {
         val request = FakeRequest(POST, routes.UploadTemplateTableErrorController.onSubmit().url)

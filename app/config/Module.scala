@@ -26,6 +26,12 @@ class Module extends AbstractModule {
   override def configure(): Unit = {
     bind(classOf[DataRetrievalAction]).to(classOf[DataRetrievalActionImpl]).asEagerSingleton()
     bind(classOf[DataRequiredAction]).to(classOf[DataRequiredActionImpl]).asEagerSingleton()
+    bind(classOf[RequireNotificationUploadUnlockedAction])
+      .to(classOf[RequireNotificationUploadUnlockedActionImpl])
+      .asEagerSingleton()
+    bind(classOf[RequireSubmitNotificationUnlockedAction])
+      .to(classOf[RequireSubmitNotificationUnlockedActionImpl])
+      .asEagerSingleton()
 
     bind(classOf[IdentifierAction]).to(classOf[AuthenticatedIdentifierAction]).asEagerSingleton()
 
