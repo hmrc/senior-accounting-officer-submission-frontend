@@ -47,12 +47,12 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         .getOrElse(throw RuntimeException("No Confirmation Panel found"))
 
     def createTestsWithStandardPageElements(
-                                             pageTitle: String,
-                                             pageHeading: String,
-                                             showBackLink: Boolean,
-                                             showIsThisPageNotWorkingProperlyLink: true,
-                                             hasError: Boolean
-                                           )(using pos: Position): Unit = {
+        pageTitle: String,
+        pageHeading: String,
+        showBackLink: Boolean,
+        showIsThisPageNotWorkingProperlyLink: true,
+        hasError: Boolean
+    )(using pos: Position): Unit = {
       createTestWithPageTitle(pageTitle = pageTitle, hasError = hasError)
       createTestWithPageHeading(pageHeading = pageHeading)
       createTestWithBackLink(show = showBackLink)

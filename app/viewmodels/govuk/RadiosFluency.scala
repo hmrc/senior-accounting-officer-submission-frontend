@@ -119,7 +119,6 @@ trait RadiosFluency {
       )
     }
 
-
     def withParagraph(text: String): Radios =
       radios.withFormGroup(
         radios.formGroup.copy(beforeInput = Some(HtmlContent(s"""<p class="govuk-body">$text</p>""")))

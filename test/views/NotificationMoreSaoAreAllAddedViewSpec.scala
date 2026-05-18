@@ -35,7 +35,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
     Jsoup.parse(view.toString)
   }
 
-  extension(doc : Document) {
+  extension (doc: Document) {
     def verticalRadioButton(): Unit = {
       "must have vertical radio buttons" in {
         doc.select(".govuk-radios").size() mustBe 1
@@ -171,5 +171,3 @@ object NotificationMoreSaoAreAllAddedViewSpec {
   val noLabel     = "No"
   val saoIndex    = 3
 }
-
-

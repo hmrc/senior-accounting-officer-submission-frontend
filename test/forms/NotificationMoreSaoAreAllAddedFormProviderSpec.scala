@@ -46,7 +46,8 @@ class NotificationMoreSaoAreAllAddedFormProviderSpec extends BooleanFieldBehavio
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Select ’Yes’ if you have added all the Senior Accounting Officers for the financial year this notification relates to"
+      message =
+        "Select ’Yes’ if you have added all the Senior Accounting Officers for the financial year this notification relates to"
     )
   }
 }
