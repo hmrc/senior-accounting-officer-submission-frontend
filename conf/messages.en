@@ -333,7 +333,7 @@ notificationMoreSaoSecondStartDate.error.required = The date must include {0}
 notificationMoreSaoSecondStartDate.error.invalid = Enter the date in the correct format
 notificationMoreSaoSecondStartDate.change.hidden = NotificationMoreSaoSecondStartDate
 
-notificationMoreSaoAreAllAdded.title = notificationMoreSaoAreAllAdded
+notificationMoreSaoAreAllAdded.title = Submit a notification - Have you added all the SAO for the financial year this notification relates to?
 notificationMoreSaoAreAllAdded.heading = Have you added all the SAO for the financial year this notification relates to?
 notificationMoreSaoAreAllAdded.caption = Submit a notification
 notificationMoreSaoAreAllAdded.checkYourAnswersLabel = notificationMoreSaoAreAllAdded
