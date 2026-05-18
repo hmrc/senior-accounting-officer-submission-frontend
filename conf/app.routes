@@ -118,7 +118,7 @@ POST       /notificationMoreSaoSecondEndDate                  controllers.Notifi
 GET        /changeNotificationMoreSaoSecondEndDate                        controllers.NotificationMoreSaoSecondEndDateController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 POST       /changeNotificationMoreSaoSecondEndDate                        controllers.NotificationMoreSaoSecondEndDateController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 
-GET        /notificationMoreSaoAreAllAdded                        controllers.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-POST       /notificationMoreSaoAreAllAdded                        controllers.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-GET        /changeNotificationMoreSaoAreAllAdded                  controllers.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
-POST       /changeNotificationMoreSaoAreAllAdded                  controllers.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+GET        /notification/more-sao/are-all-added                       controllers.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+POST       /notification/more-sao/are-all-added                         controllers.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+GET        /notification/more-sao/change-are-all-added                  controllers.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+POST       /notification/more-sao/change-are-all-added                  controllers.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
