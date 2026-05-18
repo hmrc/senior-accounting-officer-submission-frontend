@@ -33,8 +33,12 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
   "SubmitNotificationStart Controller" - {
 
     "must return OK and the initial task list view for a GET with no completed tasks" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(emptyUserAnswers)))
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, routes.SubmitNotificationStartController.onPageLoad().url)

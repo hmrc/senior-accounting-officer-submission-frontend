@@ -46,7 +46,7 @@ enum SubmitNotificationStage(
 
 object SubmitNotificationStage {
 
-  def from(userAnswers: UserAnswers): SubmitNotificationStage =
+  def taskListStage(userAnswers: UserAnswers): SubmitNotificationStage =
     if !isProvideSaoDetailsComplete(userAnswers) then {
       ProvideSaoDetails
     } else if !isUploadNotificationTemplateComplete(userAnswers) then {
