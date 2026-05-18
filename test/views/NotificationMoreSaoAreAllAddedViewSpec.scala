@@ -164,10 +164,11 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
 object NotificationMoreSaoAreAllAddedViewSpec {
   val pageHeading = "Have you added all the SAO for the financial year this notification relates to?"
   val pageCaption = "Submit a notification"
-  val pageTitle   = "Submit a notification - Have you added all the SAO for the financial year this notification relates to?"
-  val yesKey      = "true"
-  val yesLabel    = "Yes"
-  val noKey       = "false"
-  val noLabel     = "No"
-  val saoIndex    = 3
+  val pageTitle   =
+    "Submit a notification - Have you added all the SAO for the financial year this notification relates to?"
+  val yesKey   = "true"
+  val yesLabel = "Yes"
+  val noKey    = "false"
+  val noLabel  = "No"
+  val saoIndex = 3
 }
