@@ -1,4 +1,11 @@
-# Pull Request Checklist
+# Pull Request Description
+## List the changes made in comparison to main:
+* 
+
+## Jira ticket(s):
+* 
+
+## Checklist
 * [ ] Have you consulted with a QA?
     * [ ] Tick if you expect this work could break the existing Acceptance Test
 * [ ] Is the branch up to date with main?
