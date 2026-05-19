@@ -41,17 +41,29 @@
 
     <p class="govuk-body">@messages("notificationConfirmation.paragraph1", details.companyName)</p>
     <p class="govuk-body">@messages("notificationConfirmation.paragraph2", details.notificationDateTime)</p>
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph4")</p>
 
     <ul class="govuk-list govuk-list--bullet">
-        <li><a class="govuk-link" href="#">@messages("notificationConfirmation.list1.item1")</a></li>
-        <li><a class="govuk-link" href="#">@messages("notificationConfirmation.list1.item2")</a></li>
+        <li>
+            <span>
+                <a class="govuk-link" href="#">
+                    @messages("notificationConfirmation.downloadPdf")
+                </a>
+                @messages("notificationConfirmation.list1.item1")
+            </span>
+        </li>
+        <li>
+            <span>
+                <a class="govuk-link" href="#">
+                    @messages("notificationConfirmation.printPage")
+                </a>
+                @messages("notificationConfirmation.list1.item2")
+            </span>
+        </li>
     </ul>
 
-    <p class="govuk-body">@Html(messages("notificationConfirmation.paragraph5WithLink", accountHomepageLinkAttributes))</p>
     <h2 class="govuk-heading-m">@messages("notificationConfirmation.subheading")</h2>
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph6")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph4")</p>
 
     @formHelper(action = routes.NotificationConfirmationController.onSubmit()) {
         @govukButton(
