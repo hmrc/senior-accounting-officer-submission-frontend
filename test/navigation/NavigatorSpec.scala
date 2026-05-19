@@ -308,6 +308,14 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("id")
         ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
+
+      "when on CertificateSaoFullNamePage, must go to certificateSaoEmail page" in {
+        navigator.nextPage(
+          CertificateSaoFullNamePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateSaoEmailController.onPageLoad(NormalMode)
+      }
     }
 
     "in Check mode" - {
