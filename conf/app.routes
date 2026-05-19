@@ -142,3 +142,5 @@ GET        /changeCertificateSaoFullName                  controllers.Certificat
 POST       /changeCertificateSaoFullName                  controllers.CertificateSaoFullNameController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateUploadForm                       controllers.CertificateUploadFormController.onPageLoad()
+
+GET        /certificateTaskList                       controllers.CertificateTaskListController.onPageLoad()

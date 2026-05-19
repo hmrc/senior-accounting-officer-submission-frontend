@@ -387,3 +387,6 @@ certificateSaoFullName.change.hidden = CertificateSaoFullName
 
 certificateUploadForm.title = certificateUploadForm
 certificateUploadForm.heading = certificateUploadForm
+
+certificateTaskList.title = certificateTaskList
+certificateTaskList.heading = certificateTaskList
