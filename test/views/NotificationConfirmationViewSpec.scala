@@ -73,22 +73,16 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
 
     doc.getMainContent
       .select("li span")
-      .get(0).createTestWithText(pageListItems(0))
-//      .createTestWithLink(
-//        linkText = pageListItems(0),
-//        destinationUrl = "#"
-//      )
+      .get(0)
+      .createTestWithText(pageListItems(0))
 
     doc.getMainContent
       .select("li span")
-      .get(1).createTestWithText(pageListItems(1))
-//      .createTestWithLink(
-//        linkText = pageListItems(1),
-//        destinationUrl = "#"
-//      )
+      .get(1)
+      .createTestWithText(pageListItems(1))
 
     doc.getMainContent
-      .select("li a")
+      .select("li span a")
       .get(0)
       .createTestWithLink(
         linkText = pageDownload,
@@ -96,18 +90,11 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
       )
 
     doc.getMainContent
-      .select("li a")
+      .select("li span a")
       .get(1)
       .createTestWithLink(
         linkText = pagePrint,
         destinationUrl = "#"
-      )
-
-    doc.getMainContent
-      .selectFirst("p a")
-      .createTestWithLink(
-        linkText = "account homepage.",
-        destinationUrl = s"$hubUrl/senior-accounting-officer"
       )
 
     doc.createTestsForSubHeadings(
@@ -140,7 +127,7 @@ object NotificationConfirmationViewSpec {
     "We’ve sent a confirmation email to all the contacts you gave during registration.",
     "To keep a record of your submission, you can:",
     "Your notification has been received by HMRC. A member of compliance staff may contact you if they need more information.",
-    "You can now submit a Senior Accounting Officer certificate or another notification on behalf of another SAO in your group on your account homepage.",
+    "You can now submit a Senior Accounting Officer certificate or another notification on behalf of another SAO in your group on your account homepage."
   )
   val panelTitle                 = "Notification submitted"
   val testReferenceNumber        = "SAONOT0123456789"
@@ -151,8 +138,8 @@ object NotificationConfirmationViewSpec {
       "Download a PDF - save a copy of all the answers you submitted now. You may not be able to download a PDF if you leave this page",
       "Print this page - print a paper copy of this confirmation page"
     )
-  val pageDownload = "Download a PDF"
-  val pagePrint = "Print this page"
+  val pageDownload                 = "Download a PDF"
+  val pagePrint                    = "Print this page"
   val pageSubheadings: Seq[String] = Seq("What happens next")
   val hubUrl                       = "testHubUrl"
 }
