@@ -123,7 +123,10 @@ POST       /notificationMoreSaoAreAllAdded                        controllers.No
 GET        /changeNotificationMoreSaoAreAllAdded                  controllers.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 POST       /changeNotificationMoreSaoAreAllAdded                  controllers.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 
-GET        /certificateAdditionalInformation                       controllers.CertificateAdditionalInformationController.onPageLoad()
+GET        /certificateAdditionalInformation                        controllers.CertificateAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificateAdditionalInformation                        controllers.CertificateAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCertificateAdditionalInformation                  controllers.CertificateAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCertificateAdditionalInformation                  controllers.CertificateAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateDeclarationStandIn                       controllers.CertificateDeclarationStandInController.onPageLoad()
 
