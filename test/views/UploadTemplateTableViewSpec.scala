@@ -42,6 +42,10 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       hasError = false
     )
 
+    doc.createTestsWithParagraphs(paragraphs = Seq(paragraphLine1, paragraphLine2, paragraphLine3))
+
+    doc.createTestsWithCaption(pageCaption)
+
     "must render parsed data table" in {
       val tableHeaders = doc.select("th.govuk-table__header")
       tableHeaders.size() must be >= 6
@@ -72,9 +76,6 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
 }
 
 object UploadTemplateTableViewSpec {
-  val pageHeading = "Review the companies in your notification"
-  val pageTitle   = "Review the companies in your notification"
-  val saoName     = "Jane Smith"
 
   val tableData: UploadTemplateTableData = UploadTemplateTableData(
     rows = Seq(
@@ -105,4 +106,15 @@ object UploadTemplateTableViewSpec {
     ),
     errors = Seq.empty
   )
+
+  val pageHeading            = "Review the companies in your notification"
+  val pageTitle              = "Review the companies in your notification"
+  val saoName                = "Jane Smith"
+  val paragraphLine1: String =
+    "This list is taken from the notification details in the submission template you uploaded."
+  val paragraphLine2: String =
+    s"There were ${tableData.rows.size} companies $saoName was responsible for during the financial year."
+  val paragraphLine3: String = "If this is not correct, upload an updated submission template before continuing."
+  val pageCaption            = "Submit a notification"
+
 }
