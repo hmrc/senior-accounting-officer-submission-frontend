@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CertificateDeclarationStandInPage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.mvc.Call
@@ -33,7 +34,6 @@ import repositories.SessionRepository
 import views.html.CertificateDeclarationStandInView
 
 import scala.concurrent.Future
-import play.api.data.Form
 
 class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoSugar {
 
@@ -45,7 +45,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
   lazy val certificateDeclarationStandInRoute: String =
     routes.CertificateDeclarationStandInController.onPageLoad(NormalMode).url
 
-  val userAnswers = UserAnswers(
+  val userAnswers: UserAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
       CertificateDeclarationStandInPage.toString -> Json.obj(
