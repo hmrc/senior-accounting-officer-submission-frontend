@@ -26,6 +26,18 @@ Run the frontend locally using
 This service is localed on http://localhost:10058/senior-accounting-officer/submission/, however the user journeys begin from
 `SENIOR_ACCOUNTING_OFFICER_HUB_FRONTEND` on http://localhost:10056/senior-accounting-officer/
 
+### Running acceptance tests against this branch
+
+From this repo, run:
+
+`scripts/run_acceptance_tests.sh`
+
+The script starts `SAO_ALL`, stops the service-manager copy of `SENIOR_ACCOUNTING_OFFICER_SUBMISSION_FRONTEND`, starts this branch locally on port `10058`, waits for `/ping/ping`, then runs the acceptance-tests repo script. It expects `../senior-accounting-officer-acceptance-tests` by default.
+
+To run a different acceptance-tests script, set `ACCEPTANCE_TEST_SCRIPT`, for example:
+
+`ACCEPTANCE_TEST_SCRIPT=run_all_tests.sh scripts/run_acceptance_tests.sh`
+
 ## Scaffolding new pages
 To scaffold a new page, run `g8Scaffold <page_type_parameter>` in sbt shell. you can see the available scaffolds in the `.g8` directory. 
 Now execute the `migrate.sh` shell script to move the generated code into the correct place, do a `sbt clean compile` to ensure the new routes are available.
