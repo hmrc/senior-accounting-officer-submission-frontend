@@ -18,7 +18,7 @@ package models
 
 import play.api.libs.json.*
 
-case class CertificateDeclarationStandIn (StandInName: String, SaoName: String)
+case class CertificateDeclarationStandIn(StandInName: String, SaoName: String)
 
 object CertificateDeclarationStandIn {
 

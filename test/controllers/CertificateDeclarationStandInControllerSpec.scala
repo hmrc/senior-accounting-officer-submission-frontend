@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.CertificateDeclarationStandInFormProvider
-import models.{NormalMode, CertificateDeclarationStandIn, UserAnswers}
+import models.{CertificateDeclarationStandIn, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -33,22 +33,24 @@ import repositories.SessionRepository
 import views.html.CertificateDeclarationStandInView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new CertificateDeclarationStandInFormProvider()
-  val form = formProvider()
+  val formProvider                              = new CertificateDeclarationStandInFormProvider()
+  val form: Form[CertificateDeclarationStandIn] = formProvider()
 
-  lazy val certificateDeclarationStandInRoute = routes.CertificateDeclarationStandInController.onPageLoad(NormalMode).url
+  lazy val certificateDeclarationStandInRoute: String =
+    routes.CertificateDeclarationStandInController.onPageLoad(NormalMode).url
 
-  val userAnswers = UserAnswers(
+  val userAnswers: Any = UserAnswers(
     userAnswersId,
     Json.obj(
       CertificateDeclarationStandInPage.toString -> Json.obj(
         "StandInName" -> "value 1",
-        "SaoName" -> "value 2"
+        "SaoName"     -> "value 2"
       )
     )
   )
@@ -83,7 +85,10 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(CertificateDeclarationStandIn("value 1", "value 2")), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form.fill(CertificateDeclarationStandIn("value 1", "value 2")),
+          NormalMode
+        )(using request, messages(application)).toString
       }
     }
 

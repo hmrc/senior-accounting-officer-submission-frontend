@@ -17,17 +17,14 @@
 package views
 
 import base.ViewSpecBase
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import play.api.inject.Injector
-import play.api.data.Form
 import forms.CertificateDeclarationStandInFormProvider
 import models.CertificateDeclarationStandIn
-import models.{NormalMode, CheckMode, Mode}
-import pages.CertificateDeclarationStandInPage
-import views.html.CertificateDeclarationStandInView
+import models.Mode
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import play.api.data.Form
 import views.CertificateDeclarationStandInViewSpec.*
-
+import views.html.CertificateDeclarationStandInView
 
 class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDeclarationStandInView] {
 
@@ -55,8 +52,20 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
           )
 
           doc.createTestMustShowNumberOfInputs(2)
-          doc.createTestMustShowTextInput(name = "StandInName", label = field1Label, value = "", hint = None, hasError = false)
-          doc.createTestMustShowTextInput(name = "SaoName", label = field2Label, value = "", hint = None, hasError = false)
+          doc.createTestMustShowTextInput(
+            name = "StandInName",
+            label = field1Label,
+            value = "",
+            hint = None,
+            hasError = false
+          )
+          doc.createTestMustShowTextInput(
+            name = "SaoName",
+            label = field2Label,
+            value = "",
+            hint = None,
+            hasError = false
+          )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateDeclarationStandInController.onSubmit(mode),
@@ -80,8 +89,20 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
           )
 
           doc.createTestMustShowNumberOfInputs(2)
-          doc.createTestMustShowTextInput(name = "StandInName", label = field1Label, value = testInputValue1, hint = None, hasError = false)
-          doc.createTestMustShowTextInput(name = "SaoName", label = field2Label, value = testInputValue2, hint = None, hasError = false)
+          doc.createTestMustShowTextInput(
+            name = "StandInName",
+            label = field1Label,
+            value = testInputValue1,
+            hint = None,
+            hasError = false
+          )
+          doc.createTestMustShowTextInput(
+            name = "SaoName",
+            label = field2Label,
+            value = testInputValue2,
+            hint = None,
+            hasError = false
+          )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateDeclarationStandInController.onSubmit(mode),
@@ -105,8 +126,20 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
           )
 
           doc.createTestMustShowNumberOfInputs(2)
-          doc.createTestMustShowTextInput(name = "StandInName", label = field1Label, value = "", hint = None, hasError = true)
-          doc.createTestMustShowTextInput(name = "SaoName", label = field2Label, value = "", hint = None, hasError = true)
+          doc.createTestMustShowTextInput(
+            name = "StandInName",
+            label = field1Label,
+            value = "",
+            hint = None,
+            hasError = true
+          )
+          doc.createTestMustShowTextInput(
+            name = "SaoName",
+            label = field2Label,
+            value = "",
+            hint = None,
+            hasError = true
+          )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateDeclarationStandInController.onSubmit(mode),
@@ -125,7 +158,7 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 
 object CertificateDeclarationStandInViewSpec {
   val pageHeading = "certificateDeclarationStandIn"
-  val pageTitle = "certificateDeclarationStandIn"
+  val pageTitle   = "certificateDeclarationStandIn"
   val field1Label = "StandInName"
   val field2Label = "SaoName"
 

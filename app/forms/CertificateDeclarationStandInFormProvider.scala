@@ -16,21 +16,21 @@
 
 package forms
 
-import javax.inject.Inject
-
 import forms.mappings.Mappings
+import models.CertificateDeclarationStandIn
 import play.api.data.Form
 import play.api.data.Forms.*
-import models.CertificateDeclarationStandIn
+
+import javax.inject.Inject
 
 class CertificateDeclarationStandInFormProvider @Inject() extends Mappings {
 
-   def apply(): Form[CertificateDeclarationStandIn] = Form(
-     mapping(
+  def apply(): Form[CertificateDeclarationStandIn] = Form(
+    mapping(
       "StandInName" -> text("certificateDeclarationStandIn.error.StandInName.required")
         .verifying(maxLength(100, "certificateDeclarationStandIn.error.StandInName.length")),
       "SaoName" -> text("certificateDeclarationStandIn.error.SaoName.required")
         .verifying(maxLength(100, "certificateDeclarationStandIn.error.SaoName.length"))
     )(CertificateDeclarationStandIn.apply)(x => Some((x.StandInName, x.SaoName)))
-   )
- }
+  )
+}
