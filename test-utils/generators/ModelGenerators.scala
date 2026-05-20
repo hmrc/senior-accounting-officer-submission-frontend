@@ -22,6 +22,14 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  given arbitraryCertificateDeclarationStandIn: Arbitrary[CertificateDeclarationStandIn] =
+    Arbitrary {
+      for {
+        StandInName <- arbitrary[String]
+        SaoName     <- arbitrary[String]
+      } yield CertificateDeclarationStandIn(StandInName, SaoName)
+    }
+
   given arbitraryCertificateSubmissionDeclaration: Arbitrary[CertificateSubmissionDeclaration] =
     Arbitrary {
       for {

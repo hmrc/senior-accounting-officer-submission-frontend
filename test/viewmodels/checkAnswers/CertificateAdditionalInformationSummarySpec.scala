@@ -49,7 +49,9 @@ class CertificateAdditionalInformationSummarySpec extends SpecBase with GuiceOne
 
       "expected value" - {
         "must show 'testCertificateAdditionalInformation' when user answers is 'testCertificateAdditionalInformation'" in {
-          SUT(answer = "testCertificateAdditionalInformation").value.content mustBe "testCertificateAdditionalInformation".toText
+          SUT(answer =
+            "testCertificateAdditionalInformation"
+          ).value.content mustBe "testCertificateAdditionalInformation".toText
         }
       }
 

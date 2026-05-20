@@ -395,3 +395,15 @@ certificateUploadForm.heading = certificateUploadForm
 certificateTaskList.title = certificateTaskList
 certificateTaskList.heading = certificateTaskList
 
+
+certificateDeclarationStandIn.title = certificateDeclarationStandIn
+certificateDeclarationStandIn.heading = certificateDeclarationStandIn
+certificateDeclarationStandIn.StandInName = StandInName
+certificateDeclarationStandIn.SaoName = SaoName
+certificateDeclarationStandIn.checkYourAnswersLabel = CertificateDeclarationStandIn
+certificateDeclarationStandIn.error.StandInName.required = Enter StandInName
+certificateDeclarationStandIn.error.SaoName.required = Enter SaoName
+certificateDeclarationStandIn.error.StandInName.length = StandInName must be 100 characters or less
+certificateDeclarationStandIn.error.SaoName.length = SaoName must be 100 characters or less
+certificateDeclarationStandIn.StandInName.change.hidden = StandInName
+certificateDeclarationStandIn.SaoName.change.hidden = SaoName

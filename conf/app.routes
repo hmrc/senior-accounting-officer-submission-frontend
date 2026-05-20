@@ -128,8 +128,6 @@ POST       /certificateAdditionalInformation                        controllers.
 GET        /changeCertificateAdditionalInformation                  controllers.CertificateAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCertificateAdditionalInformation                  controllers.CertificateAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificateDeclarationStandIn                       controllers.CertificateDeclarationStandInController.onPageLoad()
-
 GET        /certificateReviewQualified                       controllers.CertificateReviewQualifiedController.onPageLoad()
 
 GET        /certificateReviewUnqualified                       controllers.CertificateReviewUnqualifiedController.onPageLoad()
@@ -147,3 +145,9 @@ POST       /changeCertificateSaoFullName                  controllers.Certificat
 GET        /certificateUploadForm                       controllers.CertificateUploadFormController.onPageLoad()
 
 GET        /certificateTaskList                       controllers.CertificateTaskListController.onPageLoad()
+
+
+GET        /certificateDeclarationStandIn                        controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificateDeclarationStandIn                        controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCertificateDeclarationStandIn                  controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCertificateDeclarationStandIn                  controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = CheckMode)

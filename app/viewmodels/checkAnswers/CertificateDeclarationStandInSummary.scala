@@ -18,26 +18,27 @@ package viewmodels.checkAnswers
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.CertificateAdditionalInformationPage
+import pages.CertificateDeclarationStandInPage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
+import viewmodels.converters.*
 
-object CertificateAdditionalInformationSummary {
+object CertificateDeclarationStandInSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateAdditionalInformationPage).map { answer =>
-      SummaryListRowViewModel(
-        key = messages("certificateAdditionalInformation.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.toText),
-        actions = Seq(
-          ActionItemViewModel(
-            messages("site.change").toText,
-            routes.CertificateAdditionalInformationController.onPageLoad(CheckMode).url
+    answers.get(CertificateDeclarationStandInPage).map {
+      answer =>
+        val value = HtmlFormat.escape(answer.StandInName).toString + "<br/>" + HtmlFormat.escape(answer.SaoName).toString
+        SummaryListRowViewModel(
+          key     = messages("certificateDeclarationStandIn.checkYourAnswersLabel").toKey,
+          value   = ValueViewModel(HtmlContent(value)),
+          actions = Seq(
+            ActionItemViewModel(messages("site.change").toText, routes.CertificateDeclarationStandInController.onPageLoad(CheckMode).url)
+              .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden"))
           )
-            .withVisuallyHiddenText(messages("certificateAdditionalInformation.change.hidden"))
         )
-      )
     }
 }

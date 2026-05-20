@@ -32,15 +32,17 @@ import repositories.SessionRepository
 import views.html.CertificateAdditionalInformationView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class CertificateAdditionalInformationControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new CertificateAdditionalInformationFormProvider()
-  val form = formProvider()
+  val formProvider       = new CertificateAdditionalInformationFormProvider()
+  val form: Form[String] = formProvider()
 
-  lazy val certificateAdditionalInformationRoute = routes.CertificateAdditionalInformationController.onPageLoad(NormalMode).url
+  lazy val certificateAdditionalInformationRoute: String =
+    routes.CertificateAdditionalInformationController.onPageLoad(NormalMode).url
 
   "CertificateAdditionalInformation Controller" - {
 
@@ -74,7 +76,10 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

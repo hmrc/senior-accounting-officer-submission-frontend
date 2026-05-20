@@ -14,14 +14,46 @@
  * limitations under the License.
  *@
 
+@import viewmodels.InputWidth.*
+
 @this(
-        layout: templates.Layout,
-        govukButton: GovukButton
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton
 )
 
-@()(using request: Request[?], messages: Messages)
+@(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("certificateDeclarationStandIn.title"))) {
+@layout(pageTitle = title(form, messages("certificateDeclarationStandIn.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("certificateDeclarationStandIn.heading")</h1>
+    @formHelper(action = routes.CertificateDeclarationStandInController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+        <h1 class="govuk-heading-xl">@messages("certificateDeclarationStandIn.heading")</h1>
+
+        @govukInput(
+            InputViewModel(
+                field = form("StandInName"),
+                label = LabelViewModel(messages("certificateDeclarationStandIn.StandInName").toText)
+            )
+            .withWidth(Full)
+        )
+
+        @govukInput(
+            InputViewModel(
+                field = form("SaoName"),
+                label = LabelViewModel(messages("certificateDeclarationStandIn.SaoName").toText)
+            )
+            .withWidth(Full)
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("site.continue").toText)
+        )
+    }
 }

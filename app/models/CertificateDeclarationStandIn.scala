@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package forms
+package models
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import play.api.libs.json.*
 
-import javax.inject.Inject
+case class CertificateDeclarationStandIn (StandInName: String, SaoName: String)
 
-class CertificateAdditionalInformationFormProvider @Inject() extends Mappings {
+object CertificateDeclarationStandIn {
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("certificateAdditionalInformation.error.required")
-        .verifying(maxLength(100, "certificateAdditionalInformation.error.length"))
-    )
+  given format: OFormat[CertificateDeclarationStandIn] = Json.format
 }
