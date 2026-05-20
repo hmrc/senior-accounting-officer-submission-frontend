@@ -16,6 +16,7 @@
 
 @import models.NotificationConfirmationDetails
 @import config.AppConfig
+@import views.html.helper.CSPNonce
 
 @this(
     layout: templates.Layout,
@@ -53,13 +54,20 @@
         </li>
         <li>
             <span>
-                <a class="govuk-link" href="#">
+                <a class="govuk-link" id="print-page-link" href="#">
                     @messages("notificationConfirmation.printPage")
                 </a>
                 @messages("notificationConfirmation.list1.item2")
             </span>
         </li>
     </ul>
+
+    <script @CSPNonce.attr>
+        document.getElementById('print-page-link').addEventListener('click', function() {
+            event.preventDefault();
+            window.print();
+        })
+    </script>
 
     <h2 class="govuk-heading-m">@messages("notificationConfirmation.subheading")</h2>
     <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
