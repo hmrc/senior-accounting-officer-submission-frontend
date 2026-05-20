@@ -72,8 +72,8 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
 }
 
 object UploadTemplateTableViewSpec {
-  val pageHeading = "Review the list of companies"
-  val pageTitle   = "Review the list of companies"
+  val pageHeading = "Review the companies in your notification"
+  val pageTitle   = "Review the companies in your notification"
   val saoName     = "Jane Smith"
 
   val tableData: UploadTemplateTableData = UploadTemplateTableData(
