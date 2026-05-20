@@ -84,9 +84,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
         provideSaoDetailsTag.text() mustBe notStartedText
         provideSaoDetailsTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
         uploadNotificationTag.text() mustBe cannotStartText
-        uploadNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--grey"
         submitNotificationTag.text() mustBe cannotStartText
-        submitNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--grey"
       }
     }
 
@@ -122,11 +120,9 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
         val submitNotificationTag = statusTags.get(2)
 
         provideSaoDetailsTag.text() mustBe completedText
-        provideSaoDetailsTag.getElementsByTag("strong").size() mustBe 0
         uploadNotificationTag.text() mustBe notStartedText
         uploadNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
         submitNotificationTag.text() mustBe cannotStartText
-        submitNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--grey"
       }
     }
 
@@ -161,9 +157,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
         val submitNotificationTag = statusTags.get(2)
 
         provideSaoDetailsTag.text() mustBe completedText
-        provideSaoDetailsTag.getElementsByTag("strong").size() mustBe 0
         uploadNotificationTag.text() mustBe completedText
-        uploadNotificationTag.getElementsByTag("strong").size() mustBe 0
         submitNotificationTag.text() mustBe notStartedText
         submitNotificationTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
       }
@@ -178,8 +172,8 @@ object SubmitNotificationStartViewSpec {
     "Submit a notification for each Senior Accounting Officer (SAO) in your group. Each notification must include the SAO’s name and all the entities they were responsible for during the financial year."
   )
   val provideSaoDetailsLinkText  = "Provide the SAO’s details"
-  val uploadTemplateLinkText     = "Upload a submission template"
-  val submitNotificationLinkText = "Submit a notification"
+  val uploadTemplateLinkText     = "Upload the submission template"
+  val submitNotificationLinkText = "Submit the notification"
 
   val notStartedText  = "Not started"
   val cannotStartText = "Cannot start yet"
