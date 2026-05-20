@@ -38,8 +38,8 @@ trait ModelGenerators {
       } yield CertificateSubmissionDeclaration(sao, proxy)
     }
 
-  given arbitraryWhoSubmitsCertificate: Arbitrary[WhoSubmitsCertificate] =
+  given arbitraryJointWhoSubmitsCertificate: Arbitrary[JointWhoSubmitsCertificate] =
     Arbitrary {
-      Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
+      Gen.oneOf(JointWhoSubmitsCertificate.values.toSeq)
     }
 }

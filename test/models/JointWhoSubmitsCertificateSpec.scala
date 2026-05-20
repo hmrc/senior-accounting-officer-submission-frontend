@@ -24,37 +24,37 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
 
-class WhoSubmitsCertificateSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
+class JointWhoSubmitsCertificateSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
 
-  "WhoSubmitsCertificate" - {
+  "JointWhoSubmitsCertificate" - {
 
     "must deserialise valid values" in {
 
-      val gen = Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
+      val gen = Gen.oneOf(JointWhoSubmitsCertificate.values.toSeq)
 
-      forAll(gen) { whoSubmitsCertificate =>
-        JsString(whoSubmitsCertificate.toString)
-          .validate[WhoSubmitsCertificate]
+      forAll(gen) { jointWhoSubmitsCertificate =>
+        JsString(jointWhoSubmitsCertificate.toString)
+          .validate[JointWhoSubmitsCertificate]
           .asOpt
-          .value mustEqual whoSubmitsCertificate
+          .value mustEqual jointWhoSubmitsCertificate
       }
     }
 
     "must fail to deserialise invalid values" in {
 
-      val gen = arbitrary[String] suchThat (!WhoSubmitsCertificate.values.map(_.toString).contains(_))
+      val gen = arbitrary[String] suchThat (!JointWhoSubmitsCertificate.values.map(_.toString).contains(_))
 
       forAll(gen) { invalidValue =>
-        JsString(invalidValue).validate[WhoSubmitsCertificate] mustEqual JsError("error.invalid")
+        JsString(invalidValue).validate[JointWhoSubmitsCertificate] mustEqual JsError("error.invalid")
       }
     }
 
     "must serialise" in {
 
-      val gen = Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
+      val gen = Gen.oneOf(JointWhoSubmitsCertificate.values.toSeq)
 
-      forAll(gen) { whoSubmitsCertificate =>
-        Json.toJson(whoSubmitsCertificate) mustEqual JsString(whoSubmitsCertificate.toString)
+      forAll(gen) { jointWhoSubmitsCertificate =>
+        Json.toJson(jointWhoSubmitsCertificate) mustEqual JsString(jointWhoSubmitsCertificate.toString)
       }
     }
   }

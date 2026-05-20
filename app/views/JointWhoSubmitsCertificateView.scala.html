@@ -24,11 +24,11 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("whoSubmitsCertificate.title"))) {
+@layout(pageTitle = title(form, messages("jointWhoSubmitsCertificate.title"))) {
 
-    <span class="govuk-caption-m">@messages("whoSubmitsCertificate.caption")</span>
+    <span class="govuk-caption-m">@messages("jointWhoSubmitsCertificate.caption")</span>
 
-    @formHelper(action = routes.WhoSubmitsCertificateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.JointWhoSubmitsCertificateController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
@@ -37,9 +37,9 @@
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("whoSubmitsCertificate.heading").toText).asPageHeading(LegendSize.Large),
-                items  = WhoSubmitsCertificate.options
-            ).withParagraph(messages("whoSubmitsCertificate.paragraph1"))
+                legend = LegendViewModel(messages("jointWhoSubmitsCertificate.heading").toText).asPageHeading(LegendSize.Large),
+                items  = JointWhoSubmitsCertificate.options
+            ).withParagraph(messages("jointWhoSubmitsCertificate.paragraph1"))
         )
 
         @govukButton(

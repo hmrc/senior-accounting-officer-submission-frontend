@@ -17,40 +17,40 @@
 package controllers
 
 import controllers.actions.*
-import forms.WhoSubmitsCertificateFormProvider
+import forms.JointWhoSubmitsCertificateFormProvider
 import models.Mode
-import models.WhoSubmitsCertificate
+import models.JointWhoSubmitsCertificate
 import navigation.Navigator
-import pages.WhoSubmitsCertificatePage
+import pages.JointWhoSubmitsCertificatePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.WhoSubmitsCertificateView
+import views.html.JointWhoSubmitsCertificateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class WhoSubmitsCertificateController @Inject() (
+class JointWhoSubmitsCertificateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: WhoSubmitsCertificateFormProvider,
+    formProvider: JointWhoSubmitsCertificateFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: WhoSubmitsCertificateView
+    view: JointWhoSubmitsCertificateView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  val form: Form[WhoSubmitsCertificate] = formProvider()
+  val form: Form[JointWhoSubmitsCertificate] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(WhoSubmitsCertificatePage) match {
+    val preparedForm = request.userAnswers.get(JointWhoSubmitsCertificatePage) match {
       case None        => form
       case Some(value) => form.fill(value)
     }
@@ -66,9 +66,9 @@ class WhoSubmitsCertificateController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(WhoSubmitsCertificatePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(JointWhoSubmitsCertificatePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(WhoSubmitsCertificatePage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(JointWhoSubmitsCertificatePage, mode, updatedAnswers))
         )
   }
 }

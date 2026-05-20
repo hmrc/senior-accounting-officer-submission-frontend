@@ -50,8 +50,8 @@ class Navigator @Inject() () {
     case SaoEmailCommunicationChoicePage =>
       _ => routes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateCheckYourAnswersPage =>
-      _ => routes.WhoSubmitsCertificateController.onPageLoad(NormalMode)
-    case WhoSubmitsCertificatePage =>
+      _ => routes.JointWhoSubmitsCertificateController.onPageLoad(NormalMode)
+    case JointWhoSubmitsCertificatePage =>
       _ => routes.QualifiedCompaniesController.onPageLoad()
     case QualifiedCompaniesPage =>
       _ => routes.UnqualifiedCompaniesController.onPageLoad()

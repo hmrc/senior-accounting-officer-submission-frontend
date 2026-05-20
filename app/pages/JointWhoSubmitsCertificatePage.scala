@@ -16,12 +16,12 @@
 
 package pages
 
-import models.WhoSubmitsCertificate
+import models.JointWhoSubmitsCertificate
 import play.api.libs.json.JsPath
 
-case object WhoSubmitsCertificatePage extends QuestionPage[WhoSubmitsCertificate] {
+case object JointWhoSubmitsCertificatePage extends QuestionPage[JointWhoSubmitsCertificate] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "whoSubmitsCertificate"
+  override def toString: String = "jointWhoSubmitsCertificate"
 }

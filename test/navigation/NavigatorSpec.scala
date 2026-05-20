@@ -134,12 +134,12 @@ class NavigatorSpec extends SpecBase {
           CertificateCheckYourAnswersPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.WhoSubmitsCertificateController.onPageLoad(NormalMode)
+        ) mustBe routes.JointWhoSubmitsCertificateController.onPageLoad(NormalMode)
       }
 
-      "when on WhoSubmitsCertificatePage, must go to qualified companies page" in {
+      "when on JointWhoSubmitsCertificatePage, must go to qualified companies page" in {
         navigator.nextPage(
-          WhoSubmitsCertificatePage,
+          JointWhoSubmitsCertificatePage,
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.QualifiedCompaniesController.onPageLoad()

@@ -17,26 +17,26 @@
 package views
 
 import base.ViewSpecBase
-import forms.WhoSubmitsCertificateFormProvider
+import forms.JointWhoSubmitsCertificateFormProvider
 import models.Mode
-import models.WhoSubmitsCertificate
+import models.JointWhoSubmitsCertificate
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.WhoSubmitsCertificateViewSpec.*
-import views.html.WhoSubmitsCertificateView
+import views.JointWhoSubmitsCertificateViewSpec.*
+import views.html.JointWhoSubmitsCertificateView
 
-class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateView] {
+class JointWhoSubmitsCertificateViewSpec extends ViewSpecBase[JointWhoSubmitsCertificateView] {
 
-  private val formProvider                      = app.injector.instanceOf[WhoSubmitsCertificateFormProvider]
-  private val form: Form[WhoSubmitsCertificate] = formProvider()
+  private val formProvider                      = app.injector.instanceOf[JointWhoSubmitsCertificateFormProvider]
+  private val form: Form[JointWhoSubmitsCertificate] = formProvider()
 
-  private def generateView(form: Form[WhoSubmitsCertificate], mode: Mode): Document = {
+  private def generateView(form: Form[JointWhoSubmitsCertificate], mode: Mode): Document = {
     val view = SUT(form, mode)
     Jsoup.parse(view.toString)
   }
 
-  "WhoSubmitsCertificateView" - {
+  "JointWhoSubmitsCertificateView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -66,7 +66,7 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoSubmitsCertificateController.onSubmit(mode),
+            action = controllers.routes.JointWhoSubmitsCertificateController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -101,7 +101,7 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoSubmitsCertificateController.onSubmit(mode),
+            action = controllers.routes.JointWhoSubmitsCertificateController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -136,7 +136,7 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoSubmitsCertificateController.onSubmit(mode),
+            action = controllers.routes.JointWhoSubmitsCertificateController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -149,7 +149,7 @@ class WhoSubmitsCertificateViewSpec extends ViewSpecBase[WhoSubmitsCertificateVi
   }
 }
 
-object WhoSubmitsCertificateViewSpec {
+object JointWhoSubmitsCertificateViewSpec {
   val pageHeading             = "Who is submitting the certificate?"
   val pageTitle               = "Submit a certificate"
   val pageCaption             = "Submit a certificate"

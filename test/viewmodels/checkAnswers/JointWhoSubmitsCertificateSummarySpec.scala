@@ -17,51 +17,51 @@
 package viewmodels.checkAnswers
 
 import controllers.routes
-import models.{CheckMode, WhoSubmitsCertificate}
-import pages.WhoSubmitsCertificatePage
+import models.{CheckMode, JointWhoSubmitsCertificate}
+import pages.JointWhoSubmitsCertificatePage
 
-class WhoSubmitsCertificateSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
+class JointWhoSubmitsCertificateSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
 
-  "WhoSubmitsCertificateSummary.row" - {
+  "JointWhoSubmitsCertificateSummary.row" - {
 
-    "when there is no answer for WhoSubmitsCertificatePage" - {
+    "when there is no answer for JointWhoSubmitsCertificatePage" - {
       "must return None" in {
-        WhoSubmitsCertificateSummary.row(emptyUserAnswers) mustBe None
+        JointWhoSubmitsCertificateSummary.row(emptyUserAnswers) mustBe None
       }
     }
 
-    "when there is a user answer for WhoSubmitsCertificatePage" - {
-      def testUserAnswers(answer: WhoSubmitsCertificate) =
-        emptyUserAnswers.set(WhoSubmitsCertificatePage, answer).success.value
+    "when there is a user answer for JointWhoSubmitsCertificatePage" - {
+      def testUserAnswers(answer: JointWhoSubmitsCertificate) =
+        emptyUserAnswers.set(JointWhoSubmitsCertificatePage, answer).success.value
 
       "must render the expected key text" in {
         renderSummaryRow(
-          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Sao)).value
+          JointWhoSubmitsCertificateSummary.row(testUserAnswers(JointWhoSubmitsCertificate.Sao)).value
         ).renderedKeyText mustBe
           "Who is submitting the certificate?"
       }
 
       "must render the SAO value" in {
         renderSummaryRow(
-          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Sao)).value
+          JointWhoSubmitsCertificateSummary.row(testUserAnswers(JointWhoSubmitsCertificate.Sao)).value
         ).renderedValueText mustBe
           "I am the Senior Accounting Officer"
       }
 
       "must render the proxy value" in {
         renderSummaryRow(
-          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Proxy)).value
+          JointWhoSubmitsCertificateSummary.row(testUserAnswers(JointWhoSubmitsCertificate.Proxy)).value
         ).renderedValueText mustBe
           "I am authorised to submit the certificate on behalf of the Senior Accounting Officer"
       }
 
       "must render the expected action link" in {
         val action = renderSummaryRow(
-          WhoSubmitsCertificateSummary.row(testUserAnswers(WhoSubmitsCertificate.Sao)).value
+          JointWhoSubmitsCertificateSummary.row(testUserAnswers(JointWhoSubmitsCertificate.Sao)).value
         ).renderedActionLink
 
-        action.attr("href") mustBe routes.WhoSubmitsCertificateController.onPageLoad(CheckMode).url
-        action.select("span.govuk-visually-hidden").text() mustBe "WhoSubmitsCertificate"
+        action.attr("href") mustBe routes.JointWhoSubmitsCertificateController.onPageLoad(CheckMode).url
+        action.select("span.govuk-visually-hidden").text() mustBe "JointWhoSubmitsCertificate"
         action.select("span.govuk-visually-hidden").remove()
         action.text() mustBe "Change"
       }

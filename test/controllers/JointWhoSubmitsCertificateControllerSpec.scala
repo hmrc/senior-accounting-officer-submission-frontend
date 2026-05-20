@@ -17,44 +17,44 @@
 package controllers
 
 import base.SpecBase
-import forms.WhoSubmitsCertificateFormProvider
-import models.{NormalMode, UserAnswers, WhoSubmitsCertificate}
+import forms.JointWhoSubmitsCertificateFormProvider
+import models.{NormalMode, UserAnswers, JointWhoSubmitsCertificate}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhoSubmitsCertificatePage
+import pages.JointWhoSubmitsCertificatePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.WhoSubmitsCertificateView
+import views.html.JointWhoSubmitsCertificateView
 
 import scala.concurrent.Future
 
-class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
+class JointWhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  lazy val whoSubmitsCertificateRoute: String = routes.WhoSubmitsCertificateController.onPageLoad(NormalMode).url
+  lazy val jointWhoSubmitsCertificateRoute: String = routes.JointWhoSubmitsCertificateController.onPageLoad(NormalMode).url
 
-  val formProvider                      = new WhoSubmitsCertificateFormProvider()
-  val form: Form[WhoSubmitsCertificate] = formProvider()
+  val formProvider                      = new JointWhoSubmitsCertificateFormProvider()
+  val form: Form[JointWhoSubmitsCertificate] = formProvider()
 
-  "WhoSubmitsCertificate Controller" - {
+  "JointWhoSubmitsCertificate Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoSubmitsCertificateRoute)
+        val request = FakeRequest(GET, jointWhoSubmitsCertificateRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[WhoSubmitsCertificateView]
+        val view = application.injector.instanceOf[JointWhoSubmitsCertificateView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
@@ -64,19 +64,19 @@ class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(WhoSubmitsCertificatePage, WhoSubmitsCertificate.values.head).success.value
+        UserAnswers(userAnswersId).set(JointWhoSubmitsCertificatePage, JointWhoSubmitsCertificate.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoSubmitsCertificateRoute)
+        val request = FakeRequest(GET, jointWhoSubmitsCertificateRoute)
 
-        val view = application.injector.instanceOf[WhoSubmitsCertificateView]
+        val view = application.injector.instanceOf[JointWhoSubmitsCertificateView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(WhoSubmitsCertificate.values.head), NormalMode)(using
+        contentAsString(result) mustEqual view(form.fill(JointWhoSubmitsCertificate.values.head), NormalMode)(using
           request,
           messages(application)
         ).toString
@@ -99,8 +99,8 @@ class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whoSubmitsCertificateRoute)
-            .withFormUrlEncodedBody(("value", WhoSubmitsCertificate.values.head.toString))
+          FakeRequest(POST, jointWhoSubmitsCertificateRoute)
+            .withFormUrlEncodedBody(("value", JointWhoSubmitsCertificate.values.head.toString))
 
         val result = route(application, request).value
 
@@ -115,12 +115,12 @@ class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whoSubmitsCertificateRoute)
+          FakeRequest(POST, jointWhoSubmitsCertificateRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[WhoSubmitsCertificateView]
+        val view = application.injector.instanceOf[JointWhoSubmitsCertificateView]
 
         val result = route(application, request).value
 
@@ -134,7 +134,7 @@ class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoSubmitsCertificateRoute)
+        val request = FakeRequest(GET, jointWhoSubmitsCertificateRoute)
 
         val result = route(application, request).value
 
@@ -149,8 +149,8 @@ class WhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whoSubmitsCertificateRoute)
-            .withFormUrlEncodedBody(("value", WhoSubmitsCertificate.values.head.toString))
+          FakeRequest(POST, jointWhoSubmitsCertificateRoute)
+            .withFormUrlEncodedBody(("value", JointWhoSubmitsCertificate.values.head.toString))
 
         val result = route(application, request).value
 

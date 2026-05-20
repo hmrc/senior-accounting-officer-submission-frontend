@@ -17,15 +17,15 @@
 package forms
 
 import forms.mappings.Mappings
-import models.WhoSubmitsCertificate
+import models.JointWhoSubmitsCertificate
 import play.api.data.Form
 
 import javax.inject.Inject
 
-class WhoSubmitsCertificateFormProvider @Inject() extends Mappings {
+class JointWhoSubmitsCertificateFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[WhoSubmitsCertificate] =
+  def apply(): Form[JointWhoSubmitsCertificate] =
     Form(
-      "value" -> enumerable[WhoSubmitsCertificate]("whoSubmitsCertificate.error.required")
+      "value" -> enumerable[JointWhoSubmitsCertificate]("jointWhoSubmitsCertificate.error.required")
     )
 }

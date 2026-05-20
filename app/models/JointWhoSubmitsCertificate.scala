@@ -20,18 +20,18 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
-enum WhoSubmitsCertificate(override val toString: String) {
-  case Sao   extends WhoSubmitsCertificate("sao")
-  case Proxy extends WhoSubmitsCertificate("proxy")
+enum JointWhoSubmitsCertificate(override val toString: String) {
+  case Sao   extends JointWhoSubmitsCertificate("sao")
+  case Proxy extends JointWhoSubmitsCertificate("proxy")
 }
 
-object WhoSubmitsCertificate extends Enumerable.Implicits[WhoSubmitsCertificate] {
+object JointWhoSubmitsCertificate extends Enumerable.Implicits[JointWhoSubmitsCertificate] {
 
-  override def members: Array[WhoSubmitsCertificate] = WhoSubmitsCertificate.values
+  override def members: Array[JointWhoSubmitsCertificate] = JointWhoSubmitsCertificate.values
 
   def options(using messages: Messages): Seq[RadioItem] = values.map { value =>
     RadioItem(
-      content = Text(messages(s"whoSubmitsCertificate.${value.toString}")),
+      content = Text(messages(s"jointWhoSubmitsCertificate.${value.toString}")),
       value = Some(value.toString),
       id = Some(s"value_${value.ordinal}")
     )

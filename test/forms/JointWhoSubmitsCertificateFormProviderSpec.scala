@@ -17,22 +17,22 @@
 package forms
 
 import forms.behaviours.OptionFieldBehaviours
-import models.WhoSubmitsCertificate
+import models.JointWhoSubmitsCertificate
 import play.api.data.FormError
 
-class WhoSubmitsCertificateFormProviderSpec extends OptionFieldBehaviours {
+class JointWhoSubmitsCertificateFormProviderSpec extends OptionFieldBehaviours {
 
-  val form        = new WhoSubmitsCertificateFormProvider()()
-  val requiredKey = "whoSubmitsCertificate.error.required"
+  val form        = new JointWhoSubmitsCertificateFormProvider()()
+  val requiredKey = "jointWhoSubmitsCertificate.error.required"
 
   ".value" - {
 
     val fieldName = "value"
 
-    behave like optionsField[WhoSubmitsCertificate](
+    behave like optionsField[JointWhoSubmitsCertificate](
       form,
       fieldName,
-      validValues = WhoSubmitsCertificate.values,
+      validValues = JointWhoSubmitsCertificate.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 
@@ -46,7 +46,7 @@ class WhoSubmitsCertificateFormProviderSpec extends OptionFieldBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Select whoSubmitsCertificate"
+      message = "Select jointWhoSubmitsCertificate"
     )
   }
 }
