@@ -41,7 +41,7 @@ GET         /notification/change-additional-information               controller
 POST        /notification/change-additional-information               controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onPageLoad()
-POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit()
+POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit(notificationIdReferenceNumber: String)
 
 GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad()
 POST        /notification/confirmation                                controllers.NotificationConfirmationController.onSubmit()

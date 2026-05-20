@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.NormalMode
+import models.{NormalMode, NotificationIdReferenceNumber}
 import navigation.Navigator
 import pages.NotificationCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -36,7 +36,8 @@ class NotificationCheckYourAnswersController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
     navigator: Navigator,
-    notificationCheckYourAnswersService: NotificationCheckYourAnswersService
+    notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
+    notificationIdReferenceNumber: NotificationIdReferenceNumber
 ) extends FrontendBaseController
     with I18nSupport {
 
@@ -46,7 +47,7 @@ class NotificationCheckYourAnswersController @Inject() (
     Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers))
+  def onSubmit(notificationIdReferenceNumber: NotificationIdReferenceNumber): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Redirect(navigator.nextPageWithNotiRef(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers, notificationIdReferenceNumber))
   }
 }

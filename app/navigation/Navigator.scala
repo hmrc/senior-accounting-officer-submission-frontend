@@ -125,4 +125,11 @@ class Navigator @Inject() () {
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }
+
+  def nextPageWithNotiRef(page: Page, mode: Mode, userAnswers: UserAnswers, notificationIdReferenceNumber: NotificationIdReferenceNumber): Call = mode match {
+    case NormalMode =>
+      normalRoutes(page)(userAnswers)
+    case CheckMode =>
+      checkRouteMap(page)(userAnswers)
+  }
 }
