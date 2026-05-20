@@ -35,13 +35,12 @@
 @layout(pageTitle = titleNoForm(messages("uploadTemplateTable.title"))) {
     <span class="govuk-caption-m">@messages("uploadTemplateTable.caption")</span>
     <h1 class="govuk-heading-xl">@messages("uploadTemplateTable.heading")</h1>
-    <p class="govuk-body">@messages("uploadTemplateTable.paragraph1", saoName)</p>
-    <p class="govuk-body">@messages("uploadTemplateTable.paragraph2", tableData.rows.size.toString)</p>
+    <p class="govuk-body">@messages("uploadTemplateTable.paragraph1")</p>
+    <p class="govuk-body">@messages("uploadTemplateTable.paragraph2", tableData.rows.size.toString, saoName)</p>
     <p class="govuk-body">
         @Html(messages("uploadTemplateTable.paragraph3WithLink", uploadUrl))
     </p>
 
-    <h2 class="govuk-heading-m">@messages("uploadTemplateTable.parsedData.heading")</h2>
 
     <table class="govuk-table govuk-!-font-size-16">
         <thead class="govuk-table__head">
