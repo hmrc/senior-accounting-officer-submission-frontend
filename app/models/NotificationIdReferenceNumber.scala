@@ -16,4 +16,6 @@
 
 package models
 
-case class NotificationIdReferenceNumber (notificationIdReferenceNumber: String = "SAONOT9876543210")
+case class NotificationIdReferenceNumber() {
+  def returnHardCodedNotRef: String = "SAONOT9876543210"
+}

@@ -47,7 +47,9 @@ class NotificationCheckYourAnswersController @Inject() (
     Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
   }
 
-  def onSubmit(notificationIdReferenceNumber: NotificationIdReferenceNumber): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPageWithNotiRef(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers, notificationIdReferenceNumber))
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request => {
+    val getNotificationIdReferenceNumber = notificationIdReferenceNumber.returnHardCodedNotRef
+    Redirect(navigator.nextPageWithNotRef(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers, getNotificationIdReferenceNumber))
+  }
   }
 }

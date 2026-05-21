@@ -126,7 +126,7 @@ class Navigator @Inject() () {
       checkRouteMap(page)(userAnswers)
   }
 
-  def nextPageWithNotiRef(page: Page, mode: Mode, userAnswers: UserAnswers, notificationIdReferenceNumber: NotificationIdReferenceNumber): Call = mode match {
+  def nextPageWithNotRef(page: Page, mode: Mode, userAnswers: UserAnswers, notificationIdReferenceNumber: String): Call = mode match {
     case NormalMode =>
       normalRoutes(page)(userAnswers)
     case CheckMode =>
