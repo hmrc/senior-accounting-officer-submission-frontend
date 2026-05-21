@@ -190,19 +190,19 @@ saoEmailCommunicationChoice.checkYourAnswersLabel = Email communications
 saoEmailCommunicationChoice.error.required = Select yes if saoEmailCommunicationChoice
 saoEmailCommunicationChoice.change.hidden = SaoEmailCommunicationChoice
 
-certificateCheckYourAnswers.title = Submit a certificate
-certificateCheckYourAnswers.caption = Submit a certificate
-certificateCheckYourAnswers.heading = Check your answers
+combinedCertificateCheckYourAnswers.title = Submit a certificate
+combinedCertificateCheckYourAnswers.caption = Submit a certificate
+combinedCertificateCheckYourAnswers.heading = Check your answers
 
-whoSubmitsCertificate.title = Submit a certificate
-whoSubmitsCertificate.heading = Who is submitting the certificate?
-whoSubmitsCertificate.caption = Submit a certificate
-whoSubmitsCertificate.sao = I am the Senior Accounting Officer
-whoSubmitsCertificate.proxy = I am authorised to submit the certificate on behalf of the Senior Accounting Officer
-whoSubmitsCertificate.checkYourAnswersLabel = Who is submitting the certificate?
-whoSubmitsCertificate.error.required = Select whoSubmitsCertificate
-whoSubmitsCertificate.change.hidden = WhoSubmitsCertificate
-whoSubmitsCertificate.paragraph1 = We need to know if your certificate will be submitted by the Senior Accounting Officer (SAO) or by someone authorised to act on their behalf. This helps us show the correct declaration for you to confirm and sign.
+combinedWhoSubmitsCertificate.title = Submit a certificate
+combinedWhoSubmitsCertificate.heading = Who is submitting the certificate?
+combinedWhoSubmitsCertificate.caption = Submit a certificate
+combinedWhoSubmitsCertificate.sao = I am the Senior Accounting Officer
+combinedWhoSubmitsCertificate.proxy = I am authorised to submit the certificate on behalf of the Senior Accounting Officer
+combinedWhoSubmitsCertificate.checkYourAnswersLabel = Who is submitting the certificate?
+combinedWhoSubmitsCertificate.error.required = Select combinedWhoSubmitsCertificate
+combinedWhoSubmitsCertificate.change.hidden = CombinedWhoSubmitsCertificate
+combinedWhoSubmitsCertificate.paragraph1 = We need to know if your certificate will be submitted by the Senior Accounting Officer (SAO) or by someone authorised to act on their behalf. This helps us show the correct declaration for you to confirm and sign.
 
 qualifiedCompanies.title = qualifiedCompanies
 qualifiedCompanies.heading = qualifiedCompanies
@@ -210,20 +210,20 @@ qualifiedCompanies.heading = qualifiedCompanies
 unqualifiedCompanies.title = unqualifiedCompanies
 unqualifiedCompanies.heading = unqualifiedCompanies
 
-certificateSubmissionDeclaration.title = certificateSubmissionDeclaration
-certificateSubmissionDeclaration.heading = certificateSubmissionDeclaration
-certificateSubmissionDeclaration.sao = sao
-certificateSubmissionDeclaration.proxy = proxy
-certificateSubmissionDeclaration.checkYourAnswersLabel = CertificateSubmissionDeclaration
-certificateSubmissionDeclaration.error.sao.required = Enter sao
-certificateSubmissionDeclaration.error.proxy.required = Enter proxy
-certificateSubmissionDeclaration.error.sao.length = sao must be 100 characters or less
-certificateSubmissionDeclaration.error.proxy.length = proxy must be 100 characters or less
-certificateSubmissionDeclaration.sao.change.hidden = sao
-certificateSubmissionDeclaration.proxy.change.hidden = proxy
+combinedCertificateDeclarationSao.title = combinedCertificateDeclarationSao
+combinedCertificateDeclarationSao.heading = combinedCertificateDeclarationSao
+combinedCertificateDeclarationSao.sao = sao
+combinedCertificateDeclarationSao.proxy = proxy
+combinedCertificateDeclarationSao.checkYourAnswersLabel = CombinedCertificateDeclarationSao
+combinedCertificateDeclarationSao.error.sao.required = Enter sao
+combinedCertificateDeclarationSao.error.proxy.required = Enter proxy
+combinedCertificateDeclarationSao.error.sao.length = sao must be 100 characters or less
+combinedCertificateDeclarationSao.error.proxy.length = proxy must be 100 characters or less
+combinedCertificateDeclarationSao.sao.change.hidden = sao
+combinedCertificateDeclarationSao.proxy.change.hidden = proxy
 
-certificateConfirmation.title = certificateConfirmation
-certificateConfirmation.heading = certificateConfirmation
+combinedCertificateConfirmation.title = combinedCertificateConfirmation
+combinedCertificateConfirmation.heading = combinedCertificateConfirmation
 
 notificationUploadError.title = notificationUploadError
 notificationUploadError.heading = notificationUploadError
@@ -245,13 +245,12 @@ notificationMoreThanOneSao.change.hidden = NotificationMoreThanOneSao
 notificationMoreThanOneSao.yes = There was more than one SAO, the SAO changed during the financial year
 notificationMoreThanOneSao.no = Only one person held the role for the entire financial year
 
-uploadTemplateTable.title = Review the list of companies
+uploadTemplateTable.title = Review the companies in your notification
 uploadTemplateTable.caption = Submit a notification
-uploadTemplateTable.heading = Review the list of companies
-uploadTemplateTable.paragraph1 = This list is taken from the notification details in the submission template you uploaded for {0}.
-uploadTemplateTable.paragraph2 = There were {0} companies in this upload for the financial year
+uploadTemplateTable.heading = Review the companies in your notification
+uploadTemplateTable.paragraph1 = This list is taken from the notification details in the submission template you uploaded.
+uploadTemplateTable.paragraph2 = There were {0} companies {1} was responsible for during the financial year.
 uploadTemplateTable.paragraph3WithLink = If this is not correct, <a class="govuk-link" href="{0}">upload an updated submission template</a> before continuing.
-uploadTemplateTable.parsedData.heading = Notification companies
 uploadTemplateTable.parsedData.empty = No parsed rows
 uploadTemplateTable.continue = Continue
 uploadTemplateTable.table.companyName = Company name
@@ -358,3 +357,52 @@ confirmYourNotification.paragraph2 = By submitting this notification, you confir
 confirmYourNotification.list1.item1 = the information provided is complete and correct to the best of your knowledge
 confirmYourNotification.list1.item2 = you understand that if the company deliberately provides false or incomplete information, or fails to report changes, it may be liable for a penalty of £5,000.
 confirmYourNotification.inset.text = If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels.
+
+certificateDeclarationStandIn.title = certificateDeclarationStandIn
+certificateDeclarationStandIn.heading = certificateDeclarationStandIn
+
+certificateReviewQualified.title = certificateReviewQualified
+certificateReviewQualified.heading = certificateReviewQualified
+
+certificateReviewUnqualified.title = certificateReviewUnqualified
+certificateReviewUnqualified.heading = certificateReviewUnqualified
+
+certificateAdditionalInformation.title = certificateAdditionalInformation
+certificateAdditionalInformation.heading = certificateAdditionalInformation
+certificateAdditionalInformation.checkYourAnswersLabel = certificateAdditionalInformation
+certificateAdditionalInformation.error.required = Enter certificateAdditionalInformation
+certificateAdditionalInformation.error.length = CertificateAdditionalInformation must be 100 characters or less
+certificateAdditionalInformation.change.hidden = CertificateAdditionalInformation
+
+certificateSaoEmail.title = certificateSaoEmail
+certificateSaoEmail.heading = certificateSaoEmail
+certificateSaoEmail.checkYourAnswersLabel = certificateSaoEmail
+certificateSaoEmail.error.required = Enter certificateSaoEmail
+certificateSaoEmail.error.length = CertificateSaoEmail must be 100 characters or less
+certificateSaoEmail.change.hidden = CertificateSaoEmail
+
+certificateSaoFullName.title = certificateSaoFullName
+certificateSaoFullName.heading = certificateSaoFullName
+certificateSaoFullName.checkYourAnswersLabel = certificateSaoFullName
+certificateSaoFullName.error.required = Enter certificateSaoFullName
+certificateSaoFullName.error.length = CertificateSaoFullName must be 100 characters or less
+certificateSaoFullName.change.hidden = CertificateSaoFullName
+
+certificateUploadForm.title = certificateUploadForm
+certificateUploadForm.heading = certificateUploadForm
+
+certificateTaskList.title = certificateTaskList
+certificateTaskList.heading = certificateTaskList
+
+
+certificateDeclarationStandIn.title = certificateDeclarationStandIn
+certificateDeclarationStandIn.heading = certificateDeclarationStandIn
+certificateDeclarationStandIn.StandInName = StandInName
+certificateDeclarationStandIn.SaoName = SaoName
+certificateDeclarationStandIn.checkYourAnswersLabel = CertificateDeclarationStandIn
+certificateDeclarationStandIn.error.StandInName.required = Enter StandInName
+certificateDeclarationStandIn.error.SaoName.required = Enter SaoName
+certificateDeclarationStandIn.error.StandInName.length = StandInName must be 100 characters or less
+certificateDeclarationStandIn.error.SaoName.length = SaoName must be 100 characters or less
+certificateDeclarationStandIn.StandInName.change.hidden = StandInName
+certificateDeclarationStandIn.SaoName.change.hidden = SaoName

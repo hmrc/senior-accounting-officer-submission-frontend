@@ -22,16 +22,24 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
-  given arbitraryCertificateSubmissionDeclaration: Arbitrary[CertificateSubmissionDeclaration] =
+  given arbitraryCertificateDeclarationStandIn: Arbitrary[CertificateDeclarationStandIn] =
+    Arbitrary {
+      for {
+        StandInName <- arbitrary[String]
+        SaoName     <- arbitrary[String]
+      } yield CertificateDeclarationStandIn(StandInName, SaoName)
+    }
+
+  given arbitraryCombinedCertificateDeclarationSao: Arbitrary[CombinedCertificateDeclarationSao] =
     Arbitrary {
       for {
         sao   <- arbitrary[String]
         proxy <- arbitrary[String]
-      } yield CertificateSubmissionDeclaration(sao, proxy)
+      } yield CombinedCertificateDeclarationSao(sao, proxy)
     }
 
-  given arbitraryWhoSubmitsCertificate: Arbitrary[WhoSubmitsCertificate] =
+  given arbitraryCombinedWhoSubmitsCertificate: Arbitrary[CombinedWhoSubmitsCertificate] =
     Arbitrary {
-      Gen.oneOf(WhoSubmitsCertificate.values.toSeq)
+      Gen.oneOf(CombinedWhoSubmitsCertificate.values.toSeq)
     }
 }
