@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.*
 import models.NormalMode
-import models.NotificationConfirmationDetails
 import navigation.Navigator
 import pages.NotificationConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -29,7 +28,7 @@ import views.html.NotificationConfirmationView
 import javax.inject.Inject
 
 class NotificationConfirmationController @Inject() (
-    //TODO (whoever is reviewing this): Should we rename to 'NotificationSubmittedController' etc.?
+    // TODO (whoever is reviewing this): Should we rename to 'NotificationSubmittedController' etc.?
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
@@ -40,11 +39,12 @@ class NotificationConfirmationController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(notificationIdReferenceNumber: String): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(
-      view(notificationIdReferenceNumber)
-    )
-  }
+  def onPageLoad(notificationIdReferenceNumber: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      Ok(
+        view(notificationIdReferenceNumber)
+      )
+    }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))

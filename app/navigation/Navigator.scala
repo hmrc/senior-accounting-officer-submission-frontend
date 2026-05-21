@@ -25,7 +25,7 @@ import play.api.mvc.Call
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class Navigator @Inject(notificationIdReferenceNumber: NotificationIdReferenceNumber) () {
+class Navigator @Inject() (notificationIdReferenceNumber: NotificationIdReferenceNumber) {
 
   private val normalRoutes: Page => UserAnswers => Call = {
     case NotificationAdditionalInformationPage =>
@@ -126,12 +126,17 @@ class Navigator @Inject(notificationIdReferenceNumber: NotificationIdReferenceNu
       checkRouteMap(page)(userAnswers)
   }
 
-  def nextPageWithNotRef(page: Page, mode: Mode, userAnswers: UserAnswers, notificationIdReferenceNumber: String): Call = mode match {
+  def nextPageWithNotRef(
+      page: Page,
+      mode: Mode,
+      userAnswers: UserAnswers,
+      notificationIdReferenceNumber: String
+  ): Call = mode match {
     case NormalMode =>
       normalRoutes(page)(userAnswers)
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }
-  
+
   def getNotIdRefNum: String = notificationIdReferenceNumber.returnHardCodedNotRef
 }

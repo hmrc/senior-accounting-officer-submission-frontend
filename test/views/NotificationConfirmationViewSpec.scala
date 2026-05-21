@@ -18,7 +18,6 @@ package views
 
 import base.ViewSpecBase
 import config.AppConfig
-import models.NotificationConfirmationDetails
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.NotificationConfirmationViewSpec.*
@@ -26,14 +25,7 @@ import views.html.NotificationConfirmationView
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
 
-  val notificationConfirmationDetails: NotificationConfirmationDetails =
-    NotificationConfirmationDetails(
-      companyName = "ABC Limited",
-      notificationId = testReferenceNumber,
-      notificationDateTime = testDate
-    )
-
-  private def generateView(): Document = Jsoup.parse(SUT(notificationConfirmationDetails).toString)
+  private def generateView(): Document = Jsoup.parse(SUT(testReferenceNumber).toString)
 
   "NotificationConfirmationView" - {
     AppConfig.setValue("hub-frontend.host", hubUrl)

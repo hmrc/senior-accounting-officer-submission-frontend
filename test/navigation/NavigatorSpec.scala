@@ -18,15 +18,15 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
+import models.*
 import models.upload.UploadTemplateTableData
-import models.{CheckMode, NormalMode, UserAnswers}
 import pages.*
 
 import java.time.LocalDate
 
 class NavigatorSpec extends SpecBase {
 
-  val navigator = new Navigator
+  val navigator = new Navigator(NotificationIdReferenceNumber())
 
   "Navigator.nextPage" - {
 
@@ -56,11 +56,12 @@ class NavigatorSpec extends SpecBase {
       }
 
       "when on NotificationCheckYourAnswersPage, must go to notification confirmation page" in {
+        val notRefIdMock = "SAONOT9876543210"
         navigator.nextPage(
           NotificationCheckYourAnswersPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationConfirmationController.onPageLoad()
+        ) mustBe routes.NotificationConfirmationController.onPageLoad(notRefIdMock)
       }
 
       "when on ConfirmYourNotificationPage, must go to notification check your answers page" in {

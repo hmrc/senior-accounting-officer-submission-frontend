@@ -16,12 +16,21 @@
 
 package navigation
 
-import models.{Mode, UserAnswers}
+import models.{Mode, NotificationIdReferenceNumber, UserAnswers}
 import pages.*
 import play.api.mvc.Call
 
-class FakeNavigator(desiredRoute: Call) extends Navigator {
+class FakeNavigator(desiredRoute: Call) extends Navigator(NotificationIdReferenceNumber()) {
 
   override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
     desiredRoute
+
+  override def nextPageWithNotRef(
+      page: Page,
+      mode: Mode,
+      userAnswers: UserAnswers,
+      notificationIdReferenceNumber: String
+  ): Call = desiredRoute
+
+  override def getNotIdRefNum: String = "SAONOT9876543210"
 }
