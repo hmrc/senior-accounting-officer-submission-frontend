@@ -18,8 +18,8 @@ package controllers
 
 import controllers.actions.*
 import forms.JointWhoSubmitsCertificateFormProvider
-import models.Mode
 import models.JointWhoSubmitsCertificate
+import models.Mode
 import navigation.Navigator
 import pages.JointWhoSubmitsCertificatePage
 import play.api.data.Form

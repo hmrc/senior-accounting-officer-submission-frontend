@@ -96,10 +96,10 @@ POST        /certificate/qualified-companies                          controller
 GET         /certificate/unqualified-companies                        controllers.UnqualifiedCompaniesController.onPageLoad()
 POST        /certificate/unqualified-companies                        controllers.UnqualifiedCompaniesController.onSubmit()
 
-GET         /certificate/declaration                                  controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/declaration                                  controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-declaration                           controllers.CertificateSubmissionDeclarationController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-declaration                           controllers.CertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/declaration                                  controllers.JointCertificateSubmissionDeclarationController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/declaration                                  controllers.JointCertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-declaration                           controllers.JointCertificateSubmissionDeclarationController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-declaration                           controllers.JointCertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/confirmation                                         controllers.CertificateConfirmationController.onPageLoad()
 

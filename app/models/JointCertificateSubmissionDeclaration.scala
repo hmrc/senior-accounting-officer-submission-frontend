@@ -18,9 +18,9 @@ package models
 
 import play.api.libs.json.*
 
-case class CertificateSubmissionDeclaration(sao: String, proxy: String)
+case class JointCertificateSubmissionDeclaration(sao: String, proxy: String)
 
-object CertificateSubmissionDeclaration {
+object JointCertificateSubmissionDeclaration {
 
-  given format: OFormat[CertificateSubmissionDeclaration] = Json.format
+  given format: OFormat[JointCertificateSubmissionDeclaration] = Json.format
 }

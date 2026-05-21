@@ -17,40 +17,40 @@
 package controllers
 
 import controllers.actions.*
-import forms.CertificateSubmissionDeclarationFormProvider
-import models.CertificateSubmissionDeclaration
+import forms.JointCertificateSubmissionDeclarationFormProvider
+import models.JointCertificateSubmissionDeclaration
 import models.Mode
 import navigation.Navigator
-import pages.CertificateSubmissionDeclarationPage
+import pages.JointCertificateSubmissionDeclarationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.CertificateSubmissionDeclarationView
+import views.html.JointCertificateSubmissionDeclarationView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class CertificateSubmissionDeclarationController @Inject() (
+class JointCertificateSubmissionDeclarationController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: CertificateSubmissionDeclarationFormProvider,
+    formProvider: JointCertificateSubmissionDeclarationFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateSubmissionDeclarationView
+    view: JointCertificateSubmissionDeclarationView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  val form: Form[CertificateSubmissionDeclaration] = formProvider()
+  val form: Form[JointCertificateSubmissionDeclaration] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(CertificateSubmissionDeclarationPage) match {
+    val preparedForm = request.userAnswers.get(JointCertificateSubmissionDeclarationPage) match {
       case None        => form
       case Some(value) => form.fill(value)
     }
@@ -66,9 +66,10 @@ class CertificateSubmissionDeclarationController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateSubmissionDeclarationPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateSubmissionDeclarationPage, mode, updatedAnswers))
+              updatedAnswers <- Future
+                .fromTry(request.userAnswers.set(JointCertificateSubmissionDeclarationPage, value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(JointCertificateSubmissionDeclarationPage, mode, updatedAnswers))
         )
   }
 }

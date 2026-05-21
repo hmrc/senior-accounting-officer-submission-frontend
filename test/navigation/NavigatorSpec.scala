@@ -158,12 +158,12 @@ class NavigatorSpec extends SpecBase {
           UnqualifiedCompaniesPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode)
+        ) mustBe routes.JointCertificateSubmissionDeclarationController.onPageLoad(NormalMode)
       }
 
-      "when on CertificateSubmissionDeclarationPage, must go to certificate confirmation page" in {
+      "when on JointCertificateSubmissionDeclarationPage, must go to certificate confirmation page" in {
         navigator.nextPage(
-          CertificateSubmissionDeclarationPage,
+          JointCertificateSubmissionDeclarationPage,
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.CertificateConfirmationController.onPageLoad()

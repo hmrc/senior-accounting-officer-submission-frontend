@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.JointWhoSubmitsCertificateFormProvider
-import models.{NormalMode, UserAnswers, JointWhoSubmitsCertificate}
+import models.{JointWhoSubmitsCertificate, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -38,9 +38,10 @@ class JointWhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSuga
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  lazy val jointWhoSubmitsCertificateRoute: String = routes.JointWhoSubmitsCertificateController.onPageLoad(NormalMode).url
+  lazy val jointWhoSubmitsCertificateRoute: String =
+    routes.JointWhoSubmitsCertificateController.onPageLoad(NormalMode).url
 
-  val formProvider                      = new JointWhoSubmitsCertificateFormProvider()
+  val formProvider                           = new JointWhoSubmitsCertificateFormProvider()
   val form: Form[JointWhoSubmitsCertificate] = formProvider()
 
   "JointWhoSubmitsCertificate Controller" - {
@@ -64,7 +65,10 @@ class JointWhoSubmitsCertificateControllerSpec extends SpecBase with MockitoSuga
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(JointWhoSubmitsCertificatePage, JointWhoSubmitsCertificate.values.head).success.value
+        UserAnswers(userAnswersId)
+          .set(JointWhoSubmitsCertificatePage, JointWhoSubmitsCertificate.values.head)
+          .success
+          .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

@@ -18,7 +18,7 @@ package viewmodels.checkAnswers
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.CertificateSubmissionDeclarationPage
+import pages.JointCertificateSubmissionDeclarationPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
@@ -26,21 +26,21 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
-object CertificateSubmissionDeclarationSummary {
+object JointCertificateSubmissionDeclarationSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateSubmissionDeclarationPage).map { answer =>
+    answers.get(JointCertificateSubmissionDeclarationPage).map { answer =>
       val value = HtmlFormat.escape(answer.sao).toString + "<br/>" + HtmlFormat.escape(answer.proxy).toString
 
       SummaryListRowViewModel(
-        key = messages("certificateSubmissionDeclaration.checkYourAnswersLabel").toKey,
+        key = messages("jointCertificateSubmissionDeclaration.checkYourAnswersLabel").toKey,
         value = ValueViewModel(HtmlContent(value)),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            routes.CertificateSubmissionDeclarationController.onPageLoad(CheckMode).url
+            routes.JointCertificateSubmissionDeclarationController.onPageLoad(CheckMode).url
           )
-            .withVisuallyHiddenText(messages("certificateSubmissionDeclaration.change.hidden"))
+            .withVisuallyHiddenText(messages("jointCertificateSubmissionDeclaration.change.hidden"))
         )
       )
     }

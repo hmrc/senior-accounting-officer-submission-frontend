@@ -18,8 +18,8 @@ package views
 
 import base.ViewSpecBase
 import forms.JointWhoSubmitsCertificateFormProvider
-import models.Mode
 import models.JointWhoSubmitsCertificate
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
@@ -28,7 +28,7 @@ import views.html.JointWhoSubmitsCertificateView
 
 class JointWhoSubmitsCertificateViewSpec extends ViewSpecBase[JointWhoSubmitsCertificateView] {
 
-  private val formProvider                      = app.injector.instanceOf[JointWhoSubmitsCertificateFormProvider]
+  private val formProvider                           = app.injector.instanceOf[JointWhoSubmitsCertificateFormProvider]
   private val form: Form[JointWhoSubmitsCertificate] = formProvider()
 
   private def generateView(form: Form[JointWhoSubmitsCertificate], mode: Mode): Document = {

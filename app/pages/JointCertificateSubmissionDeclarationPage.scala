@@ -16,12 +16,12 @@
 
 package pages
 
-import models.CertificateSubmissionDeclaration
+import models.JointCertificateSubmissionDeclaration
 import play.api.libs.json.JsPath
 
-case object CertificateSubmissionDeclarationPage extends QuestionPage[CertificateSubmissionDeclaration] {
+case object JointCertificateSubmissionDeclarationPage extends QuestionPage[JointCertificateSubmissionDeclaration] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "certificateSubmissionDeclaration"
+  override def toString: String = "jointCertificateSubmissionDeclaration"
 }
