@@ -308,6 +308,60 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("id")
         ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
+
+      // certificate flow
+
+      "when on CertificateSaoFullName, must go to CertificateSaoEmail page" in {
+        navigator.nextPage(
+          CertificateSaoFullNamePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateSaoEmailController.onPageLoad(NormalMode)
+      }
+
+      "when on CertificateSaoEmail, must go to CertificateTaskList page" in {
+        navigator.nextPage(
+          CertificateSaoEmailPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateTaskListController.onPageLoad()
+      }
+
+      "when on CertificateReviewQualified, must go to CertificateReviewUnqualified page" in {
+        navigator.nextPage(
+          CertificateReviewQualifiedPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateReviewUnqualifiedController.onPageLoad()
+      }
+
+      "when on CertificateReviewUnqualified, must go to CertificateTaskList page" in {
+        navigator.nextPage(
+          CertificateReviewUnqualifiedPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateTaskListController.onPageLoad()
+      }
+
+      // TODO: additional info to who is submitting
+
+      // "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {
+      //   navigator.nextPage(
+      //     CertificateAdditionalInformationPage,
+      //     NormalMode,
+      //     UserAnswers("id")
+      //   ) mustBe routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
+      // }
+
+      // TODO: who is submitting -> confirm sao
+      // TODO: who is submitting -> confirm stand in
+
+      // TODO: confirm sao -> check answers
+      // TODO: confirm stand in -> check answers
+
+      // TODO: check answers -> certificate submitted
+
+      // TODO: certificate submitted -> task list
     }
 
     "in Check mode" - {

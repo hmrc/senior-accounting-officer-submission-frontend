@@ -96,6 +96,15 @@ class Navigator @Inject() () {
               routes.NotificationUploadFormController.onPageLoad()
             case _ => routes.SubmitNotificationStartController.onPageLoad()
           }
+    // certificate flow
+    case CertificateSaoFullNamePage =>
+      _ => routes.CertificateSaoEmailController.onPageLoad(NormalMode)
+    case CertificateSaoEmailPage =>
+      _ => routes.CertificateTaskListController.onPageLoad()
+    case CertificateReviewQualifiedPage =>
+      _ => routes.CertificateReviewUnqualifiedController.onPageLoad()
+    case CertificateReviewUnqualifiedPage =>
+      _ => routes.CertificateTaskListController.onPageLoad()
     case _ =>
       _ => ???
   }
