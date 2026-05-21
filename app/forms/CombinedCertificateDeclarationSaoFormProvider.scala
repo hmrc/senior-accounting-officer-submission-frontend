@@ -17,20 +17,20 @@
 package forms
 
 import forms.mappings.Mappings
-import models.CombinedCertificateSubmissionDeclaration
+import models.CombinedCertificateDeclarationSao
 import play.api.data.Form
 import play.api.data.Forms.*
 
 import javax.inject.Inject
 
-class CombinedCertificateSubmissionDeclarationFormProvider @Inject() extends Mappings {
+class CombinedCertificateDeclarationSaoFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[CombinedCertificateSubmissionDeclaration] = Form(
+  def apply(): Form[CombinedCertificateDeclarationSao] = Form(
     mapping(
-      "sao" -> text("combinedCertificateSubmissionDeclaration.error.sao.required")
-        .verifying(maxLength(100, "combinedCertificateSubmissionDeclaration.error.sao.length")),
-      "proxy" -> text("combinedCertificateSubmissionDeclaration.error.proxy.required")
-        .verifying(maxLength(100, "combinedCertificateSubmissionDeclaration.error.proxy.length"))
-    )(CombinedCertificateSubmissionDeclaration.apply)(x => Some((x.sao, x.proxy)))
+      "sao" -> text("combinedCertificateDeclarationSao.error.sao.required")
+        .verifying(maxLength(100, "combinedCertificateDeclarationSao.error.sao.length")),
+      "proxy" -> text("combinedCertificateDeclarationSao.error.proxy.required")
+        .verifying(maxLength(100, "combinedCertificateDeclarationSao.error.proxy.length"))
+    )(CombinedCertificateDeclarationSao.apply)(x => Some((x.sao, x.proxy)))
   )
 }

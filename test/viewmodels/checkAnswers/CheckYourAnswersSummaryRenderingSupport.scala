@@ -33,7 +33,8 @@ trait CheckYourAnswersSummaryRenderingSupport extends SpecBase with GuiceOneAppP
   given Request[?] = FakeRequest()
   given Messages   = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  private lazy val combinedCertificateCheckYourAnswersView = app.injector.instanceOf[CombinedCertificateCheckYourAnswersView]
+  private lazy val combinedCertificateCheckYourAnswersView =
+    app.injector.instanceOf[CombinedCertificateCheckYourAnswersView]
 
   protected def renderSummaryRow(row: SummaryListRow): Element =
     Jsoup

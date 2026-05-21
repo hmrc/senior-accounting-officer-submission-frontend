@@ -24,7 +24,11 @@ import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
 
-class CombinedWhoSubmitsCertificateSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
+class CombinedWhoSubmitsCertificateSpec
+    extends AnyFreeSpec
+    with Matchers
+    with ScalaCheckPropertyChecks
+    with OptionValues {
 
   "CombinedWhoSubmitsCertificate" - {
 

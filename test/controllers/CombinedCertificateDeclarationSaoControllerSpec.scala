@@ -17,13 +17,13 @@
 package controllers
 
 import base.SpecBase
-import forms.CombinedCertificateSubmissionDeclarationFormProvider
-import models.{CombinedCertificateSubmissionDeclaration, NormalMode, UserAnswers}
+import forms.CombinedCertificateDeclarationSaoFormProvider
+import models.{CombinedCertificateDeclarationSao, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CombinedCertificateSubmissionDeclarationPage
+import pages.CombinedCertificateDeclarationSaoPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.libs.json.Json
@@ -31,40 +31,40 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.CombinedCertificateSubmissionDeclarationView
+import views.html.CombinedCertificateDeclarationSaoView
 
 import scala.concurrent.Future
 
-class CombinedCertificateSubmissionDeclarationControllerSpec extends SpecBase with MockitoSugar {
+class CombinedCertificateDeclarationSaoControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider                                      = new CombinedCertificateSubmissionDeclarationFormProvider()
-  val form: Form[CombinedCertificateSubmissionDeclaration] = formProvider()
+  val formProvider                                  = new CombinedCertificateDeclarationSaoFormProvider()
+  val form: Form[CombinedCertificateDeclarationSao] = formProvider()
 
-  lazy val combinedCertificateSubmissionDeclarationRoute: String =
-    routes.CombinedCertificateSubmissionDeclarationController.onPageLoad(NormalMode).url
+  lazy val combinedCertificateDeclarationSaoRoute: String =
+    routes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode).url
 
   val userAnswers: UserAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
-      CombinedCertificateSubmissionDeclarationPage.toString -> Json.obj(
+      CombinedCertificateDeclarationSaoPage.toString -> Json.obj(
         "sao"   -> "value 1",
         "proxy" -> "value 2"
       )
     )
   )
 
-  "CombinedCertificateSubmissionDeclaration Controller" - {
+  "CombinedCertificateDeclarationSao Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, combinedCertificateSubmissionDeclarationRoute)
+        val request = FakeRequest(GET, combinedCertificateDeclarationSaoRoute)
 
-        val view = application.injector.instanceOf[CombinedCertificateSubmissionDeclarationView]
+        val view = application.injector.instanceOf[CombinedCertificateDeclarationSaoView]
 
         val result = route(application, request).value
 
@@ -78,15 +78,15 @@ class CombinedCertificateSubmissionDeclarationControllerSpec extends SpecBase wi
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, combinedCertificateSubmissionDeclarationRoute)
+        val request = FakeRequest(GET, combinedCertificateDeclarationSaoRoute)
 
-        val view = application.injector.instanceOf[CombinedCertificateSubmissionDeclarationView]
+        val view = application.injector.instanceOf[CombinedCertificateDeclarationSaoView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          form.fill(CombinedCertificateSubmissionDeclaration("value 1", "value 2")),
+          form.fill(CombinedCertificateDeclarationSao("value 1", "value 2")),
           NormalMode
         )(using request, messages(application)).toString
       }
@@ -108,7 +108,7 @@ class CombinedCertificateSubmissionDeclarationControllerSpec extends SpecBase wi
 
       running(application) {
         val request =
-          FakeRequest(POST, combinedCertificateSubmissionDeclarationRoute)
+          FakeRequest(POST, combinedCertificateDeclarationSaoRoute)
             .withFormUrlEncodedBody(("sao", "value 1"), ("proxy", "value 2"))
 
         val result = route(application, request).value
@@ -124,12 +124,12 @@ class CombinedCertificateSubmissionDeclarationControllerSpec extends SpecBase wi
 
       running(application) {
         val request =
-          FakeRequest(POST, combinedCertificateSubmissionDeclarationRoute)
+          FakeRequest(POST, combinedCertificateDeclarationSaoRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[CombinedCertificateSubmissionDeclarationView]
+        val view = application.injector.instanceOf[CombinedCertificateDeclarationSaoView]
 
         val result = route(application, request).value
 
@@ -143,7 +143,7 @@ class CombinedCertificateSubmissionDeclarationControllerSpec extends SpecBase wi
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, combinedCertificateSubmissionDeclarationRoute)
+        val request = FakeRequest(GET, combinedCertificateDeclarationSaoRoute)
 
         val result = route(application, request).value
 
@@ -158,7 +158,7 @@ class CombinedCertificateSubmissionDeclarationControllerSpec extends SpecBase wi
 
       running(application) {
         val request =
-          FakeRequest(POST, combinedCertificateSubmissionDeclarationRoute)
+          FakeRequest(POST, combinedCertificateDeclarationSaoRoute)
             .withFormUrlEncodedBody(("sao", "value 1"), ("proxy", "value 2"))
 
         val result = route(application, request).value

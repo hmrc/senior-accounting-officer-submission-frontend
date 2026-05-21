@@ -158,12 +158,12 @@ class NavigatorSpec extends SpecBase {
           UnqualifiedCompaniesPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CombinedCertificateSubmissionDeclarationController.onPageLoad(NormalMode)
+        ) mustBe routes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
       }
 
-      "when on CombinedCertificateSubmissionDeclarationPage, must go to certificate confirmation page" in {
+      "when on CombinedCertificateDeclarationSaoPage, must go to certificate confirmation page" in {
         navigator.nextPage(
-          CombinedCertificateSubmissionDeclarationPage,
+          CombinedCertificateDeclarationSaoPage,
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.CombinedCertificateConfirmationController.onPageLoad()

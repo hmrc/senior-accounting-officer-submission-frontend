@@ -17,40 +17,40 @@
 package controllers
 
 import controllers.actions.*
-import forms.CombinedCertificateSubmissionDeclarationFormProvider
-import models.CombinedCertificateSubmissionDeclaration
+import forms.CombinedCertificateDeclarationSaoFormProvider
+import models.CombinedCertificateDeclarationSao
 import models.Mode
 import navigation.Navigator
-import pages.CombinedCertificateSubmissionDeclarationPage
+import pages.CombinedCertificateDeclarationSaoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.CombinedCertificateSubmissionDeclarationView
+import views.html.CombinedCertificateDeclarationSaoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class CombinedCertificateSubmissionDeclarationController @Inject() (
+class CombinedCertificateDeclarationSaoController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: CombinedCertificateSubmissionDeclarationFormProvider,
+    formProvider: CombinedCertificateDeclarationSaoFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: CombinedCertificateSubmissionDeclarationView
+    view: CombinedCertificateDeclarationSaoView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  val form: Form[CombinedCertificateSubmissionDeclaration] = formProvider()
+  val form: Form[CombinedCertificateDeclarationSao] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(CombinedCertificateSubmissionDeclarationPage) match {
+    val preparedForm = request.userAnswers.get(CombinedCertificateDeclarationSaoPage) match {
       case None        => form
       case Some(value) => form.fill(value)
     }
@@ -67,9 +67,9 @@ class CombinedCertificateSubmissionDeclarationController @Inject() (
           value =>
             for {
               updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(CombinedCertificateSubmissionDeclarationPage, value))
+                .fromTry(request.userAnswers.set(CombinedCertificateDeclarationSaoPage, value))
               _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CombinedCertificateSubmissionDeclarationPage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(CombinedCertificateDeclarationSaoPage, mode, updatedAnswers))
         )
   }
 }

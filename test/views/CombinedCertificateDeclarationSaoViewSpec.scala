@@ -17,26 +17,26 @@
 package views
 
 import base.ViewSpecBase
-import forms.CombinedCertificateSubmissionDeclarationFormProvider
-import models.CombinedCertificateSubmissionDeclaration
+import forms.CombinedCertificateDeclarationSaoFormProvider
+import models.CombinedCertificateDeclarationSao
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.CombinedCertificateSubmissionDeclarationViewSpec.*
-import views.html.CombinedCertificateSubmissionDeclarationView
+import views.CombinedCertificateDeclarationSaoViewSpec.*
+import views.html.CombinedCertificateDeclarationSaoView
 
-class CombinedCertificateSubmissionDeclarationViewSpec extends ViewSpecBase[CombinedCertificateSubmissionDeclarationView] {
+class CombinedCertificateDeclarationSaoViewSpec extends ViewSpecBase[CombinedCertificateDeclarationSaoView] {
 
-  private val formProvider = app.injector.instanceOf[CombinedCertificateSubmissionDeclarationFormProvider]
-  private val form: Form[CombinedCertificateSubmissionDeclaration] = formProvider()
+  private val formProvider = app.injector.instanceOf[CombinedCertificateDeclarationSaoFormProvider]
+  private val form: Form[CombinedCertificateDeclarationSao] = formProvider()
 
-  private def generateView(form: Form[CombinedCertificateSubmissionDeclaration], mode: Mode): Document = {
+  private def generateView(form: Form[CombinedCertificateDeclarationSao], mode: Mode): Document = {
     val view = SUT(form, mode)
     Jsoup.parse(view.toString)
   }
 
-  "CombinedCertificateSubmissionDeclarationView" - {
+  "CombinedCertificateDeclarationSaoView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -62,7 +62,7 @@ class CombinedCertificateSubmissionDeclarationViewSpec extends ViewSpecBase[Comb
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.CombinedCertificateSubmissionDeclarationController.onSubmit(mode),
+            action = controllers.routes.CombinedCertificateDeclarationSaoController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -99,7 +99,7 @@ class CombinedCertificateSubmissionDeclarationViewSpec extends ViewSpecBase[Comb
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.CombinedCertificateSubmissionDeclarationController.onSubmit(mode),
+            action = controllers.routes.CombinedCertificateDeclarationSaoController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -124,7 +124,7 @@ class CombinedCertificateSubmissionDeclarationViewSpec extends ViewSpecBase[Comb
           doc.createTestMustShowTextInput(name = "proxy", label = field2Label, value = "", hint = None, hasError = true)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.CombinedCertificateSubmissionDeclarationController.onSubmit(mode),
+            action = controllers.routes.CombinedCertificateDeclarationSaoController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -138,9 +138,9 @@ class CombinedCertificateSubmissionDeclarationViewSpec extends ViewSpecBase[Comb
 
 }
 
-object CombinedCertificateSubmissionDeclarationViewSpec {
-  val pageHeading = "combinedCertificateSubmissionDeclaration"
-  val pageTitle   = "combinedCertificateSubmissionDeclaration"
+object CombinedCertificateDeclarationSaoViewSpec {
+  val pageHeading = "combinedCertificateDeclarationSao"
+  val pageTitle   = "combinedCertificateDeclarationSao"
   val field1Label = "sao"
   val field2Label = "proxy"
 

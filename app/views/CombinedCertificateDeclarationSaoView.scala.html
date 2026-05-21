@@ -26,20 +26,20 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("combinedCertificateSubmissionDeclaration.title"))) {
+@layout(pageTitle = title(form, messages("combinedCertificateDeclarationSao.title"))) {
 
-    @formHelper(action = routes.CombinedCertificateSubmissionDeclarationController.onSubmit(mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.CombinedCertificateDeclarationSaoController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-xl">@messages("combinedCertificateSubmissionDeclaration.heading")</h1>
+        <h1 class="govuk-heading-xl">@messages("combinedCertificateDeclarationSao.heading")</h1>
 
         @govukInput(
             InputViewModel(
                 field = form("sao"),
-                label = LabelViewModel(messages("combinedCertificateSubmissionDeclaration.sao").toText)
+                label = LabelViewModel(messages("combinedCertificateDeclarationSao.sao").toText)
             )
             .withWidth(Full)
         )
@@ -47,7 +47,7 @@
         @govukInput(
             InputViewModel(
                 field = form("proxy"),
-                label = LabelViewModel(messages("combinedCertificateSubmissionDeclaration.proxy").toText)
+                label = LabelViewModel(messages("combinedCertificateDeclarationSao.proxy").toText)
             )
             .withWidth(Full)
         )

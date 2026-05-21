@@ -19,15 +19,15 @@ package forms
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class CombinedCertificateSubmissionDeclarationFormProviderSpec extends StringFieldBehaviours {
+class CombinedCertificateDeclarationSaoFormProviderSpec extends StringFieldBehaviours {
 
-  val form = new CombinedCertificateSubmissionDeclarationFormProvider()()
+  val form = new CombinedCertificateDeclarationSaoFormProvider()()
 
-  val field1RequiredKey = "combinedCertificateSubmissionDeclaration.error.sao.required"
-  val field1LengthKey   = "combinedCertificateSubmissionDeclaration.error.sao.length"
+  val field1RequiredKey = "combinedCertificateDeclarationSao.error.sao.required"
+  val field1LengthKey   = "combinedCertificateDeclarationSao.error.sao.length"
 
-  val field2RequiredKey = "combinedCertificateSubmissionDeclaration.error.proxy.required"
-  val field2LengthKey   = "combinedCertificateSubmissionDeclaration.error.proxy.length"
+  val field2RequiredKey = "combinedCertificateDeclarationSao.error.proxy.required"
+  val field2LengthKey   = "combinedCertificateDeclarationSao.error.proxy.length"
 
   ".sao" - {
 

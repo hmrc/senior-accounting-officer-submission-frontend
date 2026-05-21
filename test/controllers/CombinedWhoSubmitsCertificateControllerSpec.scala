@@ -41,7 +41,7 @@ class CombinedWhoSubmitsCertificateControllerSpec extends SpecBase with MockitoS
   lazy val combinedWhoSubmitsCertificateRoute: String =
     routes.CombinedWhoSubmitsCertificateController.onPageLoad(NormalMode).url
 
-  val formProvider                           = new CombinedWhoSubmitsCertificateFormProvider()
+  val formProvider                              = new CombinedWhoSubmitsCertificateFormProvider()
   val form: Form[CombinedWhoSubmitsCertificate] = formProvider()
 
   "CombinedWhoSubmitsCertificate Controller" - {

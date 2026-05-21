@@ -28,7 +28,7 @@ import views.html.CombinedWhoSubmitsCertificateView
 
 class CombinedWhoSubmitsCertificateViewSpec extends ViewSpecBase[CombinedWhoSubmitsCertificateView] {
 
-  private val formProvider                           = app.injector.instanceOf[CombinedWhoSubmitsCertificateFormProvider]
+  private val formProvider = app.injector.instanceOf[CombinedWhoSubmitsCertificateFormProvider]
   private val form: Form[CombinedWhoSubmitsCertificate] = formProvider()
 
   private def generateView(form: Form[CombinedWhoSubmitsCertificate], mode: Mode): Document = {

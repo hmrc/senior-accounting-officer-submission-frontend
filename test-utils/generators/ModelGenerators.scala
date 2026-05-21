@@ -30,12 +30,12 @@ trait ModelGenerators {
       } yield CertificateDeclarationStandIn(StandInName, SaoName)
     }
 
-  given arbitraryCombinedCertificateSubmissionDeclaration: Arbitrary[CombinedCertificateSubmissionDeclaration] =
+  given arbitraryCombinedCertificateDeclarationSao: Arbitrary[CombinedCertificateDeclarationSao] =
     Arbitrary {
       for {
         sao   <- arbitrary[String]
         proxy <- arbitrary[String]
-      } yield CombinedCertificateSubmissionDeclaration(sao, proxy)
+      } yield CombinedCertificateDeclarationSao(sao, proxy)
     }
 
   given arbitraryCombinedWhoSubmitsCertificate: Arbitrary[CombinedWhoSubmitsCertificate] =

@@ -18,7 +18,7 @@ package viewmodels.checkAnswers
 
 import controllers.routes
 import models.{CheckMode, UserAnswers}
-import pages.CombinedCertificateSubmissionDeclarationPage
+import pages.CombinedCertificateDeclarationSaoPage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
@@ -26,21 +26,21 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
-object CombinedCertificateSubmissionDeclarationSummary {
+object CombinedCertificateDeclarationSaoSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CombinedCertificateSubmissionDeclarationPage).map { answer =>
+    answers.get(CombinedCertificateDeclarationSaoPage).map { answer =>
       val value = HtmlFormat.escape(answer.sao).toString + "<br/>" + HtmlFormat.escape(answer.proxy).toString
 
       SummaryListRowViewModel(
-        key = messages("combinedCertificateSubmissionDeclaration.checkYourAnswersLabel").toKey,
+        key = messages("combinedCertificateDeclarationSao.checkYourAnswersLabel").toKey,
         value = ValueViewModel(HtmlContent(value)),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            routes.CombinedCertificateSubmissionDeclarationController.onPageLoad(CheckMode).url
+            routes.CombinedCertificateDeclarationSaoController.onPageLoad(CheckMode).url
           )
-            .withVisuallyHiddenText(messages("combinedCertificateSubmissionDeclaration.change.hidden"))
+            .withVisuallyHiddenText(messages("combinedCertificateDeclarationSao.change.hidden"))
         )
       )
     }
