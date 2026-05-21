@@ -25,7 +25,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.mvc.Request
 import play.api.test.FakeRequest
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
-import views.html.CertificateCheckYourAnswersView
+import views.html.JointCertificateCheckYourAnswersView
 
 trait CheckYourAnswersSummaryRenderingSupport extends SpecBase with GuiceOneAppPerSuite {
   override def fakeApplication(): Application = applicationBuilder().build()
@@ -33,11 +33,11 @@ trait CheckYourAnswersSummaryRenderingSupport extends SpecBase with GuiceOneAppP
   given Request[?] = FakeRequest()
   given Messages   = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  private lazy val certificateCheckYourAnswersView = app.injector.instanceOf[CertificateCheckYourAnswersView]
+  private lazy val jointCertificateCheckYourAnswersView = app.injector.instanceOf[JointCertificateCheckYourAnswersView]
 
   protected def renderSummaryRow(row: SummaryListRow): Element =
     Jsoup
-      .parse(certificateCheckYourAnswersView(SummaryList(rows = Seq(row))).toString)
+      .parse(jointCertificateCheckYourAnswersView(SummaryList(rows = Seq(row))).toString)
       .select(".govuk-summary-list__row")
       .first()
 

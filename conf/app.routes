@@ -82,8 +82,8 @@ POST        /certificate/sao-email-communication-choice               controller
 GET         /certificate/change-sao-email-communication-choice        controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = CheckMode)
 POST        /certificate/change-sao-email-communication-choice        controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/check-your-answers                           controllers.CertificateCheckYourAnswersController.onPageLoad()
-POST        /certificate/check-your-answers                           controllers.CertificateCheckYourAnswersController.onSubmit()
+GET         /certificate/check-your-answers                           controllers.JointCertificateCheckYourAnswersController.onPageLoad()
+POST        /certificate/check-your-answers                           controllers.JointCertificateCheckYourAnswersController.onSubmit()
 
 GET         /certificate/submit-certificate-submitter                 controllers.JointWhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/submit-certificate-submitter                 controllers.JointWhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)

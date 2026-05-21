@@ -24,11 +24,11 @@ import play.api.test.FakeRequest
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
 import viewmodels.checkAnswers.*
 
-class CertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
+class JointCertificateCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
-  "CertificateCheckYourAnswersService must generate the summaryList when all the userAnswers" - {
+  "JointCertificateCheckYourAnswersService must generate the summaryList when all the userAnswers" - {
 
-    def SUT = app.injector.instanceOf[CertificateCheckYourAnswersService]
+    def SUT = app.injector.instanceOf[JointCertificateCheckYourAnswersService]
 
     given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 

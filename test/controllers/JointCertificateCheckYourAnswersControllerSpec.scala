@@ -26,34 +26,34 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.CertificateCheckYourAnswersService
+import services.JointCertificateCheckYourAnswersService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import views.html.CertificateCheckYourAnswersView
+import views.html.JointCertificateCheckYourAnswersView
 
-class CertificateCheckYourAnswersControllerSpec extends SpecBase {
+class JointCertificateCheckYourAnswersControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
   val testUserAnswers = emptyUserAnswers
 
-  "CertificateCheckYourAnswers Controller" - {
+  "JointCertificateCheckYourAnswers Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val mockService = mock[CertificateCheckYourAnswersService]
+      val mockService = mock[JointCertificateCheckYourAnswersService]
       when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
       val userAnswers = emptyUserAnswers
       val application = applicationBuilder(userAnswers = Some(userAnswers))
-        .overrides(bind[CertificateCheckYourAnswersService].toInstance(mockService))
+        .overrides(bind[JointCertificateCheckYourAnswersService].toInstance(mockService))
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CertificateCheckYourAnswersController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.JointCertificateCheckYourAnswersController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[CertificateCheckYourAnswersView]
+        val view = application.injector.instanceOf[JointCertificateCheckYourAnswersView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(SummaryList())(using request, messages(application)).toString
@@ -68,7 +68,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
         .build()
 
       running(application) {
-        val request = FakeRequest(POST, routes.CertificateCheckYourAnswersController.onSubmit().url)
+        val request = FakeRequest(POST, routes.JointCertificateCheckYourAnswersController.onSubmit().url)
 
         val result = route(application, request).value
 
@@ -82,7 +82,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CertificateCheckYourAnswersController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.JointCertificateCheckYourAnswersController.onPageLoad().url)
 
         val result = route(application, request).value
 
@@ -97,7 +97,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
 
       running(application) {
         val request =
-          FakeRequest(POST, routes.CertificateCheckYourAnswersController.onSubmit().url)
+          FakeRequest(POST, routes.JointCertificateCheckYourAnswersController.onSubmit().url)
 
         val result = route(application, request).value
 

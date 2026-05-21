@@ -126,12 +126,12 @@ class NavigatorSpec extends SpecBase {
           SaoEmailCommunicationChoicePage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe routes.JointCertificateCheckYourAnswersController.onPageLoad()
       }
 
-      "when on CertificateCheckYourAnswersPage, must go to who submits certificate page" in {
+      "when on JointCertificateCheckYourAnswersPage, must go to who submits certificate page" in {
         navigator.nextPage(
-          CertificateCheckYourAnswersPage,
+          JointCertificateCheckYourAnswersPage,
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.JointWhoSubmitsCertificateController.onPageLoad(NormalMode)
@@ -325,7 +325,7 @@ class NavigatorSpec extends SpecBase {
           SaoNamePage,
           CheckMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe routes.JointCertificateCheckYourAnswersController.onPageLoad()
       }
 
       "when on SaoEmailPage, must go to certificate check your answers page" in {
@@ -333,7 +333,7 @@ class NavigatorSpec extends SpecBase {
           SaoEmailPage,
           CheckMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe routes.JointCertificateCheckYourAnswersController.onPageLoad()
       }
 
       "when on SaoEmailCommunicationChoicePage, must go to certificate check your answers page" in {
@@ -341,7 +341,7 @@ class NavigatorSpec extends SpecBase {
           SaoEmailCommunicationChoicePage,
           CheckMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe routes.JointCertificateCheckYourAnswersController.onPageLoad()
       }
 
       "must throw an not-implemented error for an unspecified configuration" in {

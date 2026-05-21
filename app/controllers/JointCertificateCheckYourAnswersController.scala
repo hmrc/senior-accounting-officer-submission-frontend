@@ -19,35 +19,35 @@ package controllers
 import controllers.actions.*
 import models.NormalMode
 import navigation.Navigator
-import pages.CertificateCheckYourAnswersPage
+import pages.JointCertificateCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.CertificateCheckYourAnswersService
+import services.JointCertificateCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.CertificateCheckYourAnswersView
+import views.html.JointCertificateCheckYourAnswersView
 
 import javax.inject.Inject
 
-class CertificateCheckYourAnswersController @Inject() (
+class JointCertificateCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateCheckYourAnswersView,
+    view: JointCertificateCheckYourAnswersView,
     navigator: Navigator,
-    certificateCheckYourAnswersService: CertificateCheckYourAnswersService
+    jointCertificateCheckYourAnswersService: JointCertificateCheckYourAnswersService
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val userAnswers = request.userAnswers
-    val summaryList = certificateCheckYourAnswersService.getSummaryList(userAnswers)
+    val summaryList = jointCertificateCheckYourAnswersService.getSummaryList(userAnswers)
 
     Ok(view(summaryList))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(CertificateCheckYourAnswersPage, NormalMode, request.userAnswers))
+    Redirect(navigator.nextPage(JointCertificateCheckYourAnswersPage, NormalMode, request.userAnswers))
   }
 }

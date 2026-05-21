@@ -22,7 +22,7 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.*
 import viewmodels.checkAnswers.*
 
-class CertificateCheckYourAnswersService {
+class JointCertificateCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
     SummaryList(rows =
       Seq(

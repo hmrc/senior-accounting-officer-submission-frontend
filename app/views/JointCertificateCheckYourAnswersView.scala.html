@@ -23,13 +23,13 @@
 
 @(summaryList: SummaryList)(using request : Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("certificateCheckYourAnswers.title"))) {
-    <span class="govuk-caption-m">@messages("certificateCheckYourAnswers.caption")</span>
-    <h1 class="govuk-heading-l">@messages("certificateCheckYourAnswers.heading")</h1>
+@layout(pageTitle = titleNoForm(messages("jointCertificateCheckYourAnswers.title"))) {
+    <span class="govuk-caption-m">@messages("jointCertificateCheckYourAnswers.caption")</span>
+    <h1 class="govuk-heading-l">@messages("jointCertificateCheckYourAnswers.heading")</h1>
 
     @govukSummaryList(summaryList)
   
-    @formHelper(action = routes.CertificateCheckYourAnswersController.onSubmit()) {
+    @formHelper(action = routes.JointCertificateCheckYourAnswersController.onSubmit()) {
         @govukButton(
             ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
         )
