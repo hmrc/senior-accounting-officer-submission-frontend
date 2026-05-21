@@ -19,7 +19,7 @@ package navigation
 import base.SpecBase
 import controllers.routes
 import models.upload.UploadTemplateTableData
-import models.{CheckMode, NormalMode, UserAnswers}
+import models.*
 import pages.*
 
 import java.time.LocalDate
@@ -343,25 +343,53 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.CertificateTaskListController.onPageLoad()
       }
 
-      // TODO: additional info to who is submitting
+      "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {
+        navigator.nextPage(
+          CertificateAdditionalInformationPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
+      }
 
-      // "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {
-      //   navigator.nextPage(
-      //     CertificateAdditionalInformationPage,
-      //     NormalMode,
-      //     UserAnswers("id")
-      //   ) mustBe routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
-      // }
+      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationSao page" in {
+        navigator.nextPage(
+          CertificateWhoIsSubmittingPage,
+          NormalMode,
+          UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.Sao).get
+        ) mustBe routes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
+      }
 
-      // TODO: who is submitting -> confirm sao
-      // TODO: who is submitting -> confirm stand in
+      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationStandIn page" in {
+        navigator.nextPage(
+          CertificateWhoIsSubmittingPage,
+          NormalMode,
+          UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn).get
+        ) mustBe routes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
+      }
 
-      // TODO: confirm sao -> check answers
-      // TODO: confirm stand in -> check answers
+      "when on CertificateDeclarationSao, must go to CertificateCheckYourAnswers page" in {
+        navigator.nextPage(
+          CertificateDeclarationSaoPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+      }
 
-      // TODO: check answers -> certificate submitted
+      "when on CertificateDeclarationStandIn, must go to CertificateCheckYourAnswers page" in {
+        navigator.nextPage(
+          CertificateDeclarationStandInPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+      }
 
-      // TODO: certificate submitted -> task list
+      "when on CertificateSubmitted, must go to CertificateTaskList page" in {
+        navigator.nextPage(
+          CertificateSubmittedPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateTaskListController.onPageLoad()
+      }
     }
 
     "in Check mode" - {
