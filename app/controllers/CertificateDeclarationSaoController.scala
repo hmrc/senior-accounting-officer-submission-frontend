@@ -18,7 +18,6 @@ package controllers
 
 import controllers.actions.*
 import forms.CertificateDeclarationSaoFormProvider
-import javax.inject.Inject
 import models.Mode
 import navigation.Navigator
 import pages.CertificateDeclarationSaoPage
@@ -30,33 +29,39 @@ import views.html.CertificateDeclarationSaoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class CertificateDeclarationSaoController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        sessionRepository: SessionRepository,
-                                        navigator: Navigator,
-                                        identify: IdentifierAction,
-                                        getData: DataRetrievalAction,
-                                        requireData: DataRequiredAction,
-                                        formProvider: CertificateDeclarationSaoFormProvider,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        view: CertificateDeclarationSaoView
-                                    )(using ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+import javax.inject.Inject
+
+class CertificateDeclarationSaoController @Inject() (
+    override val messagesApi: MessagesApi,
+    sessionRepository: SessionRepository,
+    navigator: Navigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    formProvider: CertificateDeclarationSaoFormProvider,
+    val controllerComponents: MessagesControllerComponents,
+    view: CertificateDeclarationSaoView
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport {
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val form = formProvider()
+    val form         = formProvider()
     val preparedForm = request.userAnswers.get(CertificateDeclarationSaoPage).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = formProvider()
-    form.bindFromRequest().fold(
-      formWithErrors =>
-        Future.successful(BadRequest(view(formWithErrors, mode))),
-      value =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationSaoPage, value))
-          _              <- sessionRepository.set(updatedAnswers)
-        } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage, mode, updatedAnswers))
-    )
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      val form = formProvider()
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationSaoPage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage, mode, updatedAnswers))
+        )
   }
 }

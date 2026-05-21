@@ -20,23 +20,24 @@ import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.CertificateDeclarationSaoPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
+import viewmodels.govuk.summarylist.*
 
 object CertificateDeclarationSaoSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateDeclarationSaoPage).map {
-      answer =>
-        SummaryListRowViewModel(
-          key     = messages("certificateDeclarationSao.checkYourAnswersLabel").toKey,
-          value   = ValueViewModel(answer.toText),
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.CertificateDeclarationSaoController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("certificateDeclarationSao.change.hidden"))
+    answers.get(CertificateDeclarationSaoPage).map { answer =>
+      SummaryListRowViewModel(
+        key = messages("certificateDeclarationSao.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(answer.toText),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.CertificateDeclarationSaoController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("certificateDeclarationSao.change.hidden"))
         )
+      )
     }
 }

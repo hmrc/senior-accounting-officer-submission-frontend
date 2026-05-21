@@ -18,10 +18,10 @@ package models
 
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.OptionValues
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
 
 class CertificateWhoIsSubmittingSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
@@ -32,10 +32,11 @@ class CertificateWhoIsSubmittingSpec extends AnyFreeSpec with Matchers with Scal
 
       val gen = Gen.oneOf(CertificateWhoIsSubmitting.values.toSeq)
 
-      forAll(gen) {
-        certificateWhoIsSubmitting =>
-
-          JsString(certificateWhoIsSubmitting.toString).validate[CertificateWhoIsSubmitting].asOpt.value mustEqual certificateWhoIsSubmitting
+      forAll(gen) { certificateWhoIsSubmitting =>
+        JsString(certificateWhoIsSubmitting.toString)
+          .validate[CertificateWhoIsSubmitting]
+          .asOpt
+          .value mustEqual certificateWhoIsSubmitting
       }
     }
 
@@ -43,10 +44,8 @@ class CertificateWhoIsSubmittingSpec extends AnyFreeSpec with Matchers with Scal
 
       val gen = arbitrary[String] suchThat (!CertificateWhoIsSubmitting.values.map(_.toString).contains(_))
 
-      forAll(gen) {
-        invalidValue =>
-
-          JsString(invalidValue).validate[CertificateWhoIsSubmitting] mustEqual JsError("error.invalid")
+      forAll(gen) { invalidValue =>
+        JsString(invalidValue).validate[CertificateWhoIsSubmitting] mustEqual JsError("error.invalid")
       }
     }
 
@@ -54,10 +53,8 @@ class CertificateWhoIsSubmittingSpec extends AnyFreeSpec with Matchers with Scal
 
       val gen = Gen.oneOf(CertificateWhoIsSubmitting.values.toSeq)
 
-      forAll(gen) {
-        certificateWhoIsSubmitting =>
-
-          Json.toJson(certificateWhoIsSubmitting) mustEqual JsString(certificateWhoIsSubmitting.toString)
+      forAll(gen) { certificateWhoIsSubmitting =>
+        Json.toJson(certificateWhoIsSubmitting) mustEqual JsString(certificateWhoIsSubmitting.toString)
       }
     }
   }

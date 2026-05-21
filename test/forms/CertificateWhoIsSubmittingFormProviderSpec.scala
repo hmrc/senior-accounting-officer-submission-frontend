@@ -22,7 +22,7 @@ import play.api.data.FormError
 
 class CertificateWhoIsSubmittingFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new CertificateWhoIsSubmittingFormProvider()()
+  val form        = new CertificateWhoIsSubmittingFormProvider()()
   val requiredKey = "certificateWhoIsSubmitting.error.required"
 
   ".value" - {
@@ -32,7 +32,7 @@ class CertificateWhoIsSubmittingFormProviderSpec extends OptionFieldBehaviours {
     behave like optionsField[CertificateWhoIsSubmitting](
       form,
       fieldName,
-      validValues  = CertificateWhoIsSubmitting.values,
+      validValues = CertificateWhoIsSubmitting.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 

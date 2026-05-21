@@ -21,7 +21,7 @@ import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
 enum CertificateWhoIsSubmitting(override val toString: String) {
-  case Sao extends CertificateWhoIsSubmitting("sao")
+  case Sao     extends CertificateWhoIsSubmitting("sao")
   case Standin extends CertificateWhoIsSubmitting("standIn")
 }
 
@@ -32,8 +32,8 @@ object CertificateWhoIsSubmitting extends Enumerable.Implicits[CertificateWhoIsS
   def options(using messages: Messages): Seq[RadioItem] = values.map { value =>
     RadioItem(
       content = Text(messages(s"certificateWhoIsSubmitting.${value.toString}")),
-      value   = Some(value.toString),
-      id      = Some(s"value_${value.ordinal}")
+      value = Some(value.toString),
+      id = Some(s"value_${value.ordinal}")
     )
   }
 

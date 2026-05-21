@@ -17,20 +17,17 @@
 package views
 
 import base.ViewSpecBase
+import forms.CertificateDeclarationSaoFormProvider
+import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import models.{NormalMode, CheckMode, Mode}
-import pages.CertificateDeclarationSaoPage
-import forms.CertificateDeclarationSaoFormProvider
-import views.html.CertificateDeclarationSaoView
 import views.CertificateDeclarationSaoViewSpec.*
-
+import views.html.CertificateDeclarationSaoView
 
 class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarationSaoView] {
 
-  private val formProvider = app.injector.instanceOf[CertificateDeclarationSaoFormProvider]
+  private val formProvider       = app.injector.instanceOf[CertificateDeclarationSaoFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
@@ -134,7 +131,7 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 }
 
 object CertificateDeclarationSaoViewSpec {
-  val pageHeading = "certificateDeclarationSao"
-  val pageTitle = "certificateDeclarationSao"
+  val pageHeading    = "certificateDeclarationSao"
+  val pageTitle      = "certificateDeclarationSao"
   val testInputValue = "myTestInputValue"
 }

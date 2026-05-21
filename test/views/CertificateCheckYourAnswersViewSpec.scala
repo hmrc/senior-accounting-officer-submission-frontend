@@ -19,9 +19,8 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.i18n.Messages
-import views.html.CertificateCheckYourAnswersView
 import views.CertificateCheckYourAnswersViewSpec.*
+import views.html.CertificateCheckYourAnswersView
 
 class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckYourAnswersView] {
 
@@ -44,5 +43,5 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
 
 object CertificateCheckYourAnswersViewSpec {
   val pageHeading = "certificateCheckYourAnswers"
-  val pageTitle = "certificateCheckYourAnswers"
+  val pageTitle   = "certificateCheckYourAnswers"
 }

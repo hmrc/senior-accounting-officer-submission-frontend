@@ -23,26 +23,28 @@ import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.govuk.summarylist.*
 import viewmodels.converters.*
+import viewmodels.govuk.summarylist.*
 
 object CertificateWhoIsSubmittingSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateWhoIsSubmittingPage).map {
-      answer =>
-        val value = ValueViewModel(
-          HtmlContent(
-            HtmlFormat.escape(messages(s"certificateWhoIsSubmitting.$answer"))
-          )
+    answers.get(CertificateWhoIsSubmittingPage).map { answer =>
+      val value = ValueViewModel(
+        HtmlContent(
+          HtmlFormat.escape(messages(s"certificateWhoIsSubmitting.$answer"))
         )
-        SummaryListRowViewModel(
-          key     = messages("certificateWhoIsSubmitting.checkYourAnswersLabel").toKey,
-          value   = value,
-          actions = Seq(
-            ActionItemViewModel(messages("site.change").toText, routes.CertificateWhoIsSubmittingController.onPageLoad(CheckMode).url)
-              .withVisuallyHiddenText(messages("certificateWhoIsSubmitting.change.hidden"))
+      )
+      SummaryListRowViewModel(
+        key = messages("certificateWhoIsSubmitting.checkYourAnswersLabel").toKey,
+        value = value,
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            routes.CertificateWhoIsSubmittingController.onPageLoad(CheckMode).url
           )
+            .withVisuallyHiddenText(messages("certificateWhoIsSubmitting.change.hidden"))
         )
+      )
     }
 }

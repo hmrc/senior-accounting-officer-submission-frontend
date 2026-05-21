@@ -17,21 +17,18 @@
 package views
 
 import base.ViewSpecBase
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import play.api.inject.Injector
-import play.api.data.Form
 import forms.CertificateWhoIsSubmittingFormProvider
 import models.CertificateWhoIsSubmitting
-import models.{NormalMode, CheckMode, Mode}
-import pages.CertificateWhoIsSubmittingPage
-import views.html.CertificateWhoIsSubmittingView
+import models.Mode
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import play.api.data.Form
 import views.CertificateWhoIsSubmittingViewSpec.*
-
+import views.html.CertificateWhoIsSubmittingView
 
 class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSubmittingView] {
 
-  private val formProvider = app.injector.instanceOf[CertificateWhoIsSubmittingFormProvider]
+  private val formProvider                           = app.injector.instanceOf[CertificateWhoIsSubmittingFormProvider]
   private val form: Form[CertificateWhoIsSubmitting] = formProvider()
 
   private def generateView(form: Form[CertificateWhoIsSubmitting], mode: Mode): Document = {
@@ -58,7 +55,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             name = "value",
             radios = List(
               radio(value = option1key, label = option1Label),
-              radio(value = option2key, label = option2Label),
+              radio(value = option2key, label = option2Label)
             ),
             isChecked = None,
             hasError = false
@@ -89,7 +86,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             name = "value",
             radios = List(
               radio(value = option1key, label = option1Label),
-              radio(value = option2key, label = option2Label),
+              radio(value = option2key, label = option2Label)
             ),
             isChecked = Some(radio(value = option1key, label = option1Label)),
             hasError = false
@@ -120,7 +117,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             name = "value",
             radios = List(
               radio(value = option1key, label = option1Label),
-              radio(value = option2key, label = option2Label),
+              radio(value = option2key, label = option2Label)
             ),
             isChecked = None,
             hasError = true
@@ -142,10 +139,10 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 }
 
 object CertificateWhoIsSubmittingViewSpec {
-  val pageHeading = "certificateWhoIsSubmitting"
-  val pageTitle = "certificateWhoIsSubmitting"
-  val option1key = "sao"
+  val pageHeading  = "certificateWhoIsSubmitting"
+  val pageTitle    = "certificateWhoIsSubmitting"
+  val option1key   = "sao"
   val option1Label = "Option 1"
-  val option2key = "standIn"
+  val option2key   = "standIn"
   val option2Label = "Option 2"
 }

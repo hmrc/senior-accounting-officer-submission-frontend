@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.CertificateWhoIsSubmittingFormProvider
-import models.{NormalMode, CertificateWhoIsSubmitting, UserAnswers}
+import models.{CertificateWhoIsSubmitting, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -35,12 +35,13 @@ import scala.concurrent.Future
 
 class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  lazy val certificateWhoIsSubmittingRoute = routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode).url
+  lazy val certificateWhoIsSubmittingRoute: String =
+    routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode).url
 
   val formProvider = new CertificateWhoIsSubmittingFormProvider()
-  val form = formProvider()
+  val form: Any    = formProvider()
 
   "CertificateWhoIsSubmitting Controller" - {
 
@@ -62,7 +63,10 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId)
+        .set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.values.head)
+        .success
+        .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -74,7 +78,10 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(CertificateWhoIsSubmitting.values.head), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(CertificateWhoIsSubmitting.values.head), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

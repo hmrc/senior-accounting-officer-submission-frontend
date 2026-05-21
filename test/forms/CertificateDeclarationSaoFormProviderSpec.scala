@@ -22,8 +22,8 @@ import play.api.data.FormError
 class CertificateDeclarationSaoFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "certificateDeclarationSao.error.required"
-  val lengthKey = "certificateDeclarationSao.error.length"
-  val maxLength = 100
+  val lengthKey   = "certificateDeclarationSao.error.length"
+  val maxLength   = 100
 
   val form = new CertificateDeclarationSaoFormProvider()()
 

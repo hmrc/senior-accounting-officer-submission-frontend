@@ -18,7 +18,7 @@ package viewmodels.checkAnswers
 
 import base.SpecBase
 import controllers.routes
-import models.{CheckMode, CertificateWhoIsSubmitting}
+import models.{CertificateWhoIsSubmitting, CheckMode}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.CertificateWhoIsSubmittingPage
 import play.api.i18n.{Messages, MessagesApi}
@@ -42,7 +42,8 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
       def testUserAnswers(answer: CertificateWhoIsSubmitting) =
         emptyUserAnswers.set(CertificateWhoIsSubmittingPage, answer).get
 
-      def SUT(answer: CertificateWhoIsSubmitting = CertificateWhoIsSubmitting.Sao) = CertificateWhoIsSubmittingSummary.row(testUserAnswers(answer)).get
+      def SUT(answer: CertificateWhoIsSubmitting = CertificateWhoIsSubmitting.Sao) =
+        CertificateWhoIsSubmittingSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
         SUT().key mustBe "certificateWhoIsSubmitting".toKey

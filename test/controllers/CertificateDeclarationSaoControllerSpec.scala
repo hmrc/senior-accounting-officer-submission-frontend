@@ -35,12 +35,13 @@ import scala.concurrent.Future
 
 class CertificateDeclarationSaoControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val formProvider = new CertificateDeclarationSaoFormProvider()
-  val form = formProvider()
+  val form: Any    = formProvider()
 
-  lazy val certificateDeclarationSaoRoute = routes.CertificateDeclarationSaoController.onPageLoad(NormalMode).url
+  lazy val certificateDeclarationSaoRoute: String =
+    routes.CertificateDeclarationSaoController.onPageLoad(NormalMode).url
 
   "CertificateDeclarationSao Controller" - {
 
@@ -74,7 +75,10 @@ class CertificateDeclarationSaoControllerSpec extends SpecBase with MockitoSugar
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 
