@@ -43,7 +43,7 @@ POST        /notification/change-additional-information               controller
 GET         /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onPageLoad()
 POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit()
 
-GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad()
+GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                controllers.NotificationConfirmationController.onSubmit()
 
 GET         /notification/confirm-your-notification                   controllers.ConfirmYourNotificationController.onPageLoad()

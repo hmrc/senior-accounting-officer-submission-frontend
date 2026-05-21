@@ -48,7 +48,7 @@ class NotificationCheckYourAnswersController @Inject() (
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request => {
-    val getNotificationIdReferenceNumber = notificationIdReferenceNumber.returnHardCodedNotRef
+    val getNotificationIdReferenceNumber: String = notificationIdReferenceNumber.returnHardCodedNotRef
     Redirect(navigator.nextPageWithNotRef(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers, getNotificationIdReferenceNumber))
   }
   }

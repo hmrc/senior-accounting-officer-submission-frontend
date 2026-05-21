@@ -29,6 +29,7 @@ import views.html.NotificationConfirmationView
 import javax.inject.Inject
 
 class NotificationConfirmationController @Inject() (
+    //TODO (whoever is reviewing this): Should we rename to 'NotificationSubmittedController' etc.?
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
@@ -39,15 +40,9 @@ class NotificationConfirmationController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onPageLoad(notificationIdReferenceNumber: String): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     Ok(
-      view(
-        NotificationConfirmationDetails(
-          companyName = "ABC Limited",
-          notificationId = "SAONOT0123456789",
-          notificationDateTime = "Placeholder Date/Time"
-        )
-      )
+      view(notificationIdReferenceNumber)
     )
   }
 

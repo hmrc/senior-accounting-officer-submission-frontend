@@ -25,7 +25,7 @@
     appConfig: AppConfig
 )
 
-@(details: NotificationConfirmationDetails)(using request: Request[?], messages: Messages)
+@(notificationIdReferenceNumber: String)(using request: Request[?], messages: Messages)
 
 @layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
 
@@ -36,12 +36,12 @@
         <div class="govuk-panel__body">
             @messages("notificationConfirmation.reference.text")
             <br>
-            <strong data-test-id="notification-reference-number">@details.notificationId</strong>
+            <strong data-test-id="notification-reference-number">@notificationIdReferenceNumber</strong>
         </div>
     </div>
 
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph1", details.companyName)</p>
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph2", details.notificationDateTime)</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph1")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph2")</p>
 
     <ul class="govuk-list govuk-list--bullet">
         <li>
