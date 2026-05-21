@@ -19,14 +19,14 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.CertificateConfirmationViewSpec.*
-import views.html.CertificateConfirmationView
+import views.JointCertificateConfirmationViewSpec.*
+import views.html.JointCertificateConfirmationView
 
-class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmationView] {
+class JointCertificateConfirmationViewSpec extends ViewSpecBase[JointCertificateConfirmationView] {
 
   private def generateView(): Document = Jsoup.parse(SUT().toString)
 
-  "CertificateConfirmationView" - {
+  "JointCertificateConfirmationView" - {
     val doc: Document = generateView()
 
     doc.createTestsWithStandardPageElements(
@@ -41,7 +41,7 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
   }
 }
 
-object CertificateConfirmationViewSpec {
-  val pageHeading = "certificateConfirmation"
-  val pageTitle   = "certificateConfirmation"
+object JointCertificateConfirmationViewSpec {
+  val pageHeading = "jointCertificateConfirmation"
+  val pageTitle   = "jointCertificateConfirmation"
 }

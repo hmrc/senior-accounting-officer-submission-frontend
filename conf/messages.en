@@ -222,8 +222,8 @@ jointCertificateSubmissionDeclaration.error.proxy.length = proxy must be 100 cha
 jointCertificateSubmissionDeclaration.sao.change.hidden = sao
 jointCertificateSubmissionDeclaration.proxy.change.hidden = proxy
 
-certificateConfirmation.title = certificateConfirmation
-certificateConfirmation.heading = certificateConfirmation
+jointCertificateConfirmation.title = jointCertificateConfirmation
+jointCertificateConfirmation.heading = jointCertificateConfirmation
 
 notificationUploadError.title = notificationUploadError
 notificationUploadError.heading = notificationUploadError

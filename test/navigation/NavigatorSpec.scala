@@ -166,7 +166,7 @@ class NavigatorSpec extends SpecBase {
           JointCertificateSubmissionDeclarationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateConfirmationController.onPageLoad()
+        ) mustBe routes.JointCertificateConfirmationController.onPageLoad()
       }
 
       "when on NotificationConfirmationPage, must go to notification task list" in {

@@ -19,22 +19,22 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.CertificateConfirmationView
+import views.html.JointCertificateConfirmationView
 
-class CertificateConfirmationControllerSpec extends SpecBase {
+class JointCertificateConfirmationControllerSpec extends SpecBase {
 
-  "CertificateConfirmation Controller" - {
+  "JointCertificateConfirmation Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CertificateConfirmationController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.JointCertificateConfirmationController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[CertificateConfirmationView]
+        val view = application.injector.instanceOf[JointCertificateConfirmationView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(using request, messages(application)).toString
@@ -46,7 +46,7 @@ class CertificateConfirmationControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CertificateConfirmationController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.JointCertificateConfirmationController.onPageLoad().url)
 
         val result = route(application, request).value
 

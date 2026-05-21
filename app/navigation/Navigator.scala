@@ -58,7 +58,7 @@ class Navigator @Inject() () {
     case UnqualifiedCompaniesPage =>
       _ => routes.JointCertificateSubmissionDeclarationController.onPageLoad(NormalMode)
     case JointCertificateSubmissionDeclarationPage =>
-      _ => routes.CertificateConfirmationController.onPageLoad()
+      _ => routes.JointCertificateConfirmationController.onPageLoad()
     case NotificationConfirmationPage =>
       _ => routes.SubmitNotificationStartController.onPageLoad()
     case NotificationMoreThanOneSaoPage =>

@@ -20,17 +20,17 @@ import controllers.actions.*
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.CertificateConfirmationView
+import views.html.JointCertificateConfirmationView
 
 import javax.inject.Inject
 
-class CertificateConfirmationController @Inject() (
+class JointCertificateConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateConfirmationView
+    view: JointCertificateConfirmationView
 ) extends FrontendBaseController
     with I18nSupport {
 
