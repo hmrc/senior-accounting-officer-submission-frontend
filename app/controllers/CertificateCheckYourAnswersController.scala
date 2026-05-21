@@ -17,15 +17,15 @@
 package controllers
 
 import controllers.actions.*
+import models.NormalMode
+import navigation.Navigator
+import pages.CertificateCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateCheckYourAnswersView
-import pages.CertificateCheckYourAnswersPage
 
 import javax.inject.Inject
-import navigation.Navigator
-import models.NormalMode
 
 class CertificateCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,

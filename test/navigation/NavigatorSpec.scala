@@ -18,8 +18,8 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
-import models.upload.UploadTemplateTableData
 import models.*
+import models.upload.UploadTemplateTableData
 import pages.*
 
 import java.time.LocalDate
