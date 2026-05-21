@@ -32,13 +32,14 @@ import repositories.SessionRepository
 import views.html.CertificateDeclarationSaoView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class CertificateDeclarationSaoControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider = new CertificateDeclarationSaoFormProvider()
-  val form: Any    = formProvider()
+  val formProvider       = new CertificateDeclarationSaoFormProvider()
+  val form: Form[String] = formProvider()
 
   lazy val certificateDeclarationSaoRoute: String =
     routes.CertificateDeclarationSaoController.onPageLoad(NormalMode).url

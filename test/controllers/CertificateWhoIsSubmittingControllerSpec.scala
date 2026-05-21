@@ -32,6 +32,7 @@ import repositories.SessionRepository
 import views.html.CertificateWhoIsSubmittingView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSugar {
 
@@ -40,8 +41,8 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
   lazy val certificateWhoIsSubmittingRoute: String =
     routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode).url
 
-  val formProvider = new CertificateWhoIsSubmittingFormProvider()
-  val form: Any    = formProvider()
+  val formProvider                           = new CertificateWhoIsSubmittingFormProvider()
+  val form: Form[CertificateWhoIsSubmitting] = formProvider()
 
   "CertificateWhoIsSubmitting Controller" - {
 
