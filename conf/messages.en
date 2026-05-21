@@ -406,3 +406,24 @@ certificateDeclarationStandIn.error.StandInName.length = StandInName must be 100
 certificateDeclarationStandIn.error.SaoName.length = SaoName must be 100 characters or less
 certificateDeclarationStandIn.StandInName.change.hidden = StandInName
 certificateDeclarationStandIn.SaoName.change.hidden = SaoName
+
+certificateWhoIsSubmitting.title = certificateWhoIsSubmitting
+certificateWhoIsSubmitting.heading = certificateWhoIsSubmitting
+certificateWhoIsSubmitting.sao = Option 1
+certificateWhoIsSubmitting.standIn = Option 2
+certificateWhoIsSubmitting.checkYourAnswersLabel = certificateWhoIsSubmitting
+certificateWhoIsSubmitting.error.required = Select certificateWhoIsSubmitting
+certificateWhoIsSubmitting.change.hidden = CertificateWhoIsSubmitting
+
+certificateCheckYourAnswers.title = certificateCheckYourAnswers
+certificateCheckYourAnswers.heading = certificateCheckYourAnswers
+
+certificateConfirmation.title = certificateConfirmation
+certificateConfirmation.heading = certificateConfirmation
+
+certificateDeclarationSao.title = certificateDeclarationSao
+certificateDeclarationSao.heading = certificateDeclarationSao
+certificateDeclarationSao.checkYourAnswersLabel = certificateDeclarationSao
+certificateDeclarationSao.error.required = Enter certificateDeclarationSao
+certificateDeclarationSao.error.length = CertificateDeclarationSao must be 100 characters or less
+certificateDeclarationSao.change.hidden = CertificateDeclarationSao

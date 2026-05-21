@@ -151,3 +151,17 @@ GET        /certificateDeclarationStandIn                        controllers.Cer
 POST       /certificateDeclarationStandIn                        controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = NormalMode)
 GET        /changeCertificateDeclarationStandIn                  controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCertificateDeclarationStandIn                  controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = CheckMode)
+
+GET        /certificateWhoIsSubmitting                        controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificateWhoIsSubmitting                        controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCertificateWhoIsSubmitting                  controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCertificateWhoIsSubmitting                  controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
+
+GET        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onPageLoad()
+
+GET        /certificateConfirmation                       controllers.CertificateConfirmationController.onPageLoad()
+
+GET        /certificateDeclarationSao                        controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificateDeclarationSao                        controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCertificateDeclarationSao                  controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCertificateDeclarationSao                  controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
