@@ -23,10 +23,14 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateReviewQualifiedView
 
 import javax.inject.Inject
+import navigation.Navigator
+import pages.CertificateReviewQualifiedPage
+import models.NormalMode
 
 class CertificateReviewQualifiedController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
+    navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
@@ -36,5 +40,9 @@ class CertificateReviewQualifiedController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     Ok(view())
+  }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Redirect(navigator.nextPage(CertificateReviewQualifiedPage, NormalMode, request.userAnswers))
   }
 }

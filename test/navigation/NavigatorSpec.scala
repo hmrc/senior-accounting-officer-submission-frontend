@@ -383,9 +383,17 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
-      "when on CertificateSubmitted, must go to CertificateTaskList page" in {
+      "when on CertificateCheckYourAnswers, must go to CertificateConfirmation page" in {
         navigator.nextPage(
-          CertificateSubmittedPage,
+          CertificateCheckYourAnswersPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateConfirmationController.onPageLoad()
+      }
+
+      "when on CertificateConfirmation, must go to CertificateTaskList page" in {
+        navigator.nextPage(
+          CertificateConfirmationPage,
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.CertificateTaskListController.onPageLoad()

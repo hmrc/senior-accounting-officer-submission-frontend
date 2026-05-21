@@ -23,6 +23,9 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateReviewUnqualifiedView
 
 import javax.inject.Inject
+import navigation.Navigator
+import pages.CertificateReviewUnqualifiedPage
+import models.NormalMode
 
 class CertificateReviewUnqualifiedController @Inject() (
     override val messagesApi: MessagesApi,
@@ -30,11 +33,16 @@ class CertificateReviewUnqualifiedController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateReviewUnqualifiedView
+    view: CertificateReviewUnqualifiedView,
+    navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     Ok(view())
+  }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Redirect(navigator.nextPage(CertificateReviewUnqualifiedPage, NormalMode, request.userAnswers))
   }
 }

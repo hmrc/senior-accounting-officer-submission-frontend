@@ -118,7 +118,9 @@ class Navigator @Inject() () {
         }
     case CertificateDeclarationSaoPage | CertificateDeclarationStandInPage =>
       _ => routes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateSubmittedPage =>
+    case CertificateCheckYourAnswersPage =>
+      _ => routes.CertificateConfirmationController.onPageLoad()
+    case CertificateConfirmationPage =>
       _ => routes.CertificateTaskListController.onPageLoad()
     case _ =>
       _ => ???
