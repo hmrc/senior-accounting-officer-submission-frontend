@@ -126,20 +126,20 @@ class NavigatorSpec extends SpecBase {
           SaoEmailCommunicationChoicePage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
-      "when on CertificateCheckYourAnswersPage, must go to who submits certificate page" in {
+      "when on CombinedCertificateCheckYourAnswersPage, must go to who submits certificate page" in {
         navigator.nextPage(
-          CertificateCheckYourAnswersPage,
+          CombinedCertificateCheckYourAnswersPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.WhoSubmitsCertificateController.onPageLoad(NormalMode)
+        ) mustBe routes.CombinedWhoSubmitsCertificateController.onPageLoad(NormalMode)
       }
 
-      "when on WhoSubmitsCertificatePage, must go to qualified companies page" in {
+      "when on CombinedWhoSubmitsCertificatePage, must go to qualified companies page" in {
         navigator.nextPage(
-          WhoSubmitsCertificatePage,
+          CombinedWhoSubmitsCertificatePage,
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.QualifiedCompaniesController.onPageLoad()
@@ -158,15 +158,15 @@ class NavigatorSpec extends SpecBase {
           UnqualifiedCompaniesPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateSubmissionDeclarationController.onPageLoad(NormalMode)
+        ) mustBe routes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
       }
 
-      "when on CertificateSubmissionDeclarationPage, must go to certificate confirmation page" in {
+      "when on CombinedCertificateDeclarationSaoPage, must go to certificate confirmation page" in {
         navigator.nextPage(
-          CertificateSubmissionDeclarationPage,
+          CombinedCertificateDeclarationSaoPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateConfirmationController.onPageLoad()
+        ) mustBe routes.CombinedCertificateConfirmationController.onPageLoad()
       }
 
       "when on NotificationConfirmationPage, must go to notification task list" in {
@@ -325,7 +325,7 @@ class NavigatorSpec extends SpecBase {
           SaoNamePage,
           CheckMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
       "when on SaoEmailPage, must go to certificate check your answers page" in {
@@ -333,7 +333,7 @@ class NavigatorSpec extends SpecBase {
           SaoEmailPage,
           CheckMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
       "when on SaoEmailCommunicationChoicePage, must go to certificate check your answers page" in {
@@ -341,7 +341,7 @@ class NavigatorSpec extends SpecBase {
           SaoEmailCommunicationChoicePage,
           CheckMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
       "must throw an not-implemented error for an unspecified configuration" in {
