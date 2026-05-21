@@ -79,6 +79,10 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
         fileInput.attr("accept") mustBe ".csv,.xlsx"
       }
 
+      "must contain data tag on the file upload input" in {
+        doc.select(s"""input#$uploadFormInputId[data-test-id="notification-file-upload"]""").size() mustBe 1
+      }
+
       "must contain label for file upload input element" in {
         val label = doc.select(s"""label.govuk-label[for="$uploadFormInputId"]""")
         label.size() mustBe 1
