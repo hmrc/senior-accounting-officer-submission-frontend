@@ -22,7 +22,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[?], mode: Mode, saoIndex: Int)(using request: Request[?], messages: Messages)
+@(saoName: String, form: Form[?], mode: Mode, saoIndex: Int)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("notificationMoreSaoSecondEndDate.title"))) {
 
@@ -32,10 +32,12 @@
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
+<span class="govuk-caption-l">@messages("notificationMoreSaoSecondEndDate.caption")</span>
+
         @govukDateInput(
             DateViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("notificationMoreSaoSecondEndDate.heading").toText).asPageHeading(LegendSize.Large)
+                legend = LegendViewModel(messages("notificationMoreSaoSecondEndDate.heading", saoName).toText).asPageHeading(LegendSize.Large)
             )
             .withHint(HintViewModel(messages("notificationMoreSaoSecondEndDate.hint").toText))
         )

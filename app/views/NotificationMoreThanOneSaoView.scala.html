@@ -24,7 +24,10 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("notificationMoreThanOneSao.title"))) {
+@layout(
+    pageTitle = title(form, messages("notificationMoreThanOneSao.title")),
+    backLink = Some(BackLinkViewModel(routes.SubmitNotificationStartController.onPageLoad().url))
+) {
 
     @formHelper(action = routes.NotificationMoreThanOneSaoController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 

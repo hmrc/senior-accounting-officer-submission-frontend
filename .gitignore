@@ -39,3 +39,4 @@ target
 test-result
 tmp
 .vscode/
+!.github

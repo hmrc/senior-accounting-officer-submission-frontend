@@ -57,7 +57,7 @@ object ConfirmYourNotificationViewSpec {
 
   val pageBullets: Seq[String] = Seq(
     "the information provided is complete and correct to the best of your knowledge",
-    "you understand that if the company deliberately provides false or incomplete information, or fails to report changes, it may be liable for a penalty of £5,000."
+    "you understand that if the company deliberately provides false or incomplete information, or fails to report changes, it may be liable for a penalty of £5,000"
   )
 
   val pageInsetText =
