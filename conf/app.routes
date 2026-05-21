@@ -82,13 +82,13 @@ POST        /certificate/sao-email-communication-choice               controller
 GET         /certificate/change-sao-email-communication-choice        controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = CheckMode)
 POST        /certificate/change-sao-email-communication-choice        controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/check-your-answers                           controllers.JointCertificateCheckYourAnswersController.onPageLoad()
-POST        /certificate/check-your-answers                           controllers.JointCertificateCheckYourAnswersController.onSubmit()
+GET         /certificate/check-your-answers                           controllers.CombinedCertificateCheckYourAnswersController.onPageLoad()
+POST        /certificate/check-your-answers                           controllers.CombinedCertificateCheckYourAnswersController.onSubmit()
 
-GET         /certificate/submit-certificate-submitter                 controllers.JointWhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/submit-certificate-submitter                 controllers.JointWhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-submitter                             controllers.JointWhoSubmitsCertificateController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-submitter                             controllers.JointWhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/submit-certificate-submitter                 controllers.CombinedWhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/submit-certificate-submitter                 controllers.CombinedWhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-submitter                             controllers.CombinedWhoSubmitsCertificateController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-submitter                             controllers.CombinedWhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
 
 GET         /certificate/qualified-companies                          controllers.QualifiedCompaniesController.onPageLoad()
 POST        /certificate/qualified-companies                          controllers.QualifiedCompaniesController.onSubmit()
@@ -96,12 +96,12 @@ POST        /certificate/qualified-companies                          controller
 GET         /certificate/unqualified-companies                        controllers.UnqualifiedCompaniesController.onPageLoad()
 POST        /certificate/unqualified-companies                        controllers.UnqualifiedCompaniesController.onSubmit()
 
-GET         /certificate/declaration                                  controllers.JointCertificateSubmissionDeclarationController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/declaration                                  controllers.JointCertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-declaration                           controllers.JointCertificateSubmissionDeclarationController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-declaration                           controllers.JointCertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/declaration                                  controllers.CombinedCertificateSubmissionDeclarationController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/declaration                                  controllers.CombinedCertificateSubmissionDeclarationController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-declaration                           controllers.CombinedCertificateSubmissionDeclarationController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-declaration                           controllers.CombinedCertificateSubmissionDeclarationController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/confirmation                                         controllers.JointCertificateConfirmationController.onPageLoad()
+GET         /certificate/confirmation                                         controllers.CombinedCertificateConfirmationController.onPageLoad()
 
 GET        /notification/more-sao/submit-notification-full-name                        controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
 POST       /notification/more-sao/submit-notification-full-name                        controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
