@@ -17,6 +17,9 @@
 package controllers
 
 import controllers.actions.*
+import models.NormalMode
+import navigation.Navigator
+import pages.CertificateConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -30,11 +33,16 @@ class CertificateConfirmationController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateConfirmationView
+    view: CertificateConfirmationView,
+    navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     Ok(view())
+  }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Redirect(navigator.nextPage(CertificateConfirmationPage, NormalMode, request.userAnswers))
   }
 }

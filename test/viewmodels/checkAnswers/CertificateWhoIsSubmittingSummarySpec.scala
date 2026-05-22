@@ -55,7 +55,7 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
         }
 
         "must show 'Option2' when user answers is standIn" in {
-          SUT(answer = CertificateWhoIsSubmitting.Standin).value.content mustBe HtmlContent("Option 2")
+          SUT(answer = CertificateWhoIsSubmitting.StandIn).value.content mustBe HtmlContent("Option 2")
         }
       }
 

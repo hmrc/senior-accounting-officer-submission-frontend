@@ -18,8 +18,8 @@ package navigation
 
 import base.SpecBase
 import controllers.routes
+import models.*
 import models.upload.UploadTemplateTableData
-import models.{CheckMode, NormalMode, UserAnswers}
 import pages.*
 
 import java.time.LocalDate
@@ -307,6 +307,96 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.JourneyRecoveryController.onPageLoad()
+      }
+
+      // certificate flow
+
+      "when on CertificateSaoFullName, must go to CertificateSaoEmail page" in {
+        navigator.nextPage(
+          CertificateSaoFullNamePage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateSaoEmailController.onPageLoad(NormalMode)
+      }
+
+      "when on CertificateSaoEmail, must go to CertificateTaskList page" in {
+        navigator.nextPage(
+          CertificateSaoEmailPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateTaskListController.onPageLoad()
+      }
+
+      "when on CertificateReviewQualified, must go to CertificateReviewUnqualified page" in {
+        navigator.nextPage(
+          CertificateReviewQualifiedPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateReviewUnqualifiedController.onPageLoad()
+      }
+
+      "when on CertificateReviewUnqualified, must go to CertificateTaskList page" in {
+        navigator.nextPage(
+          CertificateReviewUnqualifiedPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateTaskListController.onPageLoad()
+      }
+
+      "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {
+        navigator.nextPage(
+          CertificateAdditionalInformationPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
+      }
+
+      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationSao page" in {
+        navigator.nextPage(
+          CertificateWhoIsSubmittingPage,
+          NormalMode,
+          UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.Sao).get
+        ) mustBe routes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
+      }
+
+      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationStandIn page" in {
+        navigator.nextPage(
+          CertificateWhoIsSubmittingPage,
+          NormalMode,
+          UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn).get
+        ) mustBe routes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
+      }
+
+      "when on CertificateDeclarationSao, must go to CertificateCheckYourAnswers page" in {
+        navigator.nextPage(
+          CertificateDeclarationSaoPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on CertificateDeclarationStandIn, must go to CertificateCheckYourAnswers page" in {
+        navigator.nextPage(
+          CertificateDeclarationStandInPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on CertificateCheckYourAnswers, must go to CertificateConfirmation page" in {
+        navigator.nextPage(
+          CertificateCheckYourAnswersPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateConfirmationController.onPageLoad()
+      }
+
+      "when on CertificateConfirmation, must go to CertificateTaskList page" in {
+        navigator.nextPage(
+          CertificateConfirmationPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.CertificateTaskListController.onPageLoad()
       }
     }
 
