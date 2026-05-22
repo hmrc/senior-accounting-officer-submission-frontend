@@ -28,7 +28,6 @@ import views.html.NotificationConfirmationView
 import javax.inject.Inject
 
 class NotificationConfirmationController @Inject() (
-    // TODO (whoever is reviewing this): Should we rename to 'NotificationSubmittedController' etc.?
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
