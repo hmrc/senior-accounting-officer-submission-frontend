@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(
-    layout: templates.Layout,
-    govukButton: GovukButton,
-    formHelper: FormWithCSRF
-)
+package pages
 
-@()(using request: Request[?], messages: Messages)
+import play.api.libs.json.JsPath
 
-@layout(pageTitle = titleNoForm(messages("certificateReviewUnqualified.title"))) {
+case object CertificateDeclarationSaoPage extends QuestionPage[String] {
 
-    <h1 class="govuk-heading-xl">@messages("certificateReviewUnqualified.heading")</h1>
-    @formHelper(action = routes.CertificateReviewUnqualifiedController.onSubmit()) {
-        @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
-        )
-    }
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "certificateDeclarationSao"
 }

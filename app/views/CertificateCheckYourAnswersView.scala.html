@@ -22,10 +22,10 @@
 
 @()(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("certificateReviewUnqualified.title"))) {
+@layout(pageTitle = titleNoForm(messages("certificateCheckYourAnswers.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("certificateReviewUnqualified.heading")</h1>
-    @formHelper(action = routes.CertificateReviewUnqualifiedController.onSubmit()) {
+    <h1 class="govuk-heading-xl">@messages("certificateCheckYourAnswers.heading")</h1>
+    @formHelper(action = routes.CertificateCheckYourAnswersController.onSubmit()) {
         @govukButton(
             ButtonViewModel(messages("site.continue").toText)
         )

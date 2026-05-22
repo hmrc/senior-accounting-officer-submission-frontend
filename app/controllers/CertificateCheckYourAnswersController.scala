@@ -19,22 +19,22 @@ package controllers
 import controllers.actions.*
 import models.NormalMode
 import navigation.Navigator
-import pages.CertificateReviewQualifiedPage
+import pages.CertificateCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.CertificateReviewQualifiedView
+import views.html.CertificateCheckYourAnswersView
 
 import javax.inject.Inject
 
-class CertificateReviewQualifiedController @Inject() (
+class CertificateCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
-    navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateReviewQualifiedView
+    navigator: Navigator,
+    view: CertificateCheckYourAnswersView
 ) extends FrontendBaseController
     with I18nSupport {
 
@@ -43,6 +43,6 @@ class CertificateReviewQualifiedController @Inject() (
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(CertificateReviewQualifiedPage, NormalMode, request.userAnswers))
+    Redirect(navigator.nextPage(CertificateCheckYourAnswersPage, NormalMode, request.userAnswers))
   }
 }

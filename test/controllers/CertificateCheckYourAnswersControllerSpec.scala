@@ -23,24 +23,24 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.CertificateReviewUnqualifiedView
+import views.html.CertificateCheckYourAnswersView
 
-class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
+class CertificateCheckYourAnswersControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  "CertificateReviewUnqualified Controller" - {
+  "CertificateCheckYourAnswers Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CertificateReviewUnqualifiedController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.CertificateCheckYourAnswersController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[CertificateReviewUnqualifiedView]
+        val view = application.injector.instanceOf[CertificateCheckYourAnswersView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(using request, messages(application)).toString
@@ -58,7 +58,7 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
 
       running(application) {
         val request =
-          FakeRequest(POST, routes.CertificateReviewUnqualifiedController.onSubmit().url)
+          FakeRequest(POST, routes.CertificateCheckYourAnswersController.onSubmit().url)
 
         val result = route(application, request).value
 

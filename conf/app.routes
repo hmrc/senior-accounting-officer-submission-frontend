@@ -129,8 +129,10 @@ GET        /changeCertificateAdditionalInformation                  controllers.
 POST       /changeCertificateAdditionalInformation                  controllers.CertificateAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateReviewQualified                       controllers.CertificateReviewQualifiedController.onPageLoad()
+POST        /certificateReviewQualified                       controllers.CertificateReviewQualifiedController.onSubmit()
 
 GET        /certificateReviewUnqualified                       controllers.CertificateReviewUnqualifiedController.onPageLoad()
+POST        /certificateReviewUnqualified                       controllers.CertificateReviewUnqualifiedController.onSubmit()
 
 GET        /certificateSaoEmail                        controllers.CertificateSaoEmailController.onPageLoad(mode: Mode = NormalMode)
 POST       /certificateSaoEmail                        controllers.CertificateSaoEmailController.onSubmit(mode: Mode = NormalMode)
@@ -151,3 +153,19 @@ GET        /certificateDeclarationStandIn                        controllers.Cer
 POST       /certificateDeclarationStandIn                        controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = NormalMode)
 GET        /changeCertificateDeclarationStandIn                  controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCertificateDeclarationStandIn                  controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = CheckMode)
+
+GET        /certificateWhoIsSubmitting                        controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificateWhoIsSubmitting                        controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCertificateWhoIsSubmitting                  controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCertificateWhoIsSubmitting                  controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
+
+GET        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onPageLoad()
+POST        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onSubmit()
+
+GET        /certificateConfirmation                       controllers.CertificateConfirmationController.onPageLoad()
+POST        /certificateConfirmation                       controllers.CertificateConfirmationController.onSubmit()
+
+GET        /certificateDeclarationSao                        controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificateDeclarationSao                        controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
+GET        /changeCertificateDeclarationSao                  controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCertificateDeclarationSao                  controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(
-    layout: templates.Layout,
-    govukButton: GovukButton,
-    formHelper: FormWithCSRF
-)
+package forms
 
-@()(using request: Request[?], messages: Messages)
+import forms.mappings.Mappings
+import play.api.data.Form
 
-@layout(pageTitle = titleNoForm(messages("certificateReviewUnqualified.title"))) {
+import javax.inject.Inject
 
-    <h1 class="govuk-heading-xl">@messages("certificateReviewUnqualified.heading")</h1>
-    @formHelper(action = routes.CertificateReviewUnqualifiedController.onSubmit()) {
-        @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
-        )
-    }
+class CertificateDeclarationSaoFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("certificateDeclarationSao.error.required")
+        .verifying(maxLength(100, "certificateDeclarationSao.error.length"))
+    )
 }
