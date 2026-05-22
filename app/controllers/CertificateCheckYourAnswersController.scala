@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,8 @@
 package controllers
 
 import controllers.actions.*
-import models.NormalMode
-import navigation.Navigator
-import pages.CertificateCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.CertificateCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateCheckYourAnswersView
 
@@ -34,20 +30,11 @@ class CertificateCheckYourAnswersController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateCheckYourAnswersView,
-    navigator: Navigator,
-    certificateCheckYourAnswersService: CertificateCheckYourAnswersService
+    view: CertificateCheckYourAnswersView
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val userAnswers = request.userAnswers
-    val summaryList = certificateCheckYourAnswersService.getSummaryList(userAnswers)
-
-    Ok(view(summaryList))
-  }
-
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(CertificateCheckYourAnswersPage, NormalMode, request.userAnswers))
+    Ok(view())
   }
 }

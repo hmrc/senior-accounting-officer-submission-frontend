@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,14 @@ package views
 import base.ViewSpecBase
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.CertificateCheckYourAnswersViewSpec.*
-import views.html.CertificateCheckYourAnswersView
+import views.CombinedCertificateConfirmationViewSpec.*
+import views.html.CombinedCertificateConfirmationView
 
-class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckYourAnswersView] {
+class CombinedCertificateConfirmationViewSpec extends ViewSpecBase[CombinedCertificateConfirmationView] {
 
   private def generateView(): Document = Jsoup.parse(SUT().toString)
 
-  "CertificateCheckYourAnswersView" - {
+  "CombinedCertificateConfirmationView" - {
     val doc: Document = generateView()
 
     doc.createTestsWithStandardPageElements(
@@ -41,7 +41,7 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
   }
 }
 
-object CertificateCheckYourAnswersViewSpec {
-  val pageHeading = "certificateCheckYourAnswers"
-  val pageTitle   = "certificateCheckYourAnswers"
+object CombinedCertificateConfirmationViewSpec {
+  val pageHeading = "combinedCertificateConfirmation"
+  val pageTitle   = "combinedCertificateConfirmation"
 }

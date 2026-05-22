@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +17,37 @@
 package controllers
 
 import controllers.actions.*
+import models.NormalMode
+import navigation.Navigator
+import pages.CombinedCertificateCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.CombinedCertificateCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.CertificateConfirmationView
+import views.html.CombinedCertificateCheckYourAnswersView
 
 import javax.inject.Inject
 
-class CertificateConfirmationController @Inject() (
+class CombinedCertificateCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateConfirmationView
+    view: CombinedCertificateCheckYourAnswersView,
+    navigator: Navigator,
+    combinedCertificateCheckYourAnswersService: CombinedCertificateCheckYourAnswersService
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
+    val userAnswers = request.userAnswers
+    val summaryList = combinedCertificateCheckYourAnswersService.getSummaryList(userAnswers)
+
+    Ok(view(summaryList))
+  }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Redirect(navigator.nextPage(CombinedCertificateCheckYourAnswersPage, NormalMode, request.userAnswers))
   }
 }

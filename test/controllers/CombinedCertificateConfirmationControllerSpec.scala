@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,26 +19,41 @@ package controllers
 import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.CertificateCheckYourAnswersView
+import views.html.CombinedCertificateConfirmationView
 
-class CertificateCheckYourAnswersControllerSpec extends SpecBase {
+class CombinedCertificateConfirmationControllerSpec extends SpecBase {
 
-  "CertificateCheckYourAnswers Controller" - {
+  "CombinedCertificateConfirmation Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CertificateCheckYourAnswersController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.CombinedCertificateConfirmationController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[CertificateCheckYourAnswersView]
+        val view = application.injector.instanceOf[CombinedCertificateConfirmationView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(using request, messages(application)).toString
       }
     }
+
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.CombinedCertificateConfirmationController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
   }
 }

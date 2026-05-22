@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,16 +12,20 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(
-        layout: templates.Layout,
-        govukButton: GovukButton
-)
+package forms
 
-@()(using request: Request[?], messages: Messages)
+import forms.mappings.Mappings
+import play.api.data.Form
 
-@layout(pageTitle = titleNoForm(messages("certificateCheckYourAnswers.title"))) {
+import javax.inject.Inject
 
-    <h1 class="govuk-heading-xl">@messages("certificateCheckYourAnswers.heading")</h1>
+class CertificateDeclarationSaoFormProvider @Inject() extends Mappings {
+
+  def apply(): Form[String] =
+    Form(
+      "value" -> text("certificateDeclarationSao.error.required")
+        .verifying(maxLength(100, "certificateDeclarationSao.error.length"))
+    )
 }
