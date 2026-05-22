@@ -126,17 +126,5 @@ class Navigator @Inject() (notificationIdReferenceNumber: NotificationIdReferenc
       checkRouteMap(page)(userAnswers)
   }
 
-  def nextPageWithNotRef(
-      page: Page,
-      mode: Mode,
-      userAnswers: UserAnswers,
-      notificationIdReferenceNumber: String
-  ): Call = mode match {
-    case NormalMode =>
-      normalRoutes(page)(userAnswers)
-    case CheckMode =>
-      checkRouteMap(page)(userAnswers)
-  }
-
   def getNotIdRefNum: String = notificationIdReferenceNumber.returnHardCodedNotRef
 }
