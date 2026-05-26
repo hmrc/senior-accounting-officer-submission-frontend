@@ -183,7 +183,9 @@
                 @notification.additionalInformation.map { additionalInformation =>
                     <h2 id="additional-information">Additional information</h2>
                     <p>Information about your notification</p>
-                    <p>@additionalInformation</p>
+                    @additionalInformation.split("\n").map { paragraph =>
+                        <p>@paragraph</p>
+                    }
                 }
                     <!-- -->
                 <tables-page>

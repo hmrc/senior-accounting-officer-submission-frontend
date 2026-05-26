@@ -19,7 +19,8 @@ GET         /senior-accounting-officer/submission/test-only/poi/sxssf           
 GET         /senior-accounting-officer/submission/test-only/poi/deferred-sxssf                controllers.testonly.TestPoiController.testDeferredSxssf(rows:Int ?= 1000, impl: String ?= "D")
 
 
-GET         /senior-accounting-officer/submission/test-only/pdf                               controllers.testonly.TestPdfController.testPdf(rows:Int ?= 6000)
+GET         /senior-accounting-officer/submission/test-only/pdf/notification                  controllers.testonly.TestPdfController.testNotificationPdf(rows:Int ?= 4500)
+GET         /senior-accounting-officer/submission/test-only/pdf/certificate                   controllers.testonly.TestPdfController.testCertificatePdf(rows:Int ?= 4500)
 GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.openHtml()
 POST        /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.onSubmit()
 GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf/example      controllers.testonly.TestPdfController.example(rows:Int ?= 10)
