@@ -61,7 +61,7 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
     }
 
     "must render continue button" in {
-      doc.select("#continue").size() mustBe 1
+      doc.select("#submit").size() mustBe 1
     }
 
     "must render the SAO name, company count and upload link" in {
