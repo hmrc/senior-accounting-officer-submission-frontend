@@ -49,7 +49,6 @@ class NotificationCheckYourAnswersController @Inject() (
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     {
-      navigator.getNotIdRefNum
       Redirect(
         navigator.nextPage(
           NotificationCheckYourAnswersPage,
