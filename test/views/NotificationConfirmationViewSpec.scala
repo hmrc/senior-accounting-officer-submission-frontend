@@ -114,7 +114,7 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
 
 object NotificationConfirmationViewSpec {
   val pageHeading                 = "Notification submitted"
-  val pageTitle                   = "Submit a notification"
+  val pageTitle                   = "Submit a notification - Notification submitted"
   val pageParagraphs: Seq[String] = Seq(
     "We’ve sent a confirmation email to all the contacts you gave during registration.",
     "To keep a record of your submission, you can:",
