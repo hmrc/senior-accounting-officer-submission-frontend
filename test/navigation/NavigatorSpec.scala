@@ -56,7 +56,7 @@ class NavigatorSpec extends SpecBase {
       }
 
       "when on NotificationCheckYourAnswersPage, must go to notification confirmation page" in {
-        val notRefIdMock = "SAONOT9876543210"
+        val notRefIdMock = "SAONOT0123456789"
         navigator.nextPage(
           NotificationCheckYourAnswersPage,
           NormalMode,

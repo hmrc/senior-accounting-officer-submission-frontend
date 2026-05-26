@@ -25,5 +25,5 @@ class FakeNavigator(desiredRoute: Call) extends Navigator(NotificationIdReferenc
   override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
     desiredRoute
 
-  override def getNotIdRefNum: String = "SAONOT9876543210"
+  override def getNotIdRefNum: String = "SAONOT0123456789"
 }

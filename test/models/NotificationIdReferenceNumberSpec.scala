@@ -23,7 +23,7 @@ class NotificationIdReferenceNumberSpec extends SpecBase {
   val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber.apply()
 
   "returnHardCodedNotRef must return the hard coded string" in {
-    notificationIdReferenceNumber.returnHardCodedNotRef mustEqual "SAONOT9876543210"
+    notificationIdReferenceNumber.returnHardCodedNotRef mustEqual "SAONOT0123456789"
   }
 
 }

@@ -29,7 +29,7 @@ class NotificationConfirmationControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  def hardCodedNotRef: String = "SAONOT9876543210"
+  def hardCodedNotRef: String = "SAONOT0123456789"
 
   "NotificationConfirmation Controller" - {
 
