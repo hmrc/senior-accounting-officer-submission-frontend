@@ -88,8 +88,6 @@ trait SpecBase
     new GuiceApplicationBuilder()
       .overrides(
         bind[DataRequiredAction].to[DataRequiredActionImpl],
-        bind[RequireNotificationUploadUnlockedAction].to[RequireNotificationUploadUnlockedActionImpl],
-        bind[RequireSubmitNotificationUnlockedAction].to[RequireSubmitNotificationUnlockedActionImpl],
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
       )

@@ -26,8 +26,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class RequireNotificationUploadUnlockedActionImpl @Inject() (implicit val executionContext: ExecutionContext)
-    extends RequireNotificationUploadUnlockedAction {
+class RequireNotificationUploadUnlockedAction @Inject() (implicit val executionContext: ExecutionContext)
+    extends ActionFilter[DataRequest] {
 
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] =
     Future.successful {
@@ -37,10 +37,8 @@ class RequireNotificationUploadUnlockedActionImpl @Inject() (implicit val execut
     }
 }
 
-trait RequireNotificationUploadUnlockedAction extends ActionFilter[DataRequest]
-
-class RequireSubmitNotificationUnlockedActionImpl @Inject() (implicit val executionContext: ExecutionContext)
-    extends RequireSubmitNotificationUnlockedAction {
+class RequireSubmitNotificationUnlockedAction @Inject() (implicit val executionContext: ExecutionContext)
+    extends ActionFilter[DataRequest] {
 
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] =
     Future.successful {
@@ -49,5 +47,3 @@ class RequireSubmitNotificationUnlockedActionImpl @Inject() (implicit val execut
       }
     }
 }
-
-trait RequireSubmitNotificationUnlockedAction extends ActionFilter[DataRequest]
