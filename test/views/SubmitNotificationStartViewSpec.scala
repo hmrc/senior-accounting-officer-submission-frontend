@@ -165,8 +165,6 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
   }
 
   "SubmitNotificationStartView with all stages complete" - {
-//    val doc: Document = generateView(SubmitNotificationInfo)
-
     val doc: Document = generateView(SubmitNotificationStage.AllStagesCompleted)
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
