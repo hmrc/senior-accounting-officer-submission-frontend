@@ -34,8 +34,6 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
 
   "SubmitNotificationStart Controller" - {
 
-    import SubmitNotificationStartController.NotificationCompletedKey
-
     val hubBaseUrl = "http://localhost:10056/senior-accounting-officer"
 
     "must return OK and the initial task list view for a GET with no completed tasks" in {
@@ -106,7 +104,7 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must return OK and the completed task list view for a GET when the completion marker is present" in {
+    "must return OK and the completed task list view for a GET when all tasks is complete" in {
       val mockSessionRepository = mock[SessionRepository]
       when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(emptyUserAnswers)))
 
@@ -116,7 +114,6 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request = FakeRequest(GET, routes.SubmitNotificationStartController.onComplete().url)
-          .withSession(NotificationCompletedKey -> "true")
 
         val result = route(application, request).value
 
@@ -130,19 +127,6 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect to the task list for a completed task list GET when the completion marker is missing" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, routes.SubmitNotificationStartController.onComplete().url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        header(HeaderNames.LOCATION, result) mustEqual Some(routes.SubmitNotificationStartController.onPageLoad().url)
-      }
-    }
-
     "must redirect to the homepage for a completed task list POST" in {
       AppConfig.setValue("hub-frontend.host", "http://localhost:10056")
 
@@ -150,13 +134,11 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request = FakeRequest(POST, routes.SubmitNotificationStartController.onCompleteSubmit().url)
-          .withSession(NotificationCompletedKey -> "true")
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
         header(HeaderNames.LOCATION, result) mustEqual Some(hubBaseUrl)
-        session(result).get(NotificationCompletedKey) mustBe None
       }
     }
   }

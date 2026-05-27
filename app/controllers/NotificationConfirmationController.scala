@@ -16,7 +16,6 @@
 
 package controllers
 
-import controllers.SubmitNotificationStartController.NotificationCompletedKey
 import controllers.actions.*
 import models.{NormalMode, NotificationConfirmationDetails}
 import navigation.Navigator
@@ -56,6 +55,5 @@ class NotificationConfirmationController @Inject() (
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
-        .withSession(request.session + (NotificationCompletedKey -> "true"))
     }
 }
