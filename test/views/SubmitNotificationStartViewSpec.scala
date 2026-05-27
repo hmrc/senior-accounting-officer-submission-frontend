@@ -47,6 +47,24 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
+      "must render task list data-test-ids" in {
+        val taskNames = doc.getMainContent.getElementsByClass("govuk-task-list__name-and-hint")
+        taskNames.size() mustBe 3
+
+        taskNames.get(0).attr("data-test-id") mustBe "provide-sao-details"
+        taskNames.get(1).attr("data-test-id") mustBe "upload-submission-template"
+        taskNames.get(2).attr("data-test-id") mustBe "submit-notification"
+      }
+
+      "must render task list status ids" in {
+        val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
+        statusTags.size() mustBe 3
+
+        statusTags.get(0).id() mustBe "provide-sao-details-status"
+        statusTags.get(1).id() mustBe "upload-template-details-status"
+        statusTags.get(2).id() mustBe "submit-notification-details-status"
+      }
+
       doc.getMainContent
         .select("a.govuk-link")
         .get(0)

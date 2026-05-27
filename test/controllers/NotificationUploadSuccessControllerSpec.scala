@@ -49,7 +49,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
   }
 
   override def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder = super
-    .applicationBuilder(userAnswers = Some(emptyUserAnswers))
+    .applicationBuilder(userAnswers = userAnswers)
     .overrides(
       bind[UpscanService].toInstance(mockUpscanService),
       bind[SessionRepository].toInstance(mockSessionRepository)
@@ -67,7 +67,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           Future.successful(State.NoReference)
         )
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
         running(application) {
           val request =
@@ -97,7 +97,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           Future.successful(State.NoReference)
         )
 
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
         running(application) {
           val request =
@@ -118,7 +118,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
     "when UpscanService returns State.WaitingForUpscan" - {
       "must return OK and the correct view for a GET" in {
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
         when(
           mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using
@@ -148,7 +148,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
     }
 
     def testFileUploadStateCausesUploadFormRedirect(inState: State): Unit = {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
       when(mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using any())).thenReturn(
         Future.successful(inState)
@@ -189,7 +189,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
     "when UpscanService returns State.DownloadFromUpscanFailed" - {
       "must redirect to notification upload form page" in {
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
         when(
           mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using
@@ -218,7 +218,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
     "when UpscanService returns State.ValidationFailed" - {
       "must redirect to upload table error page" in {
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
         when(
           mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using
@@ -259,7 +259,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
     "when UpscanService returns State.Result" - {
       "must redirect to upload table page" in {
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
         when(
           mockUpscanService.fileUploadState(any[UserAnswers], any[Option[String]])(using

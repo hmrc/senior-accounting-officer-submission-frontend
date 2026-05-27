@@ -17,8 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.NormalMode
-import models.NotificationConfirmationDetails
+import models.{NormalMode, NotificationConfirmationDetails}
 import navigation.Navigator
 import pages.NotificationConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -33,25 +32,28 @@ class NotificationConfirmationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationConfirmationView,
     navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(
-      view(
-        NotificationConfirmationDetails(
-          companyName = "ABC Limited",
-          notificationId = "SAONOT0123456789",
-          notificationDateTime = "Placeholder Date/Time"
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+      Ok(
+        view(
+          NotificationConfirmationDetails(
+            companyName = "ABC Limited",
+            notificationId = "SAONOT0123456789",
+            notificationDateTime = "Placeholder Date/Time"
+          )
         )
       )
-    )
-  }
+    }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
-  }
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+      Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
+    }
 }

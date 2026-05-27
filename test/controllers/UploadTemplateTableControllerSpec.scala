@@ -109,11 +109,8 @@ class UploadTemplateTableControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET when there was more than one SAO" in {
       val lastSaoName = "John Smith"
-      val answers     = emptyUserAnswers
+      val answers     = completedMultipleSaoDetailsAnswers
         .set(UploadTemplateTablePage, tableData)
-        .success
-        .value
-        .set(NotificationMoreThanOneSaoPage, true)
         .success
         .value
         .set(MoreSaoSubmitNotificationFullNamePage, lastSaoName)
@@ -135,7 +132,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
     }
 
     "must redirect to Journey Recovery for GET when table data is missing" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.UploadTemplateTableController.onPageLoad().url)
@@ -147,7 +144,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
       }
     }
 
-    "must redirect to Journey Recovery for GET when SAO name is missing" in {
+    "must redirect to the task list for GET when SAO name is missing" in {
       val answers     = emptyUserAnswers.set(UploadTemplateTablePage, tableData).success.value
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
@@ -157,12 +154,12 @@ class UploadTemplateTableControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.SubmitNotificationStartController.onPageLoad().url
       }
     }
 
     "must redirect to Journey Recovery for POST when debug data is missing" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
       running(application) {
         val request = FakeRequest(POST, routes.UploadTemplateTableController.onSubmit().url)
