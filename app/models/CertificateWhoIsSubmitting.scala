@@ -22,7 +22,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
 enum CertificateWhoIsSubmitting(override val toString: String) {
   case Sao     extends CertificateWhoIsSubmitting("sao")
-  case Standin extends CertificateWhoIsSubmitting("standIn")
+  case StandIn extends CertificateWhoIsSubmitting("standIn")
 }
 
 object CertificateWhoIsSubmitting extends Enumerable.Implicits[CertificateWhoIsSubmitting] {

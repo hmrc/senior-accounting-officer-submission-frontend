@@ -96,6 +96,32 @@ class Navigator @Inject() () {
               routes.NotificationUploadFormController.onPageLoad()
             case _ => routes.SubmitNotificationStartController.onPageLoad()
           }
+    // certificate flow
+    case CertificateSaoFullNamePage =>
+      _ => routes.CertificateSaoEmailController.onPageLoad(NormalMode)
+    case CertificateSaoEmailPage =>
+      _ => routes.CertificateTaskListController.onPageLoad()
+    case CertificateReviewQualifiedPage =>
+      _ => routes.CertificateReviewUnqualifiedController.onPageLoad()
+    case CertificateReviewUnqualifiedPage =>
+      _ => routes.CertificateTaskListController.onPageLoad()
+    case CertificateAdditionalInformationPage =>
+      _ => routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
+    case CertificateWhoIsSubmittingPage =>
+      userAnswers =>
+        userAnswers.get(CertificateWhoIsSubmittingPage) match {
+          case Some(CertificateWhoIsSubmitting.Sao) =>
+            routes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
+          case Some(CertificateWhoIsSubmitting.StandIn) =>
+            routes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
+          case _ => ???
+        }
+    case CertificateDeclarationSaoPage | CertificateDeclarationStandInPage =>
+      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+    case CertificateCheckYourAnswersPage =>
+      _ => routes.CertificateConfirmationController.onPageLoad()
+    case CertificateConfirmationPage =>
+      _ => routes.CertificateTaskListController.onPageLoad()
     case _ =>
       _ => ???
   }

@@ -129,8 +129,10 @@ GET        /changeCertificateAdditionalInformation                  controllers.
 POST       /changeCertificateAdditionalInformation                  controllers.CertificateAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateReviewQualified                       controllers.CertificateReviewQualifiedController.onPageLoad()
+POST        /certificateReviewQualified                       controllers.CertificateReviewQualifiedController.onSubmit()
 
 GET        /certificateReviewUnqualified                       controllers.CertificateReviewUnqualifiedController.onPageLoad()
+POST        /certificateReviewUnqualified                       controllers.CertificateReviewUnqualifiedController.onSubmit()
 
 GET        /certificateSaoEmail                        controllers.CertificateSaoEmailController.onPageLoad(mode: Mode = NormalMode)
 POST       /certificateSaoEmail                        controllers.CertificateSaoEmailController.onSubmit(mode: Mode = NormalMode)
@@ -158,8 +160,10 @@ GET        /changeCertificateWhoIsSubmitting                  controllers.Certif
 POST       /changeCertificateWhoIsSubmitting                  controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onPageLoad()
+POST        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onSubmit()
 
 GET        /certificateConfirmation                       controllers.CertificateConfirmationController.onPageLoad()
+POST        /certificateConfirmation                       controllers.CertificateConfirmationController.onSubmit()
 
 GET        /certificateDeclarationSao                        controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
 POST       /certificateDeclarationSao                        controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)

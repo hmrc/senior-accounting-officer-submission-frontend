@@ -17,6 +17,9 @@
 package controllers
 
 import controllers.actions.*
+import models.NormalMode
+import navigation.Navigator
+import pages.CertificateReviewQualifiedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -27,6 +30,7 @@ import javax.inject.Inject
 class CertificateReviewQualifiedController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
+    navigator: Navigator,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
@@ -36,5 +40,9 @@ class CertificateReviewQualifiedController @Inject() (
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     Ok(view())
+  }
+
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Redirect(navigator.nextPage(CertificateReviewQualifiedPage, NormalMode, request.userAnswers))
   }
 }
