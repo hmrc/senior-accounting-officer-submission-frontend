@@ -73,21 +73,7 @@ class WhoWasTheSaoBeforeSummarySpec extends SpecBase with GuiceOneAppPerSuite {
 
         "must have expected url" in {
           action.href mustBe routes.WhoWasTheSaoBeforeController
-            .onPageLoad(CheckMode, 0)
-            .url
-        }
-
-        "must include the SAO index in the url" in {
-          val answers = emptyUserAnswers
-            .set(WhoWasTheSaoBeforePage(0), "testWhoWasTheSaoBefore")
-            .get
-            .set(WhoWasTheSaoBeforePage(1), "testWhoWasTheSaoBefore")
-            .get
-
-          val action = WhoWasTheSaoBeforeSummary.row(answers, 1).get.actions.head.items.head
-
-          action.href mustBe routes.WhoWasTheSaoBeforeController
-            .onPageLoad(CheckMode, 1)
+            .onPageLoad(CheckMode)
             .url
         }
 

@@ -45,8 +45,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val whoWasTheSaoBeforeRoute: String = routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode).url
 
-  val saoName         = "Firstname Lastname"
-  val previousSaoName = "Previous Name"
+  val saoName = "Firstname Lastname"
 
   val userAnswersWithSaoName: UserAnswers =
     emptyUserAnswers.set(MoreSaoSubmitNotificationFullNamePage, saoName).success.value
@@ -71,42 +70,6 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
           request,
           messages(application)
         ).toString
-      }
-    }
-
-    "must use the previous indexed SAO name for a GET when the SAO index is greater than zero" in {
-      val userAnswers = userAnswersWithSaoName
-        .set(WhoWasTheSaoBeforePage(0), previousSaoName)
-        .success
-        .value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1).url)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(previousSaoName, form, NormalMode, 1)(using
-          request,
-          messages(application)
-        ).toString
-      }
-    }
-
-    "must redirect to journey recovery for a GET when the previous indexed SAO name is missing" in {
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1).url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 

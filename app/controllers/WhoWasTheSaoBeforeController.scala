@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.*
 import forms.WhoWasTheSaoBeforeFormProvider
-import models.{Mode, UserAnswers}
+import models.Mode
 import navigation.Navigator
 import pages.MoreSaoSubmitNotificationFullNamePage
 import pages.WhoWasTheSaoBeforePage
@@ -49,17 +49,11 @@ class WhoWasTheSaoBeforeController @Inject() (
 
   val form: Form[String] = formProvider()
 
-  private def saoNameForPage(saoIndex: Int, userAnswers: UserAnswers): Option[String] =
-    if saoIndex == 0 then {
-      userAnswers.get(MoreSaoSubmitNotificationFullNamePage)
-    } else {
-      userAnswers.get(WhoWasTheSaoBeforePage(saoIndex - 1))
-    }
-
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm = request.userAnswers.get(WhoWasTheSaoBeforePage(saoIndex)).fold(form)(form.fill)
-      saoNameForPage(saoIndex, request.userAnswers)
+      request.userAnswers
+        .get(MoreSaoSubmitNotificationFullNamePage)
         .fold(
           Redirect(routes.JourneyRecoveryController.onPageLoad())
         )(saoName => Ok(view(saoName, preparedForm, mode, saoIndex)))
@@ -68,7 +62,7 @@ class WhoWasTheSaoBeforeController @Inject() (
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      saoNameForPage(saoIndex, request.userAnswers) match {
+      request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
           form
