@@ -41,6 +41,8 @@ class SubmitNotificationStartController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
+  import SubmitNotificationStartController.NotificationCompletedKey
+
   def onPageLoad: Action[AnyContent] = (identify andThen getData) async { implicit request =>
     for {
       userAnswers <- sessionRepository.get(request.userId)
@@ -54,11 +56,19 @@ class SubmitNotificationStartController @Inject() (
     } yield result
   }
 
-  def onComplete: Action[AnyContent] = (identify) { implicit request =>
-    Ok(view(SubmitNotificationStage.AllStagesCompleted))
+  def onComplete: Action[AnyContent] = identify { implicit request =>
+    if request.session.get(NotificationCompletedKey).contains("true") then {
+      Ok(view(SubmitNotificationStage.AllStagesCompleted))
+    } else {
+      Redirect(routes.SubmitNotificationStartController.onPageLoad())
+    }
   }
 
-  def onCompleteSubmit: Action[AnyContent] = identify {
-    Redirect(appConfig.hubBaseUrl)
+  def onCompleteSubmit: Action[AnyContent] = identify { implicit request =>
+    Redirect(appConfig.hubBaseUrl).removingFromSession(NotificationCompletedKey)
   }
+}
+
+object SubmitNotificationStartController {
+  val NotificationCompletedKey = "notificationCompleted"
 }
