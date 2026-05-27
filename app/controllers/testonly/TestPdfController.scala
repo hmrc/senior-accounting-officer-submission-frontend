@@ -31,25 +31,37 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.testonly.*
 
-import java.io.*
-import javax.inject.Inject
 import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.{ExecutionContext, Future, blocking}
 import scala.util.Try
 
+import java.io.*
+import javax.inject.Inject
+
 class TestPdfController @Inject() (
     mcc: MessagesControllerComponents,
     openHtmlToPdfService: OpenHtmlToPdfService,
     view: OpenHtmlToPdfView,
-    notificationTemplate: NotificationPdfView,
-    certificateTemplate: CertificatePdfView
+    notificationPdfTemplate: NotificationPdfView,
+    certificatePdfTemplate: CertificatePdfView,
+    signUpPdfTemplate: SignUpPdfView
 )(implicit val ec: ExecutionContext, actorSystem: ActorSystem)
     extends FrontendController(mcc)
     with I18nSupport {
 
+  def testSignUpPdf(): Action[AnyContent] = Action { implicit request =>
+    val html    = signUpPdfTemplate(testSignUpData()).toString
+    val content = openHtmlToPdfService.builderFor(html).asSource
+    Ok.chunked(
+      content,
+      inline = false,
+      fileName = Some("test-sign-up.pdf")
+    )
+  }
+
   def testNotificationPdf(rows: Int): Action[AnyContent] = Action { implicit request =>
-    val html    = notificationTemplate(testNotificationData(rows)).toString
+    val html    = notificationPdfTemplate(testNotificationData(rows)).toString
     val content = openHtmlToPdfService.builderFor(html).asSource
     Ok.chunked(
       content,
@@ -59,7 +71,7 @@ class TestPdfController @Inject() (
   }
 
   def testCertificatePdf(rows: Int): Action[AnyContent] = Action { implicit request =>
-    val html    = certificateTemplate(testCertificateData(rows)).toString
+    val html    = certificatePdfTemplate(testCertificateData(rows)).toString
     val content = openHtmlToPdfService.builderFor(html).asSource
     Ok.chunked(
       content,
@@ -124,12 +136,23 @@ class TestPdfController @Inject() (
   }
 
   def example(rows: Int): Action[AnyContent] = Action { implicit request =>
-    Ok(notificationTemplate(OpenHtmlToPdfService.testNotificationData(rows)))
+    Ok(notificationPdfTemplate(OpenHtmlToPdfService.testNotificationData(rows)).toString())
   }
 
 }
 
 object TestPdfController {
+
+  final case class Contact(name: String, email: String)
+
+  final case class SignUp(
+      companyName: String,
+      crn: String,
+      utr: String,
+      subscriptionDate: String,
+      subscriptionId: String,
+      contacts: Seq[Contact]
+  )
 
   final case class Certificate(
       saoName: String,
@@ -304,6 +327,18 @@ private[testonly] class OpenHtmlToPdfService {
 }
 
 private[testonly] object OpenHtmlToPdfService {
+
+  def testSignUpData(): SignUp = SignUp(
+    companyName = "Test ABC Limited",
+    crn = "SC123456",
+    utr = "5928374610",
+    subscriptionDate = "12 January 2025",
+    subscriptionId = "XMPLR0123456789",
+    contacts = List(
+      Contact(name = "Fake Ethan Easton", email = "eeaston@test.co.uk"),
+      Contact(name = "Fake Amanda Hawthorne", email = "ahawthorne@test.co.uk")
+    )
+  )
 
   private val testCompanySeeds: Seq[Certificate.Row] = Seq(
     Certificate.Row(
@@ -642,7 +677,7 @@ private[testonly] object OpenHtmlToPdfService {
     val additionalInformation = LorumIpsum.generate(totalBytes = 32767L)
     Certificate(
       saoName = "Test Jackson Brown",
-      saoEmail = "jbrown@abcltd.co.uk",
+      saoEmail = "jbrown@test.co.uk",
       submitterName = "Test Jackson Brown",
       submissionDate = "12 May 2025",
       submissionId = "XMPLR0123456789",
