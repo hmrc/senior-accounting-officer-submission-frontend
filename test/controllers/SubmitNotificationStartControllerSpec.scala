@@ -17,9 +17,11 @@
 package controllers
 
 import base.SpecBase
+import config.AppConfig
 import models.SubmitNotificationStage
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -31,6 +33,8 @@ import scala.concurrent.Future
 class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
 
   "SubmitNotificationStart Controller" - {
+
+    val hubBaseUrl = "http://localhost:10056/senior-accounting-officer"
 
     "must return OK and the initial task list view for a GET with no completed tasks" in {
       val mockSessionRepository = mock[SessionRepository]
@@ -120,6 +124,21 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
           request,
           messages(application)
         ).toString
+      }
+    }
+
+    "must redirect to the homepage for a completed task list POST" in {
+      AppConfig.setValue("hub-frontend.host", "http://localhost:10056")
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(POST, routes.SubmitNotificationStartController.onCompleteSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        header(HeaderNames.LOCATION, result) mustEqual Some(hubBaseUrl)
       }
     }
   }

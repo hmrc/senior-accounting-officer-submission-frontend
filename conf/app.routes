@@ -9,6 +9,7 @@ GET         /there-is-a-problem                                       controller
 
 GET         /notification/start                                       controllers.SubmitNotificationStartController.onPageLoad()
 GET         /notification/complete                                    controllers.SubmitNotificationStartController.onComplete()
+POST        /notification/complete                                    controllers.SubmitNotificationStartController.onCompleteSubmit()
 
 GET         /template-guidance                                        controllers.TemplateGuidanceController.onPageLoad()
 
