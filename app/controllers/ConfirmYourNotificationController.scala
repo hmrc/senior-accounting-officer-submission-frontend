@@ -32,18 +32,21 @@ class ConfirmYourNotificationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: ConfirmYourNotificationView,
     navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
-  }
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+      Ok(view())
+    }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(ConfirmYourNotificationPage, NormalMode, request.userAnswers))
-  }
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+      Redirect(navigator.nextPage(ConfirmYourNotificationPage, NormalMode, request.userAnswers))
+    }
 
 }

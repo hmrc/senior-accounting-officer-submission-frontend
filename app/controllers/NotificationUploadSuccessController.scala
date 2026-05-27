@@ -38,6 +38,7 @@ class NotificationUploadSuccessController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     sessionRepository: SessionRepository,
     upscanService: UpscanService,
@@ -48,7 +49,7 @@ class NotificationUploadSuccessController @Inject() (
     with Logging {
 
   def onPageLoad(key: Option[String]): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
       upscanService.fileUploadState(request.userAnswers, key).flatMap {
         case State.NoReference =>
           Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))

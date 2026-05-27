@@ -32,6 +32,7 @@ class NotificationConfirmationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationConfirmationView,
     navigator: Navigator
@@ -39,13 +40,14 @@ class NotificationConfirmationController @Inject() (
     with I18nSupport {
 
   def onPageLoad(notificationIdReferenceNumber: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData) { implicit request =>
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       Ok(
         view(notificationIdReferenceNumber)
       )
     }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
-  }
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+      Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
+    }
 }

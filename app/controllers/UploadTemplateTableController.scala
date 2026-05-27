@@ -33,6 +33,7 @@ class UploadTemplateTableController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: UploadTemplateTableView,
     playbackService: UploadTemplatePlaybackService,
@@ -40,15 +41,17 @@ class UploadTemplateTableController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    playbackService
-      .getPlayback(request.userAnswers)
-      .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { playback =>
-        Ok(view(playback.tableData, playback.saoName))
-      }
-  }
+  def onPageLoad(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
+      playbackService
+        .getPlayback(request.userAnswers)
+        .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { playback =>
+          Ok(view(playback.tableData, playback.saoName))
+        }
+    }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
-  }
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
+      Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+    }
 }

@@ -33,6 +33,7 @@ class NotificationCheckYourAnswersController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
     navigator: Navigator,
@@ -41,14 +42,14 @@ class NotificationCheckYourAnswersController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+      val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
 
-    Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
-  }
+      Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
+    }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    {
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       Redirect(
         navigator.nextPage(
           NotificationCheckYourAnswersPage,
@@ -57,5 +58,4 @@ class NotificationCheckYourAnswersController @Inject() (
         )
       )
     }
-  }
 }

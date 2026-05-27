@@ -31,6 +31,7 @@
         @row(
             linkText = messages("submitNotificationStart.provideSaoDetailsLinkText"),
             href = routes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode),
+            testId = "provide-sao-details",
             statusName = "provide-sao-details",
             status = currentStage.provideSaoDetailsStatus
         )
@@ -38,6 +39,7 @@
         @row(
             linkText = messages("submitNotificationStart.uploadNotificationLinkText"),
             href = routes.NotificationUploadFormController.onPageLoad(),
+            testId = "upload-submission-template",
             statusName = "upload-template-details",
             status = currentStage.uploadNotificationTemplateStatus
         )
@@ -45,6 +47,7 @@
         @row(
             linkText = messages("submitNotificationStart.submitNotificationLinkText"),
             href = routes.NotificationAdditionalInformationController.onPageLoad(NormalMode),
+            testId = "submit-notification",
             statusName = "submit-notification-details",
             status = currentStage.submitNotificationStatus
         )
@@ -52,9 +55,9 @@
 }
 
 
-@row(linkText: String, href: Call, statusName: String, status: SubmitNotificationStatus) = {
+@row(linkText: String, href: Call, testId: String, statusName: String, status: SubmitNotificationStatus) = {
 <li class="govuk-task-list__item govuk-task-list__item--with-link">
-    <div class="govuk-task-list__name-and-hint">
+    <div class="govuk-task-list__name-and-hint" data-test-id="@testId">
         @if(status == SubmitNotificationStatus.NotStarted) {
             <a class="govuk-link govuk-task-list__link" href="@href" aria-describedby="@statusName-status">
                 @linkText
