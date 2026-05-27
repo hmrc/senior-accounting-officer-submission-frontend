@@ -180,14 +180,6 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
 
     doc.createTestsWithOrWithoutError(hasError = false)
 
-//    doc.getMainContent
-//      .select("a.govuk-link")
-//      .get(0)
-//      .createTestWithLink(
-//        linkText = submitNotificationLinkText,
-//        destinationUrl = routes.NotificationAdditionalInformationController.onComplete().url
-//      )
-
     "must show the correct statuses" in {
       val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
       statusTags.size() mustBe 3

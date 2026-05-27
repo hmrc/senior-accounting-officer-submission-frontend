@@ -56,9 +56,10 @@
     @if(currentStage == SubmitNotificationStage.AllStagesCompleted) {
         @formHelper(action = routes.NotificationConfirmationController.onSubmit()) {
             @govukButton(
-                ButtonViewModel(messages("submitNotificationStart.homepageText").toText).withAttribute("id", "submit")
-            )
-        }
+        ButtonViewModel(messages("submitNotificationStart.homepageText").toText).withAttribute("id", "submit")
+  )
+}
+
     }
 }
 
