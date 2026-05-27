@@ -99,6 +99,7 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+//      doc.createTestsWithSubmissionButton()
   }
 
   extension (target: => Document) {

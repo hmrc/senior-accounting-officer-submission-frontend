@@ -16,6 +16,7 @@
 
 @this(
         layout: templates.Layout,
+        formHelper: FormWithCSRF,
         govukButton: GovukButton
 )
 
@@ -52,6 +53,13 @@
             status = currentStage.submitNotificationStatus
         )
     </ul>
+    @if(currentStage == SubmitNotificationStage.AllStagesCompleted) {
+        @formHelper(action = routes.NotificationConfirmationController.onSubmit()) {
+            @govukButton(
+                ButtonViewModel(messages("submitNotificationStart.homepageText").toText).withAttribute("id", "submit")
+            )
+        }
+    }
 }
 
 

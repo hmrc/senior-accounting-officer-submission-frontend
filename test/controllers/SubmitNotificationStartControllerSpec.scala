@@ -99,5 +99,28 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
         ).toString
       }
     }
+
+    "must return OK and the completed task list view for a GET when all tasks is complete" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(emptyUserAnswers)))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.SubmitNotificationStartController.onComplete().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[SubmitNotificationStartView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(SubmitNotificationStage.AllStagesCompleted)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
   }
 }

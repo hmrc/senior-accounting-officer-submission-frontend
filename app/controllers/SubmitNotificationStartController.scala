@@ -51,4 +51,8 @@ class SubmitNotificationStartController @Inject() (
       }
     } yield result
   }
+
+  def onComplete: Action[AnyContent] = (identify) { implicit request =>
+    Ok(view(SubmitNotificationStage.AllStagesCompleted))
+  }
 }

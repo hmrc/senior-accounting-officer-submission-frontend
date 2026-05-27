@@ -174,7 +174,7 @@ class NavigatorSpec extends SpecBase {
           NotificationConfirmationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe routes.SubmitNotificationStartController.onComplete()
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
