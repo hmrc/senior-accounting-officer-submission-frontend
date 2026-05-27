@@ -184,7 +184,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
       val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
       statusTags.size() mustBe 3
 
-      val provideSaoDetailsTag = statusTags.get(0)
+      val provideSaoDetailsTag  = statusTags.get(0)
       val uploadNotificationTag = statusTags.get(1)
       val submitNotificationTag = statusTags.get(2)
 
@@ -194,7 +194,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
     }
 
     "must show the 'Go back to the homepage' button" in {
-      val buttonTags = doc.getElementsByTag("button")
+      val buttonTags  = doc.getElementsByTag("button")
       val homepageBtn = buttonTags.get(0)
 
       buttonTags.size() mustBe 1
