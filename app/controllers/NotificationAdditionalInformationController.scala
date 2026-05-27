@@ -42,6 +42,7 @@ class NotificationAdditionalInformationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     formProvider: NotificationAdditionalInformationFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationAdditionalInformationView
@@ -51,17 +52,18 @@ class NotificationAdditionalInformationController @Inject() (
 
   val form: Form[Option[String]] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.getNullable(NotificationAdditionalInformationPage) match {
-      case None  => form
-      case value => form.fill(value)
+  def onPageLoad(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+      val preparedForm =
+        request.userAnswers
+          .getNullable(NotificationAdditionalInformationPage)
+          .fold(form)(value => form.fill(Some(value)))
+
+      Ok(view(preparedForm, mode))
     }
 
-    Ok(view(preparedForm, mode))
-  }
-
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
       form
         .bindFromRequest()
         .fold(
@@ -73,5 +75,5 @@ class NotificationAdditionalInformationController @Inject() (
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
         )
-  }
+    }
 }

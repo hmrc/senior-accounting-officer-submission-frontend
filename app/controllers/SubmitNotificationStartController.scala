@@ -43,9 +43,11 @@ class SubmitNotificationStartController @Inject() (
     for {
       userAnswers <- sessionRepository.get(request.userId)
       result      <- userAnswers match {
-        case Some(_) => Future.successful(Ok(view(SubmitNotificationStage.ShowAllLinks)))
-        case None    =>
-          sessionRepository.set(UserAnswers(request.userId)).map(_ => Ok(view(SubmitNotificationStage.ShowAllLinks)))
+        case Some(answers) => Future.successful(Ok(view(SubmitNotificationStage.taskListStage(answers))))
+        case None          =>
+          sessionRepository
+            .set(UserAnswers(request.userId))
+            .map(_ => Ok(view(SubmitNotificationStage.ProvideSaoDetails)))
       }
     } yield result
   }

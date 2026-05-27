@@ -32,7 +32,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.NotificationUploadFormView
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.Future
 
 class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
@@ -57,7 +57,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any()))
         .thenReturn(Future.successful(true))
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers))
         .overrides(
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
           bind[SessionRepository].toInstance(mockSessionRepository),
@@ -77,7 +77,6 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "return an error when upscan initiate connector fails" in {
-      given ec: ExecutionContext         = scala.concurrent.ExecutionContext.Implicits.global
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
       val mockSessionRepository          = mock[SessionRepository]
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
@@ -88,7 +87,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         )
       ).thenReturn(Future.failed(new RuntimeException("Upscan service unavailable")))
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers))
         .overrides(
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
           bind[SessionRepository].toInstance(mockSessionRepository),
@@ -126,7 +125,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any()))
         .thenReturn(Future.failed(new RuntimeException("Database connection failed")))
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers))
         .overrides(
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
           bind[SessionRepository].toInstance(mockSessionRepository),
@@ -159,6 +158,19 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
+    "must redirect to the task list when SAO details have not been completed" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, routes.NotificationUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.SubmitNotificationStartController.onPageLoad().url
+      }
+    }
+
     "store the Upscan reference in user answers as soon as the upload is initiated" in {
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
       val mockSessionRepository          = mock[SessionRepository]
@@ -172,7 +184,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         .thenReturn(Future.successful(upscanInitiateResponse))
       when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers))
         .overrides(
           bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
           bind[SessionRepository].toInstance(mockSessionRepository),
@@ -218,7 +230,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers =
         Some(
-          emptyUserAnswers
+          completedSaoDetailsAnswers
             .set(NotificationUploadStatePage, NotificationUploadState("foo", uploadStatus))
             .get
         )
