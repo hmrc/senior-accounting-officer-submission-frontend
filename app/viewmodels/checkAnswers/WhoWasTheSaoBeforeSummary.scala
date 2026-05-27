@@ -34,7 +34,7 @@ object WhoWasTheSaoBeforeSummary {
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            routes.WhoWasTheSaoBeforeController.onPageLoad(CheckMode).url
+            routes.WhoWasTheSaoBeforeController.onPageLoad(CheckMode, saoIndex).url
           )
             .withVisuallyHiddenText(messages("whoWasTheSaoBefore.change.hidden"))
         )
