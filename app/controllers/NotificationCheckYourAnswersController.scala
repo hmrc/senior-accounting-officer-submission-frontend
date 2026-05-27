@@ -49,7 +49,8 @@ class NotificationCheckYourAnswersController @Inject() (
       Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
     }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       Redirect(
         navigator.nextPage(
           NotificationCheckYourAnswersPage,
