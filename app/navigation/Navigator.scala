@@ -34,8 +34,6 @@ class Navigator @Inject() () {
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage =>
       _ => routes.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber.id)
-    case SubmitCertificateStartPage =>
-      _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
     case IsThisTheSaoOnCertificatePage =>
       userAnswers =>
         userAnswers.get(IsThisTheSaoOnCertificatePage) match {

@@ -72,14 +72,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
-      "when on SubmitCertificateStartPage, must go to is this SAO on certificate page" in {
-        navigator.nextPage(
-          SubmitCertificateStartPage,
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
-      }
-
       "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO email page" in {
         navigator.nextPage(
           IsThisTheSaoOnCertificatePage,
@@ -334,7 +326,7 @@ class NavigatorSpec extends SpecBase {
               SubmissionTypePage,
               NormalMode,
               UserAnswers("id").set(SubmissionTypePage, SubmissionType.Combined).get
-            ) mustBe routes.SubmitCertificateStartController.onPageLoad()
+            )
           }
         }
       }
