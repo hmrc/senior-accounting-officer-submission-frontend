@@ -110,6 +110,9 @@ trait RadiosFluency {
     def inline(): Radios =
       radios.withCssClass("govuk-radios--inline")
 
+    def vertical(): Radios =
+      radios.copy(classes = radios.classes.replaceAll("govuk-radios--inline", ""))
+
     def withButtonHints(hints: List[String]): Radios = {
       radios.copy(items =
         radios.items.zip(hints).map((radio, hint) => radio.copy(hint = Some(Hint(content = Text(hint)))))

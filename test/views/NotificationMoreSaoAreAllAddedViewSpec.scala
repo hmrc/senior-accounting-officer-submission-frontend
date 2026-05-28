@@ -35,6 +35,15 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
     Jsoup.parse(view.toString)
   }
 
+  extension (doc: Document) {
+    def verticalRadioButton(): Unit = {
+      "must have vertical radio buttons" in {
+        doc.select(".govuk-radios").size() mustBe 1
+        doc.select(".govuk-radios.govuk-radios--inline").size() mustBe 0
+      }
+    }
+  }
+
   "NotificationMoreSaoAreAllAddedView" - {
 
     Mode.values.foreach { mode =>
@@ -49,6 +58,12 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
             showIsThisPageNotWorkingProperlyLink = true,
             hasError = false
           )
+
+          doc.createTestsWithLargeCaption(
+            caption = pageCaption
+          )
+
+          doc.verticalRadioButton()
 
           doc.createTestsWithRadioButtons(
             name = "value",
@@ -79,6 +94,10 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
             showBackLink = true,
             showIsThisPageNotWorkingProperlyLink = true,
             hasError = false
+          )
+
+          doc.createTestsWithLargeCaption(
+            caption = pageCaption
           )
 
           doc.createTestsWithRadioButtons(
@@ -112,6 +131,10 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
             hasError = true
           )
 
+          doc.createTestsWithLargeCaption(
+            caption = pageCaption
+          )
+
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
@@ -139,11 +162,13 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
 }
 
 object NotificationMoreSaoAreAllAddedViewSpec {
-  val pageHeading = "notificationMoreSaoAreAllAdded"
-  val pageTitle   = "notificationMoreSaoAreAllAdded"
-  val yesKey      = "true"
-  val yesLabel    = "Yes"
-  val noKey       = "false"
-  val noLabel     = "No"
-  val saoIndex    = 3
+  val pageHeading = "Have you added all the SAO for the financial year this notification relates to?"
+  val pageCaption = "Submit a notification"
+  val pageTitle   =
+    "Submit a notification - Have you added all the SAO for the financial year this notification relates to?"
+  val yesKey   = "true"
+  val yesLabel = "Yes"
+  val noKey    = "false"
+  val noLabel  = "No"
+  val saoIndex = 3
 }
