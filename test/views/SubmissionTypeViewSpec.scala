@@ -64,6 +64,8 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
             hasError = false
           )
 
+          doc.createTestsWithRadioButtonDivider(radioButtonDivider)
+
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
@@ -97,6 +99,8 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
             isChecked = Some(radio(value = option1key, label = option1Label)),
             hasError = false
           )
+
+          doc.createTestsWithRadioButtonDivider(radioButtonDivider)
 
           doc.createTestsWithLargeCaption(pageCaption)
 
@@ -132,6 +136,8 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
             hasError = true
           )
 
+          doc.createTestsWithRadioButtonDivider(radioButtonDivider)
+
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
@@ -146,16 +152,26 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
       }
     }
   }
+
+  extension (doc: Document) {
+    def createTestsWithRadioButtonDivider(expectedText: String): Unit = {
+      "must have a divider" in {
+        doc.select(".govuk-radios__divider").size() mustBe 1
+        doc.select(".govuk-radios__divider").text() mustBe expectedText
+      }
+    }
+  }
 }
 
 object SubmissionTypeViewSpec {
-  val pageHeading  = "What would you like to submit?"
-  val pageTitle    = "Senior Accounting Officer notification and certificate - New submission"
-  val pageCaption  = "New submission"
-  val option1key   = "notification"
-  val option1Label = "A notification"
-  val option2key   = "certificate"
-  val option2Label = "A certificate"
-  val option3key   = "combined"
-  val option3Label = "A notification and certificate together"
+  val pageHeading        = "What would you like to submit?"
+  val pageTitle          = "Senior Accounting Officer notification and certificate - New submission"
+  val pageCaption        = "New submission"
+  val option1key         = "notification"
+  val option1Label       = "A notification"
+  val option2key         = "certificate"
+  val option2Label       = "A certificate"
+  val option3key         = "combined"
+  val option3Label       = "A notification and certificate together"
+  val radioButtonDivider = "or"
 }
