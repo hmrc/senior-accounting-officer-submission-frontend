@@ -32,15 +32,16 @@ import repositories.SessionRepository
 import views.html.SubmissionTypeView
 
 import scala.concurrent.Future
+import play.api.data.Form
 
 class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/foo")
 
-  lazy val submissionTypeRoute = routes.SubmissionTypeController.onPageLoad(NormalMode).url
+  lazy val submissionTypeRoute: String = routes.SubmissionTypeController.onPageLoad(NormalMode).url
 
-  val formProvider = new SubmissionTypeFormProvider()
-  val form = formProvider()
+  val formProvider               = new SubmissionTypeFormProvider()
+  val form: Form[SubmissionType] = formProvider()
 
   "SubmissionType Controller" - {
 
@@ -74,7 +75,10 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(SubmissionType.values.head), NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(SubmissionType.values.head), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

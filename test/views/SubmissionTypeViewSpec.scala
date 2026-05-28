@@ -17,16 +17,14 @@
 package views
 
 import base.ViewSpecBase
+import forms.SubmissionTypeFormProvider
+import models.Mode
+import models.SubmissionType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import play.api.inject.Injector
 import play.api.data.Form
-import forms.SubmissionTypeFormProvider
-import models.SubmissionType
-import models.{NormalMode, CheckMode, Mode}
-import pages.SubmissionTypePage
-import views.html.SubmissionTypeView
 import views.SubmissionTypeViewSpec.*
+import views.html.SubmissionTypeView
 
 class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 

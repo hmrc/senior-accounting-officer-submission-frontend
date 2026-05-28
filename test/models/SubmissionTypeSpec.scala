@@ -18,10 +18,10 @@ package models
 
 import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
-import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
+import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.OptionValues
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 import play.api.libs.json.{JsError, JsString, Json}
 
 class SubmissionTypeSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyChecks with OptionValues {
@@ -32,10 +32,8 @@ class SubmissionTypeSpec extends AnyFreeSpec with Matchers with ScalaCheckProper
 
       val gen = Gen.oneOf(SubmissionType.values.toSeq)
 
-      forAll(gen) {
-        submissionType =>
-
-          JsString(submissionType.toString).validate[SubmissionType].asOpt.value mustEqual submissionType
+      forAll(gen) { submissionType =>
+        JsString(submissionType.toString).validate[SubmissionType].asOpt.value mustEqual submissionType
       }
     }
 
@@ -43,10 +41,8 @@ class SubmissionTypeSpec extends AnyFreeSpec with Matchers with ScalaCheckProper
 
       val gen = arbitrary[String] suchThat (!SubmissionType.values.map(_.toString).contains(_))
 
-      forAll(gen) {
-        invalidValue =>
-
-          JsString(invalidValue).validate[SubmissionType] mustEqual JsError("error.invalid")
+      forAll(gen) { invalidValue =>
+        JsString(invalidValue).validate[SubmissionType] mustEqual JsError("error.invalid")
       }
     }
 
@@ -54,10 +50,8 @@ class SubmissionTypeSpec extends AnyFreeSpec with Matchers with ScalaCheckProper
 
       val gen = Gen.oneOf(SubmissionType.values.toSeq)
 
-      forAll(gen) {
-        submissionType =>
-
-          Json.toJson(submissionType) mustEqual JsString(submissionType.toString)
+      forAll(gen) { submissionType =>
+        Json.toJson(submissionType) mustEqual JsString(submissionType.toString)
       }
     }
   }

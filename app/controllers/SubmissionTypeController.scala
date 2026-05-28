@@ -31,33 +31,37 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class SubmissionTypeController @Inject()(
-                                       override val messagesApi: MessagesApi,
-                                       sessionRepository: SessionRepository,
-                                       navigator: Navigator,
-                                       identify: IdentifierAction,
-                                       getData: DataRetrievalAction,
-                                       requireData: DataRequiredAction,
-                                       formProvider: SubmissionTypeFormProvider,
-                                       val controllerComponents: MessagesControllerComponents,
-                                       view: SubmissionTypeView
-                                     )(using ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
+class SubmissionTypeController @Inject() (
+    override val messagesApi: MessagesApi,
+    sessionRepository: SessionRepository,
+    navigator: Navigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    formProvider: SubmissionTypeFormProvider,
+    val controllerComponents: MessagesControllerComponents,
+    view: SubmissionTypeView
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport {
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val form = formProvider()
+    val form         = formProvider()
     val preparedForm = request.userAnswers.get(SubmissionTypePage).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val form = formProvider()
-    form.bindFromRequest().fold(
-      formWithErrors =>
-        Future.successful(BadRequest(view(formWithErrors, mode))),
-      value =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, value))
-          _              <- sessionRepository.set(updatedAnswers)
-        } yield Redirect(navigator.nextPage(SubmissionTypePage, mode, updatedAnswers))
-    )
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      val form = formProvider()
+      form
+        .bindFromRequest()
+        .fold(
+          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+          value =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, value))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(SubmissionTypePage, mode, updatedAnswers))
+        )
   }
 }
