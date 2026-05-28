@@ -16,4 +16,4 @@
 
 package models
 
-final case class NotificationIdReferenceNumber(returnHardCodedNotRef: String)
+final case class NotificationIdReferenceNumber(id: String)

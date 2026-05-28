@@ -33,7 +33,7 @@ class Navigator @Inject() () {
     case ConfirmYourNotificationPage =>
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage =>
-      _ => routes.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber.returnHardCodedNotRef)
+      _ => routes.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber.id)
     case SubmitCertificateStartPage =>
       _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
     case IsThisTheSaoOnCertificatePage =>
