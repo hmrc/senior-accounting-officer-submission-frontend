@@ -191,21 +191,10 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
       submitNotificationTag.text() mustBe completedText
     }
 
-    "must show the 'Go back to the homepage' button" in {
-      val buttonTags  = doc.getElementsByTag("button")
-      val homepageBtn = buttonTags.get(0)
-
-      buttonTags.size() mustBe 1
-      homepageBtn.text() mustBe homepageBtnText
-
-    }
-
-    "must submit the homepage button to the completed task list route" in {
-      val form = doc.getMainContent.getElementsByTag("form").get(0)
-
-      form.attr("method") mustBe "POST"
-      form.attr("action") mustBe routes.SubmitNotificationStartController.onCompleteSubmit().url
-    }
+    doc.createTestsWithSubmissionButton(
+      action = routes.SubmitNotificationStartController.onCompleteSubmit(),
+      buttonText = homepageBtnText
+    )
   }
 
 }
