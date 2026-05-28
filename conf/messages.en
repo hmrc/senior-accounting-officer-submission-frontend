@@ -455,3 +455,11 @@ certificateDeclarationSao.checkYourAnswersLabel = certificateDeclarationSao
 certificateDeclarationSao.error.required = Enter the name of the Senior Accounting Officer who is authorised to submit the certificate
 certificateDeclarationSao.error.length = The authorised person name you enter must be 105 characters or less
 certificateDeclarationSao.change.hidden = CertificateDeclarationSao
+
+submissionType.title = submissionType
+submissionType.heading = submissionType
+submissionType.notification = Notification
+submissionType.certificate = Certificate
+submissionType.checkYourAnswersLabel = submissionType
+submissionType.error.required = Select submissionType
+submissionType.change.hidden = SubmissionType
