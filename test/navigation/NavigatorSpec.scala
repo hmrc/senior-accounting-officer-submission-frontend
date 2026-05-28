@@ -310,6 +310,35 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
 
+      "SubmissionTypePage" - {
+
+        "when on SubmissionTypePage and the user chose notification only, must go to SubmitNotificationStart" in {
+          navigator.nextPage(
+            SubmissionTypePage,
+            NormalMode,
+            UserAnswers("id").set(SubmissionTypePage, SubmissionType.Notification).get
+          ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+        }
+
+        "when on SubmissionTypePage and the user chose certificate only, must go to CertificateTaskList" in {
+          navigator.nextPage(
+            SubmissionTypePage,
+            NormalMode,
+            UserAnswers("id").set(SubmissionTypePage, SubmissionType.Certificate).get
+          ) mustBe routes.CertificateTaskListController.onPageLoad()
+        }
+
+        "when on SubmissionTypePage and the user chose both the notification and the certificate, must throw an exception" in {
+          intercept[NotImplementedError] {
+            navigator.nextPage(
+              SubmissionTypePage,
+              NormalMode,
+              UserAnswers("id").set(SubmissionTypePage, SubmissionType.Combined).get
+            ) mustBe routes.SubmitCertificateStartController.onPageLoad()
+          }
+        }
+      }
+
       // certificate flow
 
       "when on CertificateSaoFullName, must go to CertificateSaoEmail page" in {
