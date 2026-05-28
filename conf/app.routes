@@ -173,7 +173,7 @@ POST       /certificate/submit-certificate-confirm-sao                        co
 GET        /certificate/change-submit-certificate-confirm-sao                 controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
 POST       /certificate/change-submit-certificate-confirm-sao                 controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
 
-GET        /submissionType                        controllers.SubmissionTypeController.onPageLoad(mode: Mode = NormalMode)
-POST       /submissionType                        controllers.SubmissionTypeController.onSubmit(mode: Mode = NormalMode)
-GET        /changeSubmissionType                  controllers.SubmissionTypeController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeSubmissionType                  controllers.SubmissionTypeController.onSubmit(mode: Mode = CheckMode)
+GET        /submission-type                        controllers.SubmissionTypeController.onPageLoad(mode: Mode = NormalMode)
+POST       /submission-type                        controllers.SubmissionTypeController.onSubmit(mode: Mode = NormalMode)
+GET        /change-submission-type                  controllers.SubmissionTypeController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-submission-type                  controllers.SubmissionTypeController.onSubmit(mode: Mode = CheckMode)
