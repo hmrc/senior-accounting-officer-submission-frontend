@@ -25,7 +25,7 @@ import play.api.mvc.Call
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class Navigator @Inject() (notificationIdReferenceNumber: NotificationIdReferenceNumber) {
+class Navigator @Inject() () {
 
   private val normalRoutes: Page => UserAnswers => Call = {
     case NotificationAdditionalInformationPage =>
@@ -33,7 +33,7 @@ class Navigator @Inject() (notificationIdReferenceNumber: NotificationIdReferenc
     case ConfirmYourNotificationPage =>
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage =>
-      _ => routes.NotificationConfirmationController.onPageLoad(getNotIdRefNum)
+      _ => routes.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber.returnHardCodedNotRef)
     case SubmitCertificateStartPage =>
       _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
     case IsThisTheSaoOnCertificatePage =>
@@ -152,5 +152,5 @@ class Navigator @Inject() (notificationIdReferenceNumber: NotificationIdReferenc
       checkRouteMap(page)(userAnswers)
   }
 
-  def getNotIdRefNum: String = notificationIdReferenceNumber.returnHardCodedNotRef
+  val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber("SAONOT0123456789")
 }

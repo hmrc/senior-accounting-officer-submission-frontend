@@ -26,7 +26,7 @@ import java.time.LocalDate
 
 class NavigatorSpec extends SpecBase {
 
-  val navigator = new Navigator(NotificationIdReferenceNumber())
+  val navigator = new Navigator()
 
   "Navigator.nextPage" - {
 

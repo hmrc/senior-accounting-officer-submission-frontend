@@ -20,7 +20,7 @@ import base.SpecBase
 
 class NotificationIdReferenceNumberSpec extends SpecBase {
 
-  val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber.apply()
+  val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber("SAONOT0123456789")
 
   "returnHardCodedNotRef must return the hard coded string" in {
     notificationIdReferenceNumber.returnHardCodedNotRef mustEqual "SAONOT0123456789"

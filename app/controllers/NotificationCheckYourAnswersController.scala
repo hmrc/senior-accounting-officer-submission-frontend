@@ -37,10 +37,11 @@ class NotificationCheckYourAnswersController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
     navigator: Navigator,
-    notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
-    notificationIdReferenceNumber: NotificationIdReferenceNumber
+    notificationCheckYourAnswersService: NotificationCheckYourAnswersService
 ) extends FrontendBaseController
     with I18nSupport {
+
+  val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber("SAONOT0123456789")
 
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
