@@ -32,6 +32,8 @@
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
+        <span class="govuk-caption-l">@messages("submissionType.caption")</span>
+
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),

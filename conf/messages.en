@@ -456,10 +456,12 @@ certificateDeclarationSao.error.required = Enter the name of the Senior Accounti
 certificateDeclarationSao.error.length = The authorised person name you enter must be 105 characters or less
 certificateDeclarationSao.change.hidden = CertificateDeclarationSao
 
-submissionType.title = submissionType
-submissionType.heading = submissionType
-submissionType.notification = Notification
-submissionType.certificate = Certificate
+submissionType.caption = New submission
+submissionType.title = Senior Accounting Officer notification and certificate - New submission
+submissionType.heading = What would you like to submit?
+submissionType.notification = A notification
+submissionType.certificate = A certificate
+submissionType.combined = A notification and certificate together
 submissionType.checkYourAnswersLabel = submissionType
-submissionType.error.required = Select submissionType
+submissionType.error.required = Select what you would like to submit
 submissionType.change.hidden = SubmissionType

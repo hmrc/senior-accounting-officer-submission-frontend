@@ -22,7 +22,8 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
 
 enum SubmissionType(override val toString: String) {
   case Notification extends SubmissionType("notification")
-  case Certificate extends SubmissionType("certificate")
+  case Certificate  extends SubmissionType("certificate")
+  case Combined     extends SubmissionType("combined")
 }
 
 object SubmissionType extends Enumerable.Implicits[SubmissionType] {
@@ -32,8 +33,8 @@ object SubmissionType extends Enumerable.Implicits[SubmissionType] {
   def options(using messages: Messages): Seq[RadioItem] = values.map { value =>
     RadioItem(
       content = Text(messages(s"submissionType.${value.toString}")),
-      value   = Some(value.toString),
-      id      = Some(s"value_${value.ordinal}")
+      value = Some(value.toString),
+      id = Some(s"value_${value.ordinal}")
     )
   }
 

@@ -22,7 +22,7 @@ import play.api.data.FormError
 
 class SubmissionTypeFormProviderSpec extends OptionFieldBehaviours {
 
-  val form = new SubmissionTypeFormProvider()()
+  val form        = new SubmissionTypeFormProvider()()
   val requiredKey = "submissionType.error.required"
 
   ".value" - {
@@ -32,7 +32,7 @@ class SubmissionTypeFormProviderSpec extends OptionFieldBehaviours {
     behave like optionsField[SubmissionType](
       form,
       fieldName,
-      validValues  = SubmissionType.values,
+      validValues = SubmissionType.values,
       invalidError = FormError(fieldName, "error.invalid")
     )
 
@@ -46,7 +46,7 @@ class SubmissionTypeFormProviderSpec extends OptionFieldBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Select submissionType"
+      message = "Select what you would like to submit"
     )
   }
 }

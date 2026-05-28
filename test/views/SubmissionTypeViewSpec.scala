@@ -28,10 +28,9 @@ import pages.SubmissionTypePage
 import views.html.SubmissionTypeView
 import views.SubmissionTypeViewSpec.*
 
-
 class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
-  private val formProvider = app.injector.instanceOf[SubmissionTypeFormProvider]
+  private val formProvider               = app.injector.instanceOf[SubmissionTypeFormProvider]
   private val form: Form[SubmissionType] = formProvider()
 
   private def generateView(form: Form[SubmissionType], mode: Mode): Document = {
@@ -59,10 +58,13 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
             radios = List(
               radio(value = option1key, label = option1Label),
               radio(value = option2key, label = option2Label),
+              radio(value = option3key, label = option3Label)
             ),
             isChecked = None,
             hasError = false
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SubmissionTypeController.onSubmit(mode),
@@ -90,10 +92,13 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
             radios = List(
               radio(value = option1key, label = option1Label),
               radio(value = option2key, label = option2Label),
+              radio(value = option3key, label = option3Label)
             ),
             isChecked = Some(radio(value = option1key, label = option1Label)),
             hasError = false
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SubmissionTypeController.onSubmit(mode),
@@ -121,10 +126,13 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
             radios = List(
               radio(value = option1key, label = option1Label),
               radio(value = option2key, label = option2Label),
+              radio(value = option3key, label = option3Label)
             ),
             isChecked = None,
             hasError = true
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.SubmissionTypeController.onSubmit(mode),
@@ -137,15 +145,17 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
         }
       }
     }
-
   }
 }
 
 object SubmissionTypeViewSpec {
-  val pageHeading = "submissionType"
-  val pageTitle = "submissionType"
-  val option1key = "notification"
-  val option1Label = "Notification"
-  val option2key = "certificate"
-  val option2Label = "Certificate"
+  val pageHeading  = "What would you like to submit?"
+  val pageTitle    = "Senior Accounting Officer notification and certificate - New submission"
+  val pageCaption  = "New submission"
+  val option1key   = "notification"
+  val option1Label = "A notification"
+  val option2key   = "certificate"
+  val option2Label = "A certificate"
+  val option3key   = "combined"
+  val option3Label = "A notification and certificate together"
 }
