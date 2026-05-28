@@ -462,6 +462,7 @@ submissionType.heading = What would you like to submit?
 submissionType.notification = A notification
 submissionType.certificate = A certificate
 submissionType.combined = A notification and certificate together
+submissionType.radioDivider = or
 submissionType.checkYourAnswersLabel = submissionType
 submissionType.error.required = Select what you would like to submit
 submissionType.change.hidden = SubmissionType

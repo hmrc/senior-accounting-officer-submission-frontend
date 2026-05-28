@@ -123,5 +123,15 @@ trait RadiosFluency {
       radios.withFormGroup(
         radios.formGroup.copy(beforeInput = Some(HtmlContent(s"""<p class="govuk-body">$text</p>""")))
       )
+
+    def withDivider(insertionIndex: Int, dividerText: String): Radios = {
+      radios.copy(
+        items = radios.items.patch(
+          insertionIndex,
+          Seq(RadioItem(divider = Some(dividerText))),
+          0
+        )
+      )
+    }
   }
 }
