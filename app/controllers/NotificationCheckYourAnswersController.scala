@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.{NormalMode, NotificationIdReferenceNumber}
+import models.{NormalMode}
 import navigation.Navigator
 import pages.NotificationCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -40,8 +40,6 @@ class NotificationCheckYourAnswersController @Inject() (
     notificationCheckYourAnswersService: NotificationCheckYourAnswersService
 ) extends FrontendBaseController
     with I18nSupport {
-
-  val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber("SAONOT0123456789")
 
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
