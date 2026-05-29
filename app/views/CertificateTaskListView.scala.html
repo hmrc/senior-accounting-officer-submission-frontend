@@ -15,16 +15,75 @@
  *@
 
 @this(
-        layout: templates.Layout,
-        govukButton: GovukButton
+    layout: templates.Layout,
+    govukButton: GovukButton
 )
 
-@()(using request: Request[?], messages: Messages)
+@(currentStage: CertificateTaskListState)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("certificateTaskList.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("certificateTaskList.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("certificateTaskList.heading")</h1>
+
+    <p class="govuk-body">@messages("certificateTaskList.paragraph1")</p>
+
+    <ul class="govuk-task-list">
+        @row(
+            linkText = messages("certificateTaskList.provideSaoDetailsLinkText"),
+            href = routes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode),
+            testId = "provide-sao-details",
+            statusName = "provide-sao-details",
+            status = currentStage.stage1
+        )
+
+        @row(
+            linkText = messages("certificateTaskList.uploadNotificationLinkText"),
+            href = routes.NotificationUploadFormController.onPageLoad(),
+            testId = "upload-submission-template",
+            statusName = "upload-template-details",
+            status = currentStage.stage2
+        )
+
+        @row(
+            linkText = messages("certificateTaskList.submitNotificationLinkText"),
+            href = routes.NotificationAdditionalInformationController.onPageLoad(NormalMode),
+            testId = "submit-notification",
+            statusName = "submit-notification-details",
+            status = currentStage.stage3
+        )
+    </ul>
+
     <a href=@routes.CertificateSaoFullNameController.onPageLoad(NormalMode)>Task 1</a>
     <a href=@routes.CertificateUploadFormController.onPageLoad()>Task 2</a>
     <a href=@routes.CertificateAdditionalInformationController.onPageLoad(NormalMode)>Task 3</a>
+}
+
+
+@row(linkText: String, href: Call, testId: String, statusName: String, status: CertificateTaskListStatus) = {
+    <li class="govuk-task-list__item govuk-task-list__item--with-link">
+        <div class="govuk-task-list__name-and-hint" data-test-id="@testId">
+            @if(status == CertificateTaskListStatus.NotStarted) {
+                <a class="govuk-link govuk-task-list__link" href="@href" aria-describedby="@statusName-status">
+                    @linkText
+                </a>
+            } else {
+                @linkText
+            }
+        </div>
+        <div class="govuk-task-list__status" id="@statusName-status">
+            @status match {
+                case CertificateTaskListStatus.CannotStartYet => {
+                    @messages("submitNotificationStart.row.status.cannotStartYet")
+                }
+                case CertificateTaskListStatus.NotStarted => {
+                    <strong class="govuk-tag govuk-tag--blue">
+                        @messages("submitNotificationStart.row.status.notStarted")
+                    </strong>
+                }
+                case CertificateTaskListStatus.Completed => {
+                    @messages("submitNotificationStart.row.status.completed")
+                }
+            }
+        </div>
+    </li>
 }

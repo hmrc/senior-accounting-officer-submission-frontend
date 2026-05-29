@@ -105,11 +105,11 @@ class Navigator @Inject() () {
     case CertificateSaoFullNamePage =>
       _ => routes.CertificateSaoEmailController.onPageLoad(NormalMode)
     case CertificateSaoEmailPage =>
-      _ => routes.CertificateTaskListController.onPageLoad()
+      _ => routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Stage2Active)
     case CertificateReviewQualifiedPage =>
       _ => routes.CertificateReviewUnqualifiedController.onPageLoad()
     case CertificateReviewUnqualifiedPage =>
-      _ => routes.CertificateTaskListController.onPageLoad()
+      _ => routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Stage3Active)
     case CertificateAdditionalInformationPage =>
       _ => routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
     case CertificateWhoIsSubmittingPage =>
@@ -126,7 +126,7 @@ class Navigator @Inject() () {
     case CertificateCheckYourAnswersPage =>
       _ => routes.CertificateConfirmationController.onPageLoad()
     case CertificateConfirmationPage =>
-      _ => routes.CertificateTaskListController.onPageLoad()
+      _ => routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Complete)
     case _ =>
       _ => ???
   }
