@@ -52,7 +52,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageHeading,
+            label = pageLabel,
             value = "",
             hint = None,
             hasError = false
@@ -66,6 +66,9 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
+
+          doc.createTestsForInputWidth()
+
         }
 
         "when the form is filled in" - {
@@ -81,7 +84,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageHeading,
+            label = pageLabel,
             value = testInputValue,
             hint = None,
             hasError = false
@@ -95,6 +98,9 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
+
+          doc.createTestsForInputWidth()
+
         }
 
         "when the form has errors" - {
@@ -110,7 +116,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageHeading,
+            label = pageLabel,
             value = "",
             hint = None,
             hasError = true
@@ -124,14 +130,26 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
           doc.createTestsWithOrWithoutError(
             hasError = true
           )
+
+          doc.createTestsForInputWidth()
         }
+      }
+    }
+  }
+  extension (doc: => Document) {
+    def createTestsForInputWidth(): Unit = {
+      "must have input with expected class 'govuk-input--width-20'" in {
+        doc.getMainContent.select("input.govuk-input--width-20").size() mustBe 1
       }
     }
   }
 }
 
 object CertificateSaoFullNameViewSpec {
-  val pageHeading    = "certificateSaoFullName"
-  val pageTitle      = "certificateSaoFullName"
+  val pageHeading    = "What is the name of the SAO responsible for the certificate?"
+  val pageTitle      = "Submit a certificate"
+  val pageCaption    = "Submit a certificate"
   val testInputValue = "myTestInputValue"
+  val pageLabel      = "What is the name of the SAO responsible for the certificate?"
+
 }
