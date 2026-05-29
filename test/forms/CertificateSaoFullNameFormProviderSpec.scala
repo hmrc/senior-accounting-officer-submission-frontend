@@ -23,7 +23,7 @@ class CertificateSaoFullNameFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "certificateSaoFullName.error.required"
   val lengthKey   = "certificateSaoFullName.error.length"
-  val maxLength   = 100
+  val maxLength   = 254
 
   val form = new CertificateSaoFullNameFormProvider()()
 
