@@ -54,12 +54,12 @@ class CertificateSaoFullNameFormProviderSpec extends StringFieldBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter certificateSaoFullName"
+      message = "Enter the name of the Senior Accounting Officer"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "CertificateSaoFullName must be 100 characters or less"
+      message = "The name you enter must be 254 characters or less"
     )
   }
 }
