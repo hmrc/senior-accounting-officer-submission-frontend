@@ -149,5 +149,4 @@ object CertificateSaoFullNameViewSpec {
   val pageTitle      = "What is the name of the SAO responsible for the certificate?"
   val pageCaption    = "Submit a certificate"
   val testInputValue = "myTestInputValue"
-
 }
