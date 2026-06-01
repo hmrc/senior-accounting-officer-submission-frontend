@@ -28,8 +28,6 @@ import views.html.CertificateTaskListView
 class CertificateTaskListControllerSpec extends SpecBase {
 
   "CertificateTaskList Controller" - {
-    // TODO: tests for other stages being passed?
-    // TODO: mock the service
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
