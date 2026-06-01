@@ -94,7 +94,6 @@ class Navigator @Inject() () {
               routes.NotificationUploadFormController.onPageLoad()
             case _ => routes.SubmitNotificationStartController.onPageLoad()
           }
-    // submission type
     case SubmissionTypePage =>
       userAnswers =>
         userAnswers.get(SubmissionTypePage) match {
