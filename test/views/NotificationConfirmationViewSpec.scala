@@ -94,6 +94,10 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+    doc.createTestsWithSubmissionButton(
+      action = controllers.routes.NotificationConfirmationController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
 
   extension (target: => Document) {

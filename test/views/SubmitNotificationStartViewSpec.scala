@@ -163,6 +163,40 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
       }
     }
   }
+
+  "SubmitNotificationStartView with all stages complete" - {
+    val doc: Document = generateView(SubmitNotificationStage.AllStagesCompleted)
+    doc.createTestsWithStandardPageElements(
+      pageTitle = pageTitle,
+      pageHeading = pageHeading,
+      showBackLink = false,
+      showIsThisPageNotWorkingProperlyLink = true,
+      hasError = false
+    )
+
+    doc.createTestsWithParagraphs(paragraphs)
+
+    doc.createTestsWithOrWithoutError(hasError = false)
+
+    "must show the correct statuses" in {
+      val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
+      statusTags.size() mustBe 3
+
+      val provideSaoDetailsTag  = statusTags.get(0)
+      val uploadNotificationTag = statusTags.get(1)
+      val submitNotificationTag = statusTags.get(2)
+
+      provideSaoDetailsTag.text() mustBe completedText
+      uploadNotificationTag.text() mustBe completedText
+      submitNotificationTag.text() mustBe completedText
+    }
+
+    doc.createTestsWithSubmissionButton(
+      action = routes.SubmitNotificationStartController.onCompleteSubmit(),
+      buttonText = homepageBtnText
+    )
+  }
+
 }
 
 object SubmitNotificationStartViewSpec {
@@ -178,4 +212,5 @@ object SubmitNotificationStartViewSpec {
   val notStartedText  = "Not started"
   val cannotStartText = "Cannot start yet"
   val completedText   = "Completed"
+  val homepageBtnText = "Go back to the homepage"
 }

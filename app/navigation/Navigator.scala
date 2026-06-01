@@ -60,7 +60,7 @@ class Navigator @Inject() () {
     case CombinedCertificateDeclarationSaoPage =>
       _ => routes.CombinedCertificateConfirmationController.onPageLoad()
     case NotificationConfirmationPage =>
-      _ => routes.SubmitNotificationStartController.onPageLoad()
+      _ => routes.SubmitNotificationStartController.onComplete()
     case NotificationMoreThanOneSaoPage =>
       userAnswers =>
         userAnswers.get(NotificationMoreThanOneSaoPage) match {
