@@ -16,16 +16,18 @@
 
 package controllers.actions
 
-import models.requests.DataRequest
-import play.api.mvc.ActionFilter
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
-import play.api.mvc.Result
 import controllers.routes
 import models.CertificateTaskListStage
-import play.api.mvc.Results.Redirect
-import pages.CertificateSaoFullNamePage
+import models.requests.DataRequest
 import pages.CertificateSaoEmailPage
+import pages.CertificateSaoFullNamePage
+import play.api.mvc.ActionFilter
+import play.api.mvc.Result
+import play.api.mvc.Results.Redirect
+
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
 import javax.inject.Inject
 
 class CertificateProvideSaoDetailsStageCompletedAction @Inject() ()(using val executionContext: ExecutionContext)

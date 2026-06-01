@@ -185,7 +185,7 @@ object CertificateTaskListViewSpec {
   val pageTitle      = "Submit a certificate"
   val pageButtonText = "Go back to the homepage"
 
-  val paragraphs = Seq(
+  val paragraphs: Seq[String] = Seq(
     "Submit a certificate and confirm who is responsible for the group’s tax accounting arrangements for the financial year."
   )
 

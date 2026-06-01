@@ -18,6 +18,7 @@ package controllers.actions
 
 import base.SpecBase
 import controllers.routes
+import models.CertificateTaskListStage
 import models.UserAnswers
 import models.requests.DataRequest
 import play.api.http.HeaderNames
@@ -26,7 +27,6 @@ import play.api.test.Helpers.*
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import models.CertificateTaskListStage
 
 class CertificateUploadSubmissionTemplateStageCompletedActionSpec extends SpecBase {
 

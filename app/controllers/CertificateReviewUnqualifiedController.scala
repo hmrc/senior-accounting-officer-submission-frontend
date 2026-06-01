@@ -22,13 +22,14 @@ import navigation.Navigator
 import pages.CertificateReviewUnqualifiedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateReviewUnqualifiedView
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
-import repositories.SessionRepository
+
+import javax.inject.Inject
 
 class CertificateReviewUnqualifiedController @Inject() (
     override val messagesApi: MessagesApi,
