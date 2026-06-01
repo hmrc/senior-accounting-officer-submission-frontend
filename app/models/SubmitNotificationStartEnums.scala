@@ -42,6 +42,13 @@ enum SubmitNotificationStage(
         uploadNotificationTemplateStatus = Completed,
         submitNotificationStatus = NotStarted
       )
+
+  case AllStagesCompleted
+      extends SubmitNotificationStage(
+        provideSaoDetailsStatus = Completed,
+        uploadNotificationTemplateStatus = Completed,
+        submitNotificationStatus = Completed
+      )
 }
 
 object SubmitNotificationStage {

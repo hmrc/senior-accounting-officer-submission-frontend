@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.AppConfig
 import controllers.actions.*
 import models.{SubmitNotificationStage, UserAnswers}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -34,7 +35,8 @@ class SubmitNotificationStartController @Inject() (
     getData: DataRetrievalAction,
     val controllerComponents: MessagesControllerComponents,
     view: SubmitNotificationStartView,
-    sessionRepository: SessionRepository
+    sessionRepository: SessionRepository,
+    appConfig: AppConfig
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -50,5 +52,13 @@ class SubmitNotificationStartController @Inject() (
             .map(_ => Ok(view(SubmitNotificationStage.ProvideSaoDetails)))
       }
     } yield result
+  }
+
+  def onComplete: Action[AnyContent] = identify { implicit request =>
+    Ok(view(SubmitNotificationStage.AllStagesCompleted))
+  }
+
+  def onCompleteSubmit: Action[AnyContent] = identify {
+    Redirect(appConfig.hubBaseUrl)
   }
 }
