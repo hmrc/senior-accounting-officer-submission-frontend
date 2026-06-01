@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
-import models.Mode
+import models.NormalMode
 import navigation.Navigator
 import pages.SubmissionTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -44,24 +44,23 @@ class SubmissionTypeController @Inject() (
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.get(SubmissionTypePage).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
+    Ok(view(preparedForm))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      val form = formProvider()
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(SubmissionTypePage, mode, updatedAnswers))
-        )
+  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+    val form = formProvider()
+    form
+      .bindFromRequest()
+      .fold(
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+        value =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, value))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(SubmissionTypePage, NormalMode, updatedAnswers))
+      )
   }
 }

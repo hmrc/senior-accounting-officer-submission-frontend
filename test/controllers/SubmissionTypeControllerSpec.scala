@@ -18,12 +18,13 @@ package controllers
 
 import base.SpecBase
 import forms.SubmissionTypeFormProvider
-import models.{NormalMode, SubmissionType, UserAnswers}
+import models.{SubmissionType, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.SubmissionTypePage
+import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -32,13 +33,12 @@ import repositories.SessionRepository
 import views.html.SubmissionTypeView
 
 import scala.concurrent.Future
-import play.api.data.Form
 
 class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  lazy val submissionTypeRoute: String = routes.SubmissionTypeController.onPageLoad(NormalMode).url
+  lazy val submissionTypeRoute: String = routes.SubmissionTypeController.onPageLoad().url
 
   val formProvider               = new SubmissionTypeFormProvider()
   val form: Form[SubmissionType] = formProvider()
@@ -57,7 +57,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[SubmissionTypeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form)(using request, messages(application)).toString
       }
     }
 
@@ -75,7 +75,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(SubmissionType.values.head), NormalMode)(using
+        contentAsString(result) mustEqual view(form.fill(SubmissionType.values.head))(using
           request,
           messages(application)
         ).toString
@@ -124,7 +124,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm)(using request, messages(application)).toString
       }
     }
 

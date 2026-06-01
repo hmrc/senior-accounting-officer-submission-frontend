@@ -32,7 +32,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
   private val form: Form[SubmissionType] = formProvider()
 
   private def generateView(form: Form[SubmissionType], mode: Mode): Document = {
-    val view = SUT(form, mode)
+    val view = SUT(form)
     Jsoup.parse(view.toString)
   }
 
@@ -67,7 +67,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SubmissionTypeController.onSubmit(mode),
+            action = controllers.routes.SubmissionTypeController.onSubmit(),
             buttonText = "Continue"
           )
 
@@ -103,7 +103,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SubmissionTypeController.onSubmit(mode),
+            action = controllers.routes.SubmissionTypeController.onSubmit(),
             buttonText = "Continue"
           )
 
@@ -139,7 +139,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SubmissionTypeController.onSubmit(mode),
+            action = controllers.routes.SubmissionTypeController.onSubmit(),
             buttonText = "Continue"
           )
 
