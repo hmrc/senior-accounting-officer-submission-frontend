@@ -127,9 +127,9 @@ trait RadiosFluency {
     def withDivider(insertionIndex: Int, dividerText: String): Radios = {
       radios.copy(
         items = radios.items.patch(
-          insertionIndex,
-          Seq(RadioItem(divider = Some(dividerText))),
-          0
+          from = insertionIndex,
+          other = Seq(RadioItem(divider = Some(dividerText))),
+          replaced = 0
         )
       )
     }
