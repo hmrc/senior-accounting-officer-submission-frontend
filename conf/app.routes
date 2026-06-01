@@ -147,9 +147,9 @@ POST       /certificate/change-submit-certificate-sao-full-name                 
 
 GET        /certificateUploadForm                       controllers.CertificateUploadFormController.onPageLoad()
 
-GET        /certificateTaskList/1                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Stage1Active)
-GET        /certificateTaskList/2                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Stage2Active)
-GET        /certificateTaskList/3                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Stage3Active)
+GET        /certificateTaskList/1                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.ProvideSaoDetailsStageActive)
+GET        /certificateTaskList/2                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.UploadSubmissionTemplateStageActive)
+GET        /certificateTaskList/3                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.SubmitCertificateStageActive)
 GET        /certificateTaskList/complete                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Complete)
 
 GET        /certificate/declaration-stand-in                        controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = NormalMode)

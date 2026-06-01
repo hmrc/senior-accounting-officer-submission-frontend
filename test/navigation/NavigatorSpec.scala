@@ -346,7 +346,9 @@ class NavigatorSpec extends SpecBase {
           CertificateSaoEmailPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad()
+        ) mustBe routes.CertificateTaskListController.onPageLoad(
+          CertificateTaskListStage.UploadSubmissionTemplateStageActive
+        )
       }
 
       "when on CertificateReviewQualified, must go to CertificateReviewUnqualified page" in {
@@ -362,7 +364,7 @@ class NavigatorSpec extends SpecBase {
           CertificateReviewUnqualifiedPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad()
+        ) mustBe routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.SubmitCertificateStageActive)
       }
 
       "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {
@@ -418,7 +420,7 @@ class NavigatorSpec extends SpecBase {
           CertificateConfirmationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad()
+        ) mustBe routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.Complete)
       }
     }
 

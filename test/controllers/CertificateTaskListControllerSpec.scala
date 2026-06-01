@@ -17,6 +17,10 @@
 package controllers
 
 import base.SpecBase
+import models.CertificateTaskListShowContinueButton
+import models.CertificateTaskListStage
+import models.CertificateTaskListState
+import models.CertificateTaskListStatus
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.CertificateTaskListView
@@ -24,20 +28,35 @@ import views.html.CertificateTaskListView
 class CertificateTaskListControllerSpec extends SpecBase {
 
   "CertificateTaskList Controller" - {
-
+    // TODO: tests for other stages being passed?
+    // TODO: mock the service
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CertificateTaskListController.onPageLoad().url)
+        val request =
+          FakeRequest(
+            GET,
+            routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStageActive).url
+          )
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[CertificateTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          CertificateTaskListState(
+            provideSaoDetailsStage = CertificateTaskListStatus.NotStarted,
+            uploadSubmissionTemplateStage = CertificateTaskListStatus.CannotStartYet,
+            submitCertificateStage = CertificateTaskListStatus.CannotStartYet,
+            showContinueButton = CertificateTaskListShowContinueButton.NotShown
+          )
+        )(using
+          request,
+          messages(application)
+        ).toString
       }
     }
   }

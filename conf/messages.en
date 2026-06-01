@@ -397,6 +397,16 @@ certificateUploadForm.heading = certificateUploadForm
 certificateTaskList.title = certificateTaskList
 certificateTaskList.heading = certificateTaskList
 
+certificateTaskList.provideSaoDetailsLinkText = Provide the SAO’s details
+certificateTaskList.uploadSubmissionTemplateLinkText = Upload the submission template
+certificateTaskList.submitCertificateLinkText = Submit the certificate
+
+certificateTaskList.row.status.notStarted = Not started
+certificateTaskList.row.status.cannotStartYet = Cannot start yet
+certificateTaskList.row.status.completed = Completed
+
+certificateTaskList.homepageButton = Go back to the homepage
+
 certificateDeclarationStandIn.title = Confirm the certificate
 certificateDeclarationStandIn.caption = Submit a certificate
 certificateDeclarationStandIn.heading = Confirm the certificate

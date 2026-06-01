@@ -17,12 +17,11 @@
 package controllers
 
 import controllers.actions.*
+import models.CertificateTaskListStage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateTaskListView
-import services.CertificateTaskListService
-import models.CertificateTaskListStage
 
 import javax.inject.Inject
 
@@ -32,16 +31,14 @@ class CertificateTaskListController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateTaskListView,
-    service: CertificateTaskListService
+    view: CertificateTaskListView
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(stage: CertificateTaskListStage): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       {
-        val state = service.f(stage)
-        Ok(view(state))
+        Ok(view(stage.toState()))
       }
   }
 }
