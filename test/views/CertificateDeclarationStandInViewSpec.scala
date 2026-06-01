@@ -202,6 +202,6 @@ object CertificateDeclarationStandInViewSpec {
   val pageInput2Hint  = "Insert full name"
   val testInput1Value = "test value 1"
   val testInput2Value = "test value 2"
-  val pageButtonText = "Confirm"
+  val pageButtonText  = "Confirm"
 
 }
