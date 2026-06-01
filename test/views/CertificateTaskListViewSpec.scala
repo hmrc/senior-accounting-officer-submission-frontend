@@ -56,6 +56,8 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
 
               doc.createTestsWithOrWithoutError(hasError = false)
 
+              doc.createTestsWithParagraphs(paragraphs)
+
               doc.createTestsWithTaskList(expectedState = state)
             }
           }
@@ -179,9 +181,13 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
 }
 
 object CertificateTaskListViewSpec {
-  val pageHeading    = "certificateTaskList"
-  val pageTitle      = "certificateTaskList"
+  val pageHeading    = "Submit a certificate"
+  val pageTitle      = "Submit a certificate"
   val pageButtonText = "Go back to the homepage"
+
+  val paragraphs = Seq(
+    "Submit a certificate and confirm who is responsible for the group’s tax accounting arrangements for the financial year."
+  )
 
   val provideSaoDetailsLinkText        = "Provide the SAO’s details"
   val uploadSubmissionTemplateLinkText = "Upload the submission template"

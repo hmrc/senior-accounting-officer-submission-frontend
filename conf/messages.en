@@ -394,17 +394,15 @@ certificateSaoFullName.change.hidden = CertificateSaoFullName
 certificateUploadForm.title = certificateUploadForm
 certificateUploadForm.heading = certificateUploadForm
 
-certificateTaskList.title = certificateTaskList
-certificateTaskList.heading = certificateTaskList
-
+certificateTaskList.title = Submit a certificate
+certificateTaskList.heading = Submit a certificate
+certificateTaskList.paragraph1 = Submit a certificate and confirm who is responsible for the group’s tax accounting arrangements for the financial year.
 certificateTaskList.provideSaoDetailsLinkText = Provide the SAO’s details
 certificateTaskList.uploadSubmissionTemplateLinkText = Upload the submission template
 certificateTaskList.submitCertificateLinkText = Submit the certificate
-
 certificateTaskList.row.status.notStarted = Not started
 certificateTaskList.row.status.cannotStartYet = Cannot start yet
 certificateTaskList.row.status.completed = Completed
-
 certificateTaskList.homepageButton = Go back to the homepage
 
 certificateDeclarationStandIn.title = Confirm the certificate
