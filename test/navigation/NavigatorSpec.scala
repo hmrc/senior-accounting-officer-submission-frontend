@@ -347,7 +347,7 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.CertificateTaskListController.onPageLoad(
-          CertificateTaskListStage.UploadSubmissionTemplateStageActive
+          CertificateTaskListStage.UploadSubmissionTemplateStage
         )
       }
 
@@ -364,7 +364,7 @@ class NavigatorSpec extends SpecBase {
           CertificateReviewUnqualifiedPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.SubmitCertificateStageActive)
+        ) mustBe routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.SubmitCertificateStage)
       }
 
       "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {

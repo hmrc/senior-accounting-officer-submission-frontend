@@ -26,23 +26,34 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateReviewUnqualifiedView
 
 import javax.inject.Inject
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+import repositories.SessionRepository
 
 class CertificateReviewUnqualifiedController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    priorStagesCompleted: CertificateProvideSaoDetailsStageCompletedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateReviewUnqualifiedView,
-    navigator: Navigator
-) extends FrontendBaseController
+    navigator: Navigator,
+    sessionRepository: SessionRepository
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData andThen priorStagesCompleted) {
+    implicit request =>
+      Ok(view())
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(CertificateReviewUnqualifiedPage, NormalMode, request.userAnswers))
-  }
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen priorStagesCompleted).async { implicit request =>
+      for {
+        updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewUnqualifiedPage, "HACK"))
+        _              <- sessionRepository.set(updatedAnswers)
+      } yield Redirect(navigator.nextPage(CertificateReviewUnqualifiedPage, NormalMode, request.userAnswers))
+    }
 }

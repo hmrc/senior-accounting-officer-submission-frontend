@@ -54,7 +54,7 @@
         )
     </ul>
 
-    @if(state.showContinueButton == CertificateTaskListShowContinueButton.Show) {
+    @if(state.showContinueButton == CertificateTaskListShowContinueButton.Shown) {
         @formHelper(action = routes.JourneyRecoveryController.onPageLoad()) {
             @govukButton(
                 ButtonViewModel(messages("certificateTaskList.homepageButton").toText)

@@ -106,14 +106,11 @@ class Navigator @Inject() () {
       _ => routes.CertificateSaoEmailController.onPageLoad(NormalMode)
     case CertificateSaoEmailPage =>
       _ =>
-        routes.CertificateTaskListController.onPageLoad(stage =
-          CertificateTaskListStage.UploadSubmissionTemplateStageActive
-        )
+        routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.UploadSubmissionTemplateStage)
     case CertificateReviewQualifiedPage =>
       _ => routes.CertificateReviewUnqualifiedController.onPageLoad()
     case CertificateReviewUnqualifiedPage =>
-      _ =>
-        routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.SubmitCertificateStageActive)
+      _ => routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.SubmitCertificateStage)
     case CertificateAdditionalInformationPage =>
       _ => routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
     case CertificateWhoIsSubmittingPage =>

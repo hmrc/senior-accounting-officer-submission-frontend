@@ -48,7 +48,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithUploadedTemplate)).build()
 
       running(application) {
         val request = FakeRequest(GET, certificateAdditionalInformationRoute)
@@ -64,7 +64,8 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CertificateAdditionalInformationPage, "answer").success.value
+      val userAnswers =
+        userAnswersWithUploadedTemplate.set(CertificateAdditionalInformationPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -90,7 +91,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithUploadedTemplate))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -111,7 +112,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithUploadedTemplate)).build()
 
       running(application) {
         val request =

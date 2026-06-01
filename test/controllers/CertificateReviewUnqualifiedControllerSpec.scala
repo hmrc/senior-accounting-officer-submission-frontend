@@ -33,7 +33,7 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
 
       running(application) {
         val request = FakeRequest(GET, routes.CertificateReviewUnqualifiedController.onPageLoad().url)
@@ -50,7 +50,7 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
     "must redirect to the next page for a POST" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )

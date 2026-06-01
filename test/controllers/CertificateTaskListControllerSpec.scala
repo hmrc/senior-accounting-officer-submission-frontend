@@ -38,7 +38,7 @@ class CertificateTaskListControllerSpec extends SpecBase {
         val request =
           FakeRequest(
             GET,
-            routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStageActive).url
+            routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage).url
           )
 
         val result = route(application, request).value

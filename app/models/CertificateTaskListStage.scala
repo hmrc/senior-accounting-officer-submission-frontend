@@ -19,37 +19,37 @@ package models
 import play.api.mvc.JavascriptLiteral
 
 enum CertificateTaskListStage {
-  case ProvideSaoDetailsStageActive, UploadSubmissionTemplateStageActive, SubmitCertificateStageActive, Complete
+  case ProvideSaoDetailsStage, UploadSubmissionTemplateStage, SubmitCertificateStage, Complete
 }
 
 object CertificateTaskListStage {
   given jsLiteral: JavascriptLiteral[CertificateTaskListStage] = new JavascriptLiteral[CertificateTaskListStage] {
     override def to(value: CertificateTaskListStage): String = value match {
-      case ProvideSaoDetailsStageActive        => "ProvideSaoDetailsStageActive"
-      case UploadSubmissionTemplateStageActive => "UploadSubmissionTemplateStageActive"
-      case SubmitCertificateStageActive        => "SubmitCertificateStageActive"
-      case Complete                            => "Complete"
+      case ProvideSaoDetailsStage        => "ProvideSaoDetailsStage"
+      case UploadSubmissionTemplateStage => "UploadSubmissionTemplateStage"
+      case SubmitCertificateStage        => "SubmitCertificateStage"
+      case Complete                      => "Complete"
     }
   }
 
   extension (stage: CertificateTaskListStage) {
     def toState(): CertificateTaskListState = {
       stage match {
-        case CertificateTaskListStage.ProvideSaoDetailsStageActive =>
+        case CertificateTaskListStage.ProvideSaoDetailsStage =>
           CertificateTaskListState(
             CertificateTaskListStatus.NotStarted,
             CertificateTaskListStatus.CannotStartYet,
             CertificateTaskListStatus.CannotStartYet,
             CertificateTaskListShowContinueButton.NotShown
           )
-        case CertificateTaskListStage.UploadSubmissionTemplateStageActive =>
+        case CertificateTaskListStage.UploadSubmissionTemplateStage =>
           CertificateTaskListState(
             CertificateTaskListStatus.Completed,
             CertificateTaskListStatus.NotStarted,
             CertificateTaskListStatus.CannotStartYet,
             CertificateTaskListShowContinueButton.NotShown
           )
-        case CertificateTaskListStage.SubmitCertificateStageActive =>
+        case CertificateTaskListStage.SubmitCertificateStage =>
           CertificateTaskListState(
             CertificateTaskListStatus.Completed,
             CertificateTaskListStatus.Completed,
