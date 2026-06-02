@@ -383,7 +383,7 @@ certificateSaoEmail.error.required = Enter certificateSaoEmail
 certificateSaoEmail.error.length = CertificateSaoEmail must be 100 characters or less
 certificateSaoEmail.change.hidden = CertificateSaoEmail
 
-certificateSaoFullName.title = Submit a certificate - Senior Accounting Officer contact details
+certificateSaoFullName.title = What is the name of the SAO responsible for the certificate?
 certificateSaoFullName.heading = What is the name of the SAO responsible for the certificate?
 certificateSaoFullName.caption = Submit a certificate
 certificateSaoFullName.checkYourAnswersLabel = certificateSaoFullName
