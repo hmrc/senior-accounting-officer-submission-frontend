@@ -26,7 +26,7 @@ import java.time.LocalDate
 
 class NavigatorSpec extends SpecBase {
 
-  val navigator = new Navigator
+  val navigator = new Navigator()
 
   "Navigator.nextPage" - {
 
@@ -56,11 +56,12 @@ class NavigatorSpec extends SpecBase {
       }
 
       "when on NotificationCheckYourAnswersPage, must go to notification confirmation page" in {
+        val notRefIdMock = "SAONOT0123456789"
         navigator.nextPage(
           NotificationCheckYourAnswersPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationConfirmationController.onPageLoad()
+        ) mustBe routes.NotificationConfirmationController.onPageLoad(notRefIdMock)
       }
 
       "when on ConfirmYourNotificationPage, must go to notification check your answers page" in {

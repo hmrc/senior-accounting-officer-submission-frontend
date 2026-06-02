@@ -33,7 +33,7 @@ class Navigator @Inject() () {
     case ConfirmYourNotificationPage =>
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage =>
-      _ => routes.NotificationConfirmationController.onPageLoad()
+      _ => routes.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber.id)
     case SubmitCertificateStartPage =>
       _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
     case IsThisTheSaoOnCertificatePage =>
@@ -151,4 +151,6 @@ class Navigator @Inject() () {
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }
+
+  val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber("SAONOT0123456789")
 }
