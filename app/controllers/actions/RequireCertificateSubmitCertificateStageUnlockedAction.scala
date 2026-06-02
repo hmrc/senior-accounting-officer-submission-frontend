@@ -19,16 +19,13 @@ package controllers.actions
 import controllers.routes
 import models.CertificateTaskListStage
 import models.requests.DataRequest
-import pages.CertificateReviewQualifiedPage
-import pages.CertificateReviewUnqualifiedPage
-import pages.CertificateSaoEmailPage
-import pages.CertificateSaoFullNamePage
 import play.api.mvc.ActionFilter
 import play.api.mvc.Result
 import play.api.mvc.Results.Redirect
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
+import utils.isUploadSubmissionTemplateStageCompleted
 
 import javax.inject.Inject
 
@@ -39,12 +36,7 @@ class RequireCertificateSubmitCertificateStageUnlockedAction @Inject() ()(using
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] = {
     Future.successful {
       val userAnswers = request.userAnswers
-      Option.unless(
-        userAnswers.get(CertificateSaoFullNamePage).nonEmpty
-          && userAnswers.get(CertificateSaoEmailPage).nonEmpty
-          && userAnswers.get(CertificateReviewQualifiedPage).nonEmpty
-          && userAnswers.get(CertificateReviewUnqualifiedPage).nonEmpty
-      ) {
+      Option.unless(userAnswers.isUploadSubmissionTemplateStageCompleted) {
         Redirect(
           routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
         )

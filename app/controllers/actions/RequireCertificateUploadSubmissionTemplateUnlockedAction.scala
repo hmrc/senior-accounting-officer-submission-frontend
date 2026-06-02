@@ -19,8 +19,6 @@ package controllers.actions
 import controllers.routes
 import models.CertificateTaskListStage
 import models.requests.DataRequest
-import pages.CertificateSaoEmailPage
-import pages.CertificateSaoFullNamePage
 import play.api.mvc.ActionFilter
 import play.api.mvc.Result
 import play.api.mvc.Results.Redirect
@@ -30,6 +28,8 @@ import scala.concurrent.Future
 
 import javax.inject.Inject
 
+import utils.isProvideSaoDetailsStageCompleted
+
 class RequireCertificateUploadSubmissionTemplateUnlockedAction @Inject() ()(using
     val executionContext: ExecutionContext
 ) extends ActionFilter[DataRequest] {
@@ -37,9 +37,7 @@ class RequireCertificateUploadSubmissionTemplateUnlockedAction @Inject() ()(usin
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] = {
     Future.successful {
       val userAnswers = request.userAnswers
-      Option.unless(
-        userAnswers.get(CertificateSaoFullNamePage).nonEmpty && userAnswers.get(CertificateSaoEmailPage).nonEmpty
-      ) {
+      Option.unless(userAnswers.isProvideSaoDetailsStageCompleted) {
         Redirect(routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage))
       }
     }
