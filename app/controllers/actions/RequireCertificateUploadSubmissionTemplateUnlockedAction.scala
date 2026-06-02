@@ -28,7 +28,7 @@ import scala.concurrent.Future
 
 import javax.inject.Inject
 
-import utils.isProvideSaoDetailsStageCompleted
+import utils.CertificateStageHelper.isProvideSaoDetailsStageCompleted
 
 class RequireCertificateUploadSubmissionTemplateUnlockedAction @Inject() ()(using
     val executionContext: ExecutionContext
@@ -37,7 +37,7 @@ class RequireCertificateUploadSubmissionTemplateUnlockedAction @Inject() ()(usin
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] = {
     Future.successful {
       val userAnswers = request.userAnswers
-      Option.unless(userAnswers.isProvideSaoDetailsStageCompleted) {
+      Option.unless(isProvideSaoDetailsStageCompleted(userAnswers)) {
         Redirect(routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage))
       }
     }

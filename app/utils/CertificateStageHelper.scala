@@ -22,14 +22,14 @@ import pages.CertificateReviewUnqualifiedPage
 import pages.CertificateSaoEmailPage
 import pages.CertificateSaoFullNamePage
 
-extension (userAnswers: UserAnswers) {
-  def isProvideSaoDetailsStageCompleted: Boolean = {
+object CertificateStageHelper {
+  def isProvideSaoDetailsStageCompleted(userAnswers: UserAnswers): Boolean = {
     userAnswers.get(CertificateSaoFullNamePage).nonEmpty
     && userAnswers.get(CertificateSaoEmailPage).nonEmpty
   }
 
-  def isUploadSubmissionTemplateStageCompleted: Boolean = {
-    isProvideSaoDetailsStageCompleted
+  def isUploadSubmissionTemplateStageCompleted(userAnswers: UserAnswers): Boolean = {
+    isProvideSaoDetailsStageCompleted(userAnswers)
     && userAnswers.get(CertificateReviewQualifiedPage).nonEmpty
     && userAnswers.get(CertificateReviewUnqualifiedPage).nonEmpty
   }

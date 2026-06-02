@@ -25,7 +25,7 @@ import play.api.mvc.Results.Redirect
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
-import utils.isUploadSubmissionTemplateStageCompleted
+import utils.CertificateStageHelper.isUploadSubmissionTemplateStageCompleted
 
 import javax.inject.Inject
 
@@ -36,7 +36,7 @@ class RequireCertificateSubmitCertificateStageUnlockedAction @Inject() ()(using
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] = {
     Future.successful {
       val userAnswers = request.userAnswers
-      Option.unless(userAnswers.isUploadSubmissionTemplateStageCompleted) {
+      Option.unless(isUploadSubmissionTemplateStageCompleted(userAnswers)) {
         Redirect(
           routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
         )
