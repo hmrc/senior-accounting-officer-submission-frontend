@@ -383,10 +383,9 @@ certificateSaoEmail.error.required = Enter certificateSaoEmail
 certificateSaoEmail.error.length = CertificateSaoEmail must be 100 characters or less
 certificateSaoEmail.change.hidden = CertificateSaoEmail
 
-certificateSaoFullName.title = Submit a certificate
+certificateSaoFullName.title = Submit a certificate - Senior Accounting Officer contact details
 certificateSaoFullName.heading = What is the name of the SAO responsible for the certificate?
 certificateSaoFullName.caption = Submit a certificate
-certificateSaoFullName.label = What is the name of the SAO responsible for the certificate?
 certificateSaoFullName.checkYourAnswersLabel = certificateSaoFullName
 certificateSaoFullName.error.required = Enter the name of the Senior Accounting Officer
 certificateSaoFullName.error.length = The name you enter must be 254 characters or less

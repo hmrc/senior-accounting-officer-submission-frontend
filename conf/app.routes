@@ -141,10 +141,10 @@ POST       /certificateSaoEmail                        controllers.CertificateSa
 GET        /changeCertificateSaoEmail                  controllers.CertificateSaoEmailController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCertificateSaoEmail                  controllers.CertificateSaoEmailController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificate/submit-certificate-sao-full-name                     controllers.CertificateSaoFullNameController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificate/submit-certificate-sao-full-name                     controllers.CertificateSaoFullNameController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCertificateSaoFullName                                     controllers.CertificateSaoFullNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCertificateSaoFullName                                     controllers.CertificateSaoFullNameController.onSubmit(mode: Mode = CheckMode)
+GET        /certificate/submit-certificate-sao-full-name                            controllers.CertificateSaoFullNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificate/submit-certificate-sao-full-name                            controllers.CertificateSaoFullNameController.onSubmit(mode: Mode = NormalMode)
+GET        /certificate/change-submit-certificate-sao-full-name                     controllers.CertificateSaoFullNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /certificate/change-submit-certificate-sao-full-name                     controllers.CertificateSaoFullNameController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateUploadForm                       controllers.CertificateUploadFormController.onPageLoad()
 
