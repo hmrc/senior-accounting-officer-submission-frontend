@@ -135,6 +135,11 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
             hasError = true
           )
 
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestForInsetText(pageInset)
+          doc.createTestsForSubHeadings(pageSubheading)
+
           doc.createTestMustShowNumberOfInputs(2)
           doc.createTestMustShowTextInput(
             name = "StandInName",
@@ -166,7 +171,7 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 
   extension (doc: => Document) {
     def createTestsForSubHeadings(subheadings: String): Unit = {
-      val subheadings = doc.getMainContent.getElementsByTag("h2")
+      val subheadings = doc.getMainContent.select("h2").not(".govuk-error-summary__title")
       "must have expected number of subheadings" in {
         subheadings.size() mustBe 1
       }
@@ -178,7 +183,7 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 }
 
 object CertificateDeclarationStandInViewSpec {
-  val pageTitle   = "Confirm the certificate – Senior Accounting Officer notification and certificate"
+  val pageTitle   = "Confirm the certificate"
   val pageCaption = "Submit a certificate"
   val pageHeading = "Confirm the certificate"
 
