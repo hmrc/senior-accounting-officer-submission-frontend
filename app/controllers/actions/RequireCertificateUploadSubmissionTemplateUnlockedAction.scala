@@ -30,8 +30,9 @@ import scala.concurrent.Future
 
 import javax.inject.Inject
 
-class CertificateProvideSaoDetailsStageCompletedAction @Inject() ()(using val executionContext: ExecutionContext)
-    extends ActionFilter[DataRequest] {
+class RequireCertificateUploadSubmissionTemplateUnlockedAction @Inject() ()(using
+    val executionContext: ExecutionContext
+) extends ActionFilter[DataRequest] {
 
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] = {
     Future.successful {

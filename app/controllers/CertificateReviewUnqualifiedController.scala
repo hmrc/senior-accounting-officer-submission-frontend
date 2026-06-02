@@ -36,7 +36,7 @@ class CertificateReviewUnqualifiedController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    priorStagesCompleted: CertificateProvideSaoDetailsStageCompletedAction,
+    requireUploadSubmissionTemplateStageUnlocked: RequireCertificateUploadSubmissionTemplateUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateReviewUnqualifiedView,
     navigator: Navigator,
@@ -45,16 +45,18 @@ class CertificateReviewUnqualifiedController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData andThen priorStagesCompleted) {
-    implicit request =>
-      Ok(view())
-  }
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
+      implicit request =>
+        Ok(view())
+    }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen priorStagesCompleted).async { implicit request =>
-      for {
-        updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewUnqualifiedPage, "HACK"))
-        _              <- sessionRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(CertificateReviewUnqualifiedPage, NormalMode, request.userAnswers))
+    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked).async {
+      implicit request =>
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewUnqualifiedPage, "HACK"))
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield Redirect(navigator.nextPage(CertificateReviewUnqualifiedPage, NormalMode, request.userAnswers))
     }
 }

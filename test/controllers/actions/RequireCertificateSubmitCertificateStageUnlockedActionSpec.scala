@@ -30,7 +30,7 @@ import scala.concurrent.Future
 
 class CertificateUploadSubmissionTemplateStageCompletedActionSpec extends SpecBase {
 
-  class Harness extends CertificateUploadSubmissionTemplateStageCompletedAction {
+  class Harness extends RequireCertificateSubmitCertificateStageUnlockedAction {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
       filter(DataRequest(FakeRequest(), userAnswers.id, userAnswers))
   }

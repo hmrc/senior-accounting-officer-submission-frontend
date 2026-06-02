@@ -32,7 +32,7 @@ import scala.concurrent.Future
 
 import javax.inject.Inject
 
-class CertificateUploadSubmissionTemplateStageCompletedAction @Inject() ()(using
+class RequireCertificateSubmitCertificateStageUnlockedAction @Inject() ()(using
     val executionContext: ExecutionContext
 ) extends ActionFilter[DataRequest] {
 
