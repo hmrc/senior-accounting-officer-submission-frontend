@@ -21,10 +21,10 @@ import play.api.data.FormError
 
 class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKeyStandInName = "certificateDeclarationStandIn.error.StandInName.required"
-  val lengthKeyStandInName   = "certificateDeclarationStandIn.error.StandInName.length"
-  val requiredKeySaoName     = "certificateDeclarationStandIn.error.SaoName.required"
-  val lengthKeySaoName       = "certificateDeclarationStandIn.error.SaoName.length"
+  val requiredKeyStandInName = "certificateDeclarationStandIn.error.standInName.required"
+  val lengthKeyStandInName   = "certificateDeclarationStandIn.error.standInName.length"
+  val requiredKeySaoName     = "certificateDeclarationStandIn.error.saoName.required"
+  val lengthKeySaoName       = "certificateDeclarationStandIn.error.saoName.length"
   val maxLength              = 105
 
   val form = new CertificateDeclarationStandInFormProvider()()
@@ -85,5 +85,16 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
       key = lengthKeyStandInName,
       message = "The authorised person name you enter must be 105 characters or less"
     )
+
+    createTestWithErrorMessageAssertion(
+      key = requiredKeySaoName,
+      message = "Enter the name of the Senior Accounting Officer who authorised you to submit the certificate"
+    )
+
+    createTestWithErrorMessageAssertion(
+      key = lengthKeySaoName,
+      message = "The Senior Accounting Officer name you enter must be 105 characters or less"
+    )
+
   }
 }

@@ -196,9 +196,9 @@ object CertificateDeclarationStandInViewSpec {
   val pageInset =
     "If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels."
   val pageSubheading  = "Declaration"
-  val pageInput1Label = "I confirm that I am authorised to submit this certificate"
-  val pageInput1Hint  = "Insert your full name here (person submitting)"
-  val pageInput2Label = "Name of the SAO who authorised you"
+  val pageInput1Label = "I confirm that I am authorised to submit this certificate."
+  val pageInput1Hint  = "Insert your full name (person submitting)"
+  val pageInput2Label = "Name of the SAO who authorised you:"
   val pageInput2Hint  = "Insert full name"
   val testInput1Value = "test value 1"
   val testInput2Value = "test value 2"
