@@ -108,7 +108,7 @@ GET         /certificate/confirmation                                         co
 GET        /notification/more-sao/submit-notification-full-name                        controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
 POST       /notification/more-sao/submit-notification-full-name                        controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
 GET        /notification/more-sao/change-submitNotification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /notification/more-sao/change-submit-notification-full-name                  controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
+POST       /notification/more-sao/change-submit-notification-full-name                 controllers.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/multi-sao-second-start-date                 controllers.NotificationMoreSaoSecondStartDateController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
 POST        /notification/multi-sao-second-start-date                 controllers.NotificationMoreSaoSecondStartDateController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
@@ -141,10 +141,10 @@ POST       /certificateSaoEmail                        controllers.CertificateSa
 GET        /changeCertificateSaoEmail                  controllers.CertificateSaoEmailController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCertificateSaoEmail                  controllers.CertificateSaoEmailController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificate/submit-certificate-sao-full-name                        controllers.CertificateSaoFullNameController.onPageLoad(mode: Mode = NormalMode)
+GET        /certificate/submit-certificate-sao-full-name                     controllers.CertificateSaoFullNameController.onPageLoad(mode: Mode = NormalMode)
 POST       /certificate/submit-certificate-sao-full-name                     controllers.CertificateSaoFullNameController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCertificateSaoFullName                  controllers.CertificateSaoFullNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCertificateSaoFullName                  controllers.CertificateSaoFullNameController.onSubmit(mode: Mode = CheckMode)
+GET        /changeCertificateSaoFullName                                     controllers.CertificateSaoFullNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /changeCertificateSaoFullName                                     controllers.CertificateSaoFullNameController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateUploadForm                       controllers.CertificateUploadFormController.onPageLoad()
 
