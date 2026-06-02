@@ -20,6 +20,7 @@ import base.SpecBase
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.CertificateUploadFormView
+import models.CertificateTaskListStage
 
 class CertificateUploadFormControllerSpec extends SpecBase {
 
@@ -38,6 +39,20 @@ class CertificateUploadFormControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view()(using request, messages(application)).toString
+      }
+    }
+
+    "must redirect to task list on provide sao details stage when user answers is empty" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      running(application) {
+        val request = FakeRequest(GET, routes.CertificateUploadFormController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.CertificateTaskListController
+          .onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
+          .url
       }
     }
   }

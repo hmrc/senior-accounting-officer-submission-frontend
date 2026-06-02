@@ -91,7 +91,7 @@ trait SpecBase
       .success
       .value
 
-  def userAnswersWithUploadedTemplate: UserAnswers =
+  def userAnswersWithCertificateUploadedTemplate: UserAnswers =
     userAnswersWithCertificateSaoDetails
       .set(CertificateReviewQualifiedPage, "HACK")
       .success

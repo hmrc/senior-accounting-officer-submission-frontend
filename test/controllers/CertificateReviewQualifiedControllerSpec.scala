@@ -24,6 +24,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.CertificateReviewQualifiedView
+import models.CertificateTaskListStage
 
 class CertificateReviewQualifiedControllerSpec extends SpecBase {
 
@@ -64,6 +65,34 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
+      }
+    }
+
+    "must redirect to task list on provide sao details stage when user answers is empty for a GET" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      running(application) {
+        val request = FakeRequest(GET, routes.CertificateReviewQualifiedController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.CertificateTaskListController
+          .onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
+          .url
+      }
+    }
+
+    "must redirect to task list on provide sao details stage when user answers is empty for a POST" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      running(application) {
+        val request = FakeRequest(POST, routes.CertificateReviewQualifiedController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.CertificateTaskListController
+          .onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
+          .url
       }
     }
   }

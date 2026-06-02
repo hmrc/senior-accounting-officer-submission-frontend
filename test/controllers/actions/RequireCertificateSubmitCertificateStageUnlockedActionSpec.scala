@@ -38,7 +38,7 @@ class CertificateUploadSubmissionTemplateStageCompletedActionSpec extends SpecBa
   "CertificateUploadSubmissionTemplateStageCompletedAction" - {
 
     "must allow the request when submission template has been uploaded are complete" in {
-      new Harness().callFilter(userAnswersWithUploadedTemplate).futureValue mustBe None
+      new Harness().callFilter(userAnswersWithCertificateUploadedTemplate).futureValue mustBe None
     }
 
     "must redirect to the task list when submission template has not yet been uploaded" in {
