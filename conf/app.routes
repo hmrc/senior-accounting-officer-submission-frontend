@@ -147,10 +147,10 @@ POST       /certificate/change-submit-certificate-sao-full-name                 
 
 GET        /certificateUploadForm                       controllers.CertificateUploadFormController.onPageLoad()
 
-GET        /certificateTaskList/1                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.ProvideSaoDetailsStage)
-GET        /certificateTaskList/2                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.UploadSubmissionTemplateStage)
-GET        /certificateTaskList/3                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.SubmitCertificateStage)
-GET        /certificateTaskList/complete                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Complete)
+GET        /certificate/task-list/1                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.ProvideSaoDetailsStage)
+GET        /certificate/task-list/2                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.UploadSubmissionTemplateStage)
+GET        /certificate/task-list/3                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.SubmitCertificateStage)
+GET        /certificate/task-list/complete                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Complete)
 
 GET        /certificate/declaration-stand-in                        controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = NormalMode)
 POST       /certificate/declaration-stand-in                        controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = NormalMode)
