@@ -24,7 +24,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
+@(saoName: String, form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("certificateSaoEmail.title"))) {
 
@@ -34,16 +34,18 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <span class="govuk-caption-l">@messages("certificateSaoEmail.caption")</span>
+
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("certificateSaoEmail.heading").toText).asPageHeading(LabelSize.Large)
+                label = LabelViewModel(messages("certificateSaoEmail.heading", saoName).toText).asPageHeading(LabelSize.Large)
             )
-            .withWidth(Full)
+            .withHint(HintViewModel(messages("certificateSaoEmail.hint").toText)).withWidth(Fixed20)
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
         )
     }
 }

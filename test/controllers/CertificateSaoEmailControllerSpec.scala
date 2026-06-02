@@ -38,44 +38,51 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
+  val saoName: String = "Firstname Lastname"
+  
   val formProvider       = new CertificateSaoEmailFormProvider()
   val form: Form[String] = formProvider()
 
   lazy val certificateSaoEmailRoute: String = routes.CertificateSaoEmailController.onPageLoad(NormalMode).url
 
+  val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+    .set(CertificateSaoEmailPage, saoName)
+    .success
+    .value
+
   "CertificateSaoEmail Controller" - {
 
     "must return OK and the correct view for a GET" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, certificateSaoEmailRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[CertificateSaoEmailView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
-      }
-    }
-
-    "must populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = UserAnswers(userAnswersId).set(CertificateSaoEmailPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, certificateSaoEmailRoute)
 
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[CertificateSaoEmailView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(saoName,form, NormalMode)(using request, messages(application)).toString
+      }
+    }
+
+    "must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswersWithName = userAnswers.set(CertificateSaoEmailPage, saoName).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, certificateSaoEmailRoute)
+
         val view = application.injector.instanceOf[CertificateSaoEmailView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, form.fill("answer"), NormalMode)(using
           request,
           messages(application)
         ).toString
@@ -89,7 +96,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -124,7 +131,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using request, messages(application)).toString
       }
     }
 

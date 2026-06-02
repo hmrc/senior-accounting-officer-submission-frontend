@@ -31,7 +31,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
-    val view = SUT(form, mode)
+    val view = SUT("Firstname Lastname", form, mode)
     Jsoup.parse(view.toString)
   }
 
@@ -54,13 +54,21 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             name = "value",
             label = pageHeading,
             value = "",
-            hint = None,
+            hint = Some(pageHint),
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateSaoEmailController.onSubmit(mode),
             buttonText = "Continue"
+          )
+
+          doc.createTestsWithLargeCaption(
+            pageCaption
+          )
+
+          doc.createTestMustShowHint(
+            pageHint
           )
 
           doc.createTestsWithOrWithoutError(
@@ -83,13 +91,21 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             name = "value",
             label = pageHeading,
             value = testInputValue,
-            hint = None,
+            hint = Some(pageHint),
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateSaoEmailController.onSubmit(mode),
             buttonText = "Continue"
+          )
+
+          doc.createTestsWithLargeCaption(
+            pageCaption
+          )
+
+          doc.createTestMustShowHint(
+            pageHint
           )
 
           doc.createTestsWithOrWithoutError(
@@ -112,7 +128,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             name = "value",
             label = pageHeading,
             value = "",
-            hint = None,
+            hint = Some(pageHint),
             hasError = true
           )
 
@@ -131,7 +147,9 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
 }
 
 object CertificateSaoEmailViewSpec {
-  val pageHeading    = "certificateSaoEmail"
-  val pageTitle      = "certificateSaoEmail"
+  val pageHeading    = "What is the email address for Firstname Lastname?"
+  val pageTitle      = "Submit a certificate"
   val testInputValue = "myTestInputValue"
+  val pageCaption = "Submit a certificate"
+  val pageHint = "We’ll only use this to contact them about the company’s submission"
 }
