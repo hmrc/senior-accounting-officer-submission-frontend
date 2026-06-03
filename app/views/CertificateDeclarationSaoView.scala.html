@@ -34,16 +34,39 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <span class="govuk-caption-l">@messages("certificateDeclarationSao.caption")</span>
+        <h1 class="govuk-heading-l">@messages("certificateDeclarationSao.heading")</h1>
+
+        <p class="govuk-body-m">@messages("certificateDeclarationSao.paragraph1")</p>
+        <p class="govuk-body-m">@messages("certificateDeclarationSao.paragraph2")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("certificateDeclarationSao.list1.item1")</li>
+            <li>@messages("certificateDeclarationSao.list1.item2")</li>
+        </ul>
+
+        <p class="govuk-body">@messages("certificateDeclarationSao.paragraph3")</p>
+
+        <div class="govuk-inset-text">
+            @messages("certificateDeclarationSao.inset.text")
+        </div>
+
+
+        <h2 class="govuk-heading-s">
+            @messages("certificateDeclarationSao.subheading")
+        </h2>
+
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("certificateDeclarationSao.heading").toText).asPageHeading(LabelSize.Large)
+                label = LabelViewModel(messages("certificateDeclarationSao.label").toText)
             )
-            .withWidth(Full)
+            .withHint(HintViewModel(HtmlContent(messages("certificateDeclarationSao.hint"))))
+            .withWidth(Fixed20)
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
+            ButtonViewModel(messages("certificateDeclarationSao.button").toText)
         )
     }
 }
