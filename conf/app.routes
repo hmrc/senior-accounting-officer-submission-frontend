@@ -134,10 +134,10 @@ POST        /certificateReviewQualified                       controllers.Certif
 GET        /certificateReviewUnqualified                       controllers.CertificateReviewUnqualifiedController.onPageLoad()
 POST        /certificateReviewUnqualified                       controllers.CertificateReviewUnqualifiedController.onSubmit()
 
-GET        /certificateSaoEmail                        controllers.CertificateSaoEmailController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificateSaoEmail                        controllers.CertificateSaoEmailController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCertificateSaoEmail                  controllers.CertificateSaoEmailController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCertificateSaoEmail                  controllers.CertificateSaoEmailController.onSubmit(mode: Mode = CheckMode)
+GET        /certificate-only/sao-email                        controllers.CertificateSaoEmailController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificate-only/sao-email                       controllers.CertificateSaoEmailController.onSubmit(mode: Mode = NormalMode)
+GET        /certificate-only/change-sao-email                   controllers.CertificateSaoEmailController.onPageLoad(mode: Mode = CheckMode)
+POST       /certificate-only/change-sao-email                  controllers.CertificateSaoEmailController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateSaoFullName                        controllers.CertificateSaoFullNameController.onPageLoad(mode: Mode = NormalMode)
 POST       /certificateSaoFullName                        controllers.CertificateSaoFullNameController.onSubmit(mode: Mode = NormalMode)

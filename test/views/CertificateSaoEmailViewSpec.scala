@@ -148,8 +148,8 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
 
 object CertificateSaoEmailViewSpec {
   val pageHeading    = "What is the email address for Firstname Lastname?"
-  val pageTitle      = "Submit a certificate"
+  val pageTitle      = "What is the email address for the SAO?"
   val testInputValue = "myTestInputValue"
-  val pageCaption = "Submit a certificate"
-  val pageHint = "We’ll only use this to contact them about the company’s submission"
+  val pageCaption    = "Submit a certificate"
+  val pageHint       = "We’ll only use this to contact them about the company’s submission"
 }

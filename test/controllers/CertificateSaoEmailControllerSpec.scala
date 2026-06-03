@@ -39,9 +39,9 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
   def onwardRoute: Call = Call("GET", "/foo")
 
   val saoName: String = "Firstname Lastname"
-  
-  val formProvider       = new CertificateSaoEmailFormProvider()
-  val form: Form[String] = formProvider()
+  val testEmail = "example@example.com"
+  private val formProvider       = new CertificateSaoEmailFormProvider()
+  private def form: Form[String] = formProvider()
 
   lazy val certificateSaoEmailRoute: String = routes.CertificateSaoEmailController.onPageLoad(NormalMode).url
 
@@ -64,15 +64,29 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
         val view = application.injector.instanceOf[CertificateSaoEmailView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName,form, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(saoName, form, NormalMode)(using request, messages(application)).toString
       }
     }
 
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request = FakeRequest(GET, certificateSaoEmailRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+    
     "must populate the view correctly on a GET when the question has previously been answered" in {
+      
+      val userAnswersWithEmail = userAnswers.set(CertificateSaoEmailPage, testEmail).success.value
 
-      val userAnswersWithName = userAnswers.set(CertificateSaoEmailPage, saoName).success.value
-
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithName)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithEmail)).build()
 
       running(application) {
         val request = FakeRequest(GET, certificateSaoEmailRoute)
@@ -82,7 +96,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form.fill("answer"), NormalMode)(using
+        contentAsString(result) mustEqual view(saoName, form.fill(testEmail), NormalMode)(using
           request,
           messages(application)
         ).toString
@@ -106,7 +120,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, certificateSaoEmailRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
+            .withFormUrlEncodedBody((saoName, testEmail))
 
         val result = route(application, request).value
 
@@ -131,21 +145,10 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using request, messages(application)).toString
-      }
-    }
-
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      running(application) {
-        val request = FakeRequest(GET, certificateSaoEmailRoute)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 

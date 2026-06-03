@@ -375,7 +375,7 @@ certificateAdditionalInformation.error.required = Enter certificateAdditionalInf
 certificateAdditionalInformation.error.length = CertificateAdditionalInformation must be 100 characters or less
 certificateAdditionalInformation.change.hidden = CertificateAdditionalInformation
 
-certificateSaoEmail.title = Submit a certificate - Senior Accounting Officer contact details
+certificateSaoEmail.title = What is the email address for the SAO?
 certificateSaoEmail.caption = Submit a certificate
 certificateSaoEmail.heading = What is the email address for {0}?
 certificateSaoEmail.hint = We’ll only use this to contact them about the company’s submission
