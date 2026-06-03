@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CertificateSaoEmailPage
+import pages.{CertificateSaoEmailPage, CertificateSaoFullNamePage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -38,15 +38,15 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val saoName: String = "Firstname Lastname"
-  val testEmail = "example@example.com"
+  val saoName: String            = "Firstname Lastname"
+  val testEmail                  = "example@example.com"
   private val formProvider       = new CertificateSaoEmailFormProvider()
   private def form: Form[String] = formProvider()
 
   lazy val certificateSaoEmailRoute: String = routes.CertificateSaoEmailController.onPageLoad(NormalMode).url
 
   val userAnswers: UserAnswers = UserAnswers(userAnswersId)
-    .set(CertificateSaoEmailPage, saoName)
+    .set(CertificateSaoFullNamePage, saoName)
     .success
     .value
 
@@ -81,9 +81,9 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
-    
+
     "must populate the view correctly on a GET when the question has previously been answered" in {
-      
+
       val userAnswersWithEmail = userAnswers.set(CertificateSaoEmailPage, testEmail).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithEmail)).build()
@@ -120,7 +120,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
       running(application) {
         val request =
           FakeRequest(POST, certificateSaoEmailRoute)
-            .withFormUrlEncodedBody((saoName, testEmail))
+            .withFormUrlEncodedBody(("value", testEmail))
 
         val result = route(application, request).value
 
@@ -131,7 +131,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request =

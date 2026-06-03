@@ -140,14 +140,6 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
       }
     }
   }
-
-  extension (doc: => Document) {
-    def createTestsForInputWidth(): Unit = {
-      "must have input with expected class 'govuk-input--width-20'" in {
-        doc.getMainContent.select("input.govuk-input--width-20").size() mustBe 1
-      }
-    }
-  }
 }
 
 object MoreSaoSubmitNotificationFullNameViewSpec {

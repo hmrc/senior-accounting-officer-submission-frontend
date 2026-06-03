@@ -71,6 +71,8 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             pageHint
           )
 
+          doc.createTestsForInputWidth()
+
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
@@ -108,6 +110,8 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             pageHint
           )
 
+          doc.createTestsForInputWidth()
+
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
@@ -136,6 +140,8 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             action = controllers.routes.CertificateSaoEmailController.onSubmit(mode),
             buttonText = "Continue"
           )
+
+          doc.createTestsForInputWidth()
 
           doc.createTestsWithOrWithoutError(
             hasError = true
