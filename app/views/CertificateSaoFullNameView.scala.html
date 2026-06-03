@@ -34,16 +34,19 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
+        <span class="govuk-caption-l">@messages("certificateSaoFullName.caption")</span>
+
         @govukInput(
             InputViewModel(
                 field = form("value"),
                 label = LabelViewModel(messages("certificateSaoFullName.heading").toText).asPageHeading(LabelSize.Large)
             )
-            .withWidth(Full)
+            .withWidth(Fixed20)
         )
 
         @govukButton(
             ButtonViewModel(messages("site.continue").toText)
+                .withAttribute("id", "submit")
         )
     }
 }
