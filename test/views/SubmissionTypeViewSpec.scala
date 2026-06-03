@@ -163,7 +163,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
 object SubmissionTypeViewSpec {
   val pageHeading        = "What would you like to submit?"
-  val pageTitle          = "Senior Accounting Officer notification and certificate - New submission"
+  val pageTitle          = "What would you like to submit?"
   val pageCaption        = "New submission"
   val option1key         = "notification"
   val option1Label       = "A notification"

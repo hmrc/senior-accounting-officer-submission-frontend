@@ -457,7 +457,7 @@ certificateDeclarationSao.error.length = The authorised person name you enter mu
 certificateDeclarationSao.change.hidden = CertificateDeclarationSao
 
 submissionType.caption = New submission
-submissionType.title = Senior Accounting Officer notification and certificate - New submission
+submissionType.title = What would you like to submit?
 submissionType.heading = What would you like to submit?
 submissionType.notification = A notification
 submissionType.certificate = A certificate
