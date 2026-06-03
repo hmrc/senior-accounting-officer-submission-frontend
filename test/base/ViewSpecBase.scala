@@ -59,6 +59,12 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       createTestWithIsThisPageNotWorkingProperlyLink
     }
 
+    def createTestsForInputWidth(): Unit = {
+      "must have input with expected class 'govuk-input--width-20'" in {
+        doc.getMainContent.select("input.govuk-input--width-20").size() mustBe 1
+      }
+    }
+
     def createTestWithPageTitle(pageTitle: String, hasError: Boolean)(using pos: Position): Unit =
       "must generate a view with the correct title" in {
         val errorPrefix = if hasError then "Error: " else ""

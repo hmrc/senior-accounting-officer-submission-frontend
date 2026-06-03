@@ -14,8 +14,8 @@
  * limitations under the License.
  *@
 
-@import models.NotificationConfirmationDetails
 @import config.AppConfig
+@import views.html.helper.CSPNonce
 
 @this(
     layout: templates.Layout,
@@ -24,7 +24,7 @@
     appConfig: AppConfig
 )
 
-@(details: NotificationConfirmationDetails)(using request: Request[?], messages: Messages)
+@(notificationIdReferenceNumber: String)(using request: Request[?], messages: Messages)
 
 @layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
 
@@ -35,23 +35,42 @@
         <div class="govuk-panel__body">
             @messages("notificationConfirmation.reference.text")
             <br>
-            <strong data-test-id="notification-reference-number">@details.notificationId</strong>
+            <strong data-test-id="notification-reference-number">@notificationIdReferenceNumber</strong>
         </div>
     </div>
 
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph1", details.companyName)</p>
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph2", details.notificationDateTime)</p>
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph4")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph1")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph2")</p>
 
     <ul class="govuk-list govuk-list--bullet">
-        <li><a class="govuk-link" href="#">@messages("notificationConfirmation.list1.item1")</a></li>
-        <li><a class="govuk-link" href="#">@messages("notificationConfirmation.list1.item2")</a></li>
+        <li>
+            <span>
+                <a class="govuk-link" id="download-pdf-link" href="#">
+                    @messages("notificationConfirmation.downloadPdf")
+                </a>
+                @messages("notificationConfirmation.list1.item1")
+            </span>
+        </li>
+        <li>
+            <span>
+                <a class="govuk-link" id="print-page-link" href="#">
+                    @messages("notificationConfirmation.printPage")
+                </a>
+                @messages("notificationConfirmation.list1.item2")
+            </span>
+        </li>
     </ul>
 
-    <p class="govuk-body">@Html(messages("notificationConfirmation.paragraph5WithLink", accountHomepageLinkAttributes))</p>
+    <script @CSPNonce.attr>
+        document.getElementById('print-page-link').addEventListener('click', function() {
+            event.preventDefault();
+            window.print();
+        })
+    </script>
+
     <h2 class="govuk-heading-m">@messages("notificationConfirmation.subheading")</h2>
-    <p class="govuk-body">@messages("notificationConfirmation.paragraph6")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph4")</p>
 
     @formHelper(action = routes.NotificationConfirmationController.onSubmit()) {
         @govukButton(
