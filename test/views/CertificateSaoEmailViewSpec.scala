@@ -141,6 +141,14 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             buttonText = "Continue"
           )
 
+          doc.createTestsWithLargeCaption(
+            pageCaption
+          )
+
+          doc.createTestMustShowHint(
+            pageHint
+          )
+
           doc.createTestsForInputWidth()
 
           doc.createTestsWithOrWithoutError(

@@ -41,7 +41,8 @@
                 field = form("value"),
                 label = LabelViewModel(messages("certificateSaoEmail.heading", saoName).toText).asPageHeading(LabelSize.Large)
             )
-            .withHint(HintViewModel(messages("certificateSaoEmail.hint").toText)).withWidth(Fixed20)
+            .withHint(HintViewModel(messages("certificateSaoEmail.hint").toText))
+            .withWidth(Fixed20)
         )
 
         @govukButton(
