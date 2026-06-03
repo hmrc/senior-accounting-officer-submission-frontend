@@ -8,6 +8,8 @@ GET         /refresh-session                                          controller
 GET         /there-is-a-problem                                       controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
 
 GET         /notification/start                                       controllers.SubmitNotificationStartController.onPageLoad()
+GET         /notification/complete                                    controllers.SubmitNotificationStartController.onComplete()
+POST        /notification/complete                                    controllers.SubmitNotificationStartController.onCompleteSubmit()
 
 GET         /template-guidance                                        controllers.TemplateGuidanceController.onPageLoad()
 
@@ -43,7 +45,7 @@ POST        /notification/change-additional-information               controller
 GET         /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onPageLoad()
 POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit()
 
-GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad()
+GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                controllers.NotificationConfirmationController.onSubmit()
 
 GET         /notification/confirm-your-notification                   controllers.ConfirmYourNotificationController.onPageLoad()

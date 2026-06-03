@@ -50,6 +50,12 @@ class NotificationCheckYourAnswersController @Inject() (
 
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
-      Redirect(navigator.nextPage(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers))
+      Redirect(
+        navigator.nextPage(
+          NotificationCheckYourAnswersPage,
+          NormalMode,
+          request.userAnswers
+        )
+      )
     }
 }

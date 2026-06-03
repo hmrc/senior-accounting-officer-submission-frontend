@@ -16,8 +16,4 @@
 
 package models
 
-final case class NotificationConfirmationDetails(
-    companyName: String,
-    notificationId: String,
-    notificationDateTime: String
-)
+final case class NotificationIdReferenceNumber(id: String)

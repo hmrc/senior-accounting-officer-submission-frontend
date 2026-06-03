@@ -17,7 +17,7 @@
 package controllers
 
 import controllers.actions.*
-import models.{NormalMode, NotificationConfirmationDetails}
+import models.NormalMode
 import navigation.Navigator
 import pages.NotificationConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -39,16 +39,10 @@ class NotificationConfirmationController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] =
+  def onPageLoad(notificationIdReferenceNumber: String): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       Ok(
-        view(
-          NotificationConfirmationDetails(
-            companyName = "ABC Limited",
-            notificationId = "SAONOT0123456789",
-            notificationDateTime = "Placeholder Date/Time"
-          )
-        )
+        view(notificationIdReferenceNumber)
       )
     }
 
