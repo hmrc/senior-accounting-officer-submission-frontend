@@ -51,11 +51,13 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
 
       "expected value" - {
         "must show 'Option1' when user answers is sao" in {
-          SUT(answer = CertificateWhoIsSubmitting.Sao).value.content mustBe HtmlContent("Option 1")
+          SUT(answer = CertificateWhoIsSubmitting.Sao).value.content mustBe HtmlContent("I am the SAO")
         }
 
         "must show 'Option2' when user answers is standIn" in {
-          SUT(answer = CertificateWhoIsSubmitting.StandIn).value.content mustBe HtmlContent("Option 2")
+          SUT(answer = CertificateWhoIsSubmitting.StandIn).value.content mustBe HtmlContent(
+            "I am authorised to submit on behalf of the SAO"
+          )
         }
       }
 

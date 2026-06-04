@@ -32,10 +32,16 @@
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))
         }
 
+        <span class="govuk-caption-l">@messages("certificateWhoIsSubmitting.caption")</span>
+        <h1 class="govuk-heading-l">@messages("certificateWhoIsSubmitting.heading")</h1>
+
+        <p class="govuk-body">@messages("certificateWhoIsSubmitting.paragraph1")</p>
+        <p class="govuk-body">@messages("certificateWhoIsSubmitting.paragraph2")</p>
+
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("certificateWhoIsSubmitting.heading").toText).asPageHeading(LegendSize.Large),
+                legend = Legend(),
                 items  = CertificateWhoIsSubmitting.options
             )
         )

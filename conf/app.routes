@@ -150,16 +150,15 @@ GET        /certificateUploadForm                       controllers.CertificateU
 
 GET        /certificateTaskList                       controllers.CertificateTaskListController.onPageLoad()
 
-
 GET        /certificateDeclarationStandIn                        controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = NormalMode)
 POST       /certificateDeclarationStandIn                        controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = NormalMode)
 GET        /changeCertificateDeclarationStandIn                  controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = CheckMode)
 POST       /changeCertificateDeclarationStandIn                  controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificateWhoIsSubmitting                        controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificateWhoIsSubmitting                        controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCertificateWhoIsSubmitting                  controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCertificateWhoIsSubmitting                  controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
+GET        /certificate-who-is-submitting                        controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificate-who-is-submitting                        controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = NormalMode)
+GET        /change-certificate-who-is-submitting                 controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-certificate-who-is-submitting                 controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onPageLoad()
 POST        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onSubmit()
