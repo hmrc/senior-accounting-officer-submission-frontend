@@ -30,6 +30,7 @@ import views.html.SubmissionTypeView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import models.UserAnswers
 
 class SubmissionTypeController @Inject() (
     override val messagesApi: MessagesApi,
@@ -44,10 +45,19 @@ class SubmissionTypeController @Inject() (
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(SubmissionTypePage).fold(form)(form.fill)
-    Ok(view(preparedForm))
+    val preparedForm = request.userAnswers.fold(form)(answers => answers.get(SubmissionTypePage).fold(form)(form.fill))
+    for {
+      userAnswers <- sessionRepository.get(request.userId)
+      result      <- userAnswers match {
+        case Some(answers) => Future.successful(Ok(view(preparedForm)))
+        case None          =>
+          sessionRepository
+            .set(UserAnswers(request.userId))
+            .map(_ => Ok(view(preparedForm)))
+      }
+    } yield result
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
