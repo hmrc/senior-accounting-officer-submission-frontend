@@ -165,16 +165,16 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 }
 
 object CertificateDeclarationSaoViewSpec {
-  val pageHeading                                 = "Confirm the certificate"
-  val pageTitle                                   = "Confirm the certificate"
-  val pageLabel                                   = "I am the Senior Accounting Officer with the authority to submit this certificate:"
-  val pageHint: Some[String]                      = Some("Insert full name")
-  val pageSubHeadings: Seq[String]                = Seq("Declaration")
-  val pageSubHeadingsWithError: Seq[String]       = Seq("There is a problem", "Declaration")
-  val pageCaption                                 = "Submit a certificate"
-  val pageButton                                  = "Confirm"
-  val testInputValue                              = "myTestInputValue"
-  val pageParagraphs: Seq[String] = Seq(
+  val pageHeading                  = "Confirm the certificate"
+  val pageTitle                    = "Confirm the certificate"
+  val pageLabel                    = "I am the Senior Accounting Officer with the authority to submit this certificate:"
+  val pageHint: Some[String]       = Some("Insert full name")
+  val pageSubHeadings: Seq[String] = Seq("Declaration")
+  val pageSubHeadingsWithError: Seq[String] = Seq("There is a problem", "Declaration")
+  val pageCaption                           = "Submit a certificate"
+  val pageButton                            = "Confirm"
+  val testInputValue                        = "myTestInputValue"
+  val pageParagraphs: Seq[String]           = Seq(
     "As the SAO it is your responsibility to make sure you have reviewed and approved everything before you submit.",
     "By submitting this certificate, you confirm that:",
     "if you deliberately give wrong or incomplete information, or do not report changes, the SAO may have to pay a penalty of £5,000."
