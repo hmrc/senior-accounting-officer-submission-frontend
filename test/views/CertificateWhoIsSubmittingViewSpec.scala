@@ -51,6 +51,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             hasError = false
           )
 
+          doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
 
           doc.createTestsWithRadioButtons(
@@ -84,6 +85,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             hasError = false
           )
 
+          doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
 
           doc.createTestsWithRadioButtons(
@@ -117,6 +119,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             hasError = true
           )
 
+          doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
 
           doc.createTestsWithRadioButtons(
