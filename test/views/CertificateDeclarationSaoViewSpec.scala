@@ -71,7 +71,7 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
           doc.createTestForInsetText(pageInsetText)
-          doc.createTestsForSubHeadings(pageSubheadings)
+          doc.createTestsForSubHeadings(pageSubHeadings)
           doc.createTestsForInputWidth()
         }
 
@@ -107,7 +107,7 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
           doc.createTestForInsetText(pageInsetText)
-          doc.createTestsForSubHeadings(pageSubheadings)
+          doc.createTestsForSubHeadings(pageSubHeadings)
           doc.createTestsForInputWidth()
         }
 
@@ -143,10 +143,23 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
           doc.createTestForInsetText(pageInsetText)
-          doc.createTestsForSubHeadings(pageSubheadingsWithError)
+          doc.createTestsForSubHeadings(pageSubHeadingsWithError)
           doc.createTestsForInputWidth()
         }
       }
+    }
+  }
+  extension (target: => Document) {
+    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
+      val headings = target.getMainContent.getElementsByTag("h2")
+      "must have expected number of headings" in {
+        headings.size() mustBe subheadings.length
+      }
+      subheadings.zipWithIndex.foreach((subheading, i) => {
+        s"must have heading '$subheading'" in {
+          headings.get(i).text mustBe subheading
+        }
+      })
     }
   }
 }
@@ -156,8 +169,8 @@ object CertificateDeclarationSaoViewSpec {
   val pageTitle                                   = "Confirm the certificate"
   val pageLabel                                   = "I am the Senior Accounting Officer with the authority to submit this certificate:"
   val pageHint: Some[String]                      = Some("Insert full name")
-  val pageSubheadings: Seq[String]                = Seq("Declaration")
-  val pageSubheadingsWithError: Seq[String]       = Seq("There is a problem", "Declaration")
+  val pageSubHeadings: Seq[String]                = Seq("Declaration")
+  val pageSubHeadingsWithError: Seq[String]       = Seq("There is a problem", "Declaration")
   val pageCaption                                 = "Submit a certificate"
   val pageButton                                  = "Confirm"
   val testInputValue                              = "myTestInputValue"
