@@ -23,7 +23,7 @@ class CertificateDeclarationSaoFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "certificateDeclarationSao.error.required"
   val lengthKey   = "certificateDeclarationSao.error.length"
-  val maxLength   = 100
+  val maxLength   = 105
 
   val form = new CertificateDeclarationSaoFormProvider()()
 
@@ -54,12 +54,12 @@ class CertificateDeclarationSaoFormProviderSpec extends StringFieldBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter certificateDeclarationSao"
+      message = "Enter the name of the Senior Accounting Officer who is authorised to submit the certificate"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "CertificateDeclarationSao must be 100 characters or less"
+      message = "The authorised person name you enter must be 105 characters or less"
     )
   }
 }

@@ -82,6 +82,18 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         }
       }
 
+    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
+      val headings = doc.getMainContent.getElementsByTag("h2")
+      "must have expected number of headings" in {
+        headings.size() mustBe subheadings.length
+      }
+      subheadings.zipWithIndex.foreach((subheading, i) => {
+        s"must have heading '$subheading'" in {
+          headings.get(i).text mustBe subheading
+        }
+      })
+    }
+
     def createTestForInsetText(text: String): Unit = {
       val insetTextElement = doc.getMainContent.select(".govuk-inset-text")
       "must have one inset string" in {

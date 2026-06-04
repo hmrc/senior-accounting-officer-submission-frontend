@@ -52,20 +52,27 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageHeading,
+            label = pageLabel,
             value = "",
-            hint = None,
+            hint = pageHint,
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateDeclarationSaoController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonText = pageButton
           )
 
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestForInsetText(pageInsetText)
+          doc.createTestsForSubHeadings(pageSubheadings)
+          doc.createTestsForInputWidth()
         }
 
         "when the form is filled in" - {
@@ -81,20 +88,27 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageHeading,
+            label = pageLabel,
             value = testInputValue,
-            hint = None,
+            hint = pageHint,
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateDeclarationSaoController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonText = pageButton
           )
 
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestForInsetText(pageInsetText)
+          doc.createTestsForSubHeadings(pageSubheadings)
+          doc.createTestsForInputWidth()
         }
 
         "when the form has errors" - {
@@ -110,20 +124,27 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageHeading,
+            label = pageLabel,
             value = "",
-            hint = None,
+            hint = pageHint,
             hasError = true
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateDeclarationSaoController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonText = pageButton
           )
 
           doc.createTestsWithOrWithoutError(
             hasError = true
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestForInsetText(pageInsetText)
+          doc.createTestsForSubHeadings(pageSubheadingsWithError)
+          doc.createTestsForInputWidth()
         }
       }
     }
@@ -131,7 +152,24 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 }
 
 object CertificateDeclarationSaoViewSpec {
-  val pageHeading    = "certificateDeclarationSao"
-  val pageTitle      = "certificateDeclarationSao"
-  val testInputValue = "myTestInputValue"
+  val pageHeading                                 = "Confirm the certificate"
+  val pageTitle                                   = "Confirm the certificate"
+  val pageLabel                                   = "I am the Senior Accounting Officer with the authority to submit this certificate:"
+  val pageHint: Some[String]                      = Some("Insert full name")
+  val pageSubheadings: Seq[String]                = Seq("Declaration")
+  val pageSubheadingsWithError: Seq[String]       = Seq("There is a problem", "Declaration")
+  val pageCaption                                 = "Submit a certificate"
+  val pageButton                                  = "Confirm"
+  val testInputValue                              = "myTestInputValue"
+  val pageParagraphs: Seq[String] = Seq(
+    "As the SAO it is your responsibility to make sure you have reviewed and approved everything before you submit.",
+    "By submitting this certificate, you confirm that:",
+    "if you deliberately give wrong or incomplete information, or do not report changes, the SAO may have to pay a penalty of £5,000."
+  )
+  val pageBullets: Seq[String] = Seq(
+    "the information is complete and correct",
+    "you are the SAO submitting this certificate"
+  )
+  val pageInsetText =
+    "If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels."
 }
