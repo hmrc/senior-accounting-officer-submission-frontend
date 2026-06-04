@@ -52,9 +52,9 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageLabel,
+            label = inputLabel,
             value = "",
-            hint = pageHint,
+            hint = Some(inputHint),
             hasError = false
           )
 
@@ -88,9 +88,9 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageLabel,
+            label = inputLabel,
             value = testInputValue,
-            hint = pageHint,
+            hint = Some(inputHint),
             hasError = false
           )
 
@@ -124,9 +124,9 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageLabel,
+            label = inputLabel,
             value = "",
-            hint = pageHint,
+            hint = Some(inputHint),
             hasError = true
           )
 
@@ -167,8 +167,8 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 object CertificateDeclarationSaoViewSpec {
   val pageHeading                  = "Confirm the certificate"
   val pageTitle                    = "Confirm the certificate"
-  val pageLabel                    = "I am the Senior Accounting Officer with the authority to submit this certificate:"
-  val pageHint: Some[String]       = Some("Insert full name")
+  val inputLabel                   = "I am the Senior Accounting Officer with the authority to submit this certificate:"
+  val inputHint                    = "Insert full name"
   val pageSubHeadings: Seq[String] = Seq("Declaration")
   val pageSubHeadingsWithError: Seq[String] = Seq("There is a problem", "Declaration")
   val pageCaption                           = "Submit a certificate"
