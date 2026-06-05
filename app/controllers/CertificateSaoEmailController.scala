@@ -20,7 +20,7 @@ import controllers.actions.*
 import forms.CertificateSaoEmailFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.CertificateSaoEmailPage
+import pages.{CertificateSaoEmailPage, CertificateSaoFullNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -47,21 +47,29 @@ class CertificateSaoEmailController @Inject() (
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.get(CertificateSaoEmailPage).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
+    request.userAnswers
+      .get(CertificateSaoFullNamePage)
+      .fold(
+        Redirect(routes.JourneyRecoveryController.onPageLoad())
+      )(saoName => Ok(view(saoName, preparedForm, mode)))
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateSaoEmailPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateSaoEmailPage, mode, updatedAnswers))
-        )
+      request.userAnswers.get(CertificateSaoFullNamePage) match {
+        case Some(saoName) =>
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
+              value =>
+                for {
+                  updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateSaoEmailPage, value))
+                  _              <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(navigator.nextPage(CertificateSaoEmailPage, mode, updatedAnswers))
+            )
+        case None => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+      }
   }
 }

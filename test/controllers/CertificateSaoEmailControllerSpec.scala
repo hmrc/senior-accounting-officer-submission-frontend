@@ -23,7 +23,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CertificateSaoEmailPage
+import pages.{CertificateSaoEmailPage, CertificateSaoFullNamePage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -38,93 +38,33 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider       = new CertificateSaoEmailFormProvider()
-  val form: Form[String] = formProvider()
+  val saoName: String            = "Firstname Lastname"
+  val testEmail                  = "example@example.com"
+  private val formProvider       = new CertificateSaoEmailFormProvider()
+  private def form: Form[String] = formProvider()
 
   lazy val certificateSaoEmailRoute: String = routes.CertificateSaoEmailController.onPageLoad(NormalMode).url
+
+  val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+    .set(CertificateSaoFullNamePage, saoName)
+    .success
+    .value
 
   "CertificateSaoEmail Controller" - {
 
     "must return OK and the correct view for a GET" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      running(application) {
-        val request = FakeRequest(GET, certificateSaoEmailRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[CertificateSaoEmailView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
-      }
-    }
-
-    "must populate the view correctly on a GET when the question has previously been answered" in {
-
-      val userAnswers = UserAnswers(userAnswersId).set(CertificateSaoEmailPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, certificateSaoEmailRoute)
 
-        val view = application.injector.instanceOf[CertificateSaoEmailView]
-
         val result = route(application, request).value
+
+        val view = application.injector.instanceOf[CertificateSaoEmailView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
-          request,
-          messages(application)
-        ).toString
-      }
-    }
-
-    "must redirect to the next page when valid data is submitted" in {
-
-      val mockSessionRepository = mock[SessionRepository]
-
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-            bind[SessionRepository].toInstance(mockSessionRepository)
-          )
-          .build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, certificateSaoEmailRoute)
-            .withFormUrlEncodedBody(("value", "answer"))
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
-      }
-    }
-
-    "must return a Bad Request and errors when invalid data is submitted" in {
-
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, certificateSaoEmailRoute)
-            .withFormUrlEncodedBody(("value", ""))
-
-        val boundForm = form.bind(Map("value" -> ""))
-
-        val view = application.injector.instanceOf[CertificateSaoEmailView]
-
-        val result = route(application, request).value
-
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(saoName, form, NormalMode)(using request, messages(application)).toString
       }
     }
 
@@ -139,6 +79,76 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val userAnswersWithEmail = userAnswers.set(CertificateSaoEmailPage, testEmail).success.value
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithEmail)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, certificateSaoEmailRoute)
+
+        val view = application.injector.instanceOf[CertificateSaoEmailView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(saoName, form.fill(testEmail), NormalMode)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must redirect to the next page when valid data is submitted" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(userAnswers))
+          .overrides(
+            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateSaoEmailRoute)
+            .withFormUrlEncodedBody(("value", testEmail))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
+    }
+
+    "must return a Bad Request and errors when invalid data is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateSaoEmailRoute)
+            .withFormUrlEncodedBody(("value", ""))
+
+        val boundForm = form.bind(Map("value" -> ""))
+
+        val view = application.injector.instanceOf[CertificateSaoEmailView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 
