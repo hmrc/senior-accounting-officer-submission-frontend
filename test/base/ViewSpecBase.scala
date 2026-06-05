@@ -59,6 +59,12 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       createTestWithIsThisPageNotWorkingProperlyLink
     }
 
+    def createTestsForInputWidth(): Unit = {
+      "must have input with expected class 'govuk-input--width-20'" in {
+        doc.getMainContent.select("input.govuk-input--width-20").size() mustBe 1
+      }
+    }
+
     def createTestWithPageTitle(pageTitle: String, hasError: Boolean)(using pos: Position): Unit =
       "must generate a view with the correct title" in {
         val errorPrefix = if hasError then "Error: " else ""
@@ -612,13 +618,25 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         form.size() mustBe 1
       }
 
-      s"must have a submit button with text '$buttonText'" in {
-        val button = target.resolve.select("button[type=submit]")
-        withClue(
-          s"Submit Button with text '$buttonText' not found\n"
-        ) {
-          button.text() mustBe buttonText
-          button.size() mustBe 1
+      "must have a submit button" - {
+        s"must have text '$buttonText'" in {
+          val button = target.resolve.select("button[type=submit]")
+          withClue(
+            s"Submit Button with text '$buttonText' not found\n"
+          ) {
+            button.text() mustBe buttonText
+            button.size() mustBe 1
+          }
+        }
+
+        s"""must have an id of "submit"""" in {
+          val button = target.resolve.select("button[type=submit]")
+          withClue(s"Submit Button not found\n") {
+            button.size() mustBe 1
+          }
+          withClue(s"""Submit Button's ID is not "submit"\n""") {
+            button.attr("id") mustBe "submit"
+          }
         }
       }
     }

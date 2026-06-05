@@ -23,43 +23,56 @@ class CertificateSaoEmailFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKey = "certificateSaoEmail.error.required"
   val lengthKey   = "certificateSaoEmail.error.length"
-  val maxLength   = 100
-
-  val form = new CertificateSaoEmailFormProvider()()
+  val formatKey   = "certificateSaoEmail.error.format"
+  val maxLength   = 254
+  val emailRegex  = """^.+[@].+[.].+$"""
+  val form        = new CertificateSaoEmailFormProvider()()
 
   ".value" - {
 
     val fieldName = "value"
 
-    behave like fieldThatBindsValidData(
-      form,
-      fieldName,
-      stringsWithMaxLength(maxLength)
+    behave like fieldWithValidEmailformat(
+      form = form,
+      fieldName = fieldName,
+      generator = genValidEmailAddress
     )
 
-    behave like fieldWithMaxLength(
-      form,
-      fieldName,
-      maxLength = maxLength,
-      lengthError = FormError(fieldName, lengthKey, Seq(maxLength))
+    behave like fieldWithMaxEmailLength(
+      form = form,
+      fieldName = fieldName,
+      generator = genLongEmailAddresses,
+      requiredError = FormError(fieldName, lengthKey, Seq(maxLength))
     )
 
     behave like mandatoryField(
-      form,
-      fieldName,
+      form = form,
+      fieldName = fieldName,
       requiredError = FormError(fieldName, requiredKey)
+    )
+
+    behave like fieldWithInvalidEmailformat(
+      form = form,
+      fieldName = fieldName,
+      generator = genInvalidEmailAddresses,
+      requiredError = FormError(fieldName, formatKey, Seq(emailRegex))
     )
   }
 
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter certificateSaoEmail"
+      message = "Enter the email address of the Senior Accounting Officer"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "CertificateSaoEmail must be 100 characters or less"
+      message = "SAO email address must be 254 characters or less"
+    )
+
+    createTestWithErrorMessageAssertion(
+      key = formatKey,
+      message = "Enter the SAO name in the correct format, like name@example.com"
     )
   }
 }

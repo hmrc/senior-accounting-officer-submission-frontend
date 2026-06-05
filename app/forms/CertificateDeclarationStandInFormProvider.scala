@@ -27,10 +27,10 @@ class CertificateDeclarationStandInFormProvider @Inject() extends Mappings {
 
   def apply(): Form[CertificateDeclarationStandIn] = Form(
     mapping(
-      "StandInName" -> text("certificateDeclarationStandIn.error.StandInName.required")
-        .verifying(maxLength(100, "certificateDeclarationStandIn.error.StandInName.length")),
-      "SaoName" -> text("certificateDeclarationStandIn.error.SaoName.required")
-        .verifying(maxLength(100, "certificateDeclarationStandIn.error.SaoName.length"))
+      "StandInName" -> text("certificateDeclarationStandIn.error.standInName.required")
+        .verifying(maxLength(105, "certificateDeclarationStandIn.error.standInName.length")),
+      "SaoName" -> text("certificateDeclarationStandIn.error.saoName.required")
+        .verifying(maxLength(105, "certificateDeclarationStandIn.error.saoName.length"))
     )(CertificateDeclarationStandIn.apply)(x => Some((x.StandInName, x.SaoName)))
   )
 }

@@ -17,6 +17,7 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import models.upload.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -60,9 +61,10 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       doc.select(".govuk-pagination").size() mustBe 0
     }
 
-    "must render continue button" in {
-      doc.select("#submit").size() mustBe 1
-    }
+    doc.createTestsWithSubmissionButton(
+      action = routes.UploadTemplateTableController.onSubmit(),
+      buttonText = "Continue"
+    )
 
     "must render the SAO name, company count and upload link" in {
       doc.text() must include(saoName)

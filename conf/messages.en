@@ -360,9 +360,6 @@ confirmYourNotification.list1.item1 = the information provided is complete and c
 confirmYourNotification.list1.item2 = you understand that if the company deliberately provides false or incomplete information, or fails to report changes, it may be liable for a penalty of £5,000
 confirmYourNotification.inset.text = If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels.
 
-certificateDeclarationStandIn.title = certificateDeclarationStandIn
-certificateDeclarationStandIn.heading = certificateDeclarationStandIn
-
 certificateReviewQualified.title = certificateReviewQualified
 certificateReviewQualified.heading = certificateReviewQualified
 
@@ -376,18 +373,22 @@ certificateAdditionalInformation.error.required = Enter certificateAdditionalInf
 certificateAdditionalInformation.error.length = CertificateAdditionalInformation must be 100 characters or less
 certificateAdditionalInformation.change.hidden = CertificateAdditionalInformation
 
-certificateSaoEmail.title = certificateSaoEmail
-certificateSaoEmail.heading = certificateSaoEmail
+certificateSaoEmail.title = What is the email address for the SAO?
+certificateSaoEmail.caption = Submit a certificate
+certificateSaoEmail.heading = What is the email address for {0}?
+certificateSaoEmail.hint = We’ll only use this to contact them about the company’s submission
 certificateSaoEmail.checkYourAnswersLabel = certificateSaoEmail
-certificateSaoEmail.error.required = Enter certificateSaoEmail
-certificateSaoEmail.error.length = CertificateSaoEmail must be 100 characters or less
+certificateSaoEmail.error.required = Enter the email address of the Senior Accounting Officer
+certificateSaoEmail.error.format = Enter the SAO name in the correct format, like name@example.com
+certificateSaoEmail.error.length = SAO email address must be 254 characters or less
 certificateSaoEmail.change.hidden = CertificateSaoEmail
 
-certificateSaoFullName.title = certificateSaoFullName
-certificateSaoFullName.heading = certificateSaoFullName
+certificateSaoFullName.title = What is the name of the SAO responsible for the certificate?
+certificateSaoFullName.heading = What is the name of the SAO responsible for the certificate?
+certificateSaoFullName.caption = Submit a certificate
 certificateSaoFullName.checkYourAnswersLabel = certificateSaoFullName
-certificateSaoFullName.error.required = Enter certificateSaoFullName
-certificateSaoFullName.error.length = CertificateSaoFullName must be 100 characters or less
+certificateSaoFullName.error.required = Enter the name of the Senior Accounting Officer
+certificateSaoFullName.error.length = The name you enter must be 254 characters or less
 certificateSaoFullName.change.hidden = CertificateSaoFullName
 
 certificateUploadForm.title = certificateUploadForm
@@ -396,18 +397,32 @@ certificateUploadForm.heading = certificateUploadForm
 certificateTaskList.title = certificateTaskList
 certificateTaskList.heading = certificateTaskList
 
+certificateDeclarationStandIn.title = Confirm the certificate
+certificateDeclarationStandIn.caption = Submit a certificate
+certificateDeclarationStandIn.heading = Confirm the certificate
+certificateDeclarationStandIn.paragraph1 = It is your responsibility to make sure the SAO has reviewed and approved everything before you submit.
+certificateDeclarationStandIn.paragraph2 = By submitting this certificate, you confirm that:
+certificateDeclarationStandIn.paragraph3 = If you deliberately give wrong or incomplete information, or do not report changes, the SAO may have to pay a penalty of £5,000.
+certificateDeclarationStandIn.insetText = If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels.
+certificateDeclarationStandIn.bulletPoint1 = the information is complete and correct
+certificateDeclarationStandIn.bulletPoint2 = you have been authorised by the SAO to submit this certificate
+certificateDeclarationStandIn.subheading = Declaration
+certificateDeclarationStandIn.input1Label = I confirm that I am authorised to submit this certificate.
+certificateDeclarationStandIn.input1Hint = Insert your full name (person submitting)
+certificateDeclarationStandIn.input2Label = Name of the SAO who authorised you:
+certificateDeclarationStandIn.input2Hint = Insert full name
+certificateDeclarationStandIn.confirmButtonText = Confirm
 
-certificateDeclarationStandIn.title = certificateDeclarationStandIn
-certificateDeclarationStandIn.heading = certificateDeclarationStandIn
-certificateDeclarationStandIn.StandInName = StandInName
-certificateDeclarationStandIn.SaoName = SaoName
+certificateDeclarationStandIn.standInName = StandInName
+certificateDeclarationStandIn.saoName = SaoName
+
 certificateDeclarationStandIn.checkYourAnswersLabel = CertificateDeclarationStandIn
-certificateDeclarationStandIn.error.StandInName.required = Enter StandInName
-certificateDeclarationStandIn.error.SaoName.required = Enter SaoName
-certificateDeclarationStandIn.error.StandInName.length = StandInName must be 100 characters or less
-certificateDeclarationStandIn.error.SaoName.length = SaoName must be 100 characters or less
-certificateDeclarationStandIn.StandInName.change.hidden = StandInName
-certificateDeclarationStandIn.SaoName.change.hidden = SaoName
+certificateDeclarationStandIn.error.standInName.required = Enter the name of the person authorised to sign the certificate
+certificateDeclarationStandIn.error.saoName.required = Enter the name of the Senior Accounting Officer who authorised you to submit the certificate
+certificateDeclarationStandIn.error.standInName.length = The authorised person name you enter must be 105 characters or less
+certificateDeclarationStandIn.error.saoName.length = The Senior Accounting Officer name you enter must be 105 characters or less
+certificateDeclarationStandIn.standInName.change.hidden = StandInName
+certificateDeclarationStandIn.saoName.change.hidden = SaoName
 
 certificateWhoIsSubmitting.title = Who is submitting the certificate?
 certificateWhoIsSubmitting.caption = Submit a certificate
@@ -426,9 +441,20 @@ certificateCheckYourAnswers.heading = certificateCheckYourAnswers
 certificateConfirmation.title = certificateConfirmation
 certificateConfirmation.heading = certificateConfirmation
 
-certificateDeclarationSao.title = certificateDeclarationSao
-certificateDeclarationSao.heading = certificateDeclarationSao
+certificateDeclarationSao.title = Confirm the certificate
+certificateDeclarationSao.heading = Confirm the certificate
+certificateDeclarationSao.label = I am the Senior Accounting Officer with the authority to submit this certificate:
+certificateDeclarationSao.hint = Insert full name
+certificateDeclarationSao.subheading = Declaration
+certificateDeclarationSao.caption = Submit a certificate
+certificateDeclarationSao.paragraph1 = As the SAO it is your responsibility to make sure you have reviewed and approved everything before you submit.
+certificateDeclarationSao.paragraph2 = By submitting this certificate, you confirm that:
+certificateDeclarationSao.paragraph3 = if you deliberately give wrong or incomplete information, or do not report changes, the SAO may have to pay a penalty of £5,000.
+certificateDeclarationSao.list1.item1 = the information is complete and correct
+certificateDeclarationSao.list1.item2 = you are the SAO submitting this certificate
+certificateDeclarationSao.inset.text = If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels.
+certificateDeclarationSao.button = Confirm
 certificateDeclarationSao.checkYourAnswersLabel = certificateDeclarationSao
-certificateDeclarationSao.error.required = Enter certificateDeclarationSao
-certificateDeclarationSao.error.length = CertificateDeclarationSao must be 100 characters or less
+certificateDeclarationSao.error.required = Enter the name of the Senior Accounting Officer who is authorised to submit the certificate
+certificateDeclarationSao.error.length = The authorised person name you enter must be 105 characters or less
 certificateDeclarationSao.change.hidden = CertificateDeclarationSao

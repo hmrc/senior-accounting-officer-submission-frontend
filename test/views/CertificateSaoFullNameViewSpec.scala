@@ -58,6 +58,8 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
             hasError = false
           )
 
+          doc.createTestsWithLargeCaption(pageCaption)
+
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateSaoFullNameController.onSubmit(mode),
             buttonText = "Continue"
@@ -66,6 +68,9 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
+
+          doc.createTestsForInputWidth()
+
         }
 
         "when the form is filled in" - {
@@ -87,6 +92,8 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
             hasError = false
           )
 
+          doc.createTestsWithLargeCaption(pageCaption)
+
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateSaoFullNameController.onSubmit(mode),
             buttonText = "Continue"
@@ -95,6 +102,9 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
           doc.createTestsWithOrWithoutError(
             hasError = false
           )
+
+          doc.createTestsForInputWidth()
+
         }
 
         "when the form has errors" - {
@@ -116,6 +126,8 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
             hasError = true
           )
 
+          doc.createTestsWithLargeCaption(pageCaption)
+
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateSaoFullNameController.onSubmit(mode),
             buttonText = "Continue"
@@ -124,6 +136,8 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
           doc.createTestsWithOrWithoutError(
             hasError = true
           )
+
+          doc.createTestsForInputWidth()
         }
       }
     }
@@ -131,7 +145,8 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
 }
 
 object CertificateSaoFullNameViewSpec {
-  val pageHeading    = "certificateSaoFullName"
-  val pageTitle      = "certificateSaoFullName"
+  val pageHeading    = "What is the name of the SAO responsible for the certificate?"
+  val pageTitle      = "What is the name of the SAO responsible for the certificate?"
+  val pageCaption    = "Submit a certificate"
   val testInputValue = "myTestInputValue"
 }
