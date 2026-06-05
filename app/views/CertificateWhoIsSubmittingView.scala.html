@@ -33,17 +33,13 @@
         }
 
         <span class="govuk-caption-l">@messages("certificateWhoIsSubmitting.caption")</span>
-        <h1 class="govuk-heading-l">@messages("certificateWhoIsSubmitting.heading")</h1>
-
-        <p class="govuk-body">@messages("certificateWhoIsSubmitting.paragraph1")</p>
-        <p class="govuk-body">@messages("certificateWhoIsSubmitting.paragraph2")</p>
 
         @govukRadios(
             RadiosViewModel(
                 field  = form("value"),
-                legend = Legend(),
+                legend = LegendViewModel(messages("certificateWhoIsSubmitting.heading").toText).asPageHeading(LegendSize.Large),
                 items  = CertificateWhoIsSubmitting.options
-            )
+            ).withParagraphs(Seq(messages("certificateWhoIsSubmitting.paragraph1"), messages("certificateWhoIsSubmitting.paragraph2")))
         )
 
         @govukButton(
