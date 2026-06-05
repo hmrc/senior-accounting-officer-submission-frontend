@@ -39,7 +39,7 @@
                 field  = form("value"),
                 legend = LegendViewModel(messages("combinedWhoSubmitsCertificate.heading").toText).asPageHeading(LegendSize.Large),
                 items  = CombinedWhoSubmitsCertificate.options
-            ).withParagraph(messages("combinedWhoSubmitsCertificate.paragraph1"))
+            ).withParagraphs(Seq(messages("combinedWhoSubmitsCertificate.paragraph1")))
         )
 
         @govukButton(

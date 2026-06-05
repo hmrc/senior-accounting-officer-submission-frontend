@@ -39,7 +39,13 @@
                 field  = form("value"),
                 legend = LegendViewModel(messages("certificateWhoIsSubmitting.heading").toText).asPageHeading(LegendSize.Large),
                 items  = CertificateWhoIsSubmitting.options
-            ).withParagraphs(Seq(messages("certificateWhoIsSubmitting.paragraph1"), messages("certificateWhoIsSubmitting.paragraph2")))
+            )
+            .withParagraphs(
+                Seq(
+                    messages("certificateWhoIsSubmitting.paragraph1"),
+                    messages("certificateWhoIsSubmitting.paragraph2")
+                )
+            )
         )
 
         @govukButton(
