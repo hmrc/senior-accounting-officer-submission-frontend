@@ -22,6 +22,11 @@ import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {
 
+  given arbitrarySubmissionType: Arbitrary[SubmissionType] =
+    Arbitrary {
+      Gen.oneOf(SubmissionType.values.toSeq)
+    }
+
   given arbitraryCertificateWhoIsSubmitting: Arbitrary[CertificateWhoIsSubmitting] =
     Arbitrary {
       Gen.oneOf(CertificateWhoIsSubmitting.values.toSeq)

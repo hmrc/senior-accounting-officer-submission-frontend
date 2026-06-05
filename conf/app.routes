@@ -51,8 +51,7 @@ POST        /notification/confirmation                                controller
 GET         /notification/confirm-your-notification                   controllers.ConfirmYourNotificationController.onPageLoad()
 POST        /notification/confirm-your-notification                   controllers.ConfirmYourNotificationController.onSubmit()
 
-GET         /certificate/start                                        controllers.SubmitCertificateStartController.onPageLoad()
-POST        /certificate/start                                        controllers.SubmitCertificateStartController.onSubmit()
+GET         /certificate/start                                        controllers.CertificateTaskListController.onPageLoad()
 
 GET         /notification/one-sao/submit-notification-full-name                       controllers.OneSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/one-sao/submit-notification-full-name                       controllers.OneSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
@@ -148,9 +147,6 @@ POST       /certificate/change-submit-certificate-sao-full-name                 
 
 GET        /certificateUploadForm                       controllers.CertificateUploadFormController.onPageLoad()
 
-GET        /certificateTaskList                       controllers.CertificateTaskListController.onPageLoad()
-
-
 GET        /certificate/declaration-stand-in                        controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = NormalMode)
 POST       /certificate/declaration-stand-in                        controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = NormalMode)
 GET        /certificate/change-declaration-stand-in                  controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = CheckMode)
@@ -172,3 +168,6 @@ GET        /certificate/submit-certificate-confirm-sao                        co
 POST       /certificate/submit-certificate-confirm-sao                        controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
 GET        /certificate/change-submit-certificate-confirm-sao                 controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
 POST       /certificate/change-submit-certificate-confirm-sao                 controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /submission-type                        controllers.SubmissionTypeController.onPageLoad()
+POST       /submission-type                        controllers.SubmissionTypeController.onSubmit()
