@@ -165,9 +165,10 @@ GET        /certificateCheckYourAnswers                       controllers.Certif
 POST        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onSubmit()
 
 GET        /certificateConfirmation                       controllers.CertificateConfirmationController.onPageLoad()
-POST        /certificateConfirmation                       controllers.CertificateConfirmationController.onSubmit()
+POST       /certificateConfirmation                       controllers.CertificateConfirmationController.onSubmit()
 
-GET        /certificateDeclarationSao                        controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificateDeclarationSao                        controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCertificateDeclarationSao                  controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCertificateDeclarationSao                  controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
+
+GET        /certificate/submit-certificate-confirm-sao                        controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificate/submit-certificate-confirm-sao                        controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
+GET        /certificate/change-submit-certificate-confirm-sao                 controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
+POST       /certificate/change-submit-certificate-confirm-sao                 controllers.CertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
