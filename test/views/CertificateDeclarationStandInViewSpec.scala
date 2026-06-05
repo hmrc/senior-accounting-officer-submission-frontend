@@ -51,25 +51,30 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
             hasError = false
           )
 
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestForInsetText(pageInset)
+          doc.createTestsForSubHeadings(pageSubheading)
+
           doc.createTestMustShowNumberOfInputs(2)
           doc.createTestMustShowTextInput(
             name = "StandInName",
-            label = field1Label,
+            label = pageInput1Label,
             value = "",
-            hint = None,
+            hint = Some(pageInput1Hint),
             hasError = false
           )
           doc.createTestMustShowTextInput(
             name = "SaoName",
-            label = field2Label,
+            label = pageInput2Label,
             value = "",
-            hint = None,
+            hint = Some(pageInput2Hint),
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateDeclarationStandInController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonText = pageButtonText
           )
 
           doc.createTestsWithOrWithoutError(
@@ -78,7 +83,7 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
         }
 
         "when the form is filled in" - {
-          val doc = generateView(form.bind(Map("StandInName" -> testInputValue1, "SaoName" -> testInputValue2)), mode)
+          val doc = generateView(form.bind(Map("StandInName" -> testInput1Value, "SaoName" -> testInput2Value)), mode)
 
           doc.createTestsWithStandardPageElements(
             pageTitle = pageTitle,
@@ -88,25 +93,30 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
             hasError = false
           )
 
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestForInsetText(pageInset)
+          doc.createTestsForSubHeadings(pageSubheading)
+
           doc.createTestMustShowNumberOfInputs(2)
           doc.createTestMustShowTextInput(
             name = "StandInName",
-            label = field1Label,
-            value = testInputValue1,
-            hint = None,
+            label = pageInput1Label,
+            value = testInput1Value,
+            hint = Some(pageInput1Hint),
             hasError = false
           )
           doc.createTestMustShowTextInput(
             name = "SaoName",
-            label = field2Label,
-            value = testInputValue2,
-            hint = None,
+            label = pageInput2Label,
+            value = testInput2Value,
+            hint = Some(pageInput2Hint),
             hasError = false
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateDeclarationStandInController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonText = pageButtonText
           )
 
           doc.createTestsWithOrWithoutError(
@@ -125,25 +135,30 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
             hasError = true
           )
 
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestForInsetText(pageInset)
+          doc.createTestsForSubHeadings(pageSubheading)
+
           doc.createTestMustShowNumberOfInputs(2)
           doc.createTestMustShowTextInput(
             name = "StandInName",
-            label = field1Label,
+            label = pageInput1Label,
             value = "",
-            hint = None,
+            hint = Some(pageInput1Hint),
             hasError = true
           )
           doc.createTestMustShowTextInput(
             name = "SaoName",
-            label = field2Label,
+            label = pageInput2Label,
             value = "",
-            hint = None,
+            hint = Some(pageInput2Hint),
             hasError = true
           )
 
           doc.createTestsWithSubmissionButton(
             action = controllers.routes.CertificateDeclarationStandInController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonText = pageButtonText
           )
 
           doc.createTestsWithOrWithoutError(
@@ -154,15 +169,44 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
     }
   }
 
+  extension (doc: => Document) {
+    def createTestsForSubHeadings(subheadings: String): Unit = {
+      val subheadings = doc.getMainContent.select("h2").not(".govuk-error-summary__title")
+      "must have expected number of subheadings" in {
+        subheadings.size() mustBe 1
+      }
+      s"must have heading '$pageSubheading'" in {
+        subheadings.get(0).text mustBe pageSubheading
+      }
+    }
+  }
 }
 
 object CertificateDeclarationStandInViewSpec {
-  val pageHeading = "certificateDeclarationStandIn"
-  val pageTitle   = "certificateDeclarationStandIn"
-  val field1Label = "StandInName"
-  val field2Label = "SaoName"
+  val pageTitle   = "Confirm the certificate"
+  val pageCaption = "Submit a certificate"
+  val pageHeading = "Confirm the certificate"
 
-  val testInputValue1 = "test value 1"
-  val testInputValue2 = "test value 2"
+  val pageParagraphs: Seq[String] = Seq(
+    "It is your responsibility to make sure the SAO has reviewed and approved everything before you submit.",
+    "By submitting this certificate, you confirm that:",
+    "If you deliberately give wrong or incomplete information, or do not report changes, the SAO may have to pay a penalty of £5,000."
+  )
+
+  val pageBullets: Seq[String] = Seq(
+    "the information is complete and correct",
+    "you have been authorised by the SAO to submit this certificate"
+  )
+
+  val pageInset =
+    "If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels."
+  val pageSubheading  = "Declaration"
+  val pageInput1Label = "I confirm that I am authorised to submit this certificate."
+  val pageInput1Hint  = "Insert your full name (person submitting)"
+  val pageInput2Label = "Name of the SAO who authorised you:"
+  val pageInput2Hint  = "Insert full name"
+  val testInput1Value = "test value 1"
+  val testInput2Value = "test value 2"
+  val pageButtonText  = "Confirm"
 
 }

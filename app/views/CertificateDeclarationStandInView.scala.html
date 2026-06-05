@@ -33,27 +33,47 @@
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
+        <span class="govuk-caption-l">@messages("certificateDeclarationStandIn.caption")</span>
+        <h1 class="govuk-heading-l">@messages("certificateDeclarationStandIn.heading")</h1>
 
-        <h1 class="govuk-heading-xl">@messages("certificateDeclarationStandIn.heading")</h1>
+        <p class="govuk-body">@messages("certificateDeclarationStandIn.paragraph1")</p>
+        <p class="govuk-body">@messages("certificateDeclarationStandIn.paragraph2")</p>
+
+        <ul class = "govuk-list govuk-list--bullet">
+            <li>@messages("certificateDeclarationStandIn.bulletPoint1")</li>
+            <li>@messages("certificateDeclarationStandIn.bulletPoint2")</li>
+        </ul>
+
+        <p class="govuk-body">@messages("certificateDeclarationStandIn.paragraph3")</p>
+
+        <div class="govuk-inset-text">
+            @messages("certificateDeclarationStandIn.insetText")
+        </div>
+
+        <h2 class="govuk-heading-s">
+            @messages("certificateDeclarationStandIn.subheading")
+        </h2>
 
         @govukInput(
             InputViewModel(
                 field = form("StandInName"),
-                label = LabelViewModel(messages("certificateDeclarationStandIn.StandInName").toText)
+                label = LabelViewModel(messages("certificateDeclarationStandIn.input1Label").toText)
             )
-            .withWidth(Full)
+            .withHint(HintViewModel(HtmlContent(messages("certificateDeclarationStandIn.input1Hint"))))
+            .withWidth(Fixed20)
         )
 
         @govukInput(
             InputViewModel(
                 field = form("SaoName"),
-                label = LabelViewModel(messages("certificateDeclarationStandIn.SaoName").toText)
+                label = LabelViewModel(messages("certificateDeclarationStandIn.input2Label").toText)
             )
-            .withWidth(Full)
+            .withHint(HintViewModel(HtmlContent(messages("certificateDeclarationStandIn.input2Hint"))))
+            .withWidth(Fixed20)
         )
 
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
+            ButtonViewModel(messages("certificateDeclarationStandIn.confirmButtonText").toText)
         )
     }
 }
