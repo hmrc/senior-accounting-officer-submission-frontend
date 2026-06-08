@@ -47,22 +47,22 @@ class NotificationMoreSaoSecondEndDateFormProviderSpec extends DateBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredAllKey,
-      message = "Enter the notificationMoreSaoSecondEndDate"
+      message = "The date must be a real date"
     )
 
     createTestWithErrorMessageAssertion(
       key = requiredTwoKey,
-      message = "The notificationMoreSaoSecondEndDate must include {0} and {1}"
+      message = "The date must include {0} and {1}"
     )
 
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "The notificationMoreSaoSecondEndDate must include {0}"
+      message = "The date must include {0}"
     )
 
     createTestWithErrorMessageAssertion(
       key = invalidKey,
-      message = "Enter a real NotificationMoreSaoSecondEndDate"
+      message = "Enter the date in the correct format"
     )
   }
 }
