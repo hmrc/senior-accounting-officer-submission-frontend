@@ -345,10 +345,10 @@ notificationMoreSaoSecondEndDate.caption = Submit a notification
 notificationMoreSaoSecondEndDate.heading = When did {0} stop being the SAO?
 notificationMoreSaoSecondEndDate.hint = For example 01 6 2024
 notificationMoreSaoSecondEndDate.checkYourAnswersLabel = NotificationMoreSaoSecondEndDate
-notificationMoreSaoSecondEndDate.error.required.all = Enter the notificationMoreSaoSecondEndDate
-notificationMoreSaoSecondEndDate.error.required.two = The notificationMoreSaoSecondEndDate must include {0} and {1}
-notificationMoreSaoSecondEndDate.error.required = The notificationMoreSaoSecondEndDate must include {0}
-notificationMoreSaoSecondEndDate.error.invalid = Enter a real NotificationMoreSaoSecondEndDate
+notificationMoreSaoSecondEndDate.error.required.all = The date must be a real date
+notificationMoreSaoSecondEndDate.error.required.two = The date must include {0} and {1}
+notificationMoreSaoSecondEndDate.error.required = The date must include {0}
+notificationMoreSaoSecondEndDate.error.invalid = Enter the date in the correct format
 notificationMoreSaoSecondEndDate.change.hidden = NotificationMoreSaoSecondEndDate
 
 confirmYourNotification.title = Confirm notification and submit
