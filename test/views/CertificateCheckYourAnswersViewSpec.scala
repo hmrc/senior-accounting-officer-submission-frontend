@@ -17,6 +17,7 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.CertificateCheckYourAnswersViewSpec.*
@@ -38,6 +39,11 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithSubmissionButton(
+      action = routes.CertificateCheckYourAnswersController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
 }
 
