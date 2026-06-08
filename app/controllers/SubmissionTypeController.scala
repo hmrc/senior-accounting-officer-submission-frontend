@@ -19,6 +19,7 @@ package controllers
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
 import models.NormalMode
+import models.UserAnswers
 import navigation.Navigator
 import pages.SubmissionTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,7 +31,6 @@ import views.html.SubmissionTypeView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import models.UserAnswers
 
 class SubmissionTypeController @Inject() (
     override val messagesApi: MessagesApi,

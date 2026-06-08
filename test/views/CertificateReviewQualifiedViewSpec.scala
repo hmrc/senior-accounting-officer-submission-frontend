@@ -41,7 +41,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
     doc.createTestsWithOrWithoutError(hasError = false)
 
     doc.createTestsWithSubmissionButton(
-      action= routes.CertificateReviewQualifiedController.onSubmit(),
+      action = routes.CertificateReviewQualifiedController.onSubmit(),
       buttonText = "Continue"
     )
   }
