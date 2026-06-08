@@ -24,6 +24,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateTaskListView
 
 import javax.inject.Inject
+import config.AppConfig
 
 class CertificateTaskListController @Inject() (
     override val messagesApi: MessagesApi,
@@ -31,7 +32,8 @@ class CertificateTaskListController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateTaskListView
+    view: CertificateTaskListView,
+    appConfig: AppConfig
 ) extends FrontendBaseController
     with I18nSupport {
 
@@ -40,5 +42,9 @@ class CertificateTaskListController @Inject() (
       {
         Ok(view(stage.toState()))
       }
+  }
+
+  def onSubmit: Action[AnyContent] = identify {
+    Redirect(appConfig.hubBaseUrl)
   }
 }

@@ -154,7 +154,7 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
 
       expectedState.showContinueButton match {
         case CertificateTaskListShowContinueButton.Shown => {
-          doc.createTestsWithSubmissionButton(routes.JourneyRecoveryController.onPageLoad(), pageButtonText)
+          doc.createTestsWithSubmissionButton(routes.CertificateTaskListController.onSubmit(), pageButtonText)
         }
         case CertificateTaskListShowContinueButton.NotShown => {
           s"must not have a form" in {

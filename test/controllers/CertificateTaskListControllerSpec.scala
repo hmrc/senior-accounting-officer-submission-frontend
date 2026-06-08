@@ -24,8 +24,12 @@ import models.CertificateTaskListStatus
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.CertificateTaskListView
+import config.AppConfig
+import play.api.http.HeaderNames
 
 class CertificateTaskListControllerSpec extends SpecBase {
+
+  val hubBaseUrl = "http://localhost:10056/senior-accounting-officer"
 
   "CertificateTaskList Controller" - {
     "must return OK and the correct view for a GET" in {
@@ -55,6 +59,25 @@ class CertificateTaskListControllerSpec extends SpecBase {
           request,
           messages(application)
         ).toString
+      }
+    }
+
+    "must redirect to the account homepage on a POST" in {
+      AppConfig.setValue("hub-frontend.host", "http://localhost:10056")
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val request =
+          FakeRequest(
+            POST,
+            routes.CertificateTaskListController.onSubmit().url
+          )
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        header(HeaderNames.LOCATION, result) mustEqual Some(hubBaseUrl)
       }
     }
   }

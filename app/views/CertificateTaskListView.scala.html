@@ -58,7 +58,7 @@
     </ul>
 
     @if(state.showContinueButton == CertificateTaskListShowContinueButton.Shown) {
-        @formHelper(action = Call("GET", appConfig.hubBaseUrl)) {
+        @formHelper(action = routes.CertificateTaskListController.onSubmit()) {
             @govukButton(
                 ButtonViewModel(messages("certificateTaskList.homepageButton").toText)
                     .withAttribute("id", "submit")
