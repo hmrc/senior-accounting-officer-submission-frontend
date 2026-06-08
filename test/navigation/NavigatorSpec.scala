@@ -317,7 +317,7 @@ class NavigatorSpec extends SpecBase {
             SubmissionTypePage,
             NormalMode,
             UserAnswers("id").set(SubmissionTypePage, SubmissionType.Certificate).get
-          ) mustBe routes.CertificateTaskListController.onPageLoad()
+          ) mustBe routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
         }
 
         "when on SubmissionTypePage and the user chose both the notification and the certificate, must throw an exception" in {

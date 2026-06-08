@@ -98,8 +98,9 @@ class Navigator @Inject() () {
       userAnswers =>
         userAnswers.get(SubmissionTypePage) match {
           case Some(SubmissionType.Notification) => routes.SubmitNotificationStartController.onPageLoad()
-          case Some(SubmissionType.Certificate)  => routes.CertificateTaskListController.onPageLoad()
-          case _                                 => ???
+          case Some(SubmissionType.Certificate)  =>
+            routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
+          case _ => ???
         }
     // certificate flow
     case CertificateSaoFullNamePage =>
