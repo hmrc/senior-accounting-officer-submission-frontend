@@ -14,10 +14,13 @@
  * limitations under the License.
  *@
 
+@import config.AppConfig
+
 @this(
     layout: templates.Layout,
     govukButton: GovukButton,
-    formHelper: FormWithCSRF
+    formHelper: FormWithCSRF,
+    appConfig: AppConfig
 )
 
 @(state: CertificateTaskListState)(using request: Request[?], messages: Messages)
@@ -55,7 +58,7 @@
     </ul>
 
     @if(state.showContinueButton == CertificateTaskListShowContinueButton.Shown) {
-        @formHelper(action = routes.JourneyRecoveryController.onPageLoad()) {
+        @formHelper(action = Call("GET", appConfig.hubBaseUrl)) {
             @govukButton(
                 ButtonViewModel(messages("certificateTaskList.homepageButton").toText)
                     .withAttribute("id", "submit")
