@@ -27,7 +27,7 @@
     <h1 class="govuk-heading-xl">@messages("certificateConfirmation.heading")</h1>
     @formHelper(action = routes.CertificateConfirmationController.onSubmit()) {
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText)
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
         )
     }
 }

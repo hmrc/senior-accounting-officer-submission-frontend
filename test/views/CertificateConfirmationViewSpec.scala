@@ -17,6 +17,7 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.CertificateConfirmationViewSpec.*
@@ -38,6 +39,11 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithSubmissionButton(
+      action = routes.CertificateConfirmationController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
 }
 
