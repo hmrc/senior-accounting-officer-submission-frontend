@@ -17,6 +17,7 @@
 package views
 
 import base.ViewSpecBase
+import controllers.routes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.CertificateReviewQualifiedViewSpec.*
@@ -38,6 +39,11 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
+
+    doc.createTestsWithSubmissionButton(
+      action = routes.CertificateReviewQualifiedController.onSubmit(),
+      buttonText = "Continue"
+    )
   }
 }
 

@@ -1,4 +1,4 @@
-@*
+/*
  * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,22 +12,16 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *@
+ */
 
-@this(
-    layout: templates.Layout,
-    govukButton: GovukButton,
-    formHelper: FormWithCSRF
-)
+package pages
 
-@()(using request: Request[?], messages: Messages)
+import models.SubmissionType
+import play.api.libs.json.JsPath
 
-@layout(pageTitle = titleNoForm(messages("certificateConfirmation.title"))) {
+case object SubmissionTypePage extends QuestionPage[SubmissionType] {
 
-    <h1 class="govuk-heading-xl">@messages("certificateConfirmation.heading")</h1>
-    @formHelper(action = routes.CertificateConfirmationController.onSubmit()) {
-        @govukButton(
-            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
-        )
-    }
+  override def path: JsPath = JsPath \ toString
+
+  override def toString: String = "submissionType"
 }

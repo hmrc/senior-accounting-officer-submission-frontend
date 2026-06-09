@@ -34,8 +34,6 @@ class Navigator @Inject() () {
       _ => routes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationCheckYourAnswersPage =>
       _ => routes.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber.id)
-    case SubmitCertificateStartPage =>
-      _ => routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
     case IsThisTheSaoOnCertificatePage =>
       userAnswers =>
         userAnswers.get(IsThisTheSaoOnCertificatePage) match {
@@ -96,6 +94,13 @@ class Navigator @Inject() () {
               routes.NotificationUploadFormController.onPageLoad()
             case _ => routes.SubmitNotificationStartController.onPageLoad()
           }
+    case SubmissionTypePage =>
+      userAnswers =>
+        userAnswers.get(SubmissionTypePage) match {
+          case Some(SubmissionType.Notification) => routes.SubmitNotificationStartController.onPageLoad()
+          case Some(SubmissionType.Certificate)  => routes.CertificateTaskListController.onPageLoad()
+          case _                                 => ???
+        }
     // certificate flow
     case CertificateSaoFullNamePage =>
       _ => routes.CertificateSaoEmailController.onPageLoad(NormalMode)

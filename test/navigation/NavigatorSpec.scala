@@ -72,14 +72,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
-      "when on SubmitCertificateStartPage, must go to is this SAO on certificate page" in {
-        navigator.nextPage(
-          SubmitCertificateStartPage,
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe routes.IsThisTheSaoOnCertificateController.onPageLoad(NormalMode)
-      }
-
       "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO email page" in {
         navigator.nextPage(
           IsThisTheSaoOnCertificatePage,
@@ -308,6 +300,35 @@ class NavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("id")
         ) mustBe routes.JourneyRecoveryController.onPageLoad()
+      }
+
+      "SubmissionTypePage" - {
+
+        "when on SubmissionTypePage and the user chose notification only, must go to SubmitNotificationStart" in {
+          navigator.nextPage(
+            SubmissionTypePage,
+            NormalMode,
+            UserAnswers("id").set(SubmissionTypePage, SubmissionType.Notification).get
+          ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+        }
+
+        "when on SubmissionTypePage and the user chose certificate only, must go to CertificateTaskList" in {
+          navigator.nextPage(
+            SubmissionTypePage,
+            NormalMode,
+            UserAnswers("id").set(SubmissionTypePage, SubmissionType.Certificate).get
+          ) mustBe routes.CertificateTaskListController.onPageLoad()
+        }
+
+        "when on SubmissionTypePage and the user chose both the notification and the certificate, must throw an exception" in {
+          intercept[NotImplementedError] {
+            navigator.nextPage(
+              SubmissionTypePage,
+              NormalMode,
+              UserAnswers("id").set(SubmissionTypePage, SubmissionType.Combined).get
+            )
+          }
+        }
       }
 
       // certificate flow

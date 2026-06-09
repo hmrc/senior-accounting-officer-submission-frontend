@@ -125,5 +125,15 @@ trait RadiosFluency {
           Some(HtmlContent(paragraphs.map(paragraph => s"""<p class="govuk-body">$paragraph</p>""").mkString))
         )
       )
+
+    def withDivider(insertionIndex: Int, dividerText: String): Radios = {
+      radios.copy(
+        items = radios.items.patch(
+          from = insertionIndex,
+          other = Seq(RadioItem(divider = Some(dividerText))),
+          replaced = 0
+        )
+      )
+    }
   }
 }
