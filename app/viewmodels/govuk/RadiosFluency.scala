@@ -119,9 +119,11 @@ trait RadiosFluency {
       )
     }
 
-    def withParagraph(text: String): Radios =
+    def withParagraphs(paragraphs: Seq[String]): Radios =
       radios.withFormGroup(
-        radios.formGroup.copy(beforeInput = Some(HtmlContent(s"""<p class="govuk-body">$text</p>""")))
+        radios.formGroup.copy(beforeInput =
+          Some(HtmlContent(paragraphs.map(paragraph => s"""<p class="govuk-body">$paragraph</p>""").mkString))
+        )
       )
 
     def withDivider(insertionIndex: Int, dividerText: String): Radios = {

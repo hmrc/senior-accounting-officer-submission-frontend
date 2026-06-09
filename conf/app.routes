@@ -152,10 +152,10 @@ POST       /certificate/declaration-stand-in                        controllers.
 GET        /certificate/change-declaration-stand-in                  controllers.CertificateDeclarationStandInController.onPageLoad(mode: Mode = CheckMode)
 POST       /certificate/change-declaration-stand-in                  controllers.CertificateDeclarationStandInController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificateWhoIsSubmitting                        controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificateWhoIsSubmitting                        controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCertificateWhoIsSubmitting                  controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCertificateWhoIsSubmitting                  controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
+GET        /certificate-who-is-submitting                        controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = NormalMode)
+POST       /certificate-who-is-submitting                        controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = NormalMode)
+GET        /change-certificate-who-is-submitting                 controllers.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = CheckMode)
+POST       /change-certificate-who-is-submitting                 controllers.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
 
 GET        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onPageLoad()
 POST        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onSubmit()

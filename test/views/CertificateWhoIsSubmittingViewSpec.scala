@@ -51,6 +51,9 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             hasError = false
           )
 
+          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithParagraphs(paragraphs)
+
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
@@ -81,6 +84,9 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             showIsThisPageNotWorkingProperlyLink = true,
             hasError = false
           )
+
+          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithParagraphs(paragraphs)
 
           doc.createTestsWithRadioButtons(
             name = "value",
@@ -113,6 +119,9 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             hasError = true
           )
 
+          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithParagraphs(paragraphs)
+
           doc.createTestsWithRadioButtons(
             name = "value",
             radios = List(
@@ -139,10 +148,15 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 }
 
 object CertificateWhoIsSubmittingViewSpec {
-  val pageHeading  = "certificateWhoIsSubmitting"
-  val pageTitle    = "certificateWhoIsSubmitting"
+  val pageCaption             = "Submit a certificate"
+  val pageHeading             = "Who is submitting the certificate?"
+  val pageTitle               = "Who is submitting the certificate?"
+  val paragraphs: Seq[String] = Seq(
+    "HMRC need to know if the certificate will be submitted by the SAO or by someone authorised to act on their behalf. This allows us to show the correct declaration for the person submitting it.",
+    "We rely on the information provided to be accurate. The SAO is responsible for reviewing and approving the information before it is submitted, and for authorising someone to submit it on their behalf if they are not submitting it themselves."
+  )
   val option1key   = "sao"
-  val option1Label = "Option 1"
+  val option1Label = "I am the SAO"
   val option2key   = "standIn"
-  val option2Label = "Option 2"
+  val option2Label = "I am authorised to submit on behalf of the SAO"
 }

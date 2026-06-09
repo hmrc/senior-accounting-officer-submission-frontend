@@ -46,7 +46,7 @@ class CertificateWhoIsSubmittingFormProviderSpec extends OptionFieldBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Select certificateWhoIsSubmitting"
+      message = "Select I am the SAO if you are the SAO submitting the certificate"
     )
   }
 }

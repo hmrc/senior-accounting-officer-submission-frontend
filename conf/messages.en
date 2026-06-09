@@ -424,12 +424,15 @@ certificateDeclarationStandIn.error.saoName.length = The Senior Accounting Offic
 certificateDeclarationStandIn.standInName.change.hidden = StandInName
 certificateDeclarationStandIn.saoName.change.hidden = SaoName
 
-certificateWhoIsSubmitting.title = certificateWhoIsSubmitting
-certificateWhoIsSubmitting.heading = certificateWhoIsSubmitting
-certificateWhoIsSubmitting.sao = Option 1
-certificateWhoIsSubmitting.standIn = Option 2
+certificateWhoIsSubmitting.title = Who is submitting the certificate?
+certificateWhoIsSubmitting.caption = Submit a certificate
+certificateWhoIsSubmitting.heading = Who is submitting the certificate?
+certificateWhoIsSubmitting.paragraph1 = HMRC need to know if the certificate will be submitted by the SAO or by someone authorised to act on their behalf. This allows us to show the correct declaration for the person submitting it.
+certificateWhoIsSubmitting.paragraph2 = We rely on the information provided to be accurate. The SAO is responsible for reviewing and approving the information before it is submitted, and for authorising someone to submit it on their behalf if they are not submitting it themselves.
+certificateWhoIsSubmitting.sao = I am the SAO
+certificateWhoIsSubmitting.standIn = I am authorised to submit on behalf of the SAO
 certificateWhoIsSubmitting.checkYourAnswersLabel = certificateWhoIsSubmitting
-certificateWhoIsSubmitting.error.required = Select certificateWhoIsSubmitting
+certificateWhoIsSubmitting.error.required = Select I am the SAO if you are the SAO submitting the certificate
 certificateWhoIsSubmitting.change.hidden = CertificateWhoIsSubmitting
 
 certificateCheckYourAnswers.title = certificateCheckYourAnswers
