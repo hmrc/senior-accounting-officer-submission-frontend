@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.CertificateAdditionalInformationFormProvider
+import models.CertificateTaskListStage
 import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
@@ -33,7 +34,6 @@ import repositories.SessionRepository
 import views.html.CertificateAdditionalInformationView
 
 import scala.concurrent.Future
-import models.CertificateTaskListStage
 
 class CertificateAdditionalInformationControllerSpec extends SpecBase with MockitoSugar {
 

@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.AppConfig
 import controllers.actions.*
 import models.CertificateTaskListStage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -24,7 +25,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateTaskListView
 
 import javax.inject.Inject
-import config.AppConfig
 
 class CertificateTaskListController @Inject() (
     override val messagesApi: MessagesApi,
