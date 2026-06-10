@@ -98,18 +98,20 @@ class Navigator @Inject() () {
       userAnswers =>
         userAnswers.get(SubmissionTypePage) match {
           case Some(SubmissionType.Notification) => routes.SubmitNotificationStartController.onPageLoad()
-          case Some(SubmissionType.Certificate)  => routes.CertificateTaskListController.onPageLoad()
-          case _                                 => ???
+          case Some(SubmissionType.Certificate)  =>
+            routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
+          case _ => ???
         }
     // certificate flow
     case CertificateSaoFullNamePage =>
       _ => routes.CertificateSaoEmailController.onPageLoad(NormalMode)
     case CertificateSaoEmailPage =>
-      _ => routes.CertificateTaskListController.onPageLoad()
+      _ =>
+        routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.UploadSubmissionTemplateStage)
     case CertificateReviewQualifiedPage =>
       _ => routes.CertificateReviewUnqualifiedController.onPageLoad()
     case CertificateReviewUnqualifiedPage =>
-      _ => routes.CertificateTaskListController.onPageLoad()
+      _ => routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.SubmitCertificateStage)
     case CertificateAdditionalInformationPage =>
       _ => routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
     case CertificateWhoIsSubmittingPage =>
@@ -126,7 +128,7 @@ class Navigator @Inject() () {
     case CertificateCheckYourAnswersPage =>
       _ => routes.CertificateConfirmationController.onPageLoad()
     case CertificateConfirmationPage =>
-      _ => routes.CertificateTaskListController.onPageLoad()
+      _ => routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Complete)
     case _ =>
       _ => ???
   }

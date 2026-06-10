@@ -17,27 +17,67 @@
 package controllers
 
 import base.SpecBase
+import models.CertificateTaskListShowContinueButton
+import models.CertificateTaskListStage
+import models.CertificateTaskListState
+import models.CertificateTaskListStatus
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.CertificateTaskListView
+import config.AppConfig
+import play.api.http.HeaderNames
 
 class CertificateTaskListControllerSpec extends SpecBase {
 
-  "CertificateTaskList Controller" - {
+  val hubBaseUrl = "http://localhost:10056/senior-accounting-officer"
 
+  "CertificateTaskList Controller" - {
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CertificateTaskListController.onPageLoad().url)
+        val request =
+          FakeRequest(
+            GET,
+            routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage).url
+          )
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[CertificateTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          CertificateTaskListState(
+            provideSaoDetailsStage = CertificateTaskListStatus.NotStarted,
+            uploadSubmissionTemplateStage = CertificateTaskListStatus.CannotStartYet,
+            submitCertificateStage = CertificateTaskListStatus.CannotStartYet,
+            showContinueButton = CertificateTaskListShowContinueButton.NotShown
+          )
+        )(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must redirect to the account homepage on a POST" in {
+      AppConfig.setValue("hub-frontend.host", "http://localhost:10056")
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val request =
+          FakeRequest(
+            POST,
+            routes.CertificateTaskListController.onSubmit().url
+          )
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        header(HeaderNames.LOCATION, result) mustEqual Some(hubBaseUrl)
       }
     }
   }

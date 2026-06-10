@@ -82,6 +82,24 @@ trait SpecBase
       .success
       .value
 
+  def userAnswersWithCertificateSaoDetails: UserAnswers =
+    emptyUserAnswers
+      .set(CertificateSaoFullNamePage, "Firstname Lastname")
+      .success
+      .value
+      .set(CertificateSaoEmailPage, "firstname.lastname@example.com")
+      .success
+      .value
+
+  def userAnswersWithCertificateUploadedTemplate: UserAnswers =
+    userAnswersWithCertificateSaoDetails
+      .set(CertificateReviewQualifiedPage, "HACK")
+      .success
+      .value
+      .set(CertificateReviewUnqualifiedPage, "HACK")
+      .success
+      .value
+
   def messages(app: Application): Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
   protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =

@@ -51,7 +51,11 @@ POST        /notification/confirmation                                controller
 GET         /notification/confirm-your-notification                   controllers.ConfirmYourNotificationController.onPageLoad()
 POST        /notification/confirm-your-notification                   controllers.ConfirmYourNotificationController.onSubmit()
 
-GET         /certificate/start                                        controllers.CertificateTaskListController.onPageLoad()
+GET        /certificate/task-list/1                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.ProvideSaoDetailsStage)
+GET        /certificate/task-list/2                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.UploadSubmissionTemplateStage)
+GET        /certificate/task-list/3                       controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.SubmitCertificateStage)
+GET        /certificate/task-list/complete                controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Complete)
+POST       /certificate/task-list                         controllers.CertificateTaskListController.onSubmit()
 
 GET         /notification/one-sao/submit-notification-full-name                       controllers.OneSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/one-sao/submit-notification-full-name                       controllers.OneSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)

@@ -22,8 +22,12 @@ import navigation.Navigator
 import pages.CertificateReviewUnqualifiedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.CertificateReviewUnqualifiedView
+
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 import javax.inject.Inject
 
@@ -32,17 +36,27 @@ class CertificateReviewUnqualifiedController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireUploadSubmissionTemplateStageUnlocked: RequireCertificateUploadSubmissionTemplateUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateReviewUnqualifiedView,
-    navigator: Navigator
-) extends FrontendBaseController
+    navigator: Navigator,
+    sessionRepository: SessionRepository
+)(implicit ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
-  }
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
+      implicit request =>
+        Ok(view())
+    }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(CertificateReviewUnqualifiedPage, NormalMode, request.userAnswers))
-  }
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked).async {
+      implicit request =>
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewUnqualifiedPage, "HACK"))
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield Redirect(navigator.nextPage(CertificateReviewUnqualifiedPage, NormalMode, request.userAnswers))
+    }
 }

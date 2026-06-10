@@ -38,30 +38,33 @@ class CertificateAdditionalInformationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitCertificateStageUnlocked: RequireCertificateSubmitCertificateStageUnlockedAction,
     formProvider: CertificateAdditionalInformationFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateAdditionalInformationView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val form         = formProvider()
-    val preparedForm = request.userAnswers.get(CertificateAdditionalInformationPage).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
-  }
+  def onPageLoad(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
+      val form         = formProvider()
+      val preparedForm = request.userAnswers.get(CertificateAdditionalInformationPage).fold(form)(form.fill)
+      Ok(view(preparedForm, mode))
+    }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      val form = formProvider()
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateAdditionalInformationPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateAdditionalInformationPage, mode, updatedAnswers))
-        )
-  }
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
+      implicit request =>
+        val form = formProvider()
+        form
+          .bindFromRequest()
+          .fold(
+            formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+            value =>
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateAdditionalInformationPage, value))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(CertificateAdditionalInformationPage, mode, updatedAnswers))
+          )
+    }
 }

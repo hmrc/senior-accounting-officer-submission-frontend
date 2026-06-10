@@ -29,12 +29,15 @@ class CertificateUploadFormController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireUploadSubmissionTemplateStageUnlocked: RequireCertificateUploadSubmissionTemplateUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateUploadFormView
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
-  }
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
+      implicit request =>
+        Ok(view())
+    }
 }

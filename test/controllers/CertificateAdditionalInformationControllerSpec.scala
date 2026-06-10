@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.CertificateAdditionalInformationFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -33,6 +33,7 @@ import repositories.SessionRepository
 import views.html.CertificateAdditionalInformationView
 
 import scala.concurrent.Future
+import models.CertificateTaskListStage
 
 class CertificateAdditionalInformationControllerSpec extends SpecBase with MockitoSugar {
 
@@ -48,7 +49,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateUploadedTemplate)).build()
 
       running(application) {
         val request = FakeRequest(GET, certificateAdditionalInformationRoute)
@@ -64,7 +65,8 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(CertificateAdditionalInformationPage, "answer").success.value
+      val userAnswers =
+        userAnswersWithCertificateUploadedTemplate.set(CertificateAdditionalInformationPage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -90,7 +92,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(userAnswersWithCertificateUploadedTemplate))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -111,7 +113,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateUploadedTemplate)).build()
 
       running(application) {
         val request =
@@ -156,6 +158,62 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to task list on upload submission template stage when user answers is empty for a GET" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      running(application) {
+        val request = FakeRequest(GET, certificateAdditionalInformationRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.CertificateTaskListController
+          .onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
+          .url
+      }
+    }
+
+    "must redirect to task list on upload submission template stage when upload submission template stage has not been completed for a GET" in {
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
+      running(application) {
+        val request = FakeRequest(GET, certificateAdditionalInformationRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.CertificateTaskListController
+          .onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
+          .url
+      }
+    }
+
+    "must redirect to task list on upload submission template stage when user answers is empty for a POST" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      running(application) {
+        val request = FakeRequest(POST, routes.CertificateAdditionalInformationController.onSubmit(NormalMode).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.CertificateTaskListController
+          .onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
+          .url
+      }
+    }
+
+    "must redirect to task list on upload submission template stage when upload submission template stage has not been completed for a POST" in {
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
+      running(application) {
+        val request = FakeRequest(POST, routes.CertificateAdditionalInformationController.onSubmit(NormalMode).url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.CertificateTaskListController
+          .onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
+          .url
       }
     }
   }
