@@ -47,7 +47,7 @@ class NotificationMoreSaoSecondStartDateFormProviderSpec extends DateBehaviours 
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredAllKey,
-      message = "The date must be a real date"
+      message = "Enter the start date the SAO was responsible for the group’s tax accounting arrangements"
     )
 
     createTestWithErrorMessageAssertion(
