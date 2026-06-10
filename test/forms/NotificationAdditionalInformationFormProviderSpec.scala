@@ -54,7 +54,7 @@ class NotificationAdditionalInformationFormProviderSpec extends StringFieldBehav
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter notificationAdditionalInformation"
+      message = "Enter information about your notification or skip"
     )
 
     createTestWithErrorMessageAssertion(

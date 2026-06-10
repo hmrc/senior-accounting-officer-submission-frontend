@@ -22,10 +22,10 @@ import models.requests.DataRequest
 import play.api.mvc.ActionFilter
 import play.api.mvc.Result
 import play.api.mvc.Results.Redirect
+import utils.CertificateStageHelper.isUploadSubmissionTemplateStageCompleted
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
-import utils.CertificateStageHelper.isUploadSubmissionTemplateStageCompleted
 
 import javax.inject.Inject
 

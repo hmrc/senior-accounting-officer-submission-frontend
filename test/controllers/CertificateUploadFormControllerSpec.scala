@@ -17,10 +17,10 @@
 package controllers
 
 import base.SpecBase
+import models.CertificateTaskListStage
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.CertificateUploadFormView
-import models.CertificateTaskListStage
 
 class CertificateUploadFormControllerSpec extends SpecBase {
 

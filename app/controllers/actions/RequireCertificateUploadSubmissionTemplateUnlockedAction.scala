@@ -22,13 +22,12 @@ import models.requests.DataRequest
 import play.api.mvc.ActionFilter
 import play.api.mvc.Result
 import play.api.mvc.Results.Redirect
+import utils.CertificateStageHelper.isProvideSaoDetailsStageCompleted
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 import javax.inject.Inject
-
-import utils.CertificateStageHelper.isProvideSaoDetailsStageCompleted
 
 class RequireCertificateUploadSubmissionTemplateUnlockedAction @Inject() ()(using
     val executionContext: ExecutionContext

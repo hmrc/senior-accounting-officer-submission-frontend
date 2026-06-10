@@ -17,15 +17,15 @@
 package controllers
 
 import base.SpecBase
+import config.AppConfig
 import models.CertificateTaskListShowContinueButton
 import models.CertificateTaskListStage
 import models.CertificateTaskListState
 import models.CertificateTaskListStatus
+import play.api.http.HeaderNames
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.CertificateTaskListView
-import config.AppConfig
-import play.api.http.HeaderNames
 
 class CertificateTaskListControllerSpec extends SpecBase {
 
