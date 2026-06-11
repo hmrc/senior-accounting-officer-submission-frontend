@@ -23,7 +23,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.scalactic.source.Position
 import play.api.data.Form
-import play.api.mvc.Call
 import views.NotificationAdditionalInformationViewSpec.*
 import views.html.NotificationAdditionalInformationView
 
@@ -143,41 +142,6 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
           )
         }
       }
-    }
-  }
-
-  extension (doc: Document) {
-    def createTestsWithSubmissionButtons(
-        action: Call,
-        buttonTexts: Seq[String]
-    )(using
-        pos: Position
-    ): Unit = {
-      def target = doc.getMainContent
-      s"must have a form which submits to '${action.method} ${action.url}'" in {
-        val form = target.select("form")
-        form.attr("method") mustBe action.method
-        form.attr("action") mustBe action.url
-        form.size() mustBe 1
-      }
-
-      s"must have ${buttonTexts.size} number of buttons" in {
-        val buttons = target.select("button")
-
-        buttons.size() mustBe buttonTexts.size
-      }
-
-      buttonTexts.zipWithIndex
-        .foreach((buttonText, i) => {
-          s"must have a submit button with text '$buttonText'" in {
-            val button = target.select("button").get(i)
-            withClue(
-              s"Submit Button with text '$buttonText' not found\n"
-            ) {
-              button.text() mustBe buttonText
-            }
-          }
-        })
     }
   }
 }
