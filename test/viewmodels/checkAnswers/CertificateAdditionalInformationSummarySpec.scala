@@ -44,7 +44,7 @@ class CertificateAdditionalInformationSummarySpec extends SpecBase with GuiceOne
       def SUT(answer: String = "") = CertificateAdditionalInformationSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "certificateAdditionalInformation".toKey
+        SUT().key mustBe "Additional Information".toKey
       }
 
       "expected value" - {
