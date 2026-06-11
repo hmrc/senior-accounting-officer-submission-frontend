@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import forms.FormHelpers
+@import uk.gov.hmrc.govukfrontend.views.html.components.GovukTextarea
 @import viewmodels.InputWidth.*
 
 @this(
@@ -21,6 +23,7 @@
     formHelper: FormWithCSRF,
     govukErrorSummary: GovukErrorSummary,
     govukInput: GovukInput,
+    govukTextArea: GovukTextarea,
     govukButton: GovukButton
 )
 
@@ -34,16 +37,35 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        @govukInput(
-            InputViewModel(
+        <span class="govuk-caption-l">@messages("certificateAdditionalInformation.caption")</span>
+        <h1 class="govuk-heading-l"> @messages("certificateAdditionalInformation.heading")</h1>
+        <p class="govuk-body">@messages("certificateAdditionalInformation.paragraph1")</p>
+        <p class="govuk-body">@messages("certificateAdditionalInformation.paragraph2")</p>
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("certificateAdditionalInformation.list1.item1")</li>
+            <li>@messages("certificateAdditionalInformation.list1.item2")</li>
+            <li>@messages("certificateAdditionalInformation.list1.item3")</li>
+        </ul>
+
+        @govukTextArea(
+            TextareaViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("certificateAdditionalInformation.heading").toText).asPageHeading(LabelSize.Large)
+                label = LabelViewModel(messages("certificateAdditionalInformation.label").toText)
+                    .withCssClass("govuk-label--s")
             )
-            .withWidth(Full)
         )
 
-        @govukButton(
-            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
-        )
+        <div class="govuk-button-group">
+            @govukButton(
+                ButtonViewModel(messages("site.continue").toText)
+                    .withAttribute("id", "submit")
+            )
+            @govukButton(
+                ButtonViewModel(messages("site.skip").toText)
+                    .withName(FormHelpers.skipButtonFieldName)
+                    .withCssClass("govuk-button--secondary")
+                    .withAttribute("id", "skip")
+            )
+        </div>
     }
 }
