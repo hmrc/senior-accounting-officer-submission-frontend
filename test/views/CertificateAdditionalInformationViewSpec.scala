@@ -28,10 +28,10 @@ import views.html.CertificateAdditionalInformationView
 
 class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateAdditionalInformationView] {
 
-  private val formProvider       = app.injector.instanceOf[CertificateAdditionalInformationFormProvider]
-  private val form: Form[String] = formProvider()
+  private val formProvider               = app.injector.instanceOf[CertificateAdditionalInformationFormProvider]
+  private val form: Form[Option[String]] = formProvider()
 
-  private def generateView(form: Form[String], mode: Mode): Document = {
+  private def generateView(form: Form[Option[String]], mode: Mode): Document = {
     val view = SUT(form, mode)
     Jsoup.parse(view.toString)
   }

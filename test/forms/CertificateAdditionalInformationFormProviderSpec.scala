@@ -23,7 +23,7 @@ class CertificateAdditionalInformationFormProviderSpec extends StringFieldBehavi
 
   val requiredKey = "certificateAdditionalInformation.error.required"
   val lengthKey   = "certificateAdditionalInformation.error.length"
-  val maxLength   = 100
+  val maxLength   = 5000
 
   val form = new CertificateAdditionalInformationFormProvider()()
 
@@ -59,7 +59,7 @@ class CertificateAdditionalInformationFormProviderSpec extends StringFieldBehavi
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "Additional Information must be 100 characters or less"
+      message = "Additional Information must be 5000 characters or less"
     )
   }
 }
