@@ -5,9 +5,9 @@ import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "9.19.0"
-  private val hmrcMongoVersion = "2.7.0"
-  private val hmrcPlayFrontend = "12.8.0"
+  private val bootstrapVersion = "10.7.0"
+  private val hmrcMongoVersion = "2.12.0"
+  private val hmrcPlayFrontend = "13.9.0"
   private val poiVersion       = "5.5.1"
   private val scalaCsvVersion  = "2.0.0"
 
