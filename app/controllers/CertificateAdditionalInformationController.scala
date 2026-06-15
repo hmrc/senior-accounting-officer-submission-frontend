@@ -47,7 +47,7 @@ class CertificateAdditionalInformationController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  val form: Form[Option[String]] = formProvider()
+  inline def form: Form[Option[String]] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
