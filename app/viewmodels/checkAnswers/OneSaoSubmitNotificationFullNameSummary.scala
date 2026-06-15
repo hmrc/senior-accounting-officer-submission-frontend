@@ -37,6 +37,7 @@ object OneSaoSubmitNotificationFullNameSummary {
             routes.OneSaoSubmitNotificationFullNameController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("oneSaoSubmitNotificationFullName.change.hidden"))
+            .withAttribute("data-test-id", "change-one-sao-full-name-link")
         )
       )
     }

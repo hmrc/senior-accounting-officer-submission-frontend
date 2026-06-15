@@ -19,12 +19,13 @@ package services
 import models.UserAnswers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
+import viewmodels.checkAnswers.{NotificationAdditionalInformationSummary, OneSaoSubmitNotificationFullNameSummary}
 
 class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
     SummaryList(rows =
       Seq(
+        OneSaoSubmitNotificationFullNameSummary.row(userAnswers).get,
         NotificationAdditionalInformationSummary.row(userAnswers)
       )
     )

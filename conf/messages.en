@@ -123,9 +123,10 @@ notificationAdditionalInformation.error.required = Enter information about your 
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 5000 characters or less
 notificationAdditionalInformation.change.hidden =  the additional information supplied for the notification (Financial year end {0})
 
-notificationCheckYourAnswers.title = Submit a notification
+notificationCheckYourAnswers.title = Check your answers
 notificationCheckYourAnswers.heading = Check your answers
 notificationCheckYourAnswers.caption = Submit a notification
+notificationCheckYourAnswers.button = Accept and submit
 notificationCheckYourAnswers.card.title = Financial year end {0}
 
 submitNotification.title = Confirm notification and submit
@@ -287,10 +288,10 @@ uploadTemplateCsvParser.error.additionalInformation = Explain why the certificat
 oneSaoSubmitNotificationFullName.title = Submit a notification - SAO full name
 oneSaoSubmitNotificationFullName.heading = What is the name of the SAO?
 oneSaoSubmitNotificationFullName.caption = Submit a notification
-oneSaoSubmitNotificationFullName.checkYourAnswersLabel = oneSaoSubmitNotificationFullName
+oneSaoSubmitNotificationFullName.checkYourAnswersLabel = Senior Accounting Officer
 oneSaoSubmitNotificationFullName.error.required = Enter the name of the SAO
 oneSaoSubmitNotificationFullName.error.length = The name you enter must be 254 characters or less
-oneSaoSubmitNotificationFullName.change.hidden = OneSaoSubmitNotificationFullName
+oneSaoSubmitNotificationFullName.change.hidden = the senior accounting officer full name
 
 whoWasTheSaoBefore.title = Senior Accounting Officer full name
 whoWasTheSaoBefore.heading = Who was the SAO before {0}?
