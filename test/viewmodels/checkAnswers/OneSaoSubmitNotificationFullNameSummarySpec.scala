@@ -44,7 +44,7 @@ class OneSaoSubmitNotificationFullNameSummarySpec extends SpecBase with GuiceOne
       def SUT(answer: String = "") = OneSaoSubmitNotificationFullNameSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "oneSaoSubmitNotificationFullName".toKey
+        SUT().key mustBe "Senior Accounting Officer".toKey
       }
 
       "expected value" - {
@@ -80,7 +80,7 @@ class OneSaoSubmitNotificationFullNameSummarySpec extends SpecBase with GuiceOne
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "OneSaoSubmitNotificationFullName"
+          action.visuallyHiddenText.get mustBe "the senior accounting officer full name"
         }
       }
     }

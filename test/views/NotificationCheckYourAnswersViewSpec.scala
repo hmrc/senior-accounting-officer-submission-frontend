@@ -255,7 +255,6 @@ object NotificationCheckYourAnswersViewSpec {
   val pageCaption              = "Submit a notification"
   val pageButtonText           = "Accept and submit"
   val testFinancialYearEndDate = "'Dummy Date'"
-  val cardTitle: String        = s"Financial year end $testFinancialYearEndDate"
   val testKey1                 = "testKey"
   val testValue1               = "nonEmptyString"
   val testActionMessage1       = "dummyMessage"

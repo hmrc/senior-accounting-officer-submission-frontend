@@ -18,12 +18,12 @@ package services
 
 import base.SpecBase
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.NotificationAdditionalInformationPage
+import pages.{NotificationAdditionalInformationPage, OneSaoSubmitNotificationFullNamePage}
 import play.api.i18n.Messages
 import play.api.i18n.MessagesApi
 import play.api.test.FakeRequest
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
+import viewmodels.checkAnswers.{NotificationAdditionalInformationSummary, OneSaoSubmitNotificationFullNameSummary}
 
 class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
   "NotificationCheckYourAnswersService must generate the summaryList when all the userAnswers" - {
@@ -31,19 +31,21 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
     given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
     "are present" in {
-      val userAnswers = emptyUserAnswers.set(NotificationAdditionalInformationPage, Some("someValue")).get
+      val userAnswers = emptyUserAnswers.set(NotificationAdditionalInformationPage, Some("someValue")).get.set(OneSaoSubmitNotificationFullNamePage, "testName").get
       SUT.getSummaryList(userAnswers) mustBe SummaryList(
         Seq(
+          OneSaoSubmitNotificationFullNameSummary.row(userAnswers),
           NotificationAdditionalInformationSummary.row(userAnswers)
-        )
+        ).collect { case Some(row) => row }
       )
     }
 
     "are empty" in {
       SUT.getSummaryList(emptyUserAnswers) mustBe SummaryList(
         Seq(
+          OneSaoSubmitNotificationFullNameSummary.row(emptyUserAnswers),
           NotificationAdditionalInformationSummary.row(emptyUserAnswers)
-        )
+        ).collect { case Some(row) => row }
       )
     }
   }
