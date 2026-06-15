@@ -38,7 +38,9 @@ class NotificationAdditionalInformationSummarySpec extends CheckYourAnswersSumma
     }
 
     "must render an empty value when no answer is present" in {
-      renderSummaryRow(NotificationAdditionalInformationSummary.row(testUserAnswers)).renderedValueText mustBe "Not provided"
+      renderSummaryRow(
+        NotificationAdditionalInformationSummary.row(testUserAnswers)
+      ).renderedValueText mustBe "Not provided"
     }
 
     "must render special characters without double escaping" in {

@@ -31,7 +31,11 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
     given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
     "are present" in {
-      val userAnswers = emptyUserAnswers.set(NotificationAdditionalInformationPage, Some("someValue")).get.set(OneSaoSubmitNotificationFullNamePage, "testName").get
+      val userAnswers = emptyUserAnswers
+        .set(NotificationAdditionalInformationPage, Some("someValue"))
+        .get
+        .set(OneSaoSubmitNotificationFullNamePage, "testName")
+        .get
       SUT.getSummaryList(userAnswers) mustBe SummaryList(
         Seq(
           OneSaoSubmitNotificationFullNameSummary.row(userAnswers),

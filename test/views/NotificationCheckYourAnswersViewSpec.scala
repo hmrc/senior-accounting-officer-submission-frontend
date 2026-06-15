@@ -18,7 +18,6 @@ package views
 
 import base.ViewSpecBase
 import controllers.routes
-import models.CheckMode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
@@ -29,8 +28,6 @@ import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 import views.NotificationCheckYourAnswersViewSpec.*
 import views.html.NotificationCheckYourAnswersView
-
-import scala.collection.JavaConverters.asScalaBufferConverter
 
 class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationCheckYourAnswersView] {
 
@@ -114,7 +111,6 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         "must be exactly one present" in {
           doc.summaryListCards.size() mustBe 1
         }
-
 
         "page must have description list" in {
           doc.descriptionLists.size() mustBe 1
