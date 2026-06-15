@@ -38,18 +38,24 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
         .get
       SUT.getSummaryList(userAnswers) mustBe SummaryList(
         Seq(
-          OneSaoSubmitNotificationFullNameSummary.row(userAnswers),
-          Some(NotificationAdditionalInformationSummary.row(userAnswers))
-        ).flatten
+          OneSaoSubmitNotificationFullNameSummary.row(userAnswers).get,
+          NotificationAdditionalInformationSummary.row(userAnswers)
+        )
       )
     }
 
     "are empty" in {
-      SUT.getSummaryList(emptyUserAnswers) mustBe SummaryList(
+      val skippedUserAnswers = emptyUserAnswers
+        .set(NotificationAdditionalInformationPage, Some("Not provided"))
+        .get
+        .set(OneSaoSubmitNotificationFullNamePage, "")
+        .get
+      val result = SUT.getSummaryList(skippedUserAnswers)
+      result mustBe SummaryList(
         Seq(
-          OneSaoSubmitNotificationFullNameSummary.row(emptyUserAnswers),
-          Some(NotificationAdditionalInformationSummary.row(emptyUserAnswers))
-        ).flatten
+          OneSaoSubmitNotificationFullNameSummary.row(skippedUserAnswers).get,
+          NotificationAdditionalInformationSummary.row(skippedUserAnswers)
+        )
       )
     }
   }
