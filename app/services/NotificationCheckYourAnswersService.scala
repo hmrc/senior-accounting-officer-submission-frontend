@@ -26,8 +26,8 @@ class NotificationCheckYourAnswersService {
     SummaryList(rows =
       Seq(
         OneSaoSubmitNotificationFullNameSummary.row(userAnswers),
-        NotificationAdditionalInformationSummary.row(userAnswers)
-      ).collect { case Some(row) => row }
+        Some(NotificationAdditionalInformationSummary.row(userAnswers))
+      ).flatten
     )
   }
 }

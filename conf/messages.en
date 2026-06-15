@@ -10,6 +10,7 @@ site.skip = Skip
 site.start = Start now
 site.startAgain = Start again
 site.govuk = GOV.UK
+site.acceptAndSubmit = Accept and submit
 
 date.day = Day
 date.month = Month
@@ -122,11 +123,11 @@ notificationAdditionalInformation.checkYourAnswersLabel = Additional information
 notificationAdditionalInformation.error.required = Enter information about your notification or skip
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 5000 characters or less
 notificationAdditionalInformation.change.hidden =  the additional information supplied for the notification (Financial year end {0})
+notificationAdditionalInformation.empty = Not provided
 
 notificationCheckYourAnswers.title = Check your answers
 notificationCheckYourAnswers.heading = Check your answers
 notificationCheckYourAnswers.caption = Submit a notification
-notificationCheckYourAnswers.button = Accept and submit
 notificationCheckYourAnswers.card.title = Financial year end {0}
 
 submitNotification.title = Confirm notification and submit

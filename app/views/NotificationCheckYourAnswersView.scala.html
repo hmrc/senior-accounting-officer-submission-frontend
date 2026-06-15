@@ -33,7 +33,7 @@
 
     @formHelper(action = routes.NotificationCheckYourAnswersController.onSubmit()){
         @govukButton(
-            ButtonViewModel(messages("notificationCheckYourAnswers.button").toText).withAttribute("id", "submit")
+            ButtonViewModel(messages("site.acceptAndSubmit").toText).withAttribute("id", "submit")
         )
     }
 }

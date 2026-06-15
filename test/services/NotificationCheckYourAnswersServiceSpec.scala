@@ -39,8 +39,8 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
       SUT.getSummaryList(userAnswers) mustBe SummaryList(
         Seq(
           OneSaoSubmitNotificationFullNameSummary.row(userAnswers),
-          NotificationAdditionalInformationSummary.row(userAnswers)
-        ).collect { case Some(row) => row }
+          Some(NotificationAdditionalInformationSummary.row(userAnswers))
+        ).flatten
       )
     }
 
@@ -48,8 +48,8 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
       SUT.getSummaryList(emptyUserAnswers) mustBe SummaryList(
         Seq(
           OneSaoSubmitNotificationFullNameSummary.row(emptyUserAnswers),
-          NotificationAdditionalInformationSummary.row(emptyUserAnswers)
-        ).collect { case Some(row) => row }
+          Some(NotificationAdditionalInformationSummary.row(emptyUserAnswers))
+        ).flatten
       )
     }
   }

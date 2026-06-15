@@ -28,7 +28,9 @@ object NotificationAdditionalInformationSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): SummaryListRow = {
     val additionalInformation =
-      answers.getNullable(NotificationAdditionalInformationPage).getOrElse("Not provided")
+      answers
+        .getNullable(NotificationAdditionalInformationPage)
+        .getOrElse(messages("notificationAdditionalInformation.empty"))
 
     SummaryListRowViewModel(
       key = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,
