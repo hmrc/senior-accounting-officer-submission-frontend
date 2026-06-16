@@ -126,6 +126,7 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
 
           doc.createTestsWithLargeCaption(pageCaption)
 
+          doc.createTestMustShowNumberOfTextareas(1)
           doc.createTestMustShowTextarea(
             name = "value",
             label = textAreaLabel,
