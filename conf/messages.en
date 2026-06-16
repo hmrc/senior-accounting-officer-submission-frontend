@@ -10,7 +10,7 @@ site.skip = Skip
 site.start = Start now
 site.startAgain = Start again
 site.govuk = GOV.UK
-site.acceptAndSubmit = Accept and submit
+site.confirmAndSubmit = Confirm and submit
 
 date.day = Day
 date.month = Month

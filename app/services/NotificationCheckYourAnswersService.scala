@@ -25,9 +25,9 @@ class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
     SummaryList(rows =
       Seq(
-        OneSaoSubmitNotificationFullNameSummary.row(userAnswers).get,
-        NotificationAdditionalInformationSummary.row(userAnswers)
-      )
+        OneSaoSubmitNotificationFullNameSummary.row(userAnswers),
+        Option(NotificationAdditionalInformationSummary.row(userAnswers))
+      ).flatten
     )
   }
 }

@@ -23,6 +23,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.OneSaoSubmitNotificationFullNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 class OneSaoSubmitNotificationFullNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -49,9 +50,9 @@ class OneSaoSubmitNotificationFullNameSummarySpec extends SpecBase with GuiceOne
 
       "expected value" - {
         "must show 'testOneSaoSubmitNotificationFullName' when user answers is 'testOneSaoSubmitNotificationFullName'" in {
-          SUT(answer =
-            "testOneSaoSubmitNotificationFullName"
-          ).value.content mustBe "testOneSaoSubmitNotificationFullName".toText
+          SUT(answer = "testOneSaoSubmitNotificationFullName").value.content mustBe HtmlContent(
+            s"""<span data-test-id="sao-name-value">testOneSaoSubmitNotificationFullName</span>"""
+          )
         }
       }
 

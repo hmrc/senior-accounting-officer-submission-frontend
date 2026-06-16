@@ -20,6 +20,8 @@ import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.OneSaoSubmitNotificationFullNamePage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
@@ -30,13 +32,15 @@ object OneSaoSubmitNotificationFullNameSummary {
     answers.get(OneSaoSubmitNotificationFullNamePage).map { answer =>
       SummaryListRowViewModel(
         key = messages("oneSaoSubmitNotificationFullName.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.toText),
+        value =
+          ValueViewModel(HtmlContent(s"""<span data-test-id="sao-name-value">${HtmlFormat.escape(answer)}</span>""")),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
             routes.OneSaoSubmitNotificationFullNameController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("oneSaoSubmitNotificationFullName.change.hidden"))
+            .withAttribute("data-test-id", "change-sao-name-link")
         )
       )
     }
