@@ -208,9 +208,8 @@ combinedWhoSubmitsCertificate.paragraph1 = We need to know if your certificate w
 qualifiedCompanies.title = qualifiedCompanies
 qualifiedCompanies.heading = qualifiedCompanies
 
-unqualifiedCompanies.title = Review the companies with an unqualified certificate
-unqualifiedCompanies.heading = Review the companies with an unqualified certificate
-unqualifiedCompanies.caption = Submit a certificate
+unqualifiedCompanies.title = unqualifiedCompanies
+unqualifiedCompanies.heading = unqualifiedCompanies
 
 combinedCertificateDeclarationSao.title = combinedCertificateDeclarationSao
 combinedCertificateDeclarationSao.heading = combinedCertificateDeclarationSao
@@ -364,8 +363,9 @@ confirmYourNotification.inset.text = If you realise the information you submitte
 certificateReviewQualified.title = certificateReviewQualified
 certificateReviewQualified.heading = certificateReviewQualified
 
-certificateReviewUnqualified.title = certificateReviewUnqualified
-certificateReviewUnqualified.heading = certificateReviewUnqualified
+certificateReviewUnqualified.title = Review the companies with an unqualified certificate
+certificateReviewUnqualified.heading = Review the companies with an unqualified certificate
+certificateReviewUnqualified.caption = Submit a certificate
 
 certificateAdditionalInformation.title = certificateAdditionalInformation
 certificateAdditionalInformation.heading = certificateAdditionalInformation
