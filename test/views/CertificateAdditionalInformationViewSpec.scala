@@ -62,6 +62,14 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
 
           doc.createTestsWithLargeCaption(pageCaption)
 
+          doc.createTestsWithParagraphs(
+            paragraphs
+          )
+
+          doc.createTestsWithBulletPoints(
+            bulletPoints
+          )
+
           doc.createTestsWithSubmissionButtons(
             action = controllers.routes.CertificateAdditionalInformationController.onSubmit(mode),
             buttonTexts = Seq("Continue", "Skip")
@@ -125,6 +133,14 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
           )
 
           doc.createTestsWithLargeCaption(pageCaption)
+
+          doc.createTestsWithParagraphs(
+            paragraphs
+          )
+
+          doc.createTestsWithBulletPoints(
+            bulletPoints
+          )
 
           doc.createTestMustShowNumberOfTextareas(1)
           doc.createTestMustShowTextarea(
