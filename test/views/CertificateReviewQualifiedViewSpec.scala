@@ -44,6 +44,14 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
 
     doc.createTestsWithParagraphs(paragraphs)
 
+    // TODO: test link in paragraph 2
+
+    // TODO: test dynamic data for number of companies
+
+    // TODO: test dynamic data for number of qualified companies, also check bold
+
+    // TODO: test the table
+
     doc.createTestsWithSubmissionButton(
       action = routes.CertificateReviewQualifiedController.onSubmit(),
       buttonText = "Continue"
