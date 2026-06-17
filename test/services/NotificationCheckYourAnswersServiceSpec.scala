@@ -50,7 +50,6 @@ class NotificationCheckYourAnswersServiceSpec extends CheckYourAnswersSummaryRen
         "must render the supplied value" in {
           renderedRow("testName").renderedValueText mustBe "testName"
         }
-
       }
 
       "when there are answers for NotificationAdditionalInformationPage" - {
