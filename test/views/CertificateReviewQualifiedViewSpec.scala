@@ -22,13 +22,15 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.CertificateReviewQualifiedViewSpec.*
 import views.html.CertificateReviewQualifiedView
+import models.QualifiedCompany
 
 class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQualifiedView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT().toString)
+  private def generateView(qualifiedCompanies: Seq[QualifiedCompany]): Document =
+    Jsoup.parse(SUT(qualifiedCompanies, 1, 2).toString)
 
   "CertificateReviewQualifiedView" - {
-    val doc: Document = generateView()
+    val doc: Document = generateView(Seq())
 
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
@@ -40,6 +42,8 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
 
     doc.createTestsWithOrWithoutError(hasError = false)
 
+    doc.createTestsWithParagraphs(paragraphs)
+
     doc.createTestsWithSubmissionButton(
       action = routes.CertificateReviewQualifiedController.onSubmit(),
       buttonText = "Continue"
@@ -48,6 +52,11 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
 }
 
 object CertificateReviewQualifiedViewSpec {
-  val pageHeading = "certificateReviewQualified"
-  val pageTitle   = "certificateReviewQualified"
+  val pageHeading = "Review the companies with a qualified certificate"
+  val pageTitle   = "Review the companies with a qualified certificate"
+  val paragraphs  = Seq(
+    "This list is taken from the certificate details in the submission template you uploaded. There were 1 companies the SAO was responsible for during the financial year.",
+    "If the information listed is not correct, upload an updated submission template before continuing.",
+    "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Jackson Brown, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 1 companies did not have appropriate tax accounting arrangements."
+  )
 }

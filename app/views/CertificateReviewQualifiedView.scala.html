@@ -20,11 +20,41 @@
     formHelper: FormWithCSRF
 )
 
-@()(using request: Request[?], messages: Messages)
+@(qualifiedCompanies: Seq[QualifiedCompany], companyCount: Int, qualifiedCompanyCount: Int)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("certificateReviewQualified.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("certificateReviewQualified.heading")</h1>
+    <span class="govuk-caption-l">@messages("certificateReviewQualified.caption")</span>
+
+    <h1 class="govuk-heading-l">@messages("certificateReviewQualified.heading")</h1>
+
+    <p class="govuk-body">@messages("certificateReviewQualified.paragraph1", companyCount)</p>
+
+    <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph2WithLink", routes.CertificateUploadFormController.onPageLoad()))</p>
+
+    <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph3", qualifiedCompanyCount))</p>
+
+    @for(qualifiedCompany <- qualifiedCompanies) {
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.name")</dt>
+                <dd class="govuk-summary-list__value">@qualifiedCompany.name</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.utr")</dt>
+                <dd class="govuk-summary-list__value">@qualifiedCompany.utr</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.taxRegimes")</dt>
+                <dd class="govuk-summary-list__value">@qualifiedCompany.displayRegimes</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.additionalInformation")</dt>
+                <dd class="govuk-summary-list__value">@qualifiedCompany.additionalInformation</dd>
+            </div>
+        </dl>
+    }
+
     @formHelper(action = routes.CertificateReviewQualifiedController.onSubmit()) {
         @govukButton(
             ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")

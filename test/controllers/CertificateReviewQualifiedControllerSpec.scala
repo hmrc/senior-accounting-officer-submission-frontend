@@ -25,10 +25,45 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.CertificateReviewQualifiedView
+import models.QualifiedCompany
 
 class CertificateReviewQualifiedControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
+
+  // TODO: remove when corresponding dummy data removed from controller
+  val dummyData = Seq(
+    QualifiedCompany(
+      name = "example company name",
+      utr = "example company utr",
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = false,
+      petroleumRevenueTax = true,
+      customsDuties = false,
+      exciseDuties = false,
+      bankLevy = false,
+      additionalInformation = "example additional information"
+    ),
+    QualifiedCompany(
+      name = "example company name 2",
+      utr = "example company utr 2",
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = true,
+      petroleumRevenueTax = false,
+      customsDuties = false,
+      exciseDuties = true,
+      bankLevy = false,
+      additionalInformation = "example additional information 2"
+    )
+  )
 
   "CertificateReviewQualified Controller" - {
 
@@ -44,7 +79,7 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[CertificateReviewQualifiedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(dummyData, 1, 2)(using request, messages(application)).toString
       }
     }
 

@@ -26,6 +26,8 @@ import java.time.format.DateTimeFormatterBuilder
 import java.time.format.ResolverStyle
 import java.time.temporal.ChronoField
 
+import models.QualifiedCompany
+
 final case class ParsedSubmissionRow(
     notification: NotificationFields,
     certificate: CertificateFields
@@ -42,6 +44,24 @@ object ParsedSubmissionRow {
         crn = data.notification.companyCrn.fold("")(_.value),
         companyType = data.notification.companyType,
         companyStatus = data.notification.companyStatus
+      )
+    }
+
+    def toQualifiedCompany: QualifiedCompany = {
+      QualifiedCompany(
+        name = data.notification.companyName,
+        utr = data.notification.companyUtr.value,
+        corporationTax = data.certificate.corporationTax,
+        valueAddedTax = data.certificate.valueAddedTax,
+        paye = data.certificate.paye,
+        insurancePremiumTax = data.certificate.insurancePremiumTax,
+        stampDutyLandTax = data.certificate.stampDutyLandTax,
+        stampDutyReserveTax = data.certificate.stampDutyReserveTax,
+        petroleumRevenueTax = data.certificate.petroleumRevenueTax,
+        customsDuties = data.certificate.customsDuties,
+        exciseDuties = data.certificate.exciseDuties,
+        bankLevy = data.certificate.bankLevy,
+        additionalInformation = data.certificate.additionalInformation.fold("")(s => s)
       )
     }
   }

@@ -30,6 +30,8 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 import javax.inject.Inject
+import java.time.LocalDate
+import models.upload.*
 
 class CertificateReviewQualifiedController @Inject() (
     override val messagesApi: MessagesApi,
@@ -48,14 +50,70 @@ class CertificateReviewQualifiedController @Inject() (
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
-        Ok(view())
+        {
+          // TODO: get the submission data from somewhere more appropriate
+          val dummyData = Seq(
+            ParsedSubmissionRow(
+              notification = NotificationFields(
+                companyName = "example company name",
+                companyUtr = CompanyUtr("example company utr"),
+                companyCrn = Some(CompanyCrn("example company crn")),
+                companyType = CompanyType.LTD,
+                companyStatus = CompanyStatus.Dormant,
+                financialYearEndDate = LocalDate.now()
+              ),
+              certificate = CertificateFields(
+                corporationTax = false,
+                valueAddedTax = true,
+                paye = false,
+                insurancePremiumTax = true,
+                stampDutyLandTax = false,
+                stampDutyReserveTax = false,
+                petroleumRevenueTax = true,
+                customsDuties = false,
+                exciseDuties = false,
+                bankLevy = false,
+                certificateType = Some(CertificateType.Qualified),
+                additionalInformation = Some("example additional information")
+              )
+            ),
+            ParsedSubmissionRow(
+              notification = NotificationFields(
+                companyName = "example company name 2",
+                companyUtr = CompanyUtr("example company utr 2"),
+                companyCrn = Some(CompanyCrn("example company crn 2")),
+                companyType = CompanyType.LTD,
+                companyStatus = CompanyStatus.Dormant,
+                financialYearEndDate = LocalDate.now()
+              ),
+              certificate = CertificateFields(
+                corporationTax = false,
+                valueAddedTax = true,
+                paye = false,
+                insurancePremiumTax = true,
+                stampDutyLandTax = false,
+                stampDutyReserveTax = true,
+                petroleumRevenueTax = false,
+                customsDuties = false,
+                exciseDuties = true,
+                bankLevy = false,
+                certificateType = Some(CertificateType.Qualified),
+                additionalInformation = Some("example additional information 2")
+              )
+            )
+          )
+
+          val qualifiedCompanies = dummyData.map(_.toQualifiedCompany)
+
+          Ok(view(qualifiedCompanies = qualifiedCompanies, companyCount = 1, qualifiedCompanyCount = 2))
+        }
     }
 
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked).async {
       implicit request =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewQualifiedPage, "HACK"))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewQualifiedPage, true))
           _              <- sessionRepository.set(updatedAnswers)
         } yield Redirect(navigator.nextPage(CertificateReviewQualifiedPage, NormalMode, request.userAnswers))
     }

@@ -362,8 +362,26 @@ confirmYourNotification.list1.item1 = the information provided is complete and c
 confirmYourNotification.list1.item2 = you understand that if the company deliberately provides false or incomplete information, or fails to report changes, it may be liable for a penalty of £5,000
 confirmYourNotification.inset.text = If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels.
 
-certificateReviewQualified.title = certificateReviewQualified
-certificateReviewQualified.heading = certificateReviewQualified
+certificateReviewQualified.title = Review the companies with a qualified certificate
+certificateReviewQualified.heading = Review the companies with a qualified certificate
+certificateReviewQualified.caption = Submit a certificate
+certificateReviewQualified.paragraph1 = This list is taken from the certificate details in the submission template you uploaded. There were {0} companies the SAO was responsible for during the financial year.
+certificateReviewQualified.paragraph2WithLink = If the information listed is not correct, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
+certificateReviewQualified.paragraph3 = In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Jackson Brown, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, <b>{0}</b> companies did not have appropriate tax accounting arrangements.
+certificateReviewQualified.rows.name = Company name
+certificateReviewQualified.rows.utr = UTR
+certificateReviewQualified.rows.taxRegimes = Tax regimes
+certificateReviewQualified.rows.additionalInformation = Additional information
+certificateReviewQualified.taxRegimes.corporationTax = Corporation Tax
+certificateReviewQualified.taxRegimes.valueAddedTax = Value Added Tax
+certificateReviewQualified.taxRegimes.paye = PAYE (Pay As You Earn)
+certificateReviewQualified.taxRegimes.insurancePremiumTax = Insurance Premium Tax
+certificateReviewQualified.taxRegimes.stampDutyLandTax = Stamp Duty Land Tax
+certificateReviewQualified.taxRegimes.stampDutyReserveTax = Stamp Duty Reserve Tax
+certificateReviewQualified.taxRegimes.petroleumRevenueTax = Petroleum Revenue Tax
+certificateReviewQualified.taxRegimes.customsDuties = Customs Duties
+certificateReviewQualified.taxRegimes.exciseDuties = Excise Duties
+certificateReviewQualified.taxRegimes.bankLevy = Bank Levy
 
 certificateReviewUnqualified.title = Review the companies with an unqualified certificate
 certificateReviewUnqualified.heading = Review the companies with an unqualified certificate
