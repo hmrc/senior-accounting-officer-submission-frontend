@@ -14,65 +14,69 @@
  * limitations under the License.
  */
 
-package services
+package viewmodels.checkAnswers
 
-import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import org.jsoup.nodes.Element
 import pages.{NotificationAdditionalInformationPage, OneSaoSubmitNotificationFullNamePage}
-import play.api.i18n.Messages
-import play.api.i18n.MessagesApi
-import play.api.test.FakeRequest
+import services.NotificationCheckYourAnswersService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.checkAnswers.{NotificationAdditionalInformationSummary, OneSaoSubmitNotificationFullNameSummary}
 
-class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
-  "NotificationCheckYourAnswersService must generate the summaryList when all the userAnswers" - {
-    def SUT        = app.injector.instanceOf[NotificationCheckYourAnswersService]
-    given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
+class NotificationCheckYourAnswersServiceSpec extends CheckYourAnswersSummaryRenderingSupport {
+  def SUT: NotificationCheckYourAnswersService = app.injector.instanceOf[NotificationCheckYourAnswersService]
+  "NotificationCheckYourAnswersService.list" - {
+    "when there are no answers for OneSaoSubmitNotificationFullNamePage and NotificationAdditionalInformationPage" - {
+      "must return 'Not provided'" in {
+        val result = SUT.getSummaryList(emptyUserAnswers)
 
-    "When Full Name and Additional Information are both given" in {
-      val userAnswers = emptyUserAnswers
-        .set(NotificationAdditionalInformationPage, Some("someValue"))
-        .get
-        .set(OneSaoSubmitNotificationFullNamePage, "testName")
-        .get
-      SUT.getSummaryList(userAnswers) mustBe SummaryList(
-        Seq(
-          OneSaoSubmitNotificationFullNameSummary.row(userAnswers),
-          Option(NotificationAdditionalInformationSummary.row(userAnswers))
-        ).flatten
-      )
-    }
-
-    "When Full Name is given and Additional Information is not given" in {
-      val userAnswers = emptyUserAnswers
-        .set(OneSaoSubmitNotificationFullNamePage, "testName")
-        .get
-
-      val result = SUT.getSummaryList(userAnswers)
-      result mustBe SummaryList(
-        Seq(
-          OneSaoSubmitNotificationFullNameSummary.row(userAnswers),
-          Option(NotificationAdditionalInformationSummary.row(userAnswers))
-        ).flatten
-      )
-      result.rows(1).value.content mustBe HtmlContent(
-        s"""<span data-test-id="additional-information-value">Not provided</span>"""
-      )
-    }
-
-    "When Full Name and Additional Information are both not given" in {
-      val result = SUT.getSummaryList(emptyUserAnswers)
-      result mustBe SummaryList(
-        Seq(
-          NotificationAdditionalInformationSummary.row(emptyUserAnswers)
+        result.rows.head.value.content mustBe HtmlContent(
+          s"""<span data-test-id="additional-information-value">Not provided</span>"""
         )
-      )
+      }
+    }
 
-      result.rows.head.value.content mustBe HtmlContent(
-        s"""<span data-test-id="additional-information-value">Not provided</span>"""
-      )
+    "when there are answers for OneSaoSubmitNotificationFullNamePage and NotificationAdditionalInformationPage" - {
+
+      "when there are answers for OneSaoSubmitNotificationFullNamePage" - {
+
+        def testUserAnswers(answer: String) = emptyUserAnswers.set(OneSaoSubmitNotificationFullNamePage, answer).get
+
+        def renderedRow(answer: String): Element =
+          renderNotificationSummaryRow(OneSaoSubmitNotificationFullNameSummary.row(testUserAnswers(answer)).get)
+
+        "must render the expected key text" in {
+          renderedRow("name").renderedKeyText mustBe "Senior Accounting Officer"
+        }
+
+        "must render the supplied value" in {
+          renderedRow("testName").renderedValueText mustBe "testName"
+        }
+
+      }
+
+      "when there are answers for NotificationAdditionalInformationPage" - {
+
+        def testUserAnswers(answer: String) =
+          emptyUserAnswers.set(NotificationAdditionalInformationPage, Option(answer)).get
+
+        def renderedRow(answer: String): Element =
+          renderNotificationSummaryRow(NotificationAdditionalInformationSummary.row(testUserAnswers(answer)))
+
+        "must render the expected key text" in {
+          renderedRow("additionalInformation").renderedKeyText mustBe "Additional information"
+        }
+
+        "must render the supplied value" in {
+          renderedRow("additionalInformation").renderedValueText mustBe "additionalInformation"
+        }
+
+        "must render special characters without double escaping" in {
+          val row = renderedRow("O'Hara & Jones & Co")
+
+          row.renderedValueText mustBe "O'Hara & Jones & Co"
+          row.renderedValueHtml must not include "&amp;#x27;"
+          row.renderedValueHtml must not include "&amp;amp;"
+        }
+      }
     }
   }
 }
