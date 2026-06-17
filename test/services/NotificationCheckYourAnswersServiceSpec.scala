@@ -16,66 +16,118 @@
 
 package viewmodels.checkAnswers
 
-import org.jsoup.nodes.Element
-import pages.{NotificationAdditionalInformationPage, OneSaoSubmitNotificationFullNamePage}
+import pages.{
+  NotificationAdditionalInformationPage,
+  NotificationMoreThanOneSaoPage,
+  OneSaoSubmitNotificationFullNamePage
+}
 import services.NotificationCheckYourAnswersService
+import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 class NotificationCheckYourAnswersServiceSpec extends CheckYourAnswersSummaryRenderingSupport {
   def SUT: NotificationCheckYourAnswersService = app.injector.instanceOf[NotificationCheckYourAnswersService]
   "NotificationCheckYourAnswersService.list" - {
-    "when there are no answers for OneSaoSubmitNotificationFullNamePage and NotificationAdditionalInformationPage" - {
-      "must return 'Not provided'" in {
-        val result = SUT.getSummaryList(emptyUserAnswers)
 
-        result.rows.head.value.content mustBe HtmlContent(
-          s"""<span data-test-id="additional-information-value">Not provided</span>"""
-        )
+    "OneSaoSubmitNotificationFullNamePage.row" - {
+
+      "when MoreThanOneSao is No" - {
+        "Full Name is answered, must show the Full Name row" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, false)
+            .get
+            .set(OneSaoSubmitNotificationFullNamePage, "testName")
+            .get
+
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.head.key.content mustBe Text("Senior Accounting Officer")
+          result.rows.head.value.content mustBe HtmlContent(s"""<span data-test-id="sao-name-value">testName</span>""")
+        }
+
+        "Full Name is empty, must not show the Full Name row" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, false)
+            .get
+
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.find(row => row.key.content == Text("Senior Accounting Officer")) mustBe None
+        }
+      }
+
+      "when MoreThanOneSao is Yes" - {
+        "must not show the Full Name row even if Full Name is answered" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, true)
+            .get
+            .set(OneSaoSubmitNotificationFullNamePage, "testName")
+            .get
+
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.find(row => row.key.content == Text("Senior Accounting Officer")) mustBe None
+
+        }
       }
     }
 
-    "when there are answers for OneSaoSubmitNotificationFullNamePage and NotificationAdditionalInformationPage" - {
+    "NotificationAdditionalInformationPage row" - {
 
-      "when there are answers for OneSaoSubmitNotificationFullNamePage" - {
+      "when MoreThanOneSao is Yes" - {
 
-        def testUserAnswers(answer: String) = emptyUserAnswers.set(OneSaoSubmitNotificationFullNamePage, answer).get
+        "when there are no answers for NotificationAdditionalInformationPage, must return 'Not provided'" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, true)
+            .get
+          val result = SUT.getSummaryList(userAnswers)
 
-        def renderedRow(answer: String): Element =
-          renderNotificationSummaryRow(OneSaoSubmitNotificationFullNameSummary.row(testUserAnswers(answer)).get)
-
-        "must render the expected key text" in {
-          renderedRow("name").renderedKeyText mustBe "Senior Accounting Officer"
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="additional-information-value">Not provided</span>"""
+          )
         }
 
-        "must render the supplied value" in {
-          renderedRow("testName").renderedValueText mustBe "testName"
+        "when there are answers for NotificationAdditionalInformationPage, must return value" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, true)
+            .get
+            .set(NotificationAdditionalInformationPage, Some("testValue"))
+            .get
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="additional-information-value">testValue</span>"""
+          )
+        }
+      }
+
+      "when MoreThanOneSao is No" - {
+
+        "when there are no answers for NotificationAdditionalInformationPage, must return 'Not provided'" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, false)
+            .get
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="additional-information-value">Not provided</span>"""
+          )
+        }
+
+        "when there are answers for NotificationAdditionalInformationPage, must return value" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, false)
+            .get
+            .set(NotificationAdditionalInformationPage, Some("testValue"))
+            .get
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="additional-information-value">testValue</span>"""
+          )
         }
       }
 
-      "when there are answers for NotificationAdditionalInformationPage" - {
-
-        def testUserAnswers(answer: String) =
-          emptyUserAnswers.set(NotificationAdditionalInformationPage, Option(answer)).get
-
-        def renderedRow(answer: String): Element =
-          renderNotificationSummaryRow(NotificationAdditionalInformationSummary.row(testUserAnswers(answer)))
-
-        "must render the expected key text" in {
-          renderedRow("additionalInformation").renderedKeyText mustBe "Additional information"
-        }
-
-        "must render the supplied value" in {
-          renderedRow("additionalInformation").renderedValueText mustBe "additionalInformation"
-        }
-
-        "must render special characters without double escaping" in {
-          val row = renderedRow("O'Hara & Jones & Co")
-
-          row.renderedValueText mustBe "O'Hara & Jones & Co"
-          row.renderedValueHtml must not include "&amp;#x27;"
-          row.renderedValueHtml must not include "&amp;amp;"
-        }
-      }
     }
   }
 }

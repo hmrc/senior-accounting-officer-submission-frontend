@@ -17,6 +17,7 @@
 package services
 
 import models.UserAnswers
+import pages.NotificationMoreThanOneSaoPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.checkAnswers.{NotificationAdditionalInformationSummary, OneSaoSubmitNotificationFullNameSummary}
@@ -25,8 +26,11 @@ class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
     SummaryList(rows =
       Seq(
-        OneSaoSubmitNotificationFullNameSummary.row(userAnswers),
-        Option(NotificationAdditionalInformationSummary.row(userAnswers))
+        userAnswers
+          .get(page = NotificationMoreThanOneSaoPage)
+          .collect { case false => OneSaoSubmitNotificationFullNameSummary.row(userAnswers) }
+          .flatten,
+        Some(NotificationAdditionalInformationSummary.row(userAnswers))
       ).flatten
     )
   }
