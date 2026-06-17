@@ -208,8 +208,9 @@ combinedWhoSubmitsCertificate.paragraph1 = We need to know if your certificate w
 qualifiedCompanies.title = qualifiedCompanies
 qualifiedCompanies.heading = qualifiedCompanies
 
-unqualifiedCompanies.title = unqualifiedCompanies
-unqualifiedCompanies.heading = unqualifiedCompanies
+unqualifiedCompanies.title = Review the companies with an unqualified certificate
+unqualifiedCompanies.heading = Review the companies with an unqualified certificate
+unqualifiedCompanies.caption = Submit a certificate
 
 combinedCertificateDeclarationSao.title = combinedCertificateDeclarationSao
 combinedCertificateDeclarationSao.heading = combinedCertificateDeclarationSao
