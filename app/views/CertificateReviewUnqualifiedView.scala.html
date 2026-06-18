@@ -24,7 +24,9 @@
 
 @layout(pageTitle = titleNoForm(messages("certificateReviewUnqualified.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("certificateReviewUnqualified.heading")</h1>
+    <span class="govuk-caption-l">@messages("certificateReviewUnqualified.caption")</span>
+
+    <h1 class="govuk-heading-l">@messages("certificateReviewUnqualified.heading")</h1>
     @formHelper(action = routes.CertificateReviewUnqualifiedController.onSubmit()) {
         @govukButton(
             ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")

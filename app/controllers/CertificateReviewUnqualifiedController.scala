@@ -55,7 +55,7 @@ class CertificateReviewUnqualifiedController @Inject() (
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked).async {
       implicit request =>
         for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewUnqualifiedPage, "HACK"))
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewUnqualifiedPage, true))
           _              <- sessionRepository.set(updatedAnswers)
         } yield Redirect(navigator.nextPage(CertificateReviewUnqualifiedPage, NormalMode, request.userAnswers))
     }

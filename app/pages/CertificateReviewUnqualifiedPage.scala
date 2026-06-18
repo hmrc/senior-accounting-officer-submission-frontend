@@ -21,7 +21,7 @@ import play.api.libs.json.JsPath
 // TODO: change the type that this page points to. string has been
 // given as a workaround to allowing checking that this page has been
 // visited.
-case object CertificateReviewUnqualifiedPage extends QuestionPage[String] {
+case object CertificateReviewUnqualifiedPage extends QuestionPage[Boolean] {
   override def path: JsPath = JsPath \ toString
 
   override def toString: String = "certificateUnreviewQualifiedPage"

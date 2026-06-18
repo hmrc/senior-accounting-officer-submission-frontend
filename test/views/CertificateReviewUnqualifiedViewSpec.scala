@@ -37,6 +37,8 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
       showIsThisPageNotWorkingProperlyLink = true,
       hasError = false
     )
+    
+    doc.createTestsWithLargeCaption(pageCaption)
 
     doc.createTestsWithOrWithoutError(hasError = false)
 
@@ -48,6 +50,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
 }
 
 object CertificateReviewUnqualifiedViewSpec {
-  val pageHeading = "certificateReviewUnqualified"
-  val pageTitle   = "certificateReviewUnqualified"
+  val pageHeading = "Review the companies with an unqualified certificate"
+  val pageTitle   = "Review the companies with an unqualified certificate"
+  val pageCaption   = "Submit a certificate"
 }

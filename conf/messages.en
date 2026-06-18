@@ -366,6 +366,9 @@ certificateReviewQualified.heading = certificateReviewQualified
 certificateReviewUnqualified.title = Review the companies with an unqualified certificate
 certificateReviewUnqualified.heading = Review the companies with an unqualified certificate
 certificateReviewUnqualified.caption = Submit a certificate
+certificateReviewUnqualified.paragraph1 = This list is taken from the certificate details in the submission template you uploaded. There were 15 companies the SAO was responsible for during the financial year.
+certificateReviewUnqualified.paragraph2 = If the information listed is not correct, upload an updated submission template before continuing.
+certificateReviewUnqualified.paragraph3 = In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I {0} the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December {0} that {0} companies had appropriate tax accounting arrangements throughout the year.
 
 certificateAdditionalInformation.title = certificateAdditionalInformation
 certificateAdditionalInformation.heading = certificateAdditionalInformation

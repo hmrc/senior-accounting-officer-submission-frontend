@@ -96,7 +96,7 @@ trait SpecBase
       .set(CertificateReviewQualifiedPage, "HACK")
       .success
       .value
-      .set(CertificateReviewUnqualifiedPage, "HACK")
+      .set(CertificateReviewUnqualifiedPage, true)
       .success
       .value
 
