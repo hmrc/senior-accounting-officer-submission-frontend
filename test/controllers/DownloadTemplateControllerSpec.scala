@@ -24,10 +24,10 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.http.InternalServerException
 
-class NotificationTemplateDownloadControllerSpec extends SpecBase {
+class DownloadTemplateControllerSpec extends SpecBase {
 
   given request: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, routes.DownloadNotificationTemplateController.downloadFile().url)
+    FakeRequest(GET, routes.DownloadTemplateController.downloadFile().url)
 
   "GET must " - {
     "return a file with correct name,type and headers" in {

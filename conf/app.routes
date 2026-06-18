@@ -13,7 +13,7 @@ POST        /notification/complete        controllers.notification.SubmitNotific
 
 GET         /template-guidance                                        controllers.TemplateGuidanceController.onPageLoad()
 
-GET         /notification/template/download                           controllers.DownloadNotificationTemplateController.downloadFile()
+GET         /notification/template/download                           controllers.DownloadTemplateController.downloadFile()
 
 GET         /notification/upload                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
 GET         /notification/upload/success                                              controllers.notification.NotificationUploadSuccessController.onPageLoad(key: Option[String])
