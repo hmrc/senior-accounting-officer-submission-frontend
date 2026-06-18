@@ -17,8 +17,9 @@
 package connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import connectors.UpscanInitiateConnector.*
 import connectors.UpscanInitiateConnectorISpec.*
-import models.{UpscanInitiateRequestV2, UpscanInitiateResponse}
+import models.upscan.{UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.http.HeaderNames
 import play.api.libs.json.Json
 import play.api.mvc.Request
@@ -38,7 +39,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
 
   given Request[?] = FakeRequest()
 
-  "UpscanInitiateConnector.initiateV2" must {
+  "UpscanInitiateConnector.initiateV2(Notification)" must {
     "successfully initiate an upscan v2 upload" in {
 
       stubFor(
@@ -50,7 +51,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
           )
       )
 
-      val response: UpscanInitiateResponse = SUT.initiateV2().futureValue
+      val response: UpscanInitiateResponse = SUT.initiateV2(UpscanJourney.Notification).futureValue
 
       Json.toJson(response) mustBe Json.toJson(fakeUpscanInitiateResponse)
 
@@ -58,7 +59,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
         1,
         postRequestedFor(urlEqualTo("/upscan/v2/initiate"))
           .withHeader(HeaderNames.USER_AGENT, equalTo("senior-accounting-officer-submission-frontend"))
-          .withRequestBody(equalToJson(Json.toJson(expectedRequest).toString))
+          .withRequestBody(equalToJson(Json.toJson(expectedNotificationRequest).toString))
       )
     }
 
@@ -70,7 +71,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
               .withStatus(500)
           )
       )
-      val response = SUT.initiateV2().failed.futureValue
+      val response = SUT.initiateV2(UpscanJourney.Notification).failed.futureValue
       response mustBe a[uk.gov.hmrc.http.UpstreamErrorResponse]
     }
   }
@@ -83,7 +84,7 @@ object UpscanInitiateConnectorISpec {
     postTarget = "bar",
     formFields = Map("T1" -> "V1")
   )
-  val expectedRequest = UpscanInitiateRequestV2(
+  val expectedNotificationRequest = UpscanInitiateRequestV2(
     callbackUrl = "http://localhost:10058/internal/upscan-callback",
     successRedirect = Some(
       "http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"

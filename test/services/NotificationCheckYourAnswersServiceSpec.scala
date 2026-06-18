@@ -18,7 +18,7 @@ package services
 
 import base.SpecBase
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.{
+import pages.notification.{
   NotificationAdditionalInformationPage,
   NotificationMoreThanOneSaoPage,
   OneSaoSubmitNotificationFullNamePage

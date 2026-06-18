@@ -17,10 +17,13 @@
 package services
 
 import models.UserAnswers
-import pages.NotificationMoreThanOneSaoPage
+import pages.notification.NotificationMoreThanOneSaoPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.checkAnswers.{NotificationAdditionalInformationSummary, OneSaoSubmitNotificationFullNameSummary}
+import viewmodels.checkAnswers.notification.{
+  NotificationAdditionalInformationSummary,
+  OneSaoSubmitNotificationFullNameSummary
+}
 
 class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {

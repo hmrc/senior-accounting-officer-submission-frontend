@@ -17,11 +17,13 @@
 package services
 
 import connectors.UpscanDownloadConnector
-import models.UploadStatus.*
+import models.UserAnswers
 import models.upload.{ParsedSubmissionRow, TemplateParseError, TemplateParseResult}
-import models.{NotificationUploadState, UserAnswers}
-import pages.NotificationUploadStatePage
+import models.upscan.FileUploadState
+import models.upscan.UploadStatus.*
+import pages.notification.NotificationUploadStatePage
 import play.api.http.Status.OK
+import queries.{Gettable, Settable}
 import services.UpscanService.*
 import services.csvparser.UploadTemplateCsvParser
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -37,10 +39,11 @@ class UpscanService @Inject() (
 )(using ExecutionContext) {
 
   def fileUploadState(
+      journey: UploadJourney,
       userAnswers: UserAnswers,
       reference: Option[String]
   )(using hc: HeaderCarrier): Future[State] =
-    userAnswers.get(NotificationUploadStatePage).fold(Future.successful(State.NoReference)) { uploadState =>
+    userAnswers.get(journey.page).fold(Future.successful(State.NoReference)) { uploadState =>
       reference match {
         case Some(expectedReference) if uploadState.reference != expectedReference =>
           Future.successful(State.NoReference)
@@ -49,7 +52,7 @@ class UpscanService @Inject() (
       }
     }
 
-  private def fileUploadState(uploadState: NotificationUploadState)(using hc: HeaderCarrier): Future[State] =
+  private def fileUploadState(uploadState: FileUploadState)(using hc: HeaderCarrier): Future[State] =
     checkUploadState(uploadState).flatMap {
       _.fold(
         state => Future.successful(state),
@@ -69,7 +72,7 @@ class UpscanService @Inject() (
       )
     }
 
-  private def checkUploadState(uploadState: NotificationUploadState): Future[Either[State, InterimResult]] =
+  private def checkUploadState(uploadState: FileUploadState): Future[Either[State, InterimResult]] =
     Future.successful {
       uploadState.status match {
         case InProgress =>
@@ -101,5 +104,9 @@ object UpscanService {
     case DownloadFromUpscanFailed(response: HttpResponse)          extends State
     case ValidationFailed(errors: Seq[TemplateParseError])         extends State
     case Result(reference: String, rows: Seq[ParsedSubmissionRow]) extends State
+  }
+
+  enum UploadJourney(val page: Gettable[FileUploadState] with Settable[FileUploadState]) {
+    case Notification extends UploadJourney(NotificationUploadStatePage)
   }
 }

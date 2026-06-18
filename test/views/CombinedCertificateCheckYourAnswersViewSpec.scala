@@ -25,7 +25,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Key, Value as SLV
 import viewmodels.converters.*
 import viewmodels.govuk.all.{ActionItemViewModel, SummaryListRowViewModel, withVisuallyHiddenText}
 import views.CombinedCertificateCheckYourAnswersViewSpec.*
-import views.NotificationCheckYourAnswersViewSpec.testValue1
 import views.html.CombinedCertificateCheckYourAnswersView
 
 class CombinedCertificateCheckYourAnswersViewSpec extends ViewSpecBase[CombinedCertificateCheckYourAnswersView] {

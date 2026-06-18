@@ -1,0 +1,87 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.notification.{ routes => notificationRoutes }
+@import config.AppConfig
+@import views.html.helper.CSPNonce
+
+@this(
+    layout: templates.Layout,
+    govukButton: GovukButton,
+    formHelper: FormWithCSRF,
+    appConfig: AppConfig
+)
+
+@(notificationIdReferenceNumber: String)(using request: Request[?], messages: Messages)
+
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
+
+    <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+            @messages("notificationConfirmation.heading")
+        </h1>
+        <div class="govuk-panel__body">
+            @messages("notificationConfirmation.reference.text")
+            <br>
+            <strong data-test-id="notification-reference-number">@notificationIdReferenceNumber</strong>
+        </div>
+    </div>
+
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph1")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph2")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        <li>
+            <span>
+                <a class="govuk-link" id="download-pdf-link" href="#">
+                    @messages("notificationConfirmation.downloadPdf")
+                </a>
+                @messages("notificationConfirmation.list1.item1")
+            </span>
+        </li>
+        <li>
+            <span>
+                <a class="govuk-link" id="print-page-link" href="#">
+                    @messages("notificationConfirmation.printPage")
+                </a>
+                @messages("notificationConfirmation.list1.item2")
+            </span>
+        </li>
+    </ul>
+
+    <script @CSPNonce.attr>
+        document.getElementById('print-page-link').addEventListener('click', function() {
+            event.preventDefault();
+            window.print();
+        })
+    </script>
+
+    <h2 class="govuk-heading-m">@messages("notificationConfirmation.subheading")</h2>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph4")</p>
+
+    @formHelper(action = notificationRoutes.NotificationConfirmationController.onSubmit()) {
+        @govukButton(
+            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
+        )
+    }
+}
+
+@accountHomepageLinkAttributes = @{
+    s"""href="${appConfig.hubBaseUrl}" class="govuk-link""""
+}
+
+    

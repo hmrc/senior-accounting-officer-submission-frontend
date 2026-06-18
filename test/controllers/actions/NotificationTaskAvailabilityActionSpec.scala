@@ -17,7 +17,7 @@
 package controllers.actions
 
 import base.SpecBase
-import controllers.routes
+import controllers.notification.routes as notificationRoutes
 import models.UserAnswers
 import models.requests.DataRequest
 import play.api.http.HeaderNames
@@ -49,7 +49,8 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
       val result = new UploadHarness().callFilter(emptyUserAnswers).futureValue.value
 
       result.header.status mustBe SEE_OTHER
-      result.header.headers(HeaderNames.LOCATION) mustBe routes.SubmitNotificationStartController.onPageLoad().url
+      result.header
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad().url
     }
   }
 
@@ -63,7 +64,8 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
       val result = new SubmitHarness().callFilter(completedSaoDetailsAnswers).futureValue.value
 
       result.header.status mustBe SEE_OTHER
-      result.header.headers(HeaderNames.LOCATION) mustBe routes.SubmitNotificationStartController.onPageLoad().url
+      result.header
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad().url
     }
   }
 }
