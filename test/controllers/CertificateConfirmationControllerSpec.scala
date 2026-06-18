@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
-import navigation.FakeNavigator
-import navigation.Navigator
+import navigation.{FakeNavigator, Navigator}
+import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -27,7 +27,8 @@ import views.html.CertificateConfirmationView
 
 class CertificateConfirmationControllerSpec extends SpecBase {
 
-  def onwardRoute: Call = Call("GET", "/foo")
+  def onwardRoute: Call = Call("GET", "/senior-accounting-officer/submission/certificate/task-list/complete")
+  def certificateRef    = "SAOCRT0123456789"
 
   "CertificateConfirmation Controller" - {
 
@@ -36,34 +37,42 @@ class CertificateConfirmationControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.CertificateConfirmationController.onPageLoad().url)
+        val request = FakeRequest(GET, routes.CertificateConfirmationController.onPageLoad(certificateRef).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[CertificateConfirmationView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(certificateRef)(using request, messages(application)).toString
       }
     }
 
-    "must redirect to the next page for a POST" in {
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
+      val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request =
-          FakeRequest(POST, routes.CertificateConfirmationController.onSubmit().url)
+        val request = FakeRequest(GET, routes.CertificateConfirmationController.onPageLoad(certificateRef).url)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+    "must redirect to the next page for a POST" in {
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(POST, routes.CertificateConfirmationController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        header(HeaderNames.LOCATION, result) mustEqual Some(onwardRoute.url)
       }
     }
   }

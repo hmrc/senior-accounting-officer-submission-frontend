@@ -130,7 +130,7 @@ class Navigator @Inject() () {
     case CertificateDeclarationSaoPage | CertificateDeclarationStandInPage =>
       _ => routes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateCheckYourAnswersPage =>
-      _ => routes.CertificateConfirmationController.onPageLoad()
+      _ => routes.CertificateConfirmationController.onPageLoad(certificateIdReferenceNumber.id)
     case CertificateConfirmationPage =>
       _ => routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Complete)
     case _ =>
@@ -166,4 +166,5 @@ class Navigator @Inject() () {
   }
 
   val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber("SAONOT0123456789")
+  val certificateIdReferenceNumber: CertificateIdReferenceNumber   = CertificateIdReferenceNumber("SAOCRT0123456789")
 }
