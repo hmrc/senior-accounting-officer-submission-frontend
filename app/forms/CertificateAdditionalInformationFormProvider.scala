@@ -23,9 +23,14 @@ import javax.inject.Inject
 
 class CertificateAdditionalInformationFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  val maxLength     = 5000
+  val requiredError = "certificateAdditionalInformation.error.required"
+  val lengthError   = "certificateAdditionalInformation.error.length"
+
+  def apply(): Form[Option[String]] =
     Form(
-      "value" -> text("certificateAdditionalInformation.error.required")
-        .verifying(maxLength(100, "certificateAdditionalInformation.error.length"))
+      "value" -> FormHelpers.mandatoryUnlessSkipped(
+        text(errorKey = requiredError).verifying(maxLength(maxLength, lengthError))
+      )
     )
 }

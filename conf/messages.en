@@ -368,11 +368,18 @@ certificateReviewQualified.heading = certificateReviewQualified
 certificateReviewUnqualified.title = certificateReviewUnqualified
 certificateReviewUnqualified.heading = certificateReviewUnqualified
 
-certificateAdditionalInformation.title = certificateAdditionalInformation
-certificateAdditionalInformation.heading = certificateAdditionalInformation
-certificateAdditionalInformation.checkYourAnswersLabel = certificateAdditionalInformation
-certificateAdditionalInformation.error.required = Enter certificateAdditionalInformation
-certificateAdditionalInformation.error.length = CertificateAdditionalInformation must be 100 characters or less
+certificateAdditionalInformation.title = Additional information and explanation
+certificateAdditionalInformation.caption = Submit a certificate
+certificateAdditionalInformation.heading = Additional information and explanation
+certificateAdditionalInformation.paragraph1 = Tell us if there’s anything we should know about your certificate or the companies listed.
+certificateAdditionalInformation.paragraph2 = This could include:
+certificateAdditionalInformation.list1.item1 = an explanation of why the SAO provided a qualified certificate
+certificateAdditionalInformation.list1.item2 = a company’s status changing, such as becoming dormant or going into liquidation
+certificateAdditionalInformation.list1.item3 = anything else relevant to the companies listed or SAO
+certificateAdditionalInformation.label = Provide information about your certificate
+certificateAdditionalInformation.checkYourAnswersLabel = Additional Information
+certificateAdditionalInformation.error.required = Enter information about your certificate or skip
+certificateAdditionalInformation.error.length = Additional Information must be 5000 characters or less
 certificateAdditionalInformation.change.hidden = CertificateAdditionalInformation
 
 certificateSaoEmail.title = What is the email address for the SAO?

@@ -21,6 +21,7 @@ import forms.CertificateAdditionalInformationFormProvider
 import models.Mode
 import navigation.Navigator
 import pages.CertificateAdditionalInformationPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -45,17 +46,20 @@ class CertificateAdditionalInformationController @Inject() (
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
+
+  inline def form: Form[Option[String]] = formProvider()
+
   def onPageLoad(mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
-      val form         = formProvider()
-      val preparedForm = request.userAnswers.get(CertificateAdditionalInformationPage).fold(form)(form.fill)
+      val preparedForm = request.userAnswers
+        .getNullable(CertificateAdditionalInformationPage)
+        .fold(form)(value => form.fill(Some(value)))
       Ok(view(preparedForm, mode))
     }
 
   def onSubmit(mode: Mode): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
       implicit request =>
-        val form = formProvider()
         form
           .bindFromRequest()
           .fold(
