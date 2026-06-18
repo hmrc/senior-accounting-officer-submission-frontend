@@ -16,8 +16,8 @@
 
 package controllers.actions
 
-import controllers.routes
-import models.SubmitNotificationStage
+import controllers.notification.routes as notificationRoutes
+import models.notification.SubmitNotificationStage
 import models.requests.DataRequest
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionFilter, Result}
@@ -32,7 +32,7 @@ class RequireNotificationUploadUnlockedAction @Inject() (implicit val executionC
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] =
     Future.successful {
       Option.unless(SubmitNotificationStage.canStartUploadNotificationTemplate(request.userAnswers)) {
-        Redirect(routes.SubmitNotificationStartController.onPageLoad())
+        Redirect(notificationRoutes.SubmitNotificationStartController.onPageLoad())
       }
     }
 }
@@ -43,7 +43,7 @@ class RequireSubmitNotificationUnlockedAction @Inject() (implicit val executionC
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] =
     Future.successful {
       Option.unless(SubmitNotificationStage.canStartSubmitNotification(request.userAnswers)) {
-        Redirect(routes.SubmitNotificationStartController.onPageLoad())
+        Redirect(notificationRoutes.SubmitNotificationStartController.onPageLoad())
       }
     }
 }

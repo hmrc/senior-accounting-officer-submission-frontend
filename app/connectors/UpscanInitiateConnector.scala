@@ -17,10 +17,12 @@
 package connectors
 
 import config.AppConfig
-import controllers.routes
-import models.{UpscanInitiateRequestV2, UpscanInitiateResponse}
+import connectors.UpscanInitiateConnector.UpscanJourney
+import controllers.notification.routes as notificationRoutes
+import models.upscan.{UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue
+import play.api.mvc.Call
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
@@ -34,11 +36,11 @@ class UpscanInitiateConnector @Inject() (
     appConfig: AppConfig
 )(using ExecutionContext) {
 
-  def initiateV2()(using HeaderCarrier): Future[UpscanInitiateResponse] = {
+  def initiateV2(journey: UpscanJourney)(using HeaderCarrier): Future[UpscanInitiateResponse] = {
     val request = UpscanInitiateRequestV2(
       callbackUrl = appConfig.upscanCallbackTarget,
-      successRedirect = Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad(key = None)),
-      errorRedirect = Some(appConfig.host + routes.NotificationUploadFormController.onPageLoad())
+      successRedirect = Some(appConfig.host + journey.successRedirect),
+      errorRedirect = Some(appConfig.host + journey.errorRedirect)
     )
 
     httpClient
@@ -47,4 +49,14 @@ class UpscanInitiateConnector @Inject() (
       .execute[UpscanInitiateResponse]
   }
 
+}
+
+object UpscanInitiateConnector {
+  enum UpscanJourney(val successRedirect: Call, val errorRedirect: Call) {
+    case Notification
+        extends UpscanJourney(
+          successRedirect = notificationRoutes.NotificationUploadSuccessController.onPageLoad(key = None),
+          errorRedirect = notificationRoutes.NotificationUploadFormController.onPageLoad()
+        )
+  }
 }

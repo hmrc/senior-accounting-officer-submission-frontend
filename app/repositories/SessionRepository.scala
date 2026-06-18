@@ -17,7 +17,8 @@
 package repositories
 
 import config.AppConfig
-import models.{UploadStatus, UserAnswers}
+import models.UserAnswers
+import models.upscan.UploadStatus
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model.*
 import play.api.libs.json.Format

@@ -18,12 +18,12 @@ package services
 
 import base.SpecBase
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.NotificationAdditionalInformationPage
+import pages.notification.NotificationAdditionalInformationPage
 import play.api.i18n.Messages
 import play.api.i18n.MessagesApi
 import play.api.test.FakeRequest
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
+import viewmodels.checkAnswers.notification.NotificationAdditionalInformationSummary
 
 class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
   "NotificationCheckYourAnswersService must generate the summaryList when all the userAnswers" - {

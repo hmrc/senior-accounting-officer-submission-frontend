@@ -17,8 +17,8 @@
 package repositories
 
 import config.AppConfig
-import models.{NotificationUploadState, UploadStatus, UserAnswers}
-import pages.NotificationUploadStatePage
+import models.upscan.{FileUploadState, UploadStatus}
+import models.UserAnswers
 import org.mockito.Mockito.when
 import org.mongodb.scala.model.Filters
 import org.scalactic.source.Position
@@ -28,6 +28,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import org.slf4j.MDC
+import pages.notification.NotificationUploadStatePage
 import play.api.libs.json.Json
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.play.bootstrap.dispatchers.MDCPropagatingExecutorService
@@ -156,7 +157,7 @@ class SessionRepositoryISpec
       "must update the upload status in user answers and refresh lastUpdated" in {
 
         val userAnswersWithUpload = UserAnswers("id")
-          .set(NotificationUploadStatePage, NotificationUploadState("upscan-ref", UploadStatus.InProgress))
+          .set(NotificationUploadStatePage, FileUploadState("upscan-ref", UploadStatus.InProgress))
           .get
           .copy(lastUpdated = Instant.ofEpochSecond(1))
 

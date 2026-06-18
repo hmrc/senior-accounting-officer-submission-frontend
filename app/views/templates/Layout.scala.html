@@ -66,7 +66,7 @@
         additionalHeadBlock = Some(head)
     ),
     serviceURLs = ServiceURLs(
-        serviceUrl = Some(routes.NotificationGuidanceController.onPageLoad().url),
+        serviceUrl = Some(appConfig.hubBaseUrl),
         signOutUrl = if(showSignOut) Some(appConfig.hubSignOutUrl) else None
     ),
     banners = Banners(
