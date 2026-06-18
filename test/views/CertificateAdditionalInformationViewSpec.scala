@@ -21,16 +21,17 @@ import forms.CertificateAdditionalInformationFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.scalactic.source.Position
 import play.api.data.Form
 import views.CertificateAdditionalInformationViewSpec.*
 import views.html.CertificateAdditionalInformationView
 
 class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateAdditionalInformationView] {
 
-  private val formProvider       = app.injector.instanceOf[CertificateAdditionalInformationFormProvider]
-  private val form: Form[String] = formProvider()
+  private val formProvider               = app.injector.instanceOf[CertificateAdditionalInformationFormProvider]
+  private val form: Form[Option[String]] = formProvider()
 
-  private def generateView(form: Form[String], mode: Mode): Document = {
+  private def generateView(form: Form[Option[String]], mode: Mode): Document = {
     val view = SUT(form, mode)
     Jsoup.parse(view.toString)
   }
@@ -50,17 +51,28 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestMustShowNumberOfTextareas(1)
+          doc.createTestMustShowTextarea(
             name = "value",
-            label = pageHeading,
+            label = textAreaLabel,
             value = "",
             hint = None,
             hasError = false
           )
 
-          doc.createTestsWithSubmissionButton(
+          doc.createTestsWithLargeCaption(pageCaption)
+
+          doc.createTestsWithParagraphs(
+            paragraphs
+          )
+
+          doc.createTestsWithBulletPoints(
+            bulletPoints
+          )
+
+          doc.createTestsWithSubmissionButtons(
             action = controllers.routes.CertificateAdditionalInformationController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonTexts = Seq("Continue", "Skip")
           )
 
           doc.createTestsWithOrWithoutError(
@@ -79,17 +91,29 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithLargeCaption(pageCaption)
+
+          doc.createTestsWithParagraphs(
+            paragraphs
+          )
+
+          doc.createTestsWithBulletPoints(
+            bulletPoints
+          )
+
+          doc.createTestMustShowNumberOfTextareas(1)
+
+          doc.createTestMustShowTextarea(
             name = "value",
-            label = pageHeading,
+            label = textAreaLabel,
             value = testInputValue,
             hint = None,
             hasError = false
           )
 
-          doc.createTestsWithSubmissionButton(
+          doc.createTestsWithSubmissionButtons(
             action = controllers.routes.CertificateAdditionalInformationController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonTexts = Seq("Continue", "Skip")
           )
 
           doc.createTestsWithOrWithoutError(
@@ -108,17 +132,28 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
             hasError = true
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithLargeCaption(pageCaption)
+
+          doc.createTestsWithParagraphs(
+            paragraphs
+          )
+
+          doc.createTestsWithBulletPoints(
+            bulletPoints
+          )
+
+          doc.createTestMustShowNumberOfTextareas(1)
+          doc.createTestMustShowTextarea(
             name = "value",
-            label = pageHeading,
+            label = textAreaLabel,
             value = "",
             hint = None,
             hasError = true
           )
 
-          doc.createTestsWithSubmissionButton(
+          doc.createTestsWithSubmissionButtons(
             action = controllers.routes.CertificateAdditionalInformationController.onSubmit(mode),
-            buttonText = "Continue"
+            buttonTexts = Seq("Continue", "Skip")
           )
 
           doc.createTestsWithOrWithoutError(
@@ -131,7 +166,18 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
 }
 
 object CertificateAdditionalInformationViewSpec {
-  val pageHeading    = "certificateAdditionalInformation"
-  val pageTitle      = "certificateAdditionalInformation"
-  val testInputValue = "myTestInputValue"
+  val pageCaption             = "Submit a certificate"
+  val pageHeading             = "Additional information and explanation"
+  val pageTitle               = "Additional information and explanation"
+  val testInputValue          = "myTestInputValue"
+  val textAreaLabel           = "Provide information about your certificate"
+  val paragraphs: Seq[String] = Seq(
+    "Tell us if there’s anything we should know about your certificate or the companies listed.",
+    "This could include:"
+  )
+  val bulletPoints: Seq[String] = Seq(
+    "an explanation of why the SAO provided a qualified certificate",
+    "a company’s status changing, such as becoming dormant or going into liquidation",
+    "anything else relevant to the companies listed or SAO"
+  )
 }
