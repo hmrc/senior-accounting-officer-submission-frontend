@@ -19,7 +19,7 @@ package services
 import models.UserAnswers
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.checkAnswers.NotificationAdditionalInformationSummary
+import viewmodels.checkAnswers.notification.NotificationAdditionalInformationSummary
 
 class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {

@@ -1,0 +1,65 @@
+/*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.notification
+
+import config.AppConfig
+import controllers.actions.*
+import models.UserAnswers
+import models.notification.SubmitNotificationStage
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.notification.SubmitNotificationStartView
+
+import scala.concurrent.{ExecutionContext, Future}
+
+import javax.inject.Inject
+
+class SubmitNotificationStartController @Inject() (
+    override val messagesApi: MessagesApi,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    val controllerComponents: MessagesControllerComponents,
+    view: SubmitNotificationStartView,
+    sessionRepository: SessionRepository,
+    appConfig: AppConfig
+)(using ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport {
+
+  def onPageLoad: Action[AnyContent] = (identify andThen getData) async { implicit request =>
+    for {
+      userAnswers <- sessionRepository.get(request.userId)
+      result      <- userAnswers match {
+        case Some(answers) => Future.successful(Ok(view(SubmitNotificationStage.taskListStage(answers))))
+        case None          =>
+          sessionRepository
+            .set(UserAnswers(request.userId))
+            .map(_ => Ok(view(SubmitNotificationStage.ProvideSaoDetails)))
+      }
+    } yield result
+  }
+
+  def onComplete: Action[AnyContent] = identify { implicit request =>
+    Ok(view(SubmitNotificationStage.AllStagesCompleted))
+  }
+
+  def onCompleteSubmit: Action[AnyContent] = identify {
+    Redirect(appConfig.hubBaseUrl)
+  }
+}

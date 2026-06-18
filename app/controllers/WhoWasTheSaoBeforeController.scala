@@ -20,8 +20,8 @@ import controllers.actions.*
 import forms.WhoWasTheSaoBeforeFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.MoreSaoSubmitNotificationFullNamePage
 import pages.WhoWasTheSaoBeforePage
+import pages.notification.MoreSaoSubmitNotificationFullNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

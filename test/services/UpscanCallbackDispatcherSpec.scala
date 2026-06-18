@@ -18,6 +18,7 @@ package services
 
 import base.SpecBase
 import models.*
+import models.upscan.*
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{eq as _, *}
 import org.mockito.Mockito.{times, verify, when}
