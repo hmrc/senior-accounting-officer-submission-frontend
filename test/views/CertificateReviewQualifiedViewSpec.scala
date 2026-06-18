@@ -82,9 +82,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .get(0)
         .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      // TODO: test dynamic data for number of companies
-
-      // TODO: test dynamic data for number of qualified companies, also check bold
+      // TODO: check bold
 
       // TODO: test the table
 
@@ -116,9 +114,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .get(0)
         .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      // TODO: test dynamic data for number of companies
-
-      // TODO: test dynamic data for number of qualified companies, also check bold
+      // TODO: check bold
 
       // TODO: test the table
 
@@ -126,6 +122,17 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         action = routes.CertificateReviewQualifiedController.onSubmit(),
         buttonText = "Continue"
       )
+    }
+  }
+
+  extension (doc: Document) {
+    def createTestsWithQualifiedCompanyTable(): Unit = {
+      // TODO: make a test case class to hold view info
+
+      // TODO: test number of companies shown
+
+      // TODO: test structure of html
+
     }
   }
 }
