@@ -14,20 +14,31 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package services
 
+import base.SpecBase
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.{
   NotificationAdditionalInformationPage,
   NotificationMoreThanOneSaoPage,
   OneSaoSubmitNotificationFullNamePage
 }
-import services.NotificationCheckYourAnswersService
+import play.api.i18n.{Messages, MessagesApi}
+import play.api.test.FakeRequest
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 
-class NotificationCheckYourAnswersServiceSpec extends CheckYourAnswersSummaryRenderingSupport {
-  def SUT: NotificationCheckYourAnswersService = app.injector.instanceOf[NotificationCheckYourAnswersService]
+class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
+
   "NotificationCheckYourAnswersService.list" - {
+
+    def SUT: NotificationCheckYourAnswersService = app.injector.instanceOf[NotificationCheckYourAnswersService]
+
+    given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
+
+    val testFullName              = "testName"
+    val testAdditionalInformation = "testValue"
 
     "OneSaoSubmitNotificationFullNamePage.row" - {
 
@@ -36,13 +47,15 @@ class NotificationCheckYourAnswersServiceSpec extends CheckYourAnswersSummaryRen
           val userAnswers = emptyUserAnswers
             .set(NotificationMoreThanOneSaoPage, false)
             .get
-            .set(OneSaoSubmitNotificationFullNamePage, "testName")
+            .set(OneSaoSubmitNotificationFullNamePage, testFullName)
             .get
 
           val result = SUT.getSummaryList(userAnswers)
 
           result.rows.head.key.content mustBe Text("Senior Accounting Officer")
-          result.rows.head.value.content mustBe HtmlContent(s"""<span data-test-id="sao-name-value">testName</span>""")
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="sao-name-value">$testFullName</span>"""
+          )
         }
 
         "Full Name is empty, must not show the Full Name row" in {
@@ -61,7 +74,7 @@ class NotificationCheckYourAnswersServiceSpec extends CheckYourAnswersSummaryRen
           val userAnswers = emptyUserAnswers
             .set(NotificationMoreThanOneSaoPage, true)
             .get
-            .set(OneSaoSubmitNotificationFullNamePage, "testName")
+            .set(OneSaoSubmitNotificationFullNamePage, testFullName)
             .get
 
           val result = SUT.getSummaryList(userAnswers)
@@ -91,12 +104,12 @@ class NotificationCheckYourAnswersServiceSpec extends CheckYourAnswersSummaryRen
           val userAnswers = emptyUserAnswers
             .set(NotificationMoreThanOneSaoPage, true)
             .get
-            .set(NotificationAdditionalInformationPage, Some("testValue"))
+            .set(NotificationAdditionalInformationPage, Some(testAdditionalInformation))
             .get
           val result = SUT.getSummaryList(userAnswers)
 
           result.rows.head.value.content mustBe HtmlContent(
-            s"""<span data-test-id="additional-information-value">testValue</span>"""
+            s"""<span data-test-id="additional-information-value">$testAdditionalInformation</span>"""
           )
         }
       }
@@ -118,12 +131,12 @@ class NotificationCheckYourAnswersServiceSpec extends CheckYourAnswersSummaryRen
           val userAnswers = emptyUserAnswers
             .set(NotificationMoreThanOneSaoPage, false)
             .get
-            .set(NotificationAdditionalInformationPage, Some("testValue"))
+            .set(NotificationAdditionalInformationPage, Some(testAdditionalInformation))
             .get
           val result = SUT.getSummaryList(userAnswers)
 
           result.rows.head.value.content mustBe HtmlContent(
-            s"""<span data-test-id="additional-information-value">testValue</span>"""
+            s"""<span data-test-id="additional-information-value">$testAdditionalInformation</span>"""
           )
         }
       }
