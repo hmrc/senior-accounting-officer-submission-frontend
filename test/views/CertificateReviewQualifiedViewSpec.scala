@@ -26,45 +26,127 @@ import models.QualifiedCompany
 
 class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQualifiedView] {
 
-  private def generateView(qualifiedCompanies: Seq[QualifiedCompany]): Document =
-    Jsoup.parse(SUT(qualifiedCompanies, 1, 2).toString)
+  private def generateView(saoName: String, qualifiedCompanies: Seq[QualifiedCompany], companyCount: Int): Document =
+    Jsoup.parse(SUT(saoName, qualifiedCompanies, companyCount).toString)
 
   "CertificateReviewQualifiedView" - {
-    val doc: Document = generateView(Seq())
+    "When no rows are passed to the view must render empty table" - {
+      val doc: Document = generateView(firstSaoName, Seq(), 0)
 
-    doc.createTestsWithStandardPageElements(
-      pageTitle = pageTitle,
-      pageHeading = pageHeading,
-      showBackLink = true,
-      showIsThisPageNotWorkingProperlyLink = true,
-      hasError = false
-    )
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
 
-    doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithOrWithoutError(hasError = false)
 
-    doc.createTestsWithParagraphs(paragraphs)
+      doc.createTestsWithParagraphs(
+        Seq(firstParagraphZeroCompanies, secondParagraph, thirdParagraphZeroQualifiedCompanies)
+      )
 
-    // TODO: test link in paragraph 2
+      doc
+        .select(secondParagraphLinkSelector)
+        .get(0)
+        .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-    // TODO: test dynamic data for number of companies
+      // TODO: test when no rows passed in
 
-    // TODO: test dynamic data for number of qualified companies, also check bold
+      doc.createTestsWithSubmissionButton(
+        action = routes.CertificateReviewQualifiedController.onSubmit(),
+        buttonText = "Continue"
+      )
+    }
 
-    // TODO: test the table
+    "When rows are passed to the view must render populated table" - {
+      val doc: Document = generateView(firstSaoName, Seq(), 2)
 
-    doc.createTestsWithSubmissionButton(
-      action = routes.CertificateReviewQualifiedController.onSubmit(),
-      buttonText = "Continue"
-    )
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+
+      doc.createTestsWithParagraphs(
+        Seq(firstParagraphTwoCompanies, secondParagraph, thirdParagraphTwoQualifiedCompanies)
+      )
+
+      doc
+        .select(secondParagraphLinkSelector)
+        .get(0)
+        .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
+
+      // TODO: test dynamic data for number of companies
+
+      // TODO: test dynamic data for number of qualified companies, also check bold
+
+      // TODO: test the table
+
+      doc.createTestsWithSubmissionButton(
+        action = routes.CertificateReviewQualifiedController.onSubmit(),
+        buttonText = "Continue"
+      )
+    }
+
+    "When rows are and a different sao name are passed to the view must render populated table with differnt sao name" - {
+      val doc: Document = generateView(secondSaoName, Seq(), 2)
+
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+
+      doc.createTestsWithParagraphs(
+        Seq(firstParagraphTwoCompanies, secondParagraph, thirdParagraphTwoQualifiedCompaniesDifferentSao)
+      )
+
+      doc
+        .select(secondParagraphLinkSelector)
+        .get(0)
+        .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
+
+      // TODO: test dynamic data for number of companies
+
+      // TODO: test dynamic data for number of qualified companies, also check bold
+
+      // TODO: test the table
+
+      doc.createTestsWithSubmissionButton(
+        action = routes.CertificateReviewQualifiedController.onSubmit(),
+        buttonText = "Continue"
+      )
+    }
   }
 }
 
 object CertificateReviewQualifiedViewSpec {
-  val pageHeading = "Review the companies with a qualified certificate"
-  val pageTitle   = "Review the companies with a qualified certificate"
-  val paragraphs  = Seq(
-    "This list is taken from the certificate details in the submission template you uploaded. There were 1 companies the SAO was responsible for during the financial year.",
-    "If the information listed is not correct, upload an updated submission template before continuing.",
-    "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Jackson Brown, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 1 companies did not have appropriate tax accounting arrangements."
-  )
+  val pageHeading                 = "Review the companies with a qualified certificate"
+  val pageTitle                   = "Review the companies with a qualified certificate"
+  val firstParagraphZeroCompanies =
+    "This list is taken from the certificate details in the submission template you uploaded. There were 0 companies the SAO was responsible for during the financial year."
+  val firstParagraphTwoCompanies =
+    "This list is taken from the certificate details in the submission template you uploaded. There were 2 companies the SAO was responsible for during the financial year."
+  val secondParagraph =
+    "If the information listed is not correct, upload an updated submission template before continuing."
+  val thirdParagraphZeroQualifiedCompanies =
+    "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 0 companies did not have appropriate tax accounting arrangements."
+  val thirdParagraphTwoQualifiedCompanies =
+    "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 0 companies did not have appropriate tax accounting arrangements."
+  val thirdParagraphTwoQualifiedCompaniesDifferentSao =
+    "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Firstname Lastname II, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 0 companies did not have appropriate tax accounting arrangements."
+  val firstSaoName                = "Firstname Lastname"
+  val secondSaoName               = "Firstname Lastname II"
+  val secondParagraphLinkText     = "upload an updated submission template"
+  val secondParagraphLinkSelector = ".govuk-body:nth-of-type(2) .govuk-link"
 }

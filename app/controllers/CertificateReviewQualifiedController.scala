@@ -105,7 +105,8 @@ class CertificateReviewQualifiedController @Inject() (
 
           val qualifiedCompanies = dummyData.map(_.toQualifiedCompany)
 
-          Ok(view(qualifiedCompanies = qualifiedCompanies, companyCount = 1, qualifiedCompanyCount = 2))
+          // TODO: pull sao name out of userAnswers
+          Ok(view(saoName = "", qualifiedCompanies = qualifiedCompanies, companyCount = 1))
         }
     }
 

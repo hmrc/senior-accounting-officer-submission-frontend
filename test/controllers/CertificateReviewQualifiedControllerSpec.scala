@@ -79,7 +79,8 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[CertificateReviewQualifiedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(dummyData, 1, 2)(using request, messages(application)).toString
+        // TODO: test the saoname being passed to the view
+        contentAsString(result) mustEqual view("", dummyData, 1)(using request, messages(application)).toString
       }
     }
 
