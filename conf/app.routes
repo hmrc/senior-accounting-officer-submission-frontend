@@ -42,8 +42,8 @@ POST        /notification/additional-information                      controller
 GET         /notification/change-additional-information               controllers.NotificationAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/change-additional-information               controllers.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
-GET         /notification/one-sao/submit-notification-cya                          controllers.NotificationCheckYourAnswersController.onPageLoad()
-POST        /notification/one-sao/submit-notification-cya                           controllers.NotificationCheckYourAnswersController.onSubmit()
+GET         /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onPageLoad()
+POST        /notification/check-your-answers                          controllers.NotificationCheckYourAnswersController.onSubmit()
 
 GET         /notification/confirmation                                controllers.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                controllers.NotificationConfirmationController.onSubmit()
