@@ -26,25 +26,17 @@ import views.CertificateReviewUnqualifiedViewSpec.*
 import views.html.CertificateReviewUnqualifiedView
 
 class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateReviewUnqualifiedView] {
-  val unqualifiedCompanyExample: UnqualifiedCompany =
-    UnqualifiedCompany(
-      name = "Steve",
-      utr = "example utr",
-      crn = Some("example crn"),
-      companyType = CompanyType.LTD,
-      companyStatus = CompanyStatus.Active
-    )
   private def generateView(
-      saoName: String,
-      unqualifiedCompanies: Seq[UnqualifiedCompany],
-      companyCount: Int,
-      dummyDate: String
-  ): Document = Jsoup.parse(SUT(saoName, unqualifiedCompanies, companyCount, dummyDate).toString)
+                            saoName: String,
+                            unqualifiedCompanies: Seq[UnqualifiedCompany],
+                            companyCount: Int,
+                            dummyDate: String
+                          ): Document = Jsoup.parse(SUT(saoName, unqualifiedCompanies, companyCount, dummyDate).toString)
 
   "CertificateReviewUnqualifiedView" - {
     "will populate the table correctly when data is present" - {
 
-      val doc: Document = generateView(unqualifiedCompanyExample.name, Seq(unqualifiedCompanyExample), 1, "1996")
+      val doc: Document = generateView(saoName, unqualifiedCompanies, unqualifiedCompanies.size, dummyDate)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -65,12 +57,18 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         buttonText = "Continue"
       )
 
+      "must have bold text in second paragraph denoting number of qualified companies" in {
+        doc.select("b").get(0).text() mustBe "2"
+      }
+
       doc
         .select(linkLocator)
         .get(0)
         .createTestWithLink(linkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      // TODO: Test Table
+
+      doc.createTestsWithUnqualifiedCompanyDescriptionList(unqualifiedCompanies)
+
     }
 
     "will populate the table correctly when no data is present" - {
@@ -96,31 +94,99 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         buttonText = "Continue"
       )
 
+      "must have bold text in second paragraph denoting number of qualified companies" in {
+        doc.select("b").get(0).text() mustBe "0"
+      }
+
+
       doc
         .select(linkLocator)
         .get(0)
         .createTestWithLink(linkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      // TODO: Test Table
+      doc.createTestsWithUnqualifiedCompanyDescriptionList(unqualifiedCompanies)
+
+    }
+  }
+  extension (doc: Document) {
+    def createTestsWithUnqualifiedCompanyDescriptionList(unqualifiedCompanies: Seq[UnqualifiedCompany]): Unit = {
+      val expectedCountOfDescriptionLists = unqualifiedCompanies.size
+
+      "must be one description list per unqualified company" in {
+        val descriptionLists = doc.select("dl.govuk-summary-list")
+        descriptionLists.size() mustBe expectedCountOfDescriptionLists
+      }
+
+      "must be five description terms per unqualified company with expected text" in {
+        val descriptionTerms = doc.select("div.govuk-summary-list__row > dt.govuk-summary-list__key")
+
+        descriptionTerms.size() mustBe expectedCountOfDescriptionLists * 5
+
+        for i <- 0 to unqualifiedCompanies.size - 1 do {
+          descriptionTerms.get(i * 5).text() mustBe companyNameDescriptionTermText
+          descriptionTerms.get(i * 5 + 1).text() mustBe utrDescriptionTermText
+          descriptionTerms.get(i * 5 + 2).text() mustBe crnDescriptionTermText
+          descriptionTerms.get(i * 5 + 3).text() mustBe typeDescriptionTermText
+          descriptionTerms.get(i * 5 + 4).text() mustBe statusDescriptionTermText
+        }
+      }
+
+      "must be five description details per unqualified company with expected text" in {
+        val descriptionDetails = doc.select("div.govuk-summary-list__row > dd.govuk-summary-list__value")
+        descriptionDetails.size() mustBe expectedCountOfDescriptionLists * 5
+
+        for i <- 0 to unqualifiedCompanies.size - 1 do {
+          descriptionDetails.get(i * 5).text() mustBe unqualifiedCompanies(i).name
+          descriptionDetails.get(i * 5 + 1).text() mustBe unqualifiedCompanies(i).utr
+          descriptionDetails.get(i * 5 + 2).text() mustBe unqualifiedCompanies(i).crn
+          descriptionDetails.get(i * 5 + 3).text() mustBe unqualifiedCompanies(i).companyType
+          descriptionDetails.get(i * 5 + 4).text() mustBe unqualifiedCompanies(i).companyStatus
+        }
+      }
     }
   }
 }
+  object CertificateReviewUnqualifiedViewSpec {
+    val pageHeading = "Review the companies with an unqualified certificate"
+    val pageTitle = "Review the companies with an unqualified certificate"
+    val pageCaption = "Submit a certificate"
+    val linkLocator = ".govuk-body:nth-of-type(2) .govuk-link"
+    val linkText = "upload an updated submission template"
+    val paragraphs: Seq[String] = Seq(
+      "This list is taken from the certificate details in the submission template you uploaded. There were 1 companies the SAO was responsible for during the financial year.",
+      "If the information listed is not correct, upload an updated submission template before continuing.",
+      "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I Steve the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 1996 that 1 companies had appropriate tax accounting arrangements throughout the year."
+    )
 
-object CertificateReviewUnqualifiedViewSpec {
-  val pageHeading             = "Review the companies with an unqualified certificate"
-  val pageTitle               = "Review the companies with an unqualified certificate"
-  val pageCaption             = "Submit a certificate"
-  val linkLocator             = ".govuk-body:nth-of-type(2) .govuk-link"
-  val linkText                = "upload an updated submission template"
-  val paragraphs: Seq[String] = Seq(
-    "This list is taken from the certificate details in the submission template you uploaded. There were 1 companies the SAO was responsible for during the financial year.",
-    "If the information listed is not correct, upload an updated submission template before continuing.",
-    "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I Steve the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 1996 that 1 companies had appropriate tax accounting arrangements throughout the year."
-  )
+    val paragraphsWithNoData: Seq[String] = Seq(
+      "This list is taken from the certificate details in the submission template you uploaded. There were 0 companies the SAO was responsible for during the financial year.",
+      "If the information listed is not correct, upload an updated submission template before continuing.",
+      "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December that 0 companies had appropriate tax accounting arrangements throughout the year."
+    )
+    val unqualifiedCompanies: Seq[UnqualifiedCompany] = Seq(
+      UnqualifiedCompany(
+        name = "example company name",
+        utr = "example utr",
+        crn = Some("example crn"),
+        companyType = CompanyType.LTD,
+        companyStatus = CompanyStatus.Active
+      ),
+      UnqualifiedCompany(
+        name = "example company name 2",
+        utr = "example utr 2",
+        crn = Some("example crn 2"),
+        companyType = CompanyType.PLC,
+        companyStatus = CompanyStatus.Dormant
+      )
+    )
 
-  val paragraphsWithNoData: Seq[String] = Seq(
-    "This list is taken from the certificate details in the submission template you uploaded. There were 0 companies the SAO was responsible for during the financial year.",
-    "If the information listed is not correct, upload an updated submission template before continuing.",
-    "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December that 0 companies had appropriate tax accounting arrangements throughout the year."
-  )
-}
+    val companyNameDescriptionTermText = "Company name"
+    val utrDescriptionTermText = "UTR"
+    val crnDescriptionTermText = "CRN"
+    val typeDescriptionTermText = "Type"
+    val statusDescriptionTermText = "Status"
+    
+    val saoName = "example sao name"
+    val dummyDate = "1999"
+
+  }
