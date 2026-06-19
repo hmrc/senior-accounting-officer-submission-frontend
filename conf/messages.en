@@ -301,16 +301,16 @@ notificationMultiSaoPreviousOfficerName.error.required = Enter the name of the p
 notificationMultiSaoPreviousOfficerName.error.length = The name you enter must be 254 characters or less
 notificationMultiSaoPreviousOfficerName.change.hidden = NotificationMultiSaoPreviousOfficerName
 
-notificationMoreSaoFirstStartDate.title = Submit a notification
-notificationMoreSaoFirstStartDate.heading = What date did {0} become the SAO?
-notificationMoreSaoFirstStartDate.caption = Submit a notification
-notificationMoreSaoFirstStartDate.hint = For example 01 6 2024
-notificationMoreSaoFirstStartDate.checkYourAnswersLabel = NotificationMoreSaoFirstStartDate
-notificationMoreSaoFirstStartDate.error.required.all = The date must be a real date
-notificationMoreSaoFirstStartDate.error.required.two = The date must include {0} and {1}
-notificationMoreSaoFirstStartDate.error.required = The date must include {0}
-notificationMoreSaoFirstStartDate.error.invalid = Enter the date in the correct format
-notificationMoreSaoFirstStartDate.change.hidden = NotificationMoreSaoFirstStartDate
+notificationMultiSaoLastOfficerStartDate.title = Submit a notification
+notificationMultiSaoLastOfficerStartDate.heading = What date did {0} become the SAO?
+notificationMultiSaoLastOfficerStartDate.caption = Submit a notification
+notificationMultiSaoLastOfficerStartDate.hint = For example 01 6 2024
+notificationMultiSaoLastOfficerStartDate.checkYourAnswersLabel = NotificationMultiSaoLastOfficerStartDate
+notificationMultiSaoLastOfficerStartDate.error.required.all = The date must be a real date
+notificationMultiSaoLastOfficerStartDate.error.required.two = The date must include {0} and {1}
+notificationMultiSaoLastOfficerStartDate.error.required = The date must include {0}
+notificationMultiSaoLastOfficerStartDate.error.invalid = Enter the date in the correct format
+notificationMultiSaoLastOfficerStartDate.change.hidden = NotificationMultiSaoLastOfficerStartDate
 
 notificationMultiSaoLastOfficerName.title = Submit a notification - SAO full name
 notificationMultiSaoLastOfficerName.caption = Submit a notification

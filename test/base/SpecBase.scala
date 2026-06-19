@@ -67,7 +67,7 @@ trait SpecBase
       .set(NotificationMultiSaoLastOfficerNamePage, "Jackson Brown")
       .success
       .value
-      .set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2024, 1, 1))
+      .set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.of(2024, 1, 1))
       .success
       .value
       .set(NotificationMultiSaoPreviousOfficerNamePage(0), "Taylor Green")

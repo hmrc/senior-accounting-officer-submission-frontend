@@ -72,8 +72,8 @@ class Navigator @Inject() () {
     case OneSaoSubmitNotificationFullNamePage =>
       _ => notificationRoutes.NotificationTaskListController.onPageLoad()
     case NotificationMultiSaoLastOfficerNamePage =>
-      _ => notificationRoutes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
-    case NotificationMoreSaoFirstStartDatePage =>
+      _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
+    case NotificationMultiSaoLastOfficerStartDatePage =>
       _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
     case NotificationMultiSaoPreviousOfficerNamePage(saoIndex) =>
       _ => notificationRoutes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, saoIndex)
