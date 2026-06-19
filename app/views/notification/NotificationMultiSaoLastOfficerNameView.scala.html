@@ -27,23 +27,23 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("moreSaoSubmitNotificationFullName.title"))) {
+@layout(pageTitle = title(form, messages("notificationMultiSaoLastOfficerName.title"))) {
 
-    @formHelper(action = notificationRoutes.MoreSaoSubmitNotificationFullNameController.onSubmit(mode)) {
+    @formHelper(action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <span class="govuk-caption-l">@messages("moreSaoSubmitNotificationFullName.caption")</span>
-        <h1 class="govuk-heading-l">@messages("moreSaoSubmitNotificationFullName.heading")</h1>
+        <span class="govuk-caption-l">@messages("notificationMultiSaoLastOfficerName.caption")</span>
+        <h1 class="govuk-heading-l">@messages("notificationMultiSaoLastOfficerName.heading")</h1>
 
-        <p class="govuk-body">@messages("moreSaoSubmitNotificationFullName.paragraph1")</p>
+        <p class="govuk-body">@messages("notificationMultiSaoLastOfficerName.paragraph1")</p>
 
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("moreSaoSubmitNotificationFullName.label").toText).withCssClass("govuk-label--m")
+                label = LabelViewModel(messages("notificationMultiSaoLastOfficerName.label").toText).withCssClass("govuk-label--m")
             )
             .withWidth(Fixed20)
         )

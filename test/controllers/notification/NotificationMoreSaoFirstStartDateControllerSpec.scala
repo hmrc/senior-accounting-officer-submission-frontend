@@ -25,7 +25,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.{MoreSaoSubmitNotificationFullNamePage, NotificationMoreSaoFirstStartDatePage}
+import pages.notification.{NotificationMultiSaoLastOfficerNamePage, NotificationMoreSaoFirstStartDatePage}
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -54,7 +54,7 @@ class NotificationMoreSaoFirstStartDateControllerSpec extends SpecBase with Mock
     notificationRoutes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode).url
 
   val userAnswers: UserAnswers = UserAnswers(userAnswersId)
-    .set(MoreSaoSubmitNotificationFullNamePage, saoName)
+    .set(NotificationMultiSaoLastOfficerNamePage, saoName)
     .success
     .value
 
@@ -143,7 +143,7 @@ class NotificationMoreSaoFirstStartDateControllerSpec extends SpecBase with Mock
 
       val userAnswers =
         UserAnswers(userAnswersId)
-          .set(MoreSaoSubmitNotificationFullNamePage, saoName)
+          .set(NotificationMultiSaoLastOfficerNamePage, saoName)
           .success
           .value
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()

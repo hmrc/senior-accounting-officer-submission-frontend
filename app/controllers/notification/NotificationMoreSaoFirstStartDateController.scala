@@ -21,7 +21,7 @@ import controllers.routes
 import forms.notification.NotificationMoreSaoFirstStartDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.notification.{MoreSaoSubmitNotificationFullNamePage, NotificationMoreSaoFirstStartDatePage}
+import pages.notification.{NotificationMultiSaoLastOfficerNamePage, NotificationMoreSaoFirstStartDatePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -50,7 +50,7 @@ class NotificationMoreSaoFirstStartDateController @Inject() (
     val form         = formProvider()
     val preparedForm = request.userAnswers.get(NotificationMoreSaoFirstStartDatePage).fold(form)(form.fill)
     request.userAnswers
-      .get(MoreSaoSubmitNotificationFullNamePage)
+      .get(NotificationMultiSaoLastOfficerNamePage)
       .fold(
         Redirect(routes.JourneyRecoveryController.onPageLoad())
       )(saoName => Ok(view(saoName, preparedForm, mode)))
@@ -60,7 +60,7 @@ class NotificationMoreSaoFirstStartDateController @Inject() (
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
-      request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage) match {
+      request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage) match {
         case Some(saoName) =>
           form
             .bindFromRequest()

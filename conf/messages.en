@@ -312,15 +312,15 @@ notificationMoreSaoFirstStartDate.error.required = The date must include {0}
 notificationMoreSaoFirstStartDate.error.invalid = Enter the date in the correct format
 notificationMoreSaoFirstStartDate.change.hidden = NotificationMoreSaoFirstStartDate
 
-moreSaoSubmitNotificationFullName.title = Submit a notification - SAO full name
-moreSaoSubmitNotificationFullName.caption = Submit a notification
-moreSaoSubmitNotificationFullName.heading = Senior Accounting Officer details
-moreSaoSubmitNotificationFullName.label = What is the name of the last SAO?
-moreSaoSubmitNotificationFullName.paragraph1 = You told us more than one SAO held the role during the financial year. Enter the name of the last person who held the role. We’ll then ask you for details of the others who held the role earlier in the year.
-moreSaoSubmitNotificationFullName.checkYourAnswersLabel = moreSaoSubmitNotificationFullName
-moreSaoSubmitNotificationFullName.error.required = Enter the name of the last SAO
-moreSaoSubmitNotificationFullName.error.length = The name you enter must be 254 characters or less
-moreSaoSubmitNotificationFullName.change.hidden = MoreSaoSubmitNotificationFullName
+notificationMultiSaoLastOfficerName.title = Submit a notification - SAO full name
+notificationMultiSaoLastOfficerName.caption = Submit a notification
+notificationMultiSaoLastOfficerName.heading = Senior Accounting Officer details
+notificationMultiSaoLastOfficerName.label = What is the name of the last SAO?
+notificationMultiSaoLastOfficerName.paragraph1 = You told us more than one SAO held the role during the financial year. Enter the name of the last person who held the role. We’ll then ask you for details of the others who held the role earlier in the year.
+notificationMultiSaoLastOfficerName.checkYourAnswersLabel = notificationMultiSaoLastOfficerName
+notificationMultiSaoLastOfficerName.error.required = Enter the name of the last SAO
+notificationMultiSaoLastOfficerName.error.length = The name you enter must be 254 characters or less
+notificationMultiSaoLastOfficerName.change.hidden = NotificationMultiSaoLastOfficerName
 
 notificationMoreSaoSecondStartDate.title = Submit a notification
 notificationMoreSaoSecondStartDate.heading = When did {0}’s responsibility as the SAO start?

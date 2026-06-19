@@ -21,7 +21,7 @@ import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.notification.{MoreSaoSubmitNotificationFullNamePage, NotificationMultiSaoPreviousOfficerNamePage}
+import pages.notification.{NotificationMultiSaoLastOfficerNamePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -51,7 +51,7 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
 
   private def saoNameForPage(saoIndex: Int, userAnswers: UserAnswers): Option[String] =
     if saoIndex == 0 then {
-      userAnswers.get(MoreSaoSubmitNotificationFullNamePage)
+      userAnswers.get(NotificationMultiSaoLastOfficerNamePage)
     } else {
       userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1))
     }

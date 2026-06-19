@@ -108,10 +108,10 @@ POST        /certificate/change-declaration                           controller
 
 GET         /certificate/confirmation                                         controllers.CombinedCertificateConfirmationController.onPageLoad()
 
-GET        /notification/more-sao/submit-notification-full-name               controllers.notification.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
-POST       /notification/more-sao/submit-notification-full-name               controllers.notification.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
-GET        /notification/more-sao/change-submitNotification-full-name         controllers.notification.MoreSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /notification/more-sao/change-submit-notification-full-name        controllers.notification.MoreSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
+GET        /notification/more-sao/submit-notification-full-name               controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = NormalMode)
+POST       /notification/more-sao/submit-notification-full-name               controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = NormalMode)
+GET        /notification/more-sao/change-submitNotification-full-name         controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = CheckMode)
+POST       /notification/more-sao/change-submit-notification-full-name        controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/multi-sao-second-start-date                                 controllers.notification.NotificationMoreSaoSecondStartDateController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
 POST        /notification/multi-sao-second-start-date                                 controllers.notification.NotificationMoreSaoSecondStartDateController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)

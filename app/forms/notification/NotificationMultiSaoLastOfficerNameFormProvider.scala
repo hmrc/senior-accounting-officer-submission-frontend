@@ -21,11 +21,11 @@ import play.api.data.Form
 
 import javax.inject.Inject
 
-class MoreSaoSubmitNotificationFullNameFormProvider @Inject() extends Mappings {
+class NotificationMultiSaoLastOfficerNameFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("moreSaoSubmitNotificationFullName.error.required")
-        .verifying(maxLength(254, "moreSaoSubmitNotificationFullName.error.length"))
+      "value" -> text("notificationMultiSaoLastOfficerName.error.required")
+        .verifying(maxLength(254, "notificationMultiSaoLastOfficerName.error.length"))
     )
 }

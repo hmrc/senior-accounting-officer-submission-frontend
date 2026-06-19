@@ -17,36 +17,36 @@
 package controllers.notification
 
 import controllers.actions.*
-import forms.notification.MoreSaoSubmitNotificationFullNameFormProvider
+import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.notification.MoreSaoSubmitNotificationFullNamePage
+import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.MoreSaoSubmitNotificationFullNameView
+import views.html.notification.NotificationMultiSaoLastOfficerNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class MoreSaoSubmitNotificationFullNameController @Inject() (
+class NotificationMultiSaoLastOfficerNameController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: MoreSaoSubmitNotificationFullNameFormProvider,
+    formProvider: NotificationMultiSaoLastOfficerNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: MoreSaoSubmitNotificationFullNameView
+    view: NotificationMultiSaoLastOfficerNameView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(MoreSaoSubmitNotificationFullNamePage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -59,9 +59,9 @@ class MoreSaoSubmitNotificationFullNameController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(MoreSaoSubmitNotificationFullNamePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationMultiSaoLastOfficerNamePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(MoreSaoSubmitNotificationFullNamePage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(NotificationMultiSaoLastOfficerNamePage, mode, updatedAnswers))
         )
   }
 }

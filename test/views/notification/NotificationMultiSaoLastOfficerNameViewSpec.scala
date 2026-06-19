@@ -18,18 +18,18 @@ package views.notification
 
 import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
-import forms.notification.MoreSaoSubmitNotificationFullNameFormProvider
+import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.html.notification.MoreSaoSubmitNotificationFullNameView
+import views.html.notification.NotificationMultiSaoLastOfficerNameView
 
-import MoreSaoSubmitNotificationFullNameViewSpec.*
+import NotificationMultiSaoLastOfficerNameViewSpec.*
 
-class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubmitNotificationFullNameView] {
+class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[NotificationMultiSaoLastOfficerNameView] {
 
-  private val formProvider       = app.injector.instanceOf[MoreSaoSubmitNotificationFullNameFormProvider]
+  private val formProvider       = app.injector.instanceOf[NotificationMultiSaoLastOfficerNameFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
@@ -37,7 +37,7 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
     Jsoup.parse(view.toString)
   }
 
-  "MoreSaoSubmitNotificationFullNameView" - {
+  "NotificationMultiSaoLastOfficerNameView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -65,7 +65,7 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
           doc.createTestsForInputWidth()
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.MoreSaoSubmitNotificationFullNameController.onSubmit(mode),
+            action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -98,7 +98,7 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
           doc.createTestsForInputWidth()
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.MoreSaoSubmitNotificationFullNameController.onSubmit(mode),
+            action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -131,7 +131,7 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
           doc.createTestsForInputWidth()
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.MoreSaoSubmitNotificationFullNameController.onSubmit(mode),
+            action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -144,7 +144,7 @@ class MoreSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[MoreSaoSubm
   }
 }
 
-object MoreSaoSubmitNotificationFullNameViewSpec {
+object NotificationMultiSaoLastOfficerNameViewSpec {
   val pageHeading              = "Senior Accounting Officer details"
   val pageTitle                = "Submit a notification - SAO full name"
   val pageCaption              = "Submit a notification"

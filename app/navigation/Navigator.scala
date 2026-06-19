@@ -65,13 +65,13 @@ class Navigator @Inject() () {
     case NotificationMoreThanOneSaoPage =>
       userAnswers =>
         userAnswers.get(NotificationMoreThanOneSaoPage) match {
-          case Some(true)  => notificationRoutes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+          case Some(true)  => notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
           case Some(false) => notificationRoutes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
           case _           => ???
         }
     case OneSaoSubmitNotificationFullNamePage =>
       _ => notificationRoutes.NotificationTaskListController.onPageLoad()
-    case MoreSaoSubmitNotificationFullNamePage =>
+    case NotificationMultiSaoLastOfficerNamePage =>
       _ => notificationRoutes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
     case NotificationMoreSaoFirstStartDatePage =>
       _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)

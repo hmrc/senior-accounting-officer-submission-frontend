@@ -185,12 +185,12 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreThanOneSaoPage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-        ) mustBe notificationRoutes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
       }
 
-      "when on MoreSaoSubmitNotificationFullNameController, must go to more sao submit notification first date page" in {
+      "when on NotificationMultiSaoLastOfficerNameController, must go to more sao submit notification first date page" in {
         navigator.nextPage(
-          MoreSaoSubmitNotificationFullNamePage,
+          NotificationMultiSaoLastOfficerNamePage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
         ) mustBe notificationRoutes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)

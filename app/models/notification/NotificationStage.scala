@@ -71,7 +71,7 @@ object NotificationStage {
       case false =>
         userAnswers.get(OneSaoSubmitNotificationFullNamePage).exists(_.trim.nonEmpty)
       case true =>
-        userAnswers.get(MoreSaoSubmitNotificationFullNamePage).exists(_.trim.nonEmpty) &&
+        userAnswers.get(NotificationMultiSaoLastOfficerNamePage).exists(_.trim.nonEmpty) &&
         hasCompletedMoreSaoDetails(userAnswers)
     }
 

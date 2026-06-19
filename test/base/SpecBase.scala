@@ -64,7 +64,7 @@ trait SpecBase
       .set(NotificationMoreThanOneSaoPage, true)
       .success
       .value
-      .set(MoreSaoSubmitNotificationFullNamePage, "Jackson Brown")
+      .set(NotificationMultiSaoLastOfficerNamePage, "Jackson Brown")
       .success
       .value
       .set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2024, 1, 1))

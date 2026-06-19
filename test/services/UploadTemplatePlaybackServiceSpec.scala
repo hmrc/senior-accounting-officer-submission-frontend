@@ -86,7 +86,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(OneSaoSubmitNotificationFullNamePage, "Ignored Name")
         .success
         .value
-        .set(MoreSaoSubmitNotificationFullNamePage, "John Smith")
+        .set(NotificationMultiSaoLastOfficerNamePage, "John Smith")
         .success
         .value
 
