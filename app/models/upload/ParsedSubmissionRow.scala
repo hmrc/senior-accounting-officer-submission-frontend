@@ -38,7 +38,7 @@ object ParsedSubmissionRow {
       UnqualifiedCompany(
         name = data.notification.companyName,
         utr = data.notification.companyUtr.value,
-        crn = data.notification.companyCrn,
+        crn = data.notification.companyCrn.map(_.value),
         companyType = data.notification.companyType,
         companyStatus = data.notification.companyStatus
       )

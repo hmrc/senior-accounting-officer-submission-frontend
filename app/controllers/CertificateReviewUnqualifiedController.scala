@@ -52,7 +52,8 @@ class CertificateReviewUnqualifiedController @Inject() (
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request => 
         //TODO: remove in future
-        val unqualifiedDummyDate = Seq(
+        val dummyDate = "2020"
+        val unqualifiedDummyData = Seq(
             ParsedSubmissionRow(
               notification = NotificationFields(
                 companyName = "example company name",
@@ -127,13 +128,13 @@ class CertificateReviewUnqualifiedController @Inject() (
             )
         )
         
-        val unqualifiedCompanies = unqualifiedDummyDate.map(_.toUnqualifiedCompany)
+        val unqualifiedCompanies = unqualifiedDummyData.map(_.toUnqualifiedCompany)
 //TODO: pass financial year end date through for paragraph3
         request.userAnswers
           .get(CertificateSaoFullNamePage)
           .fold(
             Redirect(routes.JourneyRecoveryController.onPageLoad())
-          )(saoName => Ok(view(saoName = saoName, unqualifiedCompanies = unqualifiedCompanies, companyCount = unqualifiedCompanies.size)))
+          )(saoName => Ok(view(saoName = saoName, unqualifiedCompanies = unqualifiedCompanies, companyCount = unqualifiedCompanies.size, dummyDate = dummyDate)))
     }
 
   def onSubmit(): Action[AnyContent] =

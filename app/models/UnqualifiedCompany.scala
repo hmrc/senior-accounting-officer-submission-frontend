@@ -21,7 +21,7 @@ import models.upload.*
 final case class UnqualifiedCompany (
     name: String,
     utr: String,
-    crn: Option[CompanyCrn],
+    crn: Option[String],
     companyType: CompanyType,
     companyStatus: CompanyStatus
 )
