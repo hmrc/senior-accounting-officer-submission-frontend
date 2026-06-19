@@ -27,10 +27,14 @@ class NotificationMultiSaoLastOfficerStartDateFormProviderSpec extends DateBehav
   private given messages2: Messages = stubMessages()
   val form                          = new NotificationMultiSaoLastOfficerStartDateFormProvider()()
 
+  // LDS ignore
   val requiredAllKey = "notificationMultiSaoLastOfficerStartDate.error.required.all"
+  // LDS ignore
   val requiredTwoKey = "notificationMultiSaoLastOfficerStartDate.error.required.two"
-  val requiredKey    = "notificationMultiSaoLastOfficerStartDate.error.required"
-  val invalidKey     = "notificationMultiSaoLastOfficerStartDate.error.invalid"
+  // LDS ignore
+  val requiredKey = "notificationMultiSaoLastOfficerStartDate.error.required"
+  // LDS ignore
+  val invalidKey = "notificationMultiSaoLastOfficerStartDate.error.invalid"
 
   ".value" - {
 
