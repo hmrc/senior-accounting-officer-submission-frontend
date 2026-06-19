@@ -76,7 +76,7 @@ object NotificationStage {
     }
 
   private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
-    (userAnswers.data \ NotificationMoreSaoAreAllAddedPage(0).key)
+    (userAnswers.data \ NotificationMultiSaoAreAllAddedPage(0).key)
       .asOpt[Seq[Boolean]]
       .exists(_.contains(true))
 

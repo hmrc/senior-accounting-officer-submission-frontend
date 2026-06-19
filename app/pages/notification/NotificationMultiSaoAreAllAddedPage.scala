@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package forms.notification
+package pages.notification
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
+final case class NotificationMultiSaoAreAllAddedPage(saoIndex: Int) extends QuestionPage[Boolean] {
 
-class NotificationMoreSaoAreAllAddedFormProvider @Inject() extends Mappings {
+  val key = "notificationMultiSaoAreAllAdded"
 
-  def apply(): Form[Boolean] =
-    Form(
-      "value" -> boolean("notificationMoreSaoAreAllAdded.error.required")
-    )
+  override def path: JsPath = JsPath \ key \ saoIndex
+
+  override def toString: String = s"$key[$saoIndex]"
 }

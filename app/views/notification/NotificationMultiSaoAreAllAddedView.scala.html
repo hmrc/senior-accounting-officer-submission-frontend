@@ -26,18 +26,18 @@
 
 @(form: Form[?], mode: Mode, saoIndex: Int)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("notificationMoreSaoAreAllAdded.title"))) {
+@layout(pageTitle = title(form, messages("notificationMultiSaoAreAllAdded.title"))) {
 
-    @formHelper(action = notificationRoutes.NotificationMoreSaoAreAllAddedController.onSubmit(mode, saoIndex), Symbol("autoComplete") -> "off") {
+    @formHelper(action = notificationRoutes.NotificationMultiSaoAreAllAddedController.onSubmit(mode, saoIndex), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
-        <span class="govuk-caption-l">@messages("notificationMoreSaoAreAllAdded.caption")</span>
+        <span class="govuk-caption-l">@messages("notificationMultiSaoAreAllAdded.caption")</span>
         @govukRadios(
             RadiosViewModel.yesNo(
                 field = form("value"),
-                legend = LegendViewModel(messages("notificationMoreSaoAreAllAdded.heading").toText).asPageHeading(LegendSize.Large)
+                legend = LegendViewModel(messages("notificationMultiSaoAreAllAdded.heading").toText).asPageHeading(LegendSize.Large)
             ).vertical()
         )
 

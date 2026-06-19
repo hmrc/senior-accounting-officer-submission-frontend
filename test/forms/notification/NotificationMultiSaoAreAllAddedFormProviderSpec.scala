@@ -19,12 +19,12 @@ package forms.notification
 import forms.behaviours.BooleanFieldBehaviours
 import play.api.data.FormError
 
-class NotificationMoreSaoAreAllAddedFormProviderSpec extends BooleanFieldBehaviours {
+class NotificationMultiSaoAreAllAddedFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "notificationMoreSaoAreAllAdded.error.required"
+  val requiredKey = "notificationMultiSaoAreAllAdded.error.required"
   val invalidKey  = "error.boolean"
 
-  val form = new NotificationMoreSaoAreAllAddedFormProvider()()
+  val form = new NotificationMultiSaoAreAllAddedFormProvider()()
 
   ".value" - {
 

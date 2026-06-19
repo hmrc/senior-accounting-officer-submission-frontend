@@ -18,18 +18,18 @@ package views.notification
 
 import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
-import forms.notification.NotificationMoreSaoAreAllAddedFormProvider
+import forms.notification.NotificationMultiSaoAreAllAddedFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.html.notification.NotificationMoreSaoAreAllAddedView
+import views.html.notification.NotificationMultiSaoAreAllAddedView
 
-import NotificationMoreSaoAreAllAddedViewSpec.*
+import NotificationMultiSaoAreAllAddedViewSpec.*
 
-class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMoreSaoAreAllAddedView] {
+class NotificationMultiSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMultiSaoAreAllAddedView] {
 
-  private val formProvider        = app.injector.instanceOf[NotificationMoreSaoAreAllAddedFormProvider]
+  private val formProvider        = app.injector.instanceOf[NotificationMultiSaoAreAllAddedFormProvider]
   private val form: Form[Boolean] = formProvider()
 
   private def generateView(form: Form[Boolean], mode: Mode): Document = {
@@ -46,7 +46,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
     }
   }
 
-  "NotificationMoreSaoAreAllAddedView" - {
+  "NotificationMultiSaoAreAllAddedView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -78,7 +78,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.NotificationMoreSaoAreAllAddedController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoAreAllAddedController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -113,7 +113,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.NotificationMoreSaoAreAllAddedController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoAreAllAddedController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -148,7 +148,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.NotificationMoreSaoAreAllAddedController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoAreAllAddedController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -163,7 +163,7 @@ class NotificationMoreSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationMo
 
 }
 
-object NotificationMoreSaoAreAllAddedViewSpec {
+object NotificationMultiSaoAreAllAddedViewSpec {
   val pageHeading = "Have you added all the SAO for the financial year this notification relates to?"
   val pageCaption = "Submit a notification"
   val pageTitle   =

@@ -17,37 +17,37 @@
 package controllers.notification
 
 import controllers.actions.*
-import forms.notification.NotificationMoreSaoAreAllAddedFormProvider
+import forms.notification.NotificationMultiSaoAreAllAddedFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.notification.NotificationMoreSaoAreAllAddedPage
+import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.NotificationMoreSaoAreAllAddedView
+import views.html.notification.NotificationMultiSaoAreAllAddedView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class NotificationMoreSaoAreAllAddedController @Inject() (
+class NotificationMultiSaoAreAllAddedController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: NotificationMoreSaoAreAllAddedFormProvider,
+    formProvider: NotificationMultiSaoAreAllAddedFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationMoreSaoAreAllAddedView
+    view: NotificationMultiSaoAreAllAddedView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form         = formProvider()
-      val preparedForm = request.userAnswers.get(NotificationMoreSaoAreAllAddedPage(saoIndex)).fold(form)(form.fill)
+      val preparedForm = request.userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)).fold(form)(form.fill)
       Ok(view(preparedForm, mode, saoIndex))
   }
 
@@ -61,9 +61,9 @@ class NotificationMoreSaoAreAllAddedController @Inject() (
           value =>
             for {
               updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(NotificationMoreSaoAreAllAddedPage(saoIndex), value))
+                .fromTry(request.userAnswers.set(NotificationMultiSaoAreAllAddedPage(saoIndex), value))
               _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMoreSaoAreAllAddedPage(saoIndex), mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(NotificationMultiSaoAreAllAddedPage(saoIndex), mode, updatedAnswers))
         )
   }
 }

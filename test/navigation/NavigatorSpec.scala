@@ -220,37 +220,37 @@ class NavigatorSpec extends SpecBase {
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMultiSaoPreviousOfficerEndDatePage, must go to NotificationMoreSaoAreAllAdded page" in {
+      "when on NotificationMultiSaoPreviousOfficerEndDatePage, must go to NotificationMultiSaoAreAllAdded page" in {
         navigator.nextPage(
           NotificationMultiSaoPreviousOfficerEndDatePage(0),
           NormalMode,
           UserAnswers("id")
-        ) mustBe notificationRoutes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMoreSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
+      "when on NotificationMultiSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
-            NotificationMoreSaoAreAllAddedPage(0),
+            NotificationMultiSaoAreAllAddedPage(0),
             NormalMode,
             UserAnswers("id")
           )
         }
       }
 
-      "when on NotificationMoreSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
+      "when on NotificationMultiSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
         navigator.nextPage(
-          NotificationMoreSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0),
           NormalMode,
-          UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), true).success.value
+          UserAnswers("id").set(NotificationMultiSaoAreAllAddedPage(0), true).success.value
         ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
-      "when on NotificationMoreSaoAreAllAddedPage, and the user answers no, must go to NotificationMultiSaoPreviousOfficerName page with an incremented saoIndex" in {
+      "when on NotificationMultiSaoAreAllAddedPage, and the user answers no, must go to NotificationMultiSaoPreviousOfficerName page with an incremented saoIndex" in {
         navigator.nextPage(
-          NotificationMoreSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0),
           NormalMode,
-          UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), false).success.value
+          UserAnswers("id").set(NotificationMultiSaoAreAllAddedPage(0), false).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 1)
       }
 

@@ -123,10 +123,10 @@ POST       /notificationMultiSaoPreviousOfficerEndDate                          
 GET        /changeNotificationMultiSaoPreviousOfficerEndDate                                    controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 POST       /changeNotificationMultiSaoPreviousOfficerEndDate                                    controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 
-GET        /notification/more-sao/are-all-added                                       controllers.notification.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-POST       /notification/more-sao/are-all-added                                       controllers.notification.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-GET        /notification/more-sao/change-are-all-added                                controllers.notification.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
-POST       /notification/more-sao/change-are-all-added                                controllers.notification.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+GET        /notification/more-sao/are-all-added                                       controllers.notification.NotificationMultiSaoAreAllAddedController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+POST       /notification/more-sao/are-all-added                                       controllers.notification.NotificationMultiSaoAreAllAddedController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+GET        /notification/more-sao/change-are-all-added                                controllers.notification.NotificationMultiSaoAreAllAddedController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+POST       /notification/more-sao/change-are-all-added                                controllers.notification.NotificationMultiSaoAreAllAddedController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 
 GET        /certificateAdditionalInformation                        controllers.CertificateAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST       /certificateAdditionalInformation                        controllers.CertificateAdditionalInformationController.onSubmit(mode: Mode = NormalMode)

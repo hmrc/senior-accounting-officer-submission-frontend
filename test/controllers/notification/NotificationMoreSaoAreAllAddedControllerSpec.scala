@@ -19,47 +19,47 @@ package controllers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import forms.notification.NotificationMoreSaoAreAllAddedFormProvider
+import forms.notification.NotificationMultiSaoAreAllAddedFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.NotificationMoreSaoAreAllAddedPage
+import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.notification.NotificationMoreSaoAreAllAddedView
+import views.html.notification.NotificationMultiSaoAreAllAddedView
 
 import scala.concurrent.Future
 
-class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with MockitoSugar {
+class NotificationMultiSaoAreAllAddedControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider        = new NotificationMoreSaoAreAllAddedFormProvider()
+  val formProvider        = new NotificationMultiSaoAreAllAddedFormProvider()
   val form: Form[Boolean] = formProvider()
 
-  lazy val notificationMoreSaoAreAllAddedRoute: String =
-    notificationRoutes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode).url
+  lazy val notificationMultiSaoAreAllAddedRoute: String =
+    notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(NormalMode).url
 
   val saoIndex = 0
 
-  "NotificationMoreSaoAreAllAdded Controller" - {
+  "NotificationMultiSaoAreAllAdded Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationMoreSaoAreAllAddedRoute)
+        val request = FakeRequest(GET, notificationMultiSaoAreAllAddedRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[NotificationMoreSaoAreAllAddedView]
+        val view = application.injector.instanceOf[NotificationMultiSaoAreAllAddedView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode, saoIndex)(using
@@ -71,14 +71,15 @@ class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with Mockito
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NotificationMoreSaoAreAllAddedPage(saoIndex), true).success.value
+      val userAnswers =
+        UserAnswers(userAnswersId).set(NotificationMultiSaoAreAllAddedPage(saoIndex), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationMoreSaoAreAllAddedRoute)
+        val request = FakeRequest(GET, notificationMultiSaoAreAllAddedRoute)
 
-        val view = application.injector.instanceOf[NotificationMoreSaoAreAllAddedView]
+        val view = application.injector.instanceOf[NotificationMultiSaoAreAllAddedView]
 
         val result = route(application, request).value
 
@@ -106,7 +107,7 @@ class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with Mockito
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMoreSaoAreAllAddedRoute)
+          FakeRequest(POST, notificationMultiSaoAreAllAddedRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
@@ -122,12 +123,12 @@ class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with Mockito
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMoreSaoAreAllAddedRoute)
+          FakeRequest(POST, notificationMultiSaoAreAllAddedRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[NotificationMoreSaoAreAllAddedView]
+        val view = application.injector.instanceOf[NotificationMultiSaoAreAllAddedView]
 
         val result = route(application, request).value
 
@@ -144,7 +145,7 @@ class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with Mockito
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationMoreSaoAreAllAddedRoute)
+        val request = FakeRequest(GET, notificationMultiSaoAreAllAddedRoute)
 
         val result = route(application, request).value
 
@@ -159,7 +160,7 @@ class NotificationMoreSaoAreAllAddedControllerSpec extends SpecBase with Mockito
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMoreSaoAreAllAddedRoute)
+          FakeRequest(POST, notificationMultiSaoAreAllAddedRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value

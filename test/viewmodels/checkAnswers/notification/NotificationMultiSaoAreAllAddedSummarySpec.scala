@@ -20,31 +20,31 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.notification.NotificationMoreSaoAreAllAddedPage
+import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
-class NotificationMoreSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  "NotificationMoreSaoAreAllAddedSummary.row" - {
+  "NotificationMultiSaoAreAllAddedSummary.row" - {
 
-    "when there is no answer for NotificationMoreSaoAreAllAddedPage" - {
+    "when there is no answer for NotificationMultiSaoAreAllAddedPage" - {
       "must return None" in {
-        def SUT = NotificationMoreSaoAreAllAddedSummary.row(emptyUserAnswers, 0)
+        def SUT = NotificationMultiSaoAreAllAddedSummary.row(emptyUserAnswers, 0)
 
         SUT mustBe None
       }
     }
 
-    "when there is a user answer for NotificationMoreSaoAreAllAddedPage" - {
+    "when there is a user answer for NotificationMultiSaoAreAllAddedPage" - {
       def testUserAnswers(answer: Boolean) =
-        emptyUserAnswers.set(NotificationMoreSaoAreAllAddedPage(0), answer).get
+        emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), answer).get
 
-      def SUT(answer: Boolean = true) = NotificationMoreSaoAreAllAddedSummary.row(testUserAnswers(answer), 0).get
+      def SUT(answer: Boolean = true) = NotificationMultiSaoAreAllAddedSummary.row(testUserAnswers(answer), 0).get
 
       "must have expected key" in {
-        SUT().key mustBe "notificationMoreSaoAreAllAdded".toKey
+        SUT().key mustBe "notificationMultiSaoAreAllAdded".toKey
       }
 
       "expected value" - {
@@ -76,13 +76,13 @@ class NotificationMoreSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneAp
         }
 
         "must have expected url" in {
-          action.href mustBe notificationRoutes.NotificationMoreSaoAreAllAddedController
+          action.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
             .onPageLoad(CheckMode)
             .url
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMoreSaoAreAllAdded"
+          action.visuallyHiddenText.get mustBe "NotificationMultiSaoAreAllAdded"
         }
       }
     }
