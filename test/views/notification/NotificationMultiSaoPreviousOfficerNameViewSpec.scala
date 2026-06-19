@@ -18,18 +18,19 @@ package views.notification
 
 import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
-import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
+import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.html.notification.NotificationMultiSaoLastOfficerNameView
+import views.html.notification.NotificationMultiSaoPreviousOfficerNameView
 
-import NotificationMultiSaoLastOfficerNameViewSpec.*
+import NotificationMultiSaoPreviousOfficerNameViewSpec.*
 
-class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[NotificationMultiSaoLastOfficerNameView] {
+class NotificationMultiSaoPreviousOfficerNameViewSpec
+    extends ViewSpecBase[NotificationMultiSaoPreviousOfficerNameView] {
 
-  private val formProvider       = app.injector.instanceOf[NotificationMultiSaoLastOfficerNameFormProvider]
+  private val formProvider       = app.injector.instanceOf[NotificationMultiSaoPreviousOfficerNameFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(saoName: String, form: Form[String], mode: Mode): Document = {
@@ -37,7 +38,7 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
     Jsoup.parse(view.toString)
   }
 
-  "NotificationMultiSaoLastOfficerNameView" - {
+  "NotificationMultiSaoPreviousOfficerNameView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -62,7 +63,7 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -92,7 +93,7 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -123,7 +124,7 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -137,7 +138,7 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
   }
 }
 
-object NotificationMultiSaoLastOfficerNameViewSpec {
+object NotificationMultiSaoPreviousOfficerNameViewSpec {
   val pageHeading    = "Who was the SAO before Firstname Lastname?"
   val pageCaption    = "Submit a notification"
   val pageHint       = "This is the person who held the role before Firstname Lastname"

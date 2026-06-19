@@ -19,13 +19,13 @@ package forms.notification
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class NotificationMultiSaoLastOfficerNameFormProviderSpec extends StringFieldBehaviours {
+class NotificationMultiSaoPreviousOfficerNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "notificationMultiSaoLastOfficerName.error.required"
-  val lengthKey   = "notificationMultiSaoLastOfficerName.error.length"
+  val requiredKey = "notificationMultiSaoPreviousOfficerName.error.required"
+  val lengthKey   = "notificationMultiSaoPreviousOfficerName.error.length"
   val maxLength   = 254
 
-  val form = new NotificationMultiSaoLastOfficerNameFormProvider()()
+  val form = new NotificationMultiSaoPreviousOfficerNameFormProvider()()
 
   ".value" - {
 

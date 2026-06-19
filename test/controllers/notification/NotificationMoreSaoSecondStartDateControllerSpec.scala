@@ -25,7 +25,7 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.{NotificationMoreSaoSecondStartDatePage, NotificationMultiSaoLastOfficerNamePage}
+import pages.notification.{NotificationMoreSaoSecondStartDatePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -55,7 +55,7 @@ class NotificationMoreSaoSecondStartDateControllerSpec extends SpecBase with Moc
   val saoName = "Firstname Lastname"
 
   val userAnswersWithSaoName: UserAnswers =
-    emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage(0), saoName).success.value
+    emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0), saoName).success.value
 
   val saoIndex = 0
 
