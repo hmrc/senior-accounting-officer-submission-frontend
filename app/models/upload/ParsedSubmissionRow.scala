@@ -16,10 +16,10 @@
 
 package models.upload
 
+import models.UnqualifiedCompany
 import play.api.libs.json.*
 
 import scala.util.Try
-
 import java.time.LocalDate
 import java.time.format.DateTimeFormatterBuilder
 import java.time.format.ResolverStyle
@@ -32,6 +32,18 @@ final case class ParsedSubmissionRow(
 
 object ParsedSubmissionRow {
   given OFormat[ParsedSubmissionRow] = Json.format[ParsedSubmissionRow]
+
+  extension (data: ParsedSubmissionRow) {
+    def toUnqualifiedCompany: UnqualifiedCompany = {
+      UnqualifiedCompany(
+        name = data.notification.companyName,
+        utr = data.notification.companyUtr.value,
+        crn = data.notification.companyCrn,
+        companyType = data.notification.companyType,
+        companyStatus = data.notification.companyStatus
+      )
+    }
+  }
 }
 
 final case class NotificationFields(
