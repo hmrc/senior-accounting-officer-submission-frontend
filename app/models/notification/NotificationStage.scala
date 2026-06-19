@@ -16,46 +16,42 @@
 
 package models.notification
 
-import models.UserAnswers
-import models.notification.SubmitNotificationStatus.{CannotStartYet, Completed, NotStarted}
+import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
+import models.{TaskStatus, UserAnswers}
 import pages.*
 import pages.notification.*
 import play.api.libs.json.*
 
-enum SubmitNotificationStatus {
-  case CannotStartYet, NotStarted, Completed
-}
-
-enum SubmitNotificationStage(
-    val provideSaoDetailsStatus: SubmitNotificationStatus = NotStarted,
-    val uploadNotificationTemplateStatus: SubmitNotificationStatus = CannotStartYet,
-    val submitNotificationStatus: SubmitNotificationStatus = CannotStartYet
+enum NotificationStage(
+    val provideSaoDetailsStatus: TaskStatus = NotStarted,
+    val uploadNotificationTemplateStatus: TaskStatus = CannotStartYet,
+    val submitNotificationStatus: TaskStatus = CannotStartYet
 ) {
-  case ProvideSaoDetails extends SubmitNotificationStage()
+  case ProvideSaoDetails extends NotificationStage()
   case UploadSubmissionTemplateDetails
-      extends SubmitNotificationStage(
+      extends NotificationStage(
         provideSaoDetailsStatus = Completed,
         uploadNotificationTemplateStatus = NotStarted,
         submitNotificationStatus = CannotStartYet
       )
   case SubmitNotificationInfo
-      extends SubmitNotificationStage(
+      extends NotificationStage(
         provideSaoDetailsStatus = Completed,
         uploadNotificationTemplateStatus = Completed,
         submitNotificationStatus = NotStarted
       )
 
   case AllStagesCompleted
-      extends SubmitNotificationStage(
+      extends NotificationStage(
         provideSaoDetailsStatus = Completed,
         uploadNotificationTemplateStatus = Completed,
         submitNotificationStatus = Completed
       )
 }
 
-object SubmitNotificationStage {
+object NotificationStage {
 
-  def taskListStage(userAnswers: UserAnswers): SubmitNotificationStage =
+  def taskListStage(userAnswers: UserAnswers): NotificationStage =
     if !isProvideSaoDetailsComplete(userAnswers) then {
       ProvideSaoDetails
     } else if !isUploadNotificationTemplateComplete(userAnswers) then {

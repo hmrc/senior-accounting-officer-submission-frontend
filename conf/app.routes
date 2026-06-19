@@ -7,13 +7,13 @@ GET         /refresh-session                                          controller
 
 GET         /there-is-a-problem                                       controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
 
-GET         /notification/start           controllers.notification.SubmitNotificationStartController.onPageLoad()
-GET         /notification/complete        controllers.notification.SubmitNotificationStartController.onComplete()
-POST        /notification/complete        controllers.notification.SubmitNotificationStartController.onCompleteSubmit()
+GET         /notification/start           controllers.notification.NotificationTaskListController.onPageLoad()
+GET         /notification/complete        controllers.notification.NotificationTaskListController.onComplete()
+POST        /notification/complete        controllers.notification.NotificationTaskListController.onCompleteSubmit()
 
 GET         /template-guidance                                        controllers.TemplateGuidanceController.onPageLoad()
 
-GET         /notification/template/download                           controllers.DownloadNotificationTemplateController.downloadFile()
+GET         /notification/template/download                           controllers.DownloadTemplateController.downloadFile()
 
 GET         /notification/upload                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
 GET         /notification/upload/success                                              controllers.notification.NotificationUploadSuccessController.onPageLoad(key: Option[String])

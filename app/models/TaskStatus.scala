@@ -16,6 +16,6 @@
 
 package models
 
-enum CertificateTaskListStatus {
+enum TaskStatus {
   case CannotStartYet, NotStarted, Completed
 }

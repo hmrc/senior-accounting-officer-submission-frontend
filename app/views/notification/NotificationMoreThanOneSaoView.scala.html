@@ -28,7 +28,7 @@
 
 @layout(
     pageTitle = title(form, messages("notificationMoreThanOneSao.title")),
-    backLink = Some(BackLinkViewModel(notificationRoutes.SubmitNotificationStartController.onPageLoad().url))
+    backLink = Some(BackLinkViewModel(notificationRoutes.NotificationTaskListController.onPageLoad().url))
 ) {
 
     @formHelper(action = notificationRoutes.NotificationMoreThanOneSaoController.onSubmit(mode), Symbol("autoComplete") -> "off") {

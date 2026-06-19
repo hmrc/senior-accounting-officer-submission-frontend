@@ -61,7 +61,7 @@ class Navigator @Inject() () {
     case CombinedCertificateDeclarationSaoPage =>
       _ => routes.CombinedCertificateConfirmationController.onPageLoad()
     case NotificationConfirmationPage =>
-      _ => notificationRoutes.SubmitNotificationStartController.onComplete()
+      _ => notificationRoutes.NotificationTaskListController.onComplete()
     case NotificationMoreThanOneSaoPage =>
       userAnswers =>
         userAnswers.get(NotificationMoreThanOneSaoPage) match {
@@ -70,7 +70,7 @@ class Navigator @Inject() () {
           case _           => ???
         }
     case OneSaoSubmitNotificationFullNamePage =>
-      _ => notificationRoutes.SubmitNotificationStartController.onPageLoad()
+      _ => notificationRoutes.NotificationTaskListController.onPageLoad()
     case MoreSaoSubmitNotificationFullNamePage =>
       _ => notificationRoutes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
     case NotificationMoreSaoFirstStartDatePage =>
@@ -84,7 +84,7 @@ class Navigator @Inject() () {
     case NotificationMoreSaoAreAllAddedPage(saoIndex) =>
       userAnswers =>
         userAnswers.get(NotificationMoreSaoAreAllAddedPage(saoIndex)) match {
-          case Some(true)  => notificationRoutes.SubmitNotificationStartController.onPageLoad()
+          case Some(true)  => notificationRoutes.NotificationTaskListController.onPageLoad()
           case Some(false) => routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, saoIndex + 1)
           case _           => ???
         }
@@ -95,12 +95,12 @@ class Navigator @Inject() () {
           .fold(routes.JourneyRecoveryController.onPageLoad()) {
             case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
               notificationRoutes.NotificationUploadFormController.onPageLoad()
-            case _ => notificationRoutes.SubmitNotificationStartController.onPageLoad()
+            case _ => notificationRoutes.NotificationTaskListController.onPageLoad()
           }
     case SubmissionTypePage =>
       userAnswers =>
         userAnswers.get(SubmissionTypePage) match {
-          case Some(SubmissionType.Notification) => notificationRoutes.SubmitNotificationStartController.onPageLoad()
+          case Some(SubmissionType.Notification) => notificationRoutes.NotificationTaskListController.onPageLoad()
           case Some(SubmissionType.Certificate)  =>
             routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
           case _ => ???

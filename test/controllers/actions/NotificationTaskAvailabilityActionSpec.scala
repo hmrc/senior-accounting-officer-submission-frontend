@@ -50,7 +50,7 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
       result.header.status mustBe SEE_OTHER
       result.header
-        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad().url
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad().url
     }
   }
 
@@ -65,7 +65,7 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
       result.header.status mustBe SEE_OTHER
       result.header
-        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad().url
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad().url
     }
   }
 }

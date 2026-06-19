@@ -19,23 +19,23 @@ package controllers.notification
 import config.AppConfig
 import controllers.actions.*
 import models.UserAnswers
-import models.notification.SubmitNotificationStage
+import models.notification.NotificationStage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.SubmitNotificationStartView
+import views.html.notification.NotificationTaskListView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class SubmitNotificationStartController @Inject() (
+class NotificationTaskListController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     val controllerComponents: MessagesControllerComponents,
-    view: SubmitNotificationStartView,
+    view: NotificationTaskListView,
     sessionRepository: SessionRepository,
     appConfig: AppConfig
 )(using ExecutionContext)
@@ -46,17 +46,17 @@ class SubmitNotificationStartController @Inject() (
     for {
       userAnswers <- sessionRepository.get(request.userId)
       result      <- userAnswers match {
-        case Some(answers) => Future.successful(Ok(view(SubmitNotificationStage.taskListStage(answers))))
+        case Some(answers) => Future.successful(Ok(view(NotificationStage.taskListStage(answers))))
         case None          =>
           sessionRepository
             .set(UserAnswers(request.userId))
-            .map(_ => Ok(view(SubmitNotificationStage.ProvideSaoDetails)))
+            .map(_ => Ok(view(NotificationStage.ProvideSaoDetails)))
       }
     } yield result
   }
 
   def onComplete: Action[AnyContent] = identify { implicit request =>
-    Ok(view(SubmitNotificationStage.AllStagesCompleted))
+    Ok(view(NotificationStage.AllStagesCompleted))
   }
 
   def onCompleteSubmit: Action[AnyContent] = identify {

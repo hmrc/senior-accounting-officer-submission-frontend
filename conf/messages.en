@@ -34,17 +34,17 @@ timeout.message = For security reasons, you will be signed out of this service i
 timeout.keepAlive = Stay signed in
 timeout.signOut = Sign out
 
-submitNotificationStart.title = Submit a notification
-submitNotificationStart.heading = Submit a notification
-submitNotificationStart.paragraph1 = Submit a notification for each Senior Accounting Officer (SAO) in your group. Each notification must include the SAO’s name and all the entities they were responsible for during the financial year.
-submitNotificationStart.provideSaoDetailsLinkText = Provide the SAO’s details
-submitNotificationStart.uploadNotificationLinkText = Upload the submission template
-submitNotificationStart.submitNotificationLinkText = Submit the notification
-submitNotificationStart.homepageText = Go back to the homepage
+notificationTaskList.title = Submit a notification
+notificationTaskList.heading = Submit a notification
+notificationTaskList.paragraph1 = Submit a notification for each Senior Accounting Officer (SAO) in your group. Each notification must include the SAO’s name and all the entities they were responsible for during the financial year.
+notificationTaskList.provideSaoDetailsLinkText = Provide the SAO’s details
+notificationTaskList.uploadNotificationLinkText = Upload the submission template
+notificationTaskList.submitNotificationLinkText = Submit the notification
+notificationTaskList.homepageText = Go back to the homepage
 
-submitNotificationStart.row.status.cannotStartYet = Cannot start yet
-submitNotificationStart.row.status.completed = Completed
-submitNotificationStart.row.status.notStarted = Not started
+notificationTaskList.row.status.cannotStartYet = Cannot start yet
+notificationTaskList.row.status.completed = Completed
+notificationTaskList.row.status.notStarted = Not started
 
 template.guidance.title = Notification and certificate submission template guidance
 template.guidance.heading = Submission template guidance

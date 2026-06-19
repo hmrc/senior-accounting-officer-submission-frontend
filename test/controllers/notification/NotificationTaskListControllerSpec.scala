@@ -19,7 +19,7 @@ package controllers.notification
 import base.SpecBase
 import config.AppConfig
 import controllers.notification.routes as notificationRoutes
-import models.notification.SubmitNotificationStage
+import models.notification.NotificationStage
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.HeaderNames
@@ -27,13 +27,13 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.notification.SubmitNotificationStartView
+import views.html.notification.NotificationTaskListView
 
 import scala.concurrent.Future
 
-class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
+class NotificationTaskListControllerSpec extends SpecBase with MockitoSugar {
 
-  "SubmitNotificationStart Controller" - {
+  "NotificationTaskList Controller" - {
 
     val hubBaseUrl = "http://localhost:10056/senior-accounting-officer"
 
@@ -46,14 +46,14 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.SubmitNotificationStartController.onPageLoad().url)
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[SubmitNotificationStartView]
+        val view = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(SubmitNotificationStage.ProvideSaoDetails)(using
+        contentAsString(result) mustEqual view(NotificationStage.ProvideSaoDetails)(using
           request,
           messages(application)
         ).toString
@@ -69,13 +69,13 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.SubmitNotificationStartController.onPageLoad().url)
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
 
         val result = route(application, request).value
-        val view   = application.injector.instanceOf[SubmitNotificationStartView]
+        val view   = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(SubmitNotificationStage.UploadSubmissionTemplateDetails)(using
+        contentAsString(result) mustEqual view(NotificationStage.UploadSubmissionTemplateDetails)(using
           request,
           messages(application)
         ).toString
@@ -92,13 +92,13 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.SubmitNotificationStartController.onPageLoad().url)
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
 
         val result = route(application, request).value
-        val view   = application.injector.instanceOf[SubmitNotificationStartView]
+        val view   = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(SubmitNotificationStage.SubmitNotificationInfo)(using
+        contentAsString(result) mustEqual view(NotificationStage.SubmitNotificationInfo)(using
           request,
           messages(application)
         ).toString
@@ -114,14 +114,14 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.SubmitNotificationStartController.onComplete().url)
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onComplete().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[SubmitNotificationStartView]
+        val view = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(SubmitNotificationStage.AllStagesCompleted)(using
+        contentAsString(result) mustEqual view(NotificationStage.AllStagesCompleted)(using
           request,
           messages(application)
         ).toString
@@ -134,7 +134,7 @@ class SubmitNotificationStartControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(POST, notificationRoutes.SubmitNotificationStartController.onCompleteSubmit().url)
+        val request = FakeRequest(POST, notificationRoutes.NotificationTaskListController.onCompleteSubmit().url)
 
         val result = route(application, request).value
 

@@ -17,8 +17,8 @@
 package models
 
 final case class CertificateTaskListState(
-    provideSaoDetailsStage: CertificateTaskListStatus,
-    uploadSubmissionTemplateStage: CertificateTaskListStatus,
-    submitCertificateStage: CertificateTaskListStatus,
-    showContinueButton: CertificateTaskListShowContinueButton
+    provideSaoDetailsStage: TaskStatus,
+    uploadSubmissionTemplateStage: TaskStatus,
+    submitCertificateStage: TaskStatus,
+    showContinueButton: Boolean
 )
