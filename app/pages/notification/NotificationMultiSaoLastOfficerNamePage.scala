@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package forms.notification
+package pages.notification
 
-import forms.mappings.Mappings
-import play.api.data.Form
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-import javax.inject.Inject
+final case class NotificationMultiSaoLastOfficerNamePage(saoIndex: Int) extends QuestionPage[String] {
 
-class WhoWasTheSaoBeforeFormProvider @Inject() extends Mappings {
+  val key = "notificationMultiSaoLastOfficerName"
 
-  def apply(): Form[String] =
-    Form(
-      "value" -> text("whoWasTheSaoBefore.error.required")
-        .verifying(maxLength(254, "whoWasTheSaoBefore.error.length"))
-    )
+  override def path: JsPath = JsPath \ key \ saoIndex
+
+  override def toString: String = s"$key[$saoIndex]"
 }

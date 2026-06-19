@@ -18,31 +18,31 @@ package controllers.notification
 
 import controllers.actions.*
 import controllers.routes
-import forms.notification.WhoWasTheSaoBeforeFormProvider
+import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.notification.{MoreSaoSubmitNotificationFullNamePage, WhoWasTheSaoBeforePage}
+import pages.notification.{MoreSaoSubmitNotificationFullNamePage, NotificationMultiSaoLastOfficerNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.WhoWasTheSaoBeforeView
+import views.html.notification.NotificationMultiSaoLastOfficerNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class WhoWasTheSaoBeforeController @Inject() (
+class NotificationMultiSaoLastOfficerNameController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: WhoWasTheSaoBeforeFormProvider,
+    formProvider: NotificationMultiSaoLastOfficerNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: WhoWasTheSaoBeforeView
+    view: NotificationMultiSaoLastOfficerNameView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -53,12 +53,13 @@ class WhoWasTheSaoBeforeController @Inject() (
     if saoIndex == 0 then {
       userAnswers.get(MoreSaoSubmitNotificationFullNamePage)
     } else {
-      userAnswers.get(WhoWasTheSaoBeforePage(saoIndex - 1))
+      userAnswers.get(NotificationMultiSaoLastOfficerNamePage(saoIndex - 1))
     }
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm = request.userAnswers.get(WhoWasTheSaoBeforePage(saoIndex)).fold(form)(form.fill)
+      val preparedForm =
+        request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage(saoIndex)).fold(form)(form.fill)
       saoNameForPage(saoIndex, request.userAnswers)
         .fold(
           Redirect(routes.JourneyRecoveryController.onPageLoad())
@@ -78,9 +79,12 @@ class WhoWasTheSaoBeforeController @Inject() (
 
               value =>
                 for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(WhoWasTheSaoBeforePage(saoIndex), value))
-                  _              <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(navigator.nextPage(WhoWasTheSaoBeforePage(saoIndex), mode, updatedAnswers))
+                  updatedAnswers <- Future
+                    .fromTry(request.userAnswers.set(NotificationMultiSaoLastOfficerNamePage(saoIndex), value))
+                  _ <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(
+                  navigator.nextPage(NotificationMultiSaoLastOfficerNamePage(saoIndex), mode, updatedAnswers)
+                )
             )
       }
 

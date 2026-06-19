@@ -21,7 +21,7 @@ import controllers.routes
 import forms.notification.NotificationMoreSaoSecondEndDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.notification.{NotificationMoreSaoSecondEndDatePage, WhoWasTheSaoBeforePage}
+import pages.notification.{NotificationMoreSaoSecondEndDatePage, NotificationMultiSaoLastOfficerNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -51,7 +51,7 @@ class NotificationMoreSaoSecondEndDateController @Inject() (
       val form         = formProvider()
       val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondEndDatePage(saoIndex)).fold(form)(form.fill)
       request.userAnswers
-        .get(WhoWasTheSaoBeforePage(saoIndex)) match {
+        .get(NotificationMultiSaoLastOfficerNamePage(saoIndex)) match {
         case Some(saoName) => Ok(view(saoName, preparedForm, mode, saoIndex))
         case None          =>
           Redirect(
@@ -64,7 +64,7 @@ class NotificationMoreSaoSecondEndDateController @Inject() (
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
-      request.userAnswers.get(WhoWasTheSaoBeforePage(saoIndex)) match {
+      request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage(saoIndex)) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
           form

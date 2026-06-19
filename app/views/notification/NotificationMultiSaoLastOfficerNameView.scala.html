@@ -27,9 +27,9 @@
 
 @(saoName: String, form: Form[?], mode: Mode, saoIndex: Int)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("whoWasTheSaoBefore.title"))) {
+@layout(pageTitle = title(form, messages("notificationMultiSaoLastOfficerName.title"))) {
 
-    @formHelper(action = notificationRoutes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex)) {
+    @formHelper(action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode, saoIndex)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
@@ -40,10 +40,10 @@
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("whoWasTheSaoBefore.heading", saoName).toText).asPageHeading(LabelSize.Large),
+                label = LabelViewModel(messages("notificationMultiSaoLastOfficerName.heading", saoName).toText).asPageHeading(LabelSize.Large),
             )
             .withWidth(Fixed20)
-            .withHint(Hint(content = Text(messages("whoWasTheSaoBefore.hint", saoName))))
+            .withHint(Hint(content = Text(messages("notificationMultiSaoLastOfficerName.hint", saoName))))
         )
 
         @govukButton(

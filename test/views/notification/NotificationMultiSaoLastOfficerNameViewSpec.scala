@@ -18,18 +18,18 @@ package views.notification
 
 import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
-import forms.notification.WhoWasTheSaoBeforeFormProvider
+import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.html.notification.WhoWasTheSaoBeforeView
+import views.html.notification.NotificationMultiSaoLastOfficerNameView
 
-import WhoWasTheSaoBeforeViewSpec.*
+import NotificationMultiSaoLastOfficerNameViewSpec.*
 
-class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
+class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[NotificationMultiSaoLastOfficerNameView] {
 
-  private val formProvider       = app.injector.instanceOf[WhoWasTheSaoBeforeFormProvider]
+  private val formProvider       = app.injector.instanceOf[NotificationMultiSaoLastOfficerNameFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(saoName: String, form: Form[String], mode: Mode): Document = {
@@ -37,7 +37,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
     Jsoup.parse(view.toString)
   }
 
-  "WhoWasTheSaoBeforeView" - {
+  "NotificationMultiSaoLastOfficerNameView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -62,7 +62,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -92,7 +92,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -123,7 +123,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoLastOfficerNameController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -137,7 +137,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
   }
 }
 
-object WhoWasTheSaoBeforeViewSpec {
+object NotificationMultiSaoLastOfficerNameViewSpec {
   val pageHeading    = "Who was the SAO before Firstname Lastname?"
   val pageCaption    = "Submit a notification"
   val pageHint       = "This is the person who held the role before Firstname Lastname"
