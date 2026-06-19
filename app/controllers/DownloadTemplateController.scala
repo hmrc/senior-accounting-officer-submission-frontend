@@ -28,7 +28,7 @@ import scala.concurrent.ExecutionContext
 import java.io.File
 import javax.inject.Inject
 
-class DownloadTemplateController @Inject(appConfig: AppConfig)(
+class DownloadTemplateController @Inject (appConfig: AppConfig)(
     identify: IdentifierAction,
     mcc: MessagesControllerComponents
 )(implicit val ec: ExecutionContext)

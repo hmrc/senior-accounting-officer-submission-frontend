@@ -19,23 +19,23 @@ package views.notification
 import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
 import models.NormalMode
-import models.notification.SubmitNotificationStage
-import models.notification.SubmitNotificationStage.{SubmitNotificationInfo, UploadSubmissionTemplateDetails}
+import models.notification.NotificationStage
+import models.notification.NotificationStage.{SubmitNotificationInfo, UploadSubmissionTemplateDetails}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.html.notification.SubmitNotificationStartView
+import views.html.notification.NotificationTaskListView
 
-import SubmitNotificationStartViewSpec.*
+import NotificationTaskListViewSpec.*
 
-class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationStartView] {
+class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView] {
 
-  private def generateView(stage: SubmitNotificationStage): Document = Jsoup.parse(SUT(stage).toString)
+  private def generateView(stage: NotificationStage): Document = Jsoup.parse(SUT(stage).toString)
 
-  "SubmitNotificationStartView" - {
+  "NotificationTaskListView" - {
 
-    "SubmitNotificationStartView with 'provide sao details' stage" - {
+    "NotificationTaskListView with 'provide sao details' stage" - {
 
-      val doc: Document = generateView(SubmitNotificationStage.ProvideSaoDetails)
+      val doc: Document = generateView(NotificationStage.ProvideSaoDetails)
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
         pageHeading = pageHeading,
@@ -89,7 +89,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
       }
     }
 
-    "SubmitNotificationStartView with 'upload template' stage" - {
+    "NotificationTaskListView with 'upload template' stage" - {
 
       val doc: Document = generateView(UploadSubmissionTemplateDetails)
       doc.createTestsWithStandardPageElements(
@@ -127,7 +127,7 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
       }
     }
 
-    "SubmitNotificationStartView with 'submit notification' stage" - {
+    "NotificationTaskListView with 'submit notification' stage" - {
       val doc: Document = generateView(SubmitNotificationInfo)
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -165,8 +165,8 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
     }
   }
 
-  "SubmitNotificationStartView with all stages complete" - {
-    val doc: Document = generateView(SubmitNotificationStage.AllStagesCompleted)
+  "NotificationTaskListView with all stages complete" - {
+    val doc: Document = generateView(NotificationStage.AllStagesCompleted)
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
       pageHeading = pageHeading,
@@ -193,14 +193,14 @@ class SubmitNotificationStartViewSpec extends ViewSpecBase[SubmitNotificationSta
     }
 
     doc.createTestsWithSubmissionButton(
-      action = notificationRoutes.SubmitNotificationStartController.onCompleteSubmit(),
+      action = notificationRoutes.NotificationTaskListController.onCompleteSubmit(),
       buttonText = homepageBtnText
     )
   }
 
 }
 
-object SubmitNotificationStartViewSpec {
+object NotificationTaskListViewSpec {
   val pageHeading             = "Submit a notification"
   val pageTitle               = "Submit a notification"
   val paragraphs: Seq[String] = Seq(

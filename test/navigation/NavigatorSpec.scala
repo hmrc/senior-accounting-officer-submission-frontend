@@ -169,7 +169,7 @@ class NavigatorSpec extends SpecBase {
           NotificationConfirmationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe notificationRoutes.SubmitNotificationStartController.onComplete()
+        ) mustBe notificationRoutes.NotificationTaskListController.onComplete()
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
@@ -243,7 +243,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreSaoAreAllAddedPage(0),
           NormalMode,
           UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), true).success.value
-        ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on NotificationMoreSaoAreAllAddedPage, and the user answers no, must go to WhoWasTheSaoBefore page with an incremented saoIndex" in {
@@ -259,7 +259,7 @@ class NavigatorSpec extends SpecBase {
           OneSaoSubmitNotificationFullNamePage,
           NormalMode,
           UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
-        ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
@@ -273,7 +273,7 @@ class NavigatorSpec extends SpecBase {
           UploadTemplateTablePage,
           NormalMode,
           userAnswers
-        ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {
@@ -306,12 +306,12 @@ class NavigatorSpec extends SpecBase {
 
       "SubmissionTypePage" - {
 
-        "when on SubmissionTypePage and the user chose notification only, must go to SubmitNotificationStart" in {
+        "when on SubmissionTypePage and the user chose notification only, must go to NotificationTaskList" in {
           navigator.nextPage(
             SubmissionTypePage,
             NormalMode,
             UserAnswers("id").set(SubmissionTypePage, SubmissionType.Notification).get
-          ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
+          ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
         }
 
         "when on SubmissionTypePage and the user chose certificate only, must go to CertificateTaskList" in {

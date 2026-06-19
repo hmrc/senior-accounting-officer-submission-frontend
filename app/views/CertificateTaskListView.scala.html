@@ -57,7 +57,7 @@
         )
     </ul>
 
-    @if(state.showContinueButton == CertificateTaskListShowContinueButton.Shown) {
+    @if(state.showContinueButton) {
         @formHelper(action = routes.CertificateTaskListController.onSubmit()) {
             @govukButton(
                 ButtonViewModel(messages("certificateTaskList.homepageButton").toText)
@@ -68,10 +68,10 @@
 }
 
 
-@row(linkText: String, href: Call, testId: String, statusName: String, status: CertificateTaskListStatus) = {
+@row(linkText: String, href: Call, testId: String, statusName: String, status: TaskStatus) = {
     <li class="govuk-task-list__item govuk-task-list__item--with-link">
         <div class="govuk-task-list__name-and-hint" data-test-id="@testId">
-            @if(status == CertificateTaskListStatus.NotStarted) {
+            @if(status == TaskStatus.NotStarted) {
                 <a class="govuk-link govuk-task-list__link" href="@href" aria-describedby="@statusName-status">
                     @linkText
                 </a>
@@ -81,15 +81,15 @@
         </div>
         <div class="govuk-task-list__status" id="@statusName-status">
             @status match {
-                case CertificateTaskListStatus.CannotStartYet => {
+                case TaskStatus.CannotStartYet => {
                     @messages("certificateTaskList.row.status.cannotStartYet")
                 }
-                case CertificateTaskListStatus.NotStarted => {
+                case TaskStatus.NotStarted => {
                     <strong class="govuk-tag govuk-tag--blue">
                         @messages("certificateTaskList.row.status.notStarted")
                     </strong>
                 }
-                case CertificateTaskListStatus.Completed => {
+                case TaskStatus.Completed => {
                     @messages("certificateTaskList.row.status.completed")
                 }
             }

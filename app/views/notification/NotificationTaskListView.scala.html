@@ -15,26 +15,25 @@
  *@
 
 @import controllers.notification.{ routes => notificationRoutes }
-@import models.notification.SubmitNotificationStage
-@import models.notification.SubmitNotificationStatus
+@import models.notification.NotificationStage
 
 @this(
-        layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        govukButton: GovukButton
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukButton: GovukButton
 )
 
-@(currentStage: SubmitNotificationStage)(using request: Request[?], messages: Messages)
+@(currentStage: NotificationStage)(using request: Request[?], messages: Messages)
 
-@layout(showBackLink = false, pageTitle = titleNoForm(messages("submitNotificationStart.title"))) {
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationTaskList.title"))) {
 
-    <h1 class="govuk-heading-l">@messages("submitNotificationStart.heading")</h1>
+    <h1 class="govuk-heading-l">@messages("notificationTaskList.heading")</h1>
 
-    <p class="govuk-body">@messages("submitNotificationStart.paragraph1")</p>
+    <p class="govuk-body">@messages("notificationTaskList.paragraph1")</p>
 
     <ul class="govuk-task-list">
         @row(
-            linkText = messages("submitNotificationStart.provideSaoDetailsLinkText"),
+            linkText = messages("notificationTaskList.provideSaoDetailsLinkText"),
             href = notificationRoutes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode),
             testId = "provide-sao-details",
             statusName = "provide-sao-details",
@@ -42,7 +41,7 @@
         )
 
         @row(
-            linkText = messages("submitNotificationStart.uploadNotificationLinkText"),
+            linkText = messages("notificationTaskList.uploadNotificationLinkText"),
             href = notificationRoutes.NotificationUploadFormController.onPageLoad(),
             testId = "upload-submission-template",
             statusName = "upload-template-details",
@@ -50,27 +49,27 @@
         )
 
         @row(
-            linkText = messages("submitNotificationStart.submitNotificationLinkText"),
+            linkText = messages("notificationTaskList.submitNotificationLinkText"),
             href = notificationRoutes.NotificationAdditionalInformationController.onPageLoad(NormalMode),
             testId = "submit-notification",
             statusName = "submit-notification-details",
             status = currentStage.submitNotificationStatus
         )
     </ul>
-    @if(currentStage == SubmitNotificationStage.AllStagesCompleted) {
-        @formHelper(action = notificationRoutes.SubmitNotificationStartController.onCompleteSubmit()) {
+    @if(currentStage == NotificationStage.AllStagesCompleted) {
+        @formHelper(action = notificationRoutes.NotificationTaskListController.onCompleteSubmit()) {
             @govukButton(
-                ButtonViewModel(messages("submitNotificationStart.homepageText").toText).withAttribute("id", "submit")
+                ButtonViewModel(messages("notificationTaskList.homepageText").toText).withAttribute("id", "submit")
             )
         }
     }
 }
 
 
-@row(linkText: String, href: Call, testId: String, statusName: String, status: SubmitNotificationStatus) = {
+@row(linkText: String, href: Call, testId: String, statusName: String, status: TaskStatus) = {
 <li class="govuk-task-list__item govuk-task-list__item--with-link">
     <div class="govuk-task-list__name-and-hint" data-test-id="@testId">
-        @if(status == SubmitNotificationStatus.NotStarted) {
+        @if(status == TaskStatus.NotStarted) {
             <a class="govuk-link govuk-task-list__link" href="@href" aria-describedby="@statusName-status">
                 @linkText
             </a>
@@ -80,16 +79,16 @@
     </div>
     <div class="govuk-task-list__status" id="@statusName-status">
         @status match {
-            case SubmitNotificationStatus.CannotStartYet => {
-                @messages("submitNotificationStart.row.status.cannotStartYet")
+            case TaskStatus.CannotStartYet => {
+                @messages("notificationTaskList.row.status.cannotStartYet")
             }
-            case SubmitNotificationStatus.NotStarted => {
+            case TaskStatus.NotStarted => {
                 <strong class="govuk-tag govuk-tag--blue">
-                    @messages("submitNotificationStart.row.status.notStarted")
+                    @messages("notificationTaskList.row.status.notStarted")
                 </strong>
             }
-            case SubmitNotificationStatus.Completed => {
-                @messages("submitNotificationStart.row.status.completed")
+            case TaskStatus.Completed => {
+                @messages("notificationTaskList.row.status.completed")
             }
         }
     </div>

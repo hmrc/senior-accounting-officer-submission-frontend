@@ -27,10 +27,10 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
       val result = stage.toState()
 
       val expected = CertificateTaskListState(
-        CertificateTaskListStatus.NotStarted,
-        CertificateTaskListStatus.CannotStartYet,
-        CertificateTaskListStatus.CannotStartYet,
-        CertificateTaskListShowContinueButton.NotShown
+        provideSaoDetailsStage = TaskStatus.NotStarted,
+        uploadSubmissionTemplateStage = TaskStatus.CannotStartYet,
+        submitCertificateStage = TaskStatus.CannotStartYet,
+        showContinueButton = false
       )
 
       result mustBe expected
@@ -41,10 +41,10 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
       val result = stage.toState()
 
       val expected = CertificateTaskListState(
-        CertificateTaskListStatus.Completed,
-        CertificateTaskListStatus.NotStarted,
-        CertificateTaskListStatus.CannotStartYet,
-        CertificateTaskListShowContinueButton.NotShown
+        provideSaoDetailsStage = TaskStatus.Completed,
+        uploadSubmissionTemplateStage = TaskStatus.NotStarted,
+        submitCertificateStage = TaskStatus.CannotStartYet,
+        showContinueButton = false
       )
 
       result mustBe expected
@@ -56,10 +56,10 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
       val result = stage.toState()
 
       val expected = CertificateTaskListState(
-        CertificateTaskListStatus.Completed,
-        CertificateTaskListStatus.Completed,
-        CertificateTaskListStatus.NotStarted,
-        CertificateTaskListShowContinueButton.NotShown
+        provideSaoDetailsStage = TaskStatus.Completed,
+        uploadSubmissionTemplateStage = TaskStatus.Completed,
+        submitCertificateStage = TaskStatus.NotStarted,
+        showContinueButton = false
       )
 
       result mustBe expected
@@ -71,10 +71,10 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
       val result = stage.toState()
 
       val expected = CertificateTaskListState(
-        CertificateTaskListStatus.Completed,
-        CertificateTaskListStatus.Completed,
-        CertificateTaskListStatus.Completed,
-        CertificateTaskListShowContinueButton.Shown
+        provideSaoDetailsStage = TaskStatus.Completed,
+        uploadSubmissionTemplateStage = TaskStatus.Completed,
+        submitCertificateStage = TaskStatus.Completed,
+        showContinueButton = true
       )
 
       result mustBe expected

@@ -158,7 +158,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual notificationRoutes.SubmitNotificationStartController.onPageLoad().url
+        redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController.onPageLoad().url
       }
     }
 
