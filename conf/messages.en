@@ -322,16 +322,16 @@ notificationMultiSaoLastOfficerName.error.required = Enter the name of the last 
 notificationMultiSaoLastOfficerName.error.length = The name you enter must be 254 characters or less
 notificationMultiSaoLastOfficerName.change.hidden = NotificationMultiSaoLastOfficerName
 
-notificationMoreSaoSecondStartDate.title = Submit a notification
-notificationMoreSaoSecondStartDate.heading = When did {0}’s responsibility as the SAO start?
-notificationMoreSaoSecondStartDate.caption = Submit a notification
-notificationMoreSaoSecondStartDate.hint = For example 01 6 2024
-notificationMoreSaoSecondStartDate.checkYourAnswersLabel = NotificationMoreSaoSecondStartDate
-notificationMoreSaoSecondStartDate.error.required.all = Enter the start date the SAO was responsible for the group’s tax accounting arrangements
-notificationMoreSaoSecondStartDate.error.required.two = The date must include {0} and {1}
-notificationMoreSaoSecondStartDate.error.required = The date must include {0}
-notificationMoreSaoSecondStartDate.error.invalid = Enter the date in the correct format
-notificationMoreSaoSecondStartDate.change.hidden = NotificationMoreSaoSecondStartDate
+notificationMultiSaoPreviousOfficerStartDate.title = Submit a notification
+notificationMultiSaoPreviousOfficerStartDate.heading = When did {0}’s responsibility as the SAO start?
+notificationMultiSaoPreviousOfficerStartDate.caption = Submit a notification
+notificationMultiSaoPreviousOfficerStartDate.hint = For example 01 6 2024
+notificationMultiSaoPreviousOfficerStartDate.checkYourAnswersLabel = NotificationMultiSaoPreviousOfficerStartDate
+notificationMultiSaoPreviousOfficerStartDate.error.required.all = Enter the start date the SAO was responsible for the group’s tax accounting arrangements
+notificationMultiSaoPreviousOfficerStartDate.error.required.two = The date must include {0} and {1}
+notificationMultiSaoPreviousOfficerStartDate.error.required = The date must include {0}
+notificationMultiSaoPreviousOfficerStartDate.error.invalid = Enter the date in the correct format
+notificationMultiSaoPreviousOfficerStartDate.change.hidden = NotificationMultiSaoPreviousOfficerStartDate
 
 notificationMoreSaoAreAllAdded.title = Submit a notification - Have you added all the SAO for the financial year this notification relates to?
 notificationMoreSaoAreAllAdded.heading = Have you added all the SAO for the financial year this notification relates to?

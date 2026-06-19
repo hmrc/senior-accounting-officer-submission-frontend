@@ -73,7 +73,7 @@ trait SpecBase
       .set(NotificationMultiSaoPreviousOfficerNamePage(0), "Taylor Green")
       .success
       .value
-      .set(NotificationMoreSaoSecondStartDatePage(0), LocalDate.of(2023, 1, 1))
+      .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.of(2023, 1, 1))
       .success
       .value
       .set(NotificationMoreSaoSecondEndDatePage(0), LocalDate.of(2023, 12, 31))

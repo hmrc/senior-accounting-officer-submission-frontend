@@ -26,22 +26,22 @@
 
 @(saoName: String, form: Form[?], mode: Mode, saoIndex: Int)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("notificationMoreSaoSecondStartDate.title"))) {
+@layout(pageTitle = title(form, messages("notificationMultiSaoPreviousOfficerStartDate.title"))) {
 
-    @formHelper(action = notificationRoutes.NotificationMoreSaoSecondStartDateController.onSubmit(mode, saoIndex), Symbol("autoComplete") -> "off") {
+    @formHelper(action = notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onSubmit(mode, saoIndex), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value.day")))
         }
 
-        <span class="govuk-caption-l">@messages("notificationMoreSaoSecondStartDate.caption")</span>
+        <span class="govuk-caption-l">@messages("notificationMultiSaoPreviousOfficerStartDate.caption")</span>
 
         @govukDateInput(
             DateViewModel(
                 field  = form("value"),
-                legend = LegendViewModel(messages("notificationMoreSaoSecondStartDate.heading", saoName).toText).asPageHeading(LegendSize.Large)
+                legend = LegendViewModel(messages("notificationMultiSaoPreviousOfficerStartDate.heading", saoName).toText).asPageHeading(LegendSize.Large)
             )
-            .withHint(HintViewModel(messages("notificationMoreSaoSecondStartDate.hint").toText))
+            .withHint(HintViewModel(messages("notificationMultiSaoPreviousOfficerStartDate.hint").toText))
         )
 
         @govukButton(

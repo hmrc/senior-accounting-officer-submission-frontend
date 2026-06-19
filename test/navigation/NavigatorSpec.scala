@@ -204,17 +204,17 @@ class NavigatorSpec extends SpecBase {
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMultiSaoPreviousOfficerNamePage, must go to NotificationMoreSaoSecondStartDate" in {
+      "when on NotificationMultiSaoPreviousOfficerNamePage, must go to NotificationMultiSaoPreviousOfficerStartDate" in {
         navigator.nextPage(
           NotificationMultiSaoPreviousOfficerNamePage(0),
           NormalMode,
           UserAnswers("id")
-        ) mustBe notificationRoutes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, 0)
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(NormalMode, 0)
       }
 
-      "when on NotificationMoreSaoSecondStartDatePage, must go to NotificationMoreSaoSecondEndDate page" in {
+      "when on NotificationMultiSaoPreviousOfficerStartDatePage, must go to NotificationMoreSaoSecondEndDate page" in {
         navigator.nextPage(
-          NotificationMoreSaoSecondStartDatePage(0),
+          NotificationMultiSaoPreviousOfficerStartDatePage(0),
           NormalMode,
           UserAnswers("id")
         ) mustBe notificationRoutes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode)
