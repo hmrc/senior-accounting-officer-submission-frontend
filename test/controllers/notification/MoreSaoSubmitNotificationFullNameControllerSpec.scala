@@ -19,45 +19,45 @@ package controllers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import forms.notification.MoreSaoSubmitNotificationFullNameFormProvider
+import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.MoreSaoSubmitNotificationFullNamePage
+import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.notification.MoreSaoSubmitNotificationFullNameView
+import views.html.notification.NotificationMultiSaoLastOfficerNameView
 
 import scala.concurrent.Future
 
-class MoreSaoSubmitNotificationFullNameControllerSpec extends SpecBase with MockitoSugar {
+class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider       = new MoreSaoSubmitNotificationFullNameFormProvider()
+  val formProvider       = new NotificationMultiSaoLastOfficerNameFormProvider()
   val form: Form[String] = formProvider()
 
-  lazy val moreSaoSubmitNotificationFullNameRoute: String =
-    notificationRoutes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode).url
+  lazy val notificationMultiSaoLastOfficerNameRoute: String =
+    notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode).url
 
-  "MoreSaoSubmitNotificationFullName Controller" - {
+  "NotificationMultiSaoLastOfficerName Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, moreSaoSubmitNotificationFullNameRoute)
+        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[MoreSaoSubmitNotificationFullNameView]
+        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
@@ -66,14 +66,14 @@ class MoreSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mock
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(MoreSaoSubmitNotificationFullNamePage, "answer").success.value
+      val userAnswers = UserAnswers(userAnswersId).set(NotificationMultiSaoLastOfficerNamePage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, moreSaoSubmitNotificationFullNameRoute)
+        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
 
-        val view = application.injector.instanceOf[MoreSaoSubmitNotificationFullNameView]
+        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
 
         val result = route(application, request).value
 
@@ -101,7 +101,7 @@ class MoreSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, moreSaoSubmitNotificationFullNameRoute)
+          FakeRequest(POST, notificationMultiSaoLastOfficerNameRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -117,12 +117,12 @@ class MoreSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, moreSaoSubmitNotificationFullNameRoute)
+          FakeRequest(POST, notificationMultiSaoLastOfficerNameRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[MoreSaoSubmitNotificationFullNameView]
+        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
 
         val result = route(application, request).value
 
@@ -136,7 +136,7 @@ class MoreSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mock
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, moreSaoSubmitNotificationFullNameRoute)
+        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
 
         val result = route(application, request).value
 
@@ -151,7 +151,7 @@ class MoreSaoSubmitNotificationFullNameControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, moreSaoSubmitNotificationFullNameRoute)
+          FakeRequest(POST, notificationMultiSaoLastOfficerNameRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value

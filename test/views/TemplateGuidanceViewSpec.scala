@@ -52,12 +52,12 @@ class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
     doc.getMainContent
       .select("a.govuk-link")
       .get(0)
-      .createTestWithLink(linkTexts(0), routes.DownloadNotificationTemplateController.downloadFile().url)
+      .createTestWithLink(linkTexts(0), routes.DownloadTemplateController.downloadFile().url)
 
     doc.getMainContent
       .select("a.govuk-link")
       .get(1)
-      .createTestWithLink(linkTexts(1), routes.DownloadNotificationTemplateController.downloadFile().url)
+      .createTestWithLink(linkTexts(1), routes.DownloadTemplateController.downloadFile().url)
 
     doc.createTestsForSubHeadings(pageSubheadings)
 

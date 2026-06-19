@@ -37,31 +37,31 @@ object CertificateTaskListStage {
       stage match {
         case CertificateTaskListStage.ProvideSaoDetailsStage =>
           CertificateTaskListState(
-            CertificateTaskListStatus.NotStarted,
-            CertificateTaskListStatus.CannotStartYet,
-            CertificateTaskListStatus.CannotStartYet,
-            CertificateTaskListShowContinueButton.NotShown
+            provideSaoDetailsStage = TaskStatus.NotStarted,
+            uploadSubmissionTemplateStage = TaskStatus.CannotStartYet,
+            submitCertificateStage = TaskStatus.CannotStartYet,
+            showContinueButton = false
           )
         case CertificateTaskListStage.UploadSubmissionTemplateStage =>
           CertificateTaskListState(
-            CertificateTaskListStatus.Completed,
-            CertificateTaskListStatus.NotStarted,
-            CertificateTaskListStatus.CannotStartYet,
-            CertificateTaskListShowContinueButton.NotShown
+            provideSaoDetailsStage = TaskStatus.Completed,
+            uploadSubmissionTemplateStage = TaskStatus.NotStarted,
+            submitCertificateStage = TaskStatus.CannotStartYet,
+            showContinueButton = false
           )
         case CertificateTaskListStage.SubmitCertificateStage =>
           CertificateTaskListState(
-            CertificateTaskListStatus.Completed,
-            CertificateTaskListStatus.Completed,
-            CertificateTaskListStatus.NotStarted,
-            CertificateTaskListShowContinueButton.NotShown
+            provideSaoDetailsStage = TaskStatus.Completed,
+            uploadSubmissionTemplateStage = TaskStatus.Completed,
+            submitCertificateStage = TaskStatus.NotStarted,
+            showContinueButton = false
           )
         case CertificateTaskListStage.Complete =>
           CertificateTaskListState(
-            CertificateTaskListStatus.Completed,
-            CertificateTaskListStatus.Completed,
-            CertificateTaskListStatus.Completed,
-            CertificateTaskListShowContinueButton.Shown
+            provideSaoDetailsStage = TaskStatus.Completed,
+            uploadSubmissionTemplateStage = TaskStatus.Completed,
+            submitCertificateStage = TaskStatus.Completed,
+            showContinueButton = true
           )
       }
     }

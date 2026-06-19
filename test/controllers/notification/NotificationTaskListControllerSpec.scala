@@ -1,0 +1,146 @@
+/*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.notification
+
+import base.SpecBase
+import config.AppConfig
+import controllers.notification.routes as notificationRoutes
+import models.notification.NotificationStage
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
+import play.api.http.HeaderNames
+import play.api.inject.bind
+import play.api.test.FakeRequest
+import play.api.test.Helpers.*
+import repositories.SessionRepository
+import views.html.notification.NotificationTaskListView
+
+import scala.concurrent.Future
+
+class NotificationTaskListControllerSpec extends SpecBase with MockitoSugar {
+
+  "NotificationTaskList Controller" - {
+
+    val hubBaseUrl = "http://localhost:10056/senior-accounting-officer"
+
+    "must return OK and the initial task list view for a GET with no completed tasks" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(emptyUserAnswers)))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[NotificationTaskListView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(NotificationStage.ProvideSaoDetails)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must return OK and unlock the upload task when SAO details are complete" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(completedSaoDetailsAnswers)))
+
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
+
+        val result = route(application, request).value
+        val view   = application.injector.instanceOf[NotificationTaskListView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(NotificationStage.UploadSubmissionTemplateDetails)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must return OK and unlock the submit task when the upload is complete" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.get(userAnswersId))
+        .thenReturn(Future.successful(Some(completedNotificationUploadAnswers)))
+
+      val application = applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
+
+        val result = route(application, request).value
+        val view   = application.injector.instanceOf[NotificationTaskListView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(NotificationStage.SubmitNotificationInfo)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must return OK and the completed task list view for a GET when all tasks is complete" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(emptyUserAnswers)))
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onComplete().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[NotificationTaskListView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(NotificationStage.AllStagesCompleted)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must redirect to the homepage for a completed task list POST" in {
+      AppConfig.setValue("hub-frontend.host", "http://localhost:10056")
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(POST, notificationRoutes.NotificationTaskListController.onCompleteSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        header(HeaderNames.LOCATION, result) mustEqual Some(hubBaseUrl)
+      }
+    }
+  }
+}

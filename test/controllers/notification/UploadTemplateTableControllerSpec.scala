@@ -74,7 +74,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
     .set(NotificationMoreThanOneSaoPage, false)
     .success
     .value
-    .set(OneSaoSubmitNotificationFullNamePage, saoName)
+    .set(NotificationSingleSaoOfficerNamePage, saoName)
     .success
     .value
 
@@ -116,7 +116,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
         .set(UploadTemplateTablePage, tableData)
         .success
         .value
-        .set(MoreSaoSubmitNotificationFullNamePage, lastSaoName)
+        .set(NotificationMultiSaoLastOfficerNamePage, lastSaoName)
         .success
         .value
 
@@ -157,7 +157,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual notificationRoutes.SubmitNotificationStartController.onPageLoad().url
+        redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController.onPageLoad().url
       }
     }
 

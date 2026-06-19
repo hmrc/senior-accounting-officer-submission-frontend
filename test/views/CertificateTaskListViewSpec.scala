@@ -18,10 +18,9 @@ package views
 
 import base.ViewSpecBase
 import controllers.routes
-import models.CertificateTaskListShowContinueButton
 import models.CertificateTaskListState
-import models.CertificateTaskListStatus
 import models.NormalMode
+import models.TaskStatus
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.CertificateTaskListViewSpec.*
@@ -32,36 +31,37 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
   private def generateView(state: CertificateTaskListState): Document = Jsoup.parse(SUT(state).toString)
 
   "CertificateTaskListView" - {
-    CertificateTaskListStatus.values.foreach { provideSaoDetailsStageStatus =>
-      CertificateTaskListStatus.values.foreach { uploadSubmissionTemplateStatus =>
-        CertificateTaskListStatus.values.foreach { submitCertificateStageStatus =>
-          CertificateTaskListShowContinueButton.values.foreach { showButton =>
-            s"provide the sao details stage is in the $provideSaoDetailsStageStatus state, upload the submission template stage is in the $uploadSubmissionTemplateStatus state, submit the certificate stage is in the $submitCertificateStageStatus state and the button will be $showButton" - {
-              val state = CertificateTaskListState(
-                provideSaoDetailsStage = provideSaoDetailsStageStatus,
-                uploadSubmissionTemplateStage = uploadSubmissionTemplateStatus,
-                submitCertificateStage = submitCertificateStageStatus,
-                showContinueButton = showButton
-              )
 
-              val doc: Document = generateView(state)
+    for {
+      provideSaoDetailsStageStatus   <- TaskStatus.values
+      uploadSubmissionTemplateStatus <- TaskStatus.values
+      submitCertificateStageStatus   <- TaskStatus.values
+      showButton                     <- Seq(true, false)
+    } {
 
-              doc.createTestsWithStandardPageElements(
-                pageTitle = pageTitle,
-                pageHeading = pageHeading,
-                showBackLink = true,
-                showIsThisPageNotWorkingProperlyLink = true,
-                hasError = false
-              )
+      s"provide the sao details stage is in the $provideSaoDetailsStageStatus state, upload the submission template stage is in the $uploadSubmissionTemplateStatus state, submit the certificate stage is in the $submitCertificateStageStatus state and the button will be $showButton" - {
+        val state = CertificateTaskListState(
+          provideSaoDetailsStage = provideSaoDetailsStageStatus,
+          uploadSubmissionTemplateStage = uploadSubmissionTemplateStatus,
+          submitCertificateStage = submitCertificateStageStatus,
+          showContinueButton = showButton
+        )
 
-              doc.createTestsWithOrWithoutError(hasError = false)
+        val doc: Document = generateView(state)
 
-              doc.createTestsWithParagraphs(paragraphs)
+        doc.createTestsWithStandardPageElements(
+          pageTitle = pageTitle,
+          pageHeading = pageHeading,
+          showBackLink = true,
+          showIsThisPageNotWorkingProperlyLink = true,
+          hasError = false
+        )
 
-              doc.createTestsWithTaskList(expectedState = state)
-            }
-          }
-        }
+        doc.createTestsWithOrWithoutError(hasError = false)
+
+        doc.createTestsWithParagraphs(paragraphs)
+
+        doc.createTestsWithTaskList(expectedState = state)
       }
     }
   }
@@ -86,7 +86,7 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
         statusTags.get(2).id() mustBe "submit-certificate-status"
       }
 
-      if expectedState.provideSaoDetailsStage == CertificateTaskListStatus.NotStarted then {
+      if expectedState.provideSaoDetailsStage == TaskStatus.NotStarted then {
         doc.getMainContent
           .select("""[data-test-id="provide-sao-details"] a.govuk-link""")
           .get(0)
@@ -96,7 +96,7 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
           )
       }
 
-      if expectedState.uploadSubmissionTemplateStage == CertificateTaskListStatus.NotStarted then {
+      if expectedState.uploadSubmissionTemplateStage == TaskStatus.NotStarted then {
         doc.getMainContent
           .select("""[data-test-id="upload-submission-template"] a.govuk-link""")
           .get(0)
@@ -106,7 +106,7 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
           )
       }
 
-      if expectedState.submitCertificateStage == CertificateTaskListStatus.NotStarted then {
+      if expectedState.submitCertificateStage == TaskStatus.NotStarted then {
         doc.getMainContent
           .select("""[data-test-id="submit-certificate"] a.govuk-link""")
           .get(0)
@@ -125,54 +125,51 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
         val submitCertificateTag        = statusTags.get(2)
 
         expectedState.provideSaoDetailsStage match {
-          case CertificateTaskListStatus.CannotStartYet => provideSaoDetailsTag.text() mustBe cannotStartText
-          case CertificateTaskListStatus.NotStarted     => {
+          case TaskStatus.CannotStartYet => provideSaoDetailsTag.text() mustBe cannotStartText
+          case TaskStatus.NotStarted     => {
             provideSaoDetailsTag.text() mustBe notStartedText
             provideSaoDetailsTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
           }
-          case CertificateTaskListStatus.Completed => provideSaoDetailsTag.text() mustBe completedText
+          case TaskStatus.Completed => provideSaoDetailsTag.text() mustBe completedText
         }
 
         expectedState.uploadSubmissionTemplateStage match {
-          case CertificateTaskListStatus.CannotStartYet => uploadSubmissionTemplateTag.text() mustBe cannotStartText
-          case CertificateTaskListStatus.NotStarted     => {
+          case TaskStatus.CannotStartYet => uploadSubmissionTemplateTag.text() mustBe cannotStartText
+          case TaskStatus.NotStarted     => {
             uploadSubmissionTemplateTag.text() mustBe notStartedText
             uploadSubmissionTemplateTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
           }
-          case CertificateTaskListStatus.Completed => uploadSubmissionTemplateTag.text() mustBe completedText
+          case TaskStatus.Completed => uploadSubmissionTemplateTag.text() mustBe completedText
         }
 
         expectedState.submitCertificateStage match {
-          case CertificateTaskListStatus.CannotStartYet => submitCertificateTag.text() mustBe cannotStartText
-          case CertificateTaskListStatus.NotStarted     => {
+          case TaskStatus.CannotStartYet => submitCertificateTag.text() mustBe cannotStartText
+          case TaskStatus.NotStarted     => {
             submitCertificateTag.text() mustBe notStartedText
             submitCertificateTag.getElementsByTag("strong").attr("class") mustBe "govuk-tag govuk-tag--blue"
           }
-          case CertificateTaskListStatus.Completed => submitCertificateTag.text() mustBe completedText
+          case TaskStatus.Completed => submitCertificateTag.text() mustBe completedText
         }
       }
 
-      expectedState.showContinueButton match {
-        case CertificateTaskListShowContinueButton.Shown => {
-          doc.createTestsWithSubmissionButton(routes.CertificateTaskListController.onSubmit(), pageButtonText)
-        }
-        case CertificateTaskListShowContinueButton.NotShown => {
-          s"must not have a form" in {
-            val form = doc.select("form")
-            withClue(
-              s"Form found\n"
-            ) {
-              form.size() mustBe 0
-            }
+      if expectedState.showContinueButton then {
+        doc.createTestsWithSubmissionButton(routes.CertificateTaskListController.onSubmit(), pageButtonText)
+      } else {
+        s"must not have a form" in {
+          val form = doc.select("form")
+          withClue(
+            s"Form found\n"
+          ) {
+            form.size() mustBe 0
           }
+        }
 
-          s"must not have a submit button" in {
-            val button = doc.select("button[type=submit]")
-            withClue(
-              s"Submit Button found\n"
-            ) {
-              button.size() mustBe 0
-            }
+        s"must not have a submit button" in {
+          val button = doc.select("button[type=submit]")
+          withClue(
+            s"Submit Button found\n"
+          ) {
+            button.size() mustBe 0
           }
         }
       }

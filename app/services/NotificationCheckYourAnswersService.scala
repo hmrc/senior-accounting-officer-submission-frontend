@@ -22,7 +22,7 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.checkAnswers.notification.{
   NotificationAdditionalInformationSummary,
-  OneSaoSubmitNotificationFullNameSummary
+  NotificationSingleSaoOfficerNameSummary
 }
 
 class NotificationCheckYourAnswersService {
@@ -31,7 +31,7 @@ class NotificationCheckYourAnswersService {
       Seq(
         userAnswers
           .get(page = NotificationMoreThanOneSaoPage)
-          .collect { case false => OneSaoSubmitNotificationFullNameSummary.row(userAnswers) }
+          .collect { case false => NotificationSingleSaoOfficerNameSummary.row(userAnswers) }
           .flatten,
         Some(NotificationAdditionalInformationSummary.row(userAnswers))
       ).flatten

@@ -21,7 +21,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.{
   NotificationAdditionalInformationPage,
   NotificationMoreThanOneSaoPage,
-  OneSaoSubmitNotificationFullNamePage
+  NotificationSingleSaoOfficerNamePage
 }
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.test.FakeRequest
@@ -40,14 +40,14 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
     val testFullName              = "testName"
     val testAdditionalInformation = "testValue"
 
-    "OneSaoSubmitNotificationFullNamePage.row" - {
+    "NotificationSingleSaoOfficerNamePage.row" - {
 
       "when MoreThanOneSao is No" - {
         "Full Name is answered, must show the Full Name row" in {
           val userAnswers = emptyUserAnswers
             .set(NotificationMoreThanOneSaoPage, false)
             .get
-            .set(OneSaoSubmitNotificationFullNamePage, testFullName)
+            .set(NotificationSingleSaoOfficerNamePage, testFullName)
             .get
 
           val result = SUT.getSummaryList(userAnswers)
@@ -74,7 +74,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
           val userAnswers = emptyUserAnswers
             .set(NotificationMoreThanOneSaoPage, true)
             .get
-            .set(OneSaoSubmitNotificationFullNamePage, testFullName)
+            .set(NotificationSingleSaoOfficerNamePage, testFullName)
             .get
 
           val result = SUT.getSummaryList(userAnswers)
