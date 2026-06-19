@@ -21,9 +21,9 @@ import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-final case class NotificationMoreSaoSecondEndDatePage(saoIndex: Int) extends QuestionPage[LocalDate] {
+final case class NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex: Int) extends QuestionPage[LocalDate] {
 
-  val key = "notificationMoreSaoSecondEndDate"
+  val key = "notificationMultiSaoPreviousOfficerEndDate"
 
   override def path: JsPath = JsPath \ key \ saoIndex
 

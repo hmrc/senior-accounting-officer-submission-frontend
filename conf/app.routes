@@ -118,10 +118,10 @@ POST        /notification/multi-sao-second-start-date                           
 GET         /notification/change-multi-sao-second-start-date                          controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 POST        /notification/change-multi-sao-second-start-date                          controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 
-GET        /notificationMoreSaoSecondEndDate                                          controllers.notification.NotificationMoreSaoSecondEndDateController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-POST       /notificationMoreSaoSecondEndDate                                          controllers.notification.NotificationMoreSaoSecondEndDateController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-GET        /changeNotificationMoreSaoSecondEndDate                                    controllers.notification.NotificationMoreSaoSecondEndDateController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
-POST       /changeNotificationMoreSaoSecondEndDate                                    controllers.notification.NotificationMoreSaoSecondEndDateController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+GET        /notificationMultiSaoPreviousOfficerEndDate                                          controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+POST       /notificationMultiSaoPreviousOfficerEndDate                                          controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+GET        /changeNotificationMultiSaoPreviousOfficerEndDate                                    controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+POST       /changeNotificationMultiSaoPreviousOfficerEndDate                                    controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 
 GET        /notification/more-sao/are-all-added                                       controllers.notification.NotificationMoreSaoAreAllAddedController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
 POST       /notification/more-sao/are-all-added                                       controllers.notification.NotificationMoreSaoAreAllAddedController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)

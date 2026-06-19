@@ -18,27 +18,27 @@ package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
-import pages.notification.NotificationMoreSaoSecondEndDatePage
+import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
 import play.api.i18n.{Lang, Messages}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import utils.DateTimeFormats.dateTimeFormat
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
-object NotificationMoreSaoSecondEndDateSummary {
+object NotificationMultiSaoPreviousOfficerEndDateSummary {
 
   def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMoreSaoSecondEndDatePage(saoIndex)).map { answer =>
+    answers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex)).map { answer =>
       given Lang = messages.lang
       SummaryListRowViewModel(
-        key = messages("notificationMoreSaoSecondEndDate.checkYourAnswersLabel").toKey,
+        key = messages("notificationMultiSaoPreviousOfficerEndDate.checkYourAnswersLabel").toKey,
         value = ValueViewModel(answer.format(dateTimeFormat()).toText),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            notificationRoutes.NotificationMoreSaoSecondEndDateController.onPageLoad(CheckMode).url
+            notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(CheckMode).url
           )
-            .withVisuallyHiddenText(messages("notificationMoreSaoSecondEndDate.change.hidden"))
+            .withVisuallyHiddenText(messages("notificationMultiSaoPreviousOfficerEndDate.change.hidden"))
         )
       )
     }

@@ -76,7 +76,7 @@ trait SpecBase
       .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.of(2023, 1, 1))
       .success
       .value
-      .set(NotificationMoreSaoSecondEndDatePage(0), LocalDate.of(2023, 12, 31))
+      .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), LocalDate.of(2023, 12, 31))
       .success
       .value
       .set(NotificationMoreSaoAreAllAddedPage(0), true)

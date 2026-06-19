@@ -19,20 +19,21 @@ package views.notification
 import base.ViewSpecBase
 import base.ViewSpecBase.DateFieldValues
 import controllers.notification.routes as notificationRoutes
-import forms.notification.NotificationMoreSaoSecondEndDateFormProvider
+import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.html.notification.NotificationMoreSaoSecondEndDateView
+import views.html.notification.NotificationMultiSaoPreviousOfficerEndDateView
 
 import java.time.LocalDate
 
-import NotificationMoreSaoSecondEndDateViewSpec.*
+import NotificationMultiSaoPreviousOfficerEndDateViewSpec.*
 
-class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[NotificationMoreSaoSecondEndDateView] {
+class NotificationMultiSaoPreviousOfficerEndDateViewSpec
+    extends ViewSpecBase[NotificationMultiSaoPreviousOfficerEndDateView] {
 
-  private val formProvider          = app.injector.instanceOf[NotificationMoreSaoSecondEndDateFormProvider]
+  private val formProvider          = app.injector.instanceOf[NotificationMultiSaoPreviousOfficerEndDateFormProvider]
   private val form: Form[LocalDate] = formProvider()
 
   private def generateView(form: Form[LocalDate], mode: Mode): Document = {
@@ -40,7 +41,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
     Jsoup.parse(view.toString)
   }
 
-  "NotificationMoreSaoSecondEndDateView" - {
+  "NotificationMultiSaoPreviousOfficerEndDateView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -61,7 +62,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.NotificationMoreSaoSecondEndDateController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -89,7 +90,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.NotificationMoreSaoSecondEndDateController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -117,7 +118,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
           )
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.NotificationMoreSaoSecondEndDateController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -132,7 +133,7 @@ class NotificationMoreSaoSecondEndDateViewSpec extends ViewSpecBase[Notification
   }
 }
 
-object NotificationMoreSaoSecondEndDateViewSpec {
+object NotificationMultiSaoPreviousOfficerEndDateViewSpec {
   val pageHeading = "When did Firstname Lastname stop being the SAO?"
   val pageTitle   = "Submit a notification"
   val saoIndex    = 3

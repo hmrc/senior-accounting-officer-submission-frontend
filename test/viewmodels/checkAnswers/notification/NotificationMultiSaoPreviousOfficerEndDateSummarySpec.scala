@@ -20,34 +20,34 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.notification.NotificationMoreSaoSecondEndDatePage
+import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
 import java.time.LocalDate
 
-class NotificationMoreSaoSecondEndDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationMultiSaoPreviousOfficerEndDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  "NotificationMoreSaoSecondEndDateSummary.row" - {
+  "NotificationMultiSaoPreviousOfficerEndDateSummary.row" - {
 
-    "when there is no answer for NotificationMoreSaoSecondEndDatePage" - {
+    "when there is no answer for NotificationMultiSaoPreviousOfficerEndDatePage" - {
       "must return None" in {
-        def SUT = NotificationMoreSaoSecondEndDateSummary.row(emptyUserAnswers, 0)
+        def SUT = NotificationMultiSaoPreviousOfficerEndDateSummary.row(emptyUserAnswers, 0)
 
         SUT mustBe None
       }
     }
 
-    "when there is a user answer for NotificationMoreSaoSecondEndDatePage" - {
+    "when there is a user answer for NotificationMultiSaoPreviousOfficerEndDatePage" - {
       def testUserAnswers(answer: LocalDate) =
-        emptyUserAnswers.set(NotificationMoreSaoSecondEndDatePage(0), answer).get
+        emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerEndDatePage(0), answer).get
 
       def SUT(answer: LocalDate = LocalDate.now) =
-        NotificationMoreSaoSecondEndDateSummary.row(testUserAnswers(answer), 0).get
+        NotificationMultiSaoPreviousOfficerEndDateSummary.row(testUserAnswers(answer), 0).get
 
       "must have expected key" in {
-        SUT().key mustBe "NotificationMoreSaoSecondEndDate".toKey
+        SUT().key mustBe "NotificationMultiSaoPreviousOfficerEndDate".toKey
       }
 
       "expected value" - {
@@ -75,13 +75,13 @@ class NotificationMoreSaoSecondEndDateSummarySpec extends SpecBase with GuiceOne
         }
 
         "must have expected url" in {
-          action.href mustBe notificationRoutes.NotificationMoreSaoSecondEndDateController
+          action.href mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController
             .onPageLoad(CheckMode)
             .url
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMoreSaoSecondEndDate"
+          action.visuallyHiddenText.get mustBe "NotificationMultiSaoPreviousOfficerEndDate"
         }
       }
     }

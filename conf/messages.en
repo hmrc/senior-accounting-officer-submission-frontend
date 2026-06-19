@@ -340,16 +340,16 @@ notificationMoreSaoAreAllAdded.checkYourAnswersLabel = notificationMoreSaoAreAll
 notificationMoreSaoAreAllAdded.error.required = Select ’Yes’ if you have added all the Senior Accounting Officers for the financial year this notification relates to
 notificationMoreSaoAreAllAdded.change.hidden = NotificationMoreSaoAreAllAdded
 
-notificationMoreSaoSecondEndDate.title = Submit a notification
-notificationMoreSaoSecondEndDate.caption = Submit a notification
-notificationMoreSaoSecondEndDate.heading = When did {0} stop being the SAO?
-notificationMoreSaoSecondEndDate.hint = For example 01 6 2024
-notificationMoreSaoSecondEndDate.checkYourAnswersLabel = NotificationMoreSaoSecondEndDate
-notificationMoreSaoSecondEndDate.error.required.all = Enter the end date the SAO was responsible for the group’s tax accounting arrangements
-notificationMoreSaoSecondEndDate.error.required.two = The date must include {0} and {1}
-notificationMoreSaoSecondEndDate.error.required = The date must include {0}
-notificationMoreSaoSecondEndDate.error.invalid = Enter the date in the correct format
-notificationMoreSaoSecondEndDate.change.hidden = NotificationMoreSaoSecondEndDate
+notificationMultiSaoPreviousOfficerEndDate.title = Submit a notification
+notificationMultiSaoPreviousOfficerEndDate.caption = Submit a notification
+notificationMultiSaoPreviousOfficerEndDate.heading = When did {0} stop being the SAO?
+notificationMultiSaoPreviousOfficerEndDate.hint = For example 01 6 2024
+notificationMultiSaoPreviousOfficerEndDate.checkYourAnswersLabel = NotificationMultiSaoPreviousOfficerEndDate
+notificationMultiSaoPreviousOfficerEndDate.error.required.all = Enter the end date the SAO was responsible for the group’s tax accounting arrangements
+notificationMultiSaoPreviousOfficerEndDate.error.required.two = The date must include {0} and {1}
+notificationMultiSaoPreviousOfficerEndDate.error.required = The date must include {0}
+notificationMultiSaoPreviousOfficerEndDate.error.invalid = Enter the date in the correct format
+notificationMultiSaoPreviousOfficerEndDate.change.hidden = NotificationMultiSaoPreviousOfficerEndDate
 
 confirmYourNotification.title = Confirm notification and submit
 confirmYourNotification.caption = Submit a notification

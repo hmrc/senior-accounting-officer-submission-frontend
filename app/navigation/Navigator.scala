@@ -78,8 +78,8 @@ class Navigator @Inject() () {
     case NotificationMultiSaoPreviousOfficerNamePage(saoIndex) =>
       _ => notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(NormalMode, saoIndex)
     case NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex) =>
-      _ => notificationRoutes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode, saoIndex)
-    case NotificationMoreSaoSecondEndDatePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex) =>
       _ => notificationRoutes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode, saoIndex)
     case NotificationMoreSaoAreAllAddedPage(saoIndex) =>
       userAnswers =>

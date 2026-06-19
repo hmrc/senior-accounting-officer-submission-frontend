@@ -18,30 +18,30 @@ package controllers.notification
 
 import controllers.actions.*
 import controllers.routes
-import forms.notification.NotificationMoreSaoSecondEndDateFormProvider
+import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.notification.{NotificationMoreSaoSecondEndDatePage, NotificationMultiSaoPreviousOfficerNamePage}
+import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.NotificationMoreSaoSecondEndDateView
+import views.html.notification.NotificationMultiSaoPreviousOfficerEndDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class NotificationMoreSaoSecondEndDateController @Inject() (
+class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: NotificationMoreSaoSecondEndDateFormProvider,
+    formProvider: NotificationMultiSaoPreviousOfficerEndDateFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationMoreSaoSecondEndDateView
+    view: NotificationMultiSaoPreviousOfficerEndDateView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -49,7 +49,8 @@ class NotificationMoreSaoSecondEndDateController @Inject() (
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form         = formProvider()
-      val preparedForm = request.userAnswers.get(NotificationMoreSaoSecondEndDatePage(saoIndex)).fold(form)(form.fill)
+      val preparedForm =
+        request.userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex)).fold(form)(form.fill)
       request.userAnswers
         .get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)) match {
         case Some(saoName) => Ok(view(saoName, preparedForm, mode, saoIndex))
@@ -74,10 +75,10 @@ class NotificationMoreSaoSecondEndDateController @Inject() (
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(NotificationMoreSaoSecondEndDatePage(saoIndex), value))
+                    .fromTry(request.userAnswers.set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex), value))
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
-                  navigator.nextPage(NotificationMoreSaoSecondEndDatePage(saoIndex), mode, updatedAnswers)
+                  navigator.nextPage(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex), mode, updatedAnswers)
                 )
             )
       }
