@@ -65,25 +65,25 @@ class Navigator @Inject() () {
     case NotificationMoreThanOneSaoPage =>
       userAnswers =>
         userAnswers.get(NotificationMoreThanOneSaoPage) match {
-          case Some(true)  => notificationRoutes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
-          case Some(false) => notificationRoutes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+          case Some(true)  => notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
+          case Some(false) => notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
           case _           => ???
         }
-    case OneSaoSubmitNotificationFullNamePage =>
+    case NotificationSingleSaoOfficerNamePage =>
       _ => notificationRoutes.NotificationTaskListController.onPageLoad()
-    case MoreSaoSubmitNotificationFullNamePage =>
-      _ => notificationRoutes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
-    case NotificationMoreSaoFirstStartDatePage =>
+    case NotificationMultiSaoLastOfficerNamePage =>
+      _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
+    case NotificationMultiSaoLastOfficerStartDatePage =>
       _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
     case NotificationMultiSaoPreviousOfficerNamePage(saoIndex) =>
-      _ => notificationRoutes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, saoIndex)
-    case NotificationMoreSaoSecondStartDatePage(saoIndex) =>
-      _ => notificationRoutes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode, saoIndex)
-    case NotificationMoreSaoSecondEndDatePage(saoIndex) =>
-      _ => notificationRoutes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode, saoIndex)
-    case NotificationMoreSaoAreAllAddedPage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMultiSaoAreAllAddedPage(saoIndex) =>
       userAnswers =>
-        userAnswers.get(NotificationMoreSaoAreAllAddedPage(saoIndex)) match {
+        userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) match {
           case Some(true)  => notificationRoutes.NotificationTaskListController.onPageLoad()
           case Some(false) =>
             notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)

@@ -18,75 +18,69 @@ package controllers.notification
 
 import controllers.actions.*
 import controllers.routes
-import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProvider
-import models.{Mode, UserAnswers}
+import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
+import models.Mode
 import navigation.Navigator
-import pages.notification.{NotificationMultiSaoLastOfficerNamePage, NotificationMultiSaoPreviousOfficerNamePage}
-import play.api.data.Form
+import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.NotificationMultiSaoPreviousOfficerNameView
+import views.html.notification.NotificationMultiSaoPreviousOfficerEndDateView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class NotificationMultiSaoPreviousOfficerNameController @Inject() (
+class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: NotificationMultiSaoPreviousOfficerNameFormProvider,
+    formProvider: NotificationMultiSaoPreviousOfficerEndDateFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationMultiSaoPreviousOfficerNameView
+    view: NotificationMultiSaoPreviousOfficerEndDateView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  val form: Form[String] = formProvider()
-
-  private def saoNameForPage(saoIndex: Int, userAnswers: UserAnswers): Option[String] =
-    if saoIndex == 0 then {
-      userAnswers.get(NotificationMultiSaoLastOfficerNamePage)
-    } else {
-      userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1))
-    }
-
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val form         = formProvider()
       val preparedForm =
-        request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)).fold(form)(form.fill)
-      saoNameForPage(saoIndex, request.userAnswers)
-        .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad())
-        )(saoName => Ok(view(saoName, preparedForm, mode, saoIndex)))
-
+        request.userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex)).fold(form)(form.fill)
+      request.userAnswers
+        .get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)) match {
+        case Some(saoName) => Ok(view(saoName, preparedForm, mode, saoIndex))
+        case None          =>
+          Redirect(
+            routes.JourneyRecoveryController
+              .onPageLoad()
+          )
+      }
   }
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      saoNameForPage(saoIndex, request.userAnswers) match {
+      val form = formProvider()
+      request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
           form
             .bindFromRequest()
             .fold(
               formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode, saoIndex))),
-
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(saoIndex), value))
+                    .fromTry(request.userAnswers.set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex), value))
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
-                  navigator.nextPage(NotificationMultiSaoPreviousOfficerNamePage(saoIndex), mode, updatedAnswers)
+                  navigator.nextPage(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex), mode, updatedAnswers)
                 )
             )
       }
-
   }
 }
