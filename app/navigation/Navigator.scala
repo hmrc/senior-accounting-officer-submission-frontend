@@ -74,8 +74,8 @@ class Navigator @Inject() () {
     case MoreSaoSubmitNotificationFullNamePage =>
       _ => notificationRoutes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
     case NotificationMoreSaoFirstStartDatePage =>
-      _ => notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
-    case NotificationMultiSaoLastOfficerNamePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
+    case NotificationMultiSaoPreviousOfficerNamePage(saoIndex) =>
       _ => notificationRoutes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, saoIndex)
     case NotificationMoreSaoSecondStartDatePage(saoIndex) =>
       _ => notificationRoutes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode, saoIndex)
@@ -86,7 +86,7 @@ class Navigator @Inject() () {
         userAnswers.get(NotificationMoreSaoAreAllAddedPage(saoIndex)) match {
           case Some(true)  => notificationRoutes.NotificationTaskListController.onPageLoad()
           case Some(false) =>
-            notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
+            notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
           case _ => ???
         }
     case UploadTemplateTablePage =>

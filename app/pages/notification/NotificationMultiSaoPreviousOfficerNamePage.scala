@@ -19,9 +19,9 @@ package pages.notification
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-final case class NotificationMultiSaoLastOfficerNamePage(saoIndex: Int) extends QuestionPage[String] {
+final case class NotificationMultiSaoPreviousOfficerNamePage(saoIndex: Int) extends QuestionPage[String] {
 
-  val key = "notificationMultiSaoLastOfficerName"
+  val key = "notificationMultiSaoPreviousOfficerName"
 
   override def path: JsPath = JsPath \ key \ saoIndex
 

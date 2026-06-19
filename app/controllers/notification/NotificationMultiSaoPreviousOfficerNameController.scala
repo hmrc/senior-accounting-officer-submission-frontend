@@ -18,31 +18,31 @@ package controllers.notification
 
 import controllers.actions.*
 import controllers.routes
-import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
+import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.notification.{MoreSaoSubmitNotificationFullNamePage, NotificationMultiSaoLastOfficerNamePage}
+import pages.notification.{MoreSaoSubmitNotificationFullNamePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.NotificationMultiSaoLastOfficerNameView
+import views.html.notification.NotificationMultiSaoPreviousOfficerNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class NotificationMultiSaoLastOfficerNameController @Inject() (
+class NotificationMultiSaoPreviousOfficerNameController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: NotificationMultiSaoLastOfficerNameFormProvider,
+    formProvider: NotificationMultiSaoPreviousOfficerNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationMultiSaoLastOfficerNameView
+    view: NotificationMultiSaoPreviousOfficerNameView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -53,13 +53,13 @@ class NotificationMultiSaoLastOfficerNameController @Inject() (
     if saoIndex == 0 then {
       userAnswers.get(MoreSaoSubmitNotificationFullNamePage)
     } else {
-      userAnswers.get(NotificationMultiSaoLastOfficerNamePage(saoIndex - 1))
+      userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1))
     }
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm =
-        request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage(saoIndex)).fold(form)(form.fill)
+        request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)).fold(form)(form.fill)
       saoNameForPage(saoIndex, request.userAnswers)
         .fold(
           Redirect(routes.JourneyRecoveryController.onPageLoad())
@@ -80,10 +80,10 @@ class NotificationMultiSaoLastOfficerNameController @Inject() (
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(NotificationMultiSaoLastOfficerNamePage(saoIndex), value))
+                    .fromTry(request.userAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(saoIndex), value))
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
-                  navigator.nextPage(NotificationMultiSaoLastOfficerNamePage(saoIndex), mode, updatedAnswers)
+                  navigator.nextPage(NotificationMultiSaoPreviousOfficerNamePage(saoIndex), mode, updatedAnswers)
                 )
             )
       }

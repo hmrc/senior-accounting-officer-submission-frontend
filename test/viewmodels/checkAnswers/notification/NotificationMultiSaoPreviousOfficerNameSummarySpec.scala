@@ -20,38 +20,38 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.notification.NotificationMultiSaoLastOfficerNamePage
+import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
-class NotificationMultiSaoLastOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationMultiSaoPreviousOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  "NotificationMultiSaoLastOfficerNameSummary.row" - {
+  "NotificationMultiSaoPreviousOfficerNameSummary.row" - {
 
-    "when there is no answer for NotificationMultiSaoLastOfficerNamePage" - {
+    "when there is no answer for NotificationMultiSaoPreviousOfficerNamePage" - {
       "must return None" in {
-        def SUT = NotificationMultiSaoLastOfficerNameSummary.row(emptyUserAnswers, 0)
+        def SUT = NotificationMultiSaoPreviousOfficerNameSummary.row(emptyUserAnswers, 0)
 
         SUT mustBe None
       }
     }
 
-    "when there is a user answer for NotificationMultiSaoLastOfficerNamePage" - {
+    "when there is a user answer for NotificationMultiSaoPreviousOfficerNamePage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage(0), answer).get
+        emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0), answer).get
 
-      def SUT(answer: String = "") = NotificationMultiSaoLastOfficerNameSummary.row(testUserAnswers(answer), 0).get
+      def SUT(answer: String = "") = NotificationMultiSaoPreviousOfficerNameSummary.row(testUserAnswers(answer), 0).get
 
       "must have expected key" in {
-        SUT().key mustBe "notificationMultiSaoLastOfficerName".toKey
+        SUT().key mustBe "notificationMultiSaoPreviousOfficerName".toKey
       }
 
       "expected value" - {
-        "must show 'testNotificationMultiSaoLastOfficerName' when user answers is 'testNotificationMultiSaoLastOfficerName'" in {
+        "must show 'testNotificationMultiSaoPreviousOfficerName' when user answers is 'testNotificationMultiSaoPreviousOfficerName'" in {
           SUT(answer =
-            "testNotificationMultiSaoLastOfficerName"
-          ).value.content mustBe "testNotificationMultiSaoLastOfficerName".toText
+            "testNotificationMultiSaoPreviousOfficerName"
+          ).value.content mustBe "testNotificationMultiSaoPreviousOfficerName".toText
         }
       }
 
@@ -74,27 +74,27 @@ class NotificationMultiSaoLastOfficerNameSummarySpec extends SpecBase with Guice
         }
 
         "must have expected url" in {
-          action.href mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController
+          action.href mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController
             .onPageLoad(CheckMode, 0)
             .url
         }
 
         "must include the SAO index in the url" in {
           val answers = emptyUserAnswers
-            .set(NotificationMultiSaoLastOfficerNamePage(0), "testNotificationMultiSaoLastOfficerName")
+            .set(NotificationMultiSaoPreviousOfficerNamePage(0), "testNotificationMultiSaoPreviousOfficerName")
             .get
-            .set(NotificationMultiSaoLastOfficerNamePage(1), "testNotificationMultiSaoLastOfficerName")
+            .set(NotificationMultiSaoPreviousOfficerNamePage(1), "testNotificationMultiSaoPreviousOfficerName")
             .get
 
-          val action = NotificationMultiSaoLastOfficerNameSummary.row(answers, 1).get.actions.head.items.head
+          val action = NotificationMultiSaoPreviousOfficerNameSummary.row(answers, 1).get.actions.head.items.head
 
-          action.href mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController
+          action.href mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController
             .onPageLoad(CheckMode, 1)
             .url
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMultiSaoLastOfficerName"
+          action.visuallyHiddenText.get mustBe "NotificationMultiSaoPreviousOfficerName"
         }
       }
     }

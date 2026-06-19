@@ -19,32 +19,32 @@ package controllers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
+import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.{MoreSaoSubmitNotificationFullNamePage, NotificationMultiSaoLastOfficerNamePage}
+import pages.notification.{MoreSaoSubmitNotificationFullNamePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.notification.NotificationMultiSaoLastOfficerNameView
+import views.html.notification.NotificationMultiSaoPreviousOfficerNameView
 
 import scala.concurrent.Future
 
-class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with MockitoSugar {
+class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider       = new NotificationMultiSaoLastOfficerNameFormProvider()
+  val formProvider       = new NotificationMultiSaoPreviousOfficerNameFormProvider()
   val form: Form[String] = formProvider()
 
-  lazy val notificationMultiSaoLastOfficerNameRoute: String =
-    notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode).url
+  lazy val notificationMultiSaoPreviousOfficerNameRoute: String =
+    notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode).url
 
   val saoName         = "Firstname Lastname"
   val previousSaoName = "Previous Name"
@@ -54,18 +54,18 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
 
   val saoIndex = 0
 
-  "NotificationMultiSaoLastOfficerName Controller" - {
+  "NotificationMultiSaoPreviousOfficerName Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
+        val request = FakeRequest(GET, notificationMultiSaoPreviousOfficerNameRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
+        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerNameView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(saoName, form, NormalMode, saoIndex)(using
@@ -77,7 +77,7 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
 
     "must use the previous indexed SAO name for a GET when the SAO index is greater than zero" in {
       val userAnswers = userAnswersWithSaoName
-        .set(NotificationMultiSaoLastOfficerNamePage(0), previousSaoName)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousSaoName)
         .success
         .value
 
@@ -86,12 +86,12 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
       running(application) {
         val request = FakeRequest(
           GET,
-          notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode, 1).url
+          notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 1).url
         )
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
+        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerNameView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(previousSaoName, form, NormalMode, 1)(using
@@ -107,7 +107,7 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
       running(application) {
         val request = FakeRequest(
           GET,
-          notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode, 1).url
+          notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 1).url
         )
 
         val result = route(application, request).value
@@ -121,7 +121,7 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
+        val request = FakeRequest(GET, notificationMultiSaoPreviousOfficerNameRoute)
 
         val result = route(application, request).value
 
@@ -133,14 +133,14 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        userAnswersWithSaoName.set(NotificationMultiSaoLastOfficerNamePage(saoIndex), "answer").success.value
+        userAnswersWithSaoName.set(NotificationMultiSaoPreviousOfficerNamePage(saoIndex), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
+        val request = FakeRequest(GET, notificationMultiSaoPreviousOfficerNameRoute)
 
-        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
+        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerNameView]
 
         val result = route(application, request).value
 
@@ -168,7 +168,7 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMultiSaoLastOfficerNameRoute)
+          FakeRequest(POST, notificationMultiSaoPreviousOfficerNameRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -184,12 +184,12 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMultiSaoLastOfficerNameRoute)
+          FakeRequest(POST, notificationMultiSaoPreviousOfficerNameRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
+        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerNameView]
 
         val result = route(application, request).value
 
@@ -206,7 +206,7 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
+        val request = FakeRequest(GET, notificationMultiSaoPreviousOfficerNameRoute)
 
         val result = route(application, request).value
 
@@ -221,7 +221,7 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMultiSaoLastOfficerNameRoute)
+          FakeRequest(POST, notificationMultiSaoPreviousOfficerNameRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value

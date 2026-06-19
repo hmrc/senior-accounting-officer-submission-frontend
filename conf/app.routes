@@ -31,11 +31,11 @@ POST        /notification/more-than-one-sao                                     
 GET         /notification/change-more-than-one-sao                                    controllers.notification.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/change-more-than-one-sao                                    controllers.notification.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
 
-GET         /notification/who-was-the-sao-before               controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-POST        /notification/who-was-the-sao-before               controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+GET         /notification/who-was-the-sao-before               controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+POST        /notification/who-was-the-sao-before               controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
 
-GET         /notification/change-who-was-the-sao-before        controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
-POST        /notification/change-who-was-the-sao-before        controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+GET         /notification/change-who-was-the-sao-before        controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+POST        /notification/change-who-was-the-sao-before        controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
 
 GET         /notification/additional-information                                      controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/additional-information                                      controllers.notification.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
