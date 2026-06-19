@@ -18,7 +18,7 @@ package models
 
 import models.upload.*
 
-final case class UnqualifiedCompany (
+final case class UnqualifiedCompany(
     name: String,
     utr: String,
     crn: Option[String],
