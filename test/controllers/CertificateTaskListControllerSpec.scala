@@ -18,10 +18,9 @@ package controllers
 
 import base.SpecBase
 import config.AppConfig
-import models.CertificateTaskListShowContinueButton
 import models.CertificateTaskListStage
 import models.CertificateTaskListState
-import models.CertificateTaskListStatus
+import models.TaskStatus
 import play.api.http.HeaderNames
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -50,10 +49,10 @@ class CertificateTaskListControllerSpec extends SpecBase {
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
           CertificateTaskListState(
-            provideSaoDetailsStage = CertificateTaskListStatus.NotStarted,
-            uploadSubmissionTemplateStage = CertificateTaskListStatus.CannotStartYet,
-            submitCertificateStage = CertificateTaskListStatus.CannotStartYet,
-            showContinueButton = CertificateTaskListShowContinueButton.NotShown
+            provideSaoDetailsStage = TaskStatus.NotStarted,
+            uploadSubmissionTemplateStage = TaskStatus.CannotStartYet,
+            submitCertificateStage = TaskStatus.CannotStartYet,
+            showContinueButton = false
           )
         )(using
           request,

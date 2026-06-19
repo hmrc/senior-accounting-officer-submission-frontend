@@ -169,7 +169,7 @@ class NavigatorSpec extends SpecBase {
           NotificationConfirmationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe notificationRoutes.SubmitNotificationStartController.onComplete()
+        ) mustBe notificationRoutes.NotificationTaskListController.onComplete()
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
@@ -177,7 +177,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreThanOneSaoPage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, false).success.value
-        ) mustBe notificationRoutes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected Yes, must go to multiple sao name page" in {
@@ -185,81 +185,81 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreThanOneSaoPage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-        ) mustBe notificationRoutes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
       }
 
-      "when on MoreSaoSubmitNotificationFullNameController, must go to more sao submit notification first date page" in {
+      "when on NotificationMultiSaoLastOfficerNameController, must go to more sao submit notification first date page" in {
         navigator.nextPage(
-          MoreSaoSubmitNotificationFullNamePage,
+          NotificationMultiSaoLastOfficerNamePage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-        ) mustBe notificationRoutes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMoreSaoFirstStartDatePage, must go to who was the sao before page" in {
+      "when on NotificationMultiSaoLastOfficerStartDatePage, must go to who was the sao before page" in {
         navigator.nextPage(
-          NotificationMoreSaoFirstStartDatePage,
+          NotificationMultiSaoLastOfficerStartDatePage,
           NormalMode,
-          UserAnswers("id").set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2026, 5, 1)).success.value
-        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
+          UserAnswers("id").set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.of(2026, 5, 1)).success.value
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
       }
 
-      "when on WhoWasTheSaoBeforePage, must go to NotificationMoreSaoSecondStartDate" in {
+      "when on NotificationMultiSaoPreviousOfficerNamePage, must go to NotificationMultiSaoPreviousOfficerStartDate" in {
         navigator.nextPage(
-          WhoWasTheSaoBeforePage(0),
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe notificationRoutes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, 0)
-      }
-
-      "when on NotificationMoreSaoSecondStartDatePage, must go to NotificationMoreSaoSecondEndDate page" in {
-        navigator.nextPage(
-          NotificationMoreSaoSecondStartDatePage(0),
+          NotificationMultiSaoPreviousOfficerNamePage(0),
           NormalMode,
           UserAnswers("id")
-        ) mustBe notificationRoutes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(NormalMode, 0)
       }
 
-      "when on NotificationMoreSaoSecondEndDatePage, must go to NotificationMoreSaoAreAllAdded page" in {
+      "when on NotificationMultiSaoPreviousOfficerStartDatePage, must go to NotificationMultiSaoPreviousOfficerEndDate page" in {
         navigator.nextPage(
-          NotificationMoreSaoSecondEndDatePage(0),
+          NotificationMultiSaoPreviousOfficerStartDatePage(0),
           NormalMode,
           UserAnswers("id")
-        ) mustBe notificationRoutes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMoreSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
+      "when on NotificationMultiSaoPreviousOfficerEndDatePage, must go to NotificationMultiSaoAreAllAdded page" in {
+        navigator.nextPage(
+          NotificationMultiSaoPreviousOfficerEndDatePage(0),
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(NormalMode)
+      }
+
+      "when on NotificationMultiSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
-            NotificationMoreSaoAreAllAddedPage(0),
+            NotificationMultiSaoAreAllAddedPage(0),
             NormalMode,
             UserAnswers("id")
           )
         }
       }
 
-      "when on NotificationMoreSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
+      "when on NotificationMultiSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
         navigator.nextPage(
-          NotificationMoreSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0),
           NormalMode,
-          UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), true).success.value
-        ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
+          UserAnswers("id").set(NotificationMultiSaoAreAllAddedPage(0), true).success.value
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
-      "when on NotificationMoreSaoAreAllAddedPage, and the user answers no, must go to WhoWasTheSaoBefore page with an incremented saoIndex" in {
+      "when on NotificationMultiSaoAreAllAddedPage, and the user answers no, must go to NotificationMultiSaoPreviousOfficerName page with an incremented saoIndex" in {
         navigator.nextPage(
-          NotificationMoreSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0),
           NormalMode,
-          UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), false).success.value
-        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1)
+          UserAnswers("id").set(NotificationMultiSaoAreAllAddedPage(0), false).success.value
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 1)
       }
 
-      "when on OneSaoSubmitNotificationFullNamePage, must go to the submit notification start page" in {
+      "when on NotificationSingleSaoOfficerNamePage, must go to the submit notification start page" in {
         navigator.nextPage(
-          OneSaoSubmitNotificationFullNamePage,
+          NotificationSingleSaoOfficerNamePage,
           NormalMode,
-          UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
-        ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
+          UserAnswers("id").set(NotificationSingleSaoOfficerNamePage, "Firstname Lastname").success.value
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
@@ -273,7 +273,7 @@ class NavigatorSpec extends SpecBase {
           UploadTemplateTablePage,
           NormalMode,
           userAnswers
-        ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {
@@ -306,12 +306,12 @@ class NavigatorSpec extends SpecBase {
 
       "SubmissionTypePage" - {
 
-        "when on SubmissionTypePage and the user chose notification only, must go to SubmitNotificationStart" in {
+        "when on SubmissionTypePage and the user chose notification only, must go to NotificationTaskList" in {
           navigator.nextPage(
             SubmissionTypePage,
             NormalMode,
             UserAnswers("id").set(SubmissionTypePage, SubmissionType.Notification).get
-          ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
+          ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
         }
 
         "when on SubmissionTypePage and the user chose certificate only, must go to CertificateTaskList" in {
