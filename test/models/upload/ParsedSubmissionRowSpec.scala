@@ -18,7 +18,7 @@ package models.upload
 
 import base.SpecBase
 import play.api.libs.json.{JsError, JsString, Json}
-
+import models.UnqualifiedCompany
 import java.time.LocalDate
 
 class ParsedSubmissionRowSpec extends SpecBase {
@@ -88,4 +88,41 @@ class ParsedSubmissionRowSpec extends SpecBase {
       JsString("OTHER").validate[CertificateType] mustBe JsError("Unknown enum value: OTHER")
     }
   }
+
+  "toUnqualifiedCompany extension method must map from ParsedSubmissionRow to UnqualifiedCompany" in {
+    val result = ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = "example company name",
+          companyUtr = CompanyUtr("example company utr"),
+          companyCrn = Some(CompanyCrn("example company crn")),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = LocalDate.now()
+        ),
+        certificate = CertificateFields(
+          corporationTax = true,
+          valueAddedTax = false,
+          paye = true,
+          insurancePremiumTax = false,
+          stampDutyLandTax = true,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = true,
+          customsDuties = false,
+          exciseDuties = true,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Qualified),
+          additionalInformation = Some("example additional information")
+        )
+      ).toUnqualifiedCompany
+
+      val expected = UnqualifiedCompany(
+        name = "example company name",
+        utr = "example company utr",
+        crn = Some("example company crn"),
+        companyType = CompanyType.LTD,
+        companyStatus = CompanyStatus.Dormant
+      )
+
+      result mustBe expected
+    }
 }
