@@ -21,8 +21,7 @@ import controllers.routes
 import forms.notification.NotificationMoreSaoSecondEndDateFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.WhoWasTheSaoBeforePage
-import pages.notification.NotificationMoreSaoSecondEndDatePage
+import pages.notification.{NotificationMoreSaoSecondEndDatePage, WhoWasTheSaoBeforePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

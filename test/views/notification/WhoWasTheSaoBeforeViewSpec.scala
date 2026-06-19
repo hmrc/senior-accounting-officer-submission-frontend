@@ -14,16 +14,18 @@
  * limitations under the License.
  */
 
-package views
+package views.notification
 
 import base.ViewSpecBase
-import forms.WhoWasTheSaoBeforeFormProvider
+import controllers.notification.routes as notificationRoutes
+import forms.notification.WhoWasTheSaoBeforeFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.WhoWasTheSaoBeforeViewSpec.*
-import views.html.WhoWasTheSaoBeforeView
+import views.html.notification.WhoWasTheSaoBeforeView
+
+import WhoWasTheSaoBeforeViewSpec.*
 
 class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
 
@@ -60,7 +62,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -90,7 +92,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 
@@ -121,7 +123,7 @@ class WhoWasTheSaoBeforeViewSpec extends ViewSpecBase[WhoWasTheSaoBeforeView] {
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.routes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
+            action = notificationRoutes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex),
             buttonText = "Continue"
           )
 

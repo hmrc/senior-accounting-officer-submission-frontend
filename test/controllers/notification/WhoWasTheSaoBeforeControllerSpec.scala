@@ -14,25 +14,25 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.notification
 
 import base.SpecBase
-import forms.WhoWasTheSaoBeforeFormProvider
-import models.NormalMode
-import models.UserAnswers
+import controllers.notification.routes as notificationRoutes
+import controllers.routes
+import forms.notification.WhoWasTheSaoBeforeFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhoWasTheSaoBeforePage
-import pages.notification.MoreSaoSubmitNotificationFullNamePage
+import pages.notification.{MoreSaoSubmitNotificationFullNamePage, WhoWasTheSaoBeforePage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.WhoWasTheSaoBeforeView
+import views.html.notification.WhoWasTheSaoBeforeView
 
 import scala.concurrent.Future
 
@@ -43,7 +43,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
   val formProvider       = new WhoWasTheSaoBeforeFormProvider()
   val form: Form[String] = formProvider()
 
-  lazy val whoWasTheSaoBeforeRoute: String = routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode).url
+  lazy val whoWasTheSaoBeforeRoute: String = notificationRoutes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode).url
 
   val saoName         = "Firstname Lastname"
   val previousSaoName = "Previous Name"
@@ -83,7 +83,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1).url)
+        val request = FakeRequest(GET, notificationRoutes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1).url)
 
         val result = route(application, request).value
 
@@ -101,7 +101,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1).url)
+        val request = FakeRequest(GET, notificationRoutes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1).url)
 
         val result = route(application, request).value
 

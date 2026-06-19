@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.notification
 
-import controllers.routes
+import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
-import pages.WhoWasTheSaoBeforePage
+import pages.notification.WhoWasTheSaoBeforePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
@@ -34,7 +34,7 @@ object WhoWasTheSaoBeforeSummary {
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            routes.WhoWasTheSaoBeforeController.onPageLoad(CheckMode, saoIndex).url
+            notificationRoutes.WhoWasTheSaoBeforeController.onPageLoad(CheckMode, saoIndex).url
           )
             .withVisuallyHiddenText(messages("whoWasTheSaoBefore.change.hidden"))
         )

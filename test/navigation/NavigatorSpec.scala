@@ -201,7 +201,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreSaoFirstStartDatePage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2026, 5, 1)).success.value
-        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
       }
 
       "when on WhoWasTheSaoBeforePage, must go to NotificationMoreSaoSecondStartDate" in {
@@ -251,7 +251,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreSaoAreAllAddedPage(0),
           NormalMode,
           UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), false).success.value
-        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1)
+        ) mustBe notificationRoutes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1)
       }
 
       "when on OneSaoSubmitNotificationFullNamePage, must go to the submit notification start page" in {

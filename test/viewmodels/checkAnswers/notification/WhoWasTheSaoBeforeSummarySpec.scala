@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.notification
 
 import base.SpecBase
-import controllers.routes
+import controllers.notification.routes as notificationRoutes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.WhoWasTheSaoBeforePage
+import pages.notification.WhoWasTheSaoBeforePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
@@ -72,7 +72,7 @@ class WhoWasTheSaoBeforeSummarySpec extends SpecBase with GuiceOneAppPerSuite {
         }
 
         "must have expected url" in {
-          action.href mustBe routes.WhoWasTheSaoBeforeController
+          action.href mustBe notificationRoutes.WhoWasTheSaoBeforeController
             .onPageLoad(CheckMode, 0)
             .url
         }
@@ -86,7 +86,7 @@ class WhoWasTheSaoBeforeSummarySpec extends SpecBase with GuiceOneAppPerSuite {
 
           val action = WhoWasTheSaoBeforeSummary.row(answers, 1).get.actions.head.items.head
 
-          action.href mustBe routes.WhoWasTheSaoBeforeController
+          action.href mustBe notificationRoutes.WhoWasTheSaoBeforeController
             .onPageLoad(CheckMode, 1)
             .url
         }

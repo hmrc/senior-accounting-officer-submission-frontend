@@ -14,6 +14,7 @@
  * limitations under the License.
  *@
 
+@import controllers.notification.{ routes => notificationRoutes }
 @import viewmodels.InputWidth.*
 
 @this(
@@ -28,7 +29,7 @@
 
 @layout(pageTitle = title(form, messages("whoWasTheSaoBefore.title"))) {
 
-    @formHelper(action = routes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex)) {
+    @formHelper(action = notificationRoutes.WhoWasTheSaoBeforeController.onSubmit(mode, saoIndex)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

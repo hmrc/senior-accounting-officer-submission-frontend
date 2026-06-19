@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.notification
 
 import controllers.actions.*
-import forms.WhoWasTheSaoBeforeFormProvider
+import controllers.routes
+import forms.notification.WhoWasTheSaoBeforeFormProvider
 import models.{Mode, UserAnswers}
 import navigation.Navigator
-import pages.WhoWasTheSaoBeforePage
-import pages.notification.MoreSaoSubmitNotificationFullNamePage
+import pages.notification.{MoreSaoSubmitNotificationFullNamePage, WhoWasTheSaoBeforePage}
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.WhoWasTheSaoBeforeView
+import views.html.notification.WhoWasTheSaoBeforeView
 
 import scala.concurrent.{ExecutionContext, Future}
 
