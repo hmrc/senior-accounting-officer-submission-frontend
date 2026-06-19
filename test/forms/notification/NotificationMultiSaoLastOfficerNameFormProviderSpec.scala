@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package forms.notification
 
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
-class WhoWasTheSaoBeforeFormProviderSpec extends StringFieldBehaviours {
+class NotificationMultiSaoLastOfficerNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "whoWasTheSaoBefore.error.required"
-  val lengthKey   = "whoWasTheSaoBefore.error.length"
+  val requiredKey = "notificationMultiSaoLastOfficerName.error.required"
+  val lengthKey   = "notificationMultiSaoLastOfficerName.error.length"
   val maxLength   = 254
 
-  val form = new WhoWasTheSaoBeforeFormProvider()()
+  val form = new NotificationMultiSaoLastOfficerNameFormProvider()()
 
   ".value" - {
 

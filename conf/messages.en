@@ -292,14 +292,14 @@ oneSaoSubmitNotificationFullName.error.required = Enter the name of the SAO
 oneSaoSubmitNotificationFullName.error.length = The name you enter must be 254 characters or less
 oneSaoSubmitNotificationFullName.change.hidden = OneSaoSubmitNotificationFullName
 
-whoWasTheSaoBefore.title = Senior Accounting Officer full name
-whoWasTheSaoBefore.heading = Who was the SAO before {0}?
-whoWasTheSaoBefore.caption = Submit a notification
-whoWasTheSaoBefore.hint = This is the person who held the role before {0}
-whoWasTheSaoBefore.checkYourAnswersLabel = whoWasTheSaoBefore
-whoWasTheSaoBefore.error.required = Enter the name of the previous SAO
-whoWasTheSaoBefore.error.length = The name you enter must be 254 characters or less
-whoWasTheSaoBefore.change.hidden = WhoWasTheSaoBefore
+notificationMultiSaoLastOfficerName.title = Senior Accounting Officer full name
+notificationMultiSaoLastOfficerName.heading = Who was the SAO before {0}?
+notificationMultiSaoLastOfficerName.caption = Submit a notification
+notificationMultiSaoLastOfficerName.hint = This is the person who held the role before {0}
+notificationMultiSaoLastOfficerName.checkYourAnswersLabel = notificationMultiSaoLastOfficerName
+notificationMultiSaoLastOfficerName.error.required = Enter the name of the previous SAO
+notificationMultiSaoLastOfficerName.error.length = The name you enter must be 254 characters or less
+notificationMultiSaoLastOfficerName.change.hidden = NotificationMultiSaoLastOfficerName
 
 notificationMoreSaoFirstStartDate.title = Submit a notification
 notificationMoreSaoFirstStartDate.heading = What date did {0} become the SAO?

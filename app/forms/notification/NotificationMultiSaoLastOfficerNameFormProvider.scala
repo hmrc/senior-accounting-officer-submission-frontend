@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package forms
+package forms.notification
 
 import forms.mappings.Mappings
 import play.api.data.Form
 
 import javax.inject.Inject
 
-class WhoWasTheSaoBeforeFormProvider @Inject() extends Mappings {
+class NotificationMultiSaoLastOfficerNameFormProvider @Inject() extends Mappings {
 
   def apply(): Form[String] =
     Form(
-      "value" -> text("whoWasTheSaoBefore.error.required")
-        .verifying(maxLength(254, "whoWasTheSaoBefore.error.length"))
+      "value" -> text("notificationMultiSaoLastOfficerName.error.required")
+        .verifying(maxLength(254, "notificationMultiSaoLastOfficerName.error.length"))
     )
 }

@@ -14,36 +14,37 @@
  * limitations under the License.
  */
 
-package controllers
+package controllers.notification
 
 import base.SpecBase
-import forms.WhoWasTheSaoBeforeFormProvider
-import models.NormalMode
-import models.UserAnswers
+import controllers.notification.routes as notificationRoutes
+import controllers.routes
+import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.WhoWasTheSaoBeforePage
-import pages.notification.MoreSaoSubmitNotificationFullNamePage
+import pages.notification.{MoreSaoSubmitNotificationFullNamePage, NotificationMultiSaoLastOfficerNamePage}
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.WhoWasTheSaoBeforeView
+import views.html.notification.NotificationMultiSaoLastOfficerNameView
 
 import scala.concurrent.Future
 
-class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
+class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider       = new WhoWasTheSaoBeforeFormProvider()
+  val formProvider       = new NotificationMultiSaoLastOfficerNameFormProvider()
   val form: Form[String] = formProvider()
 
-  lazy val whoWasTheSaoBeforeRoute: String = routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode).url
+  lazy val notificationMultiSaoLastOfficerNameRoute: String =
+    notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode).url
 
   val saoName         = "Firstname Lastname"
   val previousSaoName = "Previous Name"
@@ -53,18 +54,18 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
   val saoIndex = 0
 
-  "WhoWasTheSaoBefore Controller" - {
+  "NotificationMultiSaoLastOfficerName Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
+        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
+        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(saoName, form, NormalMode, saoIndex)(using
@@ -76,18 +77,21 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
     "must use the previous indexed SAO name for a GET when the SAO index is greater than zero" in {
       val userAnswers = userAnswersWithSaoName
-        .set(WhoWasTheSaoBeforePage(0), previousSaoName)
+        .set(NotificationMultiSaoLastOfficerNamePage(0), previousSaoName)
         .success
         .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1).url)
+        val request = FakeRequest(
+          GET,
+          notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode, 1).url
+        )
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
+        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(previousSaoName, form, NormalMode, 1)(using
@@ -101,7 +105,10 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       running(application) {
-        val request = FakeRequest(GET, routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1).url)
+        val request = FakeRequest(
+          GET,
+          notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode, 1).url
+        )
 
         val result = route(application, request).value
 
@@ -114,7 +121,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
+        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
 
         val result = route(application, request).value
 
@@ -125,14 +132,15 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = userAnswersWithSaoName.set(WhoWasTheSaoBeforePage(saoIndex), "answer").success.value
+      val userAnswers =
+        userAnswersWithSaoName.set(NotificationMultiSaoLastOfficerNamePage(saoIndex), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
+        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
 
-        val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
+        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
 
         val result = route(application, request).value
 
@@ -160,7 +168,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whoWasTheSaoBeforeRoute)
+          FakeRequest(POST, notificationMultiSaoLastOfficerNameRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -176,12 +184,12 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whoWasTheSaoBeforeRoute)
+          FakeRequest(POST, notificationMultiSaoLastOfficerNameRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[WhoWasTheSaoBeforeView]
+        val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerNameView]
 
         val result = route(application, request).value
 
@@ -198,7 +206,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, whoWasTheSaoBeforeRoute)
+        val request = FakeRequest(GET, notificationMultiSaoLastOfficerNameRoute)
 
         val result = route(application, request).value
 
@@ -213,7 +221,7 @@ class WhoWasTheSaoBeforeControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, whoWasTheSaoBeforeRoute)
+          FakeRequest(POST, notificationMultiSaoLastOfficerNameRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value

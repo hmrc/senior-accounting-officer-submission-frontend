@@ -14,42 +14,44 @@
  * limitations under the License.
  */
 
-package viewmodels.checkAnswers
+package viewmodels.checkAnswers.notification
 
 import base.SpecBase
-import controllers.routes
+import controllers.notification.routes as notificationRoutes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.WhoWasTheSaoBeforePage
+import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
-class WhoWasTheSaoBeforeSummarySpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationMultiSaoLastOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  "WhoWasTheSaoBeforeSummary.row" - {
+  "NotificationMultiSaoLastOfficerNameSummary.row" - {
 
-    "when there is no answer for WhoWasTheSaoBeforePage" - {
+    "when there is no answer for NotificationMultiSaoLastOfficerNamePage" - {
       "must return None" in {
-        def SUT = WhoWasTheSaoBeforeSummary.row(emptyUserAnswers, 0)
+        def SUT = NotificationMultiSaoLastOfficerNameSummary.row(emptyUserAnswers, 0)
 
         SUT mustBe None
       }
     }
 
-    "when there is a user answer for WhoWasTheSaoBeforePage" - {
+    "when there is a user answer for NotificationMultiSaoLastOfficerNamePage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(WhoWasTheSaoBeforePage(0), answer).get
+        emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage(0), answer).get
 
-      def SUT(answer: String = "") = WhoWasTheSaoBeforeSummary.row(testUserAnswers(answer), 0).get
+      def SUT(answer: String = "") = NotificationMultiSaoLastOfficerNameSummary.row(testUserAnswers(answer), 0).get
 
       "must have expected key" in {
-        SUT().key mustBe "whoWasTheSaoBefore".toKey
+        SUT().key mustBe "notificationMultiSaoLastOfficerName".toKey
       }
 
       "expected value" - {
-        "must show 'testWhoWasTheSaoBefore' when user answers is 'testWhoWasTheSaoBefore'" in {
-          SUT(answer = "testWhoWasTheSaoBefore").value.content mustBe "testWhoWasTheSaoBefore".toText
+        "must show 'testNotificationMultiSaoLastOfficerName' when user answers is 'testNotificationMultiSaoLastOfficerName'" in {
+          SUT(answer =
+            "testNotificationMultiSaoLastOfficerName"
+          ).value.content mustBe "testNotificationMultiSaoLastOfficerName".toText
         }
       }
 
@@ -72,27 +74,27 @@ class WhoWasTheSaoBeforeSummarySpec extends SpecBase with GuiceOneAppPerSuite {
         }
 
         "must have expected url" in {
-          action.href mustBe routes.WhoWasTheSaoBeforeController
+          action.href mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController
             .onPageLoad(CheckMode, 0)
             .url
         }
 
         "must include the SAO index in the url" in {
           val answers = emptyUserAnswers
-            .set(WhoWasTheSaoBeforePage(0), "testWhoWasTheSaoBefore")
+            .set(NotificationMultiSaoLastOfficerNamePage(0), "testNotificationMultiSaoLastOfficerName")
             .get
-            .set(WhoWasTheSaoBeforePage(1), "testWhoWasTheSaoBefore")
+            .set(NotificationMultiSaoLastOfficerNamePage(1), "testNotificationMultiSaoLastOfficerName")
             .get
 
-          val action = WhoWasTheSaoBeforeSummary.row(answers, 1).get.actions.head.items.head
+          val action = NotificationMultiSaoLastOfficerNameSummary.row(answers, 1).get.actions.head.items.head
 
-          action.href mustBe routes.WhoWasTheSaoBeforeController
+          action.href mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController
             .onPageLoad(CheckMode, 1)
             .url
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "WhoWasTheSaoBefore"
+          action.visuallyHiddenText.get mustBe "NotificationMultiSaoLastOfficerName"
         }
       }
     }

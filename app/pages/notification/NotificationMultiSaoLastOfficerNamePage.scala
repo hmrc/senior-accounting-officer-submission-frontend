@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package pages.notification
 
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-final case class WhoWasTheSaoBeforePage(saoIndex: Int) extends QuestionPage[String] {
+final case class NotificationMultiSaoLastOfficerNamePage(saoIndex: Int) extends QuestionPage[String] {
 
-  val key = "whoWasTheSaoBefore"
+  val key = "notificationMultiSaoLastOfficerName"
 
   override def path: JsPath = JsPath \ key \ saoIndex
 
