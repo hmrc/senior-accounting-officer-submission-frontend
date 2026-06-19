@@ -17,6 +17,7 @@
 package services
 
 import models.*
+import models.upscan.*
 import repositories.SessionRepository
 
 import scala.concurrent.ExecutionContext

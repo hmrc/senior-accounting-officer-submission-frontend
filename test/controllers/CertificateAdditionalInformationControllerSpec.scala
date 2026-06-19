@@ -39,8 +39,8 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val formProvider       = new CertificateAdditionalInformationFormProvider()
-  val form: Form[String] = formProvider()
+  val formProvider               = new CertificateAdditionalInformationFormProvider()
+  val form: Form[Option[String]] = formProvider()
 
   lazy val certificateAdditionalInformationRoute: String =
     routes.CertificateAdditionalInformationController.onPageLoad(NormalMode).url
@@ -66,7 +66,10 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        userAnswersWithCertificateUploadedTemplate.set(CertificateAdditionalInformationPage, "answer").success.value
+        userAnswersWithCertificateUploadedTemplate
+          .set(CertificateAdditionalInformationPage, Some("answer"))
+          .success
+          .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -78,7 +81,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill("answer"), NormalMode)(using
+        contentAsString(result) mustEqual view(form.fill(Some("answer")), NormalMode)(using
           request,
           messages(application)
         ).toString

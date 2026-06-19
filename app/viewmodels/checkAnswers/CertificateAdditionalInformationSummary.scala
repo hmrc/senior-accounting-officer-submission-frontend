@@ -26,18 +26,19 @@ import viewmodels.govuk.summarylist.*
 
 object CertificateAdditionalInformationSummary {
 
-  def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateAdditionalInformationPage).map { answer =>
-      SummaryListRowViewModel(
-        key = messages("certificateAdditionalInformation.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.toText),
-        actions = Seq(
-          ActionItemViewModel(
-            messages("site.change").toText,
-            routes.CertificateAdditionalInformationController.onPageLoad(CheckMode).url
-          )
-            .withVisuallyHiddenText(messages("certificateAdditionalInformation.change.hidden"))
+  def row(answers: UserAnswers)(using messages: Messages): SummaryListRow =
+    val additionalInformation =
+      answers.getNullable(CertificateAdditionalInformationPage).getOrElse("")
+
+    SummaryListRowViewModel(
+      key = messages("certificateAdditionalInformation.checkYourAnswersLabel").toKey,
+      value = ValueViewModel(additionalInformation.toText),
+      actions = Seq(
+        ActionItemViewModel(
+          messages("site.change").toText,
+          routes.CertificateAdditionalInformationController.onPageLoad(CheckMode).url
         )
+          .withVisuallyHiddenText(messages("certificateAdditionalInformation.change.hidden"))
       )
-    }
+    )
 }

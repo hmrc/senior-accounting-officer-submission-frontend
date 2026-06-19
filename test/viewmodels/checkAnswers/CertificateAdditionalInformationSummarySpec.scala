@@ -16,16 +16,12 @@
 
 package viewmodels.checkAnswers
 
-import base.SpecBase
 import controllers.routes
 import models.CheckMode
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.CertificateAdditionalInformationPage
-import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
-class CertificateAdditionalInformationSummarySpec extends SpecBase with GuiceOneAppPerSuite {
-  given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
+class CertificateAdditionalInformationSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
 
   "CertificateAdditionalInformationSummary.row" - {
 
@@ -33,18 +29,18 @@ class CertificateAdditionalInformationSummarySpec extends SpecBase with GuiceOne
       "must return None" in {
         def SUT = CertificateAdditionalInformationSummary.row(emptyUserAnswers)
 
-        SUT mustBe None
+        renderSummaryRow(SUT).renderedKeyText mustBe "Additional Information"
       }
     }
 
     "when there is a user answer for CertificateAdditionalInformationPage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(CertificateAdditionalInformationPage, answer).get
+        emptyUserAnswers.set(CertificateAdditionalInformationPage, Some(answer)).get
 
-      def SUT(answer: String = "") = CertificateAdditionalInformationSummary.row(testUserAnswers(answer)).get
+      def SUT(answer: String = "") = CertificateAdditionalInformationSummary.row(testUserAnswers(answer))
 
       "must have expected key" in {
-        SUT().key mustBe "certificateAdditionalInformation".toKey
+        SUT().key mustBe "Additional Information".toKey
       }
 
       "expected value" - {

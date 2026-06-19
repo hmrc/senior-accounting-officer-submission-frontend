@@ -17,10 +17,12 @@
 package navigation
 
 import base.SpecBase
+import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
 import models.upload.UploadTemplateTableData
 import pages.*
+import pages.notification.*
 
 import java.time.LocalDate
 
@@ -44,7 +46,7 @@ class NavigatorSpec extends SpecBase {
           NotificationAdditionalInformationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.ConfirmYourNotificationController.onPageLoad()
+        ) mustBe notificationRoutes.ConfirmYourNotificationController.onPageLoad()
       }
 
       "when on ConfirmYourNotificationPage, must go to check your answers page" in {
@@ -52,7 +54,7 @@ class NavigatorSpec extends SpecBase {
           ConfirmYourNotificationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
       "when on NotificationCheckYourAnswersPage, must go to notification confirmation page" in {
@@ -61,7 +63,7 @@ class NavigatorSpec extends SpecBase {
           NotificationCheckYourAnswersPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationConfirmationController.onPageLoad(notRefIdMock)
+        ) mustBe notificationRoutes.NotificationConfirmationController.onPageLoad(notRefIdMock)
       }
 
       "when on ConfirmYourNotificationPage, must go to notification check your answers page" in {
@@ -69,7 +71,7 @@ class NavigatorSpec extends SpecBase {
           ConfirmYourNotificationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
       "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO email page" in {
@@ -167,7 +169,7 @@ class NavigatorSpec extends SpecBase {
           NotificationConfirmationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.SubmitNotificationStartController.onComplete()
+        ) mustBe notificationRoutes.SubmitNotificationStartController.onComplete()
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
@@ -175,7 +177,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreThanOneSaoPage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, false).success.value
-        ) mustBe routes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected Yes, must go to multiple sao name page" in {
@@ -183,7 +185,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreThanOneSaoPage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-        ) mustBe routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
       }
 
       "when on MoreSaoSubmitNotificationFullNameController, must go to more sao submit notification first date page" in {
@@ -191,7 +193,7 @@ class NavigatorSpec extends SpecBase {
           MoreSaoSubmitNotificationFullNamePage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-        ) mustBe routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMoreSaoFirstStartDatePage, must go to who was the sao before page" in {
@@ -207,7 +209,7 @@ class NavigatorSpec extends SpecBase {
           WhoWasTheSaoBeforePage(0),
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, 0)
+        ) mustBe notificationRoutes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, 0)
       }
 
       "when on NotificationMoreSaoSecondStartDatePage, must go to NotificationMoreSaoSecondEndDate page" in {
@@ -215,7 +217,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreSaoSecondStartDatePage(0),
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMoreSaoSecondEndDatePage, must go to NotificationMoreSaoAreAllAdded page" in {
@@ -223,7 +225,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreSaoSecondEndDatePage(0),
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMoreSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
@@ -241,7 +243,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreSaoAreAllAddedPage(0),
           NormalMode,
           UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), true).success.value
-        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
       }
 
       "when on NotificationMoreSaoAreAllAddedPage, and the user answers no, must go to WhoWasTheSaoBefore page with an incremented saoIndex" in {
@@ -257,7 +259,7 @@ class NavigatorSpec extends SpecBase {
           OneSaoSubmitNotificationFullNamePage,
           NormalMode,
           UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
-        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
@@ -271,7 +273,7 @@ class NavigatorSpec extends SpecBase {
           UploadTemplateTablePage,
           NormalMode,
           userAnswers
-        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {
@@ -291,7 +293,7 @@ class NavigatorSpec extends SpecBase {
           UploadTemplateTablePage,
           NormalMode,
           userAnswers
-        ) mustBe routes.NotificationUploadFormController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationUploadFormController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with no upload data, must go to journey recovery page" in {
@@ -309,7 +311,7 @@ class NavigatorSpec extends SpecBase {
             SubmissionTypePage,
             NormalMode,
             UserAnswers("id").set(SubmissionTypePage, SubmissionType.Notification).get
-          ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+          ) mustBe notificationRoutes.SubmitNotificationStartController.onPageLoad()
         }
 
         "when on SubmissionTypePage and the user chose certificate only, must go to CertificateTaskList" in {
@@ -431,7 +433,7 @@ class NavigatorSpec extends SpecBase {
           NotificationAdditionalInformationPage,
           CheckMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
       "when on SaoNamePage, must go to certificate check your answers page" in {
