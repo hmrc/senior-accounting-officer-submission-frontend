@@ -16,13 +16,13 @@
 
 package models
 
+import models.QualifiedCompanySpec.*
+import models.displayRegimes
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import models.displayRegimes
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.Messages
 import play.api.i18n.MessagesApi
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import models.QualifiedCompanySpec.*
 
 class QualifiedCompanySpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)

@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.CertificateTaskListStage
+import models.QualifiedCompany
 import navigation.FakeNavigator
 import navigation.Navigator
 import play.api.inject.bind
@@ -25,14 +26,13 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.CertificateReviewQualifiedView
-import models.QualifiedCompany
 
 class CertificateReviewQualifiedControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
   // TODO: remove when corresponding dummy data removed from controller
-  val dummyData = Seq(
+  val dummyData: Seq[QualifiedCompany] = Seq(
     QualifiedCompany(
       name = "example company name",
       utr = "example company utr",

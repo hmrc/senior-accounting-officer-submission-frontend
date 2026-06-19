@@ -18,11 +18,11 @@ package models.upload
 
 import base.SpecBase
 import models.UnqualifiedCompany
+import models.QualifiedCompany
+import models.upload.ParsedSubmissionRowSpec.*
 import play.api.libs.json.{JsError, JsString, Json}
 
 import java.time.LocalDate
-import models.QualifiedCompany
-import models.upload.ParsedSubmissionRowSpec.*
 
 class ParsedSubmissionRowSpec extends SpecBase {
   import NotificationFields.given

@@ -17,6 +17,7 @@
 package models.upload
 
 import models.UnqualifiedCompany
+import models.QualifiedCompany
 import play.api.libs.json.*
 
 import scala.util.Try
@@ -25,8 +26,6 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatterBuilder
 import java.time.format.ResolverStyle
 import java.time.temporal.ChronoField
-
-import models.QualifiedCompany
 
 final case class ParsedSubmissionRow(
     notification: NotificationFields,

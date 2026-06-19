@@ -18,12 +18,12 @@ package views
 
 import base.ViewSpecBase
 import controllers.routes
+import models.QualifiedCompany
+import models.displayRegimes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.CertificateReviewQualifiedViewSpec.*
 import views.html.CertificateReviewQualifiedView
-import models.QualifiedCompany
-import models.displayRegimes
 
 class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQualifiedView] {
 
@@ -199,7 +199,7 @@ object CertificateReviewQualifiedViewSpec {
   val secondParagraphLinkText       = "upload an updated submission template"
   val secondParagraphLinkSelector   = ".govuk-body:nth-of-type(2) .govuk-link"
 
-  val qualifiedCompanies = Seq(
+  val qualifiedCompanies: Seq[QualifiedCompany] = Seq(
     QualifiedCompany(
       name = "example company name",
       utr = "example company utr",

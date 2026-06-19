@@ -18,8 +18,10 @@ package controllers
 
 import controllers.actions.*
 import models.NormalMode
+import models.upload.*
 import navigation.Navigator
 import pages.CertificateReviewQualifiedPage
+import pages.CertificateSaoFullNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -29,11 +31,9 @@ import views.html.CertificateReviewQualifiedView
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
-import javax.inject.Inject
 import java.time.LocalDate
-import models.upload.*
-import pages.CertificateSaoFullNamePage
 import java.time.format.DateTimeFormatter
+import javax.inject.Inject
 
 class CertificateReviewQualifiedController @Inject() (
     override val messagesApi: MessagesApi,
