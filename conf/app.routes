@@ -57,10 +57,10 @@ GET        /certificate/task-list/3                       controllers.Certificat
 GET        /certificate/task-list/complete                controllers.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Complete)
 POST       /certificate/task-list                         controllers.CertificateTaskListController.onSubmit()
 
-GET         /notification/one-sao/submit-notification-full-name               controllers.notification.OneSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = NormalMode)
-POST        /notification/one-sao/submit-notification-full-name               controllers.notification.OneSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = NormalMode)
-GET         /notification/one-sao/change-submit-notification-full-name        controllers.notification.OneSaoSubmitNotificationFullNameController.onPageLoad(mode: Mode = CheckMode)
-POST        /notification/one-sao/change-submit-notification-full-name        controllers.notification.OneSaoSubmitNotificationFullNameController.onSubmit(mode: Mode = CheckMode)
+GET         /notification/one-sao/submit-notification-full-name               controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/one-sao/submit-notification-full-name               controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode = NormalMode)
+GET         /notification/one-sao/change-submit-notification-full-name        controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/one-sao/change-submit-notification-full-name        controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/more-sao/submit-notification-first-start-date               controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/more-sao/submit-notification-first-start-date               controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onSubmit(mode: Mode = NormalMode)

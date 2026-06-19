@@ -17,31 +17,31 @@
 package controllers.notification
 
 import controllers.actions.*
-import forms.notification.OneSaoSubmitNotificationFullNameFormProvider
+import forms.notification.NotificationSingleSaoOfficerNameFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.notification.OneSaoSubmitNotificationFullNamePage
+import pages.notification.NotificationSingleSaoOfficerNamePage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.OneSaoSubmitNotificationFullNameView
+import views.html.notification.NotificationSingleSaoOfficerNameView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-class OneSaoSubmitNotificationFullNameController @Inject() (
+class NotificationSingleSaoOfficerNameController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: Navigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    formProvider: OneSaoSubmitNotificationFullNameFormProvider,
+    formProvider: NotificationSingleSaoOfficerNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: OneSaoSubmitNotificationFullNameView
+    view: NotificationSingleSaoOfficerNameView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -49,7 +49,7 @@ class OneSaoSubmitNotificationFullNameController @Inject() (
   val form: Form[String] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(OneSaoSubmitNotificationFullNamePage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(NotificationSingleSaoOfficerNamePage).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -61,9 +61,9 @@ class OneSaoSubmitNotificationFullNameController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(OneSaoSubmitNotificationFullNamePage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationSingleSaoOfficerNamePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(OneSaoSubmitNotificationFullNamePage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(NotificationSingleSaoOfficerNamePage, mode, updatedAnswers))
         )
   }
 }

@@ -19,9 +19,9 @@ package pages.notification
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object OneSaoSubmitNotificationFullNamePage extends QuestionPage[String] {
+case object NotificationSingleSaoOfficerNamePage extends QuestionPage[String] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "oneSaoSubmitNotificationFullName"
+  override def toString: String = "notificationSingleSaoOfficerName"
 }

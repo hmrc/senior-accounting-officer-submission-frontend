@@ -20,38 +20,38 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.notification.OneSaoSubmitNotificationFullNamePage
+import pages.notification.NotificationSingleSaoOfficerNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
-class OneSaoSubmitNotificationFullNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
+class NotificationSingleSaoOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  "OneSaoSubmitNotificationFullNameSummary.row" - {
+  "NotificationSingleSaoOfficerNameSummary.row" - {
 
-    "when there is no answer for OneSaoSubmitNotificationFullNamePage" - {
+    "when there is no answer for NotificationSingleSaoOfficerNamePage" - {
       "must return None" in {
-        def SUT = OneSaoSubmitNotificationFullNameSummary.row(emptyUserAnswers)
+        def SUT = NotificationSingleSaoOfficerNameSummary.row(emptyUserAnswers)
 
         SUT mustBe None
       }
     }
 
-    "when there is a user answer for OneSaoSubmitNotificationFullNamePage" - {
+    "when there is a user answer for NotificationSingleSaoOfficerNamePage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(OneSaoSubmitNotificationFullNamePage, answer).get
+        emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage, answer).get
 
-      def SUT(answer: String = "") = OneSaoSubmitNotificationFullNameSummary.row(testUserAnswers(answer)).get
+      def SUT(answer: String = "") = NotificationSingleSaoOfficerNameSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "oneSaoSubmitNotificationFullName".toKey
+        SUT().key mustBe "notificationSingleSaoOfficerName".toKey
       }
 
       "expected value" - {
-        "must show 'testOneSaoSubmitNotificationFullName' when user answers is 'testOneSaoSubmitNotificationFullName'" in {
+        "must show 'testNotificationSingleSaoOfficerName' when user answers is 'testNotificationSingleSaoOfficerName'" in {
           SUT(answer =
-            "testOneSaoSubmitNotificationFullName"
-          ).value.content mustBe "testOneSaoSubmitNotificationFullName".toText
+            "testNotificationSingleSaoOfficerName"
+          ).value.content mustBe "testNotificationSingleSaoOfficerName".toText
         }
       }
 
@@ -74,13 +74,13 @@ class OneSaoSubmitNotificationFullNameSummarySpec extends SpecBase with GuiceOne
         }
 
         "must have expected url" in {
-          action.href mustBe notificationRoutes.OneSaoSubmitNotificationFullNameController
+          action.href mustBe notificationRoutes.NotificationSingleSaoOfficerNameController
             .onPageLoad(CheckMode)
             .url
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "OneSaoSubmitNotificationFullName"
+          action.visuallyHiddenText.get mustBe "NotificationSingleSaoOfficerName"
         }
       }
     }

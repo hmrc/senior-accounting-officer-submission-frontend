@@ -18,25 +18,25 @@ package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
-import pages.notification.OneSaoSubmitNotificationFullNamePage
+import pages.notification.NotificationSingleSaoOfficerNamePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
-object OneSaoSubmitNotificationFullNameSummary {
+object NotificationSingleSaoOfficerNameSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(OneSaoSubmitNotificationFullNamePage).map { answer =>
+    answers.get(NotificationSingleSaoOfficerNamePage).map { answer =>
       SummaryListRowViewModel(
-        key = messages("oneSaoSubmitNotificationFullName.checkYourAnswersLabel").toKey,
+        key = messages("notificationSingleSaoOfficerName.checkYourAnswersLabel").toKey,
         value = ValueViewModel(answer.toText),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            notificationRoutes.OneSaoSubmitNotificationFullNameController.onPageLoad(CheckMode).url
+            notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(CheckMode).url
           )
-            .withVisuallyHiddenText(messages("oneSaoSubmitNotificationFullName.change.hidden"))
+            .withVisuallyHiddenText(messages("notificationSingleSaoOfficerName.change.hidden"))
         )
       )
     }

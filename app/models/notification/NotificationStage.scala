@@ -69,7 +69,7 @@ object NotificationStage {
   private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(NotificationMoreThanOneSaoPage).exists {
       case false =>
-        userAnswers.get(OneSaoSubmitNotificationFullNamePage).exists(_.trim.nonEmpty)
+        userAnswers.get(NotificationSingleSaoOfficerNamePage).exists(_.trim.nonEmpty)
       case true =>
         userAnswers.get(NotificationMultiSaoLastOfficerNamePage).exists(_.trim.nonEmpty) &&
         hasCompletedMoreSaoDetails(userAnswers)

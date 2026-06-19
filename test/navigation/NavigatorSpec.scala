@@ -177,7 +177,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreThanOneSaoPage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, false).success.value
-        ) mustBe notificationRoutes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected Yes, must go to multiple sao name page" in {
@@ -254,11 +254,11 @@ class NavigatorSpec extends SpecBase {
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 1)
       }
 
-      "when on OneSaoSubmitNotificationFullNamePage, must go to the submit notification start page" in {
+      "when on NotificationSingleSaoOfficerNamePage, must go to the submit notification start page" in {
         navigator.nextPage(
-          OneSaoSubmitNotificationFullNamePage,
+          NotificationSingleSaoOfficerNamePage,
           NormalMode,
-          UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
+          UserAnswers("id").set(NotificationSingleSaoOfficerNamePage, "Firstname Lastname").success.value
         ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 

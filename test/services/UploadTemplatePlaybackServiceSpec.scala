@@ -68,7 +68,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(NotificationMoreThanOneSaoPage, false)
         .success
         .value
-        .set(OneSaoSubmitNotificationFullNamePage, "Jane Smith")
+        .set(NotificationSingleSaoOfficerNamePage, "Jane Smith")
         .success
         .value
 
@@ -83,7 +83,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(NotificationMoreThanOneSaoPage, true)
         .success
         .value
-        .set(OneSaoSubmitNotificationFullNamePage, "Ignored Name")
+        .set(NotificationSingleSaoOfficerNamePage, "Ignored Name")
         .success
         .value
         .set(NotificationMultiSaoLastOfficerNamePage, "John Smith")
@@ -98,7 +98,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(NotificationMoreThanOneSaoPage, false)
         .success
         .value
-        .set(OneSaoSubmitNotificationFullNamePage, "Jane Smith")
+        .set(NotificationSingleSaoOfficerNamePage, "Jane Smith")
         .success
         .value
 
@@ -134,7 +134,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(UploadTemplateTablePage, tableData)
         .success
         .value
-        .set(OneSaoSubmitNotificationFullNamePage, "Jane Smith")
+        .set(NotificationSingleSaoOfficerNamePage, "Jane Smith")
         .success
         .value
 

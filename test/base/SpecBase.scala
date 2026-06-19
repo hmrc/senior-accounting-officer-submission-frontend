@@ -49,7 +49,7 @@ trait SpecBase
       .set(NotificationMoreThanOneSaoPage, false)
       .success
       .value
-      .set(OneSaoSubmitNotificationFullNamePage, "Jackson Brown")
+      .set(NotificationSingleSaoOfficerNamePage, "Jackson Brown")
       .success
       .value
 

@@ -18,18 +18,18 @@ package views.notification
 
 import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
-import forms.notification.OneSaoSubmitNotificationFullNameFormProvider
+import forms.notification.NotificationSingleSaoOfficerNameFormProvider
 import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.html.notification.OneSaoSubmitNotificationFullNameView
+import views.html.notification.NotificationSingleSaoOfficerNameView
 
-import OneSaoSubmitNotificationFullNameViewSpec.*
+import NotificationSingleSaoOfficerNameViewSpec.*
 
-class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmitNotificationFullNameView] {
+class NotificationSingleSaoOfficerNameViewSpec extends ViewSpecBase[NotificationSingleSaoOfficerNameView] {
 
-  private val formProvider       = app.injector.instanceOf[OneSaoSubmitNotificationFullNameFormProvider]
+  private val formProvider       = app.injector.instanceOf[NotificationSingleSaoOfficerNameFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String], mode: Mode): Document = {
@@ -37,7 +37,7 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
     Jsoup.parse(view.toString)
   }
 
-  "OneSaoSubmitNotificationFullNameView" - {
+  "NotificationSingleSaoOfficerNameView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -65,7 +65,7 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.OneSaoSubmitNotificationFullNameController.onSubmit(mode),
+            action = notificationRoutes.NotificationSingleSaoOfficerNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -98,7 +98,7 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.OneSaoSubmitNotificationFullNameController.onSubmit(mode),
+            action = notificationRoutes.NotificationSingleSaoOfficerNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -131,7 +131,7 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
           doc.createTestsWithLargeCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = notificationRoutes.OneSaoSubmitNotificationFullNameController.onSubmit(mode),
+            action = notificationRoutes.NotificationSingleSaoOfficerNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -144,7 +144,7 @@ class OneSaoSubmitNotificationFullNameViewSpec extends ViewSpecBase[OneSaoSubmit
   }
 }
 
-object OneSaoSubmitNotificationFullNameViewSpec {
+object NotificationSingleSaoOfficerNameViewSpec {
   val pageHeading = "What is the name of the SAO?"
   val pageTitle   = "Submit a notification - SAO full name"
   val pageCaption = "Submit a notification"

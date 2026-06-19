@@ -74,7 +74,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
     .set(NotificationMoreThanOneSaoPage, false)
     .success
     .value
-    .set(OneSaoSubmitNotificationFullNamePage, saoName)
+    .set(NotificationSingleSaoOfficerNamePage, saoName)
     .success
     .value
 
