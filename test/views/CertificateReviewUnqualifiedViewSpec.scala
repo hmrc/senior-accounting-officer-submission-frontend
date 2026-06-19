@@ -138,9 +138,9 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         for i <- 0 to unqualifiedCompanies.size - 1 do {
           descriptionDetails.get(i * 5).text() mustBe unqualifiedCompanies(i).name
           descriptionDetails.get(i * 5 + 1).text() mustBe unqualifiedCompanies(i).utr
-          descriptionDetails.get(i * 5 + 2).text() mustBe unqualifiedCompanies(i).crn
-          descriptionDetails.get(i * 5 + 3).text() mustBe unqualifiedCompanies(i).companyType
-          descriptionDetails.get(i * 5 + 4).text() mustBe unqualifiedCompanies(i).companyStatus
+          descriptionDetails.get(i * 5 + 2).text() mustBe unqualifiedCompanies(i).crn.toString
+          descriptionDetails.get(i * 5 + 3).text() mustBe unqualifiedCompanies(i).companyType.toString
+          descriptionDetails.get(i * 5 + 4).text() mustBe unqualifiedCompanies(i).companyStatus.toString
         }
       }
     }
