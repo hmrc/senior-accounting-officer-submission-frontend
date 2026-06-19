@@ -20,7 +20,7 @@
     formHelper: FormWithCSRF
 )
 
-@(saoName: String, qualifiedCompanies: Seq[QualifiedCompany], companyCount: Int)(using request: Request[?], messages: Messages)
+@(saoName: String, financialYearEnd: String, companyCount: Int, qualifiedCompanies: Seq[QualifiedCompany])(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("certificateReviewQualified.title"))) {
 
@@ -32,7 +32,7 @@
 
     <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph2WithLink", routes.CertificateUploadFormController.onPageLoad()))</p>
 
-    <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph3", saoName, qualifiedCompanies.size))</p>
+    <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph3", saoName, financialYearEnd, qualifiedCompanies.size))</p>
 
     @for(qualifiedCompany <- qualifiedCompanies) {
         <dl class="govuk-summary-list">

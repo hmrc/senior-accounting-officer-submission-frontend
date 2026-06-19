@@ -32,6 +32,8 @@ import scala.concurrent.Future
 import javax.inject.Inject
 import java.time.LocalDate
 import models.upload.*
+import pages.CertificateSaoFullNamePage
+import java.time.format.DateTimeFormatter
 
 class CertificateReviewQualifiedController @Inject() (
     override val messagesApi: MessagesApi,
@@ -105,8 +107,21 @@ class CertificateReviewQualifiedController @Inject() (
 
           val qualifiedCompanies = dummyData.map(_.toQualifiedCompany)
 
-          // TODO: pull sao name out of userAnswers
-          Ok(view(saoName = "", qualifiedCompanies = qualifiedCompanies, companyCount = 1))
+          request.userAnswers
+            .get(CertificateSaoFullNamePage) match {
+            case Some(saoName) =>
+              Ok(
+                view(
+                  saoName = saoName,
+                  financialYearEnd = LocalDate
+                    .of(2024, 12, 31)
+                    .format(DateTimeFormatter.ofPattern("d MMMM yyyy")),
+                  companyCount = 1,
+                  qualifiedCompanies = qualifiedCompanies
+                )
+              )
+            case None => Redirect(routes.JourneyRecoveryController.onPageLoad())
+          }
         }
     }
 

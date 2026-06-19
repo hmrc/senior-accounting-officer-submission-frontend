@@ -367,10 +367,10 @@ certificateReviewQualified.heading = Review the companies with a qualified certi
 certificateReviewQualified.caption = Submit a certificate
 certificateReviewQualified.paragraph1 = This list is taken from the certificate details in the submission template you uploaded. There were {0} companies the SAO was responsible for during the financial year.
 certificateReviewQualified.paragraph2WithLink = If the information listed is not correct, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
-certificateReviewQualified.paragraph3 = In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I {0}, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, <b>{1}</b> companies did not have appropriate tax accounting arrangements.
+certificateReviewQualified.paragraph3 = In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I {0}, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended {1}, <b>{2}</b> companies did not have appropriate tax accounting arrangements.
 certificateReviewQualified.rows.name = Company name
 certificateReviewQualified.rows.utr = UTR
-certificateReviewQualified.rows.taxRegimes = Tax regimes
+certificateReviewQualified.rows.taxRegimes = Tax Regimes
 certificateReviewQualified.rows.additionalInformation = Additional information
 certificateReviewQualified.taxRegimes.corporationTax = Corporation Tax
 certificateReviewQualified.taxRegimes.valueAddedTax = Value Added Tax

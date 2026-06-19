@@ -23,15 +23,21 @@ import org.jsoup.nodes.Document
 import views.CertificateReviewQualifiedViewSpec.*
 import views.html.CertificateReviewQualifiedView
 import models.QualifiedCompany
+import models.displayRegimes
 
 class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQualifiedView] {
 
-  private def generateView(saoName: String, qualifiedCompanies: Seq[QualifiedCompany], companyCount: Int): Document =
-    Jsoup.parse(SUT(saoName, qualifiedCompanies, companyCount).toString)
+  private def generateView(
+      saoName: String,
+      financialYearEnd: String,
+      qualifiedCompanies: Seq[QualifiedCompany],
+      companyCount: Int
+  ): Document =
+    Jsoup.parse(SUT(saoName, financialYearEnd, companyCount, qualifiedCompanies).toString)
 
   "CertificateReviewQualifiedView" - {
     "When no rows are passed to the view must render empty table" - {
-      val doc: Document = generateView(firstSaoName, Seq(), 0)
+      val doc: Document = generateView(firstSaoName, financialYearEnd, Seq(), 0)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -52,7 +58,11 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .get(0)
         .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      // TODO: test when no rows passed in
+      "must have bold text in second paragraph denoting number of qualified companies" in {
+        doc.select("b").get(0).text() mustBe zeroQualifiedCompanyCountText
+      }
+
+      doc.createTestsWithQualifiedCompanyDescriptionList(Seq())
 
       doc.createTestsWithSubmissionButton(
         action = routes.CertificateReviewQualifiedController.onSubmit(),
@@ -61,7 +71,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
     }
 
     "When rows are passed to the view must render populated table" - {
-      val doc: Document = generateView(firstSaoName, Seq(), 2)
+      val doc: Document = generateView(firstSaoName, financialYearEnd, qualifiedCompanies, 2)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -82,9 +92,11 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .get(0)
         .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      // TODO: check bold
+      "must have bold text in second paragraph denoting number of qualified companies" in {
+        doc.select("b").get(0).text() mustBe twoQualifiedCompanyCountText
+      }
 
-      // TODO: test the table
+      doc.createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies)
 
       doc.createTestsWithSubmissionButton(
         action = routes.CertificateReviewQualifiedController.onSubmit(),
@@ -93,7 +105,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
     }
 
     "When rows are and a different sao name are passed to the view must render populated table with differnt sao name" - {
-      val doc: Document = generateView(secondSaoName, Seq(), 2)
+      val doc: Document = generateView(secondSaoName, financialYearEnd, qualifiedCompanies, 2)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -114,9 +126,11 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .get(0)
         .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      // TODO: check bold
+      "must have bold text in second paragraph denoting number of qualified companies" in {
+        doc.select("b").get(0).text() mustBe twoQualifiedCompanyCountText
+      }
 
-      // TODO: test the table
+      doc.createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies)
 
       doc.createTestsWithSubmissionButton(
         action = routes.CertificateReviewQualifiedController.onSubmit(),
@@ -126,13 +140,38 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
   }
 
   extension (doc: Document) {
-    def createTestsWithQualifiedCompanyTable(): Unit = {
-      // TODO: make a test case class to hold view info
+    def createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies: Seq[QualifiedCompany]): Unit = {
+      val expectedCountOfDesciptionLists = qualifiedCompanies.size
 
-      // TODO: test number of companies shown
+      "must be one description list per qualified company" in {
+        val descriptionLists = doc.select("dl.govuk-summary-list")
+        descriptionLists.size() mustBe expectedCountOfDesciptionLists
+      }
 
-      // TODO: test structure of html
+      "must be four description terms per qualified company with expected text" in {
+        val descriptionTerms = doc.select("div.govuk-summary-list__row > dt.govuk-summary-list__key")
 
+        descriptionTerms.size() mustBe expectedCountOfDesciptionLists * 4
+
+        for i <- 0 to qualifiedCompanies.size - 1 do {
+          descriptionTerms.get(i * 4).text() mustBe companyNameDescriptionTermText
+          descriptionTerms.get(i * 4 + 1).text() mustBe utrDescriptionTermText
+          descriptionTerms.get(i * 4 + 2).text() mustBe taxRegimesDescriptionTermText
+          descriptionTerms.get(i * 4 + 3).text() mustBe additionalInformationDescriptionTermText
+        }
+      }
+
+      "must be four description details per qualified company with expected text" in {
+        val descriptionDetails = doc.select("div.govuk-summary-list__row > dd.govuk-summary-list__value")
+        descriptionDetails.size() mustBe expectedCountOfDesciptionLists * 4
+
+        for i <- 0 to qualifiedCompanies.size - 1 do {
+          descriptionDetails.get(i * 4).text() mustBe qualifiedCompanies(i).name
+          descriptionDetails.get(i * 4 + 1).text() mustBe qualifiedCompanies(i).utr
+          descriptionDetails.get(i * 4 + 2).text() mustBe qualifiedCompanies(i).displayRegimes
+          descriptionDetails.get(i * 4 + 3).text() mustBe qualifiedCompanies(i).additionalInformation
+        }
+      }
     }
   }
 }
@@ -149,11 +188,52 @@ object CertificateReviewQualifiedViewSpec {
   val thirdParagraphZeroQualifiedCompanies =
     "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 0 companies did not have appropriate tax accounting arrangements."
   val thirdParagraphTwoQualifiedCompanies =
-    "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 0 companies did not have appropriate tax accounting arrangements."
+    "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 2 companies did not have appropriate tax accounting arrangements."
   val thirdParagraphTwoQualifiedCompaniesDifferentSao =
-    "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Firstname Lastname II, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 0 companies did not have appropriate tax accounting arrangements."
-  val firstSaoName                = "Firstname Lastname"
-  val secondSaoName               = "Firstname Lastname II"
-  val secondParagraphLinkText     = "upload an updated submission template"
-  val secondParagraphLinkSelector = ".govuk-body:nth-of-type(2) .govuk-link"
+    "In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Firstname Lastname II, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended 31 December 2024, 2 companies did not have appropriate tax accounting arrangements."
+  val firstSaoName                  = "Firstname Lastname"
+  val secondSaoName                 = "Firstname Lastname II"
+  val financialYearEnd              = "31 December 2024"
+  val zeroQualifiedCompanyCountText = "0"
+  val twoQualifiedCompanyCountText  = "2"
+  val secondParagraphLinkText       = "upload an updated submission template"
+  val secondParagraphLinkSelector   = ".govuk-body:nth-of-type(2) .govuk-link"
+
+  val qualifiedCompanies = Seq(
+    QualifiedCompany(
+      name = "example company name",
+      utr = "example company utr",
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = false,
+      petroleumRevenueTax = true,
+      customsDuties = false,
+      exciseDuties = false,
+      bankLevy = false,
+      additionalInformation = "example additional information"
+    ),
+    QualifiedCompany(
+      name = "example company name 2",
+      utr = "example company utr 2",
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = true,
+      petroleumRevenueTax = false,
+      customsDuties = false,
+      exciseDuties = true,
+      bankLevy = false,
+      additionalInformation = "example additional information 2"
+    )
+  )
+
+  val companyNameDescriptionTermText           = "Company name"
+  val utrDescriptionTermText                   = "UTR"
+  val taxRegimesDescriptionTermText            = "Tax Regimes"
+  val additionalInformationDescriptionTermText = "Additional information"
 }
