@@ -58,7 +58,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .get(0)
         .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      "must have bold text in second paragraph denoting number of qualified companies" in {
+      "must have bold text in third paragraph denoting number of qualified companies" in {
         doc.select("b").get(0).text() mustBe zeroQualifiedCompanyCountText
       }
 
@@ -92,7 +92,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .get(0)
         .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      "must have bold text in second paragraph denoting number of qualified companies" in {
+      "must have bold text in third paragraph denoting number of qualified companies" in {
         doc.select("b").get(0).text() mustBe twoQualifiedCompanyCountText
       }
 
@@ -126,7 +126,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .get(0)
         .createTestWithLink(secondParagraphLinkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      "must have bold text in second paragraph denoting number of qualified companies" in {
+      "must have bold text in third paragraph denoting number of qualified companies" in {
         doc.select("b").get(0).text() mustBe twoQualifiedCompanyCountText
       }
 
