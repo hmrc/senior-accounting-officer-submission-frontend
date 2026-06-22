@@ -41,10 +41,13 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
       val summaryList   = SummaryList()
       val doc: Document = generateView(summaryList)
 
-      "Summary Card" - {
+      "Summary Grid" - {
         "must be exactly one present" in {
-          doc.summaryListCards.size() mustBe 1
+          doc.summaryListGrid.size() mustBe 1
         }
+      }
+
+      "Description List" - {
 
         "must have description list" in {
           doc.descriptionLists.size() mustBe 1
@@ -56,11 +59,6 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
         "description list must have css class 'govuk-summary-list'" in {
           doc.descriptionList.hasClass("govuk-summary-list") mustBe true
-        }
-
-        "description list must be inside a div that has css class 'govuk-summary-card__content'" in {
-          val parent = doc.descriptionList.closest("div")
-          parent.hasClass("govuk-summary-card__content") mustBe true
         }
       }
 
@@ -108,9 +106,9 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
       val doc: Document = generateView(summaryList)
 
-      "Summary Card" - {
+      "Summary Grid" - {
         "must be exactly one present" in {
-          doc.summaryListCards.size() mustBe 1
+          doc.summaryListGrid.size() mustBe 1
         }
 
         "page must have description list" in {
@@ -146,10 +144,6 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
             doc.descriptionList.hasClass("govuk-summary-list") mustBe true
           }
 
-          "description list must be inside a div that has css class 'govuk-summary-card__content'" in {
-            val parent = doc.descriptionList.closest("div")
-            parent.hasClass("govuk-summary-card__content") mustBe true
-          }
         }
       }
 
@@ -237,12 +231,10 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
   }
 
   extension (target: Document | Element) {
-    def summaryListCards: Elements  = target.select("div.govuk-summary-card")
-    def summaryListCard: Element    = summaryListCards.get(0)
-    def summaryListTitles: Elements = summaryListCard.select("h2")
-    def summaryListTitle: Element   = summaryListTitles.get(0)
-    def descriptionLists: Elements  = summaryListCard.summaryListCard.select("dl")
-    def descriptionList: Element    = descriptionLists.get(0)
+    def summaryListGrid: Elements    = target.select("div.govuk-grid-row")
+    def summaryListContent: Elements = summaryListGrid.select("div.govuk-grid-column-two-thirds")
+    def descriptionLists: Elements   = summaryListContent.select("dl")
+    def descriptionList: Element     = descriptionLists.get(0)
   }
 }
 
