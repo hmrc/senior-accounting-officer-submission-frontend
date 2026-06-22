@@ -18,6 +18,7 @@ package config
 
 import controllers.internal.routes
 import play.api.Configuration
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -46,6 +47,22 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   val loginContinueUrl: String = hubBaseUrl
 
   lazy val upscanInitiateV2Url: String = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
+
+  lazy val internalAuthTestOnlyTokenUrl: String = servicesConfig.baseUrl("internal-auth") + "/test-only/token"
+
+  val internalAuthToken: String = config.get[String]("internal-auth.token")
+
+  val saoObjectStoreInternalAuthTokenRequest: JsObject = Json.obj(
+    "token"       -> internalAuthToken,
+    "principal"   -> "senior-accounting-officer-submission-frontend",
+    "permissions" -> Json.arr(
+      Json.obj(
+        "resourceType"     -> "object-store",
+        "resourceLocation" -> "senior-accounting-officer",
+        "actions"          -> Json.arr("READ", "WRITE")
+      )
+    )
+  )
 
   lazy val upscanCallbackTarget: String =
     s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback()}"
