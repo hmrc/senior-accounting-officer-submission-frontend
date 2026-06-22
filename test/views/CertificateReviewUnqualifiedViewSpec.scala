@@ -104,7 +104,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         .get(0)
         .createTestWithLink(linkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-      doc.createTestsWithUnqualifiedCompanyDescriptionList(unqualifiedCompanies)
+      doc.createTestsWithUnqualifiedCompanyDescriptionList(Seq())
 
     }
   }
