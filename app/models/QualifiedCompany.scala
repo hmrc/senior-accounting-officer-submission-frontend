@@ -36,33 +36,19 @@ final case class QualifiedCompany(
 
 extension (qualifiedCompany: QualifiedCompany) {
   def displayRegimes(using messages: Messages): String = {
-    def displayRegime(condition: Boolean, text: String): Option[String] = {
-      if condition then Some(text) else None
-    }
-
     List(
-      displayRegime(qualifiedCompany.corporationTax, messages("certificateReviewQualified.taxRegimes.corporationTax")),
-      displayRegime(qualifiedCompany.valueAddedTax, messages("certificateReviewQualified.taxRegimes.valueAddedTax")),
-      displayRegime(qualifiedCompany.paye, messages("certificateReviewQualified.taxRegimes.paye")),
-      displayRegime(
-        qualifiedCompany.insurancePremiumTax,
-        messages("certificateReviewQualified.taxRegimes.insurancePremiumTax")
-      ),
-      displayRegime(
-        qualifiedCompany.stampDutyLandTax,
-        messages("certificateReviewQualified.taxRegimes.stampDutyLandTax")
-      ),
-      displayRegime(
-        qualifiedCompany.stampDutyReserveTax,
-        messages("certificateReviewQualified.taxRegimes.stampDutyReserveTax")
-      ),
-      displayRegime(
-        qualifiedCompany.petroleumRevenueTax,
-        messages("certificateReviewQualified.taxRegimes.petroleumRevenueTax")
-      ),
-      displayRegime(qualifiedCompany.customsDuties, messages("certificateReviewQualified.taxRegimes.customsDuties")),
-      displayRegime(qualifiedCompany.exciseDuties, messages("certificateReviewQualified.taxRegimes.exciseDuties")),
-      displayRegime(qualifiedCompany.bankLevy, messages("certificateReviewQualified.taxRegimes.bankLevy"))
-    ).flatten.mkString(", ")
+      qualifiedCompany.corporationTax      -> "certificateReviewQualified.taxRegimes.corporationTax",
+      qualifiedCompany.valueAddedTax       -> "certificateReviewQualified.taxRegimes.valueAddedTax",
+      qualifiedCompany.paye                -> "certificateReviewQualified.taxRegimes.paye",
+      qualifiedCompany.insurancePremiumTax -> "certificateReviewQualified.taxRegimes.insurancePremiumTax",
+      qualifiedCompany.stampDutyLandTax    -> "certificateReviewQualified.taxRegimes.stampDutyLandTax",
+      qualifiedCompany.stampDutyReserveTax -> "certificateReviewQualified.taxRegimes.stampDutyReserveTax",
+      qualifiedCompany.petroleumRevenueTax -> "certificateReviewQualified.taxRegimes.petroleumRevenueTax",
+      qualifiedCompany.customsDuties       -> "certificateReviewQualified.taxRegimes.customsDuties",
+      qualifiedCompany.exciseDuties        -> "certificateReviewQualified.taxRegimes.exciseDuties",
+      qualifiedCompany.bankLevy            -> "certificateReviewQualified.taxRegimes.bankLevy"
+    ).collect { case (true, messageKey) =>
+      messages(messageKey)
+    }.mkString(", ")
   }
 }
