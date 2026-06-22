@@ -153,9 +153,9 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
     val linkLocator = ".govuk-body:nth-of-type(2) .govuk-link"
     val linkText = "upload an updated submission template"
     val paragraphs: Seq[String] = Seq(
-      "This list is taken from the certificate details in the submission template you uploaded. There were 1 companies the SAO was responsible for during the financial year.",
+      "This list is taken from the certificate details in the submission template you uploaded. There were 2 companies the SAO was responsible for during the financial year.",
       "If the information listed is not correct, upload an updated submission template before continuing.",
-      "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I Steve the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 1996 that 1 companies had appropriate tax accounting arrangements throughout the year."
+      "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I example sao name the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 1999 that 2 companies had appropriate tax accounting arrangements throughout the year."
     )
 
     val paragraphsWithNoData: Seq[String] = Seq(
@@ -163,6 +163,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
       "If the information listed is not correct, upload an updated submission template before continuing.",
       "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December that 0 companies had appropriate tax accounting arrangements throughout the year."
     )
+
     val unqualifiedCompanies: Seq[UnqualifiedCompany] = Seq(
       UnqualifiedCompany(
         name = "example company name",
