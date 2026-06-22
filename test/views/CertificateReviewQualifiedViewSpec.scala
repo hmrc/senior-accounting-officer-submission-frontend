@@ -141,17 +141,17 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
 
   extension (doc: Document) {
     def createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies: Seq[QualifiedCompany]): Unit = {
-      val expectedCountOfDesciptionLists = qualifiedCompanies.size
+      val expectedCountOfDescriptionLists = qualifiedCompanies.size
 
       "must be one description list per qualified company" in {
         val descriptionLists = doc.select("dl.govuk-summary-list")
-        descriptionLists.size() mustBe expectedCountOfDesciptionLists
+        descriptionLists.size() mustBe expectedCountOfDescriptionLists
       }
 
       "must be four description terms per qualified company with expected text" in {
         val descriptionTerms = doc.select("div.govuk-summary-list__row > dt.govuk-summary-list__key")
 
-        descriptionTerms.size() mustBe expectedCountOfDesciptionLists * 4
+        descriptionTerms.size() mustBe expectedCountOfDescriptionLists * 4
 
         for i <- 0 to qualifiedCompanies.size - 1 do {
           descriptionTerms.get(i * 4).text() mustBe companyNameDescriptionTermText
@@ -163,7 +163,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
 
       "must be four description details per qualified company with expected text" in {
         val descriptionDetails = doc.select("div.govuk-summary-list__row > dd.govuk-summary-list__value")
-        descriptionDetails.size() mustBe expectedCountOfDesciptionLists * 4
+        descriptionDetails.size() mustBe expectedCountOfDescriptionLists * 4
 
         for i <- 0 to qualifiedCompanies.size - 1 do {
           descriptionDetails.get(i * 4).text() mustBe qualifiedCompanies(i).name
