@@ -27,11 +27,11 @@ import views.html.CertificateReviewUnqualifiedView
 
 class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateReviewUnqualifiedView] {
   private def generateView(
-                            saoName: String,
-                            unqualifiedCompanies: Seq[UnqualifiedCompany],
-                            companyCount: Int,
-                            dummyDate: String
-                          ): Document = Jsoup.parse(SUT(saoName, unqualifiedCompanies, companyCount, dummyDate).toString)
+      saoName: String,
+      unqualifiedCompanies: Seq[UnqualifiedCompany],
+      companyCount: Int,
+      dummyDate: String
+  ): Document = Jsoup.parse(SUT(saoName, unqualifiedCompanies, companyCount, dummyDate).toString)
 
   "CertificateReviewUnqualifiedView" - {
     "will populate the table correctly when data is present" - {
@@ -66,7 +66,6 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         .get(0)
         .createTestWithLink(linkText, routes.CertificateUploadFormController.onPageLoad().url)
 
-
       doc.createTestsWithUnqualifiedCompanyDescriptionList(unqualifiedCompanies)
 
     }
@@ -97,7 +96,6 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
       "must have bold text in second paragraph denoting number of qualified companies" in {
         doc.select("b").get(0).text() mustBe "0"
       }
-
 
       doc
         .select(linkLocator)
@@ -146,48 +144,48 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
     }
   }
 }
-  object CertificateReviewUnqualifiedViewSpec {
-    val pageHeading = "Review the companies with an unqualified certificate"
-    val pageTitle = "Review the companies with an unqualified certificate"
-    val pageCaption = "Submit a certificate"
-    val linkLocator = ".govuk-body:nth-of-type(2) .govuk-link"
-    val linkText = "upload an updated submission template"
-    val paragraphs: Seq[String] = Seq(
-      "This list is taken from the certificate details in the submission template you uploaded. There were 2 companies the SAO was responsible for during the financial year.",
-      "If the information listed is not correct, upload an updated submission template before continuing.",
-      "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I example sao name the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 1999 that 2 companies had appropriate tax accounting arrangements throughout the year."
+object CertificateReviewUnqualifiedViewSpec {
+  val pageHeading             = "Review the companies with an unqualified certificate"
+  val pageTitle               = "Review the companies with an unqualified certificate"
+  val pageCaption             = "Submit a certificate"
+  val linkLocator             = ".govuk-body:nth-of-type(2) .govuk-link"
+  val linkText                = "upload an updated submission template"
+  val paragraphs: Seq[String] = Seq(
+    "This list is taken from the certificate details in the submission template you uploaded. There were 2 companies the SAO was responsible for during the financial year.",
+    "If the information listed is not correct, upload an updated submission template before continuing.",
+    "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I example sao name the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 1999 that 2 companies had appropriate tax accounting arrangements throughout the year."
+  )
+
+  val paragraphsWithNoData: Seq[String] = Seq(
+    "This list is taken from the certificate details in the submission template you uploaded. There were 0 companies the SAO was responsible for during the financial year.",
+    "If the information listed is not correct, upload an updated submission template before continuing.",
+    "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December that 0 companies had appropriate tax accounting arrangements throughout the year."
+  )
+
+  val unqualifiedCompanies: Seq[UnqualifiedCompany] = Seq(
+    UnqualifiedCompany(
+      name = "example company name",
+      utr = "example utr",
+      crn = Some("example crn"),
+      companyType = CompanyType.LTD,
+      companyStatus = CompanyStatus.Active
+    ),
+    UnqualifiedCompany(
+      name = "example company name 2",
+      utr = "example utr 2",
+      crn = Some("example crn 2"),
+      companyType = CompanyType.PLC,
+      companyStatus = CompanyStatus.Dormant
     )
+  )
 
-    val paragraphsWithNoData: Seq[String] = Seq(
-      "This list is taken from the certificate details in the submission template you uploaded. There were 0 companies the SAO was responsible for during the financial year.",
-      "If the information listed is not correct, upload an updated submission template before continuing.",
-      "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December that 0 companies had appropriate tax accounting arrangements throughout the year."
-    )
+  val companyNameDescriptionTermText = "Company name"
+  val utrDescriptionTermText         = "UTR"
+  val crnDescriptionTermText         = "CRN"
+  val typeDescriptionTermText        = "Type"
+  val statusDescriptionTermText      = "Status"
 
-    val unqualifiedCompanies: Seq[UnqualifiedCompany] = Seq(
-      UnqualifiedCompany(
-        name = "example company name",
-        utr = "example utr",
-        crn = Some("example crn"),
-        companyType = CompanyType.LTD,
-        companyStatus = CompanyStatus.Active
-      ),
-      UnqualifiedCompany(
-        name = "example company name 2",
-        utr = "example utr 2",
-        crn = Some("example crn 2"),
-        companyType = CompanyType.PLC,
-        companyStatus = CompanyStatus.Dormant
-      )
-    )
+  val saoName   = "example sao name"
+  val dummyDate = "1999"
 
-    val companyNameDescriptionTermText = "Company name"
-    val utrDescriptionTermText = "UTR"
-    val crnDescriptionTermText = "CRN"
-    val typeDescriptionTermText = "Type"
-    val statusDescriptionTermText = "Status"
-    
-    val saoName = "example sao name"
-    val dummyDate = "1999"
-
-  }
+}

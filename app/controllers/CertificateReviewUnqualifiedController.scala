@@ -19,7 +19,6 @@ package controllers
 import controllers.actions.*
 import models.NormalMode
 import models.upload.*
-import models.upload.ParsedSubmissionRow
 import navigation.Navigator
 import pages.{CertificateReviewUnqualifiedPage, CertificateSaoFullNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
