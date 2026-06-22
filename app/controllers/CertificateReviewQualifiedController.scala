@@ -116,7 +116,7 @@ class CertificateReviewQualifiedController @Inject() (
                   financialYearEnd = LocalDate
                     .of(2024, 12, 31) // TODO: get this from somewhere appropriate
                     .format(DateTimeFormatter.ofPattern("d MMMM yyyy")),
-                  companyCount = 1,
+                  companyCount = 3,
                   qualifiedCompanies = qualifiedCompanies
                 )
               )

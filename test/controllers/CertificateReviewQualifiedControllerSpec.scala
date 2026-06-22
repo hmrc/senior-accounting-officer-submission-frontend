@@ -79,7 +79,7 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[CertificateReviewQualifiedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view("Firstname Lastname", "31 December 2024", 1, dummyData)(using
+        contentAsString(result) mustEqual view("Firstname Lastname", "31 December 2024", 3, dummyData)(using
           request,
           messages(application)
         ).toString
