@@ -30,9 +30,11 @@ class NotificationCheckYourAnswersService {
     SummaryList(rows =
       Seq(
         userAnswers
-          .get(page = NotificationMoreThanOneSaoPage)
-          .collect { case false => NotificationSingleSaoOfficerNameSummary.row(userAnswers) }
-          .flatten,
+          .get(NotificationMoreThanOneSaoPage)
+          .flatMap {
+            case false => NotificationSingleSaoOfficerNameSummary.row(userAnswers)
+            case true  => None
+          },
         Some(NotificationAdditionalInformationSummary.row(userAnswers))
       ).flatten
     )
