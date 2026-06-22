@@ -496,8 +496,6 @@ submissionType.checkYourAnswersLabel = submissionType
 submissionType.error.required = Select what you would like to submit
 submissionType.change.hidden = SubmissionType
 
-
-
 certificateConfirmation.title = Certificate submitted
 certificateConfirmation.heading = Certificate submitted
 certificateConfirmation.reference.text = Your reference number

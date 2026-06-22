@@ -18,10 +18,10 @@
 @import views.html.helper.CSPNonce
 
 @this(
-layout: templates.Layout,
-govukButton: GovukButton,
-formHelper: FormWithCSRF,
-appConfig: AppConfig
+    layout: templates.Layout,
+    govukButton: GovukButton,
+    formHelper: FormWithCSRF,
+    appConfig: AppConfig
 )
 
 @(certificateIdReferenceNumber: String)(using request: Request[?], messages: Messages)
