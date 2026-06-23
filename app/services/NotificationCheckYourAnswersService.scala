@@ -17,16 +17,26 @@
 package services
 
 import models.UserAnswers
+import pages.notification.NotificationMoreThanOneSaoPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.checkAnswers.notification.NotificationAdditionalInformationSummary
+import viewmodels.checkAnswers.notification.{
+  NotificationAdditionalInformationSummary,
+  NotificationSingleSaoOfficerNameSummary
+}
 
 class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
     SummaryList(rows =
       Seq(
-        NotificationAdditionalInformationSummary.row(userAnswers)
-      )
+        userAnswers
+          .get(NotificationMoreThanOneSaoPage)
+          .flatMap {
+            case false => NotificationSingleSaoOfficerNameSummary.row(userAnswers)
+            case true  => None
+          },
+        Some(NotificationAdditionalInformationSummary.row(userAnswers))
+      ).flatten
     )
   }
 }

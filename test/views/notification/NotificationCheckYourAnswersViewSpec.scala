@@ -21,6 +21,7 @@ import controllers.notification.routes as notificationRoutes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Document, Element}
 import org.jsoup.select.Elements
+import org.scalactic.source.Position
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{Value as SLValue, *}
 import viewmodels.converters.*
@@ -40,27 +41,13 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
       val summaryList   = SummaryList()
       val doc: Document = generateView(summaryList)
 
-      "Summary Card" - {
+      "Summary Grid" - {
         "must be exactly one present" in {
-          doc.summaryListCards.size() mustBe 1
+          doc.summaryListGrid.size() mustBe 1
         }
+      }
 
-        "must have exactly one title present" in {
-          doc.summaryListTitles.size() mustBe 1
-        }
-
-        "must have the correct title" in {
-          doc.summaryListTitle.text() mustBe cardTitle
-        }
-
-        "title must have css class 'govuk-summary-card__title'" in {
-          doc.summaryListTitle.hasClass("govuk-summary-card__title") mustBe true
-        }
-
-        "title must be in a div with css class 'govuk-summary-card__title-wrapper'" in {
-          val parent = doc.summaryListTitle.closest("div")
-          parent.hasClass("govuk-summary-card__title-wrapper") mustBe true
-        }
+      "Description List" - {
 
         "must have description list" in {
           doc.descriptionLists.size() mustBe 1
@@ -72,11 +59,6 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
         "description list must have css class 'govuk-summary-list'" in {
           doc.descriptionList.hasClass("govuk-summary-list") mustBe true
-        }
-
-        "description list must be inside a div that has css class 'govuk-summary-card__content'" in {
-          val parent = doc.descriptionList.closest("div")
-          parent.hasClass("govuk-summary-card__content") mustBe true
         }
       }
 
@@ -90,7 +72,7 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      doc.createTestsWithCaption(
+      doc.createTestsWithLargeCaption(
         pageCaption
       )
 
@@ -124,26 +106,9 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
       val doc: Document = generateView(summaryList)
 
-      "Summary Card" - {
+      "Summary Grid" - {
         "must be exactly one present" in {
-          doc.summaryListCards.size() mustBe 1
-        }
-
-        "must have exactly one title present" in {
-          doc.summaryListTitles.size() mustBe 1
-        }
-
-        "must have the correct title" in {
-          doc.summaryListTitle.text() mustBe cardTitle
-        }
-
-        "title must have css class 'govuk-summary-card__title'" in {
-          doc.summaryListTitle.hasClass("govuk-summary-card__title") mustBe true
-        }
-
-        "title must be in a div with css class 'govuk-summary-card__title-wrapper'" in {
-          val parent = doc.summaryListTitle.closest("div")
-          parent.hasClass("govuk-summary-card__title-wrapper") mustBe true
+          doc.summaryListGrid.size() mustBe 1
         }
 
         "page must have description list" in {
@@ -179,10 +144,6 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
             doc.descriptionList.hasClass("govuk-summary-list") mustBe true
           }
 
-          "description list must be inside a div that has css class 'govuk-summary-card__content'" in {
-            val parent = doc.descriptionList.closest("div")
-            parent.hasClass("govuk-summary-card__content") mustBe true
-          }
         }
       }
 
@@ -196,7 +157,7 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      doc.createTestsWithCaption(
+      doc.createTestsWithLargeCaption(
         pageCaption
       )
 
@@ -270,22 +231,19 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
   }
 
   extension (target: Document | Element) {
-    def summaryListCards: Elements  = target.select("div.govuk-summary-card")
-    def summaryListCard: Element    = summaryListCards.get(0)
-    def summaryListTitles: Elements = summaryListCard.select("h2")
-    def summaryListTitle: Element   = summaryListTitles.get(0)
-    def descriptionLists: Elements  = summaryListCard.summaryListCard.select("dl")
-    def descriptionList: Element    = descriptionLists.get(0)
+    def summaryListGrid: Elements    = target.select("div.govuk-grid-row")
+    def summaryListContent: Elements = summaryListGrid.select("div.govuk-grid-column-two-thirds")
+    def descriptionLists: Elements   = summaryListContent.select("dl")
+    def descriptionList: Element     = descriptionLists.get(0)
   }
 }
 
 object NotificationCheckYourAnswersViewSpec {
   val pageHeading              = "Check your answers"
-  val pageTitle                = "Submit a notification"
+  val pageTitle                = "Check your answers"
   val pageCaption              = "Submit a notification"
-  val pageButtonText           = "Continue"
+  val pageButtonText           = "Confirm and submit"
   val testFinancialYearEndDate = "'Dummy Date'"
-  val cardTitle: String        = s"Financial year end $testFinancialYearEndDate"
   val testKey1                 = "testKey"
   val testValue1               = "nonEmptyString"
   val testActionMessage1       = "dummyMessage"

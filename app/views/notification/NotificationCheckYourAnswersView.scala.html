@@ -26,19 +26,14 @@
 @(summaryList: SummaryList, financialYearEndDate: String)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationCheckYourAnswers.title"))) {
-    <span class="govuk-caption-m">@messages("notificationCheckYourAnswers.caption")</span>
+    <span class="govuk-caption-l">@messages("notificationCheckYourAnswers.caption")</span>
     <h1 class="govuk-heading-l">@messages("notificationCheckYourAnswers.heading")</h1>
 
-    <div class="govuk-summary-card">
-        <div class="govuk-summary-card__title-wrapper">
-            <h2 class="govuk-summary-card__title">@messages("notificationCheckYourAnswers.card.title", financialYearEndDate)</h2>
-        </div>
-        <div class="govuk-summary-card__content">@govukSummaryList(summaryList)</div>
-    </div>
+    <div class="govuk-summary-list__row">@govukSummaryList(summaryList)</div>
 
     @formHelper(action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit()){
         @govukButton(
-            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
+            ButtonViewModel(messages("site.confirmAndSubmit").toText).withAttribute("id", "submit")
         )
     }
 }

@@ -10,6 +10,7 @@ site.skip = Skip
 site.start = Start now
 site.startAgain = Start again
 site.govuk = GOV.UK
+site.confirmAndSubmit = Confirm and submit
 
 date.day = Day
 date.month = Month
@@ -122,8 +123,9 @@ notificationAdditionalInformation.checkYourAnswersLabel = Additional information
 notificationAdditionalInformation.error.required = Enter information about your notification or skip
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 5000 characters or less
 notificationAdditionalInformation.change.hidden =  the additional information supplied for the notification (Financial year end {0})
+notificationAdditionalInformation.empty = Not provided
 
-notificationCheckYourAnswers.title = Submit a notification
+notificationCheckYourAnswers.title = Check your answers
 notificationCheckYourAnswers.heading = Check your answers
 notificationCheckYourAnswers.caption = Submit a notification
 notificationCheckYourAnswers.card.title = Financial year end {0}
@@ -287,10 +289,10 @@ uploadTemplateCsvParser.error.additionalInformation = Explain why the certificat
 notificationSingleSaoOfficerName.title = Submit a notification - SAO full name
 notificationSingleSaoOfficerName.heading = What is the name of the SAO?
 notificationSingleSaoOfficerName.caption = Submit a notification
-notificationSingleSaoOfficerName.checkYourAnswersLabel = notificationSingleSaoOfficerName
+notificationSingleSaoOfficerName.checkYourAnswersLabel = Senior Accounting Officer
 notificationSingleSaoOfficerName.error.required = Enter the name of the SAO
 notificationSingleSaoOfficerName.error.length = The name you enter must be 254 characters or less
-notificationSingleSaoOfficerName.change.hidden = NotificationSingleSaoOfficerName
+notificationSingleSaoOfficerName.change.hidden = the senior accounting officer full name
 
 notificationMultiSaoPreviousOfficerName.title = Senior Accounting Officer full name
 notificationMultiSaoPreviousOfficerName.heading = Who was the SAO before {0}?

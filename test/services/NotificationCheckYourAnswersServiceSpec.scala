@@ -18,33 +18,129 @@ package services
 
 import base.SpecBase
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.notification.NotificationAdditionalInformationPage
-import play.api.i18n.Messages
-import play.api.i18n.MessagesApi
+import pages.notification.{
+  NotificationAdditionalInformationPage,
+  NotificationMoreThanOneSaoPage,
+  NotificationSingleSaoOfficerNamePage
+}
+import play.api.i18n.{Messages, MessagesApi}
 import play.api.test.FakeRequest
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import viewmodels.checkAnswers.notification.NotificationAdditionalInformationSummary
+import uk.gov.hmrc.govukfrontend.views.Aliases.Text
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 
 class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
-  "NotificationCheckYourAnswersService must generate the summaryList when all the userAnswers" - {
-    def SUT        = app.injector.instanceOf[NotificationCheckYourAnswersService]
+
+  "NotificationCheckYourAnswersService.list" - {
+
+    def SUT: NotificationCheckYourAnswersService = app.injector.instanceOf[NotificationCheckYourAnswersService]
+
     given Messages = app.injector.instanceOf[MessagesApi].preferred(FakeRequest())
 
-    "are present" in {
-      val userAnswers = emptyUserAnswers.set(NotificationAdditionalInformationPage, Some("someValue")).get
-      SUT.getSummaryList(userAnswers) mustBe SummaryList(
-        Seq(
-          NotificationAdditionalInformationSummary.row(userAnswers)
-        )
-      )
+    val testFullName              = "testName"
+    val testAdditionalInformation = "testValue"
+
+    "NotificationSingleSaoOfficerNamePage.row" - {
+
+      "when MoreThanOneSao is No" - {
+        "Full Name is answered, must show the Full Name row" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, false)
+            .get
+            .set(NotificationSingleSaoOfficerNamePage, testFullName)
+            .get
+
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.head.key.content mustBe Text("Senior Accounting Officer")
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="sao-name-value">$testFullName</span>"""
+          )
+        }
+
+        "Full Name is empty, must not show the Full Name row" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, false)
+            .get
+
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.find(row => row.key.content == Text("Senior Accounting Officer")) mustBe None
+        }
+      }
+
+      "when MoreThanOneSao is Yes" - {
+        "must not show the Full Name row even if Full Name is answered" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, true)
+            .get
+            .set(NotificationSingleSaoOfficerNamePage, testFullName)
+            .get
+
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.find(row => row.key.content == Text("Senior Accounting Officer")) mustBe None
+
+        }
+      }
     }
 
-    "are empty" in {
-      SUT.getSummaryList(emptyUserAnswers) mustBe SummaryList(
-        Seq(
-          NotificationAdditionalInformationSummary.row(emptyUserAnswers)
-        )
-      )
+    "NotificationAdditionalInformationPage row" - {
+
+      "when MoreThanOneSao is Yes" - {
+
+        "when there are no answers for NotificationAdditionalInformationPage, must return 'Not provided'" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, true)
+            .get
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="additional-information-value">Not provided</span>"""
+          )
+        }
+
+        "when there are answers for NotificationAdditionalInformationPage, must return value" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, true)
+            .get
+            .set(NotificationAdditionalInformationPage, Some(testAdditionalInformation))
+            .get
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="additional-information-value">$testAdditionalInformation</span>"""
+          )
+        }
+      }
+
+      "when MoreThanOneSao is No" - {
+
+        "when there are no answers for NotificationAdditionalInformationPage, must return 'Not provided'" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, false)
+            .get
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="additional-information-value">Not provided</span>"""
+          )
+        }
+
+        "when there are answers for NotificationAdditionalInformationPage, must return value" in {
+          val userAnswers = emptyUserAnswers
+            .set(NotificationMoreThanOneSaoPage, false)
+            .get
+            .set(NotificationAdditionalInformationPage, Some(testAdditionalInformation))
+            .get
+          val result = SUT.getSummaryList(userAnswers)
+
+          result.rows.head.value.content mustBe HtmlContent(
+            s"""<span data-test-id="additional-information-value">$testAdditionalInformation</span>"""
+          )
+        }
+      }
+
     }
   }
 }

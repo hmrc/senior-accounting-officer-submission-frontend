@@ -20,6 +20,8 @@ import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
 import pages.notification.NotificationSingleSaoOfficerNamePage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
@@ -30,13 +32,15 @@ object NotificationSingleSaoOfficerNameSummary {
     answers.get(NotificationSingleSaoOfficerNamePage).map { answer =>
       SummaryListRowViewModel(
         key = messages("notificationSingleSaoOfficerName.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.toText),
+        value =
+          ValueViewModel(HtmlContent(s"""<span data-test-id="sao-name-value">${HtmlFormat.escape(answer)}</span>""")),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
             notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("notificationSingleSaoOfficerName.change.hidden"))
+            .withAttribute("data-test-id", "change-sao-name-link")
         )
       )
     }

@@ -20,6 +20,8 @@ import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
 import pages.notification.NotificationAdditionalInformationPage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
@@ -28,11 +30,17 @@ object NotificationAdditionalInformationSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): SummaryListRow = {
     val additionalInformation =
-      answers.getNullable(NotificationAdditionalInformationPage).getOrElse("")
+      answers
+        .getNullable(NotificationAdditionalInformationPage)
+        .getOrElse(messages("notificationAdditionalInformation.empty"))
 
     SummaryListRowViewModel(
       key = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,
-      value = ValueViewModel(additionalInformation.toText),
+      value = ValueViewModel(
+        HtmlContent(
+          s"""<span data-test-id="additional-information-value">${HtmlFormat.escape(additionalInformation)}</span>"""
+        )
+      ),
       actions = Seq(
         ActionItemViewModel(
           messages("site.change").toText,

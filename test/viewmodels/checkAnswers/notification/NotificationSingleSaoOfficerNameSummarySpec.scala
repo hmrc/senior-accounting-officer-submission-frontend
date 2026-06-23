@@ -23,6 +23,7 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationSingleSaoOfficerNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 class NotificationSingleSaoOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -44,14 +45,15 @@ class NotificationSingleSaoOfficerNameSummarySpec extends SpecBase with GuiceOne
       def SUT(answer: String = "") = NotificationSingleSaoOfficerNameSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "notificationSingleSaoOfficerName".toKey
+        SUT().key mustBe "Senior Accounting Officer".toKey
       }
 
       "expected value" - {
-        "must show 'testNotificationSingleSaoOfficerName' when user answers is 'testNotificationSingleSaoOfficerName'" in {
-          SUT(answer =
-            "testNotificationSingleSaoOfficerName"
-          ).value.content mustBe "testNotificationSingleSaoOfficerName".toText
+        val testValue = "testNotificationSingleSaoOfficerName"
+        s"must show '$testValue' when user answers is '$testValue'" in {
+          SUT(answer = testValue).value.content mustBe HtmlContent(
+            s"""<span data-test-id="sao-name-value">$testValue</span>"""
+          )
         }
       }
 
@@ -80,7 +82,7 @@ class NotificationSingleSaoOfficerNameSummarySpec extends SpecBase with GuiceOne
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationSingleSaoOfficerName"
+          action.visuallyHiddenText.get mustBe "the senior accounting officer full name"
         }
       }
     }
