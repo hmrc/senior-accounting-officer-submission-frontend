@@ -119,7 +119,7 @@ class ParsedSubmissionRowSpec extends SpecBase {
     val expected = UnqualifiedCompany(
       name = "example company name",
       utr = "example company utr",
-      crn = Some("example company crn"),
+      crn = "example company crn",
       companyType = CompanyType.LTD,
       companyStatus = CompanyStatus.Dormant
     )

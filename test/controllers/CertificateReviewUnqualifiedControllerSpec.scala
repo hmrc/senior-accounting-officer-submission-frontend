@@ -36,21 +36,21 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
     UnqualifiedCompany(
       name = "example company name",
       utr = "example company utr",
-      crn = Some("example company crn"),
+      crn = "example company crn",
       companyType = CompanyType.LTD,
       companyStatus = CompanyStatus.Administration
     ),
     UnqualifiedCompany(
       name = "example company name 2",
       utr = "example company utr 2",
-      crn = Some("example company crn 2"),
+      crn = "example company crn 2",
       companyType = CompanyType.LTD,
       companyStatus = CompanyStatus.Dormant
     ),
     UnqualifiedCompany(
       name = "example company name 3",
       utr = "example company utr 3",
-      crn = Some("example company crn 3"),
+      crn = "example company crn 3",
       companyType = CompanyType.LTD,
       companyStatus = CompanyStatus.Active
     )
