@@ -57,7 +57,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         buttonText = "Continue"
       )
 
-      "must have bold text in second paragraph denoting number of qualified companies" in {
+      "must have bold text in third paragraph denoting number of qualified companies" in {
         doc.select("b").get(0).text() mustBe "2"
       }
 
@@ -93,7 +93,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         buttonText = "Continue"
       )
 
-      "must have bold text in second paragraph denoting number of qualified companies" in {
+      "must have bold text in third paragraph denoting number of qualified companies" in {
         doc.select("b").get(0).text() mustBe "0"
       }
 

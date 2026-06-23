@@ -35,33 +35,29 @@
     <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph3", saoName, dummyDate, unqualifiedCompanies.size))</p>
 
     @for(unqualifiedCompany <- unqualifiedCompanies) {
-    <dl class="govuk-summary-list">
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.companyName")</dt>
-            <dd class="govuk-summary-list__value">@unqualifiedCompany.name</dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.utr")</dt>
-            <dd class="govuk-summary-list__value">@unqualifiedCompany.utr</dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.crn")</dt>
-            <dd class="govuk-summary-list__value">@unqualifiedCompany.crn</dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.type")</dt>
-            <dd class="govuk-summary-list__value">@unqualifiedCompany.companyType</dd>
-        </div><div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.status")</dt>
-            <dd class="govuk-summary-list__value">@unqualifiedCompany.companyStatus</dd>
-        </div>
-    </dl>
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.companyName")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.name</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.utr")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.utr</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.crn")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.crn</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.type")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.companyType</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.status")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.companyStatus</dd>
+            </div>
+        </dl>
     }
-
-
-
-
-
 
     @formHelper(action = routes.CertificateReviewUnqualifiedController.onSubmit()) {
         @govukButton(
