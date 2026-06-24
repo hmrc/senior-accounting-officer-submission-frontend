@@ -495,3 +495,16 @@ submissionType.radioDivider = or
 submissionType.checkYourAnswersLabel = submissionType
 submissionType.error.required = Select what you would like to submit
 submissionType.change.hidden = SubmissionType
+
+certificateConfirmation.title = Certificate submitted
+certificateConfirmation.heading = Certificate submitted
+certificateConfirmation.reference.text = Your reference number
+certificateConfirmation.paragraph1 = We’ve sent a confirmation email to all the contacts you gave during registration.
+certificateConfirmation.paragraph2 = If you need to keep a record of your answers, you can:
+certificateConfirmation.paragraph3 = Your certificate has been received by HMRC. A member of compliance staff may contact you if they need more information.
+certificateConfirmation.paragraph4 = You can now make another submission on your account homepage.
+certificateConfirmation.downloadPdf = Download a PDF
+certificateConfirmation.printPage = Print this page
+certificateConfirmation.list1.item1 = - save a copy of all the answers you submitted now. You may not be able to download a PDF if you leave this page
+certificateConfirmation.list1.item2 = - print a paper copy of this confirmation page
+certificateConfirmation.subheading = What happens next

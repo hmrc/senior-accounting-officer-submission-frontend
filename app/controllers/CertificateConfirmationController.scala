@@ -38,9 +38,10 @@ class CertificateConfirmationController @Inject() (
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
-  }
+  def onPageLoad(certificateIdReferenceNumber: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      Ok(view(certificateIdReferenceNumber))
+    }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     Redirect(navigator.nextPage(CertificateConfirmationPage, NormalMode, request.userAnswers))

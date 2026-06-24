@@ -164,8 +164,8 @@ POST       /change-certificate-who-is-submitting                 controllers.Cer
 GET        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onPageLoad()
 POST        /certificateCheckYourAnswers                       controllers.CertificateCheckYourAnswersController.onSubmit()
 
-GET        /certificateConfirmation                       controllers.CertificateConfirmationController.onPageLoad()
-POST       /certificateConfirmation                       controllers.CertificateConfirmationController.onSubmit()
+GET        /certificate-confirmation                       controllers.CertificateConfirmationController.onPageLoad(certificateIdReferenceNumber: String)
+POST       /certificate-confirmation                       controllers.CertificateConfirmationController.onSubmit()
 
 
 GET        /certificate/submit-certificate-confirm-sao                        controllers.CertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
@@ -175,3 +175,4 @@ POST       /certificate/change-submit-certificate-confirm-sao                 co
 
 GET        /submission-type                        controllers.SubmissionTypeController.onPageLoad()
 POST       /submission-type                        controllers.SubmissionTypeController.onSubmit()
+
