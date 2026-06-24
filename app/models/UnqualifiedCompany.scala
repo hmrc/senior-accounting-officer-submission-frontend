@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-package pages
+package models
 
-import play.api.libs.json.JsPath
+import models.upload.*
 
-case object CertificateReviewUnqualifiedPage extends QuestionPage[Boolean] {
-  override def path: JsPath = JsPath \ toString
-
-  override def toString: String = "certificateUnreviewQualifiedPage"
-}
+final case class UnqualifiedCompany(
+    name: String,
+    utr: String,
+    crn: String,
+    companyType: CompanyType,
+    companyStatus: CompanyStatus
+)

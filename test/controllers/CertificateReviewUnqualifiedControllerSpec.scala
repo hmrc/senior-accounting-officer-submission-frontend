@@ -17,7 +17,8 @@
 package controllers
 
 import base.SpecBase
-import models.CertificateTaskListStage
+import models.*
+import models.upload.{CompanyStatus, CompanyType}
 import navigation.FakeNavigator
 import navigation.Navigator
 import play.api.inject.bind
@@ -29,6 +30,31 @@ import views.html.CertificateReviewUnqualifiedView
 class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
+
+  val dummyDate                                     = "2020"
+  val unqualifiedDummyData: Seq[UnqualifiedCompany] = Seq(
+    UnqualifiedCompany(
+      name = "example company name",
+      utr = "example company utr",
+      crn = "example company crn",
+      companyType = CompanyType.LTD,
+      companyStatus = CompanyStatus.Administration
+    ),
+    UnqualifiedCompany(
+      name = "example company name 2",
+      utr = "example company utr 2",
+      crn = "example company crn 2",
+      companyType = CompanyType.LTD,
+      companyStatus = CompanyStatus.Dormant
+    ),
+    UnqualifiedCompany(
+      name = "example company name 3",
+      utr = "example company utr 3",
+      crn = "example company crn 3",
+      companyType = CompanyType.LTD,
+      companyStatus = CompanyStatus.Active
+    )
+  )
 
   "CertificateReviewUnqualified Controller" - {
 
@@ -44,7 +70,12 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[CertificateReviewUnqualifiedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          "Firstname Lastname",
+          unqualifiedDummyData,
+          unqualifiedDummyData.size,
+          dummyDate
+        )(using request, messages(application)).toString
       }
     }
 

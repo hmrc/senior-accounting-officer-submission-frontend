@@ -16,6 +16,7 @@
 
 package models.upload
 
+import models.UnqualifiedCompany
 import play.api.libs.json.*
 
 import scala.util.Try
@@ -32,6 +33,18 @@ final case class ParsedSubmissionRow(
 
 object ParsedSubmissionRow {
   given OFormat[ParsedSubmissionRow] = Json.format[ParsedSubmissionRow]
+
+  extension (data: ParsedSubmissionRow) {
+    def toUnqualifiedCompany: UnqualifiedCompany = {
+      UnqualifiedCompany(
+        name = data.notification.companyName,
+        utr = data.notification.companyUtr.value,
+        crn = data.notification.companyCrn.fold("")(_.value),
+        companyType = data.notification.companyType,
+        companyStatus = data.notification.companyStatus
+      )
+    }
+  }
 }
 
 final case class NotificationFields(

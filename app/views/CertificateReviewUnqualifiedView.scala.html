@@ -20,11 +20,45 @@
     formHelper: FormWithCSRF
 )
 
-@()(using request: Request[?], messages: Messages)
+@(saoName: String, unqualifiedCompanies: Seq[UnqualifiedCompany], companyCount: Int, dummyDate: String)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("certificateReviewUnqualified.title"))) {
 
-    <h1 class="govuk-heading-xl">@messages("certificateReviewUnqualified.heading")</h1>
+    <span class="govuk-caption-l">@messages("certificateReviewUnqualified.caption")</span>
+
+    <h1 class="govuk-heading-l">@messages("certificateReviewUnqualified.heading")</h1>
+
+    <p class="govuk-body">@messages("certificateReviewUnqualified.paragraph1", unqualifiedCompanies.size)</p>
+
+    <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph2WithLink", routes.CertificateUploadFormController.onPageLoad()))</p>
+
+    <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph3", saoName, dummyDate, unqualifiedCompanies.size))</p>
+
+    @for(unqualifiedCompany <- unqualifiedCompanies) {
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.companyName")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.name</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.utr")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.utr</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.crn")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.crn</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.type")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.companyType</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.status")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.companyStatus</dd>
+            </div>
+        </dl>
+    }
+
     @formHelper(action = routes.CertificateReviewUnqualifiedController.onSubmit()) {
         @govukButton(
             ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
