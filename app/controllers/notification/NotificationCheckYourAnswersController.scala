@@ -17,16 +17,15 @@
 package controllers.notification
 
 import controllers.actions.*
-import models.NormalMode
-import navigation.Navigator
-import pages.notification.NotificationCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.NotificationCheckYourAnswersService
+import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationCheckYourAnswersView
+import controllers.notification.routes as notificationRoutes
 
 import javax.inject.Inject
+import uk.gov.hmrc.http.InternalServerException
 
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
@@ -36,8 +35,8 @@ class NotificationCheckYourAnswersController @Inject() (
     requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
-    navigator: Navigator,
-    notificationCheckYourAnswersService: NotificationCheckYourAnswersService
+    notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
+    notificationSubmitService: NotificationSubmitService
 ) extends FrontendBaseController
     with I18nSupport {
 
@@ -50,12 +49,14 @@ class NotificationCheckYourAnswersController @Inject() (
 
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
-      Redirect(
-        navigator.nextPage(
-          NotificationCheckYourAnswersPage,
-          NormalMode,
-          request.userAnswers
-        )
-      )
+      {
+        notificationSubmitService
+          .submit(request.userAnswers)
+          .fold(
+            errorMessage => throw new InternalServerException(errorMessage),
+            notificationReference =>
+              Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
+          )
+      }
     }
 }

@@ -60,15 +60,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
-      "when on NotificationCheckYourAnswersPage, must go to notification confirmation page" in {
-        val notRefIdMock = "SAONOT0123456789"
-        navigator.nextPage(
-          NotificationCheckYourAnswersPage,
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe notificationRoutes.NotificationConfirmationController.onPageLoad(notRefIdMock)
-      }
-
       "when on ConfirmYourNotificationPage, must go to notification check your answers page" in {
         navigator.nextPage(
           ConfirmYourNotificationPage,
