@@ -17,9 +17,8 @@
 package connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
-import connectors.UpscanInitiateConnector.*
 import connectors.UpscanInitiateConnectorISpec.*
-import models.upscan.{UpscanInitiateRequestV2, UpscanInitiateResponse}
+import models.upscan.{UploadJourney, UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.http.HeaderNames
 import play.api.libs.json.Json
 import play.api.mvc.Request
@@ -51,7 +50,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
           )
       )
 
-      val response: UpscanInitiateResponse = SUT.initiateV2(UpscanJourney.Notification).futureValue
+      val response: UpscanInitiateResponse = SUT.initiateV2(UploadJourney.Notification).futureValue
 
       Json.toJson(response) mustBe Json.toJson(fakeUpscanInitiateResponse)
 
@@ -63,6 +62,29 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
       )
     }
 
+    "successfully initiate a certificate upscan v2 upload" in {
+
+      stubFor(
+        post(urlEqualTo("/upscan/v2/initiate"))
+          .willReturn(
+            aResponse()
+              .withStatus(200)
+              .withBody(Json.toJson(fakeUpscanInitiateResponse).toString)
+          )
+      )
+
+      val response: UpscanInitiateResponse = SUT.initiateV2(UploadJourney.Certificate).futureValue
+
+      Json.toJson(response) mustBe Json.toJson(fakeUpscanInitiateResponse)
+
+      verify(
+        1,
+        postRequestedFor(urlEqualTo("/upscan/v2/initiate"))
+          .withHeader(HeaderNames.USER_AGENT, equalTo("senior-accounting-officer-submission-frontend"))
+          .withRequestBody(equalToJson(Json.toJson(expectedCertificateRequest).toString))
+      )
+    }
+
     "fail to initiate when upscan returns an error" in {
       stubFor(
         post(urlEqualTo("/upscan/v2/initiate"))
@@ -71,7 +93,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
               .withStatus(500)
           )
       )
-      val response = SUT.initiateV2(UpscanJourney.Notification).failed.futureValue
+      val response = SUT.initiateV2(UploadJourney.Notification).failed.futureValue
       response mustBe a[uk.gov.hmrc.http.UpstreamErrorResponse]
     }
   }
@@ -85,10 +107,16 @@ object UpscanInitiateConnectorISpec {
     formFields = Map("T1" -> "V1")
   )
   val expectedNotificationRequest = UpscanInitiateRequestV2(
-    callbackUrl = "http://localhost:10058/internal/upscan-callback",
+    callbackUrl = "http://localhost:10058/internal/upscan-callback?journey=notification",
     successRedirect = Some(
       "http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"
     ),
     errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload")
+  )
+
+  val expectedCertificateRequest = UpscanInitiateRequestV2(
+    callbackUrl = "http://localhost:10058/internal/upscan-callback?journey=certificate",
+    successRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificateUploadForm"),
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificateUploadForm")
   )
 }

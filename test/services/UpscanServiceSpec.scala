@@ -20,7 +20,7 @@ import base.SpecBase
 import connectors.UpscanDownloadConnector
 import models.*
 import models.upload.*
-import models.upscan.{FileUploadState, UploadStatus}
+import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
 import org.mockito.ArgumentMatchers.{eq as meq, *}
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach

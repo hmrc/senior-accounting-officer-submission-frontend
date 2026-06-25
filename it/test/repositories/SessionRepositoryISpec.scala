@@ -17,7 +17,7 @@
 package repositories
 
 import config.AppConfig
-import models.upscan.{FileUploadState, UploadStatus}
+import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
 import models.UserAnswers
 import org.mockito.Mockito.when
 import org.mongodb.scala.model.Filters
@@ -28,6 +28,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatestplus.mockito.MockitoSugar
 import org.slf4j.MDC
+import pages.CertificateUploadStatePage
 import pages.notification.NotificationUploadStatePage
 import play.api.libs.json.Json
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
@@ -152,7 +153,7 @@ class SessionRepositoryISpec
 
   ".updateUploadStatus" - {
 
-    "when there is a journey with a matching upload reference" - {
+    "when there is a notification journey with a matching upload reference" - {
 
       "must update the upload status in user answers and refresh lastUpdated" in {
 
@@ -170,7 +171,7 @@ class SessionRepositoryISpec
           size = Some(123L)
         )
 
-        repository.updateUploadStatus("upscan-ref", newStatus).futureValue mustBe true
+        repository.updateUploadStatus(UploadJourney.Notification, "upscan-ref", newStatus).futureValue mustBe true
 
         val updated = repository.get(userAnswersWithUpload.id).futureValue.value
 
@@ -179,15 +180,42 @@ class SessionRepositoryISpec
       }
     }
 
+    "when there is a certificate journey with a matching upload reference" - {
+
+      "must update the upload status in user answers and refresh lastUpdated" in {
+
+        val userAnswersWithUpload = UserAnswers("id")
+          .set(CertificateUploadStatePage, FileUploadState("upscan-ref", UploadStatus.InProgress))
+          .get
+          .copy(lastUpdated = Instant.ofEpochSecond(1))
+
+        insert(userAnswersWithUpload).futureValue
+
+        val newStatus = UploadStatus.UploadedSuccessfully(
+          name = "test.csv",
+          mimeType = "text/csv",
+          downloadUrl = "http://localhost:8080/download",
+          size = Some(123L)
+        )
+
+        repository.updateUploadStatus(UploadJourney.Certificate, "upscan-ref", newStatus).futureValue mustBe true
+
+        val updated = repository.get(userAnswersWithUpload.id).futureValue.value
+
+        updated.get(CertificateUploadStatePage).value.status mustBe newStatus
+        updated.lastUpdated mustBe instant
+      }
+    }
+
     "when there is no matching upload reference" - {
 
       "must return false" in {
 
-        repository.updateUploadStatus("missing-ref", UploadStatus.Quarantined).futureValue mustBe false
+        repository.updateUploadStatus(UploadJourney.Notification, "missing-ref", UploadStatus.Quarantined).futureValue mustBe false
       }
     }
 
-    mustPreserveMdc(repository.updateUploadStatus("upscan-ref", UploadStatus.Quarantined))
+    mustPreserveMdc(repository.updateUploadStatus(UploadJourney.Notification, "upscan-ref", UploadStatus.Quarantined))
   }
 
   private def mustPreserveMdc[A](f: => Future[A])(using pos: Position): Unit =

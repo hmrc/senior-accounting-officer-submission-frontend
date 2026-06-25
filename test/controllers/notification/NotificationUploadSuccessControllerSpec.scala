@@ -21,6 +21,7 @@ import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
 import models.upload.{ParsedSubmissionRow, TemplateParseError}
+import models.upscan.UploadJourney
 import org.mockito.ArgumentMatchers.{eq as meq, *}
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach

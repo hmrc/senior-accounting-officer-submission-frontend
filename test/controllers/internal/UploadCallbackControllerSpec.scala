@@ -17,9 +17,9 @@
 package controllers.internal
 
 import base.SpecBase
-import models.*
-import models.upscan.{UpscanFailureCallback, UpscanSuccessCallback}
+import models.upscan.{UploadJourney, UpscanFailureCallback, UpscanSuccessCallback}
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as meq
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
@@ -42,7 +42,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        when(mockUpscanCallbackDispatcher.processUpscanCallback(any())).thenReturn(Future.successful(true))
+        when(mockUpscanCallbackDispatcher.processUpscanCallback(any(), any())).thenReturn(Future.successful(true))
 
         val json = Json.parse(
           """
@@ -61,12 +61,15 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
             |""".stripMargin
         )
 
-        val request = FakeRequest(POST, routes.UploadCallbackController.callback().url).withJsonBody(json)
+        val request =
+          FakeRequest(POST, routes.UploadCallbackController.callback(UploadJourney.Notification.toString).url)
+            .withJsonBody(json)
 
         val result = route(application, request).value
 
         status(result) mustEqual NO_CONTENT
-        verify(mockUpscanCallbackDispatcher, times(1)).processUpscanCallback(any[UpscanSuccessCallback])
+        verify(mockUpscanCallbackDispatcher, times(1))
+          .processUpscanCallback(meq(UploadJourney.Notification), any[UpscanSuccessCallback])
       }
     }
 
@@ -79,7 +82,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
         .build()
 
       running(application) {
-        when(mockUpscanCallbackDispatcher.processUpscanCallback(any())).thenReturn(Future.successful(true))
+        when(mockUpscanCallbackDispatcher.processUpscanCallback(any(), any())).thenReturn(Future.successful(true))
 
         val json = Json.parse(
           """
@@ -94,12 +97,15 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
             |""".stripMargin
         )
 
-        val request = FakeRequest(POST, routes.UploadCallbackController.callback().url).withJsonBody(json)
+        val request =
+          FakeRequest(POST, routes.UploadCallbackController.callback(UploadJourney.Notification.toString).url)
+            .withJsonBody(json)
 
         val result = route(application, request).value
 
         status(result) mustEqual NO_CONTENT
-        verify(mockUpscanCallbackDispatcher, times(1)).processUpscanCallback(any[UpscanFailureCallback])
+        verify(mockUpscanCallbackDispatcher, times(1))
+          .processUpscanCallback(meq(UploadJourney.Notification), any[UpscanFailureCallback])
       }
     }
 
@@ -115,7 +121,34 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
             |""".stripMargin
         )
 
-        val request = FakeRequest(POST, routes.UploadCallbackController.callback().url).withJsonBody(json)
+        val request =
+          FakeRequest(POST, routes.UploadCallbackController.callback(UploadJourney.Notification.toString).url)
+            .withJsonBody(json)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+      }
+    }
+
+    "return BadRequest for an invalid journey" in {
+      val application = applicationBuilder().build()
+
+      running(application) {
+        val json = Json.parse(
+          """
+            |{
+            |  "reference": "foo",
+            |  "failureDetails": {
+            |    "failureReason": "QUARANTINE",
+            |    "message": "This file has a virus"
+            |  },
+            |  "fileStatus": "FAILED"
+            |}
+            |""".stripMargin
+        )
+
+        val request = FakeRequest(POST, routes.UploadCallbackController.callback("unknown").url).withJsonBody(json)
 
         val result = route(application, request).value
 
