@@ -16,6 +16,7 @@
 
 package pages.notification
 
+import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
@@ -25,7 +26,7 @@ final case class NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex: Int) e
 
   val key = "notificationMultiSaoPreviousOfficerEndDate"
 
-  override def path: JsPath = JsPath \ key \ saoIndex
+  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ key \ saoIndex
 
   override def toString: String = s"$key[$saoIndex]"
 }

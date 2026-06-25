@@ -17,8 +17,8 @@
 package models.upload
 
 import base.SpecBase
-import models.UnqualifiedCompany
 import models.QualifiedCompany
+import models.UnqualifiedCompany
 import models.upload.ParsedSubmissionRowSpec.*
 import play.api.libs.json.{JsError, JsString, Json}
 

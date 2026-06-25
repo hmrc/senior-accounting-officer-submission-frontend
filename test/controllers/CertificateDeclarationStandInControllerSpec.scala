@@ -24,6 +24,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.CertificateDeclarationStandInPage
+import pages.Page.CERTIFICATE_PATH
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.libs.json.Json
@@ -48,9 +49,11 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
   val userAnswers: UserAnswers = UserAnswers(
     userAnswersId,
     Json.obj(
-      CertificateDeclarationStandInPage.toString -> Json.obj(
-        "StandInName" -> "value 1",
-        "SaoName"     -> "value 2"
+      CERTIFICATE_PATH -> Json.obj(
+        CertificateDeclarationStandInPage.toString -> Json.obj(
+          "StandInName" -> "value 1",
+          "SaoName"     -> "value 2"
+        )
       )
     )
   )

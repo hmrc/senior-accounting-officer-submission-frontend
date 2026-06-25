@@ -19,6 +19,7 @@ package models.notification
 import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
 import models.{TaskStatus, UserAnswers}
 import pages.*
+import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.libs.json.*
 
@@ -76,7 +77,7 @@ object NotificationStage {
     }
 
   private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
-    (userAnswers.data \ NotificationMultiSaoAreAllAddedPage(0).key)
+    (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0).key)
       .asOpt[Seq[Boolean]]
       .exists(_.contains(true))
 

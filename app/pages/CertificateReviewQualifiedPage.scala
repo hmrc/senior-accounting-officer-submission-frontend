@@ -16,10 +16,11 @@
 
 package pages
 
+import pages.Page.CERTIFICATE_PATH
 import play.api.libs.json.JsPath
 
 case object CertificateReviewQualifiedPage extends QuestionPage[Boolean] {
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
 
   override def toString: String = "certificateReviewQualifiedPage"
 }

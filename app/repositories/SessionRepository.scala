@@ -45,11 +45,11 @@ class SessionRepository @Inject() (
       mongoComponent = mongoComponent,
       domainFormat = UserAnswers.format,
       indexes = UploadJourney.values.toSeq.map { journey =>
-        val uploadKey = journey.page.toString
+        val uploadKey = journey.uploadPath
 
         IndexModel(
-          Indexes.ascending(s"data.$uploadKey.reference"),
-          IndexOptions().name(s"${uploadKey}ReferenceIdx").unique(true).sparse(true)
+          Indexes.ascending(s"$uploadKey.reference"),
+          IndexOptions().name(s"${journey}ReferenceIdx").unique(true).sparse(true)
         )
       } ++ Seq(
         IndexModel(
@@ -106,7 +106,7 @@ class SessionRepository @Inject() (
 
   def updateUploadStatus(journey: UploadJourney, reference: String, newStatus: UploadStatus): Future[Boolean] =
     Mdc.preservingMdc {
-      val uploadPath = s"data.${journey.page.toString}"
+      val uploadPath = journey.uploadPath
 
       collection
         .updateOne(
