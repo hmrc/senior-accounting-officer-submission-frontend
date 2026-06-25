@@ -16,8 +16,8 @@
 
 package models.upload
 
-import models.UnqualifiedCompany
 import models.QualifiedCompany
+import models.UnqualifiedCompany
 import play.api.libs.json.*
 
 import scala.util.Try
