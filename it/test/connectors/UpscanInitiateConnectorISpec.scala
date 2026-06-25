@@ -107,7 +107,7 @@ object UpscanInitiateConnectorISpec {
     formFields = Map("T1" -> "V1")
   )
   val expectedNotificationRequest = UpscanInitiateRequestV2(
-    callbackUrl = "http://localhost:10058/internal/upscan-callback/notification",
+    callbackUrl = "http://localhost:10058/internal/upscan-callback?journey=notification",
     successRedirect = Some(
       "http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"
     ),
@@ -115,7 +115,7 @@ object UpscanInitiateConnectorISpec {
   )
 
   val expectedCertificateRequest = UpscanInitiateRequestV2(
-    callbackUrl = "http://localhost:10058/internal/upscan-callback/certificate",
+    callbackUrl = "http://localhost:10058/internal/upscan-callback?journey=certificate",
     successRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificateUploadForm"),
     errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificateUploadForm")
   )
