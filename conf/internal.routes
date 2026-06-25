@@ -3,4 +3,4 @@
 
 # upload file notification callback
 + nocsrf
-POST       /upscan-callback/:journey        controllers.internal.UploadCallbackController.callback(journey: String)
+POST       /upscan-callback       controllers.internal.UploadCallbackController.callback(journey: String)

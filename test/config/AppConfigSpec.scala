@@ -32,7 +32,7 @@ class AppConfigSpec extends SpecBase {
 
     "return correct callback end point" in {
       config.upscanCallbackTarget(UploadJourney.Notification) mustBe
-        "http://localhost:10058/internal/upscan-callback/notification"
+        "http://localhost:10058/internal/upscan-callback?journey=notification"
     }
   }
 
