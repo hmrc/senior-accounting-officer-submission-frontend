@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-package pages.notification
-import pages.Page
+package services
 
-case object NotificationCheckYourAnswersPage extends Page
+import models.UserAnswers
+
+class NotificationSubmitService {
+  def submit(userAnswers: UserAnswers): Either[String, String] = {
+    // TODO: call the protected service
+    // TODO: clear mongo on success
+    // TODO: redirect
+    ???
+  }
+}
