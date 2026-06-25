@@ -18,6 +18,8 @@ package models.upload
 
 import base.SpecBase
 import models.UnqualifiedCompany
+import models.QualifiedCompany
+import models.upload.ParsedSubmissionRowSpec.*
 import play.api.libs.json.{JsError, JsString, Json}
 
 import java.time.LocalDate
@@ -90,6 +92,53 @@ class ParsedSubmissionRowSpec extends SpecBase {
     }
   }
 
+  "toQualifiedCompany extension method" - {
+    "maps from ParsedSubmissionRow to QualifiedCompany" in {
+      val result = ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = testCompanyName,
+          companyUtr = CompanyUtr(testCompanyUtr),
+          companyCrn = Some(CompanyCrn(testCompanyCrn)),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = LocalDate.now()
+        ),
+        certificate = CertificateFields(
+          corporationTax = true,
+          valueAddedTax = false,
+          paye = true,
+          insurancePremiumTax = false,
+          stampDutyLandTax = true,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = true,
+          customsDuties = false,
+          exciseDuties = true,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Qualified),
+          additionalInformation = Some(testAdditionalInformation)
+        )
+      ).toQualifiedCompany
+
+      val expected = QualifiedCompany(
+        name = testCompanyName,
+        utr = testCompanyUtr,
+        corporationTax = true,
+        valueAddedTax = false,
+        paye = true,
+        insurancePremiumTax = false,
+        stampDutyLandTax = true,
+        stampDutyReserveTax = false,
+        petroleumRevenueTax = true,
+        customsDuties = false,
+        exciseDuties = true,
+        bankLevy = false,
+        additionalInformation = testAdditionalInformation
+      )
+
+      result mustBe expected
+    }
+  }
+
   "toUnqualifiedCompany extension method must map from ParsedSubmissionRow to UnqualifiedCompany" in {
     val result = ParsedSubmissionRow(
       notification = NotificationFields(
@@ -126,4 +175,11 @@ class ParsedSubmissionRowSpec extends SpecBase {
 
     result mustBe expected
   }
+}
+
+object ParsedSubmissionRowSpec {
+  val testCompanyName           = "example company name"
+  val testCompanyUtr            = "example company utr"
+  val testCompanyCrn            = "example company crn"
+  val testAdditionalInformation = "example additional information"
 }

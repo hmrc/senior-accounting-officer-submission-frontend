@@ -94,7 +94,7 @@ trait SpecBase
 
   def userAnswersWithCertificateUploadedTemplate: UserAnswers =
     userAnswersWithCertificateSaoDetails
-      .set(CertificateReviewQualifiedPage, "HACK")
+      .set(CertificateReviewQualifiedPage, true)
       .success
       .value
       .set(CertificateReviewUnqualifiedPage, true)

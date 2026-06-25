@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import models.CertificateTaskListStage
+import models.QualifiedCompany
 import navigation.FakeNavigator
 import navigation.Navigator
 import play.api.inject.bind
@@ -29,6 +30,40 @@ import views.html.CertificateReviewQualifiedView
 class CertificateReviewQualifiedControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
+
+  // TODO: remove when corresponding dummy data removed from controller
+  val dummyData: Seq[QualifiedCompany] = Seq(
+    QualifiedCompany(
+      name = "example company name",
+      utr = "example company utr",
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = false,
+      petroleumRevenueTax = true,
+      customsDuties = false,
+      exciseDuties = false,
+      bankLevy = false,
+      additionalInformation = "example additional information"
+    ),
+    QualifiedCompany(
+      name = "example company name 2",
+      utr = "example company utr 2",
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = true,
+      petroleumRevenueTax = false,
+      customsDuties = false,
+      exciseDuties = true,
+      bankLevy = false,
+      additionalInformation = "example additional information 2"
+    )
+  )
 
   "CertificateReviewQualified Controller" - {
 
@@ -44,7 +79,10 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[CertificateReviewQualifiedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view("Firstname Lastname", "31 December 2024", 3, dummyData)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 
