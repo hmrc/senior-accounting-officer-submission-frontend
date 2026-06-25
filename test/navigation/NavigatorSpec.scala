@@ -409,15 +409,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
-      "when on CertificateCheckYourAnswers, must go to CertificateConfirmation page" in {
-        val certId = "SAOCRT0123456789"
-        navigator.nextPage(
-          CertificateCheckYourAnswersPage,
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe routes.CertificateConfirmationController.onPageLoad(certId)
-      }
-
       "when on CertificateConfirmation, must go to CertificateTaskList page" in {
         navigator.nextPage(
           CertificateConfirmationPage,

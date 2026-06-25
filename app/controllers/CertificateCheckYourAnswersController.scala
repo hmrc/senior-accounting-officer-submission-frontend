@@ -16,10 +16,8 @@
 
 package controllers
 
+import controllers.CertificateCheckYourAnswersController.certificateId
 import controllers.actions.*
-import models.NormalMode
-import navigation.Navigator
-import pages.CertificateCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -33,7 +31,6 @@ class CertificateCheckYourAnswersController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    navigator: Navigator,
     view: CertificateCheckYourAnswersView
 ) extends FrontendBaseController
     with I18nSupport {
@@ -43,6 +40,10 @@ class CertificateCheckYourAnswersController @Inject() (
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(CertificateCheckYourAnswersPage, NormalMode, request.userAnswers))
+    Redirect(routes.CertificateConfirmationController.onPageLoad(certificateId))
   }
+}
+
+object CertificateCheckYourAnswersController {
+  val certificateId: String = "SAOCRT0123456789"
 }

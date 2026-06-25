@@ -17,8 +17,8 @@
 package controllers
 
 import base.SpecBase
-import navigation.FakeNavigator
-import navigation.Navigator
+import controllers.CertificateCheckYourAnswersController.certificateId
+import navigation.{FakeNavigator, Navigator}
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -63,7 +63,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+        redirectLocation(result).value mustEqual routes.CertificateConfirmationController.onPageLoad(certificateId).url
       }
     }
   }
