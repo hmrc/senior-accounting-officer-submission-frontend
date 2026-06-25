@@ -16,7 +16,7 @@
 
 package pages
 
-import models.CertificateDeclarationStandIn
+import models.certificate.CertificateDeclarationStandIn
 import pages.Page.CERTIFICATE_PATH
 import play.api.libs.json.JsPath
 

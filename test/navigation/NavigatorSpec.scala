@@ -17,9 +17,11 @@
 package navigation
 
 import base.SpecBase
+import controllers.certificate.routes as certificateRoutes
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
+import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
 import models.upload.UploadTemplateTableData
 import pages.*
 import pages.notification.*
@@ -137,7 +139,7 @@ class NavigatorSpec extends SpecBase {
           CombinedWhoSubmitsCertificatePage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.QualifiedCompaniesController.onPageLoad()
+        ) mustBe certificateRoutes.QualifiedCompaniesController.onPageLoad()
       }
 
       "when on QualifiedCompaniesPage, must go to unqualified companies page" in {
@@ -145,7 +147,7 @@ class NavigatorSpec extends SpecBase {
           QualifiedCompaniesPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.UnqualifiedCompaniesController.onPageLoad()
+        ) mustBe certificateRoutes.UnqualifiedCompaniesController.onPageLoad()
       }
 
       "when on UnqualifiedCompaniesPage, must go to certificate submission declaration page" in {
@@ -319,7 +321,9 @@ class NavigatorSpec extends SpecBase {
             SubmissionTypePage,
             NormalMode,
             UserAnswers("id").set(SubmissionTypePage, SubmissionType.Certificate).get
-          ) mustBe routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
+          ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
+            CertificateTaskListStage.ProvideSaoDetailsStage
+          )
         }
 
         "when on SubmissionTypePage and the user chose both the notification and the certificate, must throw an exception" in {
@@ -340,7 +344,7 @@ class NavigatorSpec extends SpecBase {
           CertificateSaoFullNamePage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateSaoEmailController.onPageLoad(NormalMode)
+        ) mustBe certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode)
       }
 
       "when on CertificateSaoEmail, must go to CertificateTaskList page" in {
@@ -348,7 +352,7 @@ class NavigatorSpec extends SpecBase {
           CertificateSaoEmailPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad(
+        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
           CertificateTaskListStage.UploadSubmissionTemplateStage
         )
       }
@@ -358,7 +362,7 @@ class NavigatorSpec extends SpecBase {
           CertificateReviewQualifiedPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateReviewUnqualifiedController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
       }
 
       "when on CertificateReviewUnqualified, must go to CertificateTaskList page" in {
@@ -366,7 +370,9 @@ class NavigatorSpec extends SpecBase {
           CertificateReviewUnqualifiedPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.SubmitCertificateStage)
+        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
+          CertificateTaskListStage.SubmitCertificateStage
+        )
       }
 
       "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {
@@ -374,7 +380,7 @@ class NavigatorSpec extends SpecBase {
           CertificateAdditionalInformationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
+        ) mustBe certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
       }
 
       "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationSao page" in {
@@ -382,7 +388,7 @@ class NavigatorSpec extends SpecBase {
           CertificateWhoIsSubmittingPage,
           NormalMode,
           UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.Sao).get
-        ) mustBe routes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
+        ) mustBe certificateRoutes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
       }
 
       "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationStandIn page" in {
@@ -390,7 +396,7 @@ class NavigatorSpec extends SpecBase {
           CertificateWhoIsSubmittingPage,
           NormalMode,
           UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn).get
-        ) mustBe routes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
+        ) mustBe certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
       }
 
       "when on CertificateDeclarationSao, must go to CertificateCheckYourAnswers page" in {
@@ -398,7 +404,7 @@ class NavigatorSpec extends SpecBase {
           CertificateDeclarationSaoPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
       "when on CertificateDeclarationStandIn, must go to CertificateCheckYourAnswers page" in {
@@ -406,7 +412,7 @@ class NavigatorSpec extends SpecBase {
           CertificateDeclarationStandInPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
       "when on CertificateConfirmation, must go to CertificateTaskList page" in {
@@ -414,7 +420,7 @@ class NavigatorSpec extends SpecBase {
           CertificateConfirmationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.Complete)
+        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.Complete)
       }
     }
 
