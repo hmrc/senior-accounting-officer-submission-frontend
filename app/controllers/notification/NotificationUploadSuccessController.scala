@@ -21,6 +21,7 @@ import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.requests.DataRequest
 import models.upload.UploadTemplateTableData
+import models.upscan.UploadJourney
 import pages.notification.UploadTemplateTablePage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}

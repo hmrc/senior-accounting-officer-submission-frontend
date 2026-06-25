@@ -50,16 +50,22 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
         )
       )
 
-      when(mockSessionRepository.updateUploadStatus(any(), any())).thenReturn(Future.successful(true))
+      when(mockSessionRepository.updateUploadStatus(any(), any(), any())).thenReturn(Future.successful(true))
 
-      dispatcher.processUpscanCallback(callback).futureValue mustBe true
+      dispatcher.processUpscanCallback(UploadJourney.Notification, callback).futureValue mustBe true
 
+      val journeyCaptor   = ArgumentCaptor.forClass(classOf[UploadJourney])
       val referenceCaptor = ArgumentCaptor.forClass(classOf[AnyRef])
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
       verify(mockSessionRepository, times(1))
-        .updateUploadStatus(referenceCaptor.capture().asInstanceOf[String], statusCaptor.capture())
+        .updateUploadStatus(
+          journeyCaptor.capture(),
+          referenceCaptor.capture().asInstanceOf[String],
+          statusCaptor.capture()
+        )
 
+      journeyCaptor.getValue mustBe UploadJourney.Notification
       referenceCaptor.getValue.toString mustBe "foo"
 
       val capturedStatus = statusCaptor.getValue.asInstanceOf[UploadStatus.UploadedSuccessfully]
@@ -86,16 +92,22 @@ class UpscanCallbackDispatcherSpec extends SpecBase with MockitoSugar {
         )
       )
 
-      when(mockSessionRepository.updateUploadStatus(any(), any())).thenReturn(Future.successful(true))
+      when(mockSessionRepository.updateUploadStatus(any(), any(), any())).thenReturn(Future.successful(true))
 
-      dispatcher.processUpscanCallback(callback).futureValue mustBe true
+      dispatcher.processUpscanCallback(UploadJourney.Notification, callback).futureValue mustBe true
 
+      val journeyCaptor   = ArgumentCaptor.forClass(classOf[UploadJourney])
       val referenceCaptor = ArgumentCaptor.forClass(classOf[AnyRef])
       val statusCaptor    = ArgumentCaptor.forClass(classOf[UploadStatus])
 
       verify(mockSessionRepository, times(1))
-        .updateUploadStatus(referenceCaptor.capture().asInstanceOf[String], statusCaptor.capture())
+        .updateUploadStatus(
+          journeyCaptor.capture(),
+          referenceCaptor.capture().asInstanceOf[String],
+          statusCaptor.capture()
+        )
 
+      journeyCaptor.getValue mustBe UploadJourney.Notification
       referenceCaptor.getValue.toString mustBe "foo"
       statusCaptor.getValue mustBe expectedStatus
 

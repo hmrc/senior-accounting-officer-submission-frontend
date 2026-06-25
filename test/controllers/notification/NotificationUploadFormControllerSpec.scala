@@ -18,10 +18,9 @@ package controllers.notification
 
 import base.SpecBase
 import connectors.UpscanInitiateConnector
-import connectors.UpscanInitiateConnector.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import models.upscan.{FileUploadState, UploadStatus, UpscanInitiateResponse}
+import models.upscan.*
 import org.mockito.ArgumentMatchers.{any, argThat, eq as meq}
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
@@ -53,7 +52,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       when(mockNotificationUploadFormView.apply(any(), any())(using any(), any())).thenReturn(Html(""))
 
       when(
-        mockUpscanInitiateConnector.initiateV2(meq(UpscanJourney.Notification))(using
+        mockUpscanInitiateConnector.initiateV2(meq(UploadJourney.Notification))(using
           any[HeaderCarrier]()
         )
       ).thenReturn(Future.successful(upscanInitiateResponse))
@@ -86,7 +85,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
       val mockNotificationUploadFormView = mock[NotificationUploadFormView]
 
       when(
-        mockUpscanInitiateConnector.initiateV2(meq(UpscanJourney.Notification))(using
+        mockUpscanInitiateConnector.initiateV2(meq(UploadJourney.Notification))(using
           any[HeaderCarrier]
         )
       ).thenReturn(Future.failed(new RuntimeException("Upscan service unavailable")))
@@ -120,7 +119,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
       when(
-        mockUpscanInitiateConnector.initiateV2(meq(UpscanJourney.Notification))(using
+        mockUpscanInitiateConnector.initiateV2(meq(UploadJourney.Notification))(using
           any[HeaderCarrier]()
         )
       )
@@ -184,7 +183,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
       when(mockNotificationUploadFormView.apply(any(), any())(using any(), any())).thenReturn(Html(""))
-      when(mockUpscanInitiateConnector.initiateV2(meq(UpscanJourney.Notification))(using any[HeaderCarrier]()))
+      when(mockUpscanInitiateConnector.initiateV2(meq(UploadJourney.Notification))(using any[HeaderCarrier]()))
         .thenReturn(Future.successful(upscanInitiateResponse))
       when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
@@ -228,7 +227,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
 
       when(mockNotificationUploadFormView.apply(any(), any())(using any(), any())).thenReturn(Html(""))
-      when(mockUpscanInitiateConnector.initiateV2(meq(UpscanJourney.Notification))(using any[HeaderCarrier]()))
+      when(mockUpscanInitiateConnector.initiateV2(meq(UploadJourney.Notification))(using any[HeaderCarrier]()))
         .thenReturn(Future.successful(upscanInitiateResponse))
       when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 

@@ -17,6 +17,7 @@
 package config
 
 import base.SpecBase
+import models.upscan.UploadJourney
 import play.api.Application
 
 class AppConfigSpec extends SpecBase {
@@ -30,7 +31,8 @@ class AppConfigSpec extends SpecBase {
     }
 
     "return correct callback end point" in {
-      config.upscanCallbackTarget mustBe "http://localhost:10058/internal/upscan-callback"
+      config.upscanCallbackTarget(UploadJourney.Notification) mustBe
+        "http://localhost:10058/internal/upscan-callback/notification"
     }
   }
 

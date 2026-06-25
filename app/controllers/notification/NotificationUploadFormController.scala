@@ -17,11 +17,10 @@
 package controllers.notification
 
 import connectors.UpscanInitiateConnector
-import connectors.UpscanInitiateConnector.UpscanJourney.Notification
 import controllers.actions.*
 import forms.notification.NotificationUploadFormProvider
 import models.*
-import models.upscan.{FileUploadState, UploadStatus}
+import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
 import pages.notification.NotificationUploadStatePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -65,7 +64,7 @@ class NotificationUploadFormController @Inject() (
       }
 
       for {
-        upscanInitiateResponse <- upscanInitiateConnector.initiateV2(Notification)
+        upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Notification)
         updatedAnswers         <- Future.fromTry(
           request.userAnswers.set(
             NotificationUploadStatePage,

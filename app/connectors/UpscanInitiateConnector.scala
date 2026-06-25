@@ -17,9 +17,9 @@
 package connectors
 
 import config.AppConfig
-import connectors.UpscanInitiateConnector.UpscanJourney
 import controllers.notification.routes as notificationRoutes
-import models.upscan.{UpscanInitiateRequestV2, UpscanInitiateResponse}
+import controllers.routes
+import models.upscan.{UploadJourney, UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue
 import play.api.mvc.Call
@@ -36,11 +36,11 @@ class UpscanInitiateConnector @Inject() (
     appConfig: AppConfig
 )(using ExecutionContext) {
 
-  def initiateV2(journey: UpscanJourney)(using HeaderCarrier): Future[UpscanInitiateResponse] = {
+  def initiateV2(journey: UploadJourney)(using HeaderCarrier): Future[UpscanInitiateResponse] = {
     val request = UpscanInitiateRequestV2(
-      callbackUrl = appConfig.upscanCallbackTarget,
-      successRedirect = Some(appConfig.host + journey.successRedirect),
-      errorRedirect = Some(appConfig.host + journey.errorRedirect)
+      callbackUrl = appConfig.upscanCallbackTarget(journey),
+      successRedirect = Some(appConfig.host + successRedirect(journey)),
+      errorRedirect = Some(appConfig.host + errorRedirect(journey))
     )
 
     httpClient
@@ -49,14 +49,15 @@ class UpscanInitiateConnector @Inject() (
       .execute[UpscanInitiateResponse]
   }
 
-}
+  private def successRedirect(journey: UploadJourney): Call =
+    journey match {
+      case UploadJourney.Notification => notificationRoutes.NotificationUploadSuccessController.onPageLoad(key = None)
+      case UploadJourney.Certificate  => routes.CertificateUploadFormController.onPageLoad()
+    }
 
-object UpscanInitiateConnector {
-  enum UpscanJourney(val successRedirect: Call, val errorRedirect: Call) {
-    case Notification
-        extends UpscanJourney(
-          successRedirect = notificationRoutes.NotificationUploadSuccessController.onPageLoad(key = None),
-          errorRedirect = notificationRoutes.NotificationUploadFormController.onPageLoad()
-        )
-  }
+  private def errorRedirect(journey: UploadJourney): Call =
+    journey match {
+      case UploadJourney.Notification => notificationRoutes.NotificationUploadFormController.onPageLoad()
+      case UploadJourney.Certificate  => routes.CertificateUploadFormController.onPageLoad()
+    }
 }

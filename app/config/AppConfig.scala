@@ -17,6 +17,7 @@
 package config
 
 import controllers.internal.routes
+import models.upscan.UploadJourney
 import play.api.Configuration
 import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.RequestHeader
@@ -64,8 +65,8 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
     )
   )
 
-  lazy val upscanCallbackTarget: String =
-    s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback()}"
+  def upscanCallbackTarget(journey: UploadJourney): String =
+    s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback(journey.toString)}"
 
   private def getValue(key: String): String =
     sys.props.getOrElse(key, config.get[String](key))

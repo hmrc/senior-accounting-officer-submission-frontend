@@ -19,11 +19,9 @@ package services
 import connectors.UpscanDownloadConnector
 import models.UserAnswers
 import models.upload.{ParsedSubmissionRow, TemplateParseError, TemplateParseResult}
-import models.upscan.FileUploadState
 import models.upscan.UploadStatus.*
-import pages.notification.NotificationUploadStatePage
+import models.upscan.{FileUploadState, UploadJourney}
 import play.api.http.Status.OK
-import queries.{Gettable, Settable}
 import services.UpscanService.*
 import services.csvparser.UploadTemplateCsvParser
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -106,7 +104,4 @@ object UpscanService {
     case Result(reference: String, rows: Seq[ParsedSubmissionRow]) extends State
   }
 
-  enum UploadJourney(val page: Gettable[FileUploadState] with Settable[FileUploadState]) {
-    case Notification extends UploadJourney(NotificationUploadStatePage)
-  }
 }
