@@ -34,6 +34,9 @@ import views.html.notification.NotificationCheckYourAnswersView
 import services.NotificationSubmitService
 import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.http.HeaderCarrier
+import scala.concurrent.Future
+import services.NotificationSubmissionError
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
@@ -83,8 +86,8 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
         val mockNotificationSubmitService = mock[NotificationSubmitService]
 
-        when(mockNotificationSubmitService.submit(any()))
-          .thenReturn(Right(exampleNotificationReference))
+        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
+          .thenReturn(Future.successful(Right(exampleNotificationReference)))
 
         val application =
           applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
@@ -128,8 +131,8 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
         val mockNotificationSubmitService = mock[NotificationSubmitService]
 
-        when(mockNotificationSubmitService.submit(any()))
-          .thenReturn(Left(exampleErrorMessage))
+        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
+          .thenReturn(Future.successful(Left(NotificationSubmissionError.HttpError)))
 
         val application =
           applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
@@ -157,5 +160,5 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
 object NotificationCheckYourAnswersControllerSpec {
   val exampleNotificationReference = "example notification reference"
-  val exampleErrorMessage          = "example error message"
+  val exampleErrorMessage          = "Problem with http client"
 }

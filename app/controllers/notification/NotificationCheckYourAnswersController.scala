@@ -26,6 +26,8 @@ import controllers.notification.routes as notificationRoutes
 
 import javax.inject.Inject
 import uk.gov.hmrc.http.InternalServerException
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
 
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
@@ -37,7 +39,8 @@ class NotificationCheckYourAnswersController @Inject() (
     view: NotificationCheckYourAnswersView,
     notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
     notificationSubmitService: NotificationSubmitService
-) extends FrontendBaseController
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
@@ -48,15 +51,19 @@ class NotificationCheckYourAnswersController @Inject() (
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
       {
         notificationSubmitService
           .submit(request.userAnswers)
-          .fold(
-            errorMessage => throw new InternalServerException(errorMessage),
-            notificationReference =>
-              Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
-          )
+          .flatMap {
+            _.fold(
+              error => throw new InternalServerException(error.message),
+              notificationReference =>
+                Future.successful(
+                  Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
+                )
+            )
+          }
       }
     }
 }
