@@ -17,4 +17,4 @@
 package pages.notification
 import pages.Page
 
-case object ConfirmYourNotificationPage extends Page {}
+case object ConfirmYourNotificationPage extends Page

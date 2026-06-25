@@ -16,6 +16,7 @@
 
 package pages.notification
 
+import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
@@ -23,7 +24,7 @@ import java.time.LocalDate
 
 case object NotificationMultiSaoLastOfficerStartDatePage extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ toString
 
   override def toString: String = "notificationMultiSaoLastOfficerStartDate"
 }

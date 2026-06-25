@@ -17,15 +17,27 @@
 package models.upscan
 
 import pages.CertificateUploadStatePage
+import pages.Page.{CERTIFICATE_PATH, NOTIFICATION_PATH}
 import pages.notification.NotificationUploadStatePage
 import queries.{Gettable, Settable}
 
 enum UploadJourney(
     override val toString: String,
-    val page: Gettable[FileUploadState] with Settable[FileUploadState]
+    val page: Gettable[FileUploadState] with Settable[FileUploadState],
+    val uploadPath: String
 ) {
-  case Notification extends UploadJourney("notification", NotificationUploadStatePage)
-  case Certificate  extends UploadJourney("certificate", CertificateUploadStatePage)
+  case Notification
+      extends UploadJourney(
+        "notification",
+        NotificationUploadStatePage,
+        s"data.$NOTIFICATION_PATH.$NotificationUploadStatePage"
+      )
+  case Certificate
+      extends UploadJourney(
+        "certificate",
+        CertificateUploadStatePage,
+        s"data.$CERTIFICATE_PATH.$CertificateUploadStatePage"
+      )
 }
 
 object UploadJourney {
