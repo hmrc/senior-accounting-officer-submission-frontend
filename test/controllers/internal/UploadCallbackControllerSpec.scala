@@ -62,7 +62,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
         )
 
         val request =
-          FakeRequest(POST, routes.UploadCallbackController.callback(UploadJourney.Notification.toString).url)
+          FakeRequest(POST, routes.UploadCallbackController.callback(UploadJourney.Notification).url)
             .withJsonBody(json)
 
         val result = route(application, request).value
@@ -98,7 +98,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
         )
 
         val request =
-          FakeRequest(POST, routes.UploadCallbackController.callback(UploadJourney.Notification.toString).url)
+          FakeRequest(POST, routes.UploadCallbackController.callback(UploadJourney.Notification).url)
             .withJsonBody(json)
 
         val result = route(application, request).value
@@ -122,7 +122,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
         )
 
         val request =
-          FakeRequest(POST, routes.UploadCallbackController.callback(UploadJourney.Notification.toString).url)
+          FakeRequest(POST, routes.UploadCallbackController.callback(UploadJourney.Notification).url)
             .withJsonBody(json)
 
         val result = route(application, request).value
@@ -148,7 +148,7 @@ class UploadCallbackControllerSpec extends SpecBase with MockitoSugar {
             |""".stripMargin
         )
 
-        val request = FakeRequest(POST, routes.UploadCallbackController.callback("unknown").url).withJsonBody(json)
+        val request = FakeRequest(POST, "/internal/upscan-callback?journey=unknown").withJsonBody(json)
 
         val result = route(application, request).value
 

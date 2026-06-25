@@ -19,6 +19,7 @@ package models.upscan
 import pages.CertificateUploadStatePage
 import pages.Page.{CERTIFICATE_PATH, NOTIFICATION_PATH}
 import pages.notification.NotificationUploadStatePage
+import play.api.mvc.QueryStringBindable
 import queries.{Gettable, Settable}
 
 enum UploadJourney(
@@ -43,4 +44,14 @@ enum UploadJourney(
 object UploadJourney {
   def fromString(value: String): Option[UploadJourney] =
     UploadJourney.values.find(_.toString == value)
+
+  given QueryStringBindable[UploadJourney] with {
+    override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, UploadJourney]] =
+      QueryStringBindable.bindableString.bind(key, params).map {
+        _.flatMap(value => fromString(value).toRight(s"Invalid upload journey: $value"))
+      }
+
+    override def unbind(key: String, value: UploadJourney): String =
+      QueryStringBindable.bindableString.unbind(key, value.toString)
+  }
 }
