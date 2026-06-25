@@ -22,7 +22,7 @@ import play.api.mvc.*
 import services.UpscanCallbackDispatcher
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 import javax.inject.{Inject, Singleton}
 
@@ -34,9 +34,7 @@ class UploadCallbackController @Inject() (
     extends FrontendController(mcc)
     with Logging {
 
-  def callback(journey: String): Action[UpscanCallback] = Action.async(parse.json[UpscanCallback]) { request =>
-    UploadJourney.fromString(journey).fold(Future.successful(BadRequest)) { uploadJourney =>
-      upscanCallbackDispatcher.processUpscanCallback(uploadJourney, request.body).map(_ => NoContent)
-    }
+  def callback(journey: UploadJourney): Action[UpscanCallback] = Action.async(parse.json[UpscanCallback]) { request =>
+    upscanCallbackDispatcher.processUpscanCallback(journey, request.body).map(_ => NoContent)
   }
 }

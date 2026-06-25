@@ -66,7 +66,7 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   )
 
   def upscanCallbackTarget(journey: UploadJourney): String =
-    s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback(journey.toString)}"
+    s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback(journey)}"
 
   private def getValue(key: String): String =
     sys.props.getOrElse(key, config.get[String](key))
