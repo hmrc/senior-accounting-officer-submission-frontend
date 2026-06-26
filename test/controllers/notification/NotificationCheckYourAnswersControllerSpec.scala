@@ -42,7 +42,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       val mockService = mock[NotificationCheckYourAnswersService]
       when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
-      val userAnswers = completedNotificationUploadAnswers
+      val userAnswers = completedNotificationReviewAnswers
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(bind[NotificationCheckYourAnswersService].toInstance(mockService))
         .build()
@@ -64,7 +64,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
     "must redirect to the next page for a POST" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
+        applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
           )

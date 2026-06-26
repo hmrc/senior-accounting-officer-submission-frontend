@@ -50,7 +50,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers)).build()
 
       running(application) {
         val request = FakeRequest(GET, notificationAdditionalInformationRoute)
@@ -67,7 +67,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        completedNotificationUploadAnswers.set(NotificationAdditionalInformationPage, Some("answer")).success.value
+        completedNotificationReviewAnswers.set(NotificationAdditionalInformationPage, Some("answer")).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -96,7 +96,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
+        applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
           .overrides(
             bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -116,7 +116,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      val application = applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers)).build()
+      val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers)).build()
 
       running(application) {
         val request =
