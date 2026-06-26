@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package pages
+package pages.certificate
 
 import pages.Page.CERTIFICATE_PATH
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object CertificateReviewQualifiedPage extends QuestionPage[Boolean] {
+case object CertificateAdditionalInformationPage extends QuestionPage[Option[String]] {
+
   override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
 
-  override def toString: String = "certificateReviewQualifiedPage"
+  override def toString: String = "certificateAdditionalInformation"
 }

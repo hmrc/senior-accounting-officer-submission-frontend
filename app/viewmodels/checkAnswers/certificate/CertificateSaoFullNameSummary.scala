@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.certificate
 
 import controllers.certificate.routes as certificateRoutes
 import models.{CheckMode, UserAnswers}
-import pages.CertificateSaoFullNamePage
+import pages.certificate.CertificateSaoFullNamePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*

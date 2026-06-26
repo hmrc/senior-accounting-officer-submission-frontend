@@ -24,6 +24,7 @@ import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
 import models.notification.NotificationIdReferenceNumber
 import models.upload.UploadTemplateTableData
 import pages.*
+import pages.certificate.*
 import pages.notification.*
 import play.api.mvc.Call
 

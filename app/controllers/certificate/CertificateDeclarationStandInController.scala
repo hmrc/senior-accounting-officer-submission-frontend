@@ -20,7 +20,7 @@ import controllers.actions.*
 import forms.certificate.CertificateDeclarationStandInFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.CertificateDeclarationStandInPage
+import pages.certificate.CertificateDeclarationStandInPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

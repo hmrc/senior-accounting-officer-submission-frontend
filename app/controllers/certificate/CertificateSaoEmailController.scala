@@ -21,7 +21,7 @@ import controllers.routes
 import forms.certificate.CertificateSaoEmailFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.{CertificateSaoEmailPage, CertificateSaoFullNamePage}
+import pages.certificate.{CertificateSaoEmailPage, CertificateSaoFullNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository

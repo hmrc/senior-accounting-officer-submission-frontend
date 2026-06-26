@@ -20,7 +20,7 @@ import controllers.actions.*
 import forms.certificate.CertificateAdditionalInformationFormProvider
 import models.Mode
 import navigation.Navigator
-import pages.CertificateAdditionalInformationPage
+import pages.certificate.CertificateAdditionalInformationPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

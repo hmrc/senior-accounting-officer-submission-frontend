@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.CertificateSaoFullNamePage
+import pages.certificate.CertificateSaoFullNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
