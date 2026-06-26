@@ -124,21 +124,6 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must redirect back to the review page for a POST when the review confirmation marker is missing" in {
-      val application = applicationBuilder(userAnswers = Some(populatedAnswers))
-        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
-        .build()
-
-      running(application) {
-        val request = FakeRequest(POST, notificationRoutes.UploadTemplateTableController.onSubmit().url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual notificationRoutes.UploadTemplateTableController.onPageLoad().url
-      }
-    }
-
     "must return OK and the correct view for a GET when there was more than one SAO" in {
       val lastSaoName = "John Smith"
       val answers     = completedMultipleSaoDetailsAnswers

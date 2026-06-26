@@ -58,15 +58,9 @@ class UploadTemplateTableController @Inject() (
 
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
-      request.body.asFormUrlEncoded.flatMap(_.get("confirmReview").flatMap(_.headOption)) match {
-        case Some("true") =>
-          for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadTemplateReviewPage, true))
-            _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, updatedAnswers))
-
-        case _ =>
-          Future.successful(Redirect(controllers.notification.routes.UploadTemplateTableController.onPageLoad()))
-      }
+      for {
+        updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadTemplateReviewPage, true))
+        _              <- sessionRepository.set(updatedAnswers)
+      } yield Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, updatedAnswers))
     }
 }
