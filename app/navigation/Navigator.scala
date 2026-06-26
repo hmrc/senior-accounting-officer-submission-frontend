@@ -16,9 +16,11 @@
 
 package navigation
 
+import controllers.certificate.routes as certificateRoutes
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
+import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
 import models.notification.NotificationIdReferenceNumber
 import models.upload.UploadTemplateTableData
 import pages.*
@@ -53,9 +55,9 @@ class Navigator @Inject() () {
     case CombinedCertificateCheckYourAnswersPage =>
       _ => routes.CombinedWhoSubmitsCertificateController.onPageLoad(NormalMode)
     case CombinedWhoSubmitsCertificatePage =>
-      _ => routes.QualifiedCompaniesController.onPageLoad()
+      _ => certificateRoutes.QualifiedCompaniesController.onPageLoad()
     case QualifiedCompaniesPage =>
-      _ => routes.UnqualifiedCompaniesController.onPageLoad()
+      _ => certificateRoutes.UnqualifiedCompaniesController.onPageLoad()
     case UnqualifiedCompaniesPage =>
       _ => routes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
     case CombinedCertificateDeclarationSaoPage =>
@@ -103,34 +105,39 @@ class Navigator @Inject() () {
         userAnswers.get(SubmissionTypePage) match {
           case Some(SubmissionType.Notification) => notificationRoutes.NotificationTaskListController.onPageLoad()
           case Some(SubmissionType.Certificate)  =>
-            routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
+            certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
           case _ => ???
         }
     // certificate flow
     case CertificateSaoFullNamePage =>
-      _ => routes.CertificateSaoEmailController.onPageLoad(NormalMode)
+      _ => certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode)
     case CertificateSaoEmailPage =>
       _ =>
-        routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.UploadSubmissionTemplateStage)
+        certificateRoutes.CertificateTaskListController.onPageLoad(stage =
+          CertificateTaskListStage.UploadSubmissionTemplateStage
+        )
     case CertificateReviewQualifiedPage =>
-      _ => routes.CertificateReviewUnqualifiedController.onPageLoad()
+      _ => certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
     case CertificateReviewUnqualifiedPage =>
-      _ => routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.SubmitCertificateStage)
+      _ =>
+        certificateRoutes.CertificateTaskListController.onPageLoad(stage =
+          CertificateTaskListStage.SubmitCertificateStage
+        )
     case CertificateAdditionalInformationPage =>
-      _ => routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
+      _ => certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
     case CertificateWhoIsSubmittingPage =>
       userAnswers =>
         userAnswers.get(CertificateWhoIsSubmittingPage) match {
           case Some(CertificateWhoIsSubmitting.Sao) =>
-            routes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
+            certificateRoutes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
           case Some(CertificateWhoIsSubmitting.StandIn) =>
-            routes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
+            certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
           case _ => ???
         }
     case CertificateDeclarationSaoPage | CertificateDeclarationStandInPage =>
-      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
+      _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateConfirmationPage =>
-      _ => routes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Complete)
+      _ => certificateRoutes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Complete)
     case _ =>
       _ => ???
   }

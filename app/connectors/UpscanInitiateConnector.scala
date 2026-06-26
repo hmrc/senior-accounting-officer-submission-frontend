@@ -17,8 +17,8 @@
 package connectors
 
 import config.AppConfig
+import controllers.certificate.routes as certificateRoutes
 import controllers.notification.routes as notificationRoutes
-import controllers.routes
 import models.upscan.{UploadJourney, UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue
@@ -52,12 +52,12 @@ class UpscanInitiateConnector @Inject() (
   private def successRedirect(journey: UploadJourney): Call =
     journey match {
       case UploadJourney.Notification => notificationRoutes.NotificationUploadSuccessController.onPageLoad(key = None)
-      case UploadJourney.Certificate  => routes.CertificateUploadFormController.onPageLoad()
+      case UploadJourney.Certificate  => certificateRoutes.CertificateUploadFormController.onPageLoad()
     }
 
   private def errorRedirect(journey: UploadJourney): Call =
     journey match {
       case UploadJourney.Notification => notificationRoutes.NotificationUploadFormController.onPageLoad()
-      case UploadJourney.Certificate  => routes.CertificateUploadFormController.onPageLoad()
+      case UploadJourney.Certificate  => certificateRoutes.CertificateUploadFormController.onPageLoad()
     }
 }

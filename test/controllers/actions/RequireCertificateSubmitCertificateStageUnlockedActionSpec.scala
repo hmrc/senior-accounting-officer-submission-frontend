@@ -17,9 +17,9 @@
 package controllers.actions
 
 import base.SpecBase
-import controllers.routes
-import models.CertificateTaskListStage
+import controllers.certificate.routes as certificateRoutes
 import models.UserAnswers
+import models.certificate.CertificateTaskListStage
 import models.requests.DataRequest
 import play.api.http.HeaderNames
 import play.api.test.FakeRequest
@@ -28,14 +28,14 @@ import play.api.test.Helpers.*
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-class CertificateUploadSubmissionTemplateStageCompletedActionSpec extends SpecBase {
+class RequireCertificateSubmitCertificateStageUnlockedActionSpec extends SpecBase {
 
   class Harness extends RequireCertificateSubmitCertificateStageUnlockedAction {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
       filter(DataRequest(FakeRequest(), userAnswers.id, userAnswers))
   }
 
-  "CertificateUploadSubmissionTemplateStageCompletedAction" - {
+  "RequireCertificateSubmitCertificateStageUnlockedAction" - {
 
     "must allow the request when submission template has been uploaded are complete" in {
       new Harness().callFilter(userAnswersWithCertificateUploadedTemplate).futureValue mustBe None
@@ -45,7 +45,7 @@ class CertificateUploadSubmissionTemplateStageCompletedActionSpec extends SpecBa
       val result = new Harness().callFilter(emptyUserAnswers).futureValue.value
 
       result.header.status mustBe SEE_OTHER
-      result.header.headers(HeaderNames.LOCATION) mustBe routes.CertificateTaskListController
+      result.header.headers(HeaderNames.LOCATION) mustBe certificateRoutes.CertificateTaskListController
         .onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
         .url
     }

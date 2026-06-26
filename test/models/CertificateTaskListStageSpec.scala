@@ -16,6 +16,7 @@
 
 package models
 
+import models.certificate.{CertificateTaskListStage, CertificateTaskListState}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 

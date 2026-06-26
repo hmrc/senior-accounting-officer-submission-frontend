@@ -16,7 +16,7 @@
 
 package pages
 
-import models.CertificateWhoIsSubmitting
+import models.certificate.CertificateWhoIsSubmitting
 import pages.Page.CERTIFICATE_PATH
 import play.api.libs.json.JsPath
 

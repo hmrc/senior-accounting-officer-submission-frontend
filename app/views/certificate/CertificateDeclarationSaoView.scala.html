@@ -1,0 +1,73 @@
+@*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.certificate.routes as certificateRoutes
+@import viewmodels.InputWidth.*
+
+@this(
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukInput: GovukInput,
+    govukButton: GovukButton
+)
+
+@(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
+
+@layout(pageTitle = title(form, messages("certificateDeclarationSao.title"))) {
+
+    @formHelper(action = certificateRoutes.CertificateDeclarationSaoController.onSubmit(mode)) {
+
+        @if(form.errors.nonEmpty) {
+            @govukErrorSummary(ErrorSummaryViewModel(form))
+        }
+
+        <span class="govuk-caption-l">@messages("certificateDeclarationSao.caption")</span>
+        <h1 class="govuk-heading-l">@messages("certificateDeclarationSao.heading")</h1>
+
+        <p class="govuk-body-m">@messages("certificateDeclarationSao.paragraph1")</p>
+        <p class="govuk-body-m">@messages("certificateDeclarationSao.paragraph2")</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>@messages("certificateDeclarationSao.list1.item1")</li>
+            <li>@messages("certificateDeclarationSao.list1.item2")</li>
+        </ul>
+
+        <p class="govuk-body">@messages("certificateDeclarationSao.paragraph3")</p>
+
+        <div class="govuk-inset-text">
+            @messages("certificateDeclarationSao.inset.text")
+        </div>
+
+
+        <h2 class="govuk-heading-s">
+            @messages("certificateDeclarationSao.subheading")
+        </h2>
+
+        @govukInput(
+            InputViewModel(
+                field = form("value"),
+                label = LabelViewModel(messages("certificateDeclarationSao.label").toText)
+            )
+            .withHint(HintViewModel(HtmlContent(messages("certificateDeclarationSao.hint"))))
+            .withWidth(Fixed20)
+        )
+
+        @govukButton(
+            ButtonViewModel(messages("certificateDeclarationSao.button").toText).withAttribute("id", "submit")
+        )
+    }
+}

@@ -16,8 +16,8 @@
 
 package controllers.actions
 
-import controllers.routes
-import models.CertificateTaskListStage
+import controllers.certificate.routes as certificateRoutes
+import models.certificate.CertificateTaskListStage
 import models.requests.DataRequest
 import play.api.mvc.ActionFilter
 import play.api.mvc.Result
@@ -37,7 +37,9 @@ class RequireCertificateUploadSubmissionTemplateUnlockedAction @Inject() ()(usin
     Future.successful {
       val userAnswers = request.userAnswers
       Option.unless(isProvideSaoDetailsStageCompleted(userAnswers)) {
-        Redirect(routes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage))
+        Redirect(
+          certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
+        )
       }
     }
   }
