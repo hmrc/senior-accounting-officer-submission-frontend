@@ -59,6 +59,12 @@ trait SpecBase
       .success
       .value
 
+  def completedNotificationReviewAnswers: UserAnswers =
+    completedNotificationUploadAnswers
+      .set(UploadTemplateReviewPage, true)
+      .success
+      .value
+
   def completedMultipleSaoDetailsAnswers: UserAnswers =
     emptyUserAnswers
       .set(NotificationMoreThanOneSaoPage, true)

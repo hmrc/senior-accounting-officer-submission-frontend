@@ -67,6 +67,14 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       buttonText = "Continue"
     )
 
+    "must submit a review confirmation marker from the CTA" in {
+      val button = doc.getMainContent.select("button[type=submit]")
+
+      button.attr("id") mustBe "submit"
+      button.attr("name") mustBe "confirmReview"
+      button.attr("value") mustBe "true"
+    }
+
     "must render the SAO name, company count and upload link" in {
       doc.text() must include(saoName)
       doc.text() must include("There were 1 companies")

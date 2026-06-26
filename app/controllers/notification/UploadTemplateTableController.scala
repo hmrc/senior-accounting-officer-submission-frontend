@@ -20,12 +20,15 @@ import controllers.actions.*
 import controllers.routes
 import models.NormalMode
 import navigation.Navigator
-import pages.notification.UploadTemplateTablePage
+import pages.notification.{UploadTemplateReviewPage, UploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
 import services.UploadTemplatePlaybackService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.UploadTemplateTableView
+
+import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
@@ -38,8 +41,10 @@ class UploadTemplateTableController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: UploadTemplateTableView,
     playbackService: UploadTemplatePlaybackService,
-    navigator: Navigator
-) extends FrontendBaseController
+    navigator: Navigator,
+    sessionRepository: SessionRepository
+)(using ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] =
@@ -52,7 +57,16 @@ class UploadTemplateTableController @Inject() (
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
-      Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, request.userAnswers))
+    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
+      request.body.asFormUrlEncoded.flatMap(_.get("confirmReview").flatMap(_.headOption)) match {
+        case Some("true") =>
+          for {
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadTemplateReviewPage, true))
+            _              <- sessionRepository.set(updatedAnswers)
+          } yield Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, updatedAnswers))
+
+        case _ =>
+          Future.successful(Redirect(controllers.notification.routes.UploadTemplateTableController.onPageLoad()))
+      }
     }
 }

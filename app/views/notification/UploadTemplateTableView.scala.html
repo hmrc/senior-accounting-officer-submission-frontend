@@ -77,6 +77,8 @@
     @formHelper(action = notificationRoutes.UploadTemplateTableController.onSubmit()) {
         @govukButton(
             ButtonViewModel(messages("uploadTemplateTable.continue").toText).withAttribute("id", "submit")
+                    .withName("confirmReview")
+                    .withAttribute("value", "true")
         )
     }
 }

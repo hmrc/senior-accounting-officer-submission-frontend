@@ -21,6 +21,9 @@ import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.upload.*
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{verify, when}
+import org.scalatestplus.mockito.MockitoSugar
 import pages.*
 import pages.notification.*
 import play.api.http.HeaderNames
@@ -28,11 +31,14 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import repositories.SessionRepository
 import views.html.notification.UploadTemplateTableView
+
+import scala.concurrent.Future
 
 import java.time.LocalDate
 
-class UploadTemplateTableControllerSpec extends SpecBase {
+class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -96,6 +102,29 @@ class UploadTemplateTableControllerSpec extends SpecBase {
     }
 
     "must redirect to the next page for a POST" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+
+      val application = applicationBuilder(userAnswers = Some(populatedAnswers))
+        .overrides(
+          bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
+
+      running(application) {
+        val request = FakeRequest(POST, notificationRoutes.UploadTemplateTableController.onSubmit().url)
+          .withFormUrlEncodedBody(("confirmReview", "true"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        header(HeaderNames.LOCATION, result) mustEqual Some(onwardRoute.url)
+        verify(mockSessionRepository).set(populatedAnswers.set(UploadTemplateReviewPage, true).get)
+      }
+    }
+
+    "must redirect back to the review page for a POST when the review confirmation marker is missing" in {
       val application = applicationBuilder(userAnswers = Some(populatedAnswers))
         .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
         .build()
@@ -106,7 +135,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        header(HeaderNames.LOCATION, result) mustEqual Some(onwardRoute.url)
+        redirectLocation(result).value mustEqual notificationRoutes.UploadTemplateTableController.onPageLoad().url
       }
     }
 
@@ -166,6 +195,7 @@ class UploadTemplateTableControllerSpec extends SpecBase {
 
       running(application) {
         val request = FakeRequest(POST, notificationRoutes.UploadTemplateTableController.onSubmit().url)
+          .withFormUrlEncodedBody(("confirmReview", "true"))
 
         val result = route(application, request).value
 

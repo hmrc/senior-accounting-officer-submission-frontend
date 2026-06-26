@@ -82,5 +82,6 @@ object NotificationStage {
       .exists(_.contains(true))
 
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty)
+    userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty) &&
+      userAnswers.get(UploadTemplateReviewPage).contains(true)
 }

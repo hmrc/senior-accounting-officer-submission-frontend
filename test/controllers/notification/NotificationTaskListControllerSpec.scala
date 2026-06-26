@@ -82,12 +82,35 @@ class NotificationTaskListControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must return OK and unlock the submit task when the upload is complete" in {
+    "must return OK and keep the upload task unlocked when the upload is complete but the review is not confirmed" in {
       val mockSessionRepository = mock[SessionRepository]
       when(mockSessionRepository.get(userAnswersId))
         .thenReturn(Future.successful(Some(completedNotificationUploadAnswers)))
 
       val application = applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
+
+        val result = route(application, request).value
+        val view   = application.injector.instanceOf[NotificationTaskListView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(NotificationStage.UploadSubmissionTemplateDetails)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must return OK and unlock the submit task when the upload and review confirmation are complete" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.get(userAnswersId))
+        .thenReturn(Future.successful(Some(completedNotificationReviewAnswers)))
+
+      val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
         .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
         .build()
 
