@@ -17,10 +17,10 @@
 package pages.notification
 
 import pages.Page.NOTIFICATION_PATH
-import pages.QuestionPage
+import pages.{NotificationOnlyPage,QuestionPage}
 import play.api.libs.json.JsPath
 
-final case class NotificationMultiSaoPreviousOfficerNamePage(saoIndex: Int) extends QuestionPage[String] {
+final case class NotificationMultiSaoPreviousOfficerNamePage(saoIndex: Int) extends NotificationOnlyPage with QuestionPage[String] {
 
   val key = "notificationMultiSaoPreviousOfficerName"
 

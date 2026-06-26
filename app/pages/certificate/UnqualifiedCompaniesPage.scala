@@ -15,6 +15,7 @@
  */
 
 package pages.certificate
-import pages.Page
 
-case object UnqualifiedCompaniesPage extends Page
+import pages.CertificateOnlyPage
+
+case object UnqualifiedCompaniesPage extends CertificateOnlyPage

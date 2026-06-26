@@ -18,10 +18,10 @@ package pages.certificate
 
 import models.upscan.FileUploadState
 import pages.Page.CERTIFICATE_PATH
-import pages.QuestionPage
+import pages.{CertificateOnlyPage, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object CertificateUploadStatePage extends QuestionPage[FileUploadState] {
+case object CertificateUploadStatePage extends CertificateOnlyPage with QuestionPage[FileUploadState] {
 
   override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
 

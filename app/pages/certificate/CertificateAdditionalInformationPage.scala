@@ -17,10 +17,10 @@
 package pages.certificate
 
 import pages.Page.CERTIFICATE_PATH
-import pages.QuestionPage
+import pages.{CertificateOnlyPage, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object CertificateAdditionalInformationPage extends QuestionPage[Option[String]] {
+case object CertificateAdditionalInformationPage extends CertificateOnlyPage with QuestionPage[Option[String]] {
 
   override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
 

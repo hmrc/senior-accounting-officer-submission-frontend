@@ -17,10 +17,10 @@
 package pages.notification
 
 import pages.Page.NOTIFICATION_PATH
-import pages.QuestionPage
+import pages.{NotificationOnlyPage, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object NotificationAdditionalInformationPage extends QuestionPage[Option[String]] {
+case object NotificationAdditionalInformationPage extends NotificationOnlyPage with QuestionPage[Option[String]] {
 
   override def path: JsPath = JsPath \ NOTIFICATION_PATH \ toString
 

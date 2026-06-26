@@ -15,6 +15,7 @@
  */
 
 package pages.certificate
-import pages.Page
 
-case object CertificateConfirmationPage extends Page
+import pages.CertificateOnlyPage
+
+case object CertificateConfirmationPage extends CertificateOnlyPage
