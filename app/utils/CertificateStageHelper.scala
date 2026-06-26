@@ -17,10 +17,7 @@
 package utils
 
 import models.UserAnswers
-import pages.CertificateReviewQualifiedPage
-import pages.CertificateReviewUnqualifiedPage
-import pages.CertificateSaoEmailPage
-import pages.CertificateSaoFullNamePage
+import pages.certificate.*
 
 object CertificateStageHelper {
   def isProvideSaoDetailsStageCompleted(userAnswers: UserAnswers): Boolean = {

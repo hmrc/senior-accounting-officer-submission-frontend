@@ -26,8 +26,8 @@ import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.CertificateDeclarationStandInPage
 import pages.Page.CERTIFICATE_PATH
+import pages.certificate.CertificateDeclarationStandInPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.libs.json.Json

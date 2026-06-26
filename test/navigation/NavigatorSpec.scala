@@ -24,6 +24,7 @@ import models.*
 import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
 import models.upload.UploadTemplateTableData
 import pages.*
+import pages.certificate.*
 import pages.notification.*
 
 import java.time.LocalDate

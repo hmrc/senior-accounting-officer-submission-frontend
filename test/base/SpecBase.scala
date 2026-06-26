@@ -24,6 +24,7 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
 import pages.*
+import pages.certificate.*
 import pages.notification.*
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}

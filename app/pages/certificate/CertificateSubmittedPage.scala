@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,7 @@
  * limitations under the License.
  */
 
-package pages
+package pages.certificate
+import pages.Page
 
-import pages.Page.CERTIFICATE_PATH
-import play.api.libs.json.JsPath
-
-case object CertificateReviewUnqualifiedPage extends QuestionPage[Boolean] {
-  override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
-
-  override def toString: String = "certificateReviewUnqualifiedPage"
-}
+case object CertificateSubmittedPage extends Page

@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package pages
+package pages.certificate
 
-import models.certificate.CertificateWhoIsSubmitting
+import models.certificate.CertificateDeclarationStandIn
 import pages.Page.CERTIFICATE_PATH
+import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object CertificateWhoIsSubmittingPage extends QuestionPage[CertificateWhoIsSubmitting] {
+case object CertificateDeclarationStandInPage extends QuestionPage[CertificateDeclarationStandIn] {
 
   override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
 
-  override def toString: String = "certificateWhoIsSubmitting"
+  override def toString: String = "certificateDeclarationStandIn"
 }

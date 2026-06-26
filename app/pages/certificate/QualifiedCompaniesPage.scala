@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
-package pages
+package pages.certificate
+import pages.Page
 
-case object UnqualifiedCompaniesPage extends Page
+case object QualifiedCompaniesPage extends Page

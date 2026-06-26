@@ -16,8 +16,8 @@
 
 package models.upscan
 
-import pages.CertificateUploadStatePage
 import pages.Page.{CERTIFICATE_PATH, NOTIFICATION_PATH}
+import pages.certificate.CertificateUploadStatePage
 import pages.notification.NotificationUploadStatePage
 import play.api.mvc.QueryStringBindable
 import queries.{Gettable, Settable}

@@ -21,7 +21,7 @@ import controllers.certificate.routes as certificateRoutes
 import models.CheckMode
 import models.certificate.CertificateWhoIsSubmitting
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.CertificateWhoIsSubmittingPage
+import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent

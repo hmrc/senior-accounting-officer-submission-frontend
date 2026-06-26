@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.certificate
 
 import controllers.certificate.routes as certificateRoutes
 import models.CheckMode
-import pages.CertificateAdditionalInformationPage
+import pages.certificate.CertificateAdditionalInformationPage
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import viewmodels.checkAnswers.CheckYourAnswersSummaryRenderingSupport
 
