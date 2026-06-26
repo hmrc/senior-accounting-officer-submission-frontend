@@ -18,7 +18,7 @@ package pages.notification
 
 import models.upload.UploadTemplateTableData
 import pages.Page.NOTIFICATION_PATH
-import pages.{NotificationOnlyPage,QuestionPage}
+import pages.{NotificationOnlyPage, QuestionPage}
 import play.api.libs.json.JsPath
 
 case object UploadTemplateTablePage extends NotificationOnlyPage with QuestionPage[UploadTemplateTableData] {

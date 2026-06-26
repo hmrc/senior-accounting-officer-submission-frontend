@@ -22,7 +22,9 @@ import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-final case class NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int) extends NotificationOnlyPage with QuestionPage[LocalDate] {
+final case class NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int)
+    extends NotificationOnlyPage
+    with QuestionPage[LocalDate] {
 
   val key = "notificationMultiSaoPreviousOfficerStartDate"
 

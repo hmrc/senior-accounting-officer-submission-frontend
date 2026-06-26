@@ -19,7 +19,7 @@ package pages
 import models.SubmissionType
 import play.api.libs.json.JsPath
 
-case object SubmissionTypePage extends OtherPage with QuestionPage[SubmissionType] {
+case object SubmissionTypePage extends JourneyAgnosticPage with QuestionPage[SubmissionType] {
 
   override def path: JsPath = JsPath \ toString
 

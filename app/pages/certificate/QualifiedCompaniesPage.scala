@@ -16,6 +16,6 @@
 
 package pages.certificate
 
-import pages.CertificateOnlyPage
+import pages.CombinedPage
 
-case object QualifiedCompaniesPage extends CertificateOnlyPage
+case object QualifiedCompaniesPage extends CombinedPage

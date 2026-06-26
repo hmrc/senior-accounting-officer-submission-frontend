@@ -19,7 +19,9 @@ package pages
 import models.CombinedCertificateDeclarationSao
 import play.api.libs.json.JsPath
 
-case object CombinedCertificateDeclarationSaoPage extends CombinedPage with QuestionPage[CombinedCertificateDeclarationSao] {
+case object CombinedCertificateDeclarationSaoPage
+    extends CombinedPage
+    with QuestionPage[CombinedCertificateDeclarationSao] {
 
   override def path: JsPath = JsPath \ toString
 
