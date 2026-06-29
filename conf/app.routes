@@ -1,19 +1,66 @@
 # microservice specific routes
 
-->          /hmrc-frontend                                            hmrcfrontend.Routes
-GET         /assets/*file                                             controllers.Assets.versioned(path = "/public", file: Asset)
+->          /hmrc-frontend                                                            hmrcfrontend.Routes
+GET         /assets/*file                                                             controllers.Assets.versioned(path = "/public", file: Asset)
 
-GET         /refresh-session                                          controllers.KeepAliveController.keepAlive()
+GET         /refresh-session                                                          controllers.KeepAliveController.keepAlive()
 
-GET         /there-is-a-problem                                       controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
+GET         /there-is-a-problem                                                       controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
 
-GET         /notification/start           controllers.notification.NotificationTaskListController.onPageLoad()
-GET         /notification/complete        controllers.notification.NotificationTaskListController.onComplete()
-POST        /notification/complete        controllers.notification.NotificationTaskListController.onCompleteSubmit()
+GET         /template-guidance                                                        controllers.TemplateGuidanceController.onPageLoad()
 
-GET         /template-guidance                                        controllers.TemplateGuidanceController.onPageLoad()
+GET         /notification/template/download                                           controllers.DownloadTemplateController.downloadFile()
 
-GET         /notification/template/download                           controllers.DownloadTemplateController.downloadFile()
+GET         /submission-type                                                          controllers.SubmissionTypeController.onPageLoad()
+POST        /submission-type                                                          controllers.SubmissionTypeController.onSubmit()
+
+##############################
+# Notification only journey routes
+##############################
+
+GET         /notification/start                                                       controllers.notification.NotificationTaskListController.onPageLoad()
+GET         /notification/complete                                                    controllers.notification.NotificationTaskListController.onComplete()
+POST        /notification/complete                                                    controllers.notification.NotificationTaskListController.onCompleteSubmit()
+
+GET         /notification/more-than-one-sao                                           controllers.notification.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/more-than-one-sao                                           controllers.notification.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
+GET         /notification/change-more-than-one-sao                                    controllers.notification.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/change-more-than-one-sao                                    controllers.notification.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
+
+GET         /notification/more-sao/submit-notification-full-name                      controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/more-sao/submit-notification-full-name                      controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = NormalMode)
+GET         /notification/more-sao/change-submitNotification-full-name                controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/more-sao/change-submit-notification-full-name               controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = CheckMode)
+
+GET         /notification/more-sao/submit-notification-first-start-date               controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/more-sao/submit-notification-first-start-date               controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onSubmit(mode: Mode = NormalMode)
+GET         /notification/more-sao/change-submit-notification-first-start-date        controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/more-sao/change-submit-notification-first-start-date        controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onSubmit(mode: Mode = CheckMode)
+
+GET         /notification/who-was-the-sao-before                                      controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+POST        /notification/who-was-the-sao-before                                      controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+GET         /notification/change-who-was-the-sao-before                               controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+POST        /notification/change-who-was-the-sao-before                               controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+
+GET         /notification/multi-sao-second-start-date                                 controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+POST        /notification/multi-sao-second-start-date                                 controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+GET         /notification/change-multi-sao-second-start-date                          controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+POST        /notification/change-multi-sao-second-start-date                          controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+
+GET         /notificationMoreSaoSecondEndDate                                         controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+POST        /notificationMoreSaoSecondEndDate                                         controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+GET         /changeNotificationMoreSaoSecondEndDate                                   controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+POST        /changeNotificationMoreSaoSecondEndDate                                   controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+
+GET         /notification/more-sao/are-all-added                                      controllers.notification.NotificationMultiSaoAreAllAddedController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+POST        /notification/more-sao/are-all-added                                      controllers.notification.NotificationMultiSaoAreAllAddedController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
+GET         /notification/more-sao/change-are-all-added                               controllers.notification.NotificationMultiSaoAreAllAddedController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+POST        /notification/more-sao/change-are-all-added                               controllers.notification.NotificationMultiSaoAreAllAddedController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+
+GET         /notification/one-sao/submit-notification-full-name                       controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode = NormalMode)
+POST        /notification/one-sao/submit-notification-full-name                       controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode = NormalMode)
+GET         /notification/one-sao/change-submit-notification-full-name                controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /notification/one-sao/change-submit-notification-full-name                controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/upload                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
 GET         /notification/upload/success                                              controllers.notification.NotificationUploadSuccessController.onPageLoad(key: Option[String])
@@ -22,157 +69,117 @@ POST        /notification/upload/table                                          
 GET         /notification/upload/table/error                                          controllers.notification.UploadTemplateTableErrorController.onPageLoad()
 POST        /notification/upload/table/error                                          controllers.notification.UploadTemplateTableErrorController.onSubmit()
 
-GET         /notification/guidance        controllers.notification.NotificationGuidanceController.onPageLoad()
-POST        /notification/guidance        controllers.notification.NotificationGuidanceController.onSubmit()
-
-GET         /notification/more-than-one-sao                                           controllers.notification.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = NormalMode)
-POST        /notification/more-than-one-sao                                           controllers.notification.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = NormalMode)
-
-GET         /notification/change-more-than-one-sao                                    controllers.notification.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode = CheckMode)
-POST        /notification/change-more-than-one-sao                                    controllers.notification.NotificationMoreThanOneSaoController.onSubmit(mode: Mode = CheckMode)
-
-GET         /notification/who-was-the-sao-before               controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-POST        /notification/who-was-the-sao-before               controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-
-GET         /notification/change-who-was-the-sao-before        controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
-POST        /notification/change-who-was-the-sao-before        controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
-
 GET         /notification/additional-information                                      controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/additional-information                                      controllers.notification.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
 GET         /notification/change-additional-information                               controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/change-additional-information                               controllers.notification.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
-GET         /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
-POST        /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
-
 GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onSubmit()
+
+GET         /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
+POST        /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
 
 GET         /notification/confirm-your-notification                                   controllers.notification.ConfirmYourNotificationController.onPageLoad()
 POST        /notification/confirm-your-notification                                   controllers.notification.ConfirmYourNotificationController.onSubmit()
 
-GET        /certificate/task-list/1                                    controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.ProvideSaoDetailsStage)
-GET        /certificate/task-list/2                                    controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.UploadSubmissionTemplateStage)
-GET        /certificate/task-list/3                                    controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.SubmitCertificateStage)
-GET        /certificate/task-list/complete                             controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Complete)
-POST       /certificate/task-list                                      controllers.certificate.CertificateTaskListController.onSubmit()
+##############################
+# certificate only journey routes
+##############################
 
-GET         /notification/one-sao/submit-notification-full-name               controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode = NormalMode)
-POST        /notification/one-sao/submit-notification-full-name               controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode = NormalMode)
-GET         /notification/one-sao/change-submit-notification-full-name        controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode = CheckMode)
-POST        /notification/one-sao/change-submit-notification-full-name        controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/task-list/1                                                  controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.ProvideSaoDetailsStage)
+GET         /certificate/task-list/2                                                  controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.UploadSubmissionTemplateStage)
+GET         /certificate/task-list/3                                                  controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.SubmitCertificateStage)
+GET         /certificate/task-list/complete                                           controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Complete)
+POST        /certificate/task-list                                                    controllers.certificate.CertificateTaskListController.onSubmit()
 
-GET         /notification/more-sao/submit-notification-first-start-date               controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode = NormalMode)
-POST        /notification/more-sao/submit-notification-first-start-date               controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onSubmit(mode: Mode = NormalMode)
-GET         /notification/more-sao/change-submit-notification-first-start-date        controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode = CheckMode)
-POST        /notification/more-sao/change-submit-notification-first-start-date        controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/submit-certificate-sao-full-name                             controllers.certificate.CertificateSaoFullNameController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/submit-certificate-sao-full-name                             controllers.certificate.CertificateSaoFullNameController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-submit-certificate-sao-full-name                      controllers.certificate.CertificateSaoFullNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-submit-certificate-sao-full-name                      controllers.certificate.CertificateSaoFullNameController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/is-this-the-sao                              controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-is-this-the-sao                       controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-is-this-the-sao                       controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate-only/sao-email                                               controllers.certificate.CertificateSaoEmailController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate-only/sao-email                                               controllers.certificate.CertificateSaoEmailController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate-only/change-sao-email                                        controllers.certificate.CertificateSaoEmailController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate-only/change-sao-email                                        controllers.certificate.CertificateSaoEmailController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/sao-name                                     controllers.SaoNameController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/sao-name                                     controllers.SaoNameController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-sao-name                              controllers.SaoNameController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-sao-name                              controllers.SaoNameController.onSubmit(mode: Mode = CheckMode)
+GET         /certificateUploadForm                                                    controllers.certificate.CertificateUploadFormController.onPageLoad()
 
-GET         /certificate/sao-email                                    controllers.SaoEmailController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/sao-email                                    controllers.SaoEmailController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-sao-email                             controllers.SaoEmailController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-sao-email                             controllers.SaoEmailController.onSubmit(mode: Mode = CheckMode)
+GET         /certificateReviewQualified                                               controllers.certificate.CertificateReviewQualifiedController.onPageLoad()
+POST        /certificateReviewQualified                                               controllers.certificate.CertificateReviewQualifiedController.onSubmit()
 
-GET         /certificate/sao-email-communication-choice               controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/sao-email-communication-choice               controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-sao-email-communication-choice        controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-sao-email-communication-choice        controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = CheckMode)
+GET         /certificateReviewUnqualified                                             controllers.certificate.CertificateReviewUnqualifiedController.onPageLoad()
+POST        /certificateReviewUnqualified                                             controllers.certificate.CertificateReviewUnqualifiedController.onSubmit()
 
-GET         /certificate/check-your-answers                           controllers.CombinedCertificateCheckYourAnswersController.onPageLoad()
-POST        /certificate/check-your-answers                           controllers.CombinedCertificateCheckYourAnswersController.onSubmit()
+GET         /certificateAdditionalInformation                                         controllers.certificate.CertificateAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificateAdditionalInformation                                         controllers.certificate.CertificateAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
+GET         /changeCertificateAdditionalInformation                                   controllers.certificate.CertificateAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
+POST        /changeCertificateAdditionalInformation                                   controllers.certificate.CertificateAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/submit-certificate-submitter                 controllers.CombinedWhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/submit-certificate-submitter                 controllers.CombinedWhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-submitter                             controllers.CombinedWhoSubmitsCertificateController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-submitter                             controllers.CombinedWhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate-who-is-submitting                                            controllers.certificate.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate-who-is-submitting                                            controllers.certificate.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = NormalMode)
+GET         /change-certificate-who-is-submitting                                     controllers.certificate.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = CheckMode)
+POST        /change-certificate-who-is-submitting                                     controllers.certificate.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/qualified-companies          controllers.certificate.QualifiedCompaniesController.onPageLoad()
-POST        /certificate/qualified-companies          controllers.certificate.QualifiedCompaniesController.onSubmit()
+GET         /certificate/submit-certificate-confirm-sao                               controllers.certificate.CertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/submit-certificate-confirm-sao                               controllers.certificate.CertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-submit-certificate-confirm-sao                        controllers.certificate.CertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-submit-certificate-confirm-sao                        controllers.certificate.CertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/unqualified-companies        controllers.certificate.UnqualifiedCompaniesController.onPageLoad()
-POST        /certificate/unqualified-companies        controllers.certificate.UnqualifiedCompaniesController.onSubmit()
+GET         /certificate/declaration-stand-in                                         controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/declaration-stand-in                                         controllers.certificate.CertificateDeclarationStandInController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-declaration-stand-in                                  controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-declaration-stand-in                                  controllers.certificate.CertificateDeclarationStandInController.onSubmit(mode: Mode = CheckMode)
 
-GET         /certificate/declaration                                  controllers.CombinedCertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
-POST        /certificate/declaration                                  controllers.CombinedCertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
-GET         /certificate/change-declaration                           controllers.CombinedCertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
-POST        /certificate/change-declaration                           controllers.CombinedCertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
+GET         /certificateCheckYourAnswers                                              controllers.certificate.CertificateCheckYourAnswersController.onPageLoad()
+POST        /certificateCheckYourAnswers                                              controllers.certificate.CertificateCheckYourAnswersController.onSubmit()
 
-GET         /certificate/confirmation                                         controllers.CombinedCertificateConfirmationController.onPageLoad()
+GET         /certificate-confirmation                                                 controllers.certificate.CertificateConfirmationController.onPageLoad(certificateIdReferenceNumber: String)
+POST        /certificate-confirmation                                                 controllers.certificate.CertificateConfirmationController.onSubmit()
 
-GET        /notification/more-sao/submit-notification-full-name               controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = NormalMode)
-POST       /notification/more-sao/submit-notification-full-name               controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = NormalMode)
-GET        /notification/more-sao/change-submitNotification-full-name         controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /notification/more-sao/change-submit-notification-full-name        controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = CheckMode)
+##############################
+# combined journey routes
+##############################
+GET         /notification/guidance                                                    controllers.notification.NotificationGuidanceController.onPageLoad()
+POST        /notification/guidance                                                    controllers.notification.NotificationGuidanceController.onSubmit()
 
-GET         /notification/multi-sao-second-start-date                                 controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-POST        /notification/multi-sao-second-start-date                                 controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-GET         /notification/change-multi-sao-second-start-date                          controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
-POST        /notification/change-multi-sao-second-start-date                          controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+GET         /certificate/is-this-the-sao                                              controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/is-this-the-sao                                              controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-is-this-the-sao                                       controllers.IsThisTheSaoOnCertificateController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-is-this-the-sao                                       controllers.IsThisTheSaoOnCertificateController.onSubmit(mode: Mode = CheckMode)
 
-GET        /notificationMoreSaoSecondEndDate                                          controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-POST       /notificationMoreSaoSecondEndDate                                          controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-GET        /changeNotificationMoreSaoSecondEndDate                                    controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
-POST       /changeNotificationMoreSaoSecondEndDate                                    controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+GET         /certificate/sao-name                                                     controllers.SaoNameController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/sao-name                                                     controllers.SaoNameController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-sao-name                                              controllers.SaoNameController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-sao-name                                              controllers.SaoNameController.onSubmit(mode: Mode = CheckMode)
 
-GET        /notification/more-sao/are-all-added                                       controllers.notification.NotificationMultiSaoAreAllAddedController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-POST       /notification/more-sao/are-all-added                                       controllers.notification.NotificationMultiSaoAreAllAddedController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
-GET        /notification/more-sao/change-are-all-added                                controllers.notification.NotificationMultiSaoAreAllAddedController.onPageLoad(mode: Mode = CheckMode, saoIndex: Int ?= 0)
-POST       /notification/more-sao/change-are-all-added                                controllers.notification.NotificationMultiSaoAreAllAddedController.onSubmit(mode: Mode = CheckMode, saoIndex: Int ?= 0)
+GET         /certificate/sao-email                                                    controllers.SaoEmailController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/sao-email                                                    controllers.SaoEmailController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-sao-email                                             controllers.SaoEmailController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-sao-email                                             controllers.SaoEmailController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificateAdditionalInformation                           controllers.certificate.CertificateAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificateAdditionalInformation                           controllers.certificate.CertificateAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
-GET        /changeCertificateAdditionalInformation                     controllers.certificate.CertificateAdditionalInformationController.onPageLoad(mode: Mode = CheckMode)
-POST       /changeCertificateAdditionalInformation                     controllers.certificate.CertificateAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/sao-email-communication-choice                               controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/sao-email-communication-choice                               controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-sao-email-communication-choice                        controllers.SaoEmailCommunicationChoiceController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-sao-email-communication-choice                        controllers.SaoEmailCommunicationChoiceController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificateReviewQualified                                 controllers.certificate.CertificateReviewQualifiedController.onPageLoad()
-POST        /certificateReviewQualified                                controllers.certificate.CertificateReviewQualifiedController.onSubmit()
+GET         /certificate/check-your-answers                                           controllers.CombinedCertificateCheckYourAnswersController.onPageLoad()
+POST        /certificate/check-your-answers                                           controllers.CombinedCertificateCheckYourAnswersController.onSubmit()
 
-GET        /certificateReviewUnqualified                               controllers.certificate.CertificateReviewUnqualifiedController.onPageLoad()
-POST        /certificateReviewUnqualified                              controllers.certificate.CertificateReviewUnqualifiedController.onSubmit()
+GET         /certificate/submit-certificate-submitter                                 controllers.CombinedWhoSubmitsCertificateController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/submit-certificate-submitter                                 controllers.CombinedWhoSubmitsCertificateController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-submitter                                             controllers.CombinedWhoSubmitsCertificateController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-submitter                                             controllers.CombinedWhoSubmitsCertificateController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificate-only/sao-email                                 controllers.certificate.CertificateSaoEmailController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificate-only/sao-email                                 controllers.certificate.CertificateSaoEmailController.onSubmit(mode: Mode = NormalMode)
-GET        /certificate-only/change-sao-email                          controllers.certificate.CertificateSaoEmailController.onPageLoad(mode: Mode = CheckMode)
-POST       /certificate-only/change-sao-email                          controllers.certificate.CertificateSaoEmailController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/declaration                                                  controllers.CombinedCertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
+POST        /certificate/declaration                                                  controllers.CombinedCertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
+GET         /certificate/change-declaration                                           controllers.CombinedCertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
+POST        /certificate/change-declaration                                           controllers.CombinedCertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
 
-GET        /certificate/submit-certificate-sao-full-name               controllers.certificate.CertificateSaoFullNameController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificate/submit-certificate-sao-full-name               controllers.certificate.CertificateSaoFullNameController.onSubmit(mode: Mode = NormalMode)
-GET        /certificate/change-submit-certificate-sao-full-name        controllers.certificate.CertificateSaoFullNameController.onPageLoad(mode: Mode = CheckMode)
-POST       /certificate/change-submit-certificate-sao-full-name        controllers.certificate.CertificateSaoFullNameController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/qualified-companies                                          controllers.certificate.QualifiedCompaniesController.onPageLoad()
+POST        /certificate/qualified-companies                                          controllers.certificate.QualifiedCompaniesController.onSubmit()
 
-GET        /certificateUploadForm                                      controllers.certificate.CertificateUploadFormController.onPageLoad()
+GET         /certificate/unqualified-companies                                        controllers.certificate.UnqualifiedCompaniesController.onPageLoad()
+POST        /certificate/unqualified-companies                                        controllers.certificate.UnqualifiedCompaniesController.onSubmit()
 
-GET        /certificate/declaration-stand-in                           controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificate/declaration-stand-in                           controllers.certificate.CertificateDeclarationStandInController.onSubmit(mode: Mode = NormalMode)
-GET        /certificate/change-declaration-stand-in                    controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode = CheckMode)
-POST       /certificate/change-declaration-stand-in                    controllers.certificate.CertificateDeclarationStandInController.onSubmit(mode: Mode = CheckMode)
-
-GET        /certificate-who-is-submitting                              controllers.certificate.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificate-who-is-submitting                              controllers.certificate.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = NormalMode)
-GET        /change-certificate-who-is-submitting                       controllers.certificate.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = CheckMode)
-POST       /change-certificate-who-is-submitting                       controllers.certificate.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
-
-GET        /certificateCheckYourAnswers                                controllers.certificate.CertificateCheckYourAnswersController.onPageLoad()
-POST        /certificateCheckYourAnswers                               controllers.certificate.CertificateCheckYourAnswersController.onSubmit()
-
-GET        /certificate-confirmation                                   controllers.certificate.CertificateConfirmationController.onPageLoad(certificateIdReferenceNumber: String)
-POST       /certificate-confirmation                                   controllers.certificate.CertificateConfirmationController.onSubmit()
-
-
-GET        /certificate/submit-certificate-confirm-sao                 controllers.certificate.CertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
-POST       /certificate/submit-certificate-confirm-sao                 controllers.certificate.CertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
-GET        /certificate/change-submit-certificate-confirm-sao          controllers.certificate.CertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
-POST       /certificate/change-submit-certificate-confirm-sao          controllers.certificate.CertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
-
-GET        /submission-type                        controllers.SubmissionTypeController.onPageLoad()
-POST       /submission-type                        controllers.SubmissionTypeController.onSubmit()
-
+GET         /certificate/confirmation                                                 controllers.CombinedCertificateConfirmationController.onPageLoad()
