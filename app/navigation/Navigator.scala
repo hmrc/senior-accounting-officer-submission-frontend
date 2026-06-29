@@ -184,6 +184,4 @@ class Navigator @Inject() () {
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }
-
-  val certificateIdReferenceNumber: CertificateIdReferenceNumber = CertificateIdReferenceNumber("SAOCRT0123456789")
 }
