@@ -56,12 +56,20 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
   "RequireSubmitNotificationUnlockedAction" - {
 
-    "must allow the request when SAO details and upload are complete" in {
-      new SubmitHarness().callFilter(completedNotificationUploadAnswers).futureValue mustBe None
+    "must allow the request when SAO details, upload and review confirmation are complete" in {
+      new SubmitHarness().callFilter(completedNotificationReviewAnswers).futureValue mustBe None
     }
 
     "must redirect to the task list when the upload is incomplete" in {
       val result = new SubmitHarness().callFilter(completedSaoDetailsAnswers).futureValue.value
+
+      result.header.status mustBe SEE_OTHER
+      result.header
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad().url
+    }
+
+    "must redirect to the task list when the review confirmation is incomplete" in {
+      val result = new SubmitHarness().callFilter(completedNotificationUploadAnswers).futureValue.value
 
       result.header.status mustBe SEE_OTHER
       result.header
