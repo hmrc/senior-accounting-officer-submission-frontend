@@ -75,7 +75,10 @@ class NotificationUploadFormController @Inject() (
           )
         )
         _ <- sessionRepository.set(updatedAnswers)
-      } yield Ok(notificationUploadFormView(form, upscanInitiateResponse))
+      } yield {
+        if form.hasErrors then BadRequest(notificationUploadFormView(form, upscanInitiateResponse))
+        else Ok(notificationUploadFormView(form, upscanInitiateResponse))
+      }
     }
 }
 
