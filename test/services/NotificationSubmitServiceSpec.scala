@@ -34,6 +34,10 @@ import uk.gov.hmrc.http.HttpResponse
 import play.api.test.Helpers.CREATED
 import play.api.inject.bind
 import play.api.libs.json.Json
+import models.notification.NotificationResponse
+import models.notification.NotificationSubmissionError
+import services.NotificationSubmitServiceSpec.exampleNotificationReference
+import repositories.SessionRepository
 
 class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
@@ -56,10 +60,11 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
       .value
 
     "must return notification response on success" in {
-      // TODO: mock the connector so that it is successful
+
       val mockConnector = mock[ProtectedServiceConnector]
+
       when(mockConnector.postNotification(any())(using any[HeaderCarrier]())) thenReturn Future.successful(
-        HttpResponse(CREATED, Json.obj("notificationReference" -> "test").toString, Map())
+        HttpResponse(CREATED, Json.obj("notificationRef" -> exampleNotificationReference).toString, Map())
       )
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
@@ -71,20 +76,70 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
       running(application) {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
         val result = SUT.submit(userAnswers)
-        Await.ready(result, Duration.Inf) mustBe Right(NotificationResponse(notificationReference = "apple"))
+        Await.result(result, Duration.Inf) mustBe Right(exampleNotificationReference)
       }
     }
 
     "must return error on mongo failure" in {
-      val SUT    = app.injector.instanceOf[NotificationSubmitService]
-      val result = SUT.submit(userAnswers)
-      Await.ready(result, Duration.Inf) mustBe Left(NotificationSubmissionError.MongoError)
+      val mockConnector = mock[ProtectedServiceConnector]
+
+      when(mockConnector.postNotification(any())(using any[HeaderCarrier]()))
+        .thenReturn(
+          Future.successful(
+            HttpResponse(CREATED, Json.obj("notificationRef" -> exampleNotificationReference).toString, Map())
+          )
+        )
+
+      val mockRepository = mock[SessionRepository]
+
+      when(mockRepository.set(any())).thenReturn(Future.successful(false))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[ProtectedServiceConnector].toInstance(mockConnector),
+          bind[SessionRepository].toInstance(mockRepository)
+        )
+        .build()
+
+      running(application) {
+        val SUT    = application.injector.instanceOf[NotificationSubmitService]
+        val result = SUT.submit(userAnswers)
+        Await.result(result, Duration.Inf) mustBe Left(NotificationSubmissionError.MongoError)
+      }
     }
 
     "must return error on http failure" in {
-      val SUT    = app.injector.instanceOf[NotificationSubmitService]
-      val result = SUT.submit(userAnswers)
-      Await.ready(result, Duration.Inf) mustBe Left(NotificationSubmissionError.HttpError)
+      val mockConnector = mock[ProtectedServiceConnector]
+
+      when(mockConnector.postNotification(any())(using any[HeaderCarrier]()))
+        .thenReturn(
+          Future.successful(
+            HttpResponse(INTERNAL_SERVER_ERROR)
+          )
+        )
+
+      val mockRepository = mock[SessionRepository]
+
+      when(mockRepository.set(any())).thenReturn(Future.successful(true))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[ProtectedServiceConnector].toInstance(mockConnector),
+          bind[SessionRepository].toInstance(mockRepository)
+        )
+        .build()
+
+      running(application) {
+        val SUT    = application.injector.instanceOf[NotificationSubmitService]
+        val result = SUT.submit(userAnswers)
+        Await.result(result, Duration.Inf) mustBe Left(
+          NotificationSubmissionError.HttpError(HttpResponse(INTERNAL_SERVER_ERROR))
+        )
+      }
     }
   }
+}
+
+object NotificationSubmitServiceSpec {
+  val exampleNotificationReference = "appleBananaCitrue"
 }
