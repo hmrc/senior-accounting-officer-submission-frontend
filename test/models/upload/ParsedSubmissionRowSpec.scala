@@ -92,8 +92,8 @@ class ParsedSubmissionRowSpec extends SpecBase {
     }
   }
 
-  "toQualifiedCompany extension method" - {
-    "maps from ParsedSubmissionRow to QualifiedCompany" in {
+  "toQualifiedCompany extension method must" - {
+    "map a qualified company from ParsedSubmissionRow to Some(QualifiedCompany)" in {
       val result = ParsedSubmissionRow(
         notification = NotificationFields(
           companyName = testCompanyName,
@@ -119,61 +119,127 @@ class ParsedSubmissionRowSpec extends SpecBase {
         )
       ).toQualifiedCompany
 
-      val expected = QualifiedCompany(
-        name = testCompanyName,
-        utr = testCompanyUtr,
-        corporationTax = true,
-        valueAddedTax = false,
-        paye = true,
-        insurancePremiumTax = false,
-        stampDutyLandTax = true,
-        stampDutyReserveTax = false,
-        petroleumRevenueTax = true,
-        customsDuties = false,
-        exciseDuties = true,
-        bankLevy = false,
-        additionalInformation = testAdditionalInformation
+      val expected = Some(
+        QualifiedCompany(
+          name = testCompanyName,
+          utr = testCompanyUtr,
+          corporationTax = true,
+          valueAddedTax = false,
+          paye = true,
+          insurancePremiumTax = false,
+          stampDutyLandTax = true,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = true,
+          customsDuties = false,
+          exciseDuties = true,
+          bankLevy = false,
+          additionalInformation = testAdditionalInformation
+        )
       )
 
       result mustBe expected
     }
+
+    "map an unqualified company from ParsedSubmissionRow to None" in {
+      val result = ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = testCompanyName,
+          companyUtr = CompanyUtr(testCompanyUtr),
+          companyCrn = Some(CompanyCrn(testCompanyCrn)),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = LocalDate.now()
+        ),
+        certificate = CertificateFields(
+          corporationTax = false,
+          valueAddedTax = false,
+          paye = false,
+          insurancePremiumTax = false,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = false,
+          customsDuties = false,
+          exciseDuties = false,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Unqualified),
+          additionalInformation = Some(testAdditionalInformation)
+        )
+      ).toQualifiedCompany
+
+      result mustBe None
+
+    }
+
   }
 
-  "toUnqualifiedCompany extension method must map from ParsedSubmissionRow to UnqualifiedCompany" in {
-    val result = ParsedSubmissionRow(
-      notification = NotificationFields(
-        companyName = "example company name",
-        companyUtr = CompanyUtr("example company utr"),
-        companyCrn = Some(CompanyCrn("example company crn")),
-        companyType = CompanyType.LTD,
-        companyStatus = CompanyStatus.Dormant,
-        financialYearEndDate = LocalDate.now()
-      ),
-      certificate = CertificateFields(
-        corporationTax = true,
-        valueAddedTax = false,
-        paye = true,
-        insurancePremiumTax = false,
-        stampDutyLandTax = true,
-        stampDutyReserveTax = false,
-        petroleumRevenueTax = true,
-        customsDuties = false,
-        exciseDuties = true,
-        bankLevy = false,
-        certificateType = Some(CertificateType.Qualified),
-        additionalInformation = Some("example additional information")
+  "toUnqualifiedCompany extension method must" - {
+    "map an unqualified company from ParsedSubmissionRow to Some(UnqualifiedCompany)" in {
+      val result = ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = "example company name",
+          companyUtr = CompanyUtr("example company utr"),
+          companyCrn = Some(CompanyCrn("example company crn")),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = LocalDate.now()
+        ),
+        certificate = CertificateFields(
+          corporationTax = false,
+          valueAddedTax = false,
+          paye = false,
+          insurancePremiumTax = false,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = false,
+          customsDuties = false,
+          exciseDuties = false,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Unqualified),
+          additionalInformation = Some("example additional information")
+        )
+      ).toUnqualifiedCompany
+
+      val expected = Some(
+        UnqualifiedCompany(
+          name = "example company name",
+          utr = "example company utr",
+          crn = "example company crn",
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant
+        )
       )
-    ).toUnqualifiedCompany
 
-    val expected = UnqualifiedCompany(
-      name = "example company name",
-      utr = "example company utr",
-      crn = "example company crn",
-      companyType = CompanyType.LTD,
-      companyStatus = CompanyStatus.Dormant
-    )
+      result mustBe expected
+    }
 
-    result mustBe expected
+    "map a qualified company from ParsedSubmissionRow to None" in {
+      val result = ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = "example company name",
+          companyUtr = CompanyUtr("example company utr"),
+          companyCrn = Some(CompanyCrn("example company crn")),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = LocalDate.now()
+        ),
+        certificate = CertificateFields(
+          corporationTax = true,
+          valueAddedTax = false,
+          paye = true,
+          insurancePremiumTax = false,
+          stampDutyLandTax = true,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = true,
+          customsDuties = false,
+          exciseDuties = true,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Qualified),
+          additionalInformation = Some("example additional information")
+        )
+      ).toUnqualifiedCompany
+
+      result mustBe None
+    }
   }
 }
 

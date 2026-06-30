@@ -23,6 +23,15 @@ error.title.prefix = Error:
 error.prefix = Error
 error.summary.title = There is a problem
 
+upload.label = Upload a file
+upload.error.quarantine = The selected file contains a virus
+upload.error.rejected = The selected file must be a CSV
+upload.error.unknown = The selected file could not be uploaded – try again
+
+upload.success.title = Upload a submission template for your notification
+upload.success.heading = Your submission template is uploading
+upload.success.paragraph1 = This may take a few minutes
+
 journeyRecovery.continue.title = Sorry, there is a problem with the service
 journeyRecovery.continue.heading = Sorry, there is a problem with the service
 journeyRecovery.continue.guidance = [Add content to explain how to proceed.]
@@ -96,10 +105,6 @@ notificationUploadForm.caption = Submit a notification
 notificationUploadForm.paragraph1 = The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.
 notificationUploadForm.paragraph2 = Read guidance on how to complete the submission template (opens in new tab)
 notificationUploadForm.inset.text = If your group has more than one SAO, you must submit a separate notification for each SAO. After you complete one submission, you can start another.
-notificationUploadForm.upload.label = Upload a file
-notificationUploadForm.upload.error.quarantine = The selected file contains a virus
-notificationUploadForm.upload.error.rejected = The selected file must be a CSV
-notificationUploadForm.upload.error.unknown = The selected file could not be uploaded – try again
 
 notificationGuidance.title = Submit a notification
 notificationGuidance.heading = Submit a notification
@@ -235,10 +240,6 @@ notificationUploadError.validation.headerMismatch = The upload template headers 
 notificationUploadError.validation.missingRequiredValue = A required value is missing in the uploaded template
 notificationUploadError.validation.invalidEnumValue = A value in the uploaded template is not valid
 notificationUploadError.validation.invalidCertificateType = Certificate type must be Qualified, Unqualified or blank
-
-notificationUploadSuccess.title = Upload a submission template for your notification
-notificationUploadSuccess.heading = Your submission template is uploading
-notificationUploadSuccess.paragraph1 = This may take a few minutes
 
 notificationMoreThanOneSao.title = Submit a notification - Was there more than one SAO during the financial year?
 notificationMoreThanOneSao.heading = Was there more than one SAO during the financial year?
@@ -526,3 +527,10 @@ certificateConfirmation.printPage = Print this page
 certificateConfirmation.list1.item1 = - save a copy of all the answers you submitted now. You may not be able to download a PDF if you leave this page
 certificateConfirmation.list1.item2 = - print a paper copy of this confirmation page
 certificateConfirmation.subheading = What happens next
+
+certificateUploadForm.title = Upload a submission template for your certificate
+certificateUploadForm.heading = Upload a submission template
+certificateUploadForm.caption = Submit a certificate
+certificateUploadForm.paragraph1 = The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.
+certificateUploadForm.paragraph2 = Read guidance on how to complete the submission template (opens in new tab)
+certificateUploadForm.inset.text = If your group has more than one SAO, you must upload and submit separate templates, one for each SAO. After submitting one certificate, you can start another.

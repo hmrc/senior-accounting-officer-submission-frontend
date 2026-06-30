@@ -52,7 +52,7 @@ class UpscanInitiateConnector @Inject() (
   private def successRedirect(journey: UploadJourney): Call =
     journey match {
       case UploadJourney.Notification => notificationRoutes.NotificationUploadSuccessController.onPageLoad(key = None)
-      case UploadJourney.Certificate  => certificateRoutes.CertificateUploadFormController.onPageLoad()
+      case UploadJourney.Certificate  => certificateRoutes.CertificateUploadSuccessController.onPageLoad(key = None)
     }
 
   private def errorRedirect(journey: UploadJourney): Call =
