@@ -55,13 +55,14 @@ class NotificationCheckYourAnswersController @Inject() (
       {
         notificationSubmitService
           .submit(request.userAnswers)
-          .flatMap {
+          .map {
             _.fold(
-              error => throw new InternalServerException(error.message),
+              error =>
+                println("jacobwozere")
+                throw new InternalServerException(error.message)
+              ,
               notificationReference =>
-                Future.successful(
-                  Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
-                )
+                Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
             )
           }
       }
