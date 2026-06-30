@@ -16,101 +16,123 @@
 
 package services
 
-import models.UserAnswers
-import repositories.SessionRepository
+import connectors.ProtectedServiceConnector
 import javax.inject.Inject
-import play.api.libs.json.Json
-import uk.gov.hmrc.http.client.HttpClientV2
-import java.net.URL
-import uk.gov.hmrc.http.HttpReads.Implicits.*
+import models.UserAnswers
+import models.notification.*
+import pages.notification.*
+import play.api.libs.json.{Json, Reads}
+import repositories.SessionRepository
+import scala.annotation.tailrec
+import scala.concurrent.{ExecutionContext, Future}
 import uk.gov.hmrc.http.HeaderCarrier
-import play.api.libs.json.OFormat
-import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
-import scala.concurrent.ExecutionContext
-import uk.gov.hmrc.http.HttpResponse
-import scala.concurrent.Future
-import pages.notification.NotificationAdditionalInformationPage
-import play.api.libs.json.Reads
 
-class NotificationSubmitService @Inject() (httpClient: HttpClientV2, sessionRepository: SessionRepository)(using
+class NotificationSubmitService @Inject() (
+    protectedServiceConnector: ProtectedServiceConnector,
+    sessionRepository: SessionRepository
+)(using
     ec: ExecutionContext
 ) {
   def submit(userAnswers: UserAnswers)(using hc: HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
-    // TODO: get the url properly
-    httpClient
-      .post(URL("http://localhost:10060/notification"))
-      .withBody(Json.toJson(userAnswers.toNotification))
-      .execute[HttpResponse]
+    protectedServiceConnector
+      .postNotification(userAnswers.toNotification)
       .flatMap { response =>
         response.status match {
           case 201 => {
+            val notificationReference = Json.parse(response.body).as[NotificationResponse].notificationRef
             sessionRepository
               .set(userAnswers.copy(data = Json.obj()))
               .map {
-                case true =>
-                  Right(Json.toJson(response.body).as[NotificationResponse].notificationReference)
-                case _ => Left(NotificationSubmissionError.MongoError)
+                case true => Right(notificationReference)
+                case _    => Left(NotificationSubmissionError.MongoError)
               }
           }
-          case _ => Future.successful(Left(NotificationSubmissionError.HttpError))
+          case _ => Future.successful(Left(NotificationSubmissionError.HttpError(response)))
         }
       }
   }
 }
 
-enum NotificationSubmissionError(val message: String) {
-  case MongoError extends NotificationSubmissionError("Problem with mongo")
-  case HttpError  extends NotificationSubmissionError("Problem with http client")
-}
+val hardCodedSubscriptionId = "123" // TODO: remove when the subscription id is available
 
-final case class NotificationRequest(
-    subscriptionId: String,
-    companies: List[Company],
-    saos: List[Sao],
-    remarks: Option[String]
-)
-
-object NotificationRequest {
-  given format: OFormat[NotificationRequest] = Json.format
-}
-
-final case class Company(
-    crn: Option[String] = None,
-    utr: String,
-    name: String,
-    accPeriodEnd: String,
-    status: String,
-    `type`: String
-)
-
-object Company {
-  given OFormat[Company] = Json.format[Company]
-}
-
-final case class Sao(
-    name: String,
-    fromDate: Option[String],
-    email: Option[String],
-    toDate: Option[String]
-)
-
-object Sao {
-  given OFormat[Sao] = Json.format[Sao]
-}
-
+// TODO: where should the extensions live?
 extension (userAnswers: UserAnswers) {
+
   def toNotification: NotificationRequest = {
     NotificationRequest(
-      subscriptionId = "TODO where do i come from?", // TODO: figure out where subscription id comes from
+      subscriptionId = hardCodedSubscriptionId,
       remarks = userAnswers.getNullable(NotificationAdditionalInformationPage),
-      saos = List(),     // TODO: map saos
-      companies = List() // TODO: map companies
+      saos = toSaos,
+      companies = toCompanies
     )
   }
-}
 
-final case class NotificationResponse(notificationReference: String)
+  def toSaos: List[Sao] = {
+    @tailrec
+    def previousSaos(index: Int = 0, saos: List[Sao] = List()): List[Sao] = {
+      userAnswers
+        .get(NotificationMultiSaoPreviousOfficerNamePage(index)) match {
+        case Some(name) =>
+          previousSaos(
+            index + 1,
+            Sao(
+              name = name,
+              fromDate = userAnswers
+                .get(NotificationMultiSaoPreviousOfficerStartDatePage(index))
+                .map(_.toString()),
+              email = None,
+              toDate = userAnswers
+                .get(NotificationMultiSaoPreviousOfficerEndDatePage(index))
+                .map(_.toString())
+            ) :: saos
+          )
+        case None => saos
+      }
+    }
 
-object NotificationResponse {
-  given format: OFormat[NotificationResponse] = Json.format
+    userAnswers.get(NotificationMoreThanOneSaoPage) match {
+      case Some(true) =>
+        Sao(
+          name = userAnswers
+            .get(NotificationMultiSaoLastOfficerNamePage)
+            .fold(???)(name => name),
+          fromDate = userAnswers
+            .get(NotificationMultiSaoLastOfficerStartDatePage)
+            .map(_.toString()),
+          email = None,
+          toDate = None
+        ) :: previousSaos()
+      case Some(false) =>
+        List(
+          Sao(
+            name = userAnswers
+              .get(NotificationSingleSaoOfficerNamePage)
+              .fold(???)(name => name),
+            fromDate = None,
+            email = None,
+            toDate = None
+          )
+        )
+      case None => ???
+    }
+  }
+
+  def toCompanies: List[Company] = {
+    val notificationCompany =
+      userAnswers
+        .get(UploadTemplateTablePage)
+        .fold(???)(data => data.rows.map(_.notification))
+    notificationCompany
+      .map(company =>
+        Company(
+          crn = company.companyCrn.map(crn => crn.value),
+          utr = company.companyUtr.value,
+          name = company.companyName,
+          accPeriodEnd = company.financialYearEndDate.toString(),
+          status = company.companyStatus.toString(),
+          `type` = company.companyType.toString()
+        )
+      )
+      .toList
+  }
 }
