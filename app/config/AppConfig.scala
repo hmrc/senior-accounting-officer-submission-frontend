@@ -45,6 +45,8 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   val hubSignOutUrl: String      = hubBaseUrl + "/account/sign-out-survey"
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
+  def protectedServiceUrl: String = getValue("protected-service.host")
+
   val loginContinueUrl: String = hubBaseUrl
 
   lazy val upscanInitiateV2Url: String = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
