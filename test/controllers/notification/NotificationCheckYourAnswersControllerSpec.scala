@@ -36,7 +36,7 @@ import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.Future
-import services.NotificationSubmissionError
+import models.notification.NotificationSubmissionError
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
