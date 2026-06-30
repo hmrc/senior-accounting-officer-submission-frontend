@@ -20,56 +20,37 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.QualifiedCompany
 import models.certificate.CertificateTaskListStage
+import models.upload.*
 import navigation.{FakeNavigator, Navigator}
+import pages.certificate.CertificateUploadTemplateTablePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.certificate.CertificateReviewQualifiedView
 
+import scala.util.Random
+
+import java.time.LocalDate
+
+import CertificateReviewQualifiedControllerSpec.*
+
 class CertificateReviewQualifiedControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
-
-  // TODO: remove when corresponding dummy data removed from controller
-  val dummyData: Seq[QualifiedCompany] = Seq(
-    QualifiedCompany(
-      name = "example company name",
-      utr = "example company utr",
-      corporationTax = false,
-      valueAddedTax = true,
-      paye = false,
-      insurancePremiumTax = true,
-      stampDutyLandTax = false,
-      stampDutyReserveTax = false,
-      petroleumRevenueTax = true,
-      customsDuties = false,
-      exciseDuties = false,
-      bankLevy = false,
-      additionalInformation = "example additional information"
-    ),
-    QualifiedCompany(
-      name = "example company name 2",
-      utr = "example company utr 2",
-      corporationTax = false,
-      valueAddedTax = true,
-      paye = false,
-      insurancePremiumTax = true,
-      stampDutyLandTax = false,
-      stampDutyReserveTax = true,
-      petroleumRevenueTax = false,
-      customsDuties = false,
-      exciseDuties = true,
-      bankLevy = false,
-      additionalInformation = "example additional information 2"
-    )
-  )
 
   "CertificateReviewQualified Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
+      val application = applicationBuilder(userAnswers =
+        Some(
+          userAnswersWithCertificateSaoDetails
+            .set(CertificateUploadTemplateTablePage, testTemplateData)
+            .success
+            .value
+        )
+      ).build()
 
       running(application) {
         val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad().url)
@@ -79,7 +60,12 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[CertificateReviewQualifiedView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view("Firstname Lastname", "31 December 2024", 3, dummyData)(using
+        contentAsString(result) mustEqual view(
+          "Firstname Lastname",
+          "31 December 2024",
+          testTemplateData.rows.size,
+          testQualifiedCompanies
+        )(using
           request,
           messages(application)
         ).toString
@@ -134,4 +120,123 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
       }
     }
   }
+}
+
+object CertificateReviewQualifiedControllerSpec {
+
+  def utr(seed: Int): String = f"${Random(seed).nextLong(10000000000L)}%09d"
+
+  def crn(seed: Int): String = f"${Random(seed).nextLong(100000000L)}%08d"
+
+  val testTemplateData: UploadTemplateTableData = UploadTemplateTableData(
+    rows = Seq(
+      ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = "example company name",
+          companyUtr = CompanyUtr(utr(1)),
+          companyCrn = Some(CompanyCrn(crn(1))),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = LocalDate.now()
+        ),
+        certificate = CertificateFields(
+          corporationTax = false,
+          valueAddedTax = true,
+          paye = false,
+          insurancePremiumTax = true,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = true,
+          customsDuties = false,
+          exciseDuties = false,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Qualified),
+          additionalInformation = Some("example additional information")
+        )
+      ),
+      ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = "example company name 2",
+          companyUtr = CompanyUtr(utr(2)),
+          companyCrn = Some(CompanyCrn(crn(2))),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = LocalDate.now()
+        ),
+        certificate = CertificateFields(
+          corporationTax = false,
+          valueAddedTax = true,
+          paye = false,
+          insurancePremiumTax = true,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = true,
+          petroleumRevenueTax = false,
+          customsDuties = false,
+          exciseDuties = true,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Qualified),
+          additionalInformation = Some("example additional information 2")
+        )
+      ),
+      ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = "example company name 3",
+          companyUtr = CompanyUtr(utr(3)),
+          companyCrn = Some(CompanyCrn(crn(3))),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = LocalDate.now()
+        ),
+        certificate = CertificateFields(
+          corporationTax = false,
+          valueAddedTax = false,
+          paye = false,
+          insurancePremiumTax = false,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = false,
+          customsDuties = false,
+          exciseDuties = false,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Unqualified),
+          additionalInformation = None
+        )
+      )
+    ),
+    errors = Seq.empty
+  )
+
+  val testQualifiedCompanies: Seq[QualifiedCompany] = Seq(
+    QualifiedCompany(
+      name = "example company name",
+      utr = utr(1),
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = false,
+      petroleumRevenueTax = true,
+      customsDuties = false,
+      exciseDuties = false,
+      bankLevy = false,
+      additionalInformation = "example additional information"
+    ),
+    QualifiedCompany(
+      name = "example company name 2",
+      utr = utr(2),
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = true,
+      petroleumRevenueTax = false,
+      customsDuties = false,
+      exciseDuties = true,
+      bankLevy = false,
+      additionalInformation = "example additional information 2"
+    )
+  )
+
 }

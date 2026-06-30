@@ -37,7 +37,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
   "CertificateReviewUnqualifiedView" - {
     "will populate the table correctly when data is present" - {
 
-      val doc: Document = generateView(saoName, unqualifiedCompanies, unqualifiedCompanies.size, dummyDate)
+      val doc: Document = generateView(saoName, unqualifiedCompanies, 10, dummyDate)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -73,7 +73,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
 
     "will populate the table correctly when no data is present" - {
 
-      val doc: Document = generateView("", Seq(), 0, "")
+      val doc: Document = generateView("", Seq.empty, 0, "")
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -121,7 +121,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
 
         descriptionTerms.size() mustBe expectedCountOfDescriptionLists * 5
 
-        for i <- 0 to unqualifiedCompanies.size - 1 do {
+        for i <- unqualifiedCompanies.indices do {
           descriptionTerms.get(i * 5).text() mustBe companyNameDescriptionTermText
           descriptionTerms.get(i * 5 + 1).text() mustBe utrDescriptionTermText
           descriptionTerms.get(i * 5 + 2).text() mustBe crnDescriptionTermText
@@ -134,7 +134,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         val descriptionDetails = doc.select("div.govuk-summary-list__row > dd.govuk-summary-list__value")
         descriptionDetails.size() mustBe expectedCountOfDescriptionLists * 5
 
-        for i <- 0 to unqualifiedCompanies.size - 1 do {
+        for i <- unqualifiedCompanies.indices do {
           descriptionDetails.get(i * 5).text() mustBe unqualifiedCompanies(i).name
           descriptionDetails.get(i * 5 + 1).text() mustBe unqualifiedCompanies(i).utr
           descriptionDetails.get(i * 5 + 2).text() mustBe unqualifiedCompanies(i).crn
@@ -152,7 +152,7 @@ object CertificateReviewUnqualifiedViewSpec {
   val linkLocator             = ".govuk-body:nth-of-type(2) .govuk-link"
   val linkText                = "upload an updated submission template"
   val paragraphs: Seq[String] = Seq(
-    "This list is taken from the certificate details in the submission template you uploaded. There were 2 companies the SAO was responsible for during the financial year.",
+    "This list is taken from the certificate details in the submission template you uploaded. There were 10 companies the SAO was responsible for during the financial year.",
     "If the information listed is not correct, upload an updated submission template before continuing.",
     "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I example sao name the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 1999 that 2 companies had appropriate tax accounting arrangements throughout the year."
   )

@@ -14,36 +14,35 @@
  * limitations under the License.
  */
 
-package controllers.notification
+package controllers.certificate
 
 import controllers.actions.*
 import controllers.routes
 import models.NormalMode
 import navigation.Navigator
-import pages.notification.{UploadTemplateTablePage, UploadTemplateTableErrorPage}
+import pages.certificate.{CertificateUploadTemplateTablePage, CertificateUploadTemplateTableErrorPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.UploadTemplateTableErrorView
+import views.html.certificate.CertificateUploadTemplateTableErrorView
 
 import javax.inject.Inject
 
-class UploadTemplateTableErrorController @Inject() (
+class CertificateUploadTemplateTableErrorController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
-    view: UploadTemplateTableErrorView,
+    view: CertificateUploadTemplateTableErrorView,
     navigator: Navigator
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
+    (identify andThen getData andThen requireData) { implicit request =>
       request.userAnswers
-        .get(UploadTemplateTablePage)
+        .get(CertificateUploadTemplateTablePage)
         .fold(
           Redirect(routes.JourneyRecoveryController.onPageLoad())
         ) { tableData =>
@@ -52,7 +51,7 @@ class UploadTemplateTableErrorController @Inject() (
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
-      Redirect(navigator.nextPage(UploadTemplateTableErrorPage, NormalMode, request.userAnswers))
+    (identify andThen getData andThen requireData) { implicit request =>
+      Redirect(navigator.nextPage(CertificateUploadTemplateTableErrorPage, NormalMode, request.userAnswers))
     }
 }

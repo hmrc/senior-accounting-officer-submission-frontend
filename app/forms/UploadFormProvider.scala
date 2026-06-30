@@ -14,13 +14,17 @@
  * limitations under the License.
  */
 
-package forms.notification
+package forms
 
 import forms.mappings.Mappings
 import play.api.data.Form
 
 import javax.inject.Inject
 
-class NotificationUploadFormProvider @Inject() extends Mappings {
-  def apply(): Form[String] = Form("file" -> text())
+class UploadFormProvider @Inject() extends Mappings {
+  def apply(): Form[String] = Form(UploadFormProvider.fileInputField -> text())
+}
+
+object UploadFormProvider {
+  val fileInputField = "file"
 }
