@@ -250,7 +250,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
         val result = route(application, request).value
 
-        status(result) mustEqual OK
+        status(result) mustEqual BAD_REQUEST
 
         verify(mockNotificationUploadFormView, times(1))(
           argThat { (form: Form[String]) =>
