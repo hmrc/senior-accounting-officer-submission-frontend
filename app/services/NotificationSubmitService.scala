@@ -33,7 +33,7 @@ class NotificationSubmitService @Inject() (
 )(using
     ec: ExecutionContext
 ) {
-  def submit(userAnswers: UserAnswers)(using hc: HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
+  def submit(userAnswers: UserAnswers)(using HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
     protectedServiceConnector
       .postNotification(userAnswers.toNotification)
       .flatMap { response =>

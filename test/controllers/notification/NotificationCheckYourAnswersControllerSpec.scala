@@ -37,6 +37,7 @@ import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.Future
 import models.notification.NotificationSubmissionError
+import uk.gov.hmrc.http.HttpResponse
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
@@ -132,7 +133,11 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         val mockNotificationSubmitService = mock[NotificationSubmitService]
 
         when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Left(NotificationSubmissionError.HttpError)))
+          .thenReturn(
+            Future.successful(
+              Left(NotificationSubmissionError.HttpError(HttpResponse(INTERNAL_SERVER_ERROR, exampleErrorMessage)))
+            )
+          )
 
         val application =
           applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
@@ -146,12 +151,11 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
           val request =
             FakeRequest(POST, notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url)
 
-          // TODO: is this the right way of unit testing this?
           val exception = intercept[InternalServerException] {
             val result = route(application, request).value
             status(result)
           }
-          exception.message mustEqual exampleErrorMessage
+          exception.message mustEqual s"Problem with http client - code: $INTERNAL_SERVER_ERROR - body: $exampleErrorMessage"
         }
       }
     }
