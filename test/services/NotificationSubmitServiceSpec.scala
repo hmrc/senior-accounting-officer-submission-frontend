@@ -15,35 +15,40 @@
  */
 
 package services
-import uk.gov.hmrc.play.bootstrap.binders.RedirectUrlPolicy.Id
-import org.mockito.ArgumentMatchers.{any, eq as meq}
+
 import play.api.test.Helpers.*
 import org.mockito.ArgumentMatchers.any
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import base.SpecBase
 import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.Future
-import scala.concurrent.Await
-import scala.concurrent.duration.Duration
 import pages.notification.*
 import models.upload.UploadTemplateTableData
 import org.scalatestplus.mockito.MockitoSugar.mock
 import connectors.ProtectedServiceConnector
 import org.mockito.Mockito.when
 import uk.gov.hmrc.http.HttpResponse
-import play.api.test.Helpers.CREATED
 import play.api.inject.bind
 import play.api.libs.json.Json
-import models.notification.NotificationResponse
 import models.notification.NotificationSubmissionError
 import repositories.SessionRepository
 import services.NotificationSubmitServiceSpec.*
 import play.api.Application
+import models.UserAnswers
+import java.time.LocalDate
+import models.notification.NotificationRequest
+import models.notification.Sao
+import services.NotificationSubmitService.toNotification
+import models.upload.ParsedSubmissionRow
+import models.upload.NotificationFields
+import models.upload.CertificateFields
+import models.upload.CompanyUtr
+import models.upload.CompanyCrn
+import models.upload.CompanyType
+import models.upload.CompanyStatus
+import models.notification.Company
 
 class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
-
-  // TODO: separately test mapping code
-  // TODO: what testing needs to be done to the connector? integration testing?
 
   "NotificationSubmitService.submit" - {
 
@@ -125,9 +130,167 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
         .build()
     }
   }
+
+  "NotificationSubmitService.toNotification" - {
+    def buildUserAnswers(moreThanOneSao: Boolean): UserAnswers = {
+      emptyUserAnswers
+        .set(NotificationAdditionalInformationPage, Some(exampleAdditionalInformation))
+        .success
+        .value
+        .set(NotificationMoreThanOneSaoPage, moreThanOneSao)
+        .success
+        .value
+        .set(NotificationSingleSaoOfficerNamePage, exampleSao1Name)
+        .success
+        .value
+        .set(NotificationMultiSaoLastOfficerNamePage, exampleSao2Name)
+        .success
+        .value
+        .set(NotificationMultiSaoLastOfficerStartDatePage, exampleSao2StartDate)
+        .success
+        .value
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0), exampleSao3Name)
+        .success
+        .value
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), exampleSao3StartDate)
+        .success
+        .value
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), exampleSao3EndDate)
+        .success
+        .value
+        .set(NotificationMultiSaoPreviousOfficerNamePage(1), exampleSao4Name)
+        .success
+        .value
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), exampleSao4StartDate)
+        .success
+        .value
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), exampleSao4EndDate)
+        .success
+        .value
+        .set(UploadTemplateTablePage, exampleTableData)
+        .success
+        .value
+    }
+
+    "User has provided one SAO" in {
+      val userAnswers = buildUserAnswers(false)
+
+      val expected = NotificationRequest(
+        subscriptionId = hardCodedSubscriptionId,
+        saos = List(Sao(name = exampleSao1Name, fromDate = None, email = None, toDate = None)),
+        companies = List(
+          Company(
+            name = exampleCompanyName,
+            accPeriodEnd = exampleAccPeriodEnd.toString,
+            crn = Some(exampleCrn),
+            utr = exampleUtr,
+            status = "Active",
+            `type` = "LTD"
+          )
+        ),
+        remarks = Some(exampleAdditionalInformation)
+      )
+
+      val result = userAnswers.toNotification
+
+      result mustBe expected
+    }
+
+    "User has provided multiple SAOs" in {
+      val userAnswers = buildUserAnswers(true)
+
+      val expected = NotificationRequest(
+        subscriptionId = hardCodedSubscriptionId,
+        saos = List(
+          Sao(
+            name = exampleSao2Name,
+            fromDate = Some(exampleSao2StartDate.toString),
+            email = None,
+            toDate = None
+          ),
+          Sao(
+            name = exampleSao3Name,
+            fromDate = Some(exampleSao3StartDate.toString),
+            email = None,
+            toDate = Some(exampleSao3EndDate.toString)
+          ),
+          Sao(
+            name = exampleSao4Name,
+            fromDate = Some(exampleSao4StartDate.toString),
+            email = None,
+            toDate = Some(exampleSao4EndDate.toString)
+          )
+        ),
+        companies = List(
+          Company(
+            name = exampleCompanyName,
+            accPeriodEnd = exampleAccPeriodEnd.toString,
+            crn = Some(exampleCrn),
+            utr = exampleUtr,
+            status = "Active",
+            `type` = "LTD"
+          )
+        ),
+        remarks = Some(exampleAdditionalInformation)
+      )
+
+      val result = userAnswers.toNotification
+
+      result mustBe expected
+    }
+  }
 }
 
 object NotificationSubmitServiceSpec {
   val exampleNotificationReference = "appleBananaCitrue"
   val expectedHttpFailureMessage   = "expected http failure message"
+
+  val hardCodedSubscriptionId      = "123"
+  val exampleAdditionalInformation = "example additional information"
+  val exampleSao1Name              = "Firstname Lastname I"
+  val exampleSao2Name              = "Firstname Lastname II"
+  val exampleSao2StartDate         = LocalDate.of(2000, 1, 2)
+  val exampleSao2EndDate           = LocalDate.of(2000, 12, 2)
+  val exampleSao3Name              = "Firstname Lastname III"
+  val exampleSao3StartDate         = LocalDate.of(2000, 1, 3)
+  val exampleSao3EndDate           = LocalDate.of(2000, 12, 3)
+  val exampleSao4Name              = "Firstname Lastname IV"
+  val exampleSao4StartDate         = LocalDate.of(2000, 1, 4)
+  val exampleSao4EndDate           = LocalDate.of(2000, 12, 4)
+
+  val exampleCompanyName  = "example company name"
+  val exampleCrn          = "12345678"
+  val exampleUtr          = "1234567890"
+  val exampleAccPeriodEnd = LocalDate.of(2001, 1, 1)
+
+  // TODO: generate utr and crn
+  val exampleTableData = UploadTemplateTableData(
+    rows = Seq(
+      ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = exampleCompanyName,
+          companyUtr = CompanyUtr(exampleUtr),
+          companyCrn = Some(CompanyCrn(exampleCrn)),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Active,
+          financialYearEndDate = exampleAccPeriodEnd
+        ),
+        certificate = CertificateFields(
+          corporationTax = false,
+          valueAddedTax = false,
+          paye = false,
+          insurancePremiumTax = false,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = false,
+          customsDuties = false,
+          exciseDuties = false,
+          bankLevy = false,
+          certificateType = None,
+          additionalInformation = None
+        )
+      )
+    ),
+    errors = Seq.empty
+  )
 }

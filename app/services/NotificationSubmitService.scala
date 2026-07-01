@@ -17,15 +17,27 @@
 package services
 
 import connectors.ProtectedServiceConnector
-import javax.inject.Inject
 import models.UserAnswers
 import models.notification.*
 import pages.notification.*
-import play.api.libs.json.{Json, Reads}
+import play.api.libs.json.Json
 import repositories.SessionRepository
+import services.NotificationSubmitService.*
+import uk.gov.hmrc.http.HeaderCarrier
+
 import scala.annotation.tailrec
 import scala.concurrent.{ExecutionContext, Future}
-import uk.gov.hmrc.http.HeaderCarrier
+
+import javax.inject.Inject
+import java.time.LocalDate
+import models.upload.CertificateFields
+import models.upload.CompanyCrn
+import models.upload.CompanyStatus
+import models.upload.CompanyUtr
+import models.upload.NotificationFields
+import models.upload.ParsedSubmissionRow
+import models.upload.UploadTemplateTableData
+import models.upload.CompanyType
 
 class NotificationSubmitService @Inject() (
     protectedServiceConnector: ProtectedServiceConnector,
@@ -53,86 +65,85 @@ class NotificationSubmitService @Inject() (
   }
 }
 
-val hardCodedSubscriptionId = "123" // TODO: remove when the subscription id is available
+object NotificationSubmitService {
 
-// TODO: where should the extensions live?
-extension (userAnswers: UserAnswers) {
+  val hardCodedSubscriptionId = "123" // TODO: remove when the subscription id is available
 
-  def toNotification: NotificationRequest = {
-    NotificationRequest(
-      subscriptionId = hardCodedSubscriptionId,
-      remarks = userAnswers.getNullable(NotificationAdditionalInformationPage),
-      saos = toSaos,
-      companies = toCompanies
-    )
-  }
+  extension (userAnswers: UserAnswers) {
+    def toNotification: NotificationRequest = {
+      NotificationRequest(
+        subscriptionId = hardCodedSubscriptionId,
+        remarks = userAnswers.getNullable(NotificationAdditionalInformationPage),
+        saos = userAnswers.toSaos,
+        companies = userAnswers.toCompanies
+      )
+    }
 
-  def toSaos: List[Sao] = {
-    @tailrec
-    def previousSaos(index: Int = 0, saos: List[Sao] = List()): List[Sao] = {
-      userAnswers
-        .get(NotificationMultiSaoPreviousOfficerNamePage(index)) match {
-        case Some(name) =>
-          previousSaos(
-            index + 1,
+    private def toSaos: List[Sao] = {
+      @tailrec
+      def previousSaos(mongoSaoIndex: Int = 0, saos: List[Sao] = List()): List[Sao] = {
+        userAnswers
+          .get(NotificationMultiSaoPreviousOfficerNamePage(mongoSaoIndex)) match {
+          case Some(name) =>
+            previousSaos(
+              mongoSaoIndex + 1,
+              saos :+ Sao(
+                name = name,
+                fromDate = userAnswers
+                  .get(NotificationMultiSaoPreviousOfficerStartDatePage(mongoSaoIndex))
+                  .map(_.toString()),
+                email = None,
+                toDate = userAnswers
+                  .get(NotificationMultiSaoPreviousOfficerEndDatePage(mongoSaoIndex))
+                  .map(_.toString())
+              )
+            )
+          case None => saos
+        }
+      }
+
+      userAnswers.get(NotificationMoreThanOneSaoPage) match {
+        case Some(true) =>
+          Sao(
+            name = userAnswers
+              .get(NotificationMultiSaoLastOfficerNamePage)
+              .fold(???)(name => name),
+            fromDate = userAnswers
+              .get(NotificationMultiSaoLastOfficerStartDatePage)
+              .map(_.toString()),
+            email = None,
+            toDate = None
+          ) :: previousSaos()
+        case Some(false) =>
+          List(
             Sao(
-              name = name,
-              fromDate = userAnswers
-                .get(NotificationMultiSaoPreviousOfficerStartDatePage(index))
-                .map(_.toString()),
+              name = userAnswers
+                .get(NotificationSingleSaoOfficerNamePage)
+                .fold(???)(name => name),
+              fromDate = None,
               email = None,
-              toDate = userAnswers
-                .get(NotificationMultiSaoPreviousOfficerEndDatePage(index))
-                .map(_.toString())
-            ) :: saos
+              toDate = None
+            )
           )
-        case None => saos
+        case None => ???
       }
     }
 
-    userAnswers.get(NotificationMoreThanOneSaoPage) match {
-      case Some(true) =>
-        Sao(
-          name = userAnswers
-            .get(NotificationMultiSaoLastOfficerNamePage)
-            .fold(???)(name => name),
-          fromDate = userAnswers
-            .get(NotificationMultiSaoLastOfficerStartDatePage)
-            .map(_.toString()),
-          email = None,
-          toDate = None
-        ) :: previousSaos()
-      case Some(false) =>
-        List(
-          Sao(
-            name = userAnswers
-              .get(NotificationSingleSaoOfficerNamePage)
-              .fold(???)(name => name),
-            fromDate = None,
-            email = None,
-            toDate = None
-          )
-        )
-      case None => ???
-    }
-  }
-
-  def toCompanies: List[Company] = {
-    val notificationCompany =
+    private def toCompanies: List[Company] = {
       userAnswers
         .get(UploadTemplateTablePage)
         .fold(???)(data => data.rows.map(_.notification))
-    notificationCompany
-      .map(company =>
-        Company(
-          crn = company.companyCrn.map(crn => crn.value),
-          utr = company.companyUtr.value,
-          name = company.companyName,
-          accPeriodEnd = company.financialYearEndDate.toString(),
-          status = company.companyStatus.toString(),
-          `type` = company.companyType.toString()
+        .map(company =>
+          Company(
+            crn = company.companyCrn.map(crn => crn.value),
+            utr = company.companyUtr.value,
+            name = company.companyName,
+            accPeriodEnd = company.financialYearEndDate.toString(),
+            status = company.companyStatus.toString(),
+            `type` = company.companyType.toString()
+          )
         )
-      )
-      .toList
+        .toList
+    }
   }
 }

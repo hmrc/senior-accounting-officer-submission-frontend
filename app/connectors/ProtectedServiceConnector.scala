@@ -16,18 +16,20 @@
 
 package connectors
 
-import uk.gov.hmrc.http.client.HttpClientV2
 import config.AppConfig
-import javax.inject.Inject
-import uk.gov.hmrc.http.HttpResponse
-import uk.gov.hmrc.http.HeaderCarrier
-import play.api.libs.json.Json
 import models.notification.NotificationRequest
+import play.api.libs.json.Json
 import play.api.libs.ws.JsonBodyWritables.writeableOf_JsValue
-import scala.concurrent.ExecutionContext
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpReads.Implicits.*
-import scala.concurrent.Future
+import uk.gov.hmrc.http.HttpResponse
 import uk.gov.hmrc.http.StringContextOps
+import uk.gov.hmrc.http.client.HttpClientV2
+
+import scala.concurrent.ExecutionContext
+import scala.concurrent.Future
+
+import javax.inject.Inject
 
 class ProtectedServiceConnector @Inject() (appConfig: AppConfig, httpClient: HttpClientV2)(using
     ec: ExecutionContext

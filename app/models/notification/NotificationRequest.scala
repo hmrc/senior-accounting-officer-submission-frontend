@@ -16,27 +16,9 @@
 
 package models.notification
 
-import models.UserAnswers
-import repositories.SessionRepository
-import javax.inject.Inject
 import play.api.libs.json.Json
-import uk.gov.hmrc.http.HttpReads.Implicits.*
-import uk.gov.hmrc.http.HeaderCarrier
 import play.api.libs.json.OFormat
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
-import pages.notification.NotificationAdditionalInformationPage
-import play.api.libs.json.Reads
-import connectors.ProtectedServiceConnector
-import pages.notification.NotificationMoreThanOneSaoPage
-import pages.notification.NotificationSingleSaoOfficerNamePage
-import pages.notification.NotificationMultiSaoLastOfficerNamePage
-import scala.annotation.tailrec
-import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
-import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
-import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
-import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
-import pages.notification.UploadTemplateTablePage
+import uk.gov.hmrc.http.HttpReads.Implicits.*
 
 final case class NotificationRequest(
     subscriptionId: String,
