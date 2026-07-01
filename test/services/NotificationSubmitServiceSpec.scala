@@ -47,6 +47,8 @@ import models.upload.CompanyCrn
 import models.upload.CompanyType
 import models.upload.CompanyStatus
 import models.notification.Company
+import scala.util.Random
+import uk.gov.hmrc.domain.SaUtrGenerator
 
 class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
@@ -259,18 +261,28 @@ object NotificationSubmitServiceSpec {
   val exampleSao4EndDate           = LocalDate.of(2000, 12, 4)
 
   val exampleCompanyName  = "example company name"
-  val exampleCrn          = "12345678"
-  val exampleUtr          = "1234567890"
   val exampleAccPeriodEnd = LocalDate.of(2001, 1, 1)
 
-  // TODO: generate utr and crn
+  private def generateCrn = {
+    val num = Random.nextInt(1000000)
+    f"$num%08d"
+  }
+
+  private def generateUtr = {
+    val seed = Random.nextInt(1000000)
+    SaUtrGenerator(seed).nextSaUtr.toString
+  }
+
+  lazy val exampleCrn = generateCrn
+  lazy val exampleUtr = generateUtr
+
   val exampleTableData = UploadTemplateTableData(
     rows = Seq(
       ParsedSubmissionRow(
         notification = NotificationFields(
           companyName = exampleCompanyName,
-          companyUtr = CompanyUtr(exampleUtr),
-          companyCrn = Some(CompanyCrn(exampleCrn)),
+          companyUtr = CompanyUtr.fromString(exampleUtr).get,
+          companyCrn = Some(CompanyCrn.fromString(exampleCrn).get),
           companyType = CompanyType.LTD,
           companyStatus = CompanyStatus.Active,
           financialYearEndDate = exampleAccPeriodEnd
