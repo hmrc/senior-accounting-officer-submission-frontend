@@ -32,7 +32,7 @@ object NotificationAdditionalInformationSummary {
     val additionalInformation =
       answers
         .getNullable(NotificationAdditionalInformationPage)
-        .getOrElse(messages("notificationAdditionalInformation.empty"))
+        .getOrElse(messages("site.notProvided"))
 
     SummaryListRowViewModel(
       key = messages("notificationAdditionalInformation.checkYourAnswersLabel").toKey,

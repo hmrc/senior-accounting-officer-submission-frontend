@@ -94,14 +94,15 @@ class ParsedSubmissionRowSpec extends SpecBase {
 
   "toQualifiedCompany extension method must" - {
     "map a qualified company from ParsedSubmissionRow to Some(QualifiedCompany)" in {
-      val result = ParsedSubmissionRow(
+      val testDate = LocalDate.now()
+      val result   = ParsedSubmissionRow(
         notification = NotificationFields(
           companyName = testCompanyName,
           companyUtr = CompanyUtr(testCompanyUtr),
           companyCrn = Some(CompanyCrn(testCompanyCrn)),
           companyType = CompanyType.LTD,
           companyStatus = CompanyStatus.Dormant,
-          financialYearEndDate = LocalDate.now()
+          financialYearEndDate = testDate
         ),
         certificate = CertificateFields(
           corporationTax = true,
@@ -123,6 +124,10 @@ class ParsedSubmissionRowSpec extends SpecBase {
         QualifiedCompany(
           name = testCompanyName,
           utr = testCompanyUtr,
+          crn = Some(testCompanyCrn),
+          companyType = "LTD",
+          status = "Dormant",
+          financialYearEndDate = testDate,
           corporationTax = true,
           valueAddedTax = false,
           paye = true,
@@ -174,14 +179,15 @@ class ParsedSubmissionRowSpec extends SpecBase {
 
   "toUnqualifiedCompany extension method must" - {
     "map an unqualified company from ParsedSubmissionRow to Some(UnqualifiedCompany)" in {
-      val result = ParsedSubmissionRow(
+      val testDate = LocalDate.now()
+      val result   = ParsedSubmissionRow(
         notification = NotificationFields(
           companyName = "example company name",
           companyUtr = CompanyUtr("example company utr"),
           companyCrn = Some(CompanyCrn("example company crn")),
           companyType = CompanyType.LTD,
           companyStatus = CompanyStatus.Dormant,
-          financialYearEndDate = LocalDate.now()
+          financialYearEndDate = testDate
         ),
         certificate = CertificateFields(
           corporationTax = false,
@@ -203,9 +209,10 @@ class ParsedSubmissionRowSpec extends SpecBase {
         UnqualifiedCompany(
           name = "example company name",
           utr = "example company utr",
-          crn = "example company crn",
+          crn = Some("example company crn"),
           companyType = CompanyType.LTD,
-          companyStatus = CompanyStatus.Dormant
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = testDate
         )
       )
 

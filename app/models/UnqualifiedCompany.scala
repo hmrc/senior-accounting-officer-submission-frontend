@@ -18,10 +18,13 @@ package models
 
 import models.upload.*
 
+import java.time.LocalDate
+
 final case class UnqualifiedCompany(
     name: String,
     utr: String,
-    crn: String,
+    crn: Option[String],
     companyType: CompanyType,
-    companyStatus: CompanyStatus
+    companyStatus: CompanyStatus,
+    financialYearEndDate: LocalDate
 )

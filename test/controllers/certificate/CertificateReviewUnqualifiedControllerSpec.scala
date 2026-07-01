@@ -61,10 +61,9 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          "Firstname Lastname",
-          testUnqualifiedCompanies,
-          testTemplateData.rows.size,
-          dummyDate
+          saoName = "Firstname Lastname",
+          unqualifiedCompanies = testUnqualifiedCompanies,
+          companyCount = testTemplateData.rows.size
         )(using request, messages(application)).toString
       }
     }
@@ -120,7 +119,8 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
 }
 
 object CertificateReviewUnqualifiedControllerSpec {
-  val dummyDate = "2020"
+  private val testDate1 = LocalDate.now()
+  private val testDate2 = LocalDate.now().minusDays(1)
 
   def utr(seed: Int): String = f"${Random(seed).nextLong(10000000000L)}%09d"
   def crn(seed: Int): String = f"${Random(seed).nextLong(100000000L)}%08d"
@@ -134,7 +134,7 @@ object CertificateReviewUnqualifiedControllerSpec {
           companyCrn = Some(CompanyCrn(crn(1))),
           companyType = CompanyType.LTD,
           companyStatus = CompanyStatus.Administration,
-          financialYearEndDate = LocalDate.now()
+          financialYearEndDate = testDate1
         ),
         certificate = CertificateFields(
           corporationTax = false,
@@ -158,7 +158,7 @@ object CertificateReviewUnqualifiedControllerSpec {
           companyCrn = Some(CompanyCrn(crn(2))),
           companyType = CompanyType.LTD,
           companyStatus = CompanyStatus.Dormant,
-          financialYearEndDate = LocalDate.now()
+          financialYearEndDate = testDate2
         ),
         certificate = CertificateFields(
           corporationTax = false,
@@ -207,16 +207,18 @@ object CertificateReviewUnqualifiedControllerSpec {
     UnqualifiedCompany(
       name = "example company name",
       utr = utr(1),
-      crn = crn(1),
+      crn = Some(crn(1)),
       companyType = CompanyType.LTD,
-      companyStatus = CompanyStatus.Administration
+      companyStatus = CompanyStatus.Administration,
+      financialYearEndDate = testDate1
     ),
     UnqualifiedCompany(
       name = "example company name 2",
       utr = utr(2),
-      crn = crn(2),
+      crn = Some(crn(2)),
       companyType = CompanyType.LTD,
-      companyStatus = CompanyStatus.Dormant
+      companyStatus = CompanyStatus.Dormant,
+      financialYearEndDate = testDate2
     )
   )
 

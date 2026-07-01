@@ -28,7 +28,9 @@ object CertificateAdditionalInformationSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): SummaryListRow =
     val additionalInformation =
-      answers.getNullable(CertificateAdditionalInformationPage).getOrElse("")
+      answers
+        .getNullable(CertificateAdditionalInformationPage)
+        .getOrElse(messages("site.notProvided"))
 
     SummaryListRowViewModel(
       key = messages("certificateAdditionalInformation.checkYourAnswersLabel").toKey,

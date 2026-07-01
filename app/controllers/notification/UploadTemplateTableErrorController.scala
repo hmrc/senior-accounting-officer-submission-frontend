@@ -20,7 +20,7 @@ import controllers.actions.*
 import controllers.routes
 import models.NormalMode
 import navigation.Navigator
-import pages.notification.{UploadTemplateTablePage, UploadTemplateTableErrorPage}
+import pages.notification.{UploadTemplateTableErrorPage, UploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController

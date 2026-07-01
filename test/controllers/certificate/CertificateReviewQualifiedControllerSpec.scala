@@ -61,10 +61,9 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          "Firstname Lastname",
-          "31 December 2024",
-          testTemplateData.rows.size,
-          testQualifiedCompanies
+          saoName = "Firstname Lastname",
+          companyCount = testTemplateData.rows.size,
+          qualifiedCompanies = testQualifiedCompanies
         )(using
           request,
           messages(application)
@@ -128,6 +127,9 @@ object CertificateReviewQualifiedControllerSpec {
 
   def crn(seed: Int): String = f"${Random(seed).nextLong(100000000L)}%08d"
 
+  private val testDate1 = LocalDate.now()
+  private val testDate2 = LocalDate.now().minusDays(1)
+
   val testTemplateData: UploadTemplateTableData = UploadTemplateTableData(
     rows = Seq(
       ParsedSubmissionRow(
@@ -136,8 +138,8 @@ object CertificateReviewQualifiedControllerSpec {
           companyUtr = CompanyUtr(utr(1)),
           companyCrn = Some(CompanyCrn(crn(1))),
           companyType = CompanyType.LTD,
-          companyStatus = CompanyStatus.Dormant,
-          financialYearEndDate = LocalDate.now()
+          companyStatus = CompanyStatus.Active,
+          financialYearEndDate = testDate1
         ),
         certificate = CertificateFields(
           corporationTax = false,
@@ -158,10 +160,10 @@ object CertificateReviewQualifiedControllerSpec {
         notification = NotificationFields(
           companyName = "example company name 2",
           companyUtr = CompanyUtr(utr(2)),
-          companyCrn = Some(CompanyCrn(crn(2))),
-          companyType = CompanyType.LTD,
+          companyCrn = None,
+          companyType = CompanyType.PLC,
           companyStatus = CompanyStatus.Dormant,
-          financialYearEndDate = LocalDate.now()
+          financialYearEndDate = testDate2
         ),
         certificate = CertificateFields(
           corporationTax = false,
@@ -210,6 +212,10 @@ object CertificateReviewQualifiedControllerSpec {
     QualifiedCompany(
       name = "example company name",
       utr = utr(1),
+      crn = Some(crn(1)),
+      companyType = "LTD",
+      status = "Active",
+      financialYearEndDate = testDate1,
       corporationTax = false,
       valueAddedTax = true,
       paye = false,
@@ -225,6 +231,10 @@ object CertificateReviewQualifiedControllerSpec {
     QualifiedCompany(
       name = "example company name 2",
       utr = utr(2),
+      crn = None,
+      companyType = "PLC",
+      status = "Dormant",
+      financialYearEndDate = testDate2,
       corporationTax = false,
       valueAddedTax = true,
       paye = false,

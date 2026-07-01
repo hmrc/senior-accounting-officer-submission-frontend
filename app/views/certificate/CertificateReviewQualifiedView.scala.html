@@ -15,6 +15,7 @@
  *@
 
 @import controllers.certificate.routes as certificateRoutes
+@import utils.DateTimeFormats.dateTimeFormat
 
 @this(
     layout: templates.Layout,
@@ -22,7 +23,7 @@
     formHelper: FormWithCSRF
 )
 
-@(saoName: String, financialYearEnd: String, companyCount: Int, qualifiedCompanies: Seq[QualifiedCompany])(using request: Request[?], messages: Messages)
+@(saoName: String, companyCount: Int, qualifiedCompanies: Seq[QualifiedCompany])(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("certificateReviewQualified.title"))) {
 
@@ -34,7 +35,7 @@
 
     <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph2WithLink", certificateRoutes.CertificateUploadFormController.onPageLoad()))</p>
 
-    <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph3", saoName, financialYearEnd, qualifiedCompanies.size))</p>
+    <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph3", saoName, qualifiedCompanies.size))</p>
 
     @for(qualifiedCompany <- qualifiedCompanies) {
         <dl class="govuk-summary-list">
@@ -45,6 +46,22 @@
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.utr")</dt>
                 <dd class="govuk-summary-list__value">@qualifiedCompany.utr</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.crn")</dt>
+                <dd class="govuk-summary-list__value">@qualifiedCompany.crn.fold(messages("site.notProvided"))(identity)</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.type")</dt>
+                <dd class="govuk-summary-list__value">@qualifiedCompany.companyType</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.status")</dt>
+                <dd class="govuk-summary-list__value">@qualifiedCompany.status</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.financialYearEndDate")</dt>
+                <dd class="govuk-summary-list__value">@qualifiedCompany.financialYearEndDate.format(dateTimeFormat()(using messages.lang))</dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">@messages("certificateReviewQualified.rows.taxRegimes")</dt>

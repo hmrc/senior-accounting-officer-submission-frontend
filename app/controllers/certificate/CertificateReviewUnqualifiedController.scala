@@ -53,9 +53,6 @@ class CertificateReviewUnqualifiedController @Inject() (
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
-        // TODO: remove in future
-        val dummyDate = "2020"
-        // TODO: pass financial year end date through for paragraph3
         val userAnswers = request.userAnswers
 
         (for {
@@ -68,8 +65,7 @@ class CertificateReviewUnqualifiedController @Inject() (
             view(
               saoName = saoName,
               unqualifiedCompanies = unqualifiedCompanies,
-              companyCount = totalCompanies,
-              dummyDate = dummyDate
+              companyCount = totalCompanies
             )
           )
         }).fold(Redirect(routes.JourneyRecoveryController.onPageLoad()))(identity)

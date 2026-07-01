@@ -18,9 +18,15 @@ package models
 
 import play.api.i18n.Messages
 
+import java.time.LocalDate
+
 final case class QualifiedCompany(
     name: String,
     utr: String,
+    crn: Option[String],
+    companyType: String,
+    status: String,
+    financialYearEndDate: LocalDate,
     corporationTax: Boolean,
     valueAddedTax: Boolean,
     paye: Boolean,
