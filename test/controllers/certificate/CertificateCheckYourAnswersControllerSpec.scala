@@ -19,22 +19,31 @@ package controllers.certificate
 import base.SpecBase
 import controllers.certificate.CertificateCheckYourAnswersController.certificateId
 import controllers.certificate.routes as certificateRoutes
-import navigation.{FakeNavigator, Navigator}
+import controllers.routes
+import org.mockito.ArgumentMatchers.{any, eq as meq}
+import org.mockito.Mockito.*
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
-import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import services.CertificateCheckYourAnswersService
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.html.certificate.CertificateCheckYourAnswersView
 
-class CertificateCheckYourAnswersControllerSpec extends SpecBase {
-
-  def onwardRoute: Call = Call("GET", "/foo")
+class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar {
 
   "CertificateCheckYourAnswers Controller" - {
 
     "must return OK and the correct view for a GET" in {
+      val mockService = mock[CertificateCheckYourAnswersService]
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
+
+      val testAnswers = emptyUserAnswers
+
+      val application = applicationBuilder(userAnswers = Some(testAnswers))
+        .overrides(bind[CertificateCheckYourAnswersService].toInstance(mockService))
+        .build()
 
       running(application) {
         val request = FakeRequest(GET, certificateRoutes.CertificateCheckYourAnswersController.onPageLoad().url)
@@ -44,18 +53,15 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[CertificateCheckYourAnswersView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(SummaryList())(using request, messages(application)).toString
+        verify(mockService).getSummaryList(meq(testAnswers))(using any())
       }
     }
 
     "must redirect to the next page for a POST" in {
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
+        applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
         val request =
@@ -69,5 +75,35 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase {
           .url
       }
     }
+
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request = FakeRequest(GET, certificateRoutes.CertificateCheckYourAnswersController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateRoutes.CertificateCheckYourAnswersController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
   }
 }

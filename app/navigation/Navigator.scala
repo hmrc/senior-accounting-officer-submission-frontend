@@ -148,6 +148,8 @@ class Navigator @Inject() () {
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationSingleSaoOfficerNamePage =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case CertificateAdditionalInformationPage =>
+      _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case SaoNamePage =>
       _ => routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
     case SaoEmailPage =>

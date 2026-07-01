@@ -443,6 +443,14 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
+      "when on CertificateAdditionalInformationPage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          CertificateAdditionalInformationPage,
+          CheckMode,
+          UserAnswers("id")
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
       "when on SaoEmailPage, must go to certificate check your answers page" in {
         navigator.nextPage(
           SaoEmailPage,
