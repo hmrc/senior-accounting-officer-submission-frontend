@@ -18,10 +18,12 @@ package pages.certificate
 
 import models.certificate.CertificateDeclarationStandIn
 import pages.Page.CERTIFICATE_PATH
-import pages.QuestionPage
+import pages.{CertificateOnlyPage, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object CertificateDeclarationStandInPage extends QuestionPage[CertificateDeclarationStandIn] {
+case object CertificateDeclarationStandInPage
+    extends CertificateOnlyPage
+    with QuestionPage[CertificateDeclarationStandIn] {
 
   override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
 

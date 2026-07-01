@@ -17,12 +17,14 @@
 package pages.notification
 
 import pages.Page.NOTIFICATION_PATH
-import pages.QuestionPage
+import pages.{NotificationOnlyPage, QuestionPage}
 import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-final case class NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex: Int) extends QuestionPage[LocalDate] {
+final case class NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex: Int)
+    extends NotificationOnlyPage
+    with QuestionPage[LocalDate] {
 
   val key = "notificationMultiSaoPreviousOfficerEndDate"
 

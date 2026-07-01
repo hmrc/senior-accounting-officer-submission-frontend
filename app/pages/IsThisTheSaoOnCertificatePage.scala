@@ -19,7 +19,7 @@ package pages
 import pages.Page.CERTIFICATE_PATH
 import play.api.libs.json.JsPath
 
-case object IsThisTheSaoOnCertificatePage extends QuestionPage[Boolean] {
+case object IsThisTheSaoOnCertificatePage extends CombinedPage with QuestionPage[Boolean] {
 
   override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
 

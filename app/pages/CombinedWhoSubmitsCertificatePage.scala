@@ -19,7 +19,7 @@ package pages
 import models.CombinedWhoSubmitsCertificate
 import play.api.libs.json.JsPath
 
-case object CombinedWhoSubmitsCertificatePage extends QuestionPage[CombinedWhoSubmitsCertificate] {
+case object CombinedWhoSubmitsCertificatePage extends CombinedPage with QuestionPage[CombinedWhoSubmitsCertificate] {
 
   override def path: JsPath = JsPath \ toString
 

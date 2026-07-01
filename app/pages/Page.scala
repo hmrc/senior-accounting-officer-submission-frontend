@@ -17,6 +17,10 @@
 package pages
 
 trait Page
+trait JourneyAgnosticPage  extends Page
+trait NotificationOnlyPage extends Page
+trait CertificateOnlyPage  extends Page
+trait CombinedPage         extends Page
 
 object Page {
 

@@ -18,10 +18,10 @@ package pages.notification
 
 import models.upload.UploadTemplateTableData
 import pages.Page.NOTIFICATION_PATH
-import pages.QuestionPage
+import pages.{NotificationOnlyPage, QuestionPage}
 import play.api.libs.json.JsPath
 
-case object UploadTemplateTablePage extends QuestionPage[UploadTemplateTableData] {
+case object UploadTemplateTablePage extends NotificationOnlyPage with QuestionPage[UploadTemplateTableData] {
 
   override def path: JsPath = JsPath \ NOTIFICATION_PATH \ toString
 

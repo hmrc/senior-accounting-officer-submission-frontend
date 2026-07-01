@@ -16,4 +16,4 @@
 
 package pages
 
-case object CombinedCertificateConfirmationPage extends Page
+case object CombinedCertificateConfirmationPage extends CombinedPage

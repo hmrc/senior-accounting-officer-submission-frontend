@@ -15,6 +15,6 @@
  */
 
 package pages.notification
-import pages.Page
+import pages.NotificationOnlyPage
 
-case object NotificationCheckYourAnswersPage extends Page
+case object NotificationCheckYourAnswersPage extends NotificationOnlyPage

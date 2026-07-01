@@ -2,7 +2,7 @@ package pages
 
 import play.api.libs.json.JsPath
 
-case object $className$Page extends QuestionPage[String] {
+case object $className$Page extends CertificateOnlyPage with QuestionPage[String] {
 
   override def path: JsPath = JsPath \ toString
 
