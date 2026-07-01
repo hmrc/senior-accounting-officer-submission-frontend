@@ -143,12 +143,12 @@ object CertificateUploadFormViewSpec {
   val captionText = "Submit a certificate"
 
   val paragraphs: List[String] = List(
-    "The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.",
+    "The template must be uploaded in CSV format. If your template is saved as .xls or .xlsx, save it again as a CSV (comma delimited) (.csv) file before uploading.",
     "Read guidance on how to complete the submission template (opens in new tab)"
   )
 
   val insetText =
-    "If your group has more than one SAO, you must upload and submit separate templates, one for each SAO. After submitting one certificate, you can start another."
+    "If your group has more than one SAO, you must submit a separate certificate for each one. After you complete this submission, you can start another certificate."
 
   val uploadFormLabel   = "Upload a file"
   val uploadFormInputId = "file-input"

@@ -24,20 +24,20 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.certificate.CertificateReviewUnqualifiedView
 
-import CertificateReviewUnqualifiedViewSpec.*
+import java.time.LocalDate
 
+import CertificateReviewUnqualifiedViewSpec.*
 class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateReviewUnqualifiedView] {
   private def generateView(
       saoName: String,
       unqualifiedCompanies: Seq[UnqualifiedCompany],
-      companyCount: Int,
-      dummyDate: String
-  ): Document = Jsoup.parse(SUT(saoName, unqualifiedCompanies, companyCount, dummyDate).toString)
+      companyCount: Int
+  ): Document = Jsoup.parse(SUT(saoName, unqualifiedCompanies, companyCount).toString)
 
   "CertificateReviewUnqualifiedView" - {
     "will populate the table correctly when data is present" - {
 
-      val doc: Document = generateView(saoName, unqualifiedCompanies, 10, dummyDate)
+      val doc: Document = generateView(saoName, unqualifiedCompanies, 10)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -73,7 +73,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
 
     "will populate the table correctly when no data is present" - {
 
-      val doc: Document = generateView("", Seq.empty, 0, "")
+      val doc: Document = generateView("", Seq.empty, 0)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -119,32 +119,35 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
       "must be five description terms per unqualified company with expected text" in {
         val descriptionTerms = doc.select("div.govuk-summary-list__row > dt.govuk-summary-list__key")
 
-        descriptionTerms.size() mustBe expectedCountOfDescriptionLists * 5
+        descriptionTerms.size() mustBe expectedCountOfDescriptionLists * 6
 
         for i <- unqualifiedCompanies.indices do {
-          descriptionTerms.get(i * 5).text() mustBe companyNameDescriptionTermText
-          descriptionTerms.get(i * 5 + 1).text() mustBe utrDescriptionTermText
-          descriptionTerms.get(i * 5 + 2).text() mustBe crnDescriptionTermText
-          descriptionTerms.get(i * 5 + 3).text() mustBe typeDescriptionTermText
-          descriptionTerms.get(i * 5 + 4).text() mustBe statusDescriptionTermText
+          descriptionTerms.get(i * 6).text() mustBe companyNameDescriptionTermText
+          descriptionTerms.get(i * 6 + 1).text() mustBe utrDescriptionTermText
+          descriptionTerms.get(i * 6 + 2).text() mustBe crnDescriptionTermText
+          descriptionTerms.get(i * 6 + 3).text() mustBe typeDescriptionTermText
+          descriptionTerms.get(i * 6 + 4).text() mustBe statusDescriptionTermText
+          descriptionTerms.get(i * 6 + 5).text() mustBe financialYearEndDateDescriptionTermText
         }
       }
 
       "must be five description details per unqualified company with expected text" in {
         val descriptionDetails = doc.select("div.govuk-summary-list__row > dd.govuk-summary-list__value")
-        descriptionDetails.size() mustBe expectedCountOfDescriptionLists * 5
+        descriptionDetails.size() mustBe expectedCountOfDescriptionLists * 6
 
         for i <- unqualifiedCompanies.indices do {
-          descriptionDetails.get(i * 5).text() mustBe unqualifiedCompanies(i).name
-          descriptionDetails.get(i * 5 + 1).text() mustBe unqualifiedCompanies(i).utr
-          descriptionDetails.get(i * 5 + 2).text() mustBe unqualifiedCompanies(i).crn
-          descriptionDetails.get(i * 5 + 3).text() mustBe unqualifiedCompanies(i).companyType.toString
-          descriptionDetails.get(i * 5 + 4).text() mustBe unqualifiedCompanies(i).companyStatus.toString
+          descriptionDetails.get(i * 6).text() mustBe unqualifiedCompanies(i).name
+          descriptionDetails.get(i * 6 + 1).text() mustBe unqualifiedCompanies(i).utr
+          descriptionDetails.get(i * 6 + 2).text() mustBe unqualifiedCompanies(i).crn.fold("")(identity)
+          descriptionDetails.get(i * 6 + 3).text() mustBe unqualifiedCompanies(i).companyType.toString
+          descriptionDetails.get(i * 6 + 4).text() mustBe unqualifiedCompanies(i).companyStatus.toString
+          descriptionDetails.get(i * 6 + 5).text() mustBe testDateAsString(unqualifiedCompanies(i).financialYearEndDate)
         }
       }
     }
   }
 }
+
 object CertificateReviewUnqualifiedViewSpec {
   val pageHeading             = "Review the companies with an unqualified certificate"
   val pageTitle               = "Review the companies with an unqualified certificate"
@@ -152,41 +155,52 @@ object CertificateReviewUnqualifiedViewSpec {
   val linkLocator             = ".govuk-body:nth-of-type(2) .govuk-link"
   val linkText                = "upload an updated submission template"
   val paragraphs: Seq[String] = Seq(
-    "This list is taken from the certificate details in the submission template you uploaded. There were 10 companies the SAO was responsible for during the financial year.",
-    "If the information listed is not correct, upload an updated submission template before continuing.",
-    "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I example sao name the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 1999 that 2 companies had appropriate tax accounting arrangements throughout the year."
+    "This list is from the certificate details in your submission template. There were 10 companies your SAO was responsible for in a previous financial year.",
+    "If any companies listed are missing or incorrect, upload an updated submission template before continuing.",
+    "In accordance with Paragraph 2, Schedule 46 of the Finance Act 2009, I example sao name, the Senior Accounting Officer hereby certify that 2 companies had appropriate tax accounting arrangements throughout the year."
   )
 
   val paragraphsWithNoData: Seq[String] = Seq(
-    "This list is taken from the certificate details in the submission template you uploaded. There were 0 companies the SAO was responsible for during the financial year.",
-    "If the information listed is not correct, upload an updated submission template before continuing.",
-    "In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December that 0 companies had appropriate tax accounting arrangements throughout the year."
+    "This list is from the certificate details in your submission template. There were 0 companies your SAO was responsible for in a previous financial year.",
+    "If any companies listed are missing or incorrect, upload an updated submission template before continuing.",
+    "In accordance with Paragraph 2, Schedule 46 of the Finance Act 2009, I , the Senior Accounting Officer hereby certify that 0 companies had appropriate tax accounting arrangements throughout the year."
   )
+
+  private val testDate1 = LocalDate.of(2026, 1, 1)
+  private val testDate2 = LocalDate.of(2027, 3, 4)
+
+  def testDateAsString(localDate: LocalDate): String =
+    Map(
+      testDate1 -> "1 January 2026",
+      testDate2 -> "4 March 2027"
+    ).get(localDate).fold(throw RuntimeException("Unknown test date"))(identity)
 
   val unqualifiedCompanies: Seq[UnqualifiedCompany] = Seq(
     UnqualifiedCompany(
       name = "example company name",
       utr = "example utr",
-      crn = "example crn",
+      crn = Some("example crn"),
       companyType = CompanyType.LTD,
-      companyStatus = CompanyStatus.Active
+      companyStatus = CompanyStatus.Active,
+      financialYearEndDate = testDate1
     ),
     UnqualifiedCompany(
       name = "example company name 2",
       utr = "example utr 2",
-      crn = "example crn 2",
+      crn = Some("example crn 2"),
       companyType = CompanyType.PLC,
-      companyStatus = CompanyStatus.Dormant
+      companyStatus = CompanyStatus.Dormant,
+      financialYearEndDate = testDate2
     )
   )
 
-  val companyNameDescriptionTermText = "Company name"
-  val utrDescriptionTermText         = "UTR"
-  val crnDescriptionTermText         = "CRN"
-  val typeDescriptionTermText        = "Type"
-  val statusDescriptionTermText      = "Status"
+  val companyNameDescriptionTermText          = "Company name"
+  val utrDescriptionTermText                  = "UTR"
+  val crnDescriptionTermText                  = "CRN"
+  val typeDescriptionTermText                 = "Type"
+  val statusDescriptionTermText               = "Status"
+  val financialYearEndDateDescriptionTermText = "Financial year end"
 
-  val saoName   = "example sao name"
-  val dummyDate = "1999"
+  val saoName = "example sao name"
 
 }

@@ -129,7 +129,6 @@ notificationAdditionalInformation.checkYourAnswersLabel = Additional information
 notificationAdditionalInformation.error.required = Enter information about your notification or skip
 notificationAdditionalInformation.error.length = Additional information must be 5000 characters or less
 notificationAdditionalInformation.change.hidden =  the additional information supplied for the notification (Financial year end {0})
-notificationAdditionalInformation.empty = Not provided
 
 notificationCheckYourAnswers.title = Check your answers
 notificationCheckYourAnswers.heading = Check your answers
@@ -367,13 +366,17 @@ confirmYourNotification.inset.text = If you realise the information you submitte
 certificateReviewQualified.title = Review the companies with a qualified certificate
 certificateReviewQualified.heading = Review the companies with a qualified certificate
 certificateReviewQualified.caption = Submit a certificate
-certificateReviewQualified.paragraph1 = This list is taken from the certificate details in the submission template you uploaded. There were {0} companies the SAO was responsible for during the financial year.
-certificateReviewQualified.paragraph2WithLink = If the information listed is not correct, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
-certificateReviewQualified.paragraph3 = In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I {0}, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended {1}, <b>{2}</b> companies did not have appropriate tax accounting arrangements.
+certificateReviewQualified.paragraph1 = This list is from the certificate details in your submission template. There were {0} companies your SAO was responsible for in a previous financial year.
+certificateReviewQualified.paragraph2WithLink = If any companies listed are missing or incorrect, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
+certificateReviewQualified.paragraph3 = In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer, hereby certify that <b>{1}</b> companies did not have appropriate tax accounting arrangements.
 certificateReviewQualified.rows.name = Company name
 certificateReviewQualified.rows.utr = UTR
+certificateReviewQualified.rows.crn = CRN
+certificateReviewQualified.rows.type = Type
+certificateReviewQualified.rows.status = Status
+certificateReviewQualified.rows.financialYearEndDate = Financial year end
 certificateReviewQualified.rows.taxRegimes = Tax Regimes
-certificateReviewQualified.rows.additionalInformation = Additional information
+certificateReviewQualified.rows.additionalInformation = Explain why the certificate is qualified
 certificateReviewQualified.taxRegimes.corporationTax = Corporation Tax
 certificateReviewQualified.taxRegimes.valueAddedTax = Value Added Tax
 certificateReviewQualified.taxRegimes.paye = PAYE (Pay As You Earn)
@@ -388,14 +391,15 @@ certificateReviewQualified.taxRegimes.bankLevy = Bank Levy
 certificateReviewUnqualified.title = Review the companies with an unqualified certificate
 certificateReviewUnqualified.heading = Review the companies with an unqualified certificate
 certificateReviewUnqualified.caption = Submit a certificate
-certificateReviewUnqualified.paragraph1 = This list is taken from the certificate details in the submission template you uploaded. There were {0} companies the SAO was responsible for during the financial year.
-certificateReviewUnqualified.paragraph2WithLink = If the information listed is not correct, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
-certificateReviewUnqualified.paragraph3 = In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I {0} the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December {1} that <b>{2}</b> companies had appropriate tax accounting arrangements throughout the year.
+certificateReviewUnqualified.paragraph1 = This list is from the certificate details in your submission template. There were {0} companies your SAO was responsible for in a previous financial year.
+certificateReviewUnqualified.paragraph2WithLink = If any companies listed are missing or incorrect, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
+certificateReviewUnqualified.paragraph3 = In accordance with Paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer hereby certify that <b>{1}</b> companies had appropriate tax accounting arrangements throughout the year.
 certificateReviewUnqualified.rows.companyName = Company name
 certificateReviewUnqualified.rows.utr = UTR
 certificateReviewUnqualified.rows.crn = CRN
 certificateReviewUnqualified.rows.type = Type
 certificateReviewUnqualified.rows.status = Status
+certificateReviewUnqualified.rows.financialYearEndDate = Financial year end
 
 certificateAdditionalInformation.title = Additional information and explanation
 certificateAdditionalInformation.caption = Submit a certificate
@@ -533,6 +537,6 @@ certificateConfirmation.subheading = What happens next
 certificateUploadForm.title = Upload a submission template for your certificate
 certificateUploadForm.heading = Upload a submission template
 certificateUploadForm.caption = Submit a certificate
-certificateUploadForm.paragraph1 = The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.
+certificateUploadForm.paragraph1 = The template must be uploaded in CSV format. If your template is saved as .xls or .xlsx, save it again as a CSV (comma delimited) (.csv) file before uploading.
 certificateUploadForm.paragraph2 = Read guidance on how to complete the submission template (opens in new tab)
-certificateUploadForm.inset.text = If your group has more than one SAO, you must upload and submit separate templates, one for each SAO. After submitting one certificate, you can start another.
+certificateUploadForm.inset.text = If your group has more than one SAO, you must submit a separate certificate for each one. After you complete this submission, you can start another certificate.

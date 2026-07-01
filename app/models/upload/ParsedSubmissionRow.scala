@@ -43,9 +43,10 @@ object ParsedSubmissionRow {
           UnqualifiedCompany(
             name = data.notification.companyName,
             utr = data.notification.companyUtr.value,
-            crn = data.notification.companyCrn.fold("")(_.value),
+            crn = data.notification.companyCrn.map(_.value),
             companyType = data.notification.companyType,
-            companyStatus = data.notification.companyStatus
+            companyStatus = data.notification.companyStatus,
+            financialYearEndDate = data.notification.financialYearEndDate
           )
         )
 
@@ -55,6 +56,10 @@ object ParsedSubmissionRow {
           QualifiedCompany(
             name = data.notification.companyName,
             utr = data.notification.companyUtr.value,
+            crn = data.notification.companyCrn.map(_.value),
+            companyType = data.notification.companyType.toString,
+            status = data.notification.companyStatus.toString,
+            financialYearEndDate = data.notification.financialYearEndDate,
             corporationTax = data.certificate.corporationTax,
             valueAddedTax = data.certificate.valueAddedTax,
             paye = data.certificate.paye,

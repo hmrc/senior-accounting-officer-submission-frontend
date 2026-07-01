@@ -34,8 +34,6 @@ import views.html.certificate.CertificateReviewQualifiedView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class CertificateReviewQualifiedController @Inject() (
@@ -66,9 +64,6 @@ class CertificateReviewQualifiedController @Inject() (
           } yield Ok(
             view(
               saoName = saoName,
-              financialYearEnd = LocalDate
-                .of(2024, 12, 31) // TODO: get this from somewhere appropriate
-                .format(DateTimeFormatter.ofPattern("d MMMM yyyy")),
               companyCount = totalCompanies,
               qualifiedCompanies = qualifiedCompanies
             )

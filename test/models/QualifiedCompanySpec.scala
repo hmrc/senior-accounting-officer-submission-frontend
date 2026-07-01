@@ -24,6 +24,8 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.Messages
 import play.api.i18n.MessagesApi
 
+import java.time.LocalDate
+
 class QualifiedCompanySpec extends AnyFreeSpec with Matchers with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
@@ -32,6 +34,10 @@ class QualifiedCompanySpec extends AnyFreeSpec with Matchers with GuiceOneAppPer
       val sut = QualifiedCompany(
         name = "",
         utr = "",
+        crn = None,
+        companyType = "LTD",
+        status = "Active",
+        financialYearEndDate = LocalDate.now(),
         corporationTax = false,
         valueAddedTax = false,
         paye = false,
@@ -52,6 +58,10 @@ class QualifiedCompanySpec extends AnyFreeSpec with Matchers with GuiceOneAppPer
       val sut = QualifiedCompany(
         name = "",
         utr = "",
+        crn = None,
+        companyType = "LTD",
+        status = "Active",
+        financialYearEndDate = LocalDate.now(),
         corporationTax = true,
         valueAddedTax = false,
         paye = false,
@@ -72,6 +82,10 @@ class QualifiedCompanySpec extends AnyFreeSpec with Matchers with GuiceOneAppPer
       val sut = QualifiedCompany(
         name = "",
         utr = "",
+        crn = None,
+        companyType = "LTD",
+        status = "Active",
+        financialYearEndDate = LocalDate.now(),
         corporationTax = true,
         valueAddedTax = true,
         paye = false,
@@ -92,6 +106,10 @@ class QualifiedCompanySpec extends AnyFreeSpec with Matchers with GuiceOneAppPer
       val sut = QualifiedCompany(
         name = "",
         utr = "",
+        crn = None,
+        companyType = "LTD",
+        status = "Active",
+        financialYearEndDate = LocalDate.now(),
         corporationTax = true,
         valueAddedTax = true,
         paye = true,
