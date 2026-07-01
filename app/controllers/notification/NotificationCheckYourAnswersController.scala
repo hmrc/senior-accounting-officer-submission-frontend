@@ -17,17 +17,17 @@
 package controllers.notification
 
 import controllers.actions.*
+import controllers.notification.routes as notificationRoutes
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationCheckYourAnswersView
-import controllers.notification.routes as notificationRoutes
+
+import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
-import uk.gov.hmrc.http.InternalServerException
-import scala.concurrent.ExecutionContext
-import scala.concurrent.Future
 
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,

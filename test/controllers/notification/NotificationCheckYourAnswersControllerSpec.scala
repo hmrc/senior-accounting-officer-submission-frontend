@@ -17,8 +17,10 @@
 package controllers.notification
 
 import base.SpecBase
+import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.notification.NotificationSubmissionError
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
@@ -29,15 +31,14 @@ import play.api.mvc.{AnyContentAsEmpty, Call, Request}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import services.NotificationCheckYourAnswersService
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import views.html.notification.NotificationCheckYourAnswersView
 import services.NotificationSubmitService
-import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
-import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.http.HeaderCarrier
-import scala.concurrent.Future
-import models.notification.NotificationSubmissionError
 import uk.gov.hmrc.http.HttpResponse
+import uk.gov.hmrc.http.InternalServerException
+import views.html.notification.NotificationCheckYourAnswersView
+
+import scala.concurrent.Future
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 

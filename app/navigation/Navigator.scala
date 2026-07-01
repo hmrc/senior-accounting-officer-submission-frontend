@@ -21,7 +21,6 @@ import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
 import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
-import models.notification.NotificationIdReferenceNumber
 import models.upload.UploadTemplateTableData
 import pages.*
 import pages.certificate.*
