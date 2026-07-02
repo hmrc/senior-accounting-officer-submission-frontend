@@ -20,48 +20,37 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.*
 import models.certificate.CertificateTaskListStage
-import models.upload.{CompanyStatus, CompanyType}
+import models.upload.*
 import navigation.{FakeNavigator, Navigator}
+import pages.certificate.CertificateUploadTemplateTablePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.certificate.CertificateReviewUnqualifiedView
 
+import scala.util.Random
+
+import java.time.LocalDate
+
+import CertificateReviewUnqualifiedControllerSpec.*
+
 class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
-
-  val dummyDate                                     = "2020"
-  val unqualifiedDummyData: Seq[UnqualifiedCompany] = Seq(
-    UnqualifiedCompany(
-      name = "example company name",
-      utr = "example company utr",
-      crn = "example company crn",
-      companyType = CompanyType.LTD,
-      companyStatus = CompanyStatus.Administration
-    ),
-    UnqualifiedCompany(
-      name = "example company name 2",
-      utr = "example company utr 2",
-      crn = "example company crn 2",
-      companyType = CompanyType.LTD,
-      companyStatus = CompanyStatus.Dormant
-    ),
-    UnqualifiedCompany(
-      name = "example company name 3",
-      utr = "example company utr 3",
-      crn = "example company crn 3",
-      companyType = CompanyType.LTD,
-      companyStatus = CompanyStatus.Active
-    )
-  )
 
   "CertificateReviewUnqualified Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
+      val application = applicationBuilder(userAnswers =
+        Some(
+          userAnswersWithCertificateSaoDetails
+            .set(CertificateUploadTemplateTablePage, testTemplateData)
+            .success
+            .value
+        )
+      ).build()
 
       running(application) {
         val request = FakeRequest(GET, certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad().url)
@@ -72,10 +61,9 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
-          "Firstname Lastname",
-          unqualifiedDummyData,
-          unqualifiedDummyData.size,
-          dummyDate
+          saoName = "Firstname Lastname",
+          unqualifiedCompanies = testUnqualifiedCompanies,
+          companyCount = testTemplateData.rows.size
         )(using request, messages(application)).toString
       }
     }
@@ -128,4 +116,110 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
       }
     }
   }
+}
+
+object CertificateReviewUnqualifiedControllerSpec {
+  private val testDate1 = LocalDate.now()
+  private val testDate2 = LocalDate.now().minusDays(1)
+
+  def utr(seed: Int): String = f"${Random(seed).nextLong(10000000000L)}%09d"
+  def crn(seed: Int): String = f"${Random(seed).nextLong(100000000L)}%08d"
+
+  private val testTemplateData = UploadTemplateTableData(
+    rows = Seq(
+      ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = "example company name",
+          companyUtr = CompanyUtr(utr(1)),
+          companyCrn = Some(CompanyCrn(crn(1))),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Administration,
+          financialYearEndDate = testDate1
+        ),
+        certificate = CertificateFields(
+          corporationTax = false,
+          valueAddedTax = false,
+          paye = false,
+          insurancePremiumTax = false,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = false,
+          customsDuties = false,
+          exciseDuties = false,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Unqualified),
+          additionalInformation = Some("example additional information")
+        )
+      ),
+      ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = "example company name 2",
+          companyUtr = CompanyUtr(utr(2)),
+          companyCrn = Some(CompanyCrn(crn(2))),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Dormant,
+          financialYearEndDate = testDate2
+        ),
+        certificate = CertificateFields(
+          corporationTax = false,
+          valueAddedTax = false,
+          paye = false,
+          insurancePremiumTax = false,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = false,
+          customsDuties = false,
+          exciseDuties = false,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Unqualified),
+          additionalInformation = Some("example additional information ")
+        )
+      ),
+      ParsedSubmissionRow(
+        notification = NotificationFields(
+          companyName = "example company name 3",
+          companyUtr = CompanyUtr(utr(3)),
+          companyCrn = Some(CompanyCrn(crn(3))),
+          companyType = CompanyType.LTD,
+          companyStatus = CompanyStatus.Active,
+          financialYearEndDate = LocalDate.now()
+        ),
+        certificate = CertificateFields(
+          corporationTax = true,
+          valueAddedTax = false,
+          paye = false,
+          insurancePremiumTax = false,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = false,
+          customsDuties = false,
+          exciseDuties = false,
+          bankLevy = false,
+          certificateType = Some(CertificateType.Qualified),
+          additionalInformation = Some("example additional information 3")
+        )
+      )
+    ),
+    errors = Seq.empty
+  )
+
+  val testUnqualifiedCompanies: Seq[UnqualifiedCompany] = Seq(
+    UnqualifiedCompany(
+      name = "example company name",
+      utr = utr(1),
+      crn = Some(crn(1)),
+      companyType = CompanyType.LTD,
+      companyStatus = CompanyStatus.Administration,
+      financialYearEndDate = testDate1
+    ),
+    UnqualifiedCompany(
+      name = "example company name 2",
+      utr = utr(2),
+      crn = Some(crn(2)),
+      companyType = CompanyType.LTD,
+      companyStatus = CompanyStatus.Dormant,
+      financialYearEndDate = testDate2
+    )
+  )
+
 }

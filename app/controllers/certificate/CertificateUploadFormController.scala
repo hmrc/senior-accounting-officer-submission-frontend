@@ -16,11 +16,19 @@
 
 package controllers.certificate
 
+import connectors.UpscanInitiateConnector
 import controllers.actions.*
+import forms.UploadFormProvider
+import forms.UploadFormProvider.fileInputField
+import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
+import pages.certificate.CertificateUploadStatePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import repositories.SessionRepository
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.certificate.CertificateUploadFormView
+
+import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
@@ -29,15 +37,47 @@ class CertificateUploadFormController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    requireUploadSubmissionTemplateStageUnlocked: RequireCertificateUploadSubmissionTemplateUnlockedAction,
-    val controllerComponents: MessagesControllerComponents,
-    view: CertificateUploadFormView
-) extends FrontendBaseController
+    mcc: MessagesControllerComponents,
+    certificateUploadFormView: CertificateUploadFormView,
+    upscanInitiateConnector: UpscanInitiateConnector,
+    sessionRepository: SessionRepository,
+    formProvider: UploadFormProvider,
+    requireUploadSubmissionTemplateStageUnlocked: RequireCertificateUploadSubmissionTemplateUnlockedAction
+)(implicit ec: ExecutionContext)
+    extends FrontendController(mcc)
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
+    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked).async {
       implicit request =>
-        Ok(view())
+        val form = request.userAnswers.get(CertificateUploadStatePage).fold(formProvider()) {
+          case FileUploadState(_, UploadStatus.Quarantined) =>
+            formProvider().withError(
+              fileInputField,
+              "upload.error.quarantine"
+            )
+          case FileUploadState(_, UploadStatus.Rejected) =>
+            formProvider().withError(fileInputField, "upload.error.rejected")
+          case FileUploadState(_, UploadStatus.UnknownFailure) =>
+            formProvider().withError(fileInputField, "upload.error.unknown")
+          case _ => formProvider()
+        }
+
+        for {
+          upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Certificate)
+          updatedAnswers         <- Future.fromTry(
+            request.userAnswers.set(
+              CertificateUploadStatePage,
+              FileUploadState(
+                reference = upscanInitiateResponse.reference,
+                status = UploadStatus.InProgress
+              )
+            )
+          )
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          if form.hasErrors then BadRequest(certificateUploadFormView(form, upscanInitiateResponse))
+          else Ok(certificateUploadFormView(form, upscanInitiateResponse))
+        }
     }
 }

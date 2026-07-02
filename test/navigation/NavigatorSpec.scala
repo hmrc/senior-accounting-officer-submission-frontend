@@ -299,6 +299,26 @@ class NavigatorSpec extends SpecBase {
         ) mustBe notificationRoutes.NotificationUploadFormController.onPageLoad()
       }
 
+      "when on UploadTemplateTableErrorPage  must go to upload form page" in {
+        val userAnswers =
+          UserAnswers("id")
+            .set(
+              UploadTemplateTablePage,
+              UploadTemplateTableData(
+                rows = Seq.empty,
+                errors = Seq(models.upload.TemplateParseError(9, Some("Company UTR"), "missing_required_value", "x"))
+              )
+            )
+            .success
+            .value
+
+        navigator.nextPage(
+          UploadTemplateTableErrorPage,
+          NormalMode,
+          userAnswers
+        ) mustBe notificationRoutes.NotificationUploadFormController.onPageLoad()
+      }
+
       "when on UploadTemplateTablePage with no upload data, must go to journey recovery page" in {
         navigator.nextPage(
           UploadTemplateTablePage,
@@ -356,6 +376,48 @@ class NavigatorSpec extends SpecBase {
         ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
           CertificateTaskListStage.UploadSubmissionTemplateStage
         )
+      }
+
+      "when on CertificateUploadTemplateTableErrorPage with no parsing errors, must go to upload form page" in {
+        val userAnswers =
+          UserAnswers("id")
+            .set(CertificateUploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
+            .success
+            .value
+
+        navigator.nextPage(
+          CertificateUploadTemplateTableErrorPage,
+          NormalMode,
+          userAnswers
+        ) mustBe certificateRoutes.CertificateUploadFormController.onPageLoad()
+      }
+
+      "when on CertificateUploadTemplateTableErrorPage with parsing errors, must go to upload form page" in {
+        val userAnswers =
+          UserAnswers("id")
+            .set(
+              CertificateUploadTemplateTablePage,
+              UploadTemplateTableData(
+                rows = Seq.empty,
+                errors = Seq(models.upload.TemplateParseError(9, Some("Company UTR"), "missing_required_value", "x"))
+              )
+            )
+            .success
+            .value
+
+        navigator.nextPage(
+          CertificateUploadTemplateTableErrorPage,
+          NormalMode,
+          userAnswers
+        ) mustBe certificateRoutes.CertificateUploadFormController.onPageLoad()
+      }
+
+      "when on CertificateUploadTemplateTableErrorPage with no upload data, must go to journey recovery page" in {
+        navigator.nextPage(
+          CertificateUploadTemplateTableErrorPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
 
       "when on CertificateReviewQualified, must go to CertificateReviewUnqualified page" in {

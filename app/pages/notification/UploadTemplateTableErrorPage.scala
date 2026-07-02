@@ -14,17 +14,8 @@
  * limitations under the License.
  */
 
-package models
+package pages.notification
 
-import models.upload.*
+import pages.Page
 
-import java.time.LocalDate
-
-final case class UnqualifiedCompany(
-    name: String,
-    utr: String,
-    crn: Option[String],
-    companyType: CompanyType,
-    companyStatus: CompanyStatus,
-    financialYearEndDate: LocalDate
-)
+case object UploadTemplateTableErrorPage extends Page

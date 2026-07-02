@@ -11,6 +11,7 @@ site.start = Start now
 site.startAgain = Start again
 site.govuk = GOV.UK
 site.confirmAndSubmit = Confirm and submit
+site.notProvided = Not provided
 
 date.day = Day
 date.month = Month
@@ -22,6 +23,15 @@ date.error.year = year
 error.title.prefix = Error:
 error.prefix = Error
 error.summary.title = There is a problem
+
+upload.label = Upload a file
+upload.error.quarantine = The selected file contains a virus
+upload.error.rejected = The selected file must be a CSV
+upload.error.unknown = The selected file could not be uploaded – try again
+
+upload.success.title = Upload a submission template for your notification
+upload.success.heading = Your submission template is uploading
+upload.success.paragraph1 = This may take a few minutes
 
 journeyRecovery.continue.title = Sorry, there is a problem with the service
 journeyRecovery.continue.heading = Sorry, there is a problem with the service
@@ -96,10 +106,6 @@ notificationUploadForm.caption = Submit a notification
 notificationUploadForm.paragraph1 = The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.
 notificationUploadForm.paragraph2 = Read guidance on how to complete the submission template (opens in new tab)
 notificationUploadForm.inset.text = If your group has more than one SAO, you must submit a separate notification for each SAO. After you complete one submission, you can start another.
-notificationUploadForm.upload.label = Upload a file
-notificationUploadForm.upload.error.quarantine = The selected file contains a virus
-notificationUploadForm.upload.error.rejected = The selected file must be a CSV
-notificationUploadForm.upload.error.unknown = The selected file could not be uploaded – try again
 
 notificationGuidance.title = Submit a notification
 notificationGuidance.heading = Submit a notification
@@ -123,7 +129,6 @@ notificationAdditionalInformation.checkYourAnswersLabel = Additional information
 notificationAdditionalInformation.error.required = Enter information about your notification or skip
 notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 5000 characters or less
 notificationAdditionalInformation.change.hidden =  the additional information supplied for the notification (Financial year end {0})
-notificationAdditionalInformation.empty = Not provided
 
 notificationCheckYourAnswers.title = Check your answers
 notificationCheckYourAnswers.heading = Check your answers
@@ -235,10 +240,6 @@ notificationUploadError.validation.headerMismatch = The upload template headers 
 notificationUploadError.validation.missingRequiredValue = A required value is missing in the uploaded template
 notificationUploadError.validation.invalidEnumValue = A value in the uploaded template is not valid
 notificationUploadError.validation.invalidCertificateType = Certificate type must be Qualified, Unqualified or blank
-
-notificationUploadSuccess.title = Upload a submission template for your notification
-notificationUploadSuccess.heading = Your submission template is uploading
-notificationUploadSuccess.paragraph1 = This may take a few minutes
 
 notificationMoreThanOneSao.title = Submit a notification - Was there more than one SAO during the financial year?
 notificationMoreThanOneSao.heading = Was there more than one SAO during the financial year?
@@ -365,13 +366,17 @@ confirmYourNotification.inset.text = If you realise the information you submitte
 certificateReviewQualified.title = Review the companies with a qualified certificate
 certificateReviewQualified.heading = Review the companies with a qualified certificate
 certificateReviewQualified.caption = Submit a certificate
-certificateReviewQualified.paragraph1 = This list is taken from the certificate details in the submission template you uploaded. There were {0} companies the SAO was responsible for during the financial year.
-certificateReviewQualified.paragraph2WithLink = If the information listed is not correct, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
-certificateReviewQualified.paragraph3 = In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I {0}, the Senior Accounting Officer, hereby certify that throughout the company’s financial year ended {1}, <b>{2}</b> companies did not have appropriate tax accounting arrangements.
+certificateReviewQualified.paragraph1 = This list is from the certificate details in your submission template. There were {0} companies your SAO was responsible for in a previous financial year.
+certificateReviewQualified.paragraph2WithLink = If any companies listed are missing or incorrect, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
+certificateReviewQualified.paragraph3 = In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer, hereby certify that <b>{1}</b> companies did not have appropriate tax accounting arrangements.
 certificateReviewQualified.rows.name = Company name
 certificateReviewQualified.rows.utr = UTR
+certificateReviewQualified.rows.crn = CRN
+certificateReviewQualified.rows.type = Type
+certificateReviewQualified.rows.status = Status
+certificateReviewQualified.rows.financialYearEndDate = Financial year end
 certificateReviewQualified.rows.taxRegimes = Tax Regimes
-certificateReviewQualified.rows.additionalInformation = Additional information
+certificateReviewQualified.rows.additionalInformation = Explain why the certificate is qualified
 certificateReviewQualified.taxRegimes.corporationTax = Corporation Tax
 certificateReviewQualified.taxRegimes.valueAddedTax = Value Added Tax
 certificateReviewQualified.taxRegimes.paye = PAYE (Pay As You Earn)
@@ -386,14 +391,15 @@ certificateReviewQualified.taxRegimes.bankLevy = Bank Levy
 certificateReviewUnqualified.title = Review the companies with an unqualified certificate
 certificateReviewUnqualified.heading = Review the companies with an unqualified certificate
 certificateReviewUnqualified.caption = Submit a certificate
-certificateReviewUnqualified.paragraph1 = This list is taken from the certificate details in the submission template you uploaded. There were {0} companies the SAO was responsible for during the financial year.
-certificateReviewUnqualified.paragraph2WithLink = If the information listed is not correct, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
-certificateReviewUnqualified.paragraph3 = In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I {0} the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December {1} that <b>{2}</b> companies had appropriate tax accounting arrangements throughout the year.
+certificateReviewUnqualified.paragraph1 = This list is from the certificate details in your submission template. There were {0} companies your SAO was responsible for in a previous financial year.
+certificateReviewUnqualified.paragraph2WithLink = If any companies listed are missing or incorrect, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
+certificateReviewUnqualified.paragraph3 = In accordance with Paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer hereby certify that <b>{1}</b> companies had appropriate tax accounting arrangements throughout the year.
 certificateReviewUnqualified.rows.companyName = Company name
 certificateReviewUnqualified.rows.utr = UTR
 certificateReviewUnqualified.rows.crn = CRN
 certificateReviewUnqualified.rows.type = Type
 certificateReviewUnqualified.rows.status = Status
+certificateReviewUnqualified.rows.financialYearEndDate = Financial year end
 
 certificateAdditionalInformation.title = Additional information and explanation
 certificateAdditionalInformation.caption = Submit a certificate
@@ -526,3 +532,10 @@ certificateConfirmation.printPage = Print this page
 certificateConfirmation.list1.item1 = - save a copy of all the answers you submitted now. You may not be able to download a PDF if you leave this page
 certificateConfirmation.list1.item2 = - print a paper copy of this confirmation page
 certificateConfirmation.subheading = What happens next
+
+certificateUploadForm.title = Upload a submission template for your certificate
+certificateUploadForm.heading = Upload a submission template
+certificateUploadForm.caption = Submit a certificate
+certificateUploadForm.paragraph1 = The template must be uploaded in CSV format. If your template is saved as .xls or .xlsx, save it again as a CSV (comma delimited) (.csv) file before uploading.
+certificateUploadForm.paragraph2 = Read guidance on how to complete the submission template (opens in new tab)
+certificateUploadForm.inset.text = If your group has more than one SAO, you must submit a separate certificate for each one. After you complete this submission, you can start another certificate.

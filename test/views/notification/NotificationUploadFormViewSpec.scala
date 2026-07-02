@@ -18,7 +18,7 @@ package views.notification
 
 import base.ViewSpecBase
 import controllers.routes
-import forms.notification.NotificationUploadFormProvider
+import forms.UploadFormProvider
 import models.upscan.UpscanInitiateResponse
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -29,7 +29,7 @@ import NotificationUploadFormViewSpec.*
 
 class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadFormView] {
 
-  private val formProvider       = app.injector.instanceOf[NotificationUploadFormProvider]
+  private val formProvider       = app.injector.instanceOf[UploadFormProvider]
   private val form: Form[String] = formProvider()
 
   private def generateView(form: Form[String]): Document = {
@@ -110,6 +110,8 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
         hiddenFields.get(1).attr("value") mustBe "testValue2"
       }
 
+      doc.createTestsWithLargeCaption(captionText)
+
       doc.createTestsWithParagraphs(paragraphs)
 
       doc
@@ -137,6 +139,8 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
 object NotificationUploadFormViewSpec {
   val pageHeading = "Upload a submission template"
   val pageTitle   = "Upload a submission template for your notification"
+
+  val captionText = "Submit a notification"
 
   val paragraphs: List[String] = List(
     "The template must be uploaded in CSV format. If you already have the template saved in a different format (such as .xls or .xlsx), you must save it again as a CSV file.",

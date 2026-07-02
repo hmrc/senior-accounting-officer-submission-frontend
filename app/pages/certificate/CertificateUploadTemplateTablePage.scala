@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package models
+package pages.certificate
 
-import models.upload.*
+import models.upload.UploadTemplateTableData
+import pages.Page.CERTIFICATE_PATH
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-import java.time.LocalDate
+case object CertificateUploadTemplateTablePage extends QuestionPage[UploadTemplateTableData] {
 
-final case class UnqualifiedCompany(
-    name: String,
-    utr: String,
-    crn: Option[String],
-    companyType: CompanyType,
-    companyStatus: CompanyStatus,
-    financialYearEndDate: LocalDate
-)
+  override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
+
+  override def toString: String = "uploadTemplateTable"
+}

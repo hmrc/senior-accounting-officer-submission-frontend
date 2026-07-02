@@ -15,6 +15,7 @@
  *@
 
 @import controllers.certificate.routes as certificateRoutes
+@import utils.DateTimeFormats.dateTimeFormat
 
 @this(
     layout: templates.Layout,
@@ -22,7 +23,7 @@
     formHelper: FormWithCSRF
 )
 
-@(saoName: String, unqualifiedCompanies: Seq[UnqualifiedCompany], companyCount: Int, dummyDate: String)(using request: Request[?], messages: Messages)
+@(saoName: String, unqualifiedCompanies: Seq[UnqualifiedCompany], companyCount: Int)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("certificateReviewUnqualified.title"))) {
 
@@ -30,11 +31,11 @@
 
     <h1 class="govuk-heading-l">@messages("certificateReviewUnqualified.heading")</h1>
 
-    <p class="govuk-body">@messages("certificateReviewUnqualified.paragraph1", unqualifiedCompanies.size)</p>
+    <p class="govuk-body">@messages("certificateReviewUnqualified.paragraph1", companyCount)</p>
 
     <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph2WithLink", certificateRoutes.CertificateUploadFormController.onPageLoad()))</p>
 
-    <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph3", saoName, dummyDate, unqualifiedCompanies.size))</p>
+    <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph3", saoName, unqualifiedCompanies.size))</p>
 
     @for(unqualifiedCompany <- unqualifiedCompanies) {
         <dl class="govuk-summary-list">
@@ -48,7 +49,7 @@
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.crn")</dt>
-                <dd class="govuk-summary-list__value">@unqualifiedCompany.crn</dd>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.crn.fold(messages("site.notProvided"))(identity)</dd>
             </div>
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.type")</dt>
@@ -57,6 +58,10 @@
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.status")</dt>
                 <dd class="govuk-summary-list__value">@unqualifiedCompany.companyStatus</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">@messages("certificateReviewUnqualified.rows.financialYearEndDate")</dt>
+                <dd class="govuk-summary-list__value">@unqualifiedCompany.financialYearEndDate.format(dateTimeFormat()(using messages.lang))</dd>
             </div>
         </dl>
     }

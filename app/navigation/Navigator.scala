@@ -101,6 +101,13 @@ class Navigator @Inject() () {
               notificationRoutes.NotificationUploadFormController.onPageLoad()
             case _ => notificationRoutes.NotificationTaskListController.onPageLoad()
           }
+    case UploadTemplateTableErrorPage =>
+      userAnswers =>
+        userAnswers
+          .get(UploadTemplateTablePage)
+          .fold(routes.JourneyRecoveryController.onPageLoad()) { _ =>
+            notificationRoutes.NotificationUploadFormController.onPageLoad()
+          }
     case SubmissionTypePage =>
       userAnswers =>
         userAnswers.get(SubmissionTypePage) match {
@@ -117,6 +124,13 @@ class Navigator @Inject() () {
         certificateRoutes.CertificateTaskListController.onPageLoad(stage =
           CertificateTaskListStage.UploadSubmissionTemplateStage
         )
+    case CertificateUploadTemplateTableErrorPage =>
+      userAnswers =>
+        userAnswers
+          .get(CertificateUploadTemplateTablePage)
+          .fold(routes.JourneyRecoveryController.onPageLoad()) { _ =>
+            certificateRoutes.CertificateUploadFormController.onPageLoad()
+          }
     case CertificateReviewQualifiedPage =>
       _ => certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
     case CertificateReviewUnqualifiedPage =>
