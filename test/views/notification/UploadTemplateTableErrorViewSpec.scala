@@ -65,8 +65,8 @@ class UploadTemplateTableErrorViewSpec extends ViewSpecBase[UploadTemplateTableE
     }
 
     "must render return to file upload button" in {
-      doc.select("#continue").size() mustBe 1
-      doc.select("#continue").text() mustBe "Return to file upload"
+      doc.select("#submit").size() mustBe 1
+      doc.select("#submit").text() mustBe "Return to file upload"
     }
 
     "must render the errors table with row separators removed" in {
