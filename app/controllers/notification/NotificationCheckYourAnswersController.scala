@@ -18,16 +18,21 @@ package controllers.notification
 
 import controllers.actions.*
 import controllers.notification.routes as notificationRoutes
+import controllers.routes
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationCheckYourAnswersView
+import utils.UuidProvider
+import repositories.IdempotencyRepository
 
 import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
+import java.util.UUID
+import scala.concurrent.Future
 
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
@@ -38,7 +43,9 @@ class NotificationCheckYourAnswersController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
     notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
-    notificationSubmitService: NotificationSubmitService
+    notificationSubmitService: NotificationSubmitService,
+    uuidProvider: UuidProvider,
+    idempotencyRepository: IdempotencyRepository
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -47,24 +54,32 @@ class NotificationCheckYourAnswersController @Inject() (
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
 
-      Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
+      val idempotencyId = uuidProvider.create
+
+      Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate, idempotencyId))
     }
 
-  def onSubmit(): Action[AnyContent] =
+  // TODO: manual check this idempotency thing works
+
+  def onSubmit(idempotencyId: UUID): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
       {
-        notificationSubmitService
-          .submit(request.userAnswers)
-          .map {
-            _.fold(
-              error =>
-                println("jacobwozere")
-                throw new InternalServerException(error.message)
-              ,
-              notificationReference =>
-                Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
-            )
-          }
+        idempotencyRepository
+          .insert(idempotencyId)
+          .flatMap(isIdempotent =>
+            if isIdempotent
+            then
+              notificationSubmitService
+                .submit(request.userAnswers)
+                .map {
+                  _.fold(
+                    error => throw new InternalServerException(error.message),
+                    notificationReference =>
+                      Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
+                  )
+                }
+            else Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          )
       }
     }
 }
