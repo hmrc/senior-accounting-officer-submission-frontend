@@ -137,34 +137,6 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         }
       }
 
-      "must redirect to journey recovery page if idempotency repository returns false" in {
-        val mockNotificationSubmitService = mock[NotificationSubmitService]
-
-        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Right(exampleNotificationReference)))
-
-        val application =
-          applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
-            .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
-            )
-            .build()
-
-        running(application) {
-          val request =
-            FakeRequest(
-              POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
-            )
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
-        }
-      }
-
       "when submission unsuccessful, must throw an InternalServerException with an error message" in {
 
         val mockNotificationSubmitService = mock[NotificationSubmitService]

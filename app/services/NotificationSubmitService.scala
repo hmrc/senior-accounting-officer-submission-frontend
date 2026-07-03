@@ -29,15 +29,7 @@ import scala.annotation.tailrec
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import java.time.LocalDate
-import models.upload.CertificateFields
-import models.upload.CompanyCrn
-import models.upload.CompanyStatus
-import models.upload.CompanyUtr
-import models.upload.NotificationFields
-import models.upload.ParsedSubmissionRow
 import models.upload.UploadTemplateTableData
-import models.upload.CompanyType
 
 class NotificationSubmitService @Inject() (
     protectedServiceConnector: ProtectedServiceConnector,
