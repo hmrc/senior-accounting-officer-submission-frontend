@@ -73,24 +73,24 @@ object NotificationSubmitService {
 
     private def toSaos: List[Sao] = {
       @tailrec
-      def previousSaos(mongoSaoIndex: Int = 0, saos: List[Sao] = List()): List[Sao] = {
+      def previousSaos(mongoSaoIndex: Int = 0, saos: List[Sao] = Nil): List[Sao] = {
         userAnswers
           .get(NotificationMultiSaoPreviousOfficerNamePage(mongoSaoIndex)) match {
           case Some(name) =>
             previousSaos(
               mongoSaoIndex + 1,
-              saos :+ Sao(
+              Sao(
                 name = name,
                 fromDate = userAnswers
                   .get(NotificationMultiSaoPreviousOfficerStartDatePage(mongoSaoIndex))
-                  .map(_.toString()),
+                  .map(_.toString),
                 email = None,
                 toDate = userAnswers
                   .get(NotificationMultiSaoPreviousOfficerEndDatePage(mongoSaoIndex))
-                  .map(_.toString())
-              )
+                  .map(_.toString)
+              ) :: saos
             )
-          case None => saos
+          case None => saos.reverse
         }
       }
 
@@ -99,10 +99,10 @@ object NotificationSubmitService {
           Sao(
             name = userAnswers
               .get(NotificationMultiSaoLastOfficerNamePage)
-              .fold(???)(name => name),
+              .fold(???)(identity),
             fromDate = userAnswers
               .get(NotificationMultiSaoLastOfficerStartDatePage)
-              .map(_.toString()),
+              .map(_.toString),
             email = None,
             toDate = None
           ) :: previousSaos()
@@ -111,7 +111,7 @@ object NotificationSubmitService {
             Sao(
               name = userAnswers
                 .get(NotificationSingleSaoOfficerNamePage)
-                .fold(???)(name => name),
+                .fold(???)(identity),
               fromDate = None,
               email = None,
               toDate = None
@@ -130,9 +130,9 @@ object NotificationSubmitService {
             crn = company.companyCrn.map(crn => crn.value),
             utr = company.companyUtr.value,
             name = company.companyName,
-            accPeriodEnd = company.financialYearEndDate.toString(),
-            status = company.companyStatus.toString(),
-            `type` = company.companyType.toString()
+            accPeriodEnd = company.financialYearEndDate.toString,
+            status = company.companyStatus.toString,
+            `type` = company.companyType.toString
           )
         )
         .toList
