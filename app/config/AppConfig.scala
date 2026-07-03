@@ -45,7 +45,7 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   val hubSignOutUrl: String      = hubBaseUrl + "/account/sign-out-survey"
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
-  def protectedServiceUrl: String = getValue("protected-service.host")
+  def protectedServiceUrl: String = servicesConfig.baseUrl("protected-service")
 
   val loginContinueUrl: String = hubBaseUrl
 
