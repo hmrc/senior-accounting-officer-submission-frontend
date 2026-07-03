@@ -31,7 +31,7 @@ import play.api.libs.json.Json
 class ProtectedServiceConnectorISpec extends ISpecBase {
 
   override def additionalConfigs: Map[String, Any] = Map(
-    "microservice.services.protected-service.port" -> wireMockPort
+    "microservice.services.senior-accounting-officer.port" -> wireMockPort
   )
 
   lazy val SUT: ProtectedServiceConnector = app.injector.instanceOf[ProtectedServiceConnector]
