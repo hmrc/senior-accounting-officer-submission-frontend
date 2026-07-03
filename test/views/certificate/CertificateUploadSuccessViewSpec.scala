@@ -54,7 +54,7 @@ class CertificateUploadSuccessViewSpec extends ViewSpecBase[CertificateUploadSuc
 
 object CertificateUploadSuccessViewSpec {
   val pageHeading = "Your submission template is uploading"
-  val pageTitle   = "Upload a submission template for your notification"
+  val pageTitle   = "Upload a submission template for your certificate"
 
   val paragraphs: List[String] = List("This may take a few minutes")
 }

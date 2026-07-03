@@ -29,7 +29,8 @@ upload.error.quarantine = The selected file contains a virus
 upload.error.rejected = The selected file must be a CSV
 upload.error.unknown = The selected file could not be uploaded – try again
 
-upload.success.title = Upload a submission template for your notification
+upload.success.title.notification = Upload a submission template for your notification
+upload.success.title.certificate = Upload a submission template for your certificate
 upload.success.heading = Your submission template is uploading
 upload.success.paragraph1 = This may take a few minutes
 
