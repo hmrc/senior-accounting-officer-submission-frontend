@@ -18,7 +18,7 @@ package controllers.notification
 
 import connectors.UpscanInitiateConnector
 import controllers.actions.*
-import forms.notification.NotificationUploadFormProvider
+import forms.UploadFormProvider
 import models.*
 import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
 import pages.notification.NotificationUploadStatePage
@@ -32,7 +32,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-import NotificationUploadFormController.fileInputField
+import UploadFormProvider.fileInputField
 
 class NotificationUploadFormController @Inject() (
     identify: IdentifierAction,
@@ -43,7 +43,7 @@ class NotificationUploadFormController @Inject() (
     notificationUploadFormView: NotificationUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
     sessionRepository: SessionRepository,
-    formProvider: NotificationUploadFormProvider
+    formProvider: UploadFormProvider
 )(implicit ec: ExecutionContext)
     extends FrontendController(mcc)
     with I18nSupport {
@@ -54,12 +54,12 @@ class NotificationUploadFormController @Inject() (
         case FileUploadState(_, UploadStatus.Quarantined) =>
           formProvider().withError(
             fileInputField,
-            "notificationUploadForm.upload.error.quarantine"
+            "upload.error.quarantine"
           )
         case FileUploadState(_, UploadStatus.Rejected) =>
-          formProvider().withError(fileInputField, "notificationUploadForm.upload.error.rejected")
+          formProvider().withError(fileInputField, "upload.error.rejected")
         case FileUploadState(_, UploadStatus.UnknownFailure) =>
-          formProvider().withError(fileInputField, "notificationUploadForm.upload.error.unknown")
+          formProvider().withError(fileInputField, "upload.error.unknown")
         case _ => formProvider()
       }
 
@@ -80,8 +80,4 @@ class NotificationUploadFormController @Inject() (
         else Ok(notificationUploadFormView(form, upscanInitiateResponse))
       }
     }
-}
-
-object NotificationUploadFormController {
-  val fileInputField = "file"
 }

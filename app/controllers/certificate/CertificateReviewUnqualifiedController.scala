@@ -21,7 +21,11 @@ import controllers.routes
 import models.NormalMode
 import models.upload.*
 import navigation.Navigator
-import pages.certificate.{CertificateReviewUnqualifiedPage, CertificateSaoFullNamePage}
+import pages.certificate.{
+  CertificateReviewUnqualifiedPage,
+  CertificateSaoFullNamePage,
+  CertificateUploadTemplateTablePage
+}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,7 +34,6 @@ import views.html.certificate.CertificateReviewUnqualifiedView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-import java.time.LocalDate
 import javax.inject.Inject
 
 class CertificateReviewUnqualifiedController @Inject() (
@@ -50,99 +53,22 @@ class CertificateReviewUnqualifiedController @Inject() (
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
-        // TODO: remove in future
-        val dummyDate            = "2020"
-        val unqualifiedDummyData = Seq(
-          ParsedSubmissionRow(
-            notification = NotificationFields(
-              companyName = "example company name",
-              companyUtr = CompanyUtr("example company utr"),
-              companyCrn = Some(CompanyCrn("example company crn")),
-              companyType = CompanyType.LTD,
-              companyStatus = CompanyStatus.Administration,
-              financialYearEndDate = LocalDate.now()
-            ),
-            certificate = CertificateFields(
-              corporationTax = false,
-              valueAddedTax = true,
-              paye = false,
-              insurancePremiumTax = true,
-              stampDutyLandTax = false,
-              stampDutyReserveTax = false,
-              petroleumRevenueTax = true,
-              customsDuties = false,
-              exciseDuties = false,
-              bankLevy = false,
-              certificateType = Some(CertificateType.Unqualified),
-              additionalInformation = Some("example additional information")
-            )
-          ),
-          ParsedSubmissionRow(
-            notification = NotificationFields(
-              companyName = "example company name 2",
-              companyUtr = CompanyUtr("example company utr 2"),
-              companyCrn = Some(CompanyCrn("example company crn 2")),
-              companyType = CompanyType.LTD,
-              companyStatus = CompanyStatus.Dormant,
-              financialYearEndDate = LocalDate.now()
-            ),
-            certificate = CertificateFields(
-              corporationTax = false,
-              valueAddedTax = false,
-              paye = false,
-              insurancePremiumTax = false,
-              stampDutyLandTax = false,
-              stampDutyReserveTax = false,
-              petroleumRevenueTax = false,
-              customsDuties = false,
-              exciseDuties = false,
-              bankLevy = false,
-              certificateType = Some(CertificateType.Unqualified),
-              additionalInformation = Some("example additional information ")
-            )
-          ),
-          ParsedSubmissionRow(
-            notification = NotificationFields(
-              companyName = "example company name 3",
-              companyUtr = CompanyUtr("example company utr 3"),
-              companyCrn = Some(CompanyCrn("example company crn 3")),
-              companyType = CompanyType.LTD,
-              companyStatus = CompanyStatus.Active,
-              financialYearEndDate = LocalDate.now()
-            ),
-            certificate = CertificateFields(
-              corporationTax = false,
-              valueAddedTax = false,
-              paye = false,
-              insurancePremiumTax = false,
-              stampDutyLandTax = false,
-              stampDutyReserveTax = false,
-              petroleumRevenueTax = false,
-              customsDuties = false,
-              exciseDuties = false,
-              bankLevy = false,
-              certificateType = Some(CertificateType.Unqualified),
-              additionalInformation = Some("example additional information 3")
-            )
-          )
-        )
+        val userAnswers = request.userAnswers
 
-        val unqualifiedCompanies = unqualifiedDummyData.map(_.toUnqualifiedCompany)
-//TODO: pass financial year end date through for paragraph3
-        request.userAnswers
-          .get(CertificateSaoFullNamePage)
-          .fold(
-            Redirect(routes.JourneyRecoveryController.onPageLoad())
-          )(saoName =>
-            Ok(
-              view(
-                saoName = saoName,
-                unqualifiedCompanies = unqualifiedCompanies,
-                companyCount = unqualifiedCompanies.size,
-                dummyDate = dummyDate
-              )
+        (for {
+          saoName        <- userAnswers.get(CertificateSaoFullNamePage)
+          parsedTemplate <- userAnswers.get(CertificateUploadTemplateTablePage)
+          totalCompanies       = parsedTemplate.rows.size
+          unqualifiedCompanies = parsedTemplate.rows.flatMap(_.toUnqualifiedCompany)
+        } yield {
+          Ok(
+            view(
+              saoName = saoName,
+              unqualifiedCompanies = unqualifiedCompanies,
+              companyCount = totalCompanies
             )
           )
+        }).fold(Redirect(routes.JourneyRecoveryController.onPageLoad()))(identity)
     }
 
   def onSubmit(): Action[AnyContent] =

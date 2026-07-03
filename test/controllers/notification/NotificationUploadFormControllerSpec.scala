@@ -278,21 +278,21 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
     "pass the view a form with a quarantine error message when the quarantine state is found in the database" in {
       testErrorMessagePassed(
         UploadStatus.Quarantined,
-        "notificationUploadForm.upload.error.quarantine"
+        "upload.error.quarantine"
       )
     }
 
     "pass the view a form with a rejected error message when the rejected state is found in the database" in {
       testErrorMessagePassed(
         UploadStatus.Rejected,
-        "notificationUploadForm.upload.error.rejected"
+        "upload.error.rejected"
       )
     }
 
     "pass the view a form with a unknown error message when the unknown failure state is found in the database" in {
       testErrorMessagePassed(
         UploadStatus.UnknownFailure,
-        "notificationUploadForm.upload.error.unknown"
+        "upload.error.unknown"
       )
     }
   }

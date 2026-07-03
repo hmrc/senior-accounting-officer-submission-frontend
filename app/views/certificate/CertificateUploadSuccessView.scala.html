@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.notification.{ routes => notificationRoutes }
+@import controllers.certificate.{ routes => certificateRoutes }
 
 @this(
     layout: templates.Layout,
@@ -33,7 +33,7 @@
 
 <link href='@controllers.routes.Assets.versioned("stylesheets/application.css")' media="all" rel="stylesheet" type="text/css" />
 
-@layout(pageTitle = titleNoForm(messages("upload.success.title.notification")), additionalHeadBlock = Some(refreshScript)) {
+@layout(pageTitle = titleNoForm(messages("upload.success.title.certificate")), additionalHeadBlock = Some(refreshScript)) {
 
     <div class="loader"></div>
 

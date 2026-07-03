@@ -116,7 +116,7 @@ object UpscanInitiateConnectorISpec {
 
   val expectedCertificateRequest = UpscanInitiateRequestV2(
     callbackUrl = "http://localhost:10058/internal/upscan-callback?journey=certificate",
-    successRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificateUploadForm"),
-    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificateUploadForm")
+    successRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload/success"),
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload")
   )
 }

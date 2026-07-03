@@ -21,7 +21,11 @@ import controllers.routes
 import models.NormalMode
 import models.upload.*
 import navigation.Navigator
-import pages.certificate.{CertificateReviewQualifiedPage, CertificateSaoFullNamePage}
+import pages.certificate.{
+  CertificateReviewQualifiedPage,
+  CertificateSaoFullNamePage,
+  CertificateUploadTemplateTablePage
+}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -30,8 +34,6 @@ import views.html.certificate.CertificateReviewQualifiedView
 
 import scala.concurrent.{ExecutionContext, Future}
 
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class CertificateReviewQualifiedController @Inject() (
@@ -52,75 +54,20 @@ class CertificateReviewQualifiedController @Inject() (
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
         {
-          // TODO: get the submission data from somewhere more appropriate
-          val dummyData = Seq(
-            ParsedSubmissionRow(
-              notification = NotificationFields(
-                companyName = "example company name",
-                companyUtr = CompanyUtr("example company utr"),
-                companyCrn = Some(CompanyCrn("example company crn")),
-                companyType = CompanyType.LTD,
-                companyStatus = CompanyStatus.Dormant,
-                financialYearEndDate = LocalDate.now()
-              ),
-              certificate = CertificateFields(
-                corporationTax = false,
-                valueAddedTax = true,
-                paye = false,
-                insurancePremiumTax = true,
-                stampDutyLandTax = false,
-                stampDutyReserveTax = false,
-                petroleumRevenueTax = true,
-                customsDuties = false,
-                exciseDuties = false,
-                bankLevy = false,
-                certificateType = Some(CertificateType.Qualified),
-                additionalInformation = Some("example additional information")
-              )
-            ),
-            ParsedSubmissionRow(
-              notification = NotificationFields(
-                companyName = "example company name 2",
-                companyUtr = CompanyUtr("example company utr 2"),
-                companyCrn = Some(CompanyCrn("example company crn 2")),
-                companyType = CompanyType.LTD,
-                companyStatus = CompanyStatus.Dormant,
-                financialYearEndDate = LocalDate.now()
-              ),
-              certificate = CertificateFields(
-                corporationTax = false,
-                valueAddedTax = true,
-                paye = false,
-                insurancePremiumTax = true,
-                stampDutyLandTax = false,
-                stampDutyReserveTax = true,
-                petroleumRevenueTax = false,
-                customsDuties = false,
-                exciseDuties = true,
-                bankLevy = false,
-                certificateType = Some(CertificateType.Qualified),
-                additionalInformation = Some("example additional information 2")
-              )
+          val userAnswers = request.userAnswers
+
+          (for {
+            saoName        <- userAnswers.get(CertificateSaoFullNamePage)
+            parsedTemplate <- userAnswers.get(CertificateUploadTemplateTablePage)
+            totalCompanies     = parsedTemplate.rows.size
+            qualifiedCompanies = parsedTemplate.rows.flatMap(_.toQualifiedCompany)
+          } yield Ok(
+            view(
+              saoName = saoName,
+              companyCount = totalCompanies,
+              qualifiedCompanies = qualifiedCompanies
             )
-          )
-
-          val qualifiedCompanies = dummyData.map(_.toQualifiedCompany)
-
-          request.userAnswers
-            .get(CertificateSaoFullNamePage) match {
-            case Some(saoName) =>
-              Ok(
-                view(
-                  saoName = saoName,
-                  financialYearEnd = LocalDate
-                    .of(2024, 12, 31) // TODO: get this from somewhere appropriate
-                    .format(DateTimeFormatter.ofPattern("d MMMM yyyy")),
-                  companyCount = 3,
-                  qualifiedCompanies = qualifiedCompanies
-                )
-              )
-            case None => Redirect(routes.JourneyRecoveryController.onPageLoad())
-          }
+          )).fold(Redirect(routes.JourneyRecoveryController.onPageLoad()))(identity)
         }
     }
 
