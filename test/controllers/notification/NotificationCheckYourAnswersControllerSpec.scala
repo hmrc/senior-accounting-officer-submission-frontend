@@ -94,7 +94,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
           .thenReturn(Future.successful(Right(exampleNotificationReference)))
 
         val application =
-          applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
+          applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
             .overrides(
               bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
               bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
@@ -149,7 +149,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
           )
 
         val application =
-          applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
+          applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
             .overrides(
               bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
               bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
