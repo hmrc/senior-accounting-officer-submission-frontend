@@ -144,7 +144,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
           .thenReturn(
             Future.successful(
-              Left(NotificationSubmissionError.HttpError(HttpResponse(INTERNAL_SERVER_ERROR, exampleErrorMessage)))
+              Left(NotificationSubmissionError.HttpError(HttpResponse(INTERNAL_SERVER_ERROR)))
             )
           )
 
@@ -167,7 +167,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
             val result = route(application, request).value
             status(result)
           }
-          exception.message mustEqual s"Problem with http client - code: $INTERNAL_SERVER_ERROR - body: $exampleErrorMessage"
+          exception.message mustEqual expectedHttpFailureMessage
         }
       }
     }
@@ -175,6 +175,6 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 }
 
 object NotificationCheckYourAnswersControllerSpec {
-  val exampleNotificationReference = "example notification reference"
-  val exampleErrorMessage          = "Problem with http client"
+  val exampleNotificationReference       = "example notification reference"
+  val expectedHttpFailureMessage: String = s"Notification submit HTTP call failed with code ${INTERNAL_SERVER_ERROR}"
 }

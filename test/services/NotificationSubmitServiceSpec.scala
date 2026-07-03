@@ -86,7 +86,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "must return error on http failure" in {
       val application = configureApplication(
-        HttpResponse(INTERNAL_SERVER_ERROR, expectedHttpFailureMessage),
+        HttpResponse(INTERNAL_SERVER_ERROR),
         true
       )
 
@@ -94,9 +94,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
         val result = SUT.submit(userAnswers).futureValue
         result.isLeft mustBe true
-        result.left.map(error =>
-          error.message mustBe s"Problem with http client - code: ${INTERNAL_SERVER_ERROR} - body: ${expectedHttpFailureMessage}"
-        )
+        result.left.map(error => error.message mustBe expectedHttpFailureMessage)
       }
     }
 
@@ -235,8 +233,8 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 }
 
 object NotificationSubmitServiceSpec {
-  val exampleNotificationReference = "appleBananaCitrue"
-  val expectedHttpFailureMessage   = "expected http failure message"
+  val exampleNotificationReference       = "appleBananaCitrue"
+  val expectedHttpFailureMessage: String = s"Notification submit HTTP call failed with code ${INTERNAL_SERVER_ERROR}"
 
   val hardCodedSubscriptionId         = "123"
   val exampleAdditionalInformation    = "example additional information"

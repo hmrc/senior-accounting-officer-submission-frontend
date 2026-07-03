@@ -22,6 +22,6 @@ enum NotificationSubmissionError(val message: String) {
   case MongoError extends NotificationSubmissionError("Problem with mongo")
   case HttpError(response: HttpResponse)
       extends NotificationSubmissionError(
-        s"Problem with http client - code: ${response.status} - body: ${response.body}"
+        s"Notification submit HTTP call failed with code ${response.status}"
       )
 }
