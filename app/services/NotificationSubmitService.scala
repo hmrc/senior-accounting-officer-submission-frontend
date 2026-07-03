@@ -19,6 +19,7 @@ package services
 import connectors.ProtectedServiceConnector
 import models.UserAnswers
 import models.notification.*
+import models.upload.UploadTemplateTableData
 import pages.notification.*
 import play.api.libs.json.Json
 import repositories.SessionRepository
@@ -29,7 +30,6 @@ import scala.annotation.tailrec
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import models.upload.UploadTemplateTableData
 
 class NotificationSubmitService @Inject() (
     protectedServiceConnector: ProtectedServiceConnector,
