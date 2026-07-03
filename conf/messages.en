@@ -11,6 +11,7 @@ site.start = Start now
 site.startAgain = Start again
 site.govuk = GOV.UK
 site.confirmAndSubmit = Confirm and submit
+site.notProvided = Not provided
 
 date.day = Day
 date.month = Month
@@ -121,7 +122,7 @@ notificationAdditionalInformation.list1.item2 = anything else relevant to the co
 notificationAdditionalInformation.label = Provide information about your notification
 notificationAdditionalInformation.checkYourAnswersLabel = Additional information
 notificationAdditionalInformation.error.required = Enter information about your notification or skip
-notificationAdditionalInformation.error.length = NotificationAdditionalInformation must be 5000 characters or less
+notificationAdditionalInformation.error.length = Additional information must be 5000 characters or less
 notificationAdditionalInformation.change.hidden =  the additional information supplied for the notification (Financial year end {0})
 notificationAdditionalInformation.empty = Not provided
 
@@ -404,10 +405,10 @@ certificateAdditionalInformation.list1.item1 = an explanation of why the SAO pro
 certificateAdditionalInformation.list1.item2 = a company’s status changing, such as becoming dormant or going into liquidation
 certificateAdditionalInformation.list1.item3 = anything else relevant to the companies listed or SAO
 certificateAdditionalInformation.label = Provide information about your certificate
-certificateAdditionalInformation.checkYourAnswersLabel = Additional Information
+certificateAdditionalInformation.checkYourAnswersLabel = Additional information
 certificateAdditionalInformation.error.required = Enter information about your certificate or skip
-certificateAdditionalInformation.error.length = Additional Information must be 5000 characters or less
-certificateAdditionalInformation.change.hidden = CertificateAdditionalInformation
+certificateAdditionalInformation.error.length = Additional information must be 5000 characters or less
+certificateAdditionalInformation.change.hidden = the additional information supplied for the certificate
 
 certificateSaoEmail.title = What is the email address for the SAO?
 certificateSaoEmail.caption = Submit a certificate
@@ -479,8 +480,9 @@ certificateWhoIsSubmitting.checkYourAnswersLabel = certificateWhoIsSubmitting
 certificateWhoIsSubmitting.error.required = Select I am the SAO if you are the SAO submitting the certificate
 certificateWhoIsSubmitting.change.hidden = CertificateWhoIsSubmitting
 
-certificateCheckYourAnswers.title = certificateCheckYourAnswers
-certificateCheckYourAnswers.heading = certificateCheckYourAnswers
+certificateCheckYourAnswers.title = Check your answers
+certificateCheckYourAnswers.heading = Check your answers
+certificateCheckYourAnswers.caption = Submit a certificate
 
 certificateConfirmation.title = certificateConfirmation
 certificateConfirmation.heading = certificateConfirmation

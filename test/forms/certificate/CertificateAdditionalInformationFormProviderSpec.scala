@@ -59,7 +59,7 @@ class CertificateAdditionalInformationFormProviderSpec extends StringFieldBehavi
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "Additional Information must be 5000 characters or less"
+      message = "Additional information must be 5000 characters or less"
     )
   }
 }

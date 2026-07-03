@@ -17,69 +17,53 @@
 package viewmodels.checkAnswers.certificate
 
 import controllers.certificate.routes as certificateRoutes
-import models.CheckMode
+import models.{CheckMode, UserAnswers}
+import org.jsoup.nodes.Element
 import pages.certificate.CertificateAdditionalInformationPage
-import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import viewmodels.checkAnswers.CheckYourAnswersSummaryRenderingSupport
 
 class CertificateAdditionalInformationSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
+  val testUserAnswers: UserAnswers = emptyUserAnswers
 
   "CertificateAdditionalInformationSummary.row" - {
-
-    "when there is no answer for CertificateAdditionalInformationPage" - {
-      "must return None" in {
-        def SUT = CertificateAdditionalInformationSummary.row(emptyUserAnswers)
-
-        renderSummaryRow(SUT).renderedKeyText mustBe "Additional Information"
-      }
+    "must render the expected key text" in {
+      renderSummaryRow(CertificateAdditionalInformationSummary.row(testUserAnswers)).renderedKeyText mustBe
+        "Additional information"
     }
 
-    "when there is a user answer for CertificateAdditionalInformationPage" - {
-      def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(CertificateAdditionalInformationPage, Some(answer)).get
+    "must render the supplied value" in {
+      val row = renderRow("apple")
+      row.renderedValueText mustBe "apple"
+    }
 
-      def SUT(answer: String = "") = CertificateAdditionalInformationSummary.row(testUserAnswers(answer))
+    "must render an empty value when no answer is present" in {
+      renderSummaryRow(
+        CertificateAdditionalInformationSummary.row(testUserAnswers)
+      ).renderedValueText mustBe "Not provided"
+    }
 
-      "must have expected key" in {
-        SUT().key mustBe "Additional Information".toKey
-      }
+    "must render special characters without double escaping" in {
+      val row = renderRow("O'Hara & Jones & Co")
 
-      "expected value" - {
-        "must show 'testCertificateAdditionalInformation' when user answers is 'testCertificateAdditionalInformation'" in {
-          SUT(answer =
-            "testCertificateAdditionalInformation"
-          ).value.content mustBe "testCertificateAdditionalInformation".toText
-        }
-      }
+      row.renderedValueText mustBe "O'Hara & Jones & Co"
+      row.renderedValueHtml must not include "&amp;#x27;"
+      row.renderedValueHtml must not include "&amp;amp;"
+    }
 
-      "expected action" - {
-        def actions = SUT().actions
+    "must render the expected action link" in {
+      val action = renderSummaryRow(CertificateAdditionalInformationSummary.row(testUserAnswers)).renderedActionLink
 
-        "must only have one action" in {
-          withClue("must be 1 action\n") {
-            actions.size mustBe 1
-          }
-          withClue("must be 1 item in the action\n") {
-            actions.head.items.size mustBe 1
-          }
-        }
+      action
+        .attr("href") mustBe certificateRoutes.CertificateAdditionalInformationController.onPageLoad(CheckMode).url
+      action.select("span.govuk-visually-hidden").text() mustBe
+        s"the additional information supplied for the certificate"
+      action.select("span.govuk-visually-hidden").remove()
+      action.text() mustBe "Change"
+    }
 
-        def action = actions.head.items.head
-
-        "must have expected text" in {
-          action.content mustBe "Change".toText
-        }
-
-        "must have expected url" in {
-          action.href mustBe certificateRoutes.CertificateAdditionalInformationController
-            .onPageLoad(CheckMode)
-            .url
-        }
-
-        "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "CertificateAdditionalInformation"
-        }
-      }
+    def renderRow(answer: String): Element = {
+      val answers = testUserAnswers.set(CertificateAdditionalInformationPage, Some(answer)).get
+      renderSummaryRow(CertificateAdditionalInformationSummary.row(answers))
     }
   }
 

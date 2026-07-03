@@ -59,7 +59,7 @@ class NotificationAdditionalInformationFormProviderSpec extends StringFieldBehav
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "NotificationAdditionalInformation must be 5000 characters or less"
+      message = "Additional information must be 5000 characters or less"
     )
   }
 }

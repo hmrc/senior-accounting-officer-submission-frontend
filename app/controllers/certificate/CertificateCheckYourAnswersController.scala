@@ -17,15 +17,15 @@
 package controllers.certificate
 
 import controllers.actions.*
+import controllers.certificate.CertificateCheckYourAnswersController.certificateId
 import controllers.certificate.routes as certificateRoutes
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.CertificateCheckYourAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.certificate.CertificateCheckYourAnswersView
 
 import javax.inject.Inject
-
-import CertificateCheckYourAnswersController.certificateId
 
 class CertificateCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
@@ -33,12 +33,15 @@ class CertificateCheckYourAnswersController @Inject() (
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateCheckYourAnswersView
+    view: CertificateCheckYourAnswersView,
+    certificateCheckYourAnswersService: CertificateCheckYourAnswersService
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view())
+    val summaryList = certificateCheckYourAnswersService.getSummaryList(request.userAnswers)
+
+    Ok(view(summaryList))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
