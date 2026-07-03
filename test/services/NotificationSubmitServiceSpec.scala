@@ -16,39 +16,30 @@
 
 package services
 
-import play.api.test.Helpers.*
-import org.mockito.ArgumentMatchers.any
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import base.SpecBase
-import uk.gov.hmrc.http.HeaderCarrier
-import scala.concurrent.Future
-import pages.notification.*
-import models.upload.UploadTemplateTableData
-import org.scalatestplus.mockito.MockitoSugar.mock
 import connectors.ProtectedServiceConnector
+import models.UserAnswers
+import models.notification.*
+import models.upload.*
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import uk.gov.hmrc.http.HttpResponse
+import org.scalatestplus.mockito.MockitoSugar.mock
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import pages.notification.*
+import play.api.Application
 import play.api.inject.bind
 import play.api.libs.json.Json
-import models.notification.NotificationSubmissionError
+import play.api.test.Helpers.*
 import repositories.SessionRepository
-import services.NotificationSubmitServiceSpec.*
-import play.api.Application
-import models.UserAnswers
-import java.time.LocalDate
-import models.notification.NotificationRequest
-import models.notification.Sao
 import services.NotificationSubmitService.toNotification
-import models.upload.ParsedSubmissionRow
-import models.upload.NotificationFields
-import models.upload.CertificateFields
-import models.upload.CompanyUtr
-import models.upload.CompanyCrn
-import models.upload.CompanyType
-import models.upload.CompanyStatus
-import models.notification.Company
-import scala.util.Random
+import services.NotificationSubmitServiceSpec.*
 import uk.gov.hmrc.domain.SaUtrGenerator
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+
+import scala.concurrent.Future
+import scala.util.Random
+
+import java.time.LocalDate
 
 class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
@@ -247,21 +238,21 @@ object NotificationSubmitServiceSpec {
   val exampleNotificationReference = "appleBananaCitrue"
   val expectedHttpFailureMessage   = "expected http failure message"
 
-  val hardCodedSubscriptionId      = "123"
-  val exampleAdditionalInformation = "example additional information"
-  val exampleSao1Name              = "Firstname Lastname I"
-  val exampleSao2Name              = "Firstname Lastname II"
-  val exampleSao2StartDate         = LocalDate.of(2000, 1, 2)
-  val exampleSao2EndDate           = LocalDate.of(2000, 12, 2)
-  val exampleSao3Name              = "Firstname Lastname III"
-  val exampleSao3StartDate         = LocalDate.of(2000, 1, 3)
-  val exampleSao3EndDate           = LocalDate.of(2000, 12, 3)
-  val exampleSao4Name              = "Firstname Lastname IV"
-  val exampleSao4StartDate         = LocalDate.of(2000, 1, 4)
-  val exampleSao4EndDate           = LocalDate.of(2000, 12, 4)
+  val hardCodedSubscriptionId         = "123"
+  val exampleAdditionalInformation    = "example additional information"
+  val exampleSao1Name                 = "Firstname Lastname I"
+  val exampleSao2Name                 = "Firstname Lastname II"
+  val exampleSao2StartDate: LocalDate = LocalDate.of(2000, 1, 2)
+  val exampleSao2EndDate: LocalDate   = LocalDate.of(2000, 12, 2)
+  val exampleSao3Name                 = "Firstname Lastname III"
+  val exampleSao3StartDate: LocalDate = LocalDate.of(2000, 1, 3)
+  val exampleSao3EndDate: LocalDate   = LocalDate.of(2000, 12, 3)
+  val exampleSao4Name                 = "Firstname Lastname IV"
+  val exampleSao4StartDate: LocalDate = LocalDate.of(2000, 1, 4)
+  val exampleSao4EndDate: LocalDate   = LocalDate.of(2000, 12, 4)
 
-  val exampleCompanyName  = "example company name"
-  val exampleAccPeriodEnd = LocalDate.of(2001, 1, 1)
+  val exampleCompanyName             = "example company name"
+  val exampleAccPeriodEnd: LocalDate = LocalDate.of(2001, 1, 1)
 
   private def generateCrn = {
     val num = Random.nextInt(1000000)
@@ -276,7 +267,7 @@ object NotificationSubmitServiceSpec {
   lazy val exampleCrn = generateCrn
   lazy val exampleUtr = generateUtr
 
-  val exampleTableData = UploadTemplateTableData(
+  val exampleTableData: UploadTemplateTableData = UploadTemplateTableData(
     rows = Seq(
       ParsedSubmissionRow(
         notification = NotificationFields(

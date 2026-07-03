@@ -16,8 +16,7 @@
 
 package models.notification
 
-import play.api.libs.json.Json
-import play.api.libs.json.OFormat
+import play.api.libs.json.{Json, OFormat}
 
 final case class Company(
     crn: Option[String] = None,

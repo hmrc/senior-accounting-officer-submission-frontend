@@ -24,7 +24,7 @@
     govukSummaryList: GovukSummaryList
 )
 
-@(summaryList: SummaryList, financialYearEndDate: String, idempotencyId: UUID)(using request: Request[?], messages: Messages)
+@(summaryList: SummaryList, financialYearEndDate: String)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("notificationCheckYourAnswers.title"))) {
     <span class="govuk-caption-l">@messages("notificationCheckYourAnswers.caption")</span>
@@ -32,7 +32,7 @@
 
     <div class="govuk-summary-list__row">@govukSummaryList(summaryList)</div>
 
-    @formHelper(action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit(idempotencyId)){
+    @formHelper(action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit()){
         @govukButton(
             ButtonViewModel(messages("site.confirmAndSubmit").toText)
                 .withAttribute("id", "submit")

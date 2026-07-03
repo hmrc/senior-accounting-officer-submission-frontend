@@ -29,12 +29,11 @@ import viewmodels.govuk.summarylist.*
 import views.html.notification.NotificationCheckYourAnswersView
 
 import NotificationCheckYourAnswersViewSpec.*
-import java.util.UUID
 
 class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationCheckYourAnswersView] {
 
   private def generateView(summaryList: SummaryList): Document =
-    Jsoup.parse(SUT(summaryList, testFinancialYearEndDate, exampleIdempotencyId).toString)
+    Jsoup.parse(SUT(summaryList, testFinancialYearEndDate).toString)
 
   "NotificationCheckYourAnswersView" - {
 
@@ -78,7 +77,7 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
       )
 
       doc.createTestsWithSubmissionButton(
-        action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit(exampleIdempotencyId),
+        action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit(),
         buttonText = pageButtonText
       )
 
@@ -165,7 +164,7 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
       )
 
       doc.createTestsWithSubmissionButton(
-        action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit(exampleIdempotencyId),
+        action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit(),
         buttonText = pageButtonText
       )
 
@@ -264,5 +263,4 @@ object NotificationCheckYourAnswersViewSpec {
   val testActionHiddenText1    = "dummyVisuallyHiddenText"
   val testKey2                 = "testKey2"
   val testValue2               = "nonEmptyString2"
-  val exampleIdempotencyId     = UUID.randomUUID()
 }

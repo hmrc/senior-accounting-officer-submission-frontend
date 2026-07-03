@@ -30,18 +30,12 @@ import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, Call, Request}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.NotificationCheckYourAnswersService
-import services.NotificationSubmitService
+import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import uk.gov.hmrc.http.HeaderCarrier
-import uk.gov.hmrc.http.HttpResponse
-import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, InternalServerException}
 import views.html.notification.NotificationCheckYourAnswersView
-import utils.UuidProvider
 
 import scala.concurrent.Future
-import java.util.UUID
-import repositories.IdempotencyRepository
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
@@ -53,14 +47,10 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       val mockService = mock[NotificationCheckYourAnswersService]
       when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
-      val mockUuidProvider = mock[UuidProvider]
-      when(mockUuidProvider.create).thenReturn(exampleIdempotencyId)
-
       val userAnswers = completedNotificationUploadAnswers
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(
-          bind[NotificationCheckYourAnswersService].toInstance(mockService),
-          bind[UuidProvider].toInstance(mockUuidProvider)
+          bind[NotificationCheckYourAnswersService].toInstance(mockService)
         )
         .build()
 
@@ -75,8 +65,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(
           SummaryList(),
-          userAnswers.getFinancialYearEndDate,
-          exampleIdempotencyId
+          userAnswers.getFinancialYearEndDate
         ).toString
         verify(mockService).getSummaryList(meq(userAnswers))(using any())
       }
@@ -116,7 +105,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
           val request =
             FakeRequest(
               POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit(exampleIdempotencyId).url
+              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
             )
 
           val result = route(application, request).value
@@ -138,7 +127,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
           val request =
             FakeRequest(
               POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit(exampleIdempotencyId).url
+              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
             )
 
           val result = route(application, request).value
@@ -154,16 +143,11 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
           .thenReturn(Future.successful(Right(exampleNotificationReference)))
 
-        val mockIdempotencyRepository = mock[IdempotencyRepository]
-
-        when(mockIdempotencyRepository.insert(any())).thenReturn(Future.successful(false))
-
         val application =
           applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
             .overrides(
               bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService),
-              bind[IdempotencyRepository].toInstance(mockIdempotencyRepository)
+              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
             )
             .build()
 
@@ -171,7 +155,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
           val request =
             FakeRequest(
               POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit(exampleIdempotencyId).url
+              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
             )
 
           val result = route(application, request).value
@@ -192,16 +176,11 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
             )
           )
 
-        val mockIdempotencyRepository = mock[IdempotencyRepository]
-
-        when(mockIdempotencyRepository.insert(any())).thenReturn(Future.successful(true))
-
         val application =
           applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
             .overrides(
               bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
-              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService),
-              bind[IdempotencyRepository].toInstance(mockIdempotencyRepository)
+              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
             )
             .build()
 
@@ -209,7 +188,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
           val request =
             FakeRequest(
               POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit(exampleIdempotencyId).url
+              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
             )
 
           val exception = intercept[InternalServerException] {
@@ -226,5 +205,4 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 object NotificationCheckYourAnswersControllerSpec {
   val exampleNotificationReference = "example notification reference"
   val exampleErrorMessage          = "Problem with http client"
-  val exampleIdempotencyId         = UUID.randomUUID()
 }

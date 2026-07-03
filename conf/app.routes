@@ -75,7 +75,7 @@ GET         /notification/change-additional-information                         
 POST        /notification/change-additional-information                               controllers.notification.NotificationAdditionalInformationController.onSubmit(mode: Mode = CheckMode)
 
 GET         /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
-POST        /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit(idempotencyId: java.util.UUID)
+POST        /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
 
 GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onSubmit()
