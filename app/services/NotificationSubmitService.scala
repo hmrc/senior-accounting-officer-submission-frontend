@@ -127,7 +127,7 @@ object NotificationSubmitService {
         .fold(???)(data => data.rows.map(_.notification))
         .map(company =>
           Company(
-            crn = company.companyCrn.map(crn => crn.value),
+            crn = company.companyCrn.map(_.value),
             utr = company.companyUtr.value,
             name = company.companyName,
             accPeriodEnd = company.financialYearEndDate.toString,
