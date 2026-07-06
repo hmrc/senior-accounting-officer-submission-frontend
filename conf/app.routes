@@ -80,9 +80,6 @@ POST        /notification/check-your-answers                                    
 GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onSubmit()
 
-GET         /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
-POST        /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
-
 GET         /notification/confirm-your-notification                                   controllers.notification.ConfirmYourNotificationController.onPageLoad()
 POST        /notification/confirm-your-notification                                   controllers.notification.ConfirmYourNotificationController.onSubmit()
 
