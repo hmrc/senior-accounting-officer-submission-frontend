@@ -47,7 +47,8 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       val mockService = mock[NotificationCheckYourAnswersService]
       when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
-      val userAnswers = completedNotificationUploadAnswers
+      val userAnswers = completedNotificationReviewAnswers
+
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(
           bind[NotificationCheckYourAnswersService].toInstance(mockService)
