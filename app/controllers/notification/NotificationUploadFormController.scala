@@ -19,6 +19,7 @@ package controllers.notification
 import connectors.UpscanInitiateConnector
 import controllers.actions.*
 import forms.UploadFormProvider
+import forms.UploadFormProvider.*
 import models.*
 import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
 import pages.notification.NotificationUploadStatePage
@@ -31,8 +32,6 @@ import views.html.notification.NotificationUploadFormView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-
-import UploadFormProvider.fileInputField
 
 class NotificationUploadFormController @Inject() (
     identify: IdentifierAction,
@@ -50,18 +49,20 @@ class NotificationUploadFormController @Inject() (
 
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
-      val form = request.userAnswers.get(NotificationUploadStatePage).fold(formProvider()) {
-        case FileUploadState(_, UploadStatus.Quarantined) =>
-          formProvider().withError(
-            fileInputField,
-            "upload.error.quarantine"
-          )
-        case FileUploadState(_, UploadStatus.Rejected) =>
-          formProvider().withError(fileInputField, "upload.error.rejected")
-        case FileUploadState(_, UploadStatus.UnknownFailure) =>
-          formProvider().withError(fileInputField, "upload.error.unknown")
-        case _ => formProvider()
+      val maybeSyncError = for {
+        codes <- request.queryString.get(ERROR_CODE_QUERY)
+        code  <- codes.headOption
+      } yield syncErrorKey(code)
+
+      val maybeAsyncError = request.userAnswers.get(NotificationUploadStatePage).collect {
+        case FileUploadState(_, UploadStatus.Quarantined)    => "upload.error.quarantine"
+        case FileUploadState(_, UploadStatus.Rejected)       => "upload.error.rejected"
+        case FileUploadState(_, UploadStatus.UnknownFailure) => "upload.error.unknown"
       }
+
+      val form = maybeSyncError
+        .orElse(maybeAsyncError)
+        .fold(formProvider())(err => formProvider().withError(fileInputField, err))
 
       for {
         upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Notification)

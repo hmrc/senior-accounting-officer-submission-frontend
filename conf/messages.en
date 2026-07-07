@@ -28,6 +28,7 @@ upload.label = Upload a file
 upload.error.quarantine = The selected file contains a virus
 upload.error.rejected = The selected file must be a CSV
 upload.error.unknown = The selected file could not be uploaded – try again
+upload.error.EntityTooLarge = The selected file must be smaller than 100MB
 
 upload.success.title.notification = Upload a submission template for your notification
 upload.success.title.certificate = Upload a submission template for your certificate
