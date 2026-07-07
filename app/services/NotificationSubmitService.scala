@@ -21,6 +21,7 @@ import models.UserAnswers
 import models.notification.*
 import models.upload.UploadTemplateTableData
 import pages.notification.*
+import play.api.http.Status.OK
 import play.api.libs.json.Json
 import repositories.SessionRepository
 import services.NotificationSubmitService.*
@@ -42,7 +43,7 @@ class NotificationSubmitService @Inject() (
       .postNotification(userAnswers.toNotification)
       .flatMap { response =>
         response.status match {
-          case 201 => {
+          case OK => {
             val notificationReference = Json.parse(response.body).as[NotificationResponse].notificationRef
             sessionRepository
               .set(userAnswers.copy(data = Json.obj()))

@@ -60,7 +60,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "must return notification response on success" in {
       val application = configureApplication(
-        HttpResponse(CREATED, Json.obj("notificationRef" -> exampleNotificationReference).toString),
+        HttpResponse(OK, Json.obj("notificationRef" -> exampleNotificationReference).toString),
         true
       )
 
@@ -73,7 +73,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "must return error on mongo failure" in {
       val application = configureApplication(
-        HttpResponse(CREATED, Json.obj("notificationRef" -> exampleNotificationReference).toString),
+        HttpResponse(OK, Json.obj("notificationRef" -> exampleNotificationReference).toString),
         false
       )
 
