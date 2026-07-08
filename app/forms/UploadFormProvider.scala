@@ -27,4 +27,11 @@ class UploadFormProvider @Inject() extends Mappings {
 
 object UploadFormProvider {
   val fileInputField = "file"
+
+  val ERROR_CODE_QUERY: String = "errorCode"
+
+  val KNOWN_ERROR_CODES: Seq[String] = Seq("EntityTooLarge")
+
+  def syncErrorKey(code: String): String =
+    if KNOWN_ERROR_CODES.contains(code) then s"upload.error.$code" else "upload.error.unknown"
 }

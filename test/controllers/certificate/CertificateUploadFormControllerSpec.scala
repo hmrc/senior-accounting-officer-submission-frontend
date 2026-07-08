@@ -111,6 +111,47 @@ class CertificateUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
     }
 
+    "return 400 when there are errors in the query parameter" in {
+      val mockUpscanInitiateConnector   = mock[UpscanInitiateConnector]
+      val mockSessionRepository         = mock[SessionRepository]
+      val mockCertificateUploadFormView = mock[CertificateUploadFormView]
+
+      val upscanInitiateResponse =
+        UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
+
+      when(mockCertificateUploadFormView.apply(any(), any())(using any(), any())).thenReturn(Html(""))
+
+      when(
+        mockUpscanInitiateConnector.initiateV2(meq(UploadJourney.Certificate))(using
+          any[HeaderCarrier]()
+        )
+      ).thenReturn(Future.successful(upscanInitiateResponse))
+
+      when(mockSessionRepository.set(any()))
+        .thenReturn(Future.successful(true))
+
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails))
+        .overrides(
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[CertificateUploadFormView].toInstance(mockCertificateUploadFormView)
+        )
+        .build()
+
+      running(application) {
+
+        val request = FakeRequest(
+          GET,
+          certificateRoutes.CertificateUploadFormController.onPageLoad().url + "?errorCode=EntityTooLarge"
+        )
+
+        val result = route(application, request).value
+
+        status(result) mustBe 400
+      }
+
+    }
+
     "return an error when upload progress tracker fails" in {
       val mockUpscanInitiateConnector   = mock[UpscanInitiateConnector]
       val mockSessionRepository         = mock[SessionRepository]

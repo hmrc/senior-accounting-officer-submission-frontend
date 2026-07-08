@@ -110,6 +110,47 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
     }
 
+    "return 400 when there are errors in the query parameter" in {
+      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
+      val mockSessionRepository          = mock[SessionRepository]
+      val mockNotificationUploadFormView = mock[NotificationUploadFormView]
+
+      val upscanInitiateResponse =
+        UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
+
+      when(mockNotificationUploadFormView.apply(any(), any())(using any(), any())).thenReturn(Html(""))
+
+      when(
+        mockUpscanInitiateConnector.initiateV2(meq(UploadJourney.Notification))(using
+          any[HeaderCarrier]()
+        )
+      ).thenReturn(Future.successful(upscanInitiateResponse))
+
+      when(mockSessionRepository.set(any()))
+        .thenReturn(Future.successful(true))
+
+      val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers))
+        .overrides(
+          bind[UpscanInitiateConnector].toInstance(mockUpscanInitiateConnector),
+          bind[SessionRepository].toInstance(mockSessionRepository),
+          bind[NotificationUploadFormView].toInstance(mockNotificationUploadFormView)
+        )
+        .build()
+
+      running(application) {
+
+        val request = FakeRequest(
+          GET,
+          notificationRoutes.NotificationUploadFormController.onPageLoad().url + "?errorCode=EntityTooLarge"
+        )
+
+        val result = route(application, request).value
+
+        status(result) mustBe 400
+      }
+
+    }
+
     "return an error when upload progress tracker fails" in {
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
       val mockSessionRepository          = mock[SessionRepository]
