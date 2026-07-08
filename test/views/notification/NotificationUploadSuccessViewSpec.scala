@@ -47,8 +47,9 @@ class NotificationUploadSuccessViewSpec extends ViewSpecBase[NotificationUploadS
     }
 
     "must refresh the page without adding a browser history entry" in {
-      doc.select("script").html() must include("window.location.replace(window.location.pathname)")
-      doc.select("script").html() must not include "window.location.href"
+      val scriptAsString = doc.select("script").html()
+      scriptAsString must include("window.location.replace(window.location.href)")
+      scriptAsString.replace(" ", "") must not include "window.location.href="
     }
   }
 }
