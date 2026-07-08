@@ -50,19 +50,19 @@ class CertificateUploadFormController @Inject() (
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked).async {
       implicit request =>
-        val maybeSyncError = for {
+        val syncError = for {
           codes <- request.queryString.get(ERROR_CODE_QUERY)
           code  <- codes.headOption
         } yield syncErrorKey(code)
 
-        val maybeAsyncError = request.userAnswers.get(CertificateUploadStatePage).collect {
+        val asyncError = request.userAnswers.get(CertificateUploadStatePage).collect {
           case FileUploadState(_, UploadStatus.Quarantined)    => "upload.error.quarantine"
           case FileUploadState(_, UploadStatus.Rejected)       => "upload.error.rejected"
           case FileUploadState(_, UploadStatus.UnknownFailure) => "upload.error.unknown"
         }
 
-        val form = maybeSyncError
-          .orElse(maybeAsyncError)
+        val form = syncError
+          .orElse(asyncError)
           .fold(formProvider())(err => formProvider().withError(fileInputField, err))
 
         for {
