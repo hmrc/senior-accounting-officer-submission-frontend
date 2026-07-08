@@ -19,7 +19,6 @@ package models.notification
 import uk.gov.hmrc.http.HttpResponse
 
 enum NotificationSubmissionError(val message: String) {
-  case MongoError extends NotificationSubmissionError("Problem with mongo")
   case HttpError(response: HttpResponse)
       extends NotificationSubmissionError(
         s"Notification submit HTTP call failed with code ${response.status}"

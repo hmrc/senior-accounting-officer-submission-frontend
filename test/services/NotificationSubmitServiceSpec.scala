@@ -71,19 +71,6 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
       }
     }
 
-    "must return error on mongo failure" in {
-      val application = configureApplication(
-        HttpResponse(OK, Json.obj("notificationRef" -> exampleNotificationReference).toString),
-        false
-      )
-
-      running(application) {
-        val SUT    = application.injector.instanceOf[NotificationSubmitService]
-        val result = SUT.submit(userAnswers).futureValue
-        result mustBe Left(NotificationSubmissionError.MongoError)
-      }
-    }
-
     "must return error on http failure" in {
       val application = configureApplication(
         HttpResponse(INTERNAL_SERVER_ERROR),

@@ -47,9 +47,8 @@ class NotificationSubmitService @Inject() (
             val notificationReference = Json.parse(response.body).as[NotificationResponse].notificationRef
             sessionRepository
               .set(userAnswers.copy(data = Json.obj()))
-              .map {
-                case true => Right(notificationReference)
-                case _    => Left(NotificationSubmissionError.MongoError)
+              .map { case _ =>
+                Right(notificationReference)
               }
           }
           case _ => Future.successful(Left(NotificationSubmissionError.HttpError(response)))
