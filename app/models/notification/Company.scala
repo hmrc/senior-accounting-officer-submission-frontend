@@ -19,7 +19,7 @@ package models.notification
 import play.api.libs.json.{Json, OFormat}
 
 final case class Company(
-    crn: Option[String] = None,
+    crn: Option[String],
     utr: String,
     name: String,
     accPeriodEnd: String,
