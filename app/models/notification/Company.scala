@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,19 @@
  * limitations under the License.
  */
 
-package pages.notification
-import pages.Page
+package models.notification
 
-case object NotificationCheckYourAnswersPage extends Page
+import play.api.libs.json.{Json, OFormat}
+
+final case class Company(
+    crn: Option[String],
+    utr: String,
+    name: String,
+    accPeriodEnd: String,
+    status: String,
+    `type`: String
+)
+
+object Company {
+  given OFormat[Company] = Json.format[Company]
+}

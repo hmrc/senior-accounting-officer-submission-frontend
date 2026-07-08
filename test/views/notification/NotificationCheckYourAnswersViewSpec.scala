@@ -80,6 +80,8 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit(),
         buttonText = pageButtonText
       )
+
+      doc.createTestsWithButtonThatPreventsDoubleClick
     }
 
     "non-empty summary list must result in a table with rows" - {
@@ -165,6 +167,8 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
         action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit(),
         buttonText = pageButtonText
       )
+
+      doc.createTestsWithButtonThatPreventsDoubleClick
     }
   }
 
@@ -235,6 +239,14 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
     def summaryListContent: Elements = summaryListGrid.select("div.govuk-grid-column-two-thirds")
     def descriptionLists: Elements   = summaryListContent.select("dl")
     def descriptionList: Element     = descriptionLists.get(0)
+
+    def createTestsWithButtonThatPreventsDoubleClick: Unit = {
+      "must have button that cannot be double clicked" - {
+        val button = target.select("button[type=submit]")
+        button.hasAttr("data-prevent-double-click") mustBe true
+        button.attr("data-prevent-double-click") mustBe "true"
+      }
+    }
   }
 }
 

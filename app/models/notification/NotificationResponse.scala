@@ -16,4 +16,10 @@
 
 package models.notification
 
-final case class NotificationIdReferenceNumber(id: String)
+import play.api.libs.json.{Json, OFormat}
+
+final case class NotificationResponse(notificationRef: String)
+
+object NotificationResponse {
+  given format: OFormat[NotificationResponse] = Json.format
+}

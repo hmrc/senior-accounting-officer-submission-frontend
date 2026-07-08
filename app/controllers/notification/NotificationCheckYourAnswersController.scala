@@ -17,14 +17,15 @@
 package controllers.notification
 
 import controllers.actions.*
-import models.NormalMode
-import navigation.Navigator
-import pages.notification.NotificationCheckYourAnswersPage
+import controllers.notification.routes as notificationRoutes
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.NotificationCheckYourAnswersService
+import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationCheckYourAnswersView
+
+import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
@@ -36,9 +37,10 @@ class NotificationCheckYourAnswersController @Inject() (
     requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
-    navigator: Navigator,
-    notificationCheckYourAnswersService: NotificationCheckYourAnswersService
-) extends FrontendBaseController
+    notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
+    notificationSubmitService: NotificationSubmitService
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
@@ -49,13 +51,18 @@ class NotificationCheckYourAnswersController @Inject() (
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
-      Redirect(
-        navigator.nextPage(
-          NotificationCheckYourAnswersPage,
-          NormalMode,
-          request.userAnswers
-        )
-      )
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
+      {
+        notificationSubmitService
+          .submit(request.userAnswers)
+          .map {
+            _.fold(
+              error => throw new InternalServerException(error.message),
+              notificationReference =>
+                Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
+            )
+          }
+
+      }
     }
 }

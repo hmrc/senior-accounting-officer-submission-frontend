@@ -17,8 +17,10 @@
 package controllers.notification
 
 import base.SpecBase
+import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.notification.NotificationSubmissionError
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
@@ -28,9 +30,12 @@ import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, Call, Request}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.NotificationCheckYourAnswersService
+import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, InternalServerException}
 import views.html.notification.NotificationCheckYourAnswersView
+
+import scala.concurrent.Future
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
@@ -43,8 +48,11 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
       val userAnswers = completedNotificationReviewAnswers
+
       val application = applicationBuilder(userAnswers = Some(userAnswers))
-        .overrides(bind[NotificationCheckYourAnswersService].toInstance(mockService))
+        .overrides(
+          bind[NotificationCheckYourAnswersService].toInstance(mockService)
+        )
         .build()
 
       running(application) {
@@ -56,28 +64,11 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         given Messages = messages(application)
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(SummaryList(), userAnswers.getFinancialYearEndDate).toString
+        contentAsString(result) mustEqual view(
+          SummaryList(),
+          userAnswers.getFinancialYearEndDate
+        ).toString
         verify(mockService).getSummaryList(meq(userAnswers))(using any())
-      }
-    }
-
-    "must redirect to the next page for a POST" in {
-
-      val application =
-        applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-          .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
-          )
-          .build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
 
@@ -95,20 +86,96 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       }
     }
 
-    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+    "onSubmit" - {
+      "when submission successful, must redirect to the notification confirmation page with the notification reference" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+        val mockNotificationSubmitService = mock[NotificationSubmitService]
 
-      running(application) {
-        val request =
-          FakeRequest(POST, notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url)
+        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
+          .thenReturn(Future.successful(Right(exampleNotificationReference)))
 
-        val result = route(application, request).value
+        val application =
+          applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
+            .overrides(
+              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
+            )
+            .build()
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        running(application) {
+          val request =
+            FakeRequest(
+              POST,
+              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
+            )
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual notificationRoutes.NotificationConfirmationController
+            .onPageLoad(
+              exampleNotificationReference
+            )
+            .url
+        }
+      }
+
+      "must redirect to Journey Recovery for a POST if no existing data is found" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        running(application) {
+          val request =
+            FakeRequest(
+              POST,
+              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
+            )
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        }
+      }
+
+      "when submission unsuccessful, must throw an InternalServerException with an error message" in {
+
+        val mockNotificationSubmitService = mock[NotificationSubmitService]
+
+        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
+          .thenReturn(
+            Future.successful(
+              Left(NotificationSubmissionError.HttpError(HttpResponse(INTERNAL_SERVER_ERROR)))
+            )
+          )
+
+        val application =
+          applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
+            .overrides(
+              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
+            )
+            .build()
+
+        running(application) {
+          val request =
+            FakeRequest(
+              POST,
+              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
+            )
+
+          val exception = intercept[InternalServerException] {
+            val result = route(application, request).value
+            status(result)
+          }
+          exception.message mustEqual expectedHttpFailureMessage
+        }
       }
     }
-
   }
+}
+
+object NotificationCheckYourAnswersControllerSpec {
+  val exampleNotificationReference       = "example notification reference"
+  val expectedHttpFailureMessage: String = s"Notification submit HTTP call failed with code ${INTERNAL_SERVER_ERROR}"
 }

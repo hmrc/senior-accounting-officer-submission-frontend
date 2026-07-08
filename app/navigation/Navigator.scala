@@ -21,7 +21,6 @@ import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
 import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
-import models.notification.NotificationIdReferenceNumber
 import models.upload.UploadTemplateTableData
 import pages.*
 import pages.certificate.*
@@ -38,8 +37,6 @@ class Navigator @Inject() () {
       _ => notificationRoutes.ConfirmYourNotificationController.onPageLoad()
     case ConfirmYourNotificationPage =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-    case NotificationCheckYourAnswersPage =>
-      _ => notificationRoutes.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber.id)
     case IsThisTheSaoOnCertificatePage =>
       userAnswers =>
         userAnswers.get(IsThisTheSaoOnCertificatePage) match {
@@ -186,6 +183,4 @@ class Navigator @Inject() () {
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }
-
-  val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber("SAONOT0123456789")
 }
