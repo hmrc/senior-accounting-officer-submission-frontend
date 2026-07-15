@@ -51,6 +51,8 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
 
   lazy val upscanInitiateV2Url: String = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
 
+  lazy val protectedServiceBaseUrl: String = servicesConfig.baseUrl("senior-accounting-officer")
+
   lazy val internalAuthTestOnlyTokenUrl: String = servicesConfig.baseUrl("internal-auth") + "/test-only/token"
 
   val internalAuthToken: String = config.get[String]("internal-auth.token")
