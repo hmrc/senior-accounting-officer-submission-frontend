@@ -21,8 +21,8 @@ import play.api.libs.json.{Json, OFormat}
 final case class CertificateSubmissionRequest(
     subscriptionId: String,
     submitterName: Option[String],
-    SAOName: String,
-    SAOEmail: String,
+    saoName: String,
+    saoEmail: String,
     companies: Seq[CertificateSubmissionCompany],
     remarks: Option[String]
 )

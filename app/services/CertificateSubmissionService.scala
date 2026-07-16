@@ -79,8 +79,8 @@ class CertificateSubmissionService @Inject() (
     } yield CertificateSubmissionRequest(
       subscriptionId = saoSubscriptionId,
       submitterName = submitterName(userAnswers),
-      SAOName = saoName,
-      SAOEmail = saoEmail,
+      saoName = saoName,
+      saoEmail = saoEmail,
       companies = companies,
       remarks = userAnswers.getNullable(CertificateAdditionalInformationPage)
     )

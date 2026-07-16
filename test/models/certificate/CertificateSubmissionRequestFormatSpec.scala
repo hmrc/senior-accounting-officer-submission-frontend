@@ -124,8 +124,8 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
     CertificateSubmissionRequest(
       subscriptionId = "SAOSUB123456789",
       submitterName = Some("Proxy Person"),
-      SAOName = "Senior Officer",
-      SAOEmail = "sao@example.com",
+      saoName = "Senior Officer",
+      saoEmail = "sao@example.com",
       companies = Seq(company),
       remarks = Some("Certificate remarks")
     )
@@ -134,8 +134,8 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
     """{
       |  "subscriptionId": "SAOSUB123456789",
       |  "submitterName": "Proxy Person",
-      |  "SAOName": "Senior Officer",
-      |  "SAOEmail": "sao@example.com",
+      |  "saoName": "Senior Officer",
+      |  "saoEmail": "sao@example.com",
       |  "companies": [
       |    {
       |      "crn": "AB123456",

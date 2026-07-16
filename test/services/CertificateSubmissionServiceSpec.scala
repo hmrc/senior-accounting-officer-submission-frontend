@@ -65,8 +65,8 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val request = requestCaptor.getValue
       request.subscriptionId mustBe "SAOSUB123456789"
       request.submitterName.value mustBe "Proxy Person"
-      request.SAOName mustBe "Senior Officer"
-      request.SAOEmail mustBe "sao@example.com"
+      request.saoName mustBe "Senior Officer"
+      request.saoEmail mustBe "sao@example.com"
       request.remarks.value mustBe "Certificate remarks"
 
       val company = request.companies.head
