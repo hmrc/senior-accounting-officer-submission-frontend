@@ -17,18 +17,22 @@
 package controllers.certificate
 
 import base.SpecBase
-import controllers.certificate.CertificateCheckYourAnswersController.certificateId
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.*
+import org.jsoup.Jsoup
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import services.CertificateCheckYourAnswersService
+import services.CertificateSubmissionService
+import services.CertificateSubmissionService.CertificateSubmissionResult
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.html.certificate.CertificateCheckYourAnswersView
+
+import scala.concurrent.Future
 
 class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar {
 
@@ -51,9 +55,11 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[CertificateCheckYourAnswersView]
+        val document = Jsoup.parse(contentAsString(result))
+        val token = document.select("input[name=certificateSubmissionToken]").attr("value")
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(SummaryList())(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(SummaryList(), token)(using request, messages(application)).toString
         verify(mockService).getSummaryList(meq(testAnswers))(using any())
       }
     }
@@ -70,9 +76,100 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must submit the certificate and redirect to confirmation for a POST" in {
+      val mockSubmissionService = mock[CertificateSubmissionService]
+
+      when(mockSubmissionService.submit(meq("id"), meq("SAOSUB123456789"), any(), meq("token"))(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResult.Submitted("CRT0123456789")))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CertificateSubmissionService].toInstance(mockSubmissionService))
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateRoutes.CertificateCheckYourAnswersController.onSubmit().url)
+            .withFormUrlEncodedBody("certificateSubmissionToken" -> "token")
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual certificateRoutes.CertificateConfirmationController
-          .onPageLoad(certificateId)
+          .onPageLoad("CRT0123456789")
           .url
+      }
+    }
+
+    "must return internal server error when submission fails" in {
+      val mockSubmissionService = mock[CertificateSubmissionService]
+
+      when(mockSubmissionService.submit(meq("id"), meq("SAOSUB123456789"), any(), meq("token"))(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResult.Failed))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CertificateSubmissionService].toInstance(mockSubmissionService))
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateRoutes.CertificateCheckYourAnswersController.onSubmit().url)
+            .withFormUrlEncodedBody("certificateSubmissionToken" -> "token")
+
+        val result = route(application, request).value
+
+        status(result) mustEqual INTERNAL_SERVER_ERROR
+      }
+    }
+
+    "must redirect to Journey Recovery when required submission data is missing" in {
+      val mockSubmissionService = mock[CertificateSubmissionService]
+
+      when(mockSubmissionService.submit(meq("id"), meq("SAOSUB123456789"), any(), meq("token"))(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResult.MissingData))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CertificateSubmissionService].toInstance(mockSubmissionService))
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateRoutes.CertificateCheckYourAnswersController.onSubmit().url)
+            .withFormUrlEncodedBody("certificateSubmissionToken" -> "token")
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect back to check your answers when the submission token has already been used" in {
+      val mockSubmissionService = mock[CertificateSubmissionService]
+
+      when(mockSubmissionService.submit(meq("id"), meq("SAOSUB123456789"), any(), meq("token"))(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResult.Duplicate))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CertificateSubmissionService].toInstance(mockSubmissionService))
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateRoutes.CertificateCheckYourAnswersController.onSubmit().url)
+            .withFormUrlEncodedBody("certificateSubmissionToken" -> "token")
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateCheckYourAnswersController.onPageLoad().url
       }
     }
 
