@@ -22,7 +22,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 object MockAuthHelper {
 
   val authSession: Map[String, String] = Map("authToken" -> "mock-bearer-token")
-  
+
   val authoriseUri: String = "/auth/authorise"
 
   def mockAuthOk(): StubMapping =
@@ -33,7 +33,19 @@ object MockAuthHelper {
             .withHeader("content-type", "application/json")
             .withBody(
               """{
-                | "internalId": "testId"
+                | "internalId": "testId",
+                | "allEnrolments": [
+                |   {
+                |     "key": "HMRC-DSAO-ORG",
+                |     "identifiers": [
+                |       {
+                |         "key": "EtmpSubscriptionId",
+                |         "value": "SAOSUB123456789"
+                |       }
+                |     ],
+                |     "state": "Activated"
+                |   }
+                | ]
                 |}""".stripMargin)
             .withStatus(200)
         )
