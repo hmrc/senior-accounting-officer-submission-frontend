@@ -20,18 +20,18 @@ import base.SpecBase
 import connectors.UpscanDownloadConnector
 import models.*
 import models.upload.*
+import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
 import org.mockito.ArgumentMatchers.{eq as meq, *}
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.NotificationUploadStatePage
 import play.api.Application
 import play.api.http.Status.{BAD_REQUEST, OK}
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
-import services.UpscanService.State
+import services.UpscanService.*
 import services.UpscanServiceSpec.*
 import services.csvparser.UploadTemplateCsvParser
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
@@ -61,9 +61,9 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     )
     .build()
 
-  "UpscanService.fileUploadState" - {
+  "UpscanService.fileUploadState(UploadJourney.Notification)" - {
     "must return State.NoReference when no reference is received" in {
-      val result = SUT.fileUploadState(emptyUserAnswers, None).futureValue
+      val result = SUT.fileUploadState(UploadJourney.Notification, emptyUserAnswers, None).futureValue
 
       result mustBe State.NoReference
 
@@ -71,7 +71,8 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     }
 
     "must return State.NoReference when no upload state is stored in user answers" in {
-      val result = SUT.fileUploadState(emptyUserAnswers, Some(testFileReference)).futureValue
+      val result =
+        SUT.fileUploadState(UploadJourney.Notification, emptyUserAnswers, Some(testFileReference)).futureValue
 
       result mustBe State.NoReference
 
@@ -79,8 +80,8 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     }
 
     "must return State.NoReference when the provided reference does not match the stored upload reference" in {
-      val userAnswers = userAnswersWithUploadStatus(UploadStatus.InProgress)
-      val result      = SUT.fileUploadState(userAnswers, Some("different-reference")).futureValue
+      val userAnswers = userAnswersWithUploadStatus(UploadJourney.Notification, UploadStatus.InProgress)
+      val result = SUT.fileUploadState(UploadJourney.Notification, userAnswers, Some("different-reference")).futureValue
 
       result mustBe State.NoReference
 
@@ -89,7 +90,13 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
     "must return State.WaitingForUpscan when the file upload is in progress" in {
       val result =
-        SUT.fileUploadState(userAnswersWithUploadStatus(UploadStatus.InProgress), Some(testFileReference)).futureValue
+        SUT
+          .fileUploadState(
+            UploadJourney.Notification,
+            userAnswersWithUploadStatus(UploadJourney.Notification, UploadStatus.InProgress),
+            Some(testFileReference)
+          )
+          .futureValue
 
       result mustBe State.WaitingForUpscan
 
@@ -99,7 +106,11 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     "must return State.QuarantinedByUpscan when the file is quarantined" in {
       val result =
         SUT
-          .fileUploadState(userAnswersWithUploadStatus(UploadStatus.Quarantined), Some(testFileReference))
+          .fileUploadState(
+            UploadJourney.Notification,
+            userAnswersWithUploadStatus(UploadJourney.Notification, UploadStatus.Quarantined),
+            Some(testFileReference)
+          )
           .futureValue
 
       result mustBe State.QuarantinedByUpscan
@@ -110,7 +121,11 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     "must return State.RejectedByUpscan when the file is rejected" in {
       val result =
         SUT
-          .fileUploadState(userAnswersWithUploadStatus(UploadStatus.Rejected), Some(testFileReference))
+          .fileUploadState(
+            UploadJourney.Notification,
+            userAnswersWithUploadStatus(UploadJourney.Notification, UploadStatus.Rejected),
+            Some(testFileReference)
+          )
           .futureValue
 
       result mustBe State.RejectedByUpscan
@@ -121,7 +136,11 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     "must return State.UnknownUpscanError when the file is rejected" in {
       val result =
         SUT
-          .fileUploadState(userAnswersWithUploadStatus(UploadStatus.UnknownFailure), Some(testFileReference))
+          .fileUploadState(
+            UploadJourney.Notification,
+            userAnswersWithUploadStatus(UploadJourney.Notification, UploadStatus.UnknownFailure),
+            Some(testFileReference)
+          )
           .futureValue
 
       result mustBe State.UnknownUpscanError
@@ -164,7 +183,9 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
       val result = SUT
         .fileUploadState(
+          UploadJourney.Notification,
           userAnswersWithUploadStatus(
+            UploadJourney.Notification,
             UploadStatus.UploadedSuccessfully(
               name = "submission.csv",
               mimeType = "",
@@ -200,7 +221,9 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
       val result = SUT
         .fileUploadState(
+          UploadJourney.Notification,
           userAnswersWithUploadStatus(
+            UploadJourney.Notification,
             UploadStatus.UploadedSuccessfully(
               name = "submission.csv",
               mimeType = "",
@@ -226,7 +249,9 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
 
       val result = SUT
         .fileUploadState(
+          UploadJourney.Notification,
           userAnswersWithUploadStatus(
+            UploadJourney.Notification,
             UploadStatus.UploadedSuccessfully(
               name = "submission.csv",
               mimeType = "",
@@ -246,7 +271,9 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     "must return State.RejectedByUpscan when the uploaded file is not a CSV" in {
       val result = SUT
         .fileUploadState(
+          UploadJourney.Notification,
           userAnswersWithUploadStatus(
+            UploadJourney.Notification,
             UploadStatus.UploadedSuccessfully(
               name = "submission.xlsx",
               mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -271,8 +298,8 @@ object UpscanServiceSpec {
   val testFileContent: String   = Random.nextString(10)
   val testFileReference: String = Random.nextString(10)
 
-  def userAnswersWithUploadStatus(status: UploadStatus): UserAnswers =
+  def userAnswersWithUploadStatus(journey: UploadJourney, status: UploadStatus): UserAnswers =
     UserAnswers("id")
-      .set(NotificationUploadStatePage, NotificationUploadState(testFileReference, status))
+      .set(journey.page, FileUploadState(testFileReference, status))
       .get
 }

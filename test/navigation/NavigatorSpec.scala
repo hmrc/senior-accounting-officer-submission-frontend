@@ -17,10 +17,15 @@
 package navigation
 
 import base.SpecBase
+import controllers.certificate.routes as certificateRoutes
+import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
+import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
 import models.upload.UploadTemplateTableData
 import pages.*
+import pages.certificate.*
+import pages.notification.*
 
 import java.time.LocalDate
 
@@ -44,7 +49,7 @@ class NavigatorSpec extends SpecBase {
           NotificationAdditionalInformationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.ConfirmYourNotificationController.onPageLoad()
+        ) mustBe notificationRoutes.ConfirmYourNotificationController.onPageLoad()
       }
 
       "when on ConfirmYourNotificationPage, must go to check your answers page" in {
@@ -52,16 +57,7 @@ class NavigatorSpec extends SpecBase {
           ConfirmYourNotificationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
-      }
-
-      "when on NotificationCheckYourAnswersPage, must go to notification confirmation page" in {
-        val notRefIdMock = "SAONOT0123456789"
-        navigator.nextPage(
-          NotificationCheckYourAnswersPage,
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe routes.NotificationConfirmationController.onPageLoad(notRefIdMock)
+        ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
       "when on ConfirmYourNotificationPage, must go to notification check your answers page" in {
@@ -69,7 +65,7 @@ class NavigatorSpec extends SpecBase {
           ConfirmYourNotificationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
       "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO email page" in {
@@ -135,7 +131,7 @@ class NavigatorSpec extends SpecBase {
           CombinedWhoSubmitsCertificatePage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.QualifiedCompaniesController.onPageLoad()
+        ) mustBe certificateRoutes.QualifiedCompaniesController.onPageLoad()
       }
 
       "when on QualifiedCompaniesPage, must go to unqualified companies page" in {
@@ -143,7 +139,7 @@ class NavigatorSpec extends SpecBase {
           QualifiedCompaniesPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.UnqualifiedCompaniesController.onPageLoad()
+        ) mustBe certificateRoutes.UnqualifiedCompaniesController.onPageLoad()
       }
 
       "when on UnqualifiedCompaniesPage, must go to certificate submission declaration page" in {
@@ -167,7 +163,7 @@ class NavigatorSpec extends SpecBase {
           NotificationConfirmationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.SubmitNotificationStartController.onComplete()
+        ) mustBe notificationRoutes.NotificationTaskListController.onComplete()
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
@@ -175,7 +171,7 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreThanOneSaoPage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, false).success.value
-        ) mustBe routes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected Yes, must go to multiple sao name page" in {
@@ -183,81 +179,81 @@ class NavigatorSpec extends SpecBase {
           NotificationMoreThanOneSaoPage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-        ) mustBe routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
       }
 
-      "when on MoreSaoSubmitNotificationFullNameController, must go to more sao submit notification first date page" in {
+      "when on NotificationMultiSaoLastOfficerNameController, must go to more sao submit notification first date page" in {
         navigator.nextPage(
-          MoreSaoSubmitNotificationFullNamePage,
+          NotificationMultiSaoLastOfficerNamePage,
           NormalMode,
           UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
-        ) mustBe routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMoreSaoFirstStartDatePage, must go to who was the sao before page" in {
+      "when on NotificationMultiSaoLastOfficerStartDatePage, must go to who was the sao before page" in {
         navigator.nextPage(
-          NotificationMoreSaoFirstStartDatePage,
+          NotificationMultiSaoLastOfficerStartDatePage,
           NormalMode,
-          UserAnswers("id").set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2026, 5, 1)).success.value
-        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
+          UserAnswers("id").set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.of(2026, 5, 1)).success.value
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
       }
 
-      "when on WhoWasTheSaoBeforePage, must go to NotificationMoreSaoSecondStartDate" in {
+      "when on NotificationMultiSaoPreviousOfficerNamePage, must go to NotificationMultiSaoPreviousOfficerStartDate" in {
         navigator.nextPage(
-          WhoWasTheSaoBeforePage(0),
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe routes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, 0)
-      }
-
-      "when on NotificationMoreSaoSecondStartDatePage, must go to NotificationMoreSaoSecondEndDate page" in {
-        navigator.nextPage(
-          NotificationMoreSaoSecondStartDatePage(0),
+          NotificationMultiSaoPreviousOfficerNamePage(0),
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(NormalMode, 0)
       }
 
-      "when on NotificationMoreSaoSecondEndDatePage, must go to NotificationMoreSaoAreAllAdded page" in {
+      "when on NotificationMultiSaoPreviousOfficerStartDatePage, must go to NotificationMultiSaoPreviousOfficerEndDate page" in {
         navigator.nextPage(
-          NotificationMoreSaoSecondEndDatePage(0),
+          NotificationMultiSaoPreviousOfficerStartDatePage(0),
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode)
       }
 
-      "when on NotificationMoreSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
+      "when on NotificationMultiSaoPreviousOfficerEndDatePage, must go to NotificationMultiSaoAreAllAdded page" in {
+        navigator.nextPage(
+          NotificationMultiSaoPreviousOfficerEndDatePage(0),
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(NormalMode)
+      }
+
+      "when on NotificationMultiSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
-            NotificationMoreSaoAreAllAddedPage(0),
+            NotificationMultiSaoAreAllAddedPage(0),
             NormalMode,
             UserAnswers("id")
           )
         }
       }
 
-      "when on NotificationMoreSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
+      "when on NotificationMultiSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
         navigator.nextPage(
-          NotificationMoreSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0),
           NormalMode,
-          UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), true).success.value
-        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+          UserAnswers("id").set(NotificationMultiSaoAreAllAddedPage(0), true).success.value
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
-      "when on NotificationMoreSaoAreAllAddedPage, and the user answers no, must go to WhoWasTheSaoBefore page with an incremented saoIndex" in {
+      "when on NotificationMultiSaoAreAllAddedPage, and the user answers no, must go to NotificationMultiSaoPreviousOfficerName page with an incremented saoIndex" in {
         navigator.nextPage(
-          NotificationMoreSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0),
           NormalMode,
-          UserAnswers("id").set(NotificationMoreSaoAreAllAddedPage(0), false).success.value
-        ) mustBe routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, 1)
+          UserAnswers("id").set(NotificationMultiSaoAreAllAddedPage(0), false).success.value
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 1)
       }
 
-      "when on OneSaoSubmitNotificationFullNamePage, must go to the submit notification start page" in {
+      "when on NotificationSingleSaoOfficerNamePage, must go to the submit notification start page" in {
         navigator.nextPage(
-          OneSaoSubmitNotificationFullNamePage,
+          NotificationSingleSaoOfficerNamePage,
           NormalMode,
-          UserAnswers("id").set(OneSaoSubmitNotificationFullNamePage, "Firstname Lastname").success.value
-        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+          UserAnswers("id").set(NotificationSingleSaoOfficerNamePage, "Firstname Lastname").success.value
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
@@ -271,7 +267,7 @@ class NavigatorSpec extends SpecBase {
           UploadTemplateTablePage,
           NormalMode,
           userAnswers
-        ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {
@@ -291,7 +287,27 @@ class NavigatorSpec extends SpecBase {
           UploadTemplateTablePage,
           NormalMode,
           userAnswers
-        ) mustBe routes.NotificationUploadFormController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationUploadFormController.onPageLoad()
+      }
+
+      "when on UploadTemplateTableErrorPage  must go to upload form page" in {
+        val userAnswers =
+          UserAnswers("id")
+            .set(
+              UploadTemplateTablePage,
+              UploadTemplateTableData(
+                rows = Seq.empty,
+                errors = Seq(models.upload.TemplateParseError(9, Some("Company UTR"), "missing_required_value", "x"))
+              )
+            )
+            .success
+            .value
+
+        navigator.nextPage(
+          UploadTemplateTableErrorPage,
+          NormalMode,
+          userAnswers
+        ) mustBe notificationRoutes.NotificationUploadFormController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with no upload data, must go to journey recovery page" in {
@@ -304,12 +320,12 @@ class NavigatorSpec extends SpecBase {
 
       "SubmissionTypePage" - {
 
-        "when on SubmissionTypePage and the user chose notification only, must go to SubmitNotificationStart" in {
+        "when on SubmissionTypePage and the user chose notification only, must go to NotificationTaskList" in {
           navigator.nextPage(
             SubmissionTypePage,
             NormalMode,
             UserAnswers("id").set(SubmissionTypePage, SubmissionType.Notification).get
-          ) mustBe routes.SubmitNotificationStartController.onPageLoad()
+          ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
         }
 
         "when on SubmissionTypePage and the user chose certificate only, must go to CertificateTaskList" in {
@@ -317,7 +333,9 @@ class NavigatorSpec extends SpecBase {
             SubmissionTypePage,
             NormalMode,
             UserAnswers("id").set(SubmissionTypePage, SubmissionType.Certificate).get
-          ) mustBe routes.CertificateTaskListController.onPageLoad()
+          ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
+            CertificateTaskListStage.ProvideSaoDetailsStage
+          )
         }
 
         "when on SubmissionTypePage and the user chose both the notification and the certificate, must throw an exception" in {
@@ -338,7 +356,7 @@ class NavigatorSpec extends SpecBase {
           CertificateSaoFullNamePage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateSaoEmailController.onPageLoad(NormalMode)
+        ) mustBe certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode)
       }
 
       "when on CertificateSaoEmail, must go to CertificateTaskList page" in {
@@ -346,7 +364,51 @@ class NavigatorSpec extends SpecBase {
           CertificateSaoEmailPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
+          CertificateTaskListStage.UploadSubmissionTemplateStage
+        )
+      }
+
+      "when on CertificateUploadTemplateTableErrorPage with no parsing errors, must go to upload form page" in {
+        val userAnswers =
+          UserAnswers("id")
+            .set(CertificateUploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
+            .success
+            .value
+
+        navigator.nextPage(
+          CertificateUploadTemplateTableErrorPage,
+          NormalMode,
+          userAnswers
+        ) mustBe certificateRoutes.CertificateUploadFormController.onPageLoad()
+      }
+
+      "when on CertificateUploadTemplateTableErrorPage with parsing errors, must go to upload form page" in {
+        val userAnswers =
+          UserAnswers("id")
+            .set(
+              CertificateUploadTemplateTablePage,
+              UploadTemplateTableData(
+                rows = Seq.empty,
+                errors = Seq(models.upload.TemplateParseError(9, Some("Company UTR"), "missing_required_value", "x"))
+              )
+            )
+            .success
+            .value
+
+        navigator.nextPage(
+          CertificateUploadTemplateTableErrorPage,
+          NormalMode,
+          userAnswers
+        ) mustBe certificateRoutes.CertificateUploadFormController.onPageLoad()
+      }
+
+      "when on CertificateUploadTemplateTableErrorPage with no upload data, must go to journey recovery page" in {
+        navigator.nextPage(
+          CertificateUploadTemplateTableErrorPage,
+          NormalMode,
+          UserAnswers("id")
+        ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
 
       "when on CertificateReviewQualified, must go to CertificateReviewUnqualified page" in {
@@ -354,7 +416,7 @@ class NavigatorSpec extends SpecBase {
           CertificateReviewQualifiedPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateReviewUnqualifiedController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
       }
 
       "when on CertificateReviewUnqualified, must go to CertificateTaskList page" in {
@@ -362,7 +424,9 @@ class NavigatorSpec extends SpecBase {
           CertificateReviewUnqualifiedPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
+          CertificateTaskListStage.SubmitCertificateStage
+        )
       }
 
       "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {
@@ -370,7 +434,7 @@ class NavigatorSpec extends SpecBase {
           CertificateAdditionalInformationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
+        ) mustBe certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
       }
 
       "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationSao page" in {
@@ -378,7 +442,7 @@ class NavigatorSpec extends SpecBase {
           CertificateWhoIsSubmittingPage,
           NormalMode,
           UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.Sao).get
-        ) mustBe routes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
+        ) mustBe certificateRoutes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
       }
 
       "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationStandIn page" in {
@@ -386,7 +450,7 @@ class NavigatorSpec extends SpecBase {
           CertificateWhoIsSubmittingPage,
           NormalMode,
           UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn).get
-        ) mustBe routes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
+        ) mustBe certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
       }
 
       "when on CertificateDeclarationSao, must go to CertificateCheckYourAnswers page" in {
@@ -394,7 +458,7 @@ class NavigatorSpec extends SpecBase {
           CertificateDeclarationSaoPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
       "when on CertificateDeclarationStandIn, must go to CertificateCheckYourAnswers page" in {
@@ -402,15 +466,7 @@ class NavigatorSpec extends SpecBase {
           CertificateDeclarationStandInPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateCheckYourAnswersController.onPageLoad()
-      }
-
-      "when on CertificateCheckYourAnswers, must go to CertificateConfirmation page" in {
-        navigator.nextPage(
-          CertificateCheckYourAnswersPage,
-          NormalMode,
-          UserAnswers("id")
-        ) mustBe routes.CertificateConfirmationController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
       "when on CertificateConfirmation, must go to CertificateTaskList page" in {
@@ -418,7 +474,7 @@ class NavigatorSpec extends SpecBase {
           CertificateConfirmationPage,
           NormalMode,
           UserAnswers("id")
-        ) mustBe routes.CertificateTaskListController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.Complete)
       }
     }
 
@@ -429,7 +485,7 @@ class NavigatorSpec extends SpecBase {
           NotificationAdditionalInformationPage,
           CheckMode,
           UserAnswers("id")
-        ) mustBe routes.NotificationCheckYourAnswersController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
       "when on SaoNamePage, must go to certificate check your answers page" in {
@@ -438,6 +494,14 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           UserAnswers("id")
         ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on CertificateAdditionalInformationPage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          CertificateAdditionalInformationPage,
+          CheckMode,
+          UserAnswers("id")
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
       "when on SaoEmailPage, must go to certificate check your answers page" in {

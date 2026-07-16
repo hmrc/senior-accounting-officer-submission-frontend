@@ -17,7 +17,7 @@
 package controllers.actions
 
 import base.SpecBase
-import controllers.routes
+import controllers.notification.routes as notificationRoutes
 import models.UserAnswers
 import models.requests.DataRequest
 import play.api.http.HeaderNames
@@ -49,21 +49,31 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
       val result = new UploadHarness().callFilter(emptyUserAnswers).futureValue.value
 
       result.header.status mustBe SEE_OTHER
-      result.header.headers(HeaderNames.LOCATION) mustBe routes.SubmitNotificationStartController.onPageLoad().url
+      result.header
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad().url
     }
   }
 
   "RequireSubmitNotificationUnlockedAction" - {
 
-    "must allow the request when SAO details and upload are complete" in {
-      new SubmitHarness().callFilter(completedNotificationUploadAnswers).futureValue mustBe None
+    "must allow the request when SAO details, upload and review confirmation are complete" in {
+      new SubmitHarness().callFilter(completedNotificationReviewAnswers).futureValue mustBe None
     }
 
     "must redirect to the task list when the upload is incomplete" in {
       val result = new SubmitHarness().callFilter(completedSaoDetailsAnswers).futureValue.value
 
       result.header.status mustBe SEE_OTHER
-      result.header.headers(HeaderNames.LOCATION) mustBe routes.SubmitNotificationStartController.onPageLoad().url
+      result.header
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad().url
+    }
+
+    "must redirect to the task list when the review confirmation is incomplete" in {
+      val result = new SubmitHarness().callFilter(completedNotificationUploadAnswers).futureValue.value
+
+      result.header.status mustBe SEE_OTHER
+      result.header
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad().url
     }
   }
 }

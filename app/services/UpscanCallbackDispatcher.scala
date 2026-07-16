@@ -17,6 +17,7 @@
 package services
 
 import models.*
+import models.upscan.*
 import repositories.SessionRepository
 
 import scala.concurrent.ExecutionContext
@@ -26,7 +27,7 @@ import javax.inject.Inject
 
 class UpscanCallbackDispatcher @Inject() (sessionStorage: SessionRepository)(using ExecutionContext) {
 
-  def processUpscanCallback(callback: UpscanCallback): Future[Boolean] = {
+  def processUpscanCallback(journey: UploadJourney, callback: UpscanCallback): Future[Boolean] = {
     val uploadStatus =
       callback match {
         case s: UpscanSuccessCallback =>
@@ -44,7 +45,7 @@ class UpscanCallbackDispatcher @Inject() (sessionStorage: SessionRepository)(usi
           UploadStatus.UnknownFailure
       }
 
-    sessionStorage.updateUploadStatus(callback.reference, uploadStatus).map(_ => true)
+    sessionStorage.updateUploadStatus(journey, callback.reference, uploadStatus).map(_ => true)
   }
 
 }

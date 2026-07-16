@@ -17,7 +17,8 @@
 package generators
 
 import models.*
-import org.scalacheck.Arbitrary.arbitrary // scalafix:ok; need to keep this import cos it could be used by some scaffold
+import models.certificate.{CertificateDeclarationStandIn, CertificateWhoIsSubmitting}
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.{Arbitrary, Gen}
 
 trait ModelGenerators {

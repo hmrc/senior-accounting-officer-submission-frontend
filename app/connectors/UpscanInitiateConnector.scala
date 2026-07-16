@@ -17,10 +17,12 @@
 package connectors
 
 import config.AppConfig
-import controllers.routes
-import models.{UpscanInitiateRequestV2, UpscanInitiateResponse}
+import controllers.certificate.routes as certificateRoutes
+import controllers.notification.routes as notificationRoutes
+import models.upscan.{UploadJourney, UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue
+import play.api.mvc.Call
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
@@ -34,11 +36,11 @@ class UpscanInitiateConnector @Inject() (
     appConfig: AppConfig
 )(using ExecutionContext) {
 
-  def initiateV2()(using HeaderCarrier): Future[UpscanInitiateResponse] = {
+  def initiateV2(journey: UploadJourney)(using HeaderCarrier): Future[UpscanInitiateResponse] = {
     val request = UpscanInitiateRequestV2(
-      callbackUrl = appConfig.upscanCallbackTarget,
-      successRedirect = Some(appConfig.host + routes.NotificationUploadSuccessController.onPageLoad(key = None)),
-      errorRedirect = Some(appConfig.host + routes.NotificationUploadFormController.onPageLoad())
+      callbackUrl = appConfig.upscanCallbackTarget(journey),
+      successRedirect = Some(appConfig.host + successRedirect(journey)),
+      errorRedirect = Some(appConfig.host + errorRedirect(journey))
     )
 
     httpClient
@@ -47,4 +49,15 @@ class UpscanInitiateConnector @Inject() (
       .execute[UpscanInitiateResponse]
   }
 
+  private def successRedirect(journey: UploadJourney): Call =
+    journey match {
+      case UploadJourney.Notification => notificationRoutes.NotificationUploadSuccessController.onPageLoad(key = None)
+      case UploadJourney.Certificate  => certificateRoutes.CertificateUploadSuccessController.onPageLoad(key = None)
+    }
+
+  private def errorRedirect(journey: UploadJourney): Call =
+    journey match {
+      case UploadJourney.Notification => notificationRoutes.NotificationUploadFormController.onPageLoad()
+      case UploadJourney.Certificate  => certificateRoutes.CertificateUploadFormController.onPageLoad()
+    }
 }

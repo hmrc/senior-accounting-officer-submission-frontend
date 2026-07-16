@@ -16,7 +16,7 @@
 
 package controllers.internal
 
-import models.*
+import models.upscan.{UploadJourney, UpscanCallback}
 import play.api.Logging
 import play.api.mvc.*
 import services.UpscanCallbackDispatcher
@@ -34,7 +34,7 @@ class UploadCallbackController @Inject() (
     extends FrontendController(mcc)
     with Logging {
 
-  def callback: Action[UpscanCallback] = Action.async(parse.json[UpscanCallback]) { request =>
-    upscanCallbackDispatcher.processUpscanCallback(request.body).map(_ => NoContent)
+  def callback(journey: UploadJourney): Action[UpscanCallback] = Action.async(parse.json[UpscanCallback]) { request =>
+    upscanCallbackDispatcher.processUpscanCallback(journey, request.body).map(_ => NoContent)
   }
 }

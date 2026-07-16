@@ -17,7 +17,8 @@
 package repositories
 
 import config.AppConfig
-import models.{UploadStatus, UserAnswers}
+import models.UserAnswers
+import models.upscan.{UploadJourney, UploadStatus}
 import org.mongodb.scala.bson.conversions.Bson
 import org.mongodb.scala.model.*
 import play.api.libs.json.Format
@@ -43,11 +44,14 @@ class SessionRepository @Inject() (
       collectionName = "user-answers",
       mongoComponent = mongoComponent,
       domainFormat = UserAnswers.format,
-      indexes = Seq(
+      indexes = UploadJourney.values.toSeq.map { journey =>
+        val uploadKey = journey.uploadPath
+
         IndexModel(
-          Indexes.ascending("data.notificationUpload.reference"),
-          IndexOptions().name("notificationUploadReferenceIdx").unique(true).sparse(true)
-        ),
+          Indexes.ascending(s"$uploadKey.reference"),
+          IndexOptions().name(s"${journey}ReferenceIdx").unique(true).sparse(true)
+        )
+      } ++ Seq(
         IndexModel(
           Indexes.ascending("lastUpdated"),
           IndexOptions()
@@ -79,7 +83,7 @@ class SessionRepository @Inject() (
     }
   }
 
-  def set(answers: UserAnswers): Future[Boolean] = Mdc.preservingMdc {
+  def set(answers: UserAnswers): Future[true] = Mdc.preservingMdc {
 
     val updatedAnswers = answers copy (lastUpdated = Instant.now(clock))
 
@@ -100,16 +104,19 @@ class SessionRepository @Inject() (
       .map(_ => true)
   }
 
-  def updateUploadStatus(reference: String, newStatus: UploadStatus): Future[Boolean] = Mdc.preservingMdc {
-    collection
-      .updateOne(
-        filter = Filters.equal("data.notificationUpload.reference", Codecs.toBson(reference)),
-        update = Updates.combine(
-          Updates.set("data.notificationUpload.status", Codecs.toBson(newStatus)),
-          Updates.set("lastUpdated", Instant.now(clock))
+  def updateUploadStatus(journey: UploadJourney, reference: String, newStatus: UploadStatus): Future[Boolean] =
+    Mdc.preservingMdc {
+      val uploadPath = journey.uploadPath
+
+      collection
+        .updateOne(
+          filter = Filters.equal(s"$uploadPath.reference", Codecs.toBson(reference)),
+          update = Updates.combine(
+            Updates.set(s"$uploadPath.status", Codecs.toBson(newStatus)),
+            Updates.set("lastUpdated", Instant.now(clock))
+          )
         )
-      )
-      .toFuture()
-      .map(_.getMatchedCount > 0)
-  }
+        .toFuture()
+        .map(_.getMatchedCount > 0)
+    }
 }

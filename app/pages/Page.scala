@@ -21,4 +21,7 @@ trait Page
 object Page {
 
   given Conversion[Page, String] = (page: Page) => page.toString
+
+  val NOTIFICATION_PATH = "notification"
+  val CERTIFICATE_PATH  = "certificate"
 }

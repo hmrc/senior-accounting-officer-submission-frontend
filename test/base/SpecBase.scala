@@ -24,6 +24,8 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 import org.scalatest.{OptionValues, TryValues}
 import pages.*
+import pages.certificate.*
+import pages.notification.*
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
@@ -48,7 +50,7 @@ trait SpecBase
       .set(NotificationMoreThanOneSaoPage, false)
       .success
       .value
-      .set(OneSaoSubmitNotificationFullNamePage, "Jackson Brown")
+      .set(NotificationSingleSaoOfficerNamePage, "Jackson Brown")
       .success
       .value
 
@@ -58,27 +60,51 @@ trait SpecBase
       .success
       .value
 
+  def completedNotificationReviewAnswers: UserAnswers =
+    completedNotificationUploadAnswers
+      .set(UploadTemplateReviewPage, true)
+      .success
+      .value
+
   def completedMultipleSaoDetailsAnswers: UserAnswers =
     emptyUserAnswers
       .set(NotificationMoreThanOneSaoPage, true)
       .success
       .value
-      .set(MoreSaoSubmitNotificationFullNamePage, "Jackson Brown")
+      .set(NotificationMultiSaoLastOfficerNamePage, "Jackson Brown")
       .success
       .value
-      .set(NotificationMoreSaoFirstStartDatePage, LocalDate.of(2024, 1, 1))
+      .set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.of(2024, 1, 1))
       .success
       .value
-      .set(WhoWasTheSaoBeforePage(0), "Taylor Green")
+      .set(NotificationMultiSaoPreviousOfficerNamePage(0), "Taylor Green")
       .success
       .value
-      .set(NotificationMoreSaoSecondStartDatePage(0), LocalDate.of(2023, 1, 1))
+      .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.of(2023, 1, 1))
       .success
       .value
-      .set(NotificationMoreSaoSecondEndDatePage(0), LocalDate.of(2023, 12, 31))
+      .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), LocalDate.of(2023, 12, 31))
       .success
       .value
-      .set(NotificationMoreSaoAreAllAddedPage(0), true)
+      .set(NotificationMultiSaoAreAllAddedPage(0), true)
+      .success
+      .value
+
+  def userAnswersWithCertificateSaoDetails: UserAnswers =
+    emptyUserAnswers
+      .set(CertificateSaoFullNamePage, "Firstname Lastname")
+      .success
+      .value
+      .set(CertificateSaoEmailPage, "firstname.lastname@example.com")
+      .success
+      .value
+
+  def userAnswersWithCertificateUploadedTemplate: UserAnswers =
+    userAnswersWithCertificateSaoDetails
+      .set(CertificateReviewQualifiedPage, true)
+      .success
+      .value
+      .set(CertificateReviewUnqualifiedPage, true)
       .success
       .value
 

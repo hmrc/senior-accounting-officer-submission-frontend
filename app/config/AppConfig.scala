@@ -17,7 +17,9 @@
 package config
 
 import controllers.internal.routes
+import models.upscan.UploadJourney
 import play.api.Configuration
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
@@ -43,12 +45,30 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   val hubSignOutUrl: String      = hubBaseUrl + "/account/sign-out-survey"
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
+  def protectedServiceUrl: String = servicesConfig.baseUrl("senior-accounting-officer")
+
   val loginContinueUrl: String = hubBaseUrl
 
   lazy val upscanInitiateV2Url: String = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
 
-  lazy val upscanCallbackTarget: String =
-    s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback()}"
+  lazy val internalAuthTestOnlyTokenUrl: String = servicesConfig.baseUrl("internal-auth") + "/test-only/token"
+
+  val internalAuthToken: String = config.get[String]("internal-auth.token")
+
+  val saoObjectStoreInternalAuthTokenRequest: JsObject = Json.obj(
+    "token"       -> internalAuthToken,
+    "principal"   -> "senior-accounting-officer-submission-frontend",
+    "permissions" -> Json.arr(
+      Json.obj(
+        "resourceType"     -> "object-store",
+        "resourceLocation" -> "senior-accounting-officer",
+        "actions"          -> Json.arr("READ", "WRITE")
+      )
+    )
+  )
+
+  def upscanCallbackTarget(journey: UploadJourney): String =
+    s"${servicesConfig.baseUrl("senior-accounting-officer-submission-frontend")}${routes.UploadCallbackController.callback(journey)}"
 
   private def getValue(key: String): String =
     sys.props.getOrElse(key, config.get[String](key))

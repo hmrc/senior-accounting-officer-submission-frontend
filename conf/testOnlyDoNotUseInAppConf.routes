@@ -25,3 +25,5 @@ GET         /senior-accounting-officer/submission/test-only/pdf/certificate     
 GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.openHtml()
 POST        /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.onSubmit()
 GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf/example      controllers.testonly.TestPdfController.example(rows:Int ?= 10)
+
+POST        /senior-accounting-officer/submission/test-only/internal-auth/object-store        controllers.testonly.InternalAuthTestOnlyController.grantSaoObjectStoreAccess()

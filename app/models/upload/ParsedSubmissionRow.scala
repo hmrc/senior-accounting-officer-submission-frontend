@@ -16,6 +16,8 @@
 
 package models.upload
 
+import models.QualifiedCompany
+import models.UnqualifiedCompany
 import play.api.libs.json.*
 
 import scala.util.Try
@@ -32,6 +34,48 @@ final case class ParsedSubmissionRow(
 
 object ParsedSubmissionRow {
   given OFormat[ParsedSubmissionRow] = Json.format[ParsedSubmissionRow]
+
+  extension (data: ParsedSubmissionRow) {
+    def toUnqualifiedCompany: Option[UnqualifiedCompany] =
+      if data.certificate.isQualified then None
+      else
+        Some(
+          UnqualifiedCompany(
+            name = data.notification.companyName,
+            utr = data.notification.companyUtr.value,
+            crn = data.notification.companyCrn.map(_.value),
+            companyType = data.notification.companyType,
+            companyStatus = data.notification.companyStatus,
+            financialYearEndDate = data.notification.financialYearEndDate
+          )
+        )
+
+    def toQualifiedCompany: Option[QualifiedCompany] = {
+      if data.certificate.isQualified then
+        Some(
+          QualifiedCompany(
+            name = data.notification.companyName,
+            utr = data.notification.companyUtr.value,
+            crn = data.notification.companyCrn.map(_.value),
+            companyType = data.notification.companyType.toString,
+            status = data.notification.companyStatus.toString,
+            financialYearEndDate = data.notification.financialYearEndDate,
+            corporationTax = data.certificate.corporationTax,
+            valueAddedTax = data.certificate.valueAddedTax,
+            paye = data.certificate.paye,
+            insurancePremiumTax = data.certificate.insurancePremiumTax,
+            stampDutyLandTax = data.certificate.stampDutyLandTax,
+            stampDutyReserveTax = data.certificate.stampDutyReserveTax,
+            petroleumRevenueTax = data.certificate.petroleumRevenueTax,
+            customsDuties = data.certificate.customsDuties,
+            exciseDuties = data.certificate.exciseDuties,
+            bankLevy = data.certificate.bankLevy,
+            additionalInformation = data.certificate.additionalInformation.fold("")(s => s)
+          )
+        )
+      else None
+    }
+  }
 }
 
 final case class NotificationFields(
@@ -123,6 +167,19 @@ final case class CertificateFields(
 
 object CertificateFields {
   given OFormat[CertificateFields] = Json.format[CertificateFields]
+  extension (cert: CertificateFields) {
+    def isQualified: Boolean =
+      cert.corporationTax ||
+        cert.valueAddedTax ||
+        cert.paye ||
+        cert.insurancePremiumTax ||
+        cert.stampDutyLandTax ||
+        cert.stampDutyReserveTax ||
+        cert.petroleumRevenueTax ||
+        cert.customsDuties ||
+        cert.exciseDuties ||
+        cert.bankLevy && !cert.certificateType.contains(CertificateType.Unqualified)
+  }
 }
 
 enum CompanyType {

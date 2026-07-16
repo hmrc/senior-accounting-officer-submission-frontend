@@ -16,10 +16,15 @@
 
 package navigation
 
+import controllers.certificate.routes as certificateRoutes
+import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
+import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
 import models.upload.UploadTemplateTableData
 import pages.*
+import pages.certificate.*
+import pages.notification.*
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -29,11 +34,9 @@ class Navigator @Inject() () {
 
   private val normalRoutes: Page => UserAnswers => Call = {
     case NotificationAdditionalInformationPage =>
-      _ => routes.ConfirmYourNotificationController.onPageLoad()
+      _ => notificationRoutes.ConfirmYourNotificationController.onPageLoad()
     case ConfirmYourNotificationPage =>
-      _ => routes.NotificationCheckYourAnswersController.onPageLoad()
-    case NotificationCheckYourAnswersPage =>
-      _ => routes.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber.id)
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case IsThisTheSaoOnCertificatePage =>
       userAnswers =>
         userAnswers.get(IsThisTheSaoOnCertificatePage) match {
@@ -50,40 +53,41 @@ class Navigator @Inject() () {
     case CombinedCertificateCheckYourAnswersPage =>
       _ => routes.CombinedWhoSubmitsCertificateController.onPageLoad(NormalMode)
     case CombinedWhoSubmitsCertificatePage =>
-      _ => routes.QualifiedCompaniesController.onPageLoad()
+      _ => certificateRoutes.QualifiedCompaniesController.onPageLoad()
     case QualifiedCompaniesPage =>
-      _ => routes.UnqualifiedCompaniesController.onPageLoad()
+      _ => certificateRoutes.UnqualifiedCompaniesController.onPageLoad()
     case UnqualifiedCompaniesPage =>
       _ => routes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
     case CombinedCertificateDeclarationSaoPage =>
       _ => routes.CombinedCertificateConfirmationController.onPageLoad()
     case NotificationConfirmationPage =>
-      _ => routes.SubmitNotificationStartController.onComplete()
+      _ => notificationRoutes.NotificationTaskListController.onComplete()
     case NotificationMoreThanOneSaoPage =>
       userAnswers =>
         userAnswers.get(NotificationMoreThanOneSaoPage) match {
-          case Some(true)  => routes.MoreSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
-          case Some(false) => routes.OneSaoSubmitNotificationFullNameController.onPageLoad(NormalMode)
+          case Some(true)  => notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
+          case Some(false) => notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
           case _           => ???
         }
-    case OneSaoSubmitNotificationFullNamePage =>
-      _ => routes.SubmitNotificationStartController.onPageLoad()
-    case MoreSaoSubmitNotificationFullNamePage =>
-      _ => routes.NotificationMoreSaoFirstStartDateController.onPageLoad(NormalMode)
-    case NotificationMoreSaoFirstStartDatePage =>
-      _ => routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode)
-    case WhoWasTheSaoBeforePage(saoIndex) =>
-      _ => routes.NotificationMoreSaoSecondStartDateController.onPageLoad(NormalMode, saoIndex)
-    case NotificationMoreSaoSecondStartDatePage(saoIndex) =>
-      _ => routes.NotificationMoreSaoSecondEndDateController.onPageLoad(NormalMode, saoIndex)
-    case NotificationMoreSaoSecondEndDatePage(saoIndex) =>
-      _ => routes.NotificationMoreSaoAreAllAddedController.onPageLoad(NormalMode, saoIndex)
-    case NotificationMoreSaoAreAllAddedPage(saoIndex) =>
+    case NotificationSingleSaoOfficerNamePage =>
+      _ => notificationRoutes.NotificationTaskListController.onPageLoad()
+    case NotificationMultiSaoLastOfficerNamePage =>
+      _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
+    case NotificationMultiSaoLastOfficerStartDatePage =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
+    case NotificationMultiSaoPreviousOfficerNamePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(NormalMode, saoIndex)
+    case NotificationMultiSaoAreAllAddedPage(saoIndex) =>
       userAnswers =>
-        userAnswers.get(NotificationMoreSaoAreAllAddedPage(saoIndex)) match {
-          case Some(true)  => routes.SubmitNotificationStartController.onPageLoad()
-          case Some(false) => routes.WhoWasTheSaoBeforeController.onPageLoad(NormalMode, saoIndex + 1)
-          case _           => ???
+        userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) match {
+          case Some(true)  => notificationRoutes.NotificationTaskListController.onPageLoad()
+          case Some(false) =>
+            notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
+          case _ => ???
         }
     case UploadTemplateTablePage =>
       userAnswers =>
@@ -91,49 +95,72 @@ class Navigator @Inject() () {
           .get(UploadTemplateTablePage)
           .fold(routes.JourneyRecoveryController.onPageLoad()) {
             case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
-              routes.NotificationUploadFormController.onPageLoad()
-            case _ => routes.SubmitNotificationStartController.onPageLoad()
+              notificationRoutes.NotificationUploadFormController.onPageLoad()
+            case _ => notificationRoutes.NotificationTaskListController.onPageLoad()
+          }
+    case UploadTemplateTableErrorPage =>
+      userAnswers =>
+        userAnswers
+          .get(UploadTemplateTablePage)
+          .fold(routes.JourneyRecoveryController.onPageLoad()) { _ =>
+            notificationRoutes.NotificationUploadFormController.onPageLoad()
           }
     case SubmissionTypePage =>
       userAnswers =>
         userAnswers.get(SubmissionTypePage) match {
-          case Some(SubmissionType.Notification) => routes.SubmitNotificationStartController.onPageLoad()
-          case Some(SubmissionType.Certificate)  => routes.CertificateTaskListController.onPageLoad()
-          case _                                 => ???
+          case Some(SubmissionType.Notification) => notificationRoutes.NotificationTaskListController.onPageLoad()
+          case Some(SubmissionType.Certificate)  =>
+            certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
+          case _ => ???
         }
     // certificate flow
     case CertificateSaoFullNamePage =>
-      _ => routes.CertificateSaoEmailController.onPageLoad(NormalMode)
+      _ => certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode)
     case CertificateSaoEmailPage =>
-      _ => routes.CertificateTaskListController.onPageLoad()
+      _ =>
+        certificateRoutes.CertificateTaskListController.onPageLoad(stage =
+          CertificateTaskListStage.UploadSubmissionTemplateStage
+        )
+    case CertificateUploadTemplateTableErrorPage =>
+      userAnswers =>
+        userAnswers
+          .get(CertificateUploadTemplateTablePage)
+          .fold(routes.JourneyRecoveryController.onPageLoad()) { _ =>
+            certificateRoutes.CertificateUploadFormController.onPageLoad()
+          }
     case CertificateReviewQualifiedPage =>
-      _ => routes.CertificateReviewUnqualifiedController.onPageLoad()
+      _ => certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
     case CertificateReviewUnqualifiedPage =>
-      _ => routes.CertificateTaskListController.onPageLoad()
+      _ =>
+        certificateRoutes.CertificateTaskListController.onPageLoad(stage =
+          CertificateTaskListStage.SubmitCertificateStage
+        )
     case CertificateAdditionalInformationPage =>
-      _ => routes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
+      _ => certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
     case CertificateWhoIsSubmittingPage =>
       userAnswers =>
         userAnswers.get(CertificateWhoIsSubmittingPage) match {
           case Some(CertificateWhoIsSubmitting.Sao) =>
-            routes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
+            certificateRoutes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
           case Some(CertificateWhoIsSubmitting.StandIn) =>
-            routes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
+            certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
           case _ => ???
         }
     case CertificateDeclarationSaoPage | CertificateDeclarationStandInPage =>
-      _ => routes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateCheckYourAnswersPage =>
-      _ => routes.CertificateConfirmationController.onPageLoad()
+      _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateConfirmationPage =>
-      _ => routes.CertificateTaskListController.onPageLoad()
+      _ => certificateRoutes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Complete)
     case _ =>
       _ => ???
   }
 
   private val checkRouteMap: Page => UserAnswers => Call = {
     case NotificationAdditionalInformationPage =>
-      _ => routes.NotificationCheckYourAnswersController.onPageLoad()
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationSingleSaoOfficerNamePage =>
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case CertificateAdditionalInformationPage =>
+      _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case SaoNamePage =>
       _ => routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
     case SaoEmailPage =>
@@ -156,6 +183,4 @@ class Navigator @Inject() () {
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
   }
-
-  val notificationIdReferenceNumber: NotificationIdReferenceNumber = NotificationIdReferenceNumber("SAONOT0123456789")
 }
