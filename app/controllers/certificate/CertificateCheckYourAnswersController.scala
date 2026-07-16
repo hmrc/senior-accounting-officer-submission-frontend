@@ -64,9 +64,7 @@ class CertificateCheckYourAnswersController @Inject() (
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
     given HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    request.body.asFormUrlEncoded.flatMap(
-      _.get(CertificateCheckYourAnswersController.TokenField).flatMap(_.headOption)
-    ) match {
+    request.body.asFormUrlEncoded.flatMap(submissionToken) match {
       case None =>
         Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
       case Some(token) =>
@@ -95,6 +93,11 @@ class CertificateCheckYourAnswersController @Inject() (
         "Try again later."
       )
       .map(InternalServerError(_))
+
+  private def submissionToken(form: Map[String, Seq[String]]): Option[String] =
+    form.collectFirst {
+      case (CertificateCheckYourAnswersController.TokenField, token +: _) => token
+    }
 }
 
 object CertificateCheckYourAnswersController {
