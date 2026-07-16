@@ -15,9 +15,8 @@
  */
 
 package controllers.notification
-import controllers.notification.NotificationConfirmationController.*
-
 import controllers.actions.*
+import controllers.notification.NotificationConfirmationController.*
 import models.NormalMode
 import navigation.Navigator
 import pages.notification.NotificationConfirmationPage
@@ -34,6 +33,8 @@ import javax.inject.Inject
 import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
 import uk.gov.hmrc.objectstore.client.Path
 import scala.concurrent.ExecutionContext
+
+import javax.inject.Inject
 
 class NotificationConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
