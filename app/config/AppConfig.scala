@@ -45,13 +45,11 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   val hubSignOutUrl: String      = hubBaseUrl + "/account/sign-out-survey"
   val hubUnauthorisedUrl: String = hubBaseUrl + "/unauthorised"
 
-  def protectedServiceUrl: String = servicesConfig.baseUrl("senior-accounting-officer")
+  lazy val protectedServiceUrl: String = servicesConfig.baseUrl("senior-accounting-officer")
 
   val loginContinueUrl: String = hubBaseUrl
 
   lazy val upscanInitiateV2Url: String = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
-
-  lazy val protectedServiceBaseUrl: String = servicesConfig.baseUrl("senior-accounting-officer")
 
   lazy val internalAuthTestOnlyTokenUrl: String = servicesConfig.baseUrl("internal-auth") + "/test-only/token"
 

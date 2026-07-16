@@ -36,7 +36,7 @@ class CertificateSubmissionConnector @Inject() (
 
   def submit(request: CertificateSubmissionRequest)(using HeaderCarrier): Future[CertificateSubmissionResponse] =
     httpClient
-      .post(url"${appConfig.protectedServiceBaseUrl}/senior-accounting-officer/certificate")
+      .post(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/certificate")
       .withBody(Json.toJson(request))
       .execute[HttpResponse]
       .map {
