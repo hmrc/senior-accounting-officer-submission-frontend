@@ -33,11 +33,10 @@ import play.api.test.Helpers.*
 import repositories.SessionRepository
 import services.NotificationSubmitService.toNotification
 import services.NotificationSubmitServiceSpec.*
-import uk.gov.hmrc.domain.SaUtrGenerator
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import utils.TestDataGenerator
 
 import scala.concurrent.Future
-import scala.util.Random
 
 import java.time.LocalDate
 
@@ -239,18 +238,8 @@ object NotificationSubmitServiceSpec {
   val exampleCompanyName             = "example company name"
   val exampleAccPeriodEnd: LocalDate = LocalDate.of(2001, 1, 1)
 
-  private def generateCrn = {
-    val num = Random.nextInt(1000000)
-    f"$num%08d"
-  }
-
-  private def generateUtr = {
-    val seed = Random.nextInt(1000000)
-    SaUtrGenerator(seed).nextSaUtr.toString
-  }
-
-  lazy val exampleCrn = generateCrn
-  lazy val exampleUtr = generateUtr
+  lazy val exampleCrn = TestDataGenerator.generateCrn
+  lazy val exampleUtr = TestDataGenerator.generateUtr
 
   val exampleTableData: UploadTemplateTableData = UploadTemplateTableData(
     rows = Seq(

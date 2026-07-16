@@ -31,12 +31,12 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
   class UploadHarness extends RequireNotificationUploadUnlockedAction {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
-      filter(DataRequest(FakeRequest(), userAnswers.id, "SAOSUB123456789", userAnswers))
+      filter(DataRequest(FakeRequest(), userAnswers.id, testSaoSubscriptionId, userAnswers))
   }
 
   class SubmitHarness extends RequireSubmitNotificationUnlockedAction {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
-      filter(DataRequest(FakeRequest(), userAnswers.id, "SAOSUB123456789", userAnswers))
+      filter(DataRequest(FakeRequest(), userAnswers.id, testSaoSubscriptionId, userAnswers))
   }
 
   "RequireNotificationUploadUnlockedAction" - {

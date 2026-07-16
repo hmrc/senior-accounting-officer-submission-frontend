@@ -32,7 +32,7 @@ class RequireCertificateUploadSubmissionTemplateUnlockedActionSpec extends SpecB
 
   class Harness extends RequireCertificateUploadSubmissionTemplateUnlockedAction {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
-      filter(DataRequest(FakeRequest(), userAnswers.id, "SAOSUB123456789", userAnswers))
+      filter(DataRequest(FakeRequest(), userAnswers.id, testSaoSubscriptionId, userAnswers))
   }
 
   "RequireCertificateUploadSubmissionTemplateUnlockedAction" - {

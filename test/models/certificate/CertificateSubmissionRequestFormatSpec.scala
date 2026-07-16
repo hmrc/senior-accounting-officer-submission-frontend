@@ -122,7 +122,7 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
 
   private val request: CertificateSubmissionRequest =
     CertificateSubmissionRequest(
-      subscriptionId = "SAOSUB123456789",
+      subscriptionId = testSaoSubscriptionId,
       submitterName = Some("Proxy Person"),
       saoName = "Senior Officer",
       saoEmail = "sao@example.com",
@@ -131,8 +131,8 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
     )
 
   private val requestJson: JsValue = Json.parse(
-    """{
-      |  "subscriptionId": "SAOSUB123456789",
+    s"""{
+      |  "subscriptionId": "$testSaoSubscriptionId",
       |  "submitterName": "Proxy Person",
       |  "saoName": "Senior Officer",
       |  "saoEmail": "sao@example.com",

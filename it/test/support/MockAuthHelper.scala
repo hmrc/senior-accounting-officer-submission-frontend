@@ -18,6 +18,7 @@ package support
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.stubbing.StubMapping
+import utils.TestDataGenerator.testSaoSubscriptionId
 
 object MockAuthHelper {
 
@@ -32,7 +33,7 @@ object MockAuthHelper {
           aResponse()
             .withHeader("content-type", "application/json")
             .withBody(
-              """{
+              s"""{
                 | "internalId": "testId",
                 | "allEnrolments": [
                 |   {
@@ -40,7 +41,7 @@ object MockAuthHelper {
                 |     "identifiers": [
                 |       {
                 |         "key": "EtmpSubscriptionId",
-                |         "value": "SAOSUB123456789"
+                |         "value": "$testSaoSubscriptionId"
                 |       }
                 |     ],
                 |     "state": "Activated"

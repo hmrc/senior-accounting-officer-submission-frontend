@@ -55,7 +55,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, "SAOSUB123456789", completeUserAnswers, "token")
+        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers, "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
@@ -63,7 +63,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       verify(sessionRepository).clear(userAnswersId)
 
       val request = requestCaptor.getValue
-      request.subscriptionId mustBe "SAOSUB123456789"
+      request.subscriptionId mustBe testSaoSubscriptionId
       request.submitterName.value mustBe "Proxy Person"
       request.saoName mustBe "Senior Officer"
       request.saoEmail mustBe "sao@example.com"
@@ -98,7 +98,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, "SAOSUB123456789", completeUserAnswers, "token")
+        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers, "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Duplicate
@@ -118,7 +118,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, "SAOSUB123456789", completeUserAnswers, "token")
+        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers, "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Failed
@@ -131,7 +131,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service           = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, "SAOSUB123456789", emptyUserAnswers, "token")
+        .submit(userAnswersId, testSaoSubscriptionId, emptyUserAnswers, "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.MissingData

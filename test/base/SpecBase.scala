@@ -31,6 +31,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
+import utils.TestDataGenerator
 
 import java.time.LocalDate
 
@@ -42,19 +43,20 @@ trait SpecBase
     with ScalaFutures
     with IntegrationPatience {
 
-  val userAnswersId: String = "id"
-  val etmpSafeId            = "etmpSafeId"
-  val companyCrn            = "companyCrn"
-  val companyName           = "companyName"
-  val companyUtr            = "companyUtr"
-  val contact1Name          = "Contact 1 Name"
-  val contact1Email         = "1@test.com"
-  val contact1Language      = "en"
-  val contact1Status        = "valid"
-  val contact2Name          = "Contact 2 Name"
-  val contact2Email         = "2@test.com"
-  val contact2Language      = "cy"
-  val contact2Status        = "unreachable"
+  val userAnswersId: String         = "id"
+  val testSaoSubscriptionId: String = TestDataGenerator.testSaoSubscriptionId
+  val etmpSafeId                    = "etmpSafeId"
+  val companyCrn                    = "companyCrn"
+  val companyName                   = "companyName"
+  val companyUtr                    = "companyUtr"
+  val contact1Name                  = "Contact 1 Name"
+  val contact1Email                 = "1@test.com"
+  val contact1Language              = "en"
+  val contact1Status                = "valid"
+  val contact2Name                  = "Contact 2 Name"
+  val contact2Email                 = "2@test.com"
+  val contact2Language              = "cy"
+  val contact2Status                = "unreachable"
 
   def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
