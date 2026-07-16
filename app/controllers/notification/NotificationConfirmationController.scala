@@ -15,6 +15,7 @@
  */
 
 package controllers.notification
+import controllers.notification.NotificationConfirmationController.*
 
 import controllers.actions.*
 import models.NormalMode
@@ -29,6 +30,10 @@ import views.html.notification.NotificationConfirmationView
 import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
+
+import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import uk.gov.hmrc.objectstore.client.Path
+import scala.concurrent.ExecutionContext
 
 class NotificationConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
@@ -59,4 +64,8 @@ class NotificationConfirmationController @Inject() (
     (identify andThen getData andThen requireData) { implicit request =>
       Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
     }
+}
+
+object NotificationConfirmationController {
+  val objectStoreOwner = "senior-accounting-officer"
 }
