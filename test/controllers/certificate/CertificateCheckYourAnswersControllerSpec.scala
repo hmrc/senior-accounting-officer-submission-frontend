@@ -19,9 +19,9 @@ package controllers.certificate
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
+import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.*
-import org.jsoup.Jsoup
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -54,9 +54,9 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[CertificateCheckYourAnswersView]
+        val view     = application.injector.instanceOf[CertificateCheckYourAnswersView]
         val document = Jsoup.parse(contentAsString(result))
-        val token = document.select("input[name=certificateSubmissionToken]").attr("value")
+        val token    = document.select("input[name=certificateSubmissionToken]").attr("value")
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(SummaryList(), token)(using request, messages(application)).toString
@@ -105,7 +105,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
       }
     }
 
-    "must return internal server error when submission fails" in {
+    "must fail when submission fails so the error handler can render the 500 page" in {
       val mockSubmissionService = mock[CertificateSubmissionService]
 
       when(mockSubmissionService.submit(meq("id"), meq("SAOSUB123456789"), any(), meq("token"))(using any()))
@@ -123,7 +123,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
 
         val result = route(application, request).value
 
-        status(result) mustEqual INTERNAL_SERVER_ERROR
+        result.failed.futureValue mustBe CertificateCheckYourAnswersController.SubmissionFailedException
       }
     }
 
@@ -169,7 +169,9 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual certificateRoutes.CertificateCheckYourAnswersController.onPageLoad().url
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateCheckYourAnswersController
+          .onPageLoad()
+          .url
       }
     }
 

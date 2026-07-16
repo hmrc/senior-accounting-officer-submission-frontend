@@ -79,7 +79,9 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
       )
 
       "must include a certificate submission token" in {
-        doc.select("input[type=hidden][name=certificateSubmissionToken]").attr("value") mustBe certificateSubmissionToken
+        doc
+          .select("input[type=hidden][name=certificateSubmissionToken]")
+          .attr("value") mustBe certificateSubmissionToken
       }
 
       "must prevent double click on submit" in {

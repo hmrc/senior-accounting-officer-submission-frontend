@@ -16,7 +16,6 @@
 
 package controllers.certificate
 
-import config.ErrorHandler
 import controllers.actions.*
 import controllers.certificate.routes as certificateRoutes
 import pages.certificate.CertificateSubmissionTokenPage
@@ -45,7 +44,6 @@ class CertificateCheckYourAnswersController @Inject() (
     sessionRepository: SessionRepository,
     certificateCheckYourAnswersService: CertificateCheckYourAnswersService,
     certificateSubmissionService: CertificateSubmissionService,
-    errorHandler: ErrorHandler,
     view: CertificateCheckYourAnswersView
 )(using ExecutionContext)
     extends FrontendBaseController
@@ -80,26 +78,19 @@ class CertificateCheckYourAnswersController @Inject() (
             case CertificateSubmissionResult.MissingData =>
               Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
             case CertificateSubmissionResult.Failed =>
-              internalServerError
+              Future.failed(CertificateCheckYourAnswersController.SubmissionFailedException)
           }
     }
   }
 
-  private def internalServerError(using RequestHeader): Future[Result] =
-    errorHandler
-      .standardErrorTemplate(
-        "Sorry, there is a problem with the service",
-        "Sorry, there is a problem with the service",
-        "Try again later."
-      )
-      .map(InternalServerError(_))
-
   private def submissionToken(form: Map[String, Seq[String]]): Option[String] =
-    form.collectFirst {
-      case (CertificateCheckYourAnswersController.TokenField, token +: _) => token
+    form.collectFirst { case (CertificateCheckYourAnswersController.TokenField, token +: _) =>
+      token
     }
 }
 
 object CertificateCheckYourAnswersController {
   val TokenField: String = "certificateSubmissionToken"
+
+  object SubmissionFailedException extends RuntimeException("Certificate submission failed")
 }

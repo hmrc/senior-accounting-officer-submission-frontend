@@ -17,7 +17,7 @@
 package models.certificate
 
 import base.SpecBase
-import play.api.libs.json.{JsError, JsObject, JsSuccess, JsValue, Json}
+import play.api.libs.json.*
 
 class CertificateSubmissionRequestFormatSpec extends SpecBase {
 
