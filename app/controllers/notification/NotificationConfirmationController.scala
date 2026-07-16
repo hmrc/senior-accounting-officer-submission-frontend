@@ -40,6 +40,9 @@ class NotificationConfirmationController @Inject() (
 
   def onPageLoad(notificationIdReferenceNumber: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
+      // TODO: install object store scala package
+      // TODO: check the file exists on object store
+      // TODO: pass boolean to display the link or not. will be changed when downloading file implemented
       Ok(view(notificationIdReferenceNumber))
     }
 
