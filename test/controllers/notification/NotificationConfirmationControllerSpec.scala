@@ -26,6 +26,15 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.notification.NotificationConfirmationView
+import org.scalatestplus.mockito.MockitoSugar.mock
+import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import org.mockito.ArgumentMatchers.{any, eq as meq}
+import org.mockito.Mockito.{verify, when}
+import uk.gov.hmrc.objectstore.client.Path
+import scala.concurrent.Future
+import uk.gov.hmrc.objectstore.client.ObjectListing
+import uk.gov.hmrc.objectstore.client.ObjectSummary
+import java.time.Instant
 
 class NotificationConfirmationControllerSpec extends SpecBase {
 
@@ -35,38 +44,90 @@ class NotificationConfirmationControllerSpec extends SpecBase {
 
   "NotificationConfirmation Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "onPageLoad" - {
+      "must return OK and a view with no link displayed when object store finds no files" in {
 
-      val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers)).build()
+        val mockObjectStoreClient = mock[PlayObjectStoreClient]
+        when(
+          mockObjectStoreClient.listObjects(
+            path = any(),
+            owner = any()
+          )(using
+            any()
+          )
+        )
+          .thenReturn(Future.successful(ObjectListing(Nil)))
 
-      running(application) {
-        val request =
-          FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
+        val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
+          .overrides(bind[PlayObjectStoreClient].toInstance(mockObjectStoreClient))
+          .build()
 
-        val result = route(application, request).value
+        running(application) {
+          val request =
+            FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
 
-        val view = application.injector.instanceOf[NotificationConfirmationView]
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(hardCodedNotRef, false)(using
-          request,
-          messages(application)
-        ).toString
+          val view = application.injector.instanceOf[NotificationConfirmationView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(hardCodedNotRef, false)(using
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+      "must return OK and a view with a link displayed when object store finds some files" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+        val mockObjectStoreClient = mock[PlayObjectStoreClient]
+        when(
+          mockObjectStoreClient.listObjects(
+            path = any(),
+            owner = any()
+          )(using
+            any()
+          )
+        )
+          .thenReturn(
+            Future.successful(
+              ObjectListing(List(ObjectSummary(Path.File(Path.Directory("directory"), "fileName"), 0, Instant.now())))
+            )
+          )
 
-      running(application) {
-        val request =
-          FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
+        val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
+          .overrides(bind[PlayObjectStoreClient].toInstance(mockObjectStoreClient))
+          .build()
 
-        val result = route(application, request).value
+        running(application) {
+          val request =
+            FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[NotificationConfirmationView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(hardCodedNotRef, true)(using
+            request,
+            messages(application)
+          ).toString
+        }
+      }
+
+      "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        running(application) {
+          val request =
+            FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
     }
 
