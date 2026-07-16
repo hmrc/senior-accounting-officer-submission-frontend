@@ -8,7 +8,7 @@ ThisBuild / scalaVersion := "3.3.6"
 
 lazy val microservice = (project in file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
-  .settings(inConfig(Test)(testSettings)*)
+  .settings(inConfig(Test)(testSettings) *)
   .disablePlugins(JUnitXmlReportPlugin) // Required to prevent https://github.com/scalatest/scalatest/issues/1427
   .settings(ThisBuild / useSuperShell := false)
   .settings(
@@ -52,8 +52,8 @@ lazy val microservice = (project in file("."))
       "https://open.artefacts.tax.service.gov.uk/maven2"
     )
   )
-  .settings(CodeCoverageSettings.settings*)
-  .settings(scalafixSettings*)
+  .settings(CodeCoverageSettings.settings *)
+  .settings(scalafixSettings *)
 
 lazy val testSettings: Seq[Def.Setting[?]] = Seq(
   fork := true,

@@ -20,20 +20,22 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.notification.NotificationConfirmationView
-import org.scalatestplus.mockito.MockitoSugar.mock
-import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
-import org.mockito.ArgumentMatchers.{any, eq as meq}
-import org.mockito.Mockito.{verify, when}
-import uk.gov.hmrc.objectstore.client.Path
-import scala.concurrent.Future
 import uk.gov.hmrc.objectstore.client.ObjectListing
 import uk.gov.hmrc.objectstore.client.ObjectSummary
+import uk.gov.hmrc.objectstore.client.Path
+import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import views.html.notification.NotificationConfirmationView
+
+import scala.concurrent.Future
+
 import java.time.Instant
 
 class NotificationConfirmationControllerSpec extends SpecBase {

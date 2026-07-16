@@ -15,22 +15,21 @@
  */
 
 package controllers.notification
-import controllers.notification.NotificationConfirmationController.*
-
 import controllers.actions.*
+import controllers.notification.NotificationConfirmationController.*
 import models.NormalMode
 import navigation.Navigator
 import pages.notification.NotificationConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.objectstore.client.Path
+import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationConfirmationView
 
-import javax.inject.Inject
-
-import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
-import uk.gov.hmrc.objectstore.client.Path
 import scala.concurrent.ExecutionContext
+
+import javax.inject.Inject
 
 class NotificationConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
