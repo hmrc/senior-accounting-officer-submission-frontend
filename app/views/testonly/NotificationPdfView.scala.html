@@ -95,6 +95,7 @@
 
     td {
         border-bottom:1px solid #cecece;
+        vertical-align: baseline;
     }
 
     th {
@@ -132,7 +133,7 @@
         <bookmarks>
             <bookmark name="Nominated company details" href="#company-details"/>
             <bookmark name="Contact details" href="#contact-details"/>
-            @notification.additionalInformation.map { _ =>
+            @notification.additionalInformation.filter(_.nonEmpty).map { _ =>
                 <bookmark name="Additional information" href="#additional-information"/>
             }
             <bookmark name="List of companies" href="#companies-list"/>
@@ -180,7 +181,7 @@
                         }
                     </tbody>
                 </table>
-                @notification.additionalInformation.map { additionalInformation =>
+                @notification.additionalInformation.filter(_.nonEmpty).map { additionalInformation =>
                     <h2 id="additional-information">Additional information</h2>
                     <p>Information about your notification</p>
                     @additionalInformation.split("\n").map { paragraph =>

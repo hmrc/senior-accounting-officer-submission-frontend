@@ -20,7 +20,7 @@ GET         /senior-accounting-officer/submission/test-only/poi/deferred-sxssf  
 
 
 GET         /senior-accounting-officer/submission/test-only/pdf/sign-up                       controllers.testonly.TestPdfController.testSignUpPdf()
-GET         /senior-accounting-officer/submission/test-only/pdf/notification                  controllers.testonly.TestPdfController.testNotificationPdf(rows:Int ?= 4500)
+GET         /senior-accounting-officer/submission/test-only/pdf/notification                  controllers.testonly.TestPdfController.testNotificationPdf(rows:Int ?= 3)
 GET         /senior-accounting-officer/submission/test-only/pdf/certificate                   controllers.testonly.TestPdfController.testCertificatePdf(rows:Int ?= 4500)
 GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.openHtml()
 POST        /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.onSubmit()

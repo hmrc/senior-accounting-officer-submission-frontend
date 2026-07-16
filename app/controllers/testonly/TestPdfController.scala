@@ -658,7 +658,7 @@ private[testonly] object OpenHtmlToPdfService {
   }
 
   def testNotificationData(rows: Int)(using Materializer, ExecutionContext): Notification = {
-    val additionalInformation = LorumIpsum.generate(totalBytes = 32767L)
+    val additionalInformation = ""
     Notification(
       companyName = "Test ABC Limited",
       financialYearEndDate = "21 December 2024",
@@ -666,7 +666,7 @@ private[testonly] object OpenHtmlToPdfService {
       submissionId = "XMPLR0123456789",
       saoHistory = List(
         SaoTenure(name = "Fake Jackson Brown", startDate = Some("01 June 2024")),
-        SaoTenure(name = "Fake Ashley Ross", startDate = Some("01 January 2024"), endDate = Some("31 May 20204"))
+        SaoTenure(name = "Fake Ashley Ross", startDate = Some("01 January 2024"), endDate = Some("31 May 2024"))
       ),
       companies = genNotificationTestCompanies(rows),
       additionalInformation = Some(additionalInformation)
@@ -674,11 +674,11 @@ private[testonly] object OpenHtmlToPdfService {
   }
 
   def testCertificateData(rows: Int)(using Materializer, ExecutionContext): Certificate = {
-    val additionalInformation = LorumIpsum.generate(totalBytes = 32767L)
+    val additionalInformation = ""
     Certificate(
       saoName = "Test Jackson Brown",
       saoEmail = "jbrown@test.co.uk",
-      submitterName = "Test Jackson Brown",
+      submitterName = "Jake Allen",
       submissionDate = "12 May 2025",
       submissionId = "XMPLR0123456789",
       companies = genCertificateTestCompanies(rows, Some(additionalInformation)),
@@ -707,7 +707,7 @@ object LorumIpsum {
         loop(total, counter + 1)
       else ()
     }
-    loop(numberOfRepeats)
+    loop(1)
 
     sb.append(String(offset))
     sb.mkString

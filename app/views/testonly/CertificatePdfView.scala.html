@@ -131,12 +131,15 @@
         </div>
         <bookmarks>
             <bookmark name="Submission details" href="#submission-details"/>
-            @certificate.additionalInformation.map{ _ =>
+            @if(certificate.additionalInformation.nonEmpty) {
                 <bookmark name="Additional information" href="#additional-information"/>
             }
-            <bookmark name="Qualified certificates" href="#qualified-certificates"/>
-            <bookmark name="Unqualified certificates" href="#unqualified-certificates"/>
-
+            @if(certificate.qualified.nonEmpty) {
+                <bookmark name="Qualified certificates" href="#qualified-certificates"/>
+            }
+            @if(certificate.unqualified.nonEmpty) {
+                <bookmark name="Unqualified certificates" href="#unqualified-certificates"/>
+            }
         </bookmarks>
         <main>
             <div>
@@ -149,7 +152,7 @@
                         <tr>
                             <th>Senior Accounting Officer</th>
                             <th>Email address</th>
-                            <th>Authorised submitter</th>
+                            @{if (certificate.submitterName.nonEmpty) <th>Authorised submitter</th>}
                             <th>Submission date</th>
                             <th>Reference number</th>
                         </tr>
@@ -158,14 +161,14 @@
                         <tr>
                             <td>@certificate.saoName</td>
                             <td>@certificate.saoEmail</td>
-                            <td>@certificate.submitterName</td>
+                            @{if (certificate.submitterName.nonEmpty) <td>@certificate.submitterName</td>}
                             <td>@certificate.submissionDate</td>
                             <td>@certificate.submissionId</td>
                         </tr>
                     </tbody>
                 </table>
                     <!-- -->
-                    @certificate.additionalInformation.map{ additionalInformation =>
+                    @certificate.additionalInformation.filter(_.nonEmpty).map{ additionalInformation =>
                         <h2 id="additional-information">Additional information and explanation</h2>
                         <h4>Information about your certificate</h4>
                         @additionalInformation.split("\n").map { paragraph =>
@@ -176,7 +179,13 @@
                     @if(certificate.qualified.nonEmpty) {
                         <qualified-page>
                             <h2 id="qualified-certificates">Companies with qualified certificates</h2>
-                            <p>In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I Jackson Brown, the Senior Accounting Officer, hereby certify that throughout the company's financial year ended 31 December 2024, @certificate.qualified.length companies did not have appropriate tax accounting arrangements.</p>
+                            <p>In accordance with paragraph 2 of Schedule 46 to the Finance Act 2009, I
+                                @{if (certificate.submitterName.nonEmpty)
+                                    s"${certificate.submitterName}, on the behalf of, ${certificate.saoName}"
+                                else
+                                    certificate.saoName
+                                }
+                                the Senior Accounting Officer, hereby certify that throughout the company's financial year ended 31 December 2024, @certificate.qualified.length companies did not have appropriate tax accounting arrangements.</p>
                             <table>
                                 <thead>
                                     <tr>
@@ -203,7 +212,13 @@
                     @if(certificate.unqualified.nonEmpty) {
                         <unqualified-page>
                             <h2 id="unqualified-certificates">Companies with unqualified certificates</h2>
-                            <p>In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I Jackson Brown the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 2024 that @certificate.unqualified.length companies had appropriate tax accounting arrangements throughout the year.</p>
+                            <p>In accordance with Paragraph 2 Schedule 46 Finance Act 2009, I
+                                @{if (certificate.submitterName.nonEmpty)
+                                    s"${certificate.submitterName}, on the behalf of, ${certificate.saoName}"
+                                else
+                                    certificate.saoName
+                                }
+                                the Senior Accounting Officer hereby certify, in respect of the financial year ended 31 December 2024 that @certificate.unqualified.length companies had appropriate tax accounting arrangements throughout the year.</p>
                             <table>
                                 <thead>
                                     <tr>
