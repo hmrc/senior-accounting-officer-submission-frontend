@@ -15,6 +15,7 @@
  */
 
 package controllers.notification
+import controllers.notification.NotificationConfirmationController.*
 
 import controllers.actions.*
 import models.NormalMode
@@ -27,6 +28,10 @@ import views.html.notification.NotificationConfirmationView
 
 import javax.inject.Inject
 
+import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import uk.gov.hmrc.objectstore.client.Path
+import scala.concurrent.ExecutionContext
+
 class NotificationConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
@@ -34,20 +39,33 @@ class NotificationConfirmationController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationConfirmationView,
-    navigator: Navigator
-) extends FrontendBaseController
+    navigator: Navigator,
+    objectStoreClient: PlayObjectStoreClient
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(notificationIdReferenceNumber: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData) { implicit request =>
-      // TODO: install object store scala package
-      // TODO: check the file exists on object store
-      // TODO: pass boolean to display the link or not. will be changed when downloading file implemented
-      Ok(view(notificationIdReferenceNumber))
+  def onPageLoad(notificationReference: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      objectStoreClient
+        .listObjects(
+          path = Path.Directory(s"/$objectStoreOwner/$notificationReference/"),
+          owner = objectStoreOwner
+        )
+        .map { objectListing =>
+          objectListing.objectSummaries match {
+            case Nil => Ok(view(notificationReference, displayLink = false))
+            case _   => Ok(view(notificationReference, displayLink = true))
+          }
+        }
     }
 
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
     }
+}
+
+object NotificationConfirmationController {
+  val objectStoreOwner = "senior-accounting-officer"
 }

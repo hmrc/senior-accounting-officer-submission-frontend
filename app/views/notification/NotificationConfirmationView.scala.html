@@ -25,7 +25,7 @@
     appConfig: AppConfig
 )
 
-@(notificationIdReferenceNumber: String)(using request: Request[?], messages: Messages)
+@(notificationReference: String, displayLink: Boolean)(using request: Request[?], messages: Messages)
 
 @layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
 
@@ -36,7 +36,7 @@
         <div class="govuk-panel__body">
             @messages("notificationConfirmation.reference.text")
             <br>
-            <strong data-test-id="notification-reference-number">@notificationIdReferenceNumber</strong>
+            <strong data-test-id="notification-reference-number">@notificationReference</strong>
         </div>
     </div>
 
@@ -44,14 +44,16 @@
     <p class="govuk-body">@messages("notificationConfirmation.paragraph2")</p>
 
     <ul class="govuk-list govuk-list--bullet">
-        <li>
-            <span>
-                <a class="govuk-link" id="download-pdf-link" href="#">
-                    @messages("notificationConfirmation.downloadPdf")
-                </a>
-                @messages("notificationConfirmation.list1.item1")
-            </span>
-        </li>
+        @if(displayLink) {
+            <li>
+                <span>
+                    <a class="govuk-link" id="download-pdf-link" href="#">
+                        @messages("notificationConfirmation.downloadPdf")
+                    </a>
+                    @messages("notificationConfirmation.list1.item1")
+                </span>
+            </li>
+        }
         <li>
             <span>
                 <a class="govuk-link" id="print-page-link" href="#">

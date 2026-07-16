@@ -27,7 +27,7 @@ import NotificationConfirmationViewSpec.*
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(testReferenceNumber).toString)
+  private def generateView(): Document = Jsoup.parse(SUT(testReferenceNumber, false).toString)
 
   "NotificationConfirmationView" - {
     AppConfig.setValue("hub-frontend.host", hubUrl)

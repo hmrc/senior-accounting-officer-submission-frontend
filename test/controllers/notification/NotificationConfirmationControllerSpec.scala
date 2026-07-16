@@ -48,7 +48,7 @@ class NotificationConfirmationControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[NotificationConfirmationView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(hardCodedNotRef)(using
+        contentAsString(result) mustEqual view(hardCodedNotRef, false)(using
           request,
           messages(application)
         ).toString
