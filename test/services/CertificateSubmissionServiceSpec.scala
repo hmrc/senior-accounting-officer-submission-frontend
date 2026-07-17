@@ -131,6 +131,26 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       verify(sessionRepository, never()).set(any())
     }
 
+    "must still succeed when the certificate is submitted but wiping the session data fails" in {
+      val connector         = mock[CertificateSubmissionConnector]
+      val sessionRepository = mock[SessionRepository]
+
+      when(sessionRepository.claimCertificateSubmissionToken(eqTo(userAnswersId), eqTo("token")))
+        .thenReturn(Future.successful(true))
+      when(connector.submit(any())(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResponse("CRT0123456789")))
+      when(sessionRepository.set(any())).thenReturn(Future.failed(new RuntimeException("mongo down")))
+
+      val service = new CertificateSubmissionService(connector, sessionRepository)
+
+      val result = service
+        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers, "token")
+        .futureValue
+
+      result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
+      verify(sessionRepository).set(any())
+    }
+
     "must return MissingData when required answers are absent" in {
       val connector         = mock[CertificateSubmissionConnector]
       val sessionRepository = mock[SessionRepository]

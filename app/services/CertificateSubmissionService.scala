@@ -57,11 +57,15 @@ class CertificateSubmissionService @Inject() (
           case true =>
             connector
               .submit(request)
-              .flatMap(response =>
+              .flatMap { response =>
                 sessionRepository
                   .set(userAnswers.copy(data = Json.obj()))
+                  .recover { case e =>
+                    logger.warn(s"Certificate ${response.certificateRef} submitted but wiping journey data failed", e)
+                    true
+                  }
                   .map(_ => CertificateSubmissionResult.Submitted(response.certificateRef))
-              )
+              }
               .recover { case e =>
                 logger.error("Certificate submission failed", e)
                 CertificateSubmissionResult.Failed
