@@ -18,15 +18,13 @@ package controllers.notification
 
 import config.AppConfig
 import controllers.actions.*
-import models.UserAnswers
 import models.notification.NotificationStage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationTaskListView
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
@@ -34,25 +32,16 @@ class NotificationTaskListController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationTaskListView,
-    sessionRepository: SessionRepository,
     appConfig: AppConfig
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData) async { implicit request =>
-    for {
-      userAnswers <- sessionRepository.get(request.userId)
-      result      <- userAnswers match {
-        case Some(answers) => Future.successful(Ok(view(NotificationStage.taskListStage(answers))))
-        case None          =>
-          sessionRepository
-            .set(UserAnswers(request.userId))
-            .map(_ => Ok(view(NotificationStage.ProvideSaoDetails)))
-      }
-    } yield result
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    Ok(view(NotificationStage.taskListStage(request.userAnswers)))
   }
 
   def onComplete: Action[AnyContent] = identify { implicit request =>

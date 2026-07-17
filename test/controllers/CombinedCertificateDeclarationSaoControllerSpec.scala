@@ -45,15 +45,16 @@ class CombinedCertificateDeclarationSaoControllerSpec extends SpecBase with Mock
   lazy val combinedCertificateDeclarationSaoRoute: String =
     routes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode).url
 
-  val userAnswers: UserAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      CombinedCertificateDeclarationSaoPage.toString -> Json.obj(
-        "sao"   -> "value 1",
-        "proxy" -> "value 2"
+  val userAnswers: UserAnswers = {
+    emptyUserAnswers.copy(data =
+      Json.obj(
+        CombinedCertificateDeclarationSaoPage.toString -> Json.obj(
+          "sao"   -> "value 1",
+          "proxy" -> "value 2"
+        )
       )
     )
-  )
+  }
 
   "CombinedCertificateDeclarationSao Controller" - {
 

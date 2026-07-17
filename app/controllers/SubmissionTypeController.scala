@@ -19,7 +19,6 @@ package controllers
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
 import models.NormalMode
-import models.UserAnswers
 import navigation.Navigator
 import pages.SubmissionTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -45,19 +44,10 @@ class SubmissionTypeController @Inject() (
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.fold(form)(answers => answers.get(SubmissionTypePage).fold(form)(form.fill))
-    for {
-      userAnswers <- sessionRepository.get(request.userId)
-      result      <- userAnswers match {
-        case Some(answers) => Future.successful(Ok(view(preparedForm)))
-        case None          =>
-          sessionRepository
-            .set(UserAnswers(request.userId))
-            .map(_ => Ok(view(preparedForm)))
-      }
-    } yield result
+    val preparedForm = request.userAnswers.get(SubmissionTypePage).fold(form)(form.fill)
+    Ok(view(preparedForm))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>

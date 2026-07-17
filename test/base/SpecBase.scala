@@ -17,7 +17,7 @@
 package base
 
 import controllers.actions.*
-import models.UserAnswers
+import models.*
 import models.upload.UploadTemplateTableData
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
@@ -42,8 +42,34 @@ trait SpecBase
     with ScalaFutures
     with IntegrationPatience {
 
-  val userAnswersId: String         = "id"
-  def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
+  val userAnswersId: String = "id"
+  val etmpSafeId            = "etmpSafeId"
+  val companyCrn            = "companyCrn"
+  val companyName           = "companyName"
+  val companyUtr            = "companyUtr"
+  val contact1Name          = "Contact 1 Name"
+  val contact1Email         = "1@test.com"
+  val contact1Language      = "en"
+  val contact1Status        = "valid"
+  val contact2Name          = "Contact 2 Name"
+  val contact2Email         = "2@test.com"
+  val contact2Language      = "cy"
+  val contact2Status        = "unreachable"
+
+  val subscription: SaoSubscription = SaoSubscription(
+    etmpSafeId = etmpSafeId,
+    nominatedCompany = NominatedCompany(
+      name = companyName,
+      crn = companyCrn,
+      utr = companyUtr
+    ),
+    contacts = List(
+      Contact(name = contact1Name, email = contact1Email, language = contact1Language, status = contact1Status),
+      Contact(name = contact2Name, email = contact2Email, language = contact2Language, status = contact2Status)
+    )
+  )
+
+  def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId, subscription)
 
   def completedSaoDetailsAnswers: UserAnswers =
     emptyUserAnswers

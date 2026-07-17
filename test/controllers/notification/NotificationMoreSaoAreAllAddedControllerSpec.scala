@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoAreAllAddedFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -72,7 +72,7 @@ class NotificationMultiSaoAreAllAddedControllerSpec extends SpecBase with Mockit
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId).set(NotificationMultiSaoAreAllAddedPage(saoIndex), true).success.value
+        emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(saoIndex), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

@@ -20,8 +20,8 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import forms.certificate.CertificateWhoIsSubmittingFormProvider
+import models.NormalMode
 import models.certificate.CertificateWhoIsSubmitting
-import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -67,7 +67,7 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId)
+      val userAnswers = emptyUserAnswers
         .set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.values.head)
         .success
         .value

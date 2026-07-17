@@ -49,17 +49,17 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
   lazy val certificateDeclarationStandInRoute: String =
     certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode).url
 
-  val userAnswers: UserAnswers = UserAnswers(
-    userAnswersId,
-    Json.obj(
-      CERTIFICATE_PATH -> Json.obj(
-        CertificateDeclarationStandInPage.toString -> Json.obj(
-          "StandInName" -> "value 1",
-          "SaoName"     -> "value 2"
+  val userAnswers: UserAnswers =
+    emptyUserAnswers.copy(data =
+      Json.obj(
+        CERTIFICATE_PATH -> Json.obj(
+          CertificateDeclarationStandInPage.toString -> Json.obj(
+            "StandInName" -> "value 1",
+            "SaoName"     -> "value 2"
+          )
         )
       )
     )
-  )
 
   "CertificateDeclarationStandIn Controller" - {
 

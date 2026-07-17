@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -66,7 +66,7 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(NotificationMultiSaoLastOfficerNamePage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage, "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

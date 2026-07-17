@@ -40,7 +40,7 @@ class NavigatorSpec extends SpecBase {
       "must throw an not-implemented error for an unspecified configuration" in {
         case object UnknownPage extends Page
         intercept[NotImplementedError] {
-          navigator.nextPage(UnknownPage, NormalMode, UserAnswers("id"))
+          navigator.nextPage(UnknownPage, NormalMode, emptyUserAnswers)
         }
       }
 
@@ -48,7 +48,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationAdditionalInformationPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe notificationRoutes.ConfirmYourNotificationController.onPageLoad()
       }
 
@@ -56,7 +56,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           ConfirmYourNotificationPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
@@ -64,7 +64,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           ConfirmYourNotificationPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
@@ -72,7 +72,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           IsThisTheSaoOnCertificatePage,
           NormalMode,
-          UserAnswers("id").set(IsThisTheSaoOnCertificatePage, true).get
+          emptyUserAnswers.set(IsThisTheSaoOnCertificatePage, true).get
         ) mustBe routes.SaoEmailController.onPageLoad(NormalMode)
       }
 
@@ -80,7 +80,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           IsThisTheSaoOnCertificatePage,
           NormalMode,
-          UserAnswers("id").set(IsThisTheSaoOnCertificatePage, false).get
+          emptyUserAnswers.set(IsThisTheSaoOnCertificatePage, false).get
         ) mustBe routes.SaoNameController.onPageLoad(NormalMode)
       }
 
@@ -89,7 +89,7 @@ class NavigatorSpec extends SpecBase {
           navigator.nextPage(
             IsThisTheSaoOnCertificatePage,
             NormalMode,
-            UserAnswers("id")
+            emptyUserAnswers
           )
         }
       }
@@ -98,7 +98,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           SaoNamePage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.SaoEmailController.onPageLoad(NormalMode)
       }
 
@@ -106,7 +106,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           SaoEmailPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode)
       }
 
@@ -114,7 +114,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           SaoEmailCommunicationChoicePage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
@@ -122,7 +122,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CombinedCertificateCheckYourAnswersPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.CombinedWhoSubmitsCertificateController.onPageLoad(NormalMode)
       }
 
@@ -130,7 +130,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CombinedWhoSubmitsCertificatePage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.QualifiedCompaniesController.onPageLoad()
       }
 
@@ -138,7 +138,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           QualifiedCompaniesPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.UnqualifiedCompaniesController.onPageLoad()
       }
 
@@ -146,7 +146,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           UnqualifiedCompaniesPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
       }
 
@@ -154,7 +154,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CombinedCertificateDeclarationSaoPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.CombinedCertificateConfirmationController.onPageLoad()
       }
 
@@ -162,7 +162,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationConfirmationPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe notificationRoutes.NotificationTaskListController.onComplete()
       }
 
@@ -170,7 +170,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMoreThanOneSaoPage,
           NormalMode,
-          UserAnswers("id").set(NotificationMoreThanOneSaoPage, false).success.value
+          emptyUserAnswers.set(NotificationMoreThanOneSaoPage, false).success.value
         ) mustBe notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
       }
 
@@ -178,7 +178,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMoreThanOneSaoPage,
           NormalMode,
-          UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+          emptyUserAnswers.set(NotificationMoreThanOneSaoPage, true).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
       }
 
@@ -186,7 +186,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMultiSaoLastOfficerNamePage,
           NormalMode,
-          UserAnswers("id").set(NotificationMoreThanOneSaoPage, true).success.value
+          emptyUserAnswers.set(NotificationMoreThanOneSaoPage, true).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
       }
 
@@ -194,7 +194,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMultiSaoLastOfficerStartDatePage,
           NormalMode,
-          UserAnswers("id").set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.of(2026, 5, 1)).success.value
+          emptyUserAnswers.set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.of(2026, 5, 1)).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
       }
 
@@ -202,7 +202,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMultiSaoPreviousOfficerNamePage(0),
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(NormalMode, 0)
       }
 
@@ -210,7 +210,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMultiSaoPreviousOfficerStartDatePage(0),
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode)
       }
 
@@ -218,7 +218,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMultiSaoPreviousOfficerEndDatePage(0),
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(NormalMode)
       }
 
@@ -227,7 +227,7 @@ class NavigatorSpec extends SpecBase {
           navigator.nextPage(
             NotificationMultiSaoAreAllAddedPage(0),
             NormalMode,
-            UserAnswers("id")
+            emptyUserAnswers
           )
         }
       }
@@ -236,7 +236,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMultiSaoAreAllAddedPage(0),
           NormalMode,
-          UserAnswers("id").set(NotificationMultiSaoAreAllAddedPage(0), true).success.value
+          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), true).success.value
         ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
@@ -244,7 +244,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationMultiSaoAreAllAddedPage(0),
           NormalMode,
-          UserAnswers("id").set(NotificationMultiSaoAreAllAddedPage(0), false).success.value
+          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), false).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 1)
       }
 
@@ -252,13 +252,13 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationSingleSaoOfficerNamePage,
           NormalMode,
-          UserAnswers("id").set(NotificationSingleSaoOfficerNamePage, "Firstname Lastname").success.value
+          emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage, "Firstname Lastname").success.value
         ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
         val userAnswers =
-          UserAnswers("id")
+          emptyUserAnswers
             .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
             .success
             .value
@@ -272,7 +272,7 @@ class NavigatorSpec extends SpecBase {
 
       "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {
         val userAnswers =
-          UserAnswers("id")
+          emptyUserAnswers
             .set(
               UploadTemplateTablePage,
               UploadTemplateTableData(
@@ -292,7 +292,7 @@ class NavigatorSpec extends SpecBase {
 
       "when on UploadTemplateTableErrorPage  must go to upload form page" in {
         val userAnswers =
-          UserAnswers("id")
+          emptyUserAnswers
             .set(
               UploadTemplateTablePage,
               UploadTemplateTableData(
@@ -314,7 +314,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           UploadTemplateTablePage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
 
@@ -324,7 +324,7 @@ class NavigatorSpec extends SpecBase {
           navigator.nextPage(
             SubmissionTypePage,
             NormalMode,
-            UserAnswers("id").set(SubmissionTypePage, SubmissionType.Notification).get
+            emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Notification).get
           ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
         }
 
@@ -332,7 +332,7 @@ class NavigatorSpec extends SpecBase {
           navigator.nextPage(
             SubmissionTypePage,
             NormalMode,
-            UserAnswers("id").set(SubmissionTypePage, SubmissionType.Certificate).get
+            emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Certificate).get
           ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
             CertificateTaskListStage.ProvideSaoDetailsStage
           )
@@ -343,7 +343,7 @@ class NavigatorSpec extends SpecBase {
             navigator.nextPage(
               SubmissionTypePage,
               NormalMode,
-              UserAnswers("id").set(SubmissionTypePage, SubmissionType.Combined).get
+              emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Combined).get
             )
           }
         }
@@ -355,7 +355,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateSaoFullNamePage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode)
       }
 
@@ -363,7 +363,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateSaoEmailPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
           CertificateTaskListStage.UploadSubmissionTemplateStage
         )
@@ -371,7 +371,7 @@ class NavigatorSpec extends SpecBase {
 
       "when on CertificateUploadTemplateTableErrorPage with no parsing errors, must go to upload form page" in {
         val userAnswers =
-          UserAnswers("id")
+          emptyUserAnswers
             .set(CertificateUploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
             .success
             .value
@@ -385,7 +385,7 @@ class NavigatorSpec extends SpecBase {
 
       "when on CertificateUploadTemplateTableErrorPage with parsing errors, must go to upload form page" in {
         val userAnswers =
-          UserAnswers("id")
+          emptyUserAnswers
             .set(
               CertificateUploadTemplateTablePage,
               UploadTemplateTableData(
@@ -407,7 +407,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateUploadTemplateTableErrorPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
 
@@ -415,7 +415,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateReviewQualifiedPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
       }
 
@@ -423,7 +423,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateReviewUnqualifiedPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
           CertificateTaskListStage.SubmitCertificateStage
         )
@@ -433,7 +433,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateAdditionalInformationPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
       }
 
@@ -441,7 +441,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateWhoIsSubmittingPage,
           NormalMode,
-          UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.Sao).get
+          emptyUserAnswers.set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.Sao).get
         ) mustBe certificateRoutes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
       }
 
@@ -449,7 +449,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateWhoIsSubmittingPage,
           NormalMode,
-          UserAnswers("id").set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn).get
+          emptyUserAnswers.set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn).get
         ) mustBe certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
       }
 
@@ -457,7 +457,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateDeclarationSaoPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
@@ -465,7 +465,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateDeclarationStandInPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
@@ -473,7 +473,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateConfirmationPage,
           NormalMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.Complete)
       }
     }
@@ -484,7 +484,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           NotificationAdditionalInformationPage,
           CheckMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
@@ -492,7 +492,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           SaoNamePage,
           CheckMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
@@ -500,7 +500,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           CertificateAdditionalInformationPage,
           CheckMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
@@ -508,7 +508,7 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           SaoEmailPage,
           CheckMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
@@ -516,14 +516,14 @@ class NavigatorSpec extends SpecBase {
         navigator.nextPage(
           SaoEmailCommunicationChoicePage,
           CheckMode,
-          UserAnswers("id")
+          emptyUserAnswers
         ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
       "must throw an not-implemented error for an unspecified configuration" in {
         case object UnknownPage extends Page
         intercept[NotImplementedError] {
-          navigator.nextPage(UnknownPage, CheckMode, UserAnswers("id"))
+          navigator.nextPage(UnknownPage, CheckMode, emptyUserAnswers)
         }
       }
 
