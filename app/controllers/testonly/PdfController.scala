@@ -17,14 +17,12 @@
 package controllers.testonly
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder
-import controllers.testonly.TestPdfController.*
+import controllers.testonly.PdfController.*
 import org.apache.pekko.actor.ActorSystem
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.{Source, StreamConverters}
 import org.apache.pekko.util.ByteString
 import play.api.Logger
-import play.api.data.Form
-import play.api.data.Forms.text
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
@@ -33,28 +31,18 @@ import views.html.testonly.*
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.{ExecutionContext, Future, blocking}
+
 import java.io.*
 import javax.inject.Inject
 
-class TestPdfController @Inject() (
+class PdfController @Inject() (
     mcc: MessagesControllerComponents,
     openHtmlToPdfService: OpenHtmlToPdfService,
     notificationPdfTemplate: NotificationPdfView,
-    certificatePdfTemplate: CertificatePdfView,
-    signUpPdfTemplate: SignUpPdfView
+    certificatePdfTemplate: CertificatePdfView
 )(implicit val ec: ExecutionContext, actorSystem: ActorSystem)
     extends FrontendController(mcc)
     with I18nSupport {
-
-  def testSignUpPdf(): Action[AnyContent] = Action { implicit request =>
-    val html    = signUpPdfTemplate(OpenHtmlToPdfService.testSignUpData()).toString
-    val content = openHtmlToPdfService.builderFor(html).asSource
-    Ok.chunked(
-      content,
-      inline = false,
-      fileName = Some("test-sign-up.pdf")
-    )
-  }
 
   def testNotificationPdf(rows: Int): Action[AnyContent] = Action { implicit request =>
     val html    = notificationPdfTemplate(OpenHtmlToPdfService.testNotificationData(rows)).toString
@@ -62,7 +50,7 @@ class TestPdfController @Inject() (
     Ok.chunked(
       content,
       inline = false,
-      fileName = Some("test-notification.pdf")
+      fileName = Some("notification-submission-record.pdf")
     )
   }
 
@@ -72,24 +60,13 @@ class TestPdfController @Inject() (
     Ok.chunked(
       content,
       inline = false,
-      fileName = Some("test-certificate.pdf")
+      fileName = Some("certificate-submission-record.pdf")
     )
   }
 
 }
 
-object TestPdfController {
-
-  final case class Contact(name: String, email: String)
-
-  final case class SignUp(
-      companyName: String,
-      crn: String,
-      utr: String,
-      subscriptionDate: String,
-      subscriptionId: String,
-      contacts: Seq[Contact]
-  )
+object PdfController {
 
   final case class Certificate(
       saoName: String,
@@ -106,7 +83,7 @@ object TestPdfController {
         companyName: String,
         utr: String,
         crn: String,
-        companyType: "PLC" | "LTD",
+        companyType: "Plc" | "Ltd",
         status: "Active" | "Dormant" | "Administration" | "Liquidation",
         financialYearEndDate: String,
         qualifiedRegimes: TaxRegimes = TaxRegimes(),
@@ -170,7 +147,7 @@ object TestPdfController {
         companyName: String,
         utr: String,
         crn: String,
-        companyType: "PLC" | "LTD",
+        companyType: "Plc" | "Ltd",
         status: "Active" | "Dormant" | "Administration" | "Liquidation",
         financialYearEndDate: String
     )
@@ -193,12 +170,28 @@ object TestPdfController {
     }
   }
 
-  private def emptyForm(): Form[String] =
-    Form(
-      "value" -> text()
-    )
+  final case class TaxRegimes(
+      corporationTax: Boolean = false,
+      vat: Boolean = false,
+      paye: Boolean = false,
+      insurancePremiumTax: Boolean = false,
+      stampDutyLandTax: Boolean = false,
+      stampDutyReserveTax: Boolean = false,
+      petroleumRevenueTax: Boolean = false,
+      customsDuties: Boolean = false,
+      exciseDuties: Boolean = false,
+      bankLevy: Boolean = false
+  )
 
-  val logger: Logger = Logger(TestPdfController.getClass)
+  object TaxRegimes {
+    extension (regimes: TaxRegimes) {
+      def isQualified: Boolean = regimes.productIterator.exists { case b: Boolean =>
+        b
+      }
+    }
+  }
+
+  val logger: Logger = Logger(PdfController.getClass)
 
   extension (builder: PdfRendererBuilder) {
     def asSource(using system: ActorSystem): Source[ByteString, ?] = StreamConverters

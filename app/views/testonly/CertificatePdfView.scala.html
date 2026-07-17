@@ -14,7 +14,7 @@
  * limitations under the License.
  *@
 
-@import controllers.testonly.TestPdfController.*
+@import controllers.testonly.PdfController.*
 
 @this()
 @(certificate: Certificate)
@@ -118,7 +118,7 @@
 <!DOCTYPE html>
 <html lang="en" class="govuk-template govuk-template--rebranded">
     <head>
-        <title>Senior Accounting Officer Notification submission record</title>
+        <title>Senior Accounting Officer Certificate submission record</title>
         <meta name="author" content="HMRC forms service"/>
         <meta name="subject" content="SAO notification submission record"/>
         <meta name="Creator" content="HMRC forms service"/>
@@ -152,7 +152,7 @@
                         <tr>
                             <th>Senior Accounting Officer</th>
                             <th>Email address</th>
-                            @{if (certificate.submitterName.nonEmpty) <th>Authorised submitter</th>}
+                            @{if (certificate.submitterName.nonEmpty) <th>Authorised submitter</th> else ""}
                             <th>Submission date</th>
                             <th>Reference number</th>
                         </tr>
@@ -161,7 +161,7 @@
                         <tr>
                             <td>@certificate.saoName</td>
                             <td>@certificate.saoEmail</td>
-                            @{if (certificate.submitterName.nonEmpty) <td>@certificate.submitterName</td>}
+                            @{if (certificate.submitterName.nonEmpty) <td>{certificate.submitterName}</td> else ""}
                             <td>@certificate.submissionDate</td>
                             <td>@certificate.submissionId</td>
                         </tr>
