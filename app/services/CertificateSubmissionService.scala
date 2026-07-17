@@ -22,6 +22,7 @@ import models.certificate.*
 import models.upload.{CompanyStatus, ParsedSubmissionRow}
 import pages.certificate.*
 import play.api.Logging
+import play.api.libs.json.Json
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
 
@@ -57,7 +58,9 @@ class CertificateSubmissionService @Inject() (
             connector
               .submit(request)
               .flatMap(response =>
-                sessionRepository.clear(userId).map(_ => CertificateSubmissionResult.Submitted(response.certificateRef))
+                sessionRepository
+                  .set(userAnswers.copy(data = Json.obj()))
+                  .map(_ => CertificateSubmissionResult.Submitted(response.certificateRef))
               )
               .recover { case e =>
                 logger.error("Certificate submission failed", e)

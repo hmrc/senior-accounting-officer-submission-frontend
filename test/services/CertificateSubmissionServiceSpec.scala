@@ -26,6 +26,7 @@ import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.{never, verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.certificate.*
+import play.api.libs.json.Json
 import repositories.SessionRepository
 import services.CertificateSubmissionService.CertificateSubmissionResult
 import uk.gov.hmrc.http.HeaderCarrier
@@ -41,7 +42,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
   "CertificateSubmissionService" - {
 
-    "must build the certificate payload, call the connector, clear Mongo, and return the certificate ref" in {
+    "must build the certificate payload, call the connector, wipe the Mongo data, and return the certificate ref" in {
       val connector         = mock[CertificateSubmissionConnector]
       val sessionRepository = mock[SessionRepository]
       val requestCaptor     = ArgumentCaptor.forClass(classOf[CertificateSubmissionRequest])
@@ -50,7 +51,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
         .thenReturn(Future.successful(true))
       when(connector.submit(any())(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResponse("CRT0123456789")))
-      when(sessionRepository.clear(eqTo(userAnswersId))).thenReturn(Future.successful(true))
+      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
@@ -60,7 +61,12 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
       result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
       verify(connector).submit(requestCaptor.capture())(using any())
-      verify(sessionRepository).clear(userAnswersId)
+
+      val userAnswersCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
+      verify(sessionRepository).set(userAnswersCaptor.capture())
+      userAnswersCaptor.getValue.id mustBe userAnswersId
+      userAnswersCaptor.getValue.data mustBe Json.obj()
+      verify(sessionRepository, never()).clear(any())
 
       val request = requestCaptor.getValue
       request.subscriptionId mustBe testSaoSubscriptionId
@@ -103,7 +109,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
       result mustBe CertificateSubmissionResult.Duplicate
       verify(connector, never()).submit(any())(using any())
-      verify(sessionRepository, never()).clear(any())
+      verify(sessionRepository, never()).set(any())
     }
 
     "must retain Mongo data when the connector fails" in {
@@ -122,7 +128,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
         .futureValue
 
       result mustBe CertificateSubmissionResult.Failed
-      verify(sessionRepository, never()).clear(any())
+      verify(sessionRepository, never()).set(any())
     }
 
     "must return MissingData when required answers are absent" in {
