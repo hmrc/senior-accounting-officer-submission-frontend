@@ -25,65 +25,120 @@ import CertificateConfirmationViewSpec.*
 
 class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmationView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(certificateRef).toString)
+  private def generateView(displayLink: Boolean): Document = Jsoup.parse(SUT(certificateRef, displayLink).toString)
 
   "CertificateConfirmationView" - {
-    val doc: Document = generateView()
+    "when displayLink is true" - {
+      val displayLink   = true
+      val doc: Document = generateView(displayLink)
 
-    doc.createTestsWithStandardPageElements(
-      pageTitle = pageTitle,
-      pageHeading = pageHeading,
-      showBackLink = false,
-      showIsThisPageNotWorkingProperlyLink = true,
-      hasError = false
-    )
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
 
-    "with a confirmation panel that" - {
-      "must have the correct title" - {
-        doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+      "with a confirmation panel that" - {
+        "must have the correct title" - {
+          doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+        }
+
+        "must have the correct body" - {
+          doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
+        }
+
+        "must have the reference number in bold" in {
+          val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
+          strongTags.size() mustBe 1
+          strongTags.get(0).text() mustBe certificateRef
+        }
       }
 
-      "must have the correct body" - {
-        doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
-      }
+      doc.createTestsWithParagraphs(
+        pageParagraphs
+      )
 
-      "must have the reference number in bold" in {
-        val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
-        strongTags.size() mustBe 1
-        strongTags.get(0).text() mustBe certificateRef
-      }
+      doc.createTestsWithBulletPoints(
+        pageListItemsWhenLinkDisplayed
+      )
+
+      doc.getMainContent
+        .select("li span a")
+        .get(0)
+        .createTestWithLink(
+          linkText = pageDownload,
+          destinationUrl = "#"
+        )
+
+      doc.getMainContent
+        .select("li span a")
+        .get(1)
+        .createTestWithLink(
+          linkText = pagePrint,
+          destinationUrl = "#"
+        )
+
+      doc.createTestsForSubheadings(pageSubheadings)
+      doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithSubmissionButton(
+        controllers.certificate.routes.CertificateConfirmationController.onSubmit(),
+        "Continue"
+      )
     }
 
-    doc.createTestsWithParagraphs(
-      pageParagraphs
-    )
+    "when displayLink is false" - {
+      val displayLink   = false
+      val doc: Document = generateView(displayLink)
 
-    doc.createTestsWithBulletPoints(
-      pageListItems
-    )
-
-    doc.getMainContent
-      .select("li span a")
-      .get(0)
-      .createTestWithLink(
-        linkText = pageDownload,
-        destinationUrl = "#"
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
       )
 
-    doc.getMainContent
-      .select("li span a")
-      .get(1)
-      .createTestWithLink(
-        linkText = pagePrint,
-        destinationUrl = "#"
+      "with a confirmation panel that" - {
+        "must have the correct title" - {
+          doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+        }
+
+        "must have the correct body" - {
+          doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
+        }
+
+        "must have the reference number in bold" in {
+          val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
+          strongTags.size() mustBe 1
+          strongTags.get(0).text() mustBe certificateRef
+        }
+      }
+
+      doc.createTestsWithParagraphs(
+        pageParagraphs
       )
 
-    doc.createTestsForSubheadings(pageSubheadings)
-    doc.createTestsWithOrWithoutError(hasError = false)
-    doc.createTestsWithSubmissionButton(
-      controllers.certificate.routes.CertificateConfirmationController.onSubmit(),
-      "Continue"
-    )
+      doc.createTestsWithBulletPoints(
+        pageListItemsWhenLinkNotDisplayed
+      )
+
+      doc.getMainContent
+        .select("li span a")
+        .get(0)
+        .createTestWithLink(
+          linkText = pagePrint,
+          destinationUrl = "#"
+        )
+
+      doc.createTestsForSubheadings(pageSubheadings)
+      doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithSubmissionButton(
+        controllers.certificate.routes.CertificateConfirmationController.onSubmit(),
+        "Continue"
+      )
+    }
   }
 
   extension (target: => Document) {
@@ -116,8 +171,11 @@ object CertificateConfirmationViewSpec {
     "Your certificate has been received by HMRC. A member of compliance staff may contact you if they need more information.",
     "You can now make another submission on your account homepage."
   )
-  val pageListItems: Seq[String] = Seq(
+  val pageListItemsWhenLinkDisplayed: Seq[String] = Seq(
     "Download a PDF - save a copy of all the answers you submitted now. You may not be able to download a PDF if you leave this page",
+    "Print this page - print a paper copy of this confirmation page"
+  )
+  val pageListItemsWhenLinkNotDisplayed: Seq[String] = Seq(
     "Print this page - print a paper copy of this confirmation page"
   )
   val pageDownload                 = "Download a PDF"

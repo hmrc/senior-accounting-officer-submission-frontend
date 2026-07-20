@@ -26,6 +26,15 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.certificate.CertificateConfirmationView
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
+import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import scala.concurrent.Future
+import uk.gov.hmrc.objectstore.client.ObjectListing
+import java.time.Instant
+import uk.gov.hmrc.objectstore.client.Path
+import uk.gov.hmrc.objectstore.client.ObjectSummary
 
 class CertificateConfirmationControllerSpec extends SpecBase {
 
@@ -34,37 +43,87 @@ class CertificateConfirmationControllerSpec extends SpecBase {
 
   "CertificateConfirmation Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "onPageLoad" - {
+      "must return OK and a view with no link displayed when object store finds no files" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val mockObjectStoreClient = mock[PlayObjectStoreClient]
+        when(
+          mockObjectStoreClient.listObjects(
+            path = any(),
+            owner = any()
+          )(using
+            any()
+          )
+        )
+          .thenReturn(Future.successful(ObjectListing(Nil)))
 
-      running(application) {
-        val request =
-          FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[PlayObjectStoreClient].toInstance(mockObjectStoreClient))
+          .build()
 
-        val result = route(application, request).value
+        running(application) {
+          val request =
+            FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
 
-        val view = application.injector.instanceOf[CertificateConfirmationView]
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(certificateRef)(using request, messages(application)).toString
+          val view = application.injector.instanceOf[CertificateConfirmationView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(certificateRef, false)(using request, messages(application)).toString
+        }
+      }
+
+      "must return OK and a view with a link displayed when object store finds a file" in {
+
+        val mockObjectStoreClient = mock[PlayObjectStoreClient]
+        when(
+          mockObjectStoreClient.listObjects(
+            path = any(),
+            owner = any()
+          )(using
+            any()
+          )
+        )
+          .thenReturn(
+            Future.successful(
+              ObjectListing(List(ObjectSummary(Path.File(Path.Directory("directory"), "fileName"), 0, Instant.now())))
+            )
+          )
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[PlayObjectStoreClient].toInstance(mockObjectStoreClient))
+          .build()
+
+        running(application) {
+          val request =
+            FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[CertificateConfirmationView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(certificateRef, true)(using request, messages(application)).toString
+        }
+      }
+
+      "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        running(application) {
+          val request =
+            FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
     }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      running(application) {
-        val request =
-          FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
-      }
-    }
     "must redirect to the next page for a POST" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))

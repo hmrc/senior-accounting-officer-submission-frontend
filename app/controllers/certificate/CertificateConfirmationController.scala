@@ -26,6 +26,10 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.certificate.CertificateConfirmationView
 
 import javax.inject.Inject
+import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import uk.gov.hmrc.objectstore.client.Path
+import controllers.certificate.CertificateConfirmationController.*
+import scala.concurrent.ExecutionContext
 
 class CertificateConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
@@ -34,16 +38,32 @@ class CertificateConfirmationController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateConfirmationView,
-    navigator: Navigator
-) extends FrontendBaseController
+    navigator: Navigator,
+    objectStoreClient: PlayObjectStoreClient
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(certificateIdReferenceNumber: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData) { implicit request =>
-      Ok(view(certificateIdReferenceNumber))
+  def onPageLoad(certificateReference: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      objectStoreClient
+        .listObjects(
+          path = Path.Directory(s"/$objectStoreOwner/$certificateReference/"),
+          owner = objectStoreOwner
+        )
+        .map { objectListing =>
+          objectListing.objectSummaries match {
+            case Nil => Ok(view(certificateReference, displayLink = false))
+            case _   => Ok(view(certificateReference, displayLink = true))
+          }
+        }
     }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     Redirect(navigator.nextPage(CertificateConfirmationPage, NormalMode, request.userAnswers))
   }
+}
+
+object CertificateConfirmationController {
+  val objectStoreOwner = "senior-accounting-officer"
 }

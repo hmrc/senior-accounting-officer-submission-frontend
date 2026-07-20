@@ -25,7 +25,7 @@
     appConfig: AppConfig
 )
 
-@(certificateIdReferenceNumber: String)(using request: Request[?], messages: Messages)
+@(certificateIdReferenceNumber: String, displayLink: Boolean)(using request: Request[?], messages: Messages)
 
 @layout(showBackLink = false, pageTitle = titleNoForm(messages("certificateConfirmation.title"))) {
 
@@ -46,14 +46,16 @@
         <p class="govuk-body">@messages("certificateConfirmation.paragraph2")</p>
 
         <ul class="govuk-list govuk-list--bullet">
-            <li>
+            @if(displayLink) {
+                <li>
                     <span>
                         <a class="govuk-link" id="download-pdf-link" href="#">
                             @messages("certificateConfirmation.downloadPdf")
                         </a>
                         @messages("certificateConfirmation.list1.item1")
                     </span>
-            </li>
+                </li>
+            }
             <li>
                     <span>
                         <a class="govuk-link" id="print-page-link" href="#">
