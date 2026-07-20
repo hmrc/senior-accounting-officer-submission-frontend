@@ -46,11 +46,7 @@ lazy val microservice = (project in file("."))
     retrieveManaged          := true,
     pipelineStages           := Seq(digest, gzip),
     Assets / pipelineStages  := Seq(concat),
-    PlayKeys.playDefaultPort := 10058,
-    resolvers += MavenRepository( // needed for object-store-client
-      "HMRC-open-artefacts-maven2",
-      "https://open.artefacts.tax.service.gov.uk/maven2"
-    )
+    PlayKeys.playDefaultPort := 10058
   )
   .settings(CodeCoverageSettings.settings *)
   .settings(scalafixSettings *)
