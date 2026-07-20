@@ -53,7 +53,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
   lazy val notificationMultiSaoLastOfficerStartDateRoute: String =
     notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode).url
 
-  val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+  val userAnswers: UserAnswers = emptyUserAnswers
     .set(NotificationMultiSaoLastOfficerNamePage, saoName)
     .success
     .value
@@ -142,7 +142,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
     "must return a Bad Request and errors when invalid data is submitted" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(NotificationMultiSaoLastOfficerNamePage, saoName)
           .success
           .value

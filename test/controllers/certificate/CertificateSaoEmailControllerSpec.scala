@@ -47,7 +47,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
 
   lazy val certificateSaoEmailRoute: String = certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode).url
 
-  val userAnswers: UserAnswers = UserAnswers(userAnswersId)
+  val userAnswers: UserAnswers = emptyUserAnswers
     .set(CertificateSaoFullNamePage, saoName)
     .success
     .value

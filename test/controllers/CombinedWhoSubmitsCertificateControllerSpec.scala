@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.CombinedWhoSubmitsCertificateFormProvider
-import models.{CombinedWhoSubmitsCertificate, NormalMode, UserAnswers}
+import models.{CombinedWhoSubmitsCertificate, NormalMode}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -65,7 +65,7 @@ class CombinedWhoSubmitsCertificateControllerSpec extends SpecBase with MockitoS
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        UserAnswers(userAnswersId)
+        emptyUserAnswers
           .set(CombinedWhoSubmitsCertificatePage, CombinedWhoSubmitsCertificate.values.head)
           .success
           .value

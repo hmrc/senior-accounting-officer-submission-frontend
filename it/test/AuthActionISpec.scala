@@ -14,16 +14,32 @@
  * limitations under the License.
  */
 
+import AuthActionISpec.*
 import config.AppConfig
-import org.jsoup.Jsoup
+import controllers.actions.IdentifierAction
 import play.api.http.{HeaderNames, Status}
+import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.mvc.Results
 import support.MockAuthHelper.authSession
 import support.{ISpecBase, MockAuthHelper, SessionCookieBaker}
 
 class AuthActionISpec extends ISpecBase {
 
-  val appConfig = app.injector.instanceOf[AppConfig]
-  val targetUrl = s"$baseUrl/senior-accounting-officer/submission/notification/start"
+  override def applicationBuilder: GuiceApplicationBuilder =
+    GuiceApplicationBuilder()
+      .appRoutes { app =>
+        val identifierAction = app.injector.instanceOf[IdentifierAction]
+
+        { case ("GET", `testPath`) =>
+          identifierAction { request =>
+            Results.Ok(testSuccessBody(request.userId))
+          }
+        }
+      }
+
+  def appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+
+  def targetUrl = s"$baseUrl$testPath"
 
   "An endpoint with Auth Action" when {
     "Auth is missing" must {
@@ -81,4 +97,11 @@ class AuthActionISpec extends ISpecBase {
     }
   }
 
+}
+
+object AuthActionISpec {
+  val testPath = "/test-identifier-action"
+
+  def testSuccessBody(userId: String) =
+    s"Action Passed Successfully $userId"
 }

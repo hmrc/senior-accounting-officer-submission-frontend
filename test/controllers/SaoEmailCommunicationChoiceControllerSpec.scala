@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SaoEmailCommunicationChoiceFormProvider
-import models.{NormalMode, UserAnswers}
+import models.NormalMode
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -64,7 +64,7 @@ class SaoEmailCommunicationChoiceControllerSpec extends SpecBase with MockitoSug
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SaoEmailCommunicationChoicePage, true).success.value
+      val userAnswers = emptyUserAnswers.set(SaoEmailCommunicationChoicePage, true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

@@ -291,15 +291,15 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
       verify(mockUploadTemplateCsvParser, times(0)).parse(any(), any[Messages])
     }
   }
+
+  def userAnswersWithUploadStatus(journey: UploadJourney, status: UploadStatus): UserAnswers =
+    emptyUserAnswers
+      .set(journey.page, FileUploadState(testFileReference, status))
+      .get
 }
 
 object UpscanServiceSpec {
   val testDownloadUrl: String   = "/test/url"
   val testFileContent: String   = Random.nextString(10)
   val testFileReference: String = Random.nextString(10)
-
-  def userAnswersWithUploadStatus(journey: UploadJourney, status: UploadStatus): UserAnswers =
-    UserAnswers("id")
-      .set(journey.page, FileUploadState(testFileReference, status))
-      .get
 }

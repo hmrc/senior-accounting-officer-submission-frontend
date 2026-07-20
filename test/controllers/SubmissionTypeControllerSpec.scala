@@ -18,7 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SubmissionTypeFormProvider
-import models.{SubmissionType, UserAnswers}
+import models.SubmissionType
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -63,7 +63,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(SubmissionTypePage, SubmissionType.values.head).success.value
+      val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.head).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -125,22 +125,6 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual BAD_REQUEST
         contentAsString(result) mustEqual view(boundForm)(using request, messages(application)).toString
-      }
-    }
-
-    "must return OK and the correct view for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      running(application) {
-        val request = FakeRequest(GET, submissionTypeRoute)
-
-        val result = route(application, request).value
-
-        val view = application.injector.instanceOf[SubmissionTypeView]
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form)(using request, messages(application)).toString
       }
     }
 

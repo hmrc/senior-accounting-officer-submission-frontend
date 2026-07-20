@@ -18,7 +18,7 @@ package repositories
 
 import config.AppConfig
 import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
-import models.UserAnswers
+import models.*
 import org.mockito.Mockito.when
 import org.mongodb.scala.model.Filters
 import org.scalactic.source.Position
@@ -51,7 +51,16 @@ class SessionRepositoryISpec
   private val instant          = Instant.now.truncatedTo(ChronoUnit.MILLIS)
   private val stubClock: Clock = Clock.fixed(instant, ZoneId.systemDefault)
 
-  private val userAnswers = UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
+  private val subscription = SaoSubscription(
+    etmpSafeId = "etmpSafeId",
+    nominatedCompany = NominatedCompany(
+      name = "companyName",
+      crn = "companyCrn",
+      utr = "companyUtr"
+    ),
+    contacts = List(Contact("name", "email", "language", "status"))
+  )
+  private val userAnswers = UserAnswers("id", subscription, Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
 
   private val mockAppConfig = mock[AppConfig]
   when(mockAppConfig.cacheTtl) thenReturn 1L
@@ -157,7 +166,7 @@ class SessionRepositoryISpec
 
       "must update the upload status in user answers and refresh lastUpdated" in {
 
-        val userAnswersWithUpload = UserAnswers("id")
+        val userAnswersWithUpload = UserAnswers("id", subscription)
           .set(NotificationUploadStatePage, FileUploadState("upscan-ref", UploadStatus.InProgress))
           .get
           .copy(lastUpdated = Instant.ofEpochSecond(1))
@@ -184,7 +193,7 @@ class SessionRepositoryISpec
 
       "must update the upload status in user answers and refresh lastUpdated" in {
 
-        val userAnswersWithUpload = UserAnswers("id")
+        val userAnswersWithUpload = UserAnswers("id", subscription)
           .set(CertificateUploadStatePage, FileUploadState("upscan-ref", UploadStatus.InProgress))
           .get
           .copy(lastUpdated = Instant.ofEpochSecond(1))
@@ -211,7 +220,9 @@ class SessionRepositoryISpec
 
       "must return false" in {
 
-        repository.updateUploadStatus(UploadJourney.Notification, "missing-ref", UploadStatus.Quarantined).futureValue mustBe false
+        repository
+          .updateUploadStatus(UploadJourney.Notification, "missing-ref", UploadStatus.Quarantined)
+          .futureValue mustBe false
       }
     }
 

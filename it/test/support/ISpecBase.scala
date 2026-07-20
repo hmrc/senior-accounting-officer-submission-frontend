@@ -67,8 +67,10 @@ abstract class ISpecBase
     "play.ws.followRedirects" -> "false"
   ) ++ additionalConfigs
 
-  override def fakeApplication(): Application =
-    GuiceApplicationBuilder()
+  protected def applicationBuilder: GuiceApplicationBuilder = GuiceApplicationBuilder()
+
+  final override def fakeApplication(): Application =
+    applicationBuilder
       .configure(configs)
       .build()
 
