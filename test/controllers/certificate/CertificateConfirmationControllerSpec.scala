@@ -20,21 +20,23 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.certificate.CertificateConfirmationView
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar.mock
-import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
-import scala.concurrent.Future
 import uk.gov.hmrc.objectstore.client.ObjectListing
-import java.time.Instant
-import uk.gov.hmrc.objectstore.client.Path
 import uk.gov.hmrc.objectstore.client.ObjectSummary
+import uk.gov.hmrc.objectstore.client.Path
+import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import views.html.certificate.CertificateConfirmationView
+
+import scala.concurrent.Future
+
+import java.time.Instant
 
 class CertificateConfirmationControllerSpec extends SpecBase {
 
