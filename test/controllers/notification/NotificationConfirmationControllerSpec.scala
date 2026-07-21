@@ -41,6 +41,7 @@ import uk.gov.hmrc.objectstore.client.ObjectSummary
 import uk.gov.hmrc.objectstore.client.Path
 import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
 import views.html.notification.NotificationConfirmationView
+import services.ObjectStoreService
 
 import scala.concurrent.Future
 

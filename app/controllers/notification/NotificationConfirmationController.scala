@@ -15,8 +15,8 @@
  */
 
 package controllers.notification
+
 import controllers.actions.*
-import controllers.notification.NotificationConfirmationController.*
 import models.NormalMode
 import navigation.Navigator
 import pages.notification.NotificationConfirmationPage
@@ -65,8 +65,4 @@ class NotificationConfirmationController @Inject() (
     (identify andThen getData andThen requireData) { implicit request =>
       Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
     }
-}
-
-object NotificationConfirmationController {
-  val objectStoreOwner = "senior-accounting-officer"
 }
