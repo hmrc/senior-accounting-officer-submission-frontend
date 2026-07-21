@@ -25,7 +25,7 @@
     appConfig: AppConfig
 )
 
-@(notificationReference: String, displayLink: Boolean)(using request: Request[?], messages: Messages)
+@(notificationReference: String, displayPdfLink: Boolean)(using request: Request[?], messages: Messages)
 
 @layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationConfirmation.title"))) {
 
@@ -44,7 +44,7 @@
     <p class="govuk-body">@messages("notificationConfirmation.paragraph2")</p>
 
     <ul class="govuk-list govuk-list--bullet">
-        @if(displayLink) {
+        @if(displayPdfLink) {
             <li>
                 <span>
                     <a class="govuk-link" id="download-pdf-link" href="#">

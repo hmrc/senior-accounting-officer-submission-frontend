@@ -53,8 +53,8 @@ class NotificationConfirmationController @Inject() (
         )
         .map { objectListing =>
           objectListing.objectSummaries match {
-            case Nil => Ok(view(notificationReference, displayLink = false))
-            case _   => Ok(view(notificationReference, displayLink = true))
+            case Nil => Ok(view(notificationReference, displayPdfLink = false))
+            case _   => Ok(view(notificationReference, displayPdfLink = true))
           }
         }
     }

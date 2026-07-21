@@ -27,13 +27,14 @@ import NotificationConfirmationViewSpec.*
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
 
-  private def generateView(displayLink: Boolean): Document = Jsoup.parse(SUT(testReferenceNumber, displayLink).toString)
+  private def generateView(displayPdfLink: Boolean): Document =
+    Jsoup.parse(SUT(testReferenceNumber, displayPdfLink).toString)
 
   "NotificationConfirmationView" - {
-    "when displayLink is true" - {
-      val displayLink = true
+    "when displayPdfLink is true" - {
+      val displayPdfLink = true
       AppConfig.setValue("hub-frontend.host", hubUrl)
-      val doc: Document = generateView(displayLink)
+      val doc: Document = generateView(displayPdfLink)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -104,10 +105,10 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
       )
     }
 
-    "when displayLink is false" - {
-      val displayLink = false
+    "when displayPdfLink is false" - {
+      val displayPdfLink = false
       AppConfig.setValue("hub-frontend.host", hubUrl)
-      val doc: Document = generateView(displayLink)
+      val doc: Document = generateView(displayPdfLink)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
