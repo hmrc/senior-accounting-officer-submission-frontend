@@ -17,21 +17,23 @@
 package services
 
 import base.SpecBase
-import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
-import org.mockito.Mockito.*
-import org.scalatestplus.mockito.MockitoSugar.mock
 import org.mockito.ArgumentMatchers.any
-import scala.concurrent.Future
-import uk.gov.hmrc.objectstore.client.ObjectListing
-import play.api.inject.bind
+import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.Application
+import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import services.ObjectStoreServiceSpec.*
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.objectstore.client.ObjectListing
 import uk.gov.hmrc.objectstore.client.ObjectSummary
 import uk.gov.hmrc.objectstore.client.Path
+import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+
+import scala.concurrent.Future
+
 import java.time.Instant
 
 class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAndAfterEach {
@@ -46,7 +48,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
     )
     .build()
 
-  def SUT = app.injector.instanceOf[ObjectStoreService]
+  def SUT: ObjectStoreService = app.injector.instanceOf[ObjectStoreService]
 
   override def beforeEach(): Unit = {
     reset(mockObjectStoreClient)

@@ -28,16 +28,10 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import uk.gov.hmrc.objectstore.client.ObjectListing
-import uk.gov.hmrc.objectstore.client.ObjectSummary
-import uk.gov.hmrc.objectstore.client.Path
-import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
-import views.html.notification.NotificationConfirmationView
 import services.ObjectStoreService
+import views.html.notification.NotificationConfirmationView
 
 import scala.concurrent.Future
-
-import java.time.Instant
 
 class NotificationConfirmationControllerSpec extends SpecBase {
 
