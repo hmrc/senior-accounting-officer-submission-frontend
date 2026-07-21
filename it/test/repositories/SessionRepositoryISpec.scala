@@ -17,8 +17,8 @@
 package repositories
 
 import config.AppConfig
-import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
 import models.*
+import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
 import org.mockito.Mockito.when
 import org.mongodb.scala.model.Filters
 import org.scalactic.source.Position
@@ -34,8 +34,8 @@ import play.api.libs.json.Json
 import uk.gov.hmrc.mongo.test.DefaultPlayMongoRepositorySupport
 import uk.gov.hmrc.play.bootstrap.dispatchers.MDCPropagatingExecutorService
 
-import java.time.{Clock, Instant, ZoneId}
 import java.time.temporal.ChronoUnit
+import java.time.{Clock, Instant, ZoneId}
 import java.util.concurrent.Executors
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -51,16 +51,7 @@ class SessionRepositoryISpec
   private val instant          = Instant.now.truncatedTo(ChronoUnit.MILLIS)
   private val stubClock: Clock = Clock.fixed(instant, ZoneId.systemDefault)
 
-  private val subscription = SaoSubscription(
-    etmpSafeId = "etmpSafeId",
-    nominatedCompany = NominatedCompany(
-      name = "companyName",
-      crn = "companyCrn",
-      utr = "companyUtr"
-    ),
-    contacts = List(Contact("name", "email", "language", "status"))
-  )
-  private val userAnswers = UserAnswers("id", subscription, Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
+  private val userAnswers = UserAnswers("id", Json.obj("foo" -> "bar"), Instant.ofEpochSecond(1))
 
   private val mockAppConfig = mock[AppConfig]
   when(mockAppConfig.cacheTtl) thenReturn 1L
@@ -166,7 +157,7 @@ class SessionRepositoryISpec
 
       "must update the upload status in user answers and refresh lastUpdated" in {
 
-        val userAnswersWithUpload = UserAnswers("id", subscription)
+        val userAnswersWithUpload = UserAnswers("id")
           .set(NotificationUploadStatePage, FileUploadState("upscan-ref", UploadStatus.InProgress))
           .get
           .copy(lastUpdated = Instant.ofEpochSecond(1))
@@ -193,7 +184,7 @@ class SessionRepositoryISpec
 
       "must update the upload status in user answers and refresh lastUpdated" in {
 
-        val userAnswersWithUpload = UserAnswers("id", subscription)
+        val userAnswersWithUpload = UserAnswers("id")
           .set(CertificateUploadStatePage, FileUploadState("upscan-ref", UploadStatus.InProgress))
           .get
           .copy(lastUpdated = Instant.ofEpochSecond(1))

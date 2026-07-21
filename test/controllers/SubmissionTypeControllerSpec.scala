@@ -20,12 +20,14 @@ import base.SpecBase
 import forms.SubmissionTypeFormProvider
 import models.SubmissionType
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.{any, argThat}
+import org.mockito.Mockito.*
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.SubmissionTypePage
 import play.api.data.Form
 import play.api.inject.bind
+import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -34,7 +36,7 @@ import views.html.SubmissionTypeView
 
 import scala.concurrent.Future
 
-class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
+class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -42,6 +44,13 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
 
   val formProvider               = new SubmissionTypeFormProvider()
   val form: Form[SubmissionType] = formProvider()
+
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
+
+  override def beforeEach(): Unit = {
+    reset(mockSessionRepository)
+    when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+  }
 
   "SubmissionType Controller" - {
 
@@ -84,10 +93,6 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
 
     "must redirect to the next page when valid data is submitted" in {
 
-      val mockSessionRepository = mock[SessionRepository]
-
-      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
@@ -128,9 +133,13 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "redirect to Journey Recovery for a POST if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
+    "create a new mongo entry if no existing data is found" in {
+      val application = applicationBuilder(userAnswers = None)
+        .overrides(
+          bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
+        .build()
 
       running(application) {
         val request =
@@ -141,8 +150,15 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual onwardRoute.url
+
+        verify(mockSessionRepository, times(1)).set(argThat { insertedUserAnswer =>
+          insertedUserAnswer.id mustBe userAnswersId
+          insertedUserAnswer.data mustBe Json.parse(s"""{"submissionType":"${SubmissionType.values.head.toString}"}""")
+          true
+        })
       }
     }
   }
+
 }
