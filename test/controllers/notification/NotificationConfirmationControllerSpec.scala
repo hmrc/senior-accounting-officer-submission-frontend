@@ -33,6 +33,7 @@ import uk.gov.hmrc.objectstore.client.ObjectSummary
 import uk.gov.hmrc.objectstore.client.Path
 import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
 import views.html.notification.NotificationConfirmationView
+import services.ObjectStoreService
 
 import scala.concurrent.Future
 
@@ -47,21 +48,16 @@ class NotificationConfirmationControllerSpec extends SpecBase {
   "NotificationConfirmation Controller" - {
 
     "onPageLoad" - {
-      "must return OK and a view with no link displayed when object store finds no files" in {
+      "must return OK and a view with no link displayed when pdf is not available" in {
 
-        val mockObjectStoreClient = mock[PlayObjectStoreClient]
+        val mockObjectStoreService = mock[ObjectStoreService]
         when(
-          mockObjectStoreClient.listObjects(
-            path = any(),
-            owner = any()
-          )(using
-            any()
-          )
+          mockObjectStoreService.isNotificationPdfAvailable(any())(using any())
         )
-          .thenReturn(Future.successful(ObjectListing(Nil)))
+          .thenReturn(Future.successful(false))
 
         val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-          .overrides(bind[PlayObjectStoreClient].toInstance(mockObjectStoreClient))
+          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
           .build()
 
         running(application) {
@@ -80,25 +76,16 @@ class NotificationConfirmationControllerSpec extends SpecBase {
         }
       }
 
-      "must return OK and a view with a link displayed when object store finds some files" in {
+      "must return OK and a view with a link displayed when pdf is available" in {
 
-        val mockObjectStoreClient = mock[PlayObjectStoreClient]
+        val mockObjectStoreService = mock[ObjectStoreService]
         when(
-          mockObjectStoreClient.listObjects(
-            path = any(),
-            owner = any()
-          )(using
-            any()
-          )
+          mockObjectStoreService.isNotificationPdfAvailable(any())(using any())
         )
-          .thenReturn(
-            Future.successful(
-              ObjectListing(List(ObjectSummary(Path.File(Path.Directory("directory"), "fileName"), 0, Instant.now())))
-            )
-          )
+          .thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-          .overrides(bind[PlayObjectStoreClient].toInstance(mockObjectStoreClient))
+          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
           .build()
 
         running(application) {

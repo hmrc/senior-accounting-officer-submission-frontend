@@ -15,15 +15,14 @@
  */
 
 package controllers.notification
+
 import controllers.actions.*
-import controllers.notification.NotificationConfirmationController.*
 import models.NormalMode
 import navigation.Navigator
 import pages.notification.NotificationConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.objectstore.client.Path
-import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import services.ObjectStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationConfirmationView
 
@@ -39,32 +38,25 @@ class NotificationConfirmationController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: NotificationConfirmationView,
     navigator: Navigator,
-    objectStoreClient: PlayObjectStoreClient
+    objectStoreService: ObjectStoreService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(notificationReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      objectStoreClient
-        .listObjects(
-          path = Path.Directory(s"/$objectStoreOwner/$notificationReference/"),
-          owner = objectStoreOwner
+      objectStoreService.isNotificationPdfAvailable(notificationReference).map { isPdfAvailable =>
+        Ok(
+          view(
+            notificationReference = notificationReference,
+            displayPdfLink = isPdfAvailable
+          )
         )
-        .map { objectListing =>
-          objectListing.objectSummaries match {
-            case Nil => Ok(view(notificationReference, displayPdfLink = false))
-            case _   => Ok(view(notificationReference, displayPdfLink = true))
-          }
-        }
+      }
     }
 
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
     }
-}
-
-object NotificationConfirmationController {
-  val objectStoreOwner = "senior-accounting-officer"
 }
