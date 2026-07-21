@@ -20,12 +20,18 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import services.ObjectStoreService
 import views.html.notification.NotificationConfirmationView
+
+import scala.concurrent.Future
 
 class NotificationConfirmationControllerSpec extends SpecBase {
 
@@ -35,38 +41,76 @@ class NotificationConfirmationControllerSpec extends SpecBase {
 
   "NotificationConfirmation Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "onPageLoad" - {
+      "must return OK and a view with no link displayed when pdf is not available" in {
 
-      val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers)).build()
+        val mockObjectStoreService = mock[ObjectStoreService]
+        when(
+          mockObjectStoreService.isNotificationPdfAvailable(any())(using any())
+        )
+          .thenReturn(Future.successful(false))
 
-      running(application) {
-        val request =
-          FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
+        val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
+          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
+          .build()
 
-        val result = route(application, request).value
+        running(application) {
+          val request =
+            FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
 
-        val view = application.injector.instanceOf[NotificationConfirmationView]
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(hardCodedNotRef)(using
-          request,
-          messages(application)
-        ).toString
+          val view = application.injector.instanceOf[NotificationConfirmationView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(hardCodedNotRef, false)(using
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+      "must return OK and a view with a link displayed when pdf is available" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+        val mockObjectStoreService = mock[ObjectStoreService]
+        when(
+          mockObjectStoreService.isNotificationPdfAvailable(any())(using any())
+        )
+          .thenReturn(Future.successful(true))
 
-      running(application) {
-        val request =
-          FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
+        val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
+          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
+          .build()
 
-        val result = route(application, request).value
+        running(application) {
+          val request =
+            FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[NotificationConfirmationView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(hardCodedNotRef, true)(using
+            request,
+            messages(application)
+          ).toString
+        }
+      }
+
+      "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        running(application) {
+          val request =
+            FakeRequest(GET, notificationRoutes.NotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
     }
 

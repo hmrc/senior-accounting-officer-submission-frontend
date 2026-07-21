@@ -27,79 +27,145 @@ import NotificationConfirmationViewSpec.*
 
 class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirmationView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(testReferenceNumber).toString)
+  private def generateView(displayPdfLink: Boolean): Document =
+    Jsoup.parse(SUT(testReferenceNumber, displayPdfLink).toString)
 
   "NotificationConfirmationView" - {
-    AppConfig.setValue("hub-frontend.host", hubUrl)
-    val doc: Document = generateView()
+    "when displayPdfLink is true" - {
+      val displayPdfLink = true
+      AppConfig.setValue("hub-frontend.host", hubUrl)
+      val doc: Document = generateView(displayPdfLink)
 
-    doc.createTestsWithStandardPageElements(
-      pageTitle = pageTitle,
-      pageHeading = pageHeading,
-      showBackLink = false,
-      showIsThisPageNotWorkingProperlyLink = true,
-      hasError = false
-    )
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
 
-    "with a confirmation panel that" - {
-      "must have the correct title" - {
-        doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+      "with a confirmation panel that" - {
+        "must have the correct title" - {
+          doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+        }
+
+        "must have the correct body" - {
+          doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
+        }
+
+        "must have the reference number in bold" in {
+          val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
+          strongTags.size() mustBe 1
+          strongTags.get(0).text() mustBe testReferenceNumber
+        }
       }
 
-      "must have the correct body" - {
-        doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
-      }
+      doc.createTestsWithParagraphs(
+        pageParagraphs
+      )
 
-      "must have the reference number in bold" in {
-        val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
-        strongTags.size() mustBe 1
-        strongTags.get(0).text() mustBe testReferenceNumber
-      }
+      doc.createTestsWithBulletPoints(
+        pageListItemsWhenLinkDisplayed
+      )
+
+      doc.getMainContent
+        .select("li span")
+        .get(0)
+        .createTestWithText(pageListItemsWhenLinkDisplayed(0))
+
+      doc.getMainContent
+        .select("li span")
+        .get(1)
+        .createTestWithText(pageListItemsWhenLinkDisplayed(1))
+
+      doc.getMainContent
+        .select("li span a")
+        .get(0)
+        .createTestWithLink(
+          linkText = pageDownload,
+          destinationUrl = "#"
+        )
+
+      doc.getMainContent
+        .select("li span a")
+        .get(1)
+        .createTestWithLink(
+          linkText = pagePrint,
+          destinationUrl = "#"
+        )
+
+      doc.createTestsForSubHeadings(
+        pageSubheadings
+      )
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithSubmissionButton(
+        action = notificationRoutes.NotificationConfirmationController.onSubmit(),
+        buttonText = "Continue"
+      )
     }
 
-    doc.createTestsWithParagraphs(
-      pageParagraphs
-    )
+    "when displayPdfLink is false" - {
+      val displayPdfLink = false
+      AppConfig.setValue("hub-frontend.host", hubUrl)
+      val doc: Document = generateView(displayPdfLink)
 
-    doc.createTestsWithBulletPoints(
-      pageListItems
-    )
-
-    doc.getMainContent
-      .select("li span")
-      .get(0)
-      .createTestWithText(pageListItems(0))
-
-    doc.getMainContent
-      .select("li span")
-      .get(1)
-      .createTestWithText(pageListItems(1))
-
-    doc.getMainContent
-      .select("li span a")
-      .get(0)
-      .createTestWithLink(
-        linkText = pageDownload,
-        destinationUrl = "#"
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
       )
 
-    doc.getMainContent
-      .select("li span a")
-      .get(1)
-      .createTestWithLink(
-        linkText = pagePrint,
-        destinationUrl = "#"
+      "with a confirmation panel that" - {
+        "must have the correct title" - {
+          doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+        }
+
+        "must have the correct body" - {
+          doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
+        }
+
+        "must have the reference number in bold" in {
+          val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
+          strongTags.size() mustBe 1
+          strongTags.get(0).text() mustBe testReferenceNumber
+        }
+      }
+
+      doc.createTestsWithParagraphs(
+        pageParagraphs
       )
 
-    doc.createTestsForSubHeadings(
-      pageSubheadings
-    )
+      doc.createTestsWithBulletPoints(
+        pageListItemsWhenLinkNotDisplayed
+      )
 
-    doc.createTestsWithOrWithoutError(hasError = false)
-    doc.createTestsWithSubmissionButton(
-      action = notificationRoutes.NotificationConfirmationController.onSubmit(),
-      buttonText = "Continue"
-    )
+      doc.getMainContent
+        .select("li span")
+        .get(0)
+        .createTestWithText(pageListItemsWhenLinkNotDisplayed(0))
+
+      doc.getMainContent
+        .select("li span a")
+        .get(0)
+        .createTestWithLink(
+          linkText = pagePrint,
+          destinationUrl = "#"
+        )
+
+      doc.createTestsForSubHeadings(
+        pageSubheadings
+      )
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithSubmissionButton(
+        action = notificationRoutes.NotificationConfirmationController.onSubmit(),
+        buttonText = "Continue"
+      )
+    }
+
   }
 
   extension (target: => Document) {
@@ -127,13 +193,17 @@ object NotificationConfirmationViewSpec {
     "Your notification has been received by HMRC. A member of compliance staff may contact you if they need more information.",
     "You can now submit a Senior Accounting Officer certificate or another notification on behalf of another SAO in your group on your account homepage."
   )
-  val panelTitle                 = "Notification submitted"
-  val testReferenceNumber        = "SAONOT0123456789"
-  val panelBody: String          = s"Your reference number $testReferenceNumber"
-  val testDate                   = "17 January 2025 at 14:15am (GMT)"
-  val pageListItems: Seq[String] =
+  val panelTitle                                  = "Notification submitted"
+  val testReferenceNumber                         = "SAONOT0123456789"
+  val panelBody: String                           = s"Your reference number $testReferenceNumber"
+  val testDate                                    = "17 January 2025 at 14:15am (GMT)"
+  val pageListItemsWhenLinkDisplayed: Seq[String] =
     Seq(
       "Download a PDF - save a copy of all the answers you submitted now. You may not be able to download a PDF if you leave this page",
+      "Print this page - print a paper copy of this confirmation page"
+    )
+  val pageListItemsWhenLinkNotDisplayed: Seq[String] =
+    Seq(
       "Print this page - print a paper copy of this confirmation page"
     )
   val pageDownload                 = "Download a PDF"

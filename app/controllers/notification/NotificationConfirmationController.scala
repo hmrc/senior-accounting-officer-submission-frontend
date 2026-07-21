@@ -22,8 +22,11 @@ import navigation.Navigator
 import pages.notification.NotificationConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.ObjectStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationConfirmationView
+
+import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
@@ -34,13 +37,22 @@ class NotificationConfirmationController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationConfirmationView,
-    navigator: Navigator
-) extends FrontendBaseController
+    navigator: Navigator,
+    objectStoreService: ObjectStoreService
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(notificationIdReferenceNumber: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData) { implicit request =>
-      Ok(view(notificationIdReferenceNumber))
+  def onPageLoad(notificationReference: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      objectStoreService.isNotificationPdfAvailable(notificationReference).map { isPdfAvailable =>
+        Ok(
+          view(
+            notificationReference = notificationReference,
+            displayPdfLink = isPdfAvailable
+          )
+        )
+      }
     }
 
   def onSubmit(): Action[AnyContent] =
