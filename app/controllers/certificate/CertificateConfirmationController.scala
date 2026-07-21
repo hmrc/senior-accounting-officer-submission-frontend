@@ -17,7 +17,6 @@
 package controllers.certificate
 
 import controllers.actions.*
-import controllers.certificate.CertificateConfirmationController.*
 import models.NormalMode
 import navigation.Navigator
 import pages.certificate.CertificateConfirmationPage
@@ -31,6 +30,7 @@ import views.html.certificate.CertificateConfirmationView
 import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
+import services.ObjectStoreService
 
 class CertificateConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
@@ -40,24 +40,33 @@ class CertificateConfirmationController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: CertificateConfirmationView,
     navigator: Navigator,
-    objectStoreClient: PlayObjectStoreClient
+    // objectStoreClient: PlayObjectStoreClient
+    objectStoreService: ObjectStoreService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(certificateReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      objectStoreClient
-        .listObjects(
-          path = Path.Directory(s"/$objectStoreOwner/$certificateReference/"),
-          owner = objectStoreOwner
+      // objectStoreClient
+      // .listObjects(
+      // path = Path.Directory(s"/$objectStoreOwner/$certificateReference/"),
+      // owner = objectStoreOwner
+      // )
+      // .map { objectListing =>
+      // objectListing.objectSummaries match {
+      // case Nil => Ok(view(certificateReference, displayLink = false))
+      // case _   => Ok(view(certificateReference, displayLink = true))
+      // }
+      // }
+      objectStoreService.isCertificatePdfAvailable(certificateReference).map { isPdfAvailable =>
+        Ok(
+          view(
+            certificateReference = certificateReference,
+            displayPdfLink = isPdfAvailable
+          )
         )
-        .map { objectListing =>
-          objectListing.objectSummaries match {
-            case Nil => Ok(view(certificateReference, displayLink = false))
-            case _   => Ok(view(certificateReference, displayLink = true))
-          }
-        }
+      }
     }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
@@ -65,6 +74,6 @@ class CertificateConfirmationController @Inject() (
   }
 }
 
-object CertificateConfirmationController {
-  val objectStoreOwner = "senior-accounting-officer"
-}
+// object CertificateConfirmationController {
+// val objectStoreOwner = "senior-accounting-officer"
+// }

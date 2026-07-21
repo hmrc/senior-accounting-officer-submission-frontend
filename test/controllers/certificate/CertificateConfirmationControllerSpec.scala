@@ -37,6 +37,7 @@ import views.html.certificate.CertificateConfirmationView
 import scala.concurrent.Future
 
 import java.time.Instant
+import services.ObjectStoreService
 
 class CertificateConfirmationControllerSpec extends SpecBase {
 
@@ -46,21 +47,16 @@ class CertificateConfirmationControllerSpec extends SpecBase {
   "CertificateConfirmation Controller" - {
 
     "onPageLoad" - {
-      "must return OK and a view with no link displayed when object store finds no files" in {
+      "must return OK and a view with no link displayed when pdf is not available" in {
 
-        val mockObjectStoreClient = mock[PlayObjectStoreClient]
+        val mockObjectStoreService = mock[ObjectStoreService]
         when(
-          mockObjectStoreClient.listObjects(
-            path = any(),
-            owner = any()
-          )(using
-            any()
-          )
+          mockObjectStoreService.isCertificatePdfAvailable(any())(using any())
         )
-          .thenReturn(Future.successful(ObjectListing(Nil)))
+          .thenReturn(Future.successful(false))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[PlayObjectStoreClient].toInstance(mockObjectStoreClient))
+          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
           .build()
 
         running(application) {
@@ -76,25 +72,16 @@ class CertificateConfirmationControllerSpec extends SpecBase {
         }
       }
 
-      "must return OK and a view with a link displayed when object store finds a file" in {
+      "must return OK and a view with a link displayed when pdf is available" in {
 
-        val mockObjectStoreClient = mock[PlayObjectStoreClient]
+        val mockObjectStoreService = mock[ObjectStoreService]
         when(
-          mockObjectStoreClient.listObjects(
-            path = any(),
-            owner = any()
-          )(using
-            any()
-          )
+          mockObjectStoreService.isCertificatePdfAvailable(any())(using any())
         )
-          .thenReturn(
-            Future.successful(
-              ObjectListing(List(ObjectSummary(Path.File(Path.Directory("directory"), "fileName"), 0, Instant.now())))
-            )
-          )
+          .thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .overrides(bind[PlayObjectStoreClient].toInstance(mockObjectStoreClient))
+          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
           .build()
 
         running(application) {
