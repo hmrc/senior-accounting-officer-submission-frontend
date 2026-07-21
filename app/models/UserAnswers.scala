@@ -26,7 +26,6 @@ import java.time.Instant
 
 final case class UserAnswers(
     id: String,
-    subscription: SaoSubscription,
     data: JsObject = Json.obj(),
     lastUpdated: Instant = Instant.now
 ) {
@@ -76,7 +75,6 @@ object UserAnswers {
 
     (
       (__ \ "_id").read[String] and
-        (__ \ "subscription").read[SaoSubscription] and
         (__ \ "data").read[JsObject] and
         (__ \ "lastUpdated").read(MongoJavatimeFormats.instantFormat)
     )(UserAnswers.apply _)
@@ -88,10 +86,9 @@ object UserAnswers {
 
     (
       (__ \ "_id").write[String] and
-        (__ \ "subscription").write[SaoSubscription] and
         (__ \ "data").write[JsObject] and
         (__ \ "lastUpdated").write(MongoJavatimeFormats.instantFormat)
-    )(ua => (ua.id, ua.subscription, ua.data, ua.lastUpdated))
+    )(ua => (ua.id, ua.data, ua.lastUpdated))
   }
 
   given format: OFormat[UserAnswers] = OFormat(reads, writes)

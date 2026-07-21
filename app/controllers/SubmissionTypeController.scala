@@ -18,7 +18,7 @@ package controllers
 
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
-import models.NormalMode
+import models.{NormalMode, UserAnswers}
 import navigation.Navigator
 import pages.SubmissionTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -44,13 +44,13 @@ class SubmissionTypeController @Inject() (
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onPageLoad(): Action[AnyContent] = (identify andThen getData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(SubmissionTypePage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.flatMap(_.get(SubmissionTypePage)).fold(form)(form.fill)
     Ok(view(preparedForm))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
     val form = formProvider()
     form
       .bindFromRequest()
@@ -58,8 +58,13 @@ class SubmissionTypeController @Inject() (
         formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(SubmissionTypePage, value))
-            _              <- sessionRepository.set(updatedAnswers)
+            updatedAnswers <- Future
+              .fromTry(
+                request.userAnswers
+                  .fold(UserAnswers(request.userId))(identity)
+                  .set(SubmissionTypePage, value)
+              )
+            _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(SubmissionTypePage, NormalMode, updatedAnswers))
       )
   }

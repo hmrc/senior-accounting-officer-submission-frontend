@@ -56,20 +56,7 @@ trait SpecBase
   val contact2Language      = "cy"
   val contact2Status        = "unreachable"
 
-  val subscription: SaoSubscription = SaoSubscription(
-    etmpSafeId = etmpSafeId,
-    nominatedCompany = NominatedCompany(
-      name = companyName,
-      crn = companyCrn,
-      utr = companyUtr
-    ),
-    contacts = List(
-      Contact(name = contact1Name, email = contact1Email, language = contact1Language, status = contact1Status),
-      Contact(name = contact2Name, email = contact2Email, language = contact2Language, status = contact2Status)
-    )
-  )
-
-  def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId, subscription)
+  def emptyUserAnswers: UserAnswers = UserAnswers(userAnswersId)
 
   def completedSaoDetailsAnswers: UserAnswers =
     emptyUserAnswers
