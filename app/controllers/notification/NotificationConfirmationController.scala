@@ -30,12 +30,6 @@ import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
-import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
-import uk.gov.hmrc.objectstore.client.Path
-import scala.concurrent.ExecutionContext
-
-import javax.inject.Inject
-
 class NotificationConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
