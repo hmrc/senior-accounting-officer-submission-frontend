@@ -34,12 +34,25 @@ class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(us
         path = Path.Directory(s"/$objectStoreOwner/$notificationReference/"),
         owner = objectStoreOwner
       )
-      .map { objectListing =>
-        objectListing.objectSummaries match {
-          case objectSummaries if objectSummaries.exists { case ObjectSummary(Path.File(_, fileName), _, _) =>
-                fileName == s"${notificationReference}_SAO_Notification.pdf"
-              } =>
-            true
+      .map {
+        _.objectSummaries.exists {
+          case ObjectSummary(Path.File(_, fileName), _, _) =>
+            fileName == s"${notificationReference}_SAO_Notification.pdf"
+          case _ => false
+        }
+      }
+  }
+
+  def isCertificatePdfAvailable(certificateReference: String)(using hc: HeaderCarrier): Future[Boolean] = {
+    objectStoreClient
+      .listObjects(
+        path = Path.Directory(s"/$objectStoreOwner/$certificateReference/"),
+        owner = objectStoreOwner
+      )
+      .map {
+        _.objectSummaries.exists {
+          case ObjectSummary(Path.File(_, fileName), _, _) =>
+            fileName == s"${certificateReference}_SAO_Certificate.pdf"
           case _ => false
         }
       }

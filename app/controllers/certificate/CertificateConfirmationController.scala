@@ -22,8 +22,11 @@ import navigation.Navigator
 import pages.certificate.CertificateConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.ObjectStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.certificate.CertificateConfirmationView
+
+import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
 
@@ -34,13 +37,22 @@ class CertificateConfirmationController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateConfirmationView,
-    navigator: Navigator
-) extends FrontendBaseController
+    navigator: Navigator,
+    objectStoreService: ObjectStoreService
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(certificateIdReferenceNumber: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData) { implicit request =>
-      Ok(view(certificateIdReferenceNumber))
+  def onPageLoad(certificateReference: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      objectStoreService.isCertificatePdfAvailable(certificateReference).map { isPdfAvailable =>
+        Ok(
+          view(
+            certificateReference = certificateReference,
+            displayPdfLink = isPdfAvailable
+          )
+        )
+      }
     }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>

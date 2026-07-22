@@ -20,12 +20,18 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import navigation.{FakeNavigator, Navigator}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import services.ObjectStoreService
 import views.html.certificate.CertificateConfirmationView
+
+import scala.concurrent.Future
 
 class CertificateConfirmationControllerSpec extends SpecBase {
 
@@ -34,37 +40,73 @@ class CertificateConfirmationControllerSpec extends SpecBase {
 
   "CertificateConfirmation Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "onPageLoad" - {
+      "must return OK and a view with no link displayed when pdf is not available" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val mockObjectStoreService = mock[ObjectStoreService]
+        when(
+          mockObjectStoreService.isCertificatePdfAvailable(any())(using any())
+        )
+          .thenReturn(Future.successful(false))
 
-      running(application) {
-        val request =
-          FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
+          .build()
 
-        val result = route(application, request).value
+        running(application) {
+          val request =
+            FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
 
-        val view = application.injector.instanceOf[CertificateConfirmationView]
+          val result = route(application, request).value
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(certificateRef)(using request, messages(application)).toString
+          val view = application.injector.instanceOf[CertificateConfirmationView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(certificateRef, false)(using request, messages(application)).toString
+        }
+      }
+
+      "must return OK and a view with a link displayed when pdf is available" in {
+
+        val mockObjectStoreService = mock[ObjectStoreService]
+        when(
+          mockObjectStoreService.isCertificatePdfAvailable(any())(using any())
+        )
+          .thenReturn(Future.successful(true))
+
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
+          .build()
+
+        running(application) {
+          val request =
+            FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
+
+          val result = route(application, request).value
+
+          val view = application.injector.instanceOf[CertificateConfirmationView]
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(certificateRef, true)(using request, messages(application)).toString
+        }
+      }
+
+      "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+        val application = applicationBuilder(userAnswers = None).build()
+
+        running(application) {
+          val request =
+            FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        }
       }
     }
 
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None).build()
-
-      running(application) {
-        val request =
-          FakeRequest(GET, certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef).url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
-      }
-    }
     "must redirect to the next page for a POST" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
         .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
