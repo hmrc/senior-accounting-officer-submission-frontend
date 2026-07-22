@@ -22,15 +22,13 @@ import navigation.Navigator
 import pages.certificate.CertificateConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import uk.gov.hmrc.objectstore.client.Path
-import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import services.ObjectStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.certificate.CertificateConfirmationView
 
 import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
-import services.ObjectStoreService
 
 class CertificateConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
