@@ -54,87 +54,172 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
     reset(mockObjectStoreClient)
   }
 
-  "when no objects are found in object store must return false" in {
-    when(
-      mockObjectStoreClient.listObjects(
-        path = any(),
-        owner = any()
-      )(using
-        any()
+  "isNotificationPdfAvailable" - {
+    "when no objects are found in object store must return false" in {
+      when(
+        mockObjectStoreClient.listObjects(
+          path = any(),
+          owner = any()
+        )(using
+          any()
+        )
       )
-    )
-      .thenReturn(Future.successful(ObjectListing(Nil)))
+        .thenReturn(Future.successful(ObjectListing(Nil)))
 
-    val result = SUT.isNotificationPdfAvailable(notificationReference)
+      val result = SUT.isNotificationPdfAvailable(notificationReference)
 
-    result.futureValue mustBe false
-  }
+      result.futureValue mustBe false
+    }
 
-  "when objects are found in object store without a pdf must return false" in {
-    when(
-      mockObjectStoreClient.listObjects(
-        path = any(),
-        owner = any()
-      )(using
-        any()
+    "when objects are found in object store without a pdf must return false" in {
+      when(
+        mockObjectStoreClient.listObjects(
+          path = any(),
+          owner = any()
+        )(using
+          any()
+        )
       )
-    )
-      .thenReturn(
-        Future.successful(
-          ObjectListing(
-            List(
-              ObjectSummary(
-                Path
-                  .File(
-                    Path.Directory(s"senior-accounting-officer/$notificationReference"),
-                    s"${notificationReference}_SAO_Notification.txt"
-                  ),
-                0,
-                Instant.now()
+        .thenReturn(
+          Future.successful(
+            ObjectListing(
+              List(
+                ObjectSummary(
+                  Path
+                    .File(
+                      Path.Directory(s"senior-accounting-officer/$notificationReference"),
+                      s"${notificationReference}_SAO_Notification.txt"
+                    ),
+                  0,
+                  Instant.now()
+                )
               )
             )
           )
         )
+
+      val result = SUT.isNotificationPdfAvailable(notificationReference)
+
+      result.futureValue mustBe false
+    }
+
+    "when objects are found in object store with a pdf must return true" in {
+      when(
+        mockObjectStoreClient.listObjects(
+          path = any(),
+          owner = any()
+        )(using
+          any()
+        )
       )
-
-    val result = SUT.isNotificationPdfAvailable(notificationReference)
-
-    result.futureValue mustBe false
-  }
-
-  "when objects are found in object store with a pdf must return true" in {
-    when(
-      mockObjectStoreClient.listObjects(
-        path = any(),
-        owner = any()
-      )(using
-        any()
-      )
-    )
-      .thenReturn(
-        Future.successful(
-          ObjectListing(
-            List(
-              ObjectSummary(
-                Path
-                  .File(
-                    Path.Directory(s"senior-accounting-officer/$notificationReference"),
-                    s"${notificationReference}_SAO_Notification.pdf"
-                  ),
-                0,
-                Instant.now()
+        .thenReturn(
+          Future.successful(
+            ObjectListing(
+              List(
+                ObjectSummary(
+                  Path
+                    .File(
+                      Path.Directory(s"senior-accounting-officer/$notificationReference"),
+                      s"${notificationReference}_SAO_Notification.pdf"
+                    ),
+                  0,
+                  Instant.now()
+                )
               )
             )
           )
         )
+
+      val result = SUT.isNotificationPdfAvailable(notificationReference)
+
+      result.futureValue mustBe true
+    }
+  }
+
+  "isCertificatePdfAvailable" - {
+    "when no objects are found in object store must return false" in {
+      when(
+        mockObjectStoreClient.listObjects(
+          path = any(),
+          owner = any()
+        )(using
+          any()
+        )
       )
+        .thenReturn(Future.successful(ObjectListing(Nil)))
 
-    val result = SUT.isNotificationPdfAvailable(notificationReference)
+      val result = SUT.isCertificatePdfAvailable(certificateReference)
 
-    result.futureValue mustBe true
+      result.futureValue mustBe false
+    }
+
+    "when objects are found in object store without a pdf must return false" in {
+      when(
+        mockObjectStoreClient.listObjects(
+          path = any(),
+          owner = any()
+        )(using
+          any()
+        )
+      )
+        .thenReturn(
+          Future.successful(
+            ObjectListing(
+              List(
+                ObjectSummary(
+                  Path
+                    .File(
+                      Path.Directory(s"senior-accounting-officer/$certificateReference"),
+                      s"${certificateReference}_SAO_Certificate.txt"
+                    ),
+                  0,
+                  Instant.now()
+                )
+              )
+            )
+          )
+        )
+
+      val result = SUT.isCertificatePdfAvailable(certificateReference)
+
+      result.futureValue mustBe false
+    }
+
+    "when objects are found in object store with a pdf must return true" in {
+      when(
+        mockObjectStoreClient.listObjects(
+          path = any(),
+          owner = any()
+        )(using
+          any()
+        )
+      )
+        .thenReturn(
+          Future.successful(
+            ObjectListing(
+              List(
+                ObjectSummary(
+                  Path
+                    .File(
+                      Path.Directory(s"senior-accounting-officer/$certificateReference"),
+                      s"${certificateReference}_SAO_Certificate.pdf"
+                    ),
+                  0,
+                  Instant.now()
+                )
+              )
+            )
+          )
+        )
+
+      val result = SUT.isCertificatePdfAvailable(certificateReference)
+
+      result.futureValue mustBe true
+    }
   }
 }
 
 object ObjectStoreServiceSpec {
   val notificationReference = "NOT0123456789"
+  val certificateReference  = "CERT123456789"
 }
