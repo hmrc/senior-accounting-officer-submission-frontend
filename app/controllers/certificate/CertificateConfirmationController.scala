@@ -38,7 +38,6 @@ class CertificateConfirmationController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: CertificateConfirmationView,
     navigator: Navigator,
-    // objectStoreClient: PlayObjectStoreClient
     objectStoreService: ObjectStoreService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
@@ -46,17 +45,6 @@ class CertificateConfirmationController @Inject() (
 
   def onPageLoad(certificateReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      // objectStoreClient
-      // .listObjects(
-      // path = Path.Directory(s"/$objectStoreOwner/$certificateReference/"),
-      // owner = objectStoreOwner
-      // )
-      // .map { objectListing =>
-      // objectListing.objectSummaries match {
-      // case Nil => Ok(view(certificateReference, displayLink = false))
-      // case _   => Ok(view(certificateReference, displayLink = true))
-      // }
-      // }
       objectStoreService.isCertificatePdfAvailable(certificateReference).map { isPdfAvailable =>
         Ok(
           view(
@@ -71,7 +59,3 @@ class CertificateConfirmationController @Inject() (
     Redirect(navigator.nextPage(CertificateConfirmationPage, NormalMode, request.userAnswers))
   }
 }
-
-// object CertificateConfirmationController {
-// val objectStoreOwner = "senior-accounting-officer"
-// }
