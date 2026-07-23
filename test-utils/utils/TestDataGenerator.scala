@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,23 @@
  * limitations under the License.
  */
 
-package models.requests
+package utils
 
-import play.api.mvc.{Request, WrappedRequest}
+import uk.gov.hmrc.domain.SaUtrGenerator
 
-final case class IdentifierRequest[A](request: Request[A], userId: String, saoSubscriptionId: String)
-    extends WrappedRequest[A](request)
+import scala.util.Random
+
+object TestDataGenerator {
+
+  val testSaoSubscriptionId: String = "SAOSUB123456789"
+
+  def generateCrn: String = {
+    val num = Random.nextInt(1000000)
+    f"$num%08d"
+  }
+
+  def generateUtr: String = {
+    val seed = Random.nextInt(1000000)
+    SaUtrGenerator(seed).nextSaUtr.toString
+  }
+}

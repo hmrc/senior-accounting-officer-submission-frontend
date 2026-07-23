@@ -30,7 +30,8 @@ import CertificateCheckYourAnswersViewSpec.*
 
 class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckYourAnswersView] {
 
-  private def generateView(summaryList: SummaryList): Document = Jsoup.parse(SUT(summaryList).toString)
+  private def generateView(summaryList: SummaryList): Document =
+    Jsoup.parse(SUT(summaryList, certificateSubmissionToken).toString)
 
   "CertificateCheckYourAnswersView" - {
     "empty summary list must result in no table rows" - {
@@ -76,6 +77,16 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
         action = certificateRoutes.CertificateCheckYourAnswersController.onSubmit(),
         buttonText = pageButtonText
       )
+
+      "must include a certificate submission token" in {
+        doc
+          .select("input[type=hidden][name=certificateSubmissionToken]")
+          .attr("value") mustBe certificateSubmissionToken
+      }
+
+      "must prevent double click on submit" in {
+        doc.select("button[type=submit]").attr("data-prevent-double-click") mustBe "true"
+      }
     }
 
     "non-empty summary list must result in a table with rows" - {
@@ -234,15 +245,16 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
 }
 
 object CertificateCheckYourAnswersViewSpec {
-  val pageHeading           = "Check your answers"
-  val pageTitle             = "Check your answers"
-  val pageCaption           = "Submit a certificate"
-  val pageButtonText        = "Confirm and submit"
-  val testKey1              = "testKey"
-  val testValue1            = "nonEmptyString"
-  val testActionMessage1    = "dummyMessage"
-  val testActionUrl1        = "dummyUrl"
-  val testActionHiddenText1 = "dummyVisuallyHiddenText"
-  val testKey2              = "testKey2"
-  val testValue2            = "nonEmptyString2"
+  val pageHeading                = "Check your answers"
+  val pageTitle                  = "Check your answers"
+  val pageCaption                = "Submit a certificate"
+  val pageButtonText             = "Confirm and submit"
+  val certificateSubmissionToken = "test-token"
+  val testKey1                   = "testKey"
+  val testValue1                 = "nonEmptyString"
+  val testActionMessage1         = "dummyMessage"
+  val testActionUrl1             = "dummyUrl"
+  val testActionHiddenText1      = "dummyVisuallyHiddenText"
+  val testKey2                   = "testKey2"
+  val testValue2                 = "nonEmptyString2"
 }

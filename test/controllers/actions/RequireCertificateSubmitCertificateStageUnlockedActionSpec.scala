@@ -32,7 +32,7 @@ class RequireCertificateSubmitCertificateStageUnlockedActionSpec extends SpecBas
 
   class Harness extends RequireCertificateSubmitCertificateStageUnlockedAction {
     def callFilter(userAnswers: UserAnswers): Future[Option[play.api.mvc.Result]] =
-      filter(DataRequest(FakeRequest(), userAnswers.id, userAnswers))
+      filter(DataRequest(FakeRequest(), userAnswers.id, testSaoSubscriptionId, userAnswers))
   }
 
   "RequireCertificateSubmitCertificateStageUnlockedAction" - {

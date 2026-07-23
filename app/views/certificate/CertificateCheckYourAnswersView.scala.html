@@ -23,7 +23,7 @@
     govukSummaryList: GovukSummaryList
 )
 
-@(summaryList: SummaryList)(using request: Request[?], messages: Messages)
+@(summaryList: SummaryList, certificateSubmissionToken: String)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("certificateCheckYourAnswers.title"))) {
 
@@ -33,8 +33,11 @@
     <div class="govuk-summary-list__row">@govukSummaryList(summaryList)</div>
 
     @formHelper(action = certificateRoutes.CertificateCheckYourAnswersController.onSubmit()) {
+        <input type="hidden" name="certificateSubmissionToken" value="@certificateSubmissionToken">
         @govukButton(
-            ButtonViewModel(messages("site.confirmAndSubmit").toText).withAttribute("id", "submit")
+            ButtonViewModel(messages("site.confirmAndSubmit").toText)
+                .withAttribute("id", "submit")
+                .withAttribute("data-prevent-double-click", "true")
         )
     }
 }

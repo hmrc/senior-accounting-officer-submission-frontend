@@ -63,7 +63,9 @@ class SessionRepository @Inject() (
 
   given instantFormat: Format[Instant] = MongoJavatimeFormats.instantFormat
 
-  private def byId(id: String): Bson = Filters.equal("_id", id)
+  private def byId(id: String): Bson                          = Filters.equal("_id", id)
+  private def certificateSubmissionToken(token: String): Bson =
+    Filters.equal("data.certificate.certificateSubmissionToken", Codecs.toBson(token))
 
   def keepAlive(id: String): Future[Boolean] = Mdc.preservingMdc {
     collection
@@ -102,6 +104,19 @@ class SessionRepository @Inject() (
       .deleteOne(byId(id))
       .toFuture()
       .map(_ => true)
+  }
+
+  def claimCertificateSubmissionToken(id: String, token: String): Future[Boolean] = Mdc.preservingMdc {
+    collection
+      .updateOne(
+        filter = Filters.and(byId(id), certificateSubmissionToken(token)),
+        update = Updates.combine(
+          Updates.unset("data.certificate.certificateSubmissionToken"),
+          Updates.set("lastUpdated", Instant.now(clock))
+        )
+      )
+      .toFuture()
+      .map(_.getMatchedCount > 0)
   }
 
   def updateUploadStatus(journey: UploadJourney, reference: String, newStatus: UploadStatus): Future[Boolean] =

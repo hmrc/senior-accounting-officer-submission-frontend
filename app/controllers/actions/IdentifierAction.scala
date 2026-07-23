@@ -23,6 +23,7 @@ import play.api.mvc.*
 import play.api.mvc.Results.*
 import uk.gov.hmrc.auth.core.*
 import uk.gov.hmrc.auth.core.retrieve.v2.Retrievals
+import uk.gov.hmrc.auth.core.retrieve.~
 import uk.gov.hmrc.http.{HeaderCarrier, UnauthorizedException}
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
@@ -44,10 +45,20 @@ class AuthenticatedIdentifierAction @Inject() (
 
     implicit val hc: HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
 
-    authorised().retrieve(Retrievals.internalId) {
-      _.map { internalId =>
-        block(IdentifierRequest(request, internalId))
-      }.getOrElse(throw new UnauthorizedException("Unable to retrieve internal Id"))
+    authorised().retrieve(Retrievals.internalId and Retrievals.allEnrolments) { case internalId ~ enrolments =>
+      val saoSubscriptionId = enrolments.enrolments
+        .find(_.key == AuthenticatedIdentifierAction.DsaoServiceName)
+        .flatMap(
+          _.identifiers
+            .find(_.key == AuthenticatedIdentifierAction.EtmpSubscriptionIdIdentifier)
+            .map(_.value)
+        )
+
+      (internalId, saoSubscriptionId) match {
+        case (Some(id), Some(subscriptionId)) => block(IdentifierRequest(request, id, subscriptionId))
+        case (None, _)                        => throw new UnauthorizedException("Unable to retrieve internal Id")
+        case (_, None)                        => Future.successful(Redirect(config.hubUnauthorisedUrl))
+      }
     } recover {
       case _: NoActiveSession =>
         Redirect(config.loginContinueUrl)
@@ -55,4 +66,9 @@ class AuthenticatedIdentifierAction @Inject() (
         Redirect(config.hubUnauthorisedUrl)
     }
   }
+}
+
+object AuthenticatedIdentifierAction {
+  private val DsaoServiceName              = "HMRC-DSAO-ORG"
+  private val EtmpSubscriptionIdIdentifier = "EtmpSubscriptionId"
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-package models.requests
+package pages.certificate
 
-import play.api.mvc.{Request, WrappedRequest}
+import pages.Page.CERTIFICATE_PATH
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-final case class IdentifierRequest[A](request: Request[A], userId: String, saoSubscriptionId: String)
-    extends WrappedRequest[A](request)
+case object CertificateSubmissionTokenPage extends QuestionPage[String] {
+
+  override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
+
+  override def toString: String = "certificateSubmissionToken"
+}
