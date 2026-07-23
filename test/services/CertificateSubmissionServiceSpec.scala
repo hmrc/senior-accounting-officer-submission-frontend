@@ -24,6 +24,7 @@ import models.upload.*
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito.{never, verify, when}
+import org.scalatest.TryValues.convertTryToSuccessOrFailure
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.certificate.*
 import play.api.libs.json.Json
@@ -34,6 +35,8 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.{ExecutionContext, Future}
 
 import java.time.LocalDate
+
+import CertificateSubmissionServiceSpec.*
 
 class CertificateSubmissionServiceSpec extends SpecBase {
 
@@ -56,7 +59,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers, "token")
+        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers(emptyUserAnswers), "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
@@ -104,7 +107,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers, "token")
+        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers(emptyUserAnswers), "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Duplicate
@@ -124,7 +127,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers, "token")
+        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers(emptyUserAnswers), "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Failed
@@ -144,7 +147,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers, "token")
+        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers(emptyUserAnswers), "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
@@ -165,8 +168,11 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       verify(connector, never()).submit(any())(using any())
     }
   }
+}
 
-  private def completeUserAnswers: UserAnswers =
+object CertificateSubmissionServiceSpec {
+
+  def completeUserAnswers(emptyUserAnswers: UserAnswers): UserAnswers =
     emptyUserAnswers
       .set(CertificateSaoFullNamePage, "Senior Officer")
       .success
@@ -187,7 +193,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       .success
       .value
 
-  private def parsedRow: ParsedSubmissionRow =
+  val parsedRow: ParsedSubmissionRow =
     ParsedSubmissionRow(
       notification = NotificationFields(
         companyName = "Example Ltd",

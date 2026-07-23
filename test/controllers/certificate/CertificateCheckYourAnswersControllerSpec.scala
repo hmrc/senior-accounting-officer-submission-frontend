@@ -82,9 +82,10 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
 
     "must submit the certificate and redirect to confirmation for a POST" in {
       val mockSubmissionService = mock[CertificateSubmissionService]
+      val certificateRef        = "CRT0123456789"
 
       when(mockSubmissionService.submit(meq("id"), meq(testSaoSubscriptionId), any(), meq("token"))(using any()))
-        .thenReturn(Future.successful(CertificateSubmissionResult.Submitted("CRT0123456789")))
+        .thenReturn(Future.successful(CertificateSubmissionResult.Submitted(certificateRef)))
 
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -100,7 +101,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual certificateRoutes.CertificateConfirmationController
-          .onPageLoad("CRT0123456789")
+          .onPageLoad(certificateRef)
           .url
       }
     }

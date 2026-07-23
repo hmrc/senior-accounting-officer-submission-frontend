@@ -19,7 +19,12 @@ package models.certificate
 import base.SpecBase
 import play.api.libs.json.*
 
+import CertificateSubmissionRequestFormatSpec.*
+
 class CertificateSubmissionRequestFormatSpec extends SpecBase {
+
+  private val request     = certificateSubmissionRequest(testSaoSubscriptionId)
+  private val requestJson = certificateSubmissionRequestJson(testSaoSubscriptionId)
 
   "CertificateSubmissionRequest" - {
 
@@ -79,7 +84,11 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
     }
   }
 
-  private val company: CertificateSubmissionCompany =
+}
+
+object CertificateSubmissionRequestFormatSpec {
+
+  val company: CertificateSubmissionCompany =
     CertificateSubmissionCompany(
       crn = Some("AB123456"),
       utr = "1234567890",
@@ -99,7 +108,7 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
       isBankLevyQualified = false
     )
 
-  private val companyJson: JsValue = Json.parse(
+  val companyJson: JsValue = Json.parse(
     """{
       |  "crn": "AB123456",
       |  "utr": "1234567890",
@@ -120,7 +129,7 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
       |}""".stripMargin
   )
 
-  private val request: CertificateSubmissionRequest =
+  def certificateSubmissionRequest(testSaoSubscriptionId: String): CertificateSubmissionRequest =
     CertificateSubmissionRequest(
       subscriptionId = testSaoSubscriptionId,
       submitterName = Some("Proxy Person"),
@@ -130,7 +139,7 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
       remarks = Some("Certificate remarks")
     )
 
-  private val requestJson: JsValue = Json.parse(
+  def certificateSubmissionRequestJson(testSaoSubscriptionId: String): JsValue = Json.parse(
     s"""{
       |  "subscriptionId": "$testSaoSubscriptionId",
       |  "submitterName": "Proxy Person",
