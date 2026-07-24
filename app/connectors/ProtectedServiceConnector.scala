@@ -29,6 +29,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
+import java.util.UUID
 import javax.inject.Inject
 
 class ProtectedServiceConnector @Inject() (appConfig: AppConfig, httpClient: HttpClientV2)(using
@@ -38,6 +39,7 @@ class ProtectedServiceConnector @Inject() (appConfig: AppConfig, httpClient: Htt
     httpClient
       .post(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/notification")
       .withBody(Json.toJson(request))
+      .setHeader("correlationId" -> UUID.randomUUID().toString)
       .execute[HttpResponse]
   }
 }

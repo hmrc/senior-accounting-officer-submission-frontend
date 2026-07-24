@@ -153,7 +153,6 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
       val userAnswers = buildUserAnswers(false)
 
       val expected = NotificationRequest(
-        subscriptionId = hardCodedSubscriptionId,
         saos = List(Sao(name = exampleSao1Name, fromDate = None, email = None, toDate = None)),
         companies = List(
           Company(
@@ -177,7 +176,6 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
       val userAnswers = buildUserAnswers(true)
 
       val expected = NotificationRequest(
-        subscriptionId = hardCodedSubscriptionId,
         saos = List(
           Sao(
             name = exampleSao2Name,
@@ -222,7 +220,6 @@ object NotificationSubmitServiceSpec {
   val exampleNotificationReference       = "appleBananaCitrue"
   val expectedHttpFailureMessage: String = s"Notification submit HTTP call failed with code ${INTERNAL_SERVER_ERROR}"
 
-  val hardCodedSubscriptionId         = "123"
   val exampleAdditionalInformation    = "example additional information"
   val exampleSao1Name                 = "Firstname Lastname I"
   val exampleSao2Name                 = "Firstname Lastname II"

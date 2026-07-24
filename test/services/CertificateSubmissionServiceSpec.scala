@@ -59,7 +59,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers(emptyUserAnswers), "token")
+        .submit(userAnswersId, completeUserAnswers(emptyUserAnswers), "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
@@ -72,7 +72,6 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       verify(sessionRepository, never()).clear(any())
 
       val request = requestCaptor.getValue
-      request.subscriptionId mustBe testSaoSubscriptionId
       request.submitterName.value mustBe "Proxy Person"
       request.saoName mustBe "Senior Officer"
       request.saoEmail mustBe "sao@example.com"
@@ -107,7 +106,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers(emptyUserAnswers), "token")
+        .submit(userAnswersId, completeUserAnswers(emptyUserAnswers), "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Duplicate
@@ -127,7 +126,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers(emptyUserAnswers), "token")
+        .submit(userAnswersId, completeUserAnswers(emptyUserAnswers), "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Failed
@@ -147,7 +146,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, testSaoSubscriptionId, completeUserAnswers(emptyUserAnswers), "token")
+        .submit(userAnswersId, completeUserAnswers(emptyUserAnswers), "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
@@ -160,7 +159,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service           = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, testSaoSubscriptionId, emptyUserAnswers, "token")
+        .submit(userAnswersId, emptyUserAnswers, "token")
         .futureValue
 
       result mustBe CertificateSubmissionResult.MissingData

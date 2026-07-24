@@ -19,7 +19,6 @@ package models.certificate
 import play.api.libs.json.{Json, OFormat}
 
 final case class CertificateSubmissionRequest(
-    subscriptionId: String,
     submitterName: Option[String],
     saoName: String,
     saoEmail: String,

@@ -20,7 +20,6 @@ import play.api.libs.json.{Json, OFormat}
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 
 final case class NotificationRequest(
-    subscriptionId: String,
     companies: List[Company],
     saos: List[Sao],
     remarks: Option[String]

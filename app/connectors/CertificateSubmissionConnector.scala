@@ -27,6 +27,7 @@ import uk.gov.hmrc.http.client.HttpClientV2
 
 import scala.concurrent.{ExecutionContext, Future}
 
+import java.util.UUID
 import javax.inject.Inject
 
 class CertificateSubmissionConnector @Inject() (
@@ -38,6 +39,7 @@ class CertificateSubmissionConnector @Inject() (
     httpClient
       .post(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/certificate")
       .withBody(Json.toJson(request))
+      .setHeader("correlationId" -> UUID.randomUUID().toString)
       .execute[HttpResponse]
       .map {
         case response if response.status == CREATED =>

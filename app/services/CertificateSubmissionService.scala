@@ -41,11 +41,10 @@ class CertificateSubmissionService @Inject() (
 
   def submit(
       userId: String,
-      saoSubscriptionId: String,
       userAnswers: UserAnswers,
       token: String
   )(using HeaderCarrier): Future[CertificateSubmissionResult] =
-    buildRequest(saoSubscriptionId, userAnswers) match {
+    buildRequest(userAnswers) match {
       case Left(error) =>
         logger.warn(s"Certificate submission could not be built: $error")
         Future.successful(CertificateSubmissionResult.MissingData)
@@ -74,7 +73,6 @@ class CertificateSubmissionService @Inject() (
     }
 
   private def buildRequest(
-      saoSubscriptionId: String,
       userAnswers: UserAnswers
   ): Either[String, CertificateSubmissionRequest] =
     for {
@@ -84,7 +82,6 @@ class CertificateSubmissionService @Inject() (
       companies = tableData.rows.map(toCompany)
       _ <- Either.cond(companies.nonEmpty, (), "missing companies")
     } yield CertificateSubmissionRequest(
-      subscriptionId = saoSubscriptionId,
       submitterName = submitterName(userAnswers),
       saoName = saoName,
       saoEmail = saoEmail,
