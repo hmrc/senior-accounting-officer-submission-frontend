@@ -84,7 +84,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
       val mockSubmissionService = mock[CertificateSubmissionService]
       val certificateRef        = "CRT0123456789"
 
-      when(mockSubmissionService.submit(meq("id"), meq(testSaoSubscriptionId), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Submitted(certificateRef)))
 
       val application =
@@ -109,7 +109,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
     "must fail when submission fails so the error handler can render the 500 page" in {
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submit(meq("id"), meq(testSaoSubscriptionId), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Failed))
 
       val application =
@@ -131,7 +131,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
     "must redirect to Journey Recovery when required submission data is missing" in {
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submit(meq("id"), meq(testSaoSubscriptionId), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.MissingData))
 
       val application =
@@ -154,7 +154,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
     "must redirect back to check your answers when the submission token has already been used" in {
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submit(meq("id"), meq(testSaoSubscriptionId), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Duplicate))
 
       val application =

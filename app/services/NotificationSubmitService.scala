@@ -47,9 +47,7 @@ class NotificationSubmitService @Inject() (
             val notificationReference = Json.parse(response.body).as[NotificationResponse].notificationRef
             sessionRepository
               .set(userAnswers.copy(data = Json.obj()))
-              .map { case _ =>
-                Right(notificationReference)
-              }
+              .map(_ => Right(notificationReference))
           }
           case _ => Future.successful(Left(NotificationSubmissionError.HttpError(response)))
         }
@@ -59,12 +57,9 @@ class NotificationSubmitService @Inject() (
 
 object NotificationSubmitService {
 
-  val hardCodedSubscriptionId = "123" // TODO: remove when the subscription id is available
-
   extension (userAnswers: UserAnswers) {
     def toNotification: NotificationRequest = {
       NotificationRequest(
-        subscriptionId = hardCodedSubscriptionId,
         remarks = userAnswers.getNullable(NotificationAdditionalInformationPage),
         saos = userAnswers.toSaos,
         companies = userAnswers.toCompanies

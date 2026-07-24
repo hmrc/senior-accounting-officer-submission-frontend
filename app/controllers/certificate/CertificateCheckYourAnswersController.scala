@@ -67,7 +67,7 @@ class CertificateCheckYourAnswersController @Inject() (
         Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
       case Some(token) =>
         certificateSubmissionService
-          .submit(request.userId, request.saoSubscriptionId, request.userAnswers, token)
+          .submit(request.userId, request.userAnswers, token)
           .flatMap {
             case CertificateSubmissionResult.Submitted(certificateRef) =>
               Future.successful(

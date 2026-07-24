@@ -55,7 +55,6 @@ class ProtectedServiceConnectorISpec extends ISpecBase {
         SUT
           .postNotification(
             NotificationRequest(
-              subscriptionId = subscriptionId,
               companies = List(
                 Company(
                   crn = None,
@@ -92,5 +91,4 @@ class ProtectedServiceConnectorISpec extends ISpecBase {
 
 object ProtectedServiceConnectorISpec {
   val testBody       = Json.obj("notificationRef" -> "NOT0123456789").toString
-  val subscriptionId = "123"
 }

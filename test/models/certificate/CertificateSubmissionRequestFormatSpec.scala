@@ -23,8 +23,8 @@ import CertificateSubmissionRequestFormatSpec.*
 
 class CertificateSubmissionRequestFormatSpec extends SpecBase {
 
-  private val request     = certificateSubmissionRequest(testSaoSubscriptionId)
-  private val requestJson = certificateSubmissionRequestJson(testSaoSubscriptionId)
+  private val request     = certificateSubmissionRequest
+  private val requestJson = certificateSubmissionRequestJson
 
   "CertificateSubmissionRequest" - {
 
@@ -48,10 +48,12 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
       json.validate[CertificateSubmissionRequest] mustBe JsSuccess(requestWithoutOptionalValues)
     }
 
-    "must fail to read when a required field is missing" in {
-      val result = requestJson.as[JsObject].-("subscriptionId").validate[CertificateSubmissionRequest]
+    for name <- Seq("saoName", "saoEmail", "companies") yield {
+      s"must fail to read when a required '$name' field is missing" in {
+        val result = requestJson.as[JsObject].-(name).validate[CertificateSubmissionRequest]
 
-      result mustBe a[JsError]
+        result mustBe a[JsError]
+      }
     }
   }
 
@@ -129,9 +131,8 @@ object CertificateSubmissionRequestFormatSpec {
       |}""".stripMargin
   )
 
-  def certificateSubmissionRequest(testSaoSubscriptionId: String): CertificateSubmissionRequest =
+  def certificateSubmissionRequest: CertificateSubmissionRequest =
     CertificateSubmissionRequest(
-      subscriptionId = testSaoSubscriptionId,
       submitterName = Some("Proxy Person"),
       saoName = "Senior Officer",
       saoEmail = "sao@example.com",
@@ -139,9 +140,8 @@ object CertificateSubmissionRequestFormatSpec {
       remarks = Some("Certificate remarks")
     )
 
-  def certificateSubmissionRequestJson(testSaoSubscriptionId: String): JsValue = Json.parse(
+  def certificateSubmissionRequestJson: JsValue = Json.parse(
     s"""{
-      |  "subscriptionId": "$testSaoSubscriptionId",
       |  "submitterName": "Proxy Person",
       |  "saoName": "Senior Officer",
       |  "saoEmail": "sao@example.com",
