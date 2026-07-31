@@ -17,7 +17,10 @@
 package services
 
 import base.SpecBase
-import org.mockito.ArgumentMatchers.any
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Source
+import org.apache.pekko.util.ByteString
+import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
@@ -27,7 +30,10 @@ import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import services.ObjectStoreServiceSpec.*
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.objectstore.client.Md5Hash
+import uk.gov.hmrc.objectstore.client.Object as ObjectStoreObject
 import uk.gov.hmrc.objectstore.client.ObjectListing
+import uk.gov.hmrc.objectstore.client.ObjectMetadata
 import uk.gov.hmrc.objectstore.client.ObjectSummary
 import uk.gov.hmrc.objectstore.client.Path
 import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
@@ -217,9 +223,42 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
       result.futureValue mustBe true
     }
   }
+
+  "downloadDocumentumPackage" - {
+    "must download the zip from the SDES object-store path" in {
+      val expectedPath = Path
+        .Directory(s"/senior-accounting-officer/sdes/$notificationReference/")
+        .file(documentumPackageFileName)
+      val storedObject = ObjectStoreObject(
+        expectedPath,
+        Source.single(ByteString("zip-content")),
+        ObjectMetadata("application/zip", 11, Md5Hash("hash"), Instant.now(), Map.empty)
+      )
+
+      when(
+        mockObjectStoreClient.getObject[Source[ByteString, NotUsed]](
+          path = any(),
+          owner = any()
+        )(using
+          any(),
+          any()
+        )
+      ).thenReturn(Future.successful(Some(storedObject)))
+
+      val result = SUT.downloadDocumentumPackage(notificationReference, documentumPackageFileName)
+
+      result.futureValue mustBe Some(storedObject.content)
+      verify(mockObjectStoreClient).getObject[Source[ByteString, NotUsed]](
+        path = meq(expectedPath),
+        owner = meq("senior-accounting-officer")
+      )(using any(), any())
+    }
+  }
 }
 
 object ObjectStoreServiceSpec {
-  val notificationReference = "NOT0123456789"
-  val certificateReference  = "CERT123456789"
+  val notificationReference     = "NOT0123456789"
+  val certificateReference      = "CERT123456789"
+  val documentumPackageFileName =
+    s"20260731_${notificationReference}_SAO_Notification_OFFICIAL_SENSITIVE.zip"
 }
