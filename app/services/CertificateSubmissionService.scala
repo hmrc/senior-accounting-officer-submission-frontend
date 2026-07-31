@@ -119,7 +119,7 @@ class CertificateSubmissionService @Inject() (
 
   private def status(companyStatus: CompanyStatus): String =
     companyStatus match {
-      case CompanyStatus.Active         => "COMPLIANT"
+      case CompanyStatus.Active         => "ACTIVE"
       case CompanyStatus.Dormant        => "DORMANT"
       case CompanyStatus.Administration => "ADMINISTRATION"
       case CompanyStatus.Liquidation    => "LIQUIDATION"

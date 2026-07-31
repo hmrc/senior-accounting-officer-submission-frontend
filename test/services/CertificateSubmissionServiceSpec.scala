@@ -82,7 +82,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       company.utr mustBe "1234567890"
       company.name mustBe "Example Ltd"
       company.accPeriodEnd mustBe "2026-03-31"
-      company.status mustBe "COMPLIANT"
+      company.status mustBe "ACTIVE"
       company.`type` mustBe "LTD"
       company.isCorporationTaxQualified mustBe true
       company.isVatQualified mustBe false
