@@ -37,29 +37,6 @@ class Navigator @Inject() () {
       _ => notificationRoutes.ConfirmYourNotificationController.onPageLoad()
     case ConfirmYourNotificationPage =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-    case IsThisTheSaoOnCertificatePage =>
-      userAnswers =>
-        userAnswers.get(IsThisTheSaoOnCertificatePage) match {
-          case Some(true)  => routes.SaoEmailController.onPageLoad(NormalMode)
-          case Some(false) => routes.SaoNameController.onPageLoad(NormalMode)
-          case _           => ???
-        }
-    case SaoNamePage =>
-      _ => routes.SaoEmailController.onPageLoad(NormalMode)
-    case SaoEmailPage =>
-      _ => routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode)
-    case SaoEmailCommunicationChoicePage =>
-      _ => routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-    case CombinedCertificateCheckYourAnswersPage =>
-      _ => routes.CombinedWhoSubmitsCertificateController.onPageLoad(NormalMode)
-    case CombinedWhoSubmitsCertificatePage =>
-      _ => certificateRoutes.QualifiedCompaniesController.onPageLoad()
-    case QualifiedCompaniesPage =>
-      _ => certificateRoutes.UnqualifiedCompaniesController.onPageLoad()
-    case UnqualifiedCompaniesPage =>
-      _ => routes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
-    case CombinedCertificateDeclarationSaoPage =>
-      _ => routes.CombinedCertificateConfirmationController.onPageLoad()
     case NotificationConfirmationPage =>
       _ => notificationRoutes.NotificationTaskListController.onComplete()
     case NotificationMoreThanOneSaoPage =>
@@ -161,19 +138,6 @@ class Navigator @Inject() () {
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case CertificateAdditionalInformationPage =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-    case SaoNamePage =>
-      _ => routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-    case SaoEmailPage =>
-      _ => routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-    case SaoEmailCommunicationChoicePage =>
-      _ => routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-    case IsThisTheSaoOnCertificatePage =>
-      userAnswers =>
-        userAnswers.get(IsThisTheSaoOnCertificatePage) match {
-          case Some(true)  => routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-          case Some(false) => routes.SaoNameController.onPageLoad(CheckMode)
-          case _           => ???
-        }
     case _ => _ => ???
   }
 

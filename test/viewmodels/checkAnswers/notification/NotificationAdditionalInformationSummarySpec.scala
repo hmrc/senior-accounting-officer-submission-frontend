@@ -16,13 +16,13 @@
 
 package viewmodels.checkAnswers.notification
 
+import base.CheckYourAnswersSpecBase
 import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
 import org.jsoup.nodes.Element
 import pages.notification.NotificationAdditionalInformationPage
-import viewmodels.checkAnswers.CheckYourAnswersSummaryRenderingSupport
 
-class NotificationAdditionalInformationSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
+class NotificationAdditionalInformationSummarySpec extends CheckYourAnswersSpecBase {
   val testUserAnswers: UserAnswers = emptyUserAnswers
   val testDate: String             = testUserAnswers.getFinancialYearEndDate
 
