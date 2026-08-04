@@ -24,4 +24,7 @@ GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf
 POST        /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.onSubmit()
 GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf/example      controllers.testonly.TestPdfController.example(rows:Int ?= 10)
 
++ nocsrf
 POST        /senior-accounting-officer/submission/test-only/internal-auth/object-store        controllers.testonly.InternalAuthTestOnlyController.grantSaoObjectStoreAccess()
+
+GET         /senior-accounting-officer/submission/test-only/documentum-package/:submissionId/:fileName        controllers.testonly.DocumentumPackageTestOnlyController.download(submissionId, fileName)

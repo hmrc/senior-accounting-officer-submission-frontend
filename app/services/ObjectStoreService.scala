@@ -16,10 +16,14 @@
 
 package services
 
+import org.apache.pekko.NotUsed
+import org.apache.pekko.stream.scaladsl.Source
+import org.apache.pekko.util.ByteString
 import services.ObjectStoreService.*
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.objectstore.client.ObjectSummary
 import uk.gov.hmrc.objectstore.client.Path
+import uk.gov.hmrc.objectstore.client.play.Implicits.*
 import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
 
 import scala.concurrent.ExecutionContext
@@ -57,6 +61,16 @@ class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(us
         }
       }
   }
+
+  def downloadDocumentumPackage(submissionId: String, fileName: String)(using
+      hc: HeaderCarrier
+  ): Future[Option[Source[ByteString, NotUsed]]] =
+    objectStoreClient
+      .getObject[Source[ByteString, NotUsed]](
+        path = Path.Directory(s"/$objectStoreOwner/sdes/$submissionId/").file(fileName),
+        owner = objectStoreOwner
+      )
+      .map(_.map(_.content))
 }
 
 object ObjectStoreService {
