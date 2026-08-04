@@ -19,8 +19,8 @@ package controllers.testonly
 import base.SpecBase
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -31,6 +31,10 @@ import uk.gov.hmrc.http.HeaderCarrier
 import scala.concurrent.Future
 
 class DocumentumPackageTestOnlyControllerSpec extends SpecBase with MockitoSugar {
+
+  private val submissionId = "NOT0123456789"
+  private val fileName     = "package.zip"
+  private val packagePath  = s"/test-only/documentum-package/$submissionId/$fileName"
 
   "DocumentumPackageTestOnlyController.download" - {
     "return the zip stream when object store contains the package" in {
@@ -44,13 +48,15 @@ class DocumentumPackageTestOnlyControllerSpec extends SpecBase with MockitoSugar
           mockObjectStoreService.downloadDocumentumPackage(any(), any())(using any[HeaderCarrier]())
         ).thenReturn(Future.successful(Some(Source.single(ByteString("zip-content")))))
 
-        val request    = FakeRequest(GET, "/test-only/documentum-package/NOT0123456789/package.zip")
+        val request    = FakeRequest(GET, packagePath)
         val controller = application.injector.instanceOf[DocumentumPackageTestOnlyController]
 
-        val result = controller.download("NOT0123456789", "package.zip")(request)
+        val result = controller.download(submissionId, fileName)(request)
 
         status(result) mustBe OK
         contentType(result) mustBe Some("application/zip")
+        verify(mockObjectStoreService, times(1))
+          .downloadDocumentumPackage(eqTo(submissionId), eqTo(fileName))(using any[HeaderCarrier]())
       }
     }
 
@@ -65,12 +71,14 @@ class DocumentumPackageTestOnlyControllerSpec extends SpecBase with MockitoSugar
           mockObjectStoreService.downloadDocumentumPackage(any(), any())(using any[HeaderCarrier]())
         ).thenReturn(Future.successful(None))
 
-        val request    = FakeRequest(GET, "/test-only/documentum-package/NOT0123456789/package.zip")
+        val request    = FakeRequest(GET, packagePath)
         val controller = application.injector.instanceOf[DocumentumPackageTestOnlyController]
 
-        val result = controller.download("NOT0123456789", "package.zip")(request)
+        val result = controller.download(submissionId, fileName)(request)
 
         status(result) mustBe NOT_FOUND
+        verify(mockObjectStoreService, times(1))
+          .downloadDocumentumPackage(eqTo(submissionId), eqTo(fileName))(using any[HeaderCarrier]())
       }
     }
   }

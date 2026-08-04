@@ -257,8 +257,8 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
 }
 
 object ObjectStoreServiceSpec {
-  val notificationReference     = "NOT0123456789"
-  val certificateReference      = "CERT123456789"
-  val documentumPackageFileName =
+  val notificationReference             = "NOT0123456789"
+  val certificateReference              = "CERT123456789"
+  val documentumPackageFileName: String =
     s"20260731_${notificationReference}_SAO_Notification_OFFICIAL_SENSITIVE.zip"
 }

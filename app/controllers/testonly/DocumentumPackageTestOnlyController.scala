@@ -19,7 +19,6 @@ package controllers.testonly
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.ObjectStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.ExecutionContext
 import scala.util.control.NonFatal
@@ -33,8 +32,6 @@ class DocumentumPackageTestOnlyController @Inject() (
     extends FrontendController(mcc) {
 
   def download(submissionId: String, fileName: String): Action[AnyContent] = Action.async { implicit request =>
-    given hc: uk.gov.hmrc.http.HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-
     objectStoreService
       .downloadDocumentumPackage(submissionId, fileName)
       .map {
