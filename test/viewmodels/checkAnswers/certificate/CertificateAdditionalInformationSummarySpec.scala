@@ -16,13 +16,13 @@
 
 package viewmodels.checkAnswers.certificate
 
+import base.CheckYourAnswersSpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.{CheckMode, UserAnswers}
 import org.jsoup.nodes.Element
 import pages.certificate.CertificateAdditionalInformationPage
-import viewmodels.checkAnswers.CheckYourAnswersSummaryRenderingSupport
 
-class CertificateAdditionalInformationSummarySpec extends CheckYourAnswersSummaryRenderingSupport {
+class CertificateAdditionalInformationSummarySpec extends CheckYourAnswersSpecBase {
   val testUserAnswers: UserAnswers = emptyUserAnswers
 
   "CertificateAdditionalInformationSummary.row" - {

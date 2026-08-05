@@ -68,96 +68,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
-      "when on IsThisTheSaoOnCertificatePage and the user selected Yes, must go to SAO email page" in {
-        navigator.nextPage(
-          IsThisTheSaoOnCertificatePage,
-          NormalMode,
-          emptyUserAnswers.set(IsThisTheSaoOnCertificatePage, true).get
-        ) mustBe routes.SaoEmailController.onPageLoad(NormalMode)
-      }
-
-      "when on IsThisTheSaoOnCertificatePage and the user selected No, must go to SAO name page" in {
-        navigator.nextPage(
-          IsThisTheSaoOnCertificatePage,
-          NormalMode,
-          emptyUserAnswers.set(IsThisTheSaoOnCertificatePage, false).get
-        ) mustBe routes.SaoNameController.onPageLoad(NormalMode)
-      }
-
-      "when on IsThisTheSaoOnCertificatePage and the question is not answered then" in {
-        intercept[NotImplementedError] {
-          navigator.nextPage(
-            IsThisTheSaoOnCertificatePage,
-            NormalMode,
-            emptyUserAnswers
-          )
-        }
-      }
-
-      "when on SaoNamePage, must go to SAO email page" in {
-        navigator.nextPage(
-          SaoNamePage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe routes.SaoEmailController.onPageLoad(NormalMode)
-      }
-
-      "when on SaoEmailPage, must go to SAO email communication choice page" in {
-        navigator.nextPage(
-          SaoEmailPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe routes.SaoEmailCommunicationChoiceController.onPageLoad(NormalMode)
-      }
-
-      "when on SaoEmailCommunicationChoicePage, must go to certificate check your answers page" in {
-        navigator.nextPage(
-          SaoEmailCommunicationChoicePage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-      }
-
-      "when on CombinedCertificateCheckYourAnswersPage, must go to who submits certificate page" in {
-        navigator.nextPage(
-          CombinedCertificateCheckYourAnswersPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe routes.CombinedWhoSubmitsCertificateController.onPageLoad(NormalMode)
-      }
-
-      "when on CombinedWhoSubmitsCertificatePage, must go to qualified companies page" in {
-        navigator.nextPage(
-          CombinedWhoSubmitsCertificatePage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.QualifiedCompaniesController.onPageLoad()
-      }
-
-      "when on QualifiedCompaniesPage, must go to unqualified companies page" in {
-        navigator.nextPage(
-          QualifiedCompaniesPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.UnqualifiedCompaniesController.onPageLoad()
-      }
-
-      "when on UnqualifiedCompaniesPage, must go to certificate submission declaration page" in {
-        navigator.nextPage(
-          UnqualifiedCompaniesPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe routes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
-      }
-
-      "when on CombinedCertificateDeclarationSaoPage, must go to certificate confirmation page" in {
-        navigator.nextPage(
-          CombinedCertificateDeclarationSaoPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe routes.CombinedCertificateConfirmationController.onPageLoad()
-      }
-
       "when on NotificationConfirmationPage, must go to notification task list" in {
         navigator.nextPage(
           NotificationConfirmationPage,
@@ -488,36 +398,12 @@ class NavigatorSpec extends SpecBase {
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
-      "when on SaoNamePage, must go to certificate check your answers page" in {
-        navigator.nextPage(
-          SaoNamePage,
-          CheckMode,
-          emptyUserAnswers
-        ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-      }
-
       "when on CertificateAdditionalInformationPage, must go to certificate check your answers page" in {
         navigator.nextPage(
           CertificateAdditionalInformationPage,
           CheckMode,
           emptyUserAnswers
         ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-      }
-
-      "when on SaoEmailPage, must go to certificate check your answers page" in {
-        navigator.nextPage(
-          SaoEmailPage,
-          CheckMode,
-          emptyUserAnswers
-        ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-      }
-
-      "when on SaoEmailCommunicationChoicePage, must go to certificate check your answers page" in {
-        navigator.nextPage(
-          SaoEmailCommunicationChoicePage,
-          CheckMode,
-          emptyUserAnswers
-        ) mustBe routes.CombinedCertificateCheckYourAnswersController.onPageLoad()
       }
 
       "must throw an not-implemented error for an unspecified configuration" in {
