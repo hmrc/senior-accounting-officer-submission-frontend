@@ -19,7 +19,6 @@ package controllers.testonly
 import connectors.InternalAuthTestOnlyConnector
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
-import uk.gov.hmrc.play.http.HeaderCarrierConverter
 
 import scala.concurrent.ExecutionContext
 
@@ -32,8 +31,6 @@ class InternalAuthTestOnlyController @Inject() (
     extends FrontendController(mcc) {
 
   def grantSaoObjectStoreAccess(): Action[AnyContent] = Action.async { implicit request =>
-    given hc: uk.gov.hmrc.http.HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-
     connector.grantSaoObjectStoreAccess().map { response =>
       Status(response.status)(response.body)
     }
