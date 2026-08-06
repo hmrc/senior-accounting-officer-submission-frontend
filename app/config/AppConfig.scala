@@ -62,7 +62,7 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
       Json.obj(
         "resourceType"     -> "object-store",
         "resourceLocation" -> "senior-accounting-officer",
-        "actions"          -> Json.arr("READ", "WRITE")
+        "actions"          -> Json.arr("READ", "WRITE", "DELETE")
       )
     )
   )
