@@ -61,6 +61,22 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
   }
 
   "isNotificationPdfAvailable" - {
+    "when connection to object store fails must return false" in {
+      when(
+        mockObjectStoreClient.listObjects(
+          path = any(),
+          owner = any()
+        )(using
+          any()
+        )
+      )
+        .thenReturn(Future.failed(RuntimeException("some exception")))
+
+      val result = SUT.isNotificationPdfAvailable(notificationReference)
+
+      result.futureValue mustBe false
+    }
+
     "when no objects are found in object store must return false" in {
       when(
         mockObjectStoreClient.listObjects(
@@ -143,6 +159,22 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
   }
 
   "isCertificatePdfAvailable" - {
+    "when connection to object store fails must return false" in {
+      when(
+        mockObjectStoreClient.listObjects(
+          path = any(),
+          owner = any()
+        )(using
+          any()
+        )
+      )
+        .thenReturn(Future.failed(RuntimeException("some exception")))
+
+      val result = SUT.isCertificatePdfAvailable(certificateReference)
+
+      result.futureValue mustBe false
+    }
+
     "when no objects are found in object store must return false" in {
       when(
         mockObjectStoreClient.listObjects(
@@ -225,6 +257,22 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
   }
 
   "downloadDocumentumPackage" - {
+    "when connection to object store fails must return Future.succssful(None)" in {
+      when(
+        mockObjectStoreClient.getObject[Source[ByteString, NotUsed]](
+          path = any(),
+          owner = any()
+        )(using
+          any(),
+          any()
+        )
+      ).thenReturn(Future.failed(RuntimeException("some exception")))
+
+      val result = SUT.downloadDocumentumPackage(notificationReference, documentumPackageFileName)
+
+      result.futureValue mustBe None
+    }
+
     "must download the zip from the SDES object-store path" in {
       val expectedPath = Path
         .Directory(s"/senior-accounting-officer/sdes/$notificationReference/")

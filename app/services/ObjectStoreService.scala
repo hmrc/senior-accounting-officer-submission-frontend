@@ -19,6 +19,7 @@ package services
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
+import play.api.Logging
 import services.ObjectStoreService.*
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.objectstore.client.ObjectSummary
@@ -28,10 +29,12 @@ import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
+import scala.util.control.NonFatal
 
 import javax.inject.Inject
 
-class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(using ec: ExecutionContext) {
+class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(using ec: ExecutionContext)
+    extends Logging {
   def isNotificationPdfAvailable(notificationReference: String)(using hc: HeaderCarrier): Future[Boolean] = {
     objectStoreClient
       .listObjects(
@@ -39,11 +42,13 @@ class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(us
         owner = objectStoreOwner
       )
       .map {
-        _.objectSummaries.exists {
-          case ObjectSummary(Path.File(_, fileName), _, _) =>
-            fileName == s"${notificationReference}_SAO_Notification.pdf"
-          case _ => false
+        _.objectSummaries.exists { case ObjectSummary(Path.File(_, fileName), _, _) =>
+          fileName == s"${notificationReference}_SAO_Notification.pdf"
         }
+      }
+      .recoverWith { case NonFatal(e) =>
+        logger.warn("[OBJECT_STORE][ListObjects]", e)
+        Future.successful(false)
       }
   }
 
@@ -54,11 +59,13 @@ class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(us
         owner = objectStoreOwner
       )
       .map {
-        _.objectSummaries.exists {
-          case ObjectSummary(Path.File(_, fileName), _, _) =>
-            fileName == s"${certificateReference}_SAO_Certificate.pdf"
-          case _ => false
+        _.objectSummaries.exists { case ObjectSummary(Path.File(_, fileName), _, _) =>
+          fileName == s"${certificateReference}_SAO_Certificate.pdf"
         }
+      }
+      .recoverWith { case NonFatal(e) =>
+        logger.warn("[OBJECT_STORE][ListObjects]", e)
+        Future.successful(false)
       }
   }
 
@@ -71,6 +78,10 @@ class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(us
         owner = objectStoreOwner
       )
       .map(_.map(_.content))
+      .recoverWith { case NonFatal(e) =>
+        logger.warn("[OBJECT_STORE][getObject]", e)
+        Future.successful(None)
+      }
 }
 
 object ObjectStoreService {
