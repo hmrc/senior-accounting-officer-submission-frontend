@@ -5,8 +5,8 @@ import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "10.7.0"
-  private val hmrcMongoVersion = "2.12.0"
+  private val bootstrapVersion = "10.7.1"
+  private val hmrcMongoVersion = "2.13.0"
   private val hmrcPlayFrontend = "13.9.0"
   private val poiVersion       = "5.5.1"
   private val scalaCsvVersion  = "2.0.0"
@@ -18,7 +18,7 @@ object AppDependencies {
     "org.apache.poi"           % "poi"                         % poiVersion,
     "org.apache.poi"           % "poi-ooxml"                   % poiVersion,
     "com.github.tototoshi"    %% "scala-csv"                   % scalaCsvVersion,
-    "io.github.openhtmltopdf"  % "openhtmltopdf-pdfbox"        % "1.1.37",
+    "io.github.openhtmltopdf"  % "openhtmltopdf-pdfbox"        % "1.1.70",
     "uk.gov.hmrc.objectstore" %% "object-store-client-play-30" % "2.6.0"
   )
 
