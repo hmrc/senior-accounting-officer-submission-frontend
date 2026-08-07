@@ -23,16 +23,18 @@ import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
 import play.api.Logging
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.ObjectStoreService.objectStoreOwner
 import uk.gov.hmrc.http.UpstreamErrorResponse
-import uk.gov.hmrc.objectstore.client.Path
 import uk.gov.hmrc.objectstore.client.play.Implicits.*
 import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import uk.gov.hmrc.objectstore.client.{ObjectSummary, Path}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.testonly.ObjectStoreView
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
+import java.time.Instant
 import javax.inject.Inject
 
 class ObjectStoreViewerController @Inject() (
@@ -48,10 +50,13 @@ class ObjectStoreViewerController @Inject() (
     objectStoreClient
       .listObjects(
         Path.Directory("/"),
-        owner = "senior-accounting-officer"
+        owner = objectStoreOwner
       )
       .map { objectSummaries =>
-        Ok(view(objectSummaries.objectSummaries))
+        val sortedObjectSummaries = objectSummaries.objectSummaries
+          .sorted(using Ordering.by[ObjectSummary, Instant](_.lastModified).reverse)
+
+        Ok(view(sortedObjectSummaries))
       }
       .recoverWith {
         case e @ UpstreamErrorResponse(_, status @ (401 | 403), _, _) if stubInternalAuth =>
@@ -67,11 +72,11 @@ class ObjectStoreViewerController @Inject() (
   }
 
   def download(location: String, fileName: String): Action[AnyContent] = Action.async { implicit request =>
-    val fileLocation = Path.Directory(location.replaceFirst("^senior-accounting-officer", "")).file(fileName)
+    val fileLocation = Path.Directory(location.replaceFirst(s"^$objectStoreOwner", "")).file(fileName)
     objectStoreClient
       .getObject[Source[ByteString, NotUsed]](
         fileLocation,
-        owner = "senior-accounting-officer"
+        owner = objectStoreOwner
       )
       .map {
         case Some(obj) =>
@@ -91,11 +96,11 @@ class ObjectStoreViewerController @Inject() (
   }
 
   def delete(location: String, fileName: String): Action[AnyContent] = Action.async { implicit request =>
-    val fileLocation = Path.Directory(location.replaceFirst("^senior-accounting-officer", "")).file(fileName)
+    val fileLocation = Path.Directory(location.replaceFirst(s"^$objectStoreOwner", "")).file(fileName)
     objectStoreClient
       .deleteObject(
         fileLocation,
-        owner = "senior-accounting-officer"
+        owner = objectStoreOwner
       )
       .map { _ => Redirect(routes.ObjectStoreViewerController.listDirectory()) }
       .recover { case NonFatal(e) =>

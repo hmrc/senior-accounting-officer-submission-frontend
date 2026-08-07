@@ -19,6 +19,9 @@ package views
 import play.api.data.Form
 import play.api.i18n.Messages
 
+import java.time.format.DateTimeFormatter
+import java.time.{Instant, ZoneId}
+
 object ViewUtils {
 
   def title(form: Form[?], title: String, section: Option[String] = None)(using messages: Messages): String =
@@ -33,4 +36,10 @@ object ViewUtils {
   private def errorPrefix(form: Form[?])(using messages: Messages): String = {
     if form.hasErrors || form.hasGlobalErrors then s"${messages("error.title.prefix")} " else ""
   }
+
+  def formatInstant(instant: Instant, format: String = "dd MMM yyyy HH:mm:ss"): String = {
+    val formatter = DateTimeFormatter.ofPattern(format).withZone(ZoneId.systemDefault())
+    formatter.format(instant)
+  }
+
 }
