@@ -298,7 +298,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
       result.futureValue mustBe Some(storedObject.content)
       verify(mockObjectStoreClient).getObject[Source[ByteString, NotUsed]](
         path = meq(expectedPath),
-        owner = meq("senior-accounting-officer")
+        owner = meq(ObjectStoreService.objectStoreOwner)
       )(using any(), any())
     }
   }
