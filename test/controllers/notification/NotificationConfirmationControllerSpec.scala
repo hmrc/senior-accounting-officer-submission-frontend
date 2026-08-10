@@ -46,7 +46,7 @@ class NotificationConfirmationControllerSpec extends SpecBase {
 
         val mockObjectStoreService = mock[ObjectStoreService]
         when(
-          mockObjectStoreService.isNotificationPdfAvailable(any())(using any())
+          mockObjectStoreService.isNotificationPdfAvailable(any(), any())(using any())
         )
           .thenReturn(Future.successful(false))
 
@@ -74,7 +74,7 @@ class NotificationConfirmationControllerSpec extends SpecBase {
 
         val mockObjectStoreService = mock[ObjectStoreService]
         when(
-          mockObjectStoreService.isNotificationPdfAvailable(any())(using any())
+          mockObjectStoreService.isNotificationPdfAvailable(any(), any())(using any())
         )
           .thenReturn(Future.successful(true))
 

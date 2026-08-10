@@ -49,7 +49,7 @@
             @if(displayPdfLink) {
                 <li>
                     <span>
-                        <a class="govuk-link" id="download-pdf-link" href="#">
+                        <a class="govuk-link" id="download-pdf-link" href="@controllers.routes.DownloadPdfController.certificate(certificateReference)">
                             @messages("certificateConfirmation.downloadPdf")
                         </a>
                         @messages("certificateConfirmation.list1.item1")

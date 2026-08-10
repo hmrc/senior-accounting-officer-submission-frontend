@@ -45,7 +45,7 @@ class CertificateConfirmationControllerSpec extends SpecBase {
 
         val mockObjectStoreService = mock[ObjectStoreService]
         when(
-          mockObjectStoreService.isCertificatePdfAvailable(any())(using any())
+          mockObjectStoreService.isCertificatePdfAvailable(any(), any())(using any())
         )
           .thenReturn(Future.successful(false))
 
@@ -70,7 +70,7 @@ class CertificateConfirmationControllerSpec extends SpecBase {
 
         val mockObjectStoreService = mock[ObjectStoreService]
         when(
-          mockObjectStoreService.isCertificatePdfAvailable(any())(using any())
+          mockObjectStoreService.isCertificatePdfAvailable(any(), any())(using any())
         )
           .thenReturn(Future.successful(true))
 

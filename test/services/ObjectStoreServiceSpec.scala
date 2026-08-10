@@ -17,6 +17,7 @@
 package services
 
 import base.SpecBase
+import models.SubmissionDocumentType
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
@@ -37,6 +38,7 @@ import uk.gov.hmrc.objectstore.client.ObjectMetadata
 import uk.gov.hmrc.objectstore.client.ObjectSummary
 import uk.gov.hmrc.objectstore.client.Path
 import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import utils.SubscriptionIdHash
 
 import scala.concurrent.Future
 
@@ -72,7 +74,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
       )
         .thenReturn(Future.failed(RuntimeException("some exception")))
 
-      val result = SUT.isNotificationPdfAvailable(notificationReference)
+      val result = SUT.isNotificationPdfAvailable(saoSubscriptionId, notificationReference)
 
       result.futureValue mustBe false
     }
@@ -88,7 +90,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
       )
         .thenReturn(Future.successful(ObjectListing(Nil)))
 
-      val result = SUT.isNotificationPdfAvailable(notificationReference)
+      val result = SUT.isNotificationPdfAvailable(saoSubscriptionId, notificationReference)
 
       result.futureValue mustBe false
     }
@@ -120,7 +122,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
           )
         )
 
-      val result = SUT.isNotificationPdfAvailable(notificationReference)
+      val result = SUT.isNotificationPdfAvailable(saoSubscriptionId, notificationReference)
 
       result.futureValue mustBe false
     }
@@ -152,7 +154,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
           )
         )
 
-      val result = SUT.isNotificationPdfAvailable(notificationReference)
+      val result = SUT.isNotificationPdfAvailable(saoSubscriptionId, notificationReference)
 
       result.futureValue mustBe true
     }
@@ -170,7 +172,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
       )
         .thenReturn(Future.failed(RuntimeException("some exception")))
 
-      val result = SUT.isCertificatePdfAvailable(certificateReference)
+      val result = SUT.isCertificatePdfAvailable(saoSubscriptionId, certificateReference)
 
       result.futureValue mustBe false
     }
@@ -186,7 +188,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
       )
         .thenReturn(Future.successful(ObjectListing(Nil)))
 
-      val result = SUT.isCertificatePdfAvailable(certificateReference)
+      val result = SUT.isCertificatePdfAvailable(saoSubscriptionId, certificateReference)
 
       result.futureValue mustBe false
     }
@@ -218,7 +220,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
           )
         )
 
-      val result = SUT.isCertificatePdfAvailable(certificateReference)
+      val result = SUT.isCertificatePdfAvailable(saoSubscriptionId, certificateReference)
 
       result.futureValue mustBe false
     }
@@ -250,7 +252,7 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
           )
         )
 
-      val result = SUT.isCertificatePdfAvailable(certificateReference)
+      val result = SUT.isCertificatePdfAvailable(saoSubscriptionId, certificateReference)
 
       result.futureValue mustBe true
     }
@@ -302,9 +304,134 @@ class ObjectStoreServiceSpec extends SpecBase with GuiceOneAppPerSuite with Befo
       )(using any(), any())
     }
   }
+
+  "downloadSubmissionPdf" - {
+    "must download the notification pdf from the path the backend stores it at" in {
+      val expectedPath = Path
+        .Directory(s"/senior-accounting-officer/$hashedSaoSubscriptionId/")
+        .file(s"${notificationReference}_SAO_Notification.pdf")
+      val storedObject = ObjectStoreObject(
+        expectedPath,
+        Source.single(ByteString("pdf-content")),
+        ObjectMetadata("application/pdf", 11, Md5Hash("hash"), Instant.now(), Map.empty)
+      )
+
+      when(
+        mockObjectStoreClient.getObject[Source[ByteString, NotUsed]](
+          path = any(),
+          owner = any()
+        )(using
+          any(),
+          any()
+        )
+      ).thenReturn(Future.successful(Some(storedObject)))
+
+      val result =
+        SUT.downloadSubmissionPdf(saoSubscriptionId, notificationReference, SubmissionDocumentType.Notification)
+
+      result.futureValue mustBe Some(storedObject)
+      verify(mockObjectStoreClient).getObject[Source[ByteString, NotUsed]](
+        path = meq(expectedPath),
+        owner = meq(ObjectStoreService.objectStoreOwner)
+      )(using any(), any())
+    }
+
+    "must download the certificate pdf from the path the backend stores it at" in {
+      val expectedPath = Path
+        .Directory(s"/senior-accounting-officer/$hashedSaoSubscriptionId/")
+        .file(s"${certificateReference}_SAO_Certificate.pdf")
+      val storedObject = ObjectStoreObject(
+        expectedPath,
+        Source.single(ByteString("pdf-content")),
+        ObjectMetadata("application/pdf", 11, Md5Hash("hash"), Instant.now(), Map.empty)
+      )
+
+      when(
+        mockObjectStoreClient.getObject[Source[ByteString, NotUsed]](
+          path = any(),
+          owner = any()
+        )(using
+          any(),
+          any()
+        )
+      ).thenReturn(Future.successful(Some(storedObject)))
+
+      val result =
+        SUT.downloadSubmissionPdf(saoSubscriptionId, certificateReference, SubmissionDocumentType.Certificate)
+
+      result.futureValue mustBe Some(storedObject)
+      verify(mockObjectStoreClient).getObject[Source[ByteString, NotUsed]](
+        path = meq(expectedPath),
+        owner = meq(ObjectStoreService.objectStoreOwner)
+      )(using any(), any())
+    }
+
+    "when the pdf is not in object store must return None" in {
+      when(
+        mockObjectStoreClient.getObject[Source[ByteString, NotUsed]](
+          path = any(),
+          owner = any()
+        )(using
+          any(),
+          any()
+        )
+      ).thenReturn(Future.successful(None))
+
+      val result =
+        SUT.downloadSubmissionPdf(saoSubscriptionId, notificationReference, SubmissionDocumentType.Notification)
+
+      result.futureValue mustBe None
+    }
+
+    "when connection to object store fails must fail rather than report the pdf as missing" in {
+      val expectedException = RuntimeException("some exception")
+
+      when(
+        mockObjectStoreClient.getObject[Source[ByteString, NotUsed]](
+          path = any(),
+          owner = any()
+        )(using
+          any(),
+          any()
+        )
+      ).thenReturn(Future.failed(expectedException))
+
+      val result =
+        SUT.downloadSubmissionPdf(saoSubscriptionId, notificationReference, SubmissionDocumentType.Notification)
+
+      result.failed.futureValue mustBe expectedException
+    }
+
+    malformedReferences.foreach { reference =>
+      s"must return None without calling object store for the reference '$reference'" in {
+        val result = SUT.downloadSubmissionPdf(saoSubscriptionId, reference, SubmissionDocumentType.Notification)
+
+        result.futureValue mustBe None
+        verifyNoInteractions(mockObjectStoreClient)
+      }
+    }
+  }
+
+  "isNotificationPdfAvailable" - {
+    malformedReferences.foreach { reference =>
+      s"must return false without calling object store for the reference '$reference'" in {
+        val result = SUT.isNotificationPdfAvailable(saoSubscriptionId, reference)
+
+        result.futureValue mustBe false
+        verifyNoInteractions(mockObjectStoreClient)
+      }
+    }
+  }
 }
 
 object ObjectStoreServiceSpec {
+  val saoSubscriptionId                = "SAOSUB123456789"
+  val hashedSaoSubscriptionId: String  = SubscriptionIdHash.hex(saoSubscriptionId)
+  val malformedReferences: Seq[String] = Seq(
+    "../../other-service/secret",
+    "NOT 0123456789",
+    ""
+  )
   val notificationReference             = "NOT0123456789"
   val certificateReference              = "CERT123456789"
   val documentumPackageFileName: String =

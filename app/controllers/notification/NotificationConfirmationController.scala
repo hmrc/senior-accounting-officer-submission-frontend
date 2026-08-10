@@ -45,13 +45,14 @@ class NotificationConfirmationController @Inject() (
 
   def onPageLoad(notificationReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      objectStoreService.isNotificationPdfAvailable(notificationReference).map { isPdfAvailable =>
-        Ok(
-          view(
-            notificationReference = notificationReference,
-            displayPdfLink = isPdfAvailable
+      objectStoreService.isNotificationPdfAvailable(request.saoSubscriptionId, notificationReference).map {
+        isPdfAvailable =>
+          Ok(
+            view(
+              notificationReference = notificationReference,
+              displayPdfLink = isPdfAvailable
+            )
           )
-        )
       }
     }
 
