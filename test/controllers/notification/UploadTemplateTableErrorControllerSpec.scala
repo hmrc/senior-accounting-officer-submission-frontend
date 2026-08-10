@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.upload.*
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import pages.notification.UploadTemplateTablePage
 import play.api.http.HeaderNames
 import play.api.inject.bind
@@ -59,7 +59,7 @@ class UploadTemplateTableErrorControllerSpec extends SpecBase {
 
     "must redirect to the next page for a POST" in {
       val application = applicationBuilder(userAnswers = Some(populatedAnswers))
-        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .overrides(bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)))
         .build()
 
       running(application) {

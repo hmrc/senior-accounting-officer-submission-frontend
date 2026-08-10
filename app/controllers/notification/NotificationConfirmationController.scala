@@ -18,7 +18,7 @@ package controllers.notification
 
 import controllers.actions.*
 import models.NormalMode
-import navigation.Navigator
+import navigation.NotificationNavigator
 import pages.notification.NotificationConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -37,7 +37,7 @@ class NotificationConfirmationController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationConfirmationView,
-    navigator: Navigator,
+    navigator: NotificationNavigator,
     objectStoreService: ObjectStoreService
 )(using ec: ExecutionContext)
     extends FrontendBaseController

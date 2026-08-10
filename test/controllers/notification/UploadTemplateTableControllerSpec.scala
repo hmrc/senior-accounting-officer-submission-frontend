@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.upload.*
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{verify, when}
 import org.scalatestplus.mockito.MockitoSugar
@@ -107,7 +107,7 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
 
       val application = applicationBuilder(userAnswers = Some(populatedAnswers))
         .overrides(
-          bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+          bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
           bind[SessionRepository].toInstance(mockSessionRepository)
         )
         .build()

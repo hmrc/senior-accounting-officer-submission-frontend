@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.NotificationNavigator
 import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,7 +34,7 @@ import javax.inject.Inject
 class NotificationMultiSaoLastOfficerNameController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
-    navigator: Navigator,
+    navigator: NotificationNavigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,

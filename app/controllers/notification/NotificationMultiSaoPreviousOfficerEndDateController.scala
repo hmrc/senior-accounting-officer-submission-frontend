@@ -20,7 +20,7 @@ import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.NotificationNavigator
 import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
-    navigator: Navigator,
+    navigator: NotificationNavigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,

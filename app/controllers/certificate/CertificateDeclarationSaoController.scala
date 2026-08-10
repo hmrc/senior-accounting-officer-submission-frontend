@@ -19,7 +19,7 @@ package controllers.certificate
 import controllers.actions.*
 import forms.certificate.CertificateDeclarationSaoFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.CertificateNavigator
 import pages.certificate.CertificateDeclarationSaoPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,7 +34,7 @@ import javax.inject.Inject
 class CertificateDeclarationSaoController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
-    navigator: Navigator,
+    navigator: CertificateNavigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,

@@ -19,7 +19,7 @@ package controllers.certificate
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
-import navigation.{FakeNavigator, Navigator}
+import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
@@ -109,7 +109,7 @@ class CertificateConfirmationControllerSpec extends SpecBase {
 
     "must redirect to the next page for a POST" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .overrides(bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute)))
         .build()
 
       running(application) {

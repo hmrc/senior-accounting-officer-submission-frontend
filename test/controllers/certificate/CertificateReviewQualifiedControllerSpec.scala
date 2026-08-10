@@ -21,7 +21,7 @@ import controllers.certificate.routes as certificateRoutes
 import models.QualifiedCompany
 import models.certificate.CertificateTaskListStage
 import models.upload.*
-import navigation.{FakeNavigator, Navigator}
+import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import pages.certificate.CertificateUploadTemplateTablePage
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -76,7 +76,7 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
       val application =
         applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute))
+            bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute))
           )
           .build()
 

@@ -20,7 +20,7 @@ import controllers.actions.*
 import controllers.routes
 import forms.certificate.CertificateSaoEmailFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.CertificateNavigator
 import pages.certificate.{CertificateSaoEmailPage, CertificateSaoFullNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class CertificateSaoEmailController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
-    navigator: Navigator,
+    navigator: CertificateNavigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,

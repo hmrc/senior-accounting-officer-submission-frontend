@@ -21,7 +21,7 @@ import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.notification.NotificationSubmissionError
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
@@ -97,7 +97,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         val application =
           applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
               bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
             )
             .build()
@@ -152,7 +152,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         val application =
           applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
             .overrides(
-              bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+              bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
               bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
             )
             .build()

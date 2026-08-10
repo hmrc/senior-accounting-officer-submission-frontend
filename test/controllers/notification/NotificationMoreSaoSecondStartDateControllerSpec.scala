@@ -21,7 +21,7 @@ import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerStartDateFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -136,7 +136,7 @@ class NotificationMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBas
       val application =
         applicationBuilder(userAnswers = Some(userAnswersWithSaoName))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -158,7 +158,7 @@ class NotificationMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBas
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

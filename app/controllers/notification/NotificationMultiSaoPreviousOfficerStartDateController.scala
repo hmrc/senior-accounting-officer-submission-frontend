@@ -20,7 +20,7 @@ import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerStartDateFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.NotificationNavigator
 import pages.notification.{
   NotificationMultiSaoPreviousOfficerNamePage,
   NotificationMultiSaoPreviousOfficerStartDatePage
@@ -38,7 +38,7 @@ import javax.inject.Inject
 class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
-    navigator: Navigator,
+    navigator: NotificationNavigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,

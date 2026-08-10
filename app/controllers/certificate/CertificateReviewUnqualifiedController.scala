@@ -20,7 +20,7 @@ import controllers.actions.*
 import controllers.routes
 import models.NormalMode
 import models.upload.*
-import navigation.Navigator
+import navigation.CertificateNavigator
 import pages.certificate.{
   CertificateReviewUnqualifiedPage,
   CertificateSaoFullNamePage,
@@ -44,7 +44,7 @@ class CertificateReviewUnqualifiedController @Inject() (
     requireUploadSubmissionTemplateStageUnlocked: RequireCertificateUploadSubmissionTemplateUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateReviewUnqualifiedView,
-    navigator: Navigator,
+    navigator: CertificateNavigator,
     sessionRepository: SessionRepository
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController

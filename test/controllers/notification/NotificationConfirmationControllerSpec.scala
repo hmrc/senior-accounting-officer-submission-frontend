@@ -19,7 +19,7 @@ package controllers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
@@ -116,7 +116,7 @@ class NotificationConfirmationControllerSpec extends SpecBase {
 
     "must redirect to the next page for a POST" in {
       val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .overrides(bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)))
         .build()
 
       running(application) {

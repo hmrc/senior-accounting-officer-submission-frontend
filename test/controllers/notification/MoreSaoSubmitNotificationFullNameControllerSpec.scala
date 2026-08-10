@@ -21,7 +21,7 @@ import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -94,7 +94,7 @@ class NotificationMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mo
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

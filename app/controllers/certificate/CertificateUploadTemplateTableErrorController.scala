@@ -19,7 +19,7 @@ package controllers.certificate
 import controllers.actions.*
 import controllers.routes
 import models.NormalMode
-import navigation.Navigator
+import navigation.CertificateNavigator
 import pages.certificate.{CertificateUploadTemplateTableErrorPage, CertificateUploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -35,7 +35,7 @@ class CertificateUploadTemplateTableErrorController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateUploadTemplateTableErrorView,
-    navigator: Navigator
+    navigator: CertificateNavigator
 ) extends FrontendBaseController
     with I18nSupport {
 

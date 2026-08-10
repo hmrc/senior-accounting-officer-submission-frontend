@@ -17,23 +17,21 @@
 package navigation
 
 import base.SpecBase
-import controllers.certificate.routes as certificateRoutes
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
-import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
 import models.upload.UploadTemplateTableData
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.*
-import pages.certificate.*
 import pages.notification.*
 
 import java.time.LocalDate
 
-class NavigatorSpec extends SpecBase {
+class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
-  val navigator = new Navigator()
+  lazy val navigator: Navigator = app.injector.instanceOf[NotificationNavigator]
 
-  "Navigator.nextPage" - {
+  "NotificationNavigator.nextPage" - {
 
     "in Normal mode" - {
 
@@ -228,164 +226,6 @@ class NavigatorSpec extends SpecBase {
         ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
 
-      "SubmissionTypePage" - {
-
-        "when on SubmissionTypePage and the user chose notification only, must go to NotificationTaskList" in {
-          navigator.nextPage(
-            SubmissionTypePage,
-            NormalMode,
-            emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Notification).get
-          ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
-        }
-
-        "when on SubmissionTypePage and the user chose certificate only, must go to CertificateTaskList" in {
-          navigator.nextPage(
-            SubmissionTypePage,
-            NormalMode,
-            emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Certificate).get
-          ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
-            CertificateTaskListStage.ProvideSaoDetailsStage
-          )
-        }
-
-        "when on SubmissionTypePage and the user chose both the notification and the certificate, must throw an exception" in {
-          intercept[NotImplementedError] {
-            navigator.nextPage(
-              SubmissionTypePage,
-              NormalMode,
-              emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Combined).get
-            )
-          }
-        }
-      }
-
-      // certificate flow
-
-      "when on CertificateSaoFullName, must go to CertificateSaoEmail page" in {
-        navigator.nextPage(
-          CertificateSaoFullNamePage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode)
-      }
-
-      "when on CertificateSaoEmail, must go to CertificateTaskList page" in {
-        navigator.nextPage(
-          CertificateSaoEmailPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
-          CertificateTaskListStage.UploadSubmissionTemplateStage
-        )
-      }
-
-      "when on CertificateUploadTemplateTableErrorPage with no parsing errors, must go to upload form page" in {
-        val userAnswers =
-          emptyUserAnswers
-            .set(CertificateUploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
-            .success
-            .value
-
-        navigator.nextPage(
-          CertificateUploadTemplateTableErrorPage,
-          NormalMode,
-          userAnswers
-        ) mustBe certificateRoutes.CertificateUploadFormController.onPageLoad()
-      }
-
-      "when on CertificateUploadTemplateTableErrorPage with parsing errors, must go to upload form page" in {
-        val userAnswers =
-          emptyUserAnswers
-            .set(
-              CertificateUploadTemplateTablePage,
-              UploadTemplateTableData(
-                rows = Seq.empty,
-                errors = Seq(models.upload.TemplateParseError(9, Some("Company UTR"), "missing_required_value", "x"))
-              )
-            )
-            .success
-            .value
-
-        navigator.nextPage(
-          CertificateUploadTemplateTableErrorPage,
-          NormalMode,
-          userAnswers
-        ) mustBe certificateRoutes.CertificateUploadFormController.onPageLoad()
-      }
-
-      "when on CertificateUploadTemplateTableErrorPage with no upload data, must go to journey recovery page" in {
-        navigator.nextPage(
-          CertificateUploadTemplateTableErrorPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe routes.JourneyRecoveryController.onPageLoad()
-      }
-
-      "when on CertificateReviewQualified, must go to CertificateReviewUnqualified page" in {
-        navigator.nextPage(
-          CertificateReviewQualifiedPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
-      }
-
-      "when on CertificateReviewUnqualified, must go to CertificateTaskList page" in {
-        navigator.nextPage(
-          CertificateReviewUnqualifiedPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
-          CertificateTaskListStage.SubmitCertificateStage
-        )
-      }
-
-      "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {
-        navigator.nextPage(
-          CertificateAdditionalInformationPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
-      }
-
-      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationSao page" in {
-        navigator.nextPage(
-          CertificateWhoIsSubmittingPage,
-          NormalMode,
-          emptyUserAnswers.set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.Sao).get
-        ) mustBe certificateRoutes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
-      }
-
-      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationStandIn page" in {
-        navigator.nextPage(
-          CertificateWhoIsSubmittingPage,
-          NormalMode,
-          emptyUserAnswers.set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn).get
-        ) mustBe certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
-      }
-
-      "when on CertificateDeclarationSao, must go to CertificateCheckYourAnswers page" in {
-        navigator.nextPage(
-          CertificateDeclarationSaoPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-      }
-
-      "when on CertificateDeclarationStandIn, must go to CertificateCheckYourAnswers page" in {
-        navigator.nextPage(
-          CertificateDeclarationStandInPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-      }
-
-      "when on CertificateConfirmation, must go to CertificateTaskList page" in {
-        navigator.nextPage(
-          CertificateConfirmationPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.Complete)
-      }
     }
 
     "in Check mode" - {
@@ -396,14 +236,6 @@ class NavigatorSpec extends SpecBase {
           CheckMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-      }
-
-      "when on CertificateAdditionalInformationPage, must go to certificate check your answers page" in {
-        navigator.nextPage(
-          CertificateAdditionalInformationPage,
-          CheckMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
 
       "must throw an not-implemented error for an unspecified configuration" in {

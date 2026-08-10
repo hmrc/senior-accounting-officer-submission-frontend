@@ -18,7 +18,7 @@ package controllers.notification
 
 import controllers.actions.*
 import models.NormalMode
-import navigation.Navigator
+import navigation.NotificationNavigator
 import pages.notification.ConfirmYourNotificationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -35,7 +35,7 @@ class ConfirmYourNotificationController @Inject() (
     requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: ConfirmYourNotificationView,
-    navigator: Navigator
+    navigator: NotificationNavigator
 ) extends FrontendBaseController
     with I18nSupport {
 
