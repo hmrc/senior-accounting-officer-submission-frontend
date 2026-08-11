@@ -83,7 +83,7 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
         .get(0)
         .createTestWithLink(
           linkText = pageDownload,
-          destinationUrl = "#"
+          destinationUrl = pageDownloadUrl
         )
 
       doc.getMainContent
@@ -206,7 +206,9 @@ object NotificationConfirmationViewSpec {
     Seq(
       "Print this page - print a paper copy of this confirmation page"
     )
-  val pageDownload                 = "Download a PDF"
+  val pageDownload            = "Download a PDF"
+  val pageDownloadUrl: String =
+    s"/senior-accounting-officer/submission/notification/download?notificationReference=$testReferenceNumber"
   val pagePrint                    = "Print this page"
   val pageSubheadings: Seq[String] = Seq("What happens next")
   val hubUrl                       = "testHubUrl"

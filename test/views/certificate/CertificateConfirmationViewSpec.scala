@@ -69,7 +69,7 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
         .get(0)
         .createTestWithLink(
           linkText = pageDownload,
-          destinationUrl = "#"
+          destinationUrl = pageDownloadUrl
         )
 
       doc.getMainContent
@@ -161,7 +161,9 @@ object CertificateConfirmationViewSpec {
   val pageHeading = "Certificate submitted"
   val pageTitle   = "Certificate submitted"
 
-  val certificateRef    = "SAOCRT0123456789"
+  val certificateRef          = "SAOCRT0123456789"
+  val pageDownloadUrl: String =
+    s"/senior-accounting-officer/submission/certificate/download?certificateReference=$certificateRef"
   val panelTitle        = "Certificate submitted"
   val panelBody: String = s"Your reference number $certificateRef"
 

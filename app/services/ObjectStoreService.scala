@@ -16,16 +16,19 @@
 
 package services
 
+import models.SubmissionDocumentType
 import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
 import play.api.Logging
 import services.ObjectStoreService.*
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.objectstore.client.Object as ObjectStoreObject
 import uk.gov.hmrc.objectstore.client.ObjectSummary
 import uk.gov.hmrc.objectstore.client.Path
 import uk.gov.hmrc.objectstore.client.play.Implicits.*
 import uk.gov.hmrc.objectstore.client.play.PlayObjectStoreClient
+import utils.SubscriptionIdHash
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
@@ -35,38 +38,56 @@ import javax.inject.Inject
 
 class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(using ec: ExecutionContext)
     extends Logging {
-  def isNotificationPdfAvailable(notificationReference: String)(using hc: HeaderCarrier): Future[Boolean] = {
-    objectStoreClient
-      .listObjects(
-        path = Path.Directory(s"/$objectStoreOwner/$notificationReference/"),
-        owner = objectStoreOwner
-      )
-      .map {
-        _.objectSummaries.exists { case ObjectSummary(Path.File(_, fileName), _, _) =>
-          fileName == s"${notificationReference}_SAO_Notification.pdf"
-        }
-      }
-      .recoverWith { case NonFatal(e) =>
-        logger.warn("[OBJECT_STORE][ListObjects]", e)
-        Future.successful(false)
-      }
-  }
+  def isNotificationPdfAvailable(saoSubscriptionId: String, notificationReference: String)(using
+      hc: HeaderCarrier
+  ): Future[Boolean] =
+    isPdfAvailable(saoSubscriptionId, notificationReference, SubmissionDocumentType.Notification)
 
-  def isCertificatePdfAvailable(certificateReference: String)(using hc: HeaderCarrier): Future[Boolean] = {
-    objectStoreClient
-      .listObjects(
-        path = Path.Directory(s"/$objectStoreOwner/$certificateReference/"),
-        owner = objectStoreOwner
-      )
-      .map {
-        _.objectSummaries.exists { case ObjectSummary(Path.File(_, fileName), _, _) =>
-          fileName == s"${certificateReference}_SAO_Certificate.pdf"
+  def isCertificatePdfAvailable(saoSubscriptionId: String, certificateReference: String)(using
+      hc: HeaderCarrier
+  ): Future[Boolean] =
+    isPdfAvailable(saoSubscriptionId, certificateReference, SubmissionDocumentType.Certificate)
+
+  def downloadSubmissionPdf(saoSubscriptionId: String, reference: String, documentType: SubmissionDocumentType)(using
+      hc: HeaderCarrier
+  ): Future[Option[ObjectStoreObject[Source[ByteString, NotUsed]]]] =
+    if !isWellFormedReference(reference) then {
+      logger.warn("[OBJECT_STORE][GetObject] rejected a reference that is not well formed")
+      Future.successful(None)
+    } else {
+      objectStoreClient
+        .getObject[Source[ByteString, NotUsed]](
+          path = submissionDirectory(saoSubscriptionId).file(documentType.pdfFileName(reference)),
+          owner = objectStoreOwner
+        )
+        .recoverWith { case NonFatal(e) =>
+          logger.warn("[OBJECT_STORE][GetObject]", e)
+          Future.failed(e)
         }
-      }
-      .recoverWith { case NonFatal(e) =>
-        logger.warn("[OBJECT_STORE][ListObjects]", e)
-        Future.successful(false)
-      }
+    }
+
+  private def isPdfAvailable(saoSubscriptionId: String, reference: String, documentType: SubmissionDocumentType)(using
+      hc: HeaderCarrier
+  ): Future[Boolean] = {
+    if !isWellFormedReference(reference) then {
+      logger.warn("[OBJECT_STORE][ListObjects] rejected a reference that is not well formed")
+      Future.successful(false)
+    } else {
+      objectStoreClient
+        .listObjects(
+          path = submissionDirectory(saoSubscriptionId),
+          owner = objectStoreOwner
+        )
+        .map {
+          _.objectSummaries.exists { case ObjectSummary(Path.File(_, fileName), _, _) =>
+            fileName == documentType.pdfFileName(reference)
+          }
+        }
+        .recoverWith { case NonFatal(e) =>
+          logger.warn("[OBJECT_STORE][ListObjects]", e)
+          Future.successful(false)
+        }
+    }
   }
 
   def downloadDocumentumPackage(submissionId: String, fileName: String)(using
@@ -82,8 +103,16 @@ class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(us
         logger.warn("[OBJECT_STORE][getObject]", e)
         Future.successful(None)
       }
+
+  private def isWellFormedReference(reference: String): Boolean =
+    referenceFormat.matches(reference)
+
+  private def submissionDirectory(saoSubscriptionId: String): Path.Directory =
+    Path.Directory(s"/$objectStoreOwner/${SubscriptionIdHash.hex(saoSubscriptionId)}/")
 }
 
 object ObjectStoreService {
   val objectStoreOwner = "senior-accounting-officer"
+
+  private val referenceFormat = "^[A-Za-z0-9]{1,64}$".r
 }

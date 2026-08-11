@@ -80,6 +80,8 @@ POST        /notification/check-your-answers                                    
 GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onSubmit()
 
+GET         /notification/download                                                    controllers.DownloadPdfController.notification(notificationReference: String)
+
 GET         /notification/confirm-your-notification                                   controllers.notification.ConfirmYourNotificationController.onPageLoad()
 POST        /notification/confirm-your-notification                                   controllers.notification.ConfirmYourNotificationController.onSubmit()
 
@@ -139,6 +141,8 @@ POST        /certificateCheckYourAnswers                                        
 
 GET         /certificate-confirmation                                                 controllers.certificate.CertificateConfirmationController.onPageLoad(certificateIdReferenceNumber: String)
 POST        /certificate-confirmation                                                 controllers.certificate.CertificateConfirmationController.onSubmit()
+
+GET         /certificate/download                                                     controllers.DownloadPdfController.certificate(certificateReference: String)
 
 ##############################
 # combined journey routes

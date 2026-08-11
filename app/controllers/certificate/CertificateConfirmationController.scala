@@ -45,13 +45,14 @@ class CertificateConfirmationController @Inject() (
 
   def onPageLoad(certificateReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      objectStoreService.isCertificatePdfAvailable(certificateReference).map { isPdfAvailable =>
-        Ok(
-          view(
-            certificateReference = certificateReference,
-            displayPdfLink = isPdfAvailable
+      objectStoreService.isCertificatePdfAvailable(request.saoSubscriptionId, certificateReference).map {
+        isPdfAvailable =>
+          Ok(
+            view(
+              certificateReference = certificateReference,
+              displayPdfLink = isPdfAvailable
+            )
           )
-        )
       }
     }
 
