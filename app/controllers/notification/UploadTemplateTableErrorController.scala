@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.routes
 import models.NormalMode
-import navigation.Navigator
+import navigation.NotificationNavigator
 import pages.notification.{UploadTemplateTableErrorPage, UploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -36,7 +36,7 @@ class UploadTemplateTableErrorController @Inject() (
     requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: UploadTemplateTableErrorView,
-    navigator: Navigator
+    navigator: NotificationNavigator
 ) extends FrontendBaseController
     with I18nSupport {
 

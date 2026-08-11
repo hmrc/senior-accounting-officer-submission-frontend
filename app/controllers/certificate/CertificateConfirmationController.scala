@@ -18,7 +18,7 @@ package controllers.certificate
 
 import controllers.actions.*
 import models.NormalMode
-import navigation.Navigator
+import navigation.CertificateNavigator
 import pages.certificate.CertificateConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -37,7 +37,7 @@ class CertificateConfirmationController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateConfirmationView,
-    navigator: Navigator,
+    navigator: CertificateNavigator,
     objectStoreService: ObjectStoreService
 )(using ec: ExecutionContext)
     extends FrontendBaseController

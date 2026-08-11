@@ -17,17 +17,17 @@
 package controllers.certificate
 
 import base.SpecBase
-import controllers.notification.routes as notificationRoutes
+import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import models.upload.*
-import navigation.{FakeNavigator, Navigator}
-import pages.notification.UploadTemplateTablePage
+import navigation.{CertificateNavigator, FakeCertificateNavigator}
+import pages.certificate.CertificateUploadTemplateTablePage
 import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.notification.UploadTemplateTableErrorView
+import views.html.certificate.CertificateUploadTemplateTableErrorView
 
 class CertificateUploadTemplateTableErrorControllerSpec extends SpecBase {
 
@@ -38,7 +38,8 @@ class CertificateUploadTemplateTableErrorControllerSpec extends SpecBase {
     errors = Seq(TemplateParseError(9, Some("Company UTR"), "missing_required_value", "UTR is required"))
   )
 
-  private val populatedAnswers = completedSaoDetailsAnswers.set(UploadTemplateTablePage, tableData).success.value
+  private val populatedAnswers =
+    completedSaoDetailsAnswers.set(CertificateUploadTemplateTablePage, tableData).success.value
 
   "UploadTemplateTableError Controller" - {
 
@@ -46,11 +47,11 @@ class CertificateUploadTemplateTableErrorControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(populatedAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableErrorController.onPageLoad().url)
+        val request = FakeRequest(GET, certificateRoutes.CertificateUploadTemplateTableErrorController.onPageLoad().url)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[UploadTemplateTableErrorView]
+        val view = application.injector.instanceOf[CertificateUploadTemplateTableErrorView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(tableData)(using request, messages(application)).toString
@@ -59,11 +60,11 @@ class CertificateUploadTemplateTableErrorControllerSpec extends SpecBase {
 
     "must redirect to the next page for a POST" in {
       val application = applicationBuilder(userAnswers = Some(populatedAnswers))
-        .overrides(bind[Navigator].toInstance(new FakeNavigator(onwardRoute)))
+        .overrides(bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute)))
         .build()
 
       running(application) {
-        val request = FakeRequest(POST, notificationRoutes.UploadTemplateTableErrorController.onSubmit().url)
+        val request = FakeRequest(POST, certificateRoutes.CertificateUploadTemplateTableErrorController.onSubmit().url)
 
         val result = route(application, request).value
 
@@ -76,7 +77,7 @@ class CertificateUploadTemplateTableErrorControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableErrorController.onPageLoad().url)
+        val request = FakeRequest(GET, certificateRoutes.CertificateUploadTemplateTableErrorController.onPageLoad().url)
 
         val result = route(application, request).value
 
@@ -89,7 +90,7 @@ class CertificateUploadTemplateTableErrorControllerSpec extends SpecBase {
       val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(POST, notificationRoutes.UploadTemplateTableErrorController.onSubmit().url)
+        val request = FakeRequest(POST, certificateRoutes.CertificateUploadTemplateTableErrorController.onSubmit().url)
 
         val result = route(application, request).value
 

@@ -16,21 +16,21 @@
 
 package navigation
 
-import models.{Mode, UserAnswers}
-import pages.Page
+import models.*
+import pages.*
 import play.api.mvc.Call
 
-trait FakeNavigator extends Navigator {
+import javax.inject.{Inject, Singleton}
 
-  def desiredRoute: Call
+@Singleton
+class CombinedNavigator @Inject() () extends Navigator {
 
-  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
-    desiredRoute
+  override protected val normalRoutes: Page => UserAnswers => Call = { case _ =>
+    _ => ???
+  }
+
+  override protected val checkRouteMap: Page => UserAnswers => Call = { case _ =>
+    _ => ???
+  }
 
 }
-
-class FakeAgnosticNavigator(override val desiredRoute: Call) extends AgnosticNavigator with FakeNavigator
-
-class FakeNotificationNavigator(override val desiredRoute: Call) extends NotificationNavigator with FakeNavigator
-
-class FakeCertificateNavigator(override val desiredRoute: Call) extends CertificateNavigator with FakeNavigator

@@ -20,7 +20,7 @@ import controllers.actions.*
 import controllers.routes
 import models.NormalMode
 import models.upload.*
-import navigation.Navigator
+import navigation.CertificateNavigator
 import pages.certificate.{
   CertificateReviewQualifiedPage,
   CertificateSaoFullNamePage,
@@ -39,7 +39,7 @@ import javax.inject.Inject
 class CertificateReviewQualifiedController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
-    navigator: Navigator,
+    navigator: CertificateNavigator,
     sessionRepository: SessionRepository,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,

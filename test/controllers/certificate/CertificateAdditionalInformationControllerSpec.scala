@@ -22,7 +22,7 @@ import controllers.routes
 import forms.certificate.CertificateAdditionalInformationFormProvider
 import models.NormalMode
 import models.certificate.CertificateTaskListStage
-import navigation.{FakeNavigator, Navigator}
+import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -99,7 +99,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
       val application =
         applicationBuilder(userAnswers = Some(userAnswersWithCertificateUploadedTemplate))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

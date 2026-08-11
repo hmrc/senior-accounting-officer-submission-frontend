@@ -22,7 +22,7 @@ import controllers.routes
 import forms.certificate.CertificateDeclarationStandInFormProvider
 import models.certificate.CertificateDeclarationStandIn
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -107,7 +107,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

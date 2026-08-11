@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.routes
 import models.NormalMode
-import navigation.Navigator
+import navigation.NotificationNavigator
 import pages.notification.{UploadTemplateReviewPage, UploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -41,7 +41,7 @@ class UploadTemplateTableController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: UploadTemplateTableView,
     playbackService: UploadTemplatePlaybackService,
-    navigator: Navigator,
+    navigator: NotificationNavigator,
     sessionRepository: SessionRepository
 )(using ExecutionContext)
     extends FrontendBaseController

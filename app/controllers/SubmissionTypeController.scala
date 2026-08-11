@@ -19,7 +19,7 @@ package controllers
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.Navigator
+import navigation.AgnosticNavigator
 import pages.SubmissionTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -34,10 +34,9 @@ import javax.inject.Inject
 class SubmissionTypeController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
-    navigator: Navigator,
+    navigator: AgnosticNavigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
-    requireData: DataRequiredAction,
     formProvider: SubmissionTypeFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: SubmissionTypeView

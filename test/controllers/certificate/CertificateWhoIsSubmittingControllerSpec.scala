@@ -22,7 +22,7 @@ import controllers.routes
 import forms.certificate.CertificateWhoIsSubmittingFormProvider
 import models.NormalMode
 import models.certificate.CertificateWhoIsSubmitting
-import navigation.{FakeNavigator, Navigator}
+import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -98,7 +98,7 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import forms.notification.NotificationMoreThanOneSaoFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.NotificationNavigator
 import pages.notification.NotificationMoreThanOneSaoPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -35,7 +35,7 @@ import javax.inject.Inject
 class NotificationMoreThanOneSaoController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
-    navigator: Navigator,
+    navigator: NotificationNavigator,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,

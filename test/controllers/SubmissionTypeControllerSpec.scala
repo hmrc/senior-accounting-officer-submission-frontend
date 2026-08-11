@@ -19,7 +19,7 @@ package controllers
 import base.SpecBase
 import forms.SubmissionTypeFormProvider
 import models.SubmissionType
-import navigation.{FakeNavigator, Navigator}
+import navigation.{AgnosticNavigator, FakeAgnosticNavigator}
 import org.mockito.ArgumentMatchers.{any, argThat}
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
@@ -96,7 +96,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
@@ -136,7 +136,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
     "create a new mongo entry if no existing data is found" in {
       val application = applicationBuilder(userAnswers = None)
         .overrides(
-          bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+          bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
           bind[SessionRepository].toInstance(mockSessionRepository)
         )
         .build()

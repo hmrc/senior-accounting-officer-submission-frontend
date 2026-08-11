@@ -21,7 +21,7 @@ import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import forms.certificate.CertificateSaoFullNameFormProvider
 import models.NormalMode
-import navigation.{FakeNavigator, Navigator}
+import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -94,7 +94,7 @@ class CertificateSaoFullNameControllerSpec extends SpecBase with MockitoSugar {
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
