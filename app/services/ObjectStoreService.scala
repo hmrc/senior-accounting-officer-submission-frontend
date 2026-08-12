@@ -112,6 +112,6 @@ class ObjectStoreService @Inject() (objectStoreClient: PlayObjectStoreClient)(us
 }
 
 object ObjectStoreService {
-  private val objectStoreOwner = "senior-accounting-officer"
+  val objectStoreOwner        = "senior-accounting-officer"
   private val referenceFormat = "^[A-Za-z0-9]{1,64}$".r
 }
