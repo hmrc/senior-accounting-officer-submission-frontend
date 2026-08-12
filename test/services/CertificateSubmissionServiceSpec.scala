@@ -85,15 +85,15 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       company.status mustBe "ACTIVE"
       company.`type` mustBe "LTD"
       company.isCorporationTaxQualified mustBe true
-      company.isVatQualified mustBe false
-      company.isPayeQualified mustBe false
-      company.isInsurancePremiumTaxQualified mustBe false
-      company.isStampDutyLandTaxQualified mustBe false
-      company.isStampDutyReserveTaxQualified mustBe false
-      company.isPetroleumRevenueTaxQualified mustBe false
-      company.isCustomsDutiesQualified mustBe false
-      company.isExciseDutiesQualified mustBe false
-      company.isBankLevyQualified mustBe false
+      company.isVatQualified mustBe true
+      company.isPayeQualified mustBe true
+      company.isInsurancePremiumTaxQualified mustBe true
+      company.isStampDutyLandTaxQualified mustBe true
+      company.isStampDutyReserveTaxQualified mustBe true
+      company.isPetroleumRevenueTaxQualified mustBe true
+      company.isCustomsDutiesQualified mustBe true
+      company.isExciseDutiesQualified mustBe true
+      company.isBankLevyQualified mustBe true
     }
 
     "must not call the connector when the token has already been used" in {
@@ -204,15 +204,15 @@ object CertificateSubmissionServiceSpec {
       ),
       certificate = CertificateFields(
         corporationTax = true,
-        valueAddedTax = false,
-        paye = false,
-        insurancePremiumTax = false,
-        stampDutyLandTax = false,
-        stampDutyReserveTax = false,
-        petroleumRevenueTax = false,
-        customsDuties = false,
-        exciseDuties = false,
-        bankLevy = false,
+        valueAddedTax = true,
+        paye = true,
+        insurancePremiumTax = true,
+        stampDutyLandTax = true,
+        stampDutyReserveTax = true,
+        petroleumRevenueTax = true,
+        customsDuties = true,
+        exciseDuties = true,
+        bankLevy = true,
         certificateType = Some(CertificateType.Qualified),
         additionalInformation = None
       )

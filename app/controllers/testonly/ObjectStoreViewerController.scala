@@ -35,6 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.util.control.NonFatal
 
 import java.time.Instant
+
 import javax.inject.Inject
 
 class ObjectStoreViewerController @Inject() (
