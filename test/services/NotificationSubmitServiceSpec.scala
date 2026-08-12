@@ -153,7 +153,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
       val userAnswers = buildUserAnswers(false)
 
       val expected = NotificationRequest(
-        saos = List(Sao(name = exampleSao1Name, fromDate = None, email = None, toDate = None)),
+        saos = List(Sao(name = exampleSao1Name, fromDate = None, toDate = None)),
         companies = List(
           Company(
             name = exampleCompanyName,
@@ -180,19 +180,16 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
           Sao(
             name = exampleSao2Name,
             fromDate = Some(exampleSao2StartDate.toString),
-            email = None,
             toDate = None
           ),
           Sao(
             name = exampleSao3Name,
             fromDate = Some(exampleSao3StartDate.toString),
-            email = None,
             toDate = Some(exampleSao3EndDate.toString)
           ),
           Sao(
             name = exampleSao4Name,
             fromDate = Some(exampleSao4StartDate.toString),
-            email = None,
             toDate = Some(exampleSao4EndDate.toString)
           )
         ),

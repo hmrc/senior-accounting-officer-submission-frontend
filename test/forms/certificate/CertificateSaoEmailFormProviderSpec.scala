@@ -25,7 +25,7 @@ class CertificateSaoEmailFormProviderSpec extends StringFieldBehaviours {
   val lengthKey   = "certificateSaoEmail.error.length"
   val formatKey   = "certificateSaoEmail.error.format"
   val maxLength   = 254
-  val emailRegex  = """^.+[@].+[.].+$"""
+  val emailRegex  = """^([a-zA-Z0-9.!#$%&’'*+/=?^_`{|}~-]+)@([a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*)$"""
   val form        = new CertificateSaoEmailFormProvider()()
 
   ".value" - {

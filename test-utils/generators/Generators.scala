@@ -153,9 +153,8 @@ trait Generators extends ModelGenerators {
   def genInvalidEmailAddresses: Gen[String] = {
     Gen.oneOf(
       Gen.const("notAnEmail"),
-      Gen.const("missing@domain"),
-      Gen.const("missing@domain."),
       Gen.const("@noDomain.com"),
+      Gen.const("end@withdot."),
       Gen.const("missingAtSign.com")
     )
   }

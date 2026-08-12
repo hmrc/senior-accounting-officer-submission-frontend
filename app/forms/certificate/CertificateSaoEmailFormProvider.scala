@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 class CertificateSaoEmailFormProvider @Inject() extends Mappings {
 
-  val emailRegEx = """^.+[@].+[.].+$"""
+  val emailRegEx = """^([a-zA-Z0-9.!#$%&’'*+/=?^_`{|}~-]+)@([a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*)$"""
 
   def apply(): Form[String] =
     Form(

@@ -79,7 +79,6 @@ object NotificationSubmitService {
                 fromDate = userAnswers
                   .get(NotificationMultiSaoPreviousOfficerStartDatePage(mongoSaoIndex))
                   .map(_.toString),
-                email = None,
                 toDate = userAnswers
                   .get(NotificationMultiSaoPreviousOfficerEndDatePage(mongoSaoIndex))
                   .map(_.toString)
@@ -98,7 +97,6 @@ object NotificationSubmitService {
             fromDate = userAnswers
               .get(NotificationMultiSaoLastOfficerStartDatePage)
               .map(_.toString),
-            email = None,
             toDate = None
           ) :: previousSaos()
         case Some(false) =>
@@ -108,7 +106,6 @@ object NotificationSubmitService {
                 .get(NotificationSingleSaoOfficerNamePage)
                 .fold(???)(identity),
               fromDate = None,
-              email = None,
               toDate = None
             )
           )

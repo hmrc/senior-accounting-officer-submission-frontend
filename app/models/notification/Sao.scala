@@ -21,7 +21,6 @@ import play.api.libs.json.{Json, OFormat}
 final case class Sao(
     name: String,
     fromDate: Option[String],
-    email: Option[String],
     toDate: Option[String]
 )
 

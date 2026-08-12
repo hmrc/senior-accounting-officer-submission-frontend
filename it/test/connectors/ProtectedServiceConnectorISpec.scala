@@ -69,7 +69,6 @@ class ProtectedServiceConnectorISpec extends ISpecBase {
                 Sao(
                   name = "String",
                   fromDate = None,
-                  email = None,
                   toDate = None
                 )
               ),
