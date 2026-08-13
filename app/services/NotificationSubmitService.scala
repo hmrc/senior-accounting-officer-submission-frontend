@@ -123,8 +123,8 @@ object NotificationSubmitService {
             utr = company.companyUtr.value,
             name = company.companyName,
             accPeriodEnd = company.financialYearEndDate.toString,
-            status = company.companyStatus.toString,
-            `type` = company.companyType.toString
+            status = company.companyStatus,
+            `type` = company.companyType
           )
         )
         .toList

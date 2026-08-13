@@ -160,8 +160,8 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
             accPeriodEnd = exampleAccPeriodEnd.toString,
             crn = Some(exampleCrn),
             utr = exampleUtr,
-            status = "Active",
-            `type` = "LTD"
+            status = CompanyStatus.Active,
+            `type` = CompanyType.LTD
           )
         ),
         remarks = Some(exampleAdditionalInformation)
@@ -199,8 +199,8 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
             accPeriodEnd = exampleAccPeriodEnd.toString,
             crn = Some(exampleCrn),
             utr = exampleUtr,
-            status = "Active",
-            `type` = "LTD"
+            status = CompanyStatus.Active,
+            `type` = CompanyType.LTD
           )
         ),
         remarks = Some(exampleAdditionalInformation)

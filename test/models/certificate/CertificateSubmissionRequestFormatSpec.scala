@@ -17,6 +17,7 @@
 package models.certificate
 
 import base.SpecBase
+import models.upload.{CompanyStatus, CompanyType}
 import play.api.libs.json.*
 
 import CertificateSubmissionRequestFormatSpec.*
@@ -96,8 +97,8 @@ object CertificateSubmissionRequestFormatSpec {
       utr = "1234567890",
       name = "Example Ltd",
       accPeriodEnd = "2026-03-31",
-      status = "COMPLIANT",
-      `type` = "LTD",
+      status = CompanyStatus.Active,
+      `type` = CompanyType.LTD,
       isCorporationTaxQualified = true,
       isVatQualified = false,
       isPayeQualified = false,
@@ -116,7 +117,7 @@ object CertificateSubmissionRequestFormatSpec {
       |  "utr": "1234567890",
       |  "name": "Example Ltd",
       |  "accPeriodEnd": "2026-03-31",
-      |  "status": "COMPLIANT",
+      |  "status": "Active",
       |  "type": "LTD",
       |  "isCorporationTaxQualified": true,
       |  "isVatQualified": false,
@@ -151,7 +152,7 @@ object CertificateSubmissionRequestFormatSpec {
       |      "utr": "1234567890",
       |      "name": "Example Ltd",
       |      "accPeriodEnd": "2026-03-31",
-      |      "status": "COMPLIANT",
+      |      "status": "Active",
       |      "type": "LTD",
       |      "isCorporationTaxQualified": true,
       |      "isVatQualified": false,

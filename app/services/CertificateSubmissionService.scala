@@ -19,7 +19,7 @@ package services
 import connectors.CertificateSubmissionConnector
 import models.UserAnswers
 import models.certificate.*
-import models.upload.{CompanyStatus, ParsedSubmissionRow}
+import models.upload.ParsedSubmissionRow
 import pages.certificate.*
 import play.api.Logging
 import play.api.libs.json.Json
@@ -103,8 +103,8 @@ class CertificateSubmissionService @Inject() (
       utr = row.notification.companyUtr.value,
       name = row.notification.companyName,
       accPeriodEnd = row.notification.financialYearEndDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
-      status = status(row.notification.companyStatus),
-      `type` = row.notification.companyType.toString,
+      status = row.notification.companyStatus,
+      `type` = row.notification.companyType,
       isCorporationTaxQualified = row.certificate.corporationTax,
       isVatQualified = row.certificate.valueAddedTax,
       isPayeQualified = row.certificate.paye,
@@ -117,13 +117,6 @@ class CertificateSubmissionService @Inject() (
       isBankLevyQualified = row.certificate.bankLevy
     )
 
-  private def status(companyStatus: CompanyStatus): String =
-    companyStatus match {
-      case CompanyStatus.Active         => "ACTIVE"
-      case CompanyStatus.Dormant        => "DORMANT"
-      case CompanyStatus.Administration => "ADMINISTRATION"
-      case CompanyStatus.Liquidation    => "LIQUIDATION"
-    }
 }
 
 object CertificateSubmissionService {

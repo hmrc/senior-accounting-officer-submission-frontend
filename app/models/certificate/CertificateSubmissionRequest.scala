@@ -16,6 +16,7 @@
 
 package models.certificate
 
+import models.upload.{CompanyStatus, CompanyType}
 import play.api.libs.json.{Json, OFormat}
 
 final case class CertificateSubmissionRequest(
@@ -35,8 +36,8 @@ final case class CertificateSubmissionCompany(
     utr: String,
     name: String,
     accPeriodEnd: String,
-    status: String,
-    `type`: String,
+    status: CompanyStatus,
+    `type`: CompanyType,
     isCorporationTaxQualified: Boolean,
     isVatQualified: Boolean,
     isPayeQualified: Boolean,

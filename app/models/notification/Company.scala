@@ -16,6 +16,7 @@
 
 package models.notification
 
+import models.upload.{CompanyStatus, CompanyType}
 import play.api.libs.json.{Json, OFormat}
 
 final case class Company(
@@ -23,8 +24,8 @@ final case class Company(
     utr: String,
     name: String,
     accPeriodEnd: String,
-    status: String,
-    `type`: String
+    status: CompanyStatus,
+    `type`: CompanyType
 )
 
 object Company {
