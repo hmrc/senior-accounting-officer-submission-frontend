@@ -17,6 +17,7 @@
 package views.certificate
 
 import base.ViewSpecBase
+import base.ViewSpecBase.excludeHelpLinkAndErrorMessageParagraphsSelector
 import controllers.certificate.routes as certificateRoutes
 import models.UnqualifiedCompany
 import models.upload.{CompanyStatus, CompanyType}
@@ -25,8 +26,8 @@ import org.jsoup.nodes.Document
 import views.html.certificate.CertificateReviewUnqualifiedView
 
 import java.time.LocalDate
+
 import CertificateReviewUnqualifiedViewSpec.*
-import base.ViewSpecBase.excludeHelpLinkAndErrorMessageParagraphsSelector
 
 class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateReviewUnqualifiedView] {
   private def generateView(

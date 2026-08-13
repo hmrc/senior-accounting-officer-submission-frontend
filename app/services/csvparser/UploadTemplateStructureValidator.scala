@@ -58,6 +58,9 @@ class UploadTemplateStructureValidator @Inject() () {
         ).flatten
     }
 
+  private def normaliseLineEnding(string: String): String =
+    string.replaceAll("\r\n", "\n").replaceAll("\r", "\n")
+
   def validateHeaderRow(rowOpt: Option[CsvRow], templateFileErrorMessage: String): Seq[TemplateParseError] =
     rowOpt match {
       case None =>
@@ -80,7 +83,8 @@ class UploadTemplateStructureValidator @Inject() () {
         )
 
         val headerErrors = ExpectedHeaders.zipWithIndex.collect {
-          case (expectedHeader, idx) if cellValue(row, idx) != expectedHeader =>
+          case (expectedHeader, idx) if normaliseLineEnding(cellValue(row, idx)) != expectedHeader =>
+
             TemplateParseError(
               line = HeaderLineNumber,
               column = Some(expectedHeader),

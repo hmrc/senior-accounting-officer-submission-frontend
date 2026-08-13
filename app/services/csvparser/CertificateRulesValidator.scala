@@ -83,7 +83,7 @@ class CertificateRulesValidator @Inject() () {
         Vector(
           TemplateParseError(
             line = lineNumber,
-            column = Some(ExpectedHeaders(CertificateTypeIndex)),
+            column = Some(ColumnNameMessageKeys(CertificateTypeIndex)),
             code = "invalid_certificate_type",
             message = rowErrorMessages.certificateType
           )
@@ -104,9 +104,27 @@ class CertificateRulesValidator @Inject() () {
       Vector(
         TemplateParseError(
           line = lineNumber,
-          column = Some(ExpectedHeaders(AdditionalInformationIndex)),
+          column = Some(ColumnNameMessageKeys(AdditionalInformationIndex)),
           code = "missing_qualified_reason",
-          message = rowErrorMessages.additionalInformation
+          message = rowErrorMessages.additionalInformationMissing
+        )
+      )
+    } else if hasAnyTaxRegimeSelected && value.length > 5000 then {
+      Vector(
+        TemplateParseError(
+          line = lineNumber,
+          column = Some(ColumnNameMessageKeys(AdditionalInformationIndex)),
+          code = "qualified_reason_too_long",
+          message = rowErrorMessages.additionalInformationTooLong
+        )
+      )
+    } else if !hasAnyTaxRegimeSelected && value.nonEmpty then {
+      Vector(
+        TemplateParseError(
+          line = lineNumber,
+          column = Some(ColumnNameMessageKeys(AdditionalInformationIndex)),
+          code = "qualified_reason_is_prohibited",
+          message = rowErrorMessages.additionalInformationProhibited
         )
       )
     } else {

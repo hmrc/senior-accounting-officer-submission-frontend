@@ -31,7 +31,9 @@ final case class UploadTemplateRowErrorMessages(
     financialYearEndDate: String,
     taxRegime: String,
     certificateType: String,
-    additionalInformation: String
+    additionalInformationMissing: String,
+    additionalInformationTooLong: String,
+    additionalInformationProhibited: String
 )
 
 class UploadTemplateRowParser @Inject() (

@@ -48,7 +48,9 @@ class UploadTemplateCsvParser @Inject() (
     financialYearEndDate = message(FinancialYearEndDateErrorMessageKey, messages),
     taxRegime = message(TaxRegimeErrorMessageKey, messages),
     certificateType = message(CertificateTypeErrorMessageKey, messages),
-    additionalInformation = message(AdditionalInformationErrorMessageKey, messages)
+    additionalInformationMissing = message(AdditionalInformationMissingErrorMessageKey, messages),
+    additionalInformationTooLong = message(AdditionalInformationTooLongErrorMessageKey, messages),
+    additionalInformationProhibited = message(AdditionalInformationProhibitedMessageKey, messages)
   )
 
   def parse(csv: String, messages: Messages = messagesApi.preferred(Seq.empty)): TemplateParseResult = {
