@@ -18,6 +18,7 @@ package connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import connectors.ProtectedServiceConnectorISpec.*
+
 import java.net.URI
 import models.notification.NotificationRequest
 import play.api.http.Status.CREATED
@@ -26,6 +27,7 @@ import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.HttpResponse
 import models.notification.Company
 import models.notification.Sao
+import models.upload.{CompanyStatus, CompanyType}
 import play.api.libs.json.Json
 
 class ProtectedServiceConnectorISpec extends ISpecBase {
@@ -61,8 +63,8 @@ class ProtectedServiceConnectorISpec extends ISpecBase {
                   utr = "0000000000",
                   name = "String",
                   accPeriodEnd = "2000-01-01",
-                  status = "String",
-                  `type` = "LTD"
+                  status = CompanyStatus.Active,
+                  `type` = CompanyType.LTD
                 )
               ),
               saos = List(
