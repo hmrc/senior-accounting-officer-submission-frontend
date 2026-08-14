@@ -169,16 +169,18 @@ object CertificateFields {
   given OFormat[CertificateFields] = Json.format[CertificateFields]
   extension (cert: CertificateFields) {
     def isQualified: Boolean =
-      cert.corporationTax ||
-        cert.valueAddedTax ||
-        cert.paye ||
-        cert.insurancePremiumTax ||
-        cert.stampDutyLandTax ||
-        cert.stampDutyReserveTax ||
-        cert.petroleumRevenueTax ||
-        cert.customsDuties ||
-        cert.exciseDuties ||
-        cert.bankLevy && !cert.certificateType.contains(CertificateType.Unqualified)
+      List(
+        cert.corporationTax,
+        cert.valueAddedTax,
+        cert.paye,
+        cert.insurancePremiumTax,
+        cert.stampDutyLandTax,
+        cert.stampDutyReserveTax,
+        cert.petroleumRevenueTax,
+        cert.customsDuties,
+        cert.exciseDuties,
+        cert.bankLevy
+      ).contains(true)
   }
 }
 

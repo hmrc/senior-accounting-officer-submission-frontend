@@ -93,6 +93,50 @@ class ParsedSubmissionRowSpec extends SpecBase {
   }
 
   "toQualifiedCompany extension method must" - {
+    "treat each tax regime flag as qualifying regardless of certificate type" in {
+      val regimes = Seq(
+        (true, false, false, false, false, false, false, false, false, false),
+        (false, true, false, false, false, false, false, false, false, false),
+        (false, false, true, false, false, false, false, false, false, false),
+        (false, false, false, true, false, false, false, false, false, false),
+        (false, false, false, false, true, false, false, false, false, false),
+        (false, false, false, false, false, true, false, false, false, false),
+        (false, false, false, false, false, false, true, false, false, false),
+        (false, false, false, false, false, false, false, true, false, false),
+        (false, false, false, false, false, false, false, false, true, false),
+        (false, false, false, false, false, false, false, false, false, true)
+      )
+
+      regimes.foreach {
+        case (
+              corporationTax,
+              valueAddedTax,
+              paye,
+              insurancePremiumTax,
+              stampDutyLandTax,
+              stampDutyReserveTax,
+              petroleumRevenueTax,
+              customsDuties,
+              exciseDuties,
+              bankLevy
+            ) =>
+          CertificateFields(
+            corporationTax = corporationTax,
+            valueAddedTax = valueAddedTax,
+            paye = paye,
+            insurancePremiumTax = insurancePremiumTax,
+            stampDutyLandTax = stampDutyLandTax,
+            stampDutyReserveTax = stampDutyReserveTax,
+            petroleumRevenueTax = petroleumRevenueTax,
+            customsDuties = customsDuties,
+            exciseDuties = exciseDuties,
+            bankLevy = bankLevy,
+            certificateType = Some(CertificateType.Unqualified),
+            additionalInformation = Some(testAdditionalInformation)
+          ).isQualified mustBe true
+      }
+    }
+
     "map a qualified company from ParsedSubmissionRow to Some(QualifiedCompany)" in {
       val testDate = LocalDate.now()
       val result   = ParsedSubmissionRow(
