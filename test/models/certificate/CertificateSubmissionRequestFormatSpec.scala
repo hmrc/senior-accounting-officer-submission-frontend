@@ -108,7 +108,8 @@ object CertificateSubmissionRequestFormatSpec {
       isPetroleumRevenueTaxQualified = false,
       isCustomsDutiesQualified = false,
       isExciseDutiesQualified = false,
-      isBankLevyQualified = false
+      isBankLevyQualified = false,
+      qualificationStatement = Some("Test Statement")
     )
 
   val companyJson: JsValue = Json.parse(
@@ -128,7 +129,8 @@ object CertificateSubmissionRequestFormatSpec {
       |  "isPetroleumRevenueTaxQualified": false,
       |  "isCustomsDutiesQualified": false,
       |  "isExciseDutiesQualified": false,
-      |  "isBankLevyQualified": false
+      |  "isBankLevyQualified": false,
+      |  "qualificationStatement": "Test Statement"
       |}""".stripMargin
   )
 
@@ -163,7 +165,8 @@ object CertificateSubmissionRequestFormatSpec {
       |      "isPetroleumRevenueTaxQualified": false,
       |      "isCustomsDutiesQualified": false,
       |      "isExciseDutiesQualified": false,
-      |      "isBankLevyQualified": false
+      |      "isBankLevyQualified": false,
+      |      "qualificationStatement": "Test Statement"
       |    }
       |  ],
       |  "remarks": "Certificate remarks"
