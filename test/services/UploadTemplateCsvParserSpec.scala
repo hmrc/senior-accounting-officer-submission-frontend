@@ -49,19 +49,21 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         companyStatus = companyStatus,
         financialYearEndDate = LocalDate.of(2025, 12, 31)
       ),
-      certificate = CertificateFields(
-        corporationTax = corporationTax,
-        valueAddedTax = false,
-        paye = false,
-        insurancePremiumTax = false,
-        stampDutyLandTax = false,
-        stampDutyReserveTax = false,
-        petroleumRevenueTax = false,
-        customsDuties = false,
-        exciseDuties = false,
-        bankLevy = false,
-        certificateType = Some(certificateType),
-        additionalInformation = additionalInformation
+      certificate = Some(
+        CertificateFields(
+          corporationTax = corporationTax,
+          valueAddedTax = false,
+          paye = false,
+          insurancePremiumTax = false,
+          stampDutyLandTax = false,
+          stampDutyReserveTax = false,
+          petroleumRevenueTax = false,
+          customsDuties = false,
+          exciseDuties = false,
+          bankLevy = false,
+          certificateType = Some(certificateType),
+          additionalInformation = additionalInformation
+        )
       )
     )
 
@@ -152,7 +154,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
           Seq(UploadTemplateCsvParser.ExpectedHeaders, validQualifiedDataRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result mustBe Valid(
         Seq(
@@ -174,7 +176,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
           Seq(UploadTemplateCsvParser.ExpectedHeaders, blankDataRow, validQualifiedDataRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result mustBe Valid(
         Seq(
@@ -196,7 +198,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
           Seq(UploadTemplateCsvParser.ExpectedHeaders, validUnqualifiedDataRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result mustBe Valid(
         Seq(
@@ -221,7 +223,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
           Seq(UploadTemplateCsvParser.ExpectedHeaders, rowWithBlankCrn)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result mustBe Valid(
         Seq(
@@ -245,7 +247,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, autoQualifiedRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result mustBe Valid(
         Seq(
@@ -271,7 +273,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
           )
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -289,7 +291,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
           Seq(UploadTemplateCsvParser.ExpectedHeaders, validQualifiedDataRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -308,7 +310,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(badHeaders, validQualifiedDataRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -326,7 +328,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, rowWithExtraColumn)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -344,7 +346,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
     }
 
     "must return an invalid CSV error when CSV content cannot be parsed" in {
-      val result = parser.parse("\"unterminated")
+      val result = parser.parse("\"unterminated", notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -373,7 +375,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, badRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -400,7 +402,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, badRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -420,7 +422,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, badRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -439,7 +441,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, badRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -456,7 +458,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, badRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -473,7 +475,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, badRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result match {
         case Invalid(errors) =>
@@ -490,7 +492,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
         descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, quotedRow)
       )
 
-      val result = parser.parse(csv)
+      val result = parser.parse(csv, notificationOnly = false)
 
       result mustBe Valid(
         Seq(
@@ -523,24 +525,35 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
             val csv: String =
               readFile(s"templates/testonly/CSV scenarios/pass/$file")
 
-            val result = parser.parse(csv)
+            val result = parser.parse(csv, notificationOnly = false)
 
             result mustBe an[Valid]
             result.asInstanceOf[Valid].rows.length mustBe expectedNumberEntries
           }
+        }
+
+        "'Certificate only Errors.csv' when notificationOnly = true" in {
+          val csv: String =
+            readFile(s"templates/testonly/CSV scenarios/fail/Certificate only Errors.csv")
+
+          val result = parser.parse(csv, notificationOnly = true)
+
+          result mustBe an[Valid]
+          result.asInstanceOf[Valid].rows.length mustBe 3
         }
       }
 
       "must fail for" - {
         Map(
           "Z Massive Fail (1000 Companies).csv"                              -> 6500,
-          "Z Moderately Complex (4 SAOs - Submission A- AEFG) - Failure.csv" -> 4
+          "Z Moderately Complex (4 SAOs - Submission A- AEFG) - Failure.csv" -> 4,
+          "Certificate only Errors.csv"                                      -> 14
         ).foreach { case (file, expectedErrors) =>
           s"$file" in {
             val csv: String =
               readFile(s"templates/testonly/CSV scenarios/fail/$file")
 
-            val result = parser.parse(csv)
+            val result = parser.parse(csv, notificationOnly = false)
 
             result mustBe an[Invalid]
             result.asInstanceOf[Invalid].errors.length mustBe expectedErrors

@@ -53,19 +53,21 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
           companyStatus = CompanyStatus.Active,
           financialYearEndDate = LocalDate.of(2025, 12, 31)
         ),
-        certificate = CertificateFields(
-          corporationTax = true,
-          valueAddedTax = false,
-          paye = false,
-          insurancePremiumTax = false,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Qualified),
-          additionalInformation = Some("Example")
+        certificate = Some(
+          CertificateFields(
+            corporationTax = true,
+            valueAddedTax = false,
+            paye = false,
+            insurancePremiumTax = false,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Qualified),
+            additionalInformation = Some("Example")
+          )
         )
       )
     ),

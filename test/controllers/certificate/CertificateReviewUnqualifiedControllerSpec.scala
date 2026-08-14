@@ -136,19 +136,21 @@ object CertificateReviewUnqualifiedControllerSpec {
           companyStatus = CompanyStatus.Administration,
           financialYearEndDate = testDate1
         ),
-        certificate = CertificateFields(
-          corporationTax = false,
-          valueAddedTax = false,
-          paye = false,
-          insurancePremiumTax = false,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Unqualified),
-          additionalInformation = Some("example additional information")
+        certificate = Some(
+          CertificateFields(
+            corporationTax = false,
+            valueAddedTax = false,
+            paye = false,
+            insurancePremiumTax = false,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Unqualified),
+            additionalInformation = Some("example additional information")
+          )
         )
       ),
       ParsedSubmissionRow(
@@ -160,19 +162,21 @@ object CertificateReviewUnqualifiedControllerSpec {
           companyStatus = CompanyStatus.Dormant,
           financialYearEndDate = testDate2
         ),
-        certificate = CertificateFields(
-          corporationTax = false,
-          valueAddedTax = false,
-          paye = false,
-          insurancePremiumTax = false,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Unqualified),
-          additionalInformation = Some("example additional information ")
+        certificate = Some(
+          CertificateFields(
+            corporationTax = false,
+            valueAddedTax = false,
+            paye = false,
+            insurancePremiumTax = false,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Unqualified),
+            additionalInformation = Some("example additional information ")
+          )
         )
       ),
       ParsedSubmissionRow(
@@ -184,19 +188,21 @@ object CertificateReviewUnqualifiedControllerSpec {
           companyStatus = CompanyStatus.Active,
           financialYearEndDate = LocalDate.now()
         ),
-        certificate = CertificateFields(
-          corporationTax = true,
-          valueAddedTax = false,
-          paye = false,
-          insurancePremiumTax = false,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Qualified),
-          additionalInformation = Some("example additional information 3")
+        certificate = Some(
+          CertificateFields(
+            corporationTax = true,
+            valueAddedTax = false,
+            paye = false,
+            insurancePremiumTax = false,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Qualified),
+            additionalInformation = Some("example additional information 3")
+          )
         )
       )
     ),

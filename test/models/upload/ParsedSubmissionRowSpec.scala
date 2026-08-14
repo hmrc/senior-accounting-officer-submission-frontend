@@ -39,19 +39,21 @@ class ParsedSubmissionRowSpec extends SpecBase {
           companyStatus = CompanyStatus.Active,
           financialYearEndDate = LocalDate.of(2025, 12, 31)
         ),
-        certificate = CertificateFields(
-          corporationTax = true,
-          valueAddedTax = false,
-          paye = true,
-          insurancePremiumTax = false,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Qualified),
-          additionalInformation = Some("Additional context")
+        certificate = Some(
+          CertificateFields(
+            corporationTax = true,
+            valueAddedTax = false,
+            paye = true,
+            insurancePremiumTax = false,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Qualified),
+            additionalInformation = Some("Additional context")
+          )
         )
       )
 
@@ -104,19 +106,21 @@ class ParsedSubmissionRowSpec extends SpecBase {
           companyStatus = CompanyStatus.Dormant,
           financialYearEndDate = testDate
         ),
-        certificate = CertificateFields(
-          corporationTax = true,
-          valueAddedTax = false,
-          paye = true,
-          insurancePremiumTax = false,
-          stampDutyLandTax = true,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = true,
-          customsDuties = false,
-          exciseDuties = true,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Qualified),
-          additionalInformation = Some(testAdditionalInformation)
+        certificate = Some(
+          CertificateFields(
+            corporationTax = true,
+            valueAddedTax = false,
+            paye = true,
+            insurancePremiumTax = false,
+            stampDutyLandTax = true,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = true,
+            customsDuties = false,
+            exciseDuties = true,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Qualified),
+            additionalInformation = Some(testAdditionalInformation)
+          )
         )
       ).toQualifiedCompany
 
@@ -155,19 +159,21 @@ class ParsedSubmissionRowSpec extends SpecBase {
           companyStatus = CompanyStatus.Dormant,
           financialYearEndDate = LocalDate.now()
         ),
-        certificate = CertificateFields(
-          corporationTax = false,
-          valueAddedTax = false,
-          paye = false,
-          insurancePremiumTax = false,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Unqualified),
-          additionalInformation = Some(testAdditionalInformation)
+        certificate = Some(
+          CertificateFields(
+            corporationTax = false,
+            valueAddedTax = false,
+            paye = false,
+            insurancePremiumTax = false,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Unqualified),
+            additionalInformation = Some(testAdditionalInformation)
+          )
         )
       ).toQualifiedCompany
 
@@ -189,19 +195,21 @@ class ParsedSubmissionRowSpec extends SpecBase {
           companyStatus = CompanyStatus.Dormant,
           financialYearEndDate = testDate
         ),
-        certificate = CertificateFields(
-          corporationTax = false,
-          valueAddedTax = false,
-          paye = false,
-          insurancePremiumTax = false,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Unqualified),
-          additionalInformation = Some("example additional information")
+        certificate = Some(
+          CertificateFields(
+            corporationTax = false,
+            valueAddedTax = false,
+            paye = false,
+            insurancePremiumTax = false,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Unqualified),
+            additionalInformation = Some("example additional information")
+          )
         )
       ).toUnqualifiedCompany
 
@@ -229,19 +237,21 @@ class ParsedSubmissionRowSpec extends SpecBase {
           companyStatus = CompanyStatus.Dormant,
           financialYearEndDate = LocalDate.now()
         ),
-        certificate = CertificateFields(
-          corporationTax = true,
-          valueAddedTax = false,
-          paye = true,
-          insurancePremiumTax = false,
-          stampDutyLandTax = true,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = true,
-          customsDuties = false,
-          exciseDuties = true,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Qualified),
-          additionalInformation = Some("example additional information")
+        certificate = Some(
+          CertificateFields(
+            corporationTax = true,
+            valueAddedTax = false,
+            paye = true,
+            insurancePremiumTax = false,
+            stampDutyLandTax = true,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = true,
+            customsDuties = false,
+            exciseDuties = true,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Qualified),
+            additionalInformation = Some("example additional information")
+          )
         )
       ).toUnqualifiedCompany
 

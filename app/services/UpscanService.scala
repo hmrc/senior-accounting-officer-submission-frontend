@@ -19,6 +19,7 @@ package services
 import connectors.UpscanDownloadConnector
 import models.UserAnswers
 import models.upload.{ParsedSubmissionRow, TemplateParseError, TemplateParseResult}
+import models.upscan.UploadJourney.Notification
 import models.upscan.UploadStatus.*
 import models.upscan.{FileUploadState, UploadJourney}
 import play.api.http.Status.OK
@@ -46,18 +47,20 @@ class UpscanService @Inject() (
         case Some(expectedReference) if uploadState.reference != expectedReference =>
           Future.successful(State.NoReference)
         case _ =>
-          fileUploadState(uploadState)
+          fileUploadState(journey, uploadState)
       }
     }
 
-  private def fileUploadState(uploadState: FileUploadState)(using hc: HeaderCarrier): Future[State] =
+  private def fileUploadState(journey: UploadJourney, uploadState: FileUploadState)(using
+      hc: HeaderCarrier
+  ): Future[State] =
     checkUploadState(uploadState).flatMap {
       _.fold(
         state => Future.successful(state),
         { case InterimResult(reference, downloadUrl) =>
           downloadConnector.download(downloadUrl).map {
             case HttpResponse(OK, body, _) =>
-              uploadTemplateCsvParser.parse(body) match {
+              uploadTemplateCsvParser.parse(body, notificationOnly = journey == Notification) match {
                 case TemplateParseResult.Valid(rows) =>
                   State.Result(reference, rows)
                 case TemplateParseResult.Invalid(errors) =>
