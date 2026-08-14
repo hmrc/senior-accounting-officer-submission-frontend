@@ -114,7 +114,8 @@ class CertificateSubmissionService @Inject() (
       isPetroleumRevenueTaxQualified = row.certificate.petroleumRevenueTax,
       isCustomsDutiesQualified = row.certificate.customsDuties,
       isExciseDutiesQualified = row.certificate.exciseDuties,
-      isBankLevyQualified = row.certificate.bankLevy
+      isBankLevyQualified = row.certificate.bankLevy,
+      qualificationStatement = row.certificate.additionalInformation
     )
 
 }
