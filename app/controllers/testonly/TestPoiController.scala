@@ -514,6 +514,14 @@ final case class TaxRegimes(
     bankLevy: Boolean = false
 )
 
+object TaxRegimes {
+  extension (regimes: TaxRegimes) {
+    def isQualified: Boolean = regimes.productIterator.exists { case b: Boolean =>
+      b
+    }
+  }
+}
+
 final case class Row(
     companyName: String,
     utr: String,
