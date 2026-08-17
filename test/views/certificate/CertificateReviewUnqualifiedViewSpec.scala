@@ -25,8 +25,9 @@ import org.jsoup.nodes.Document
 import views.html.certificate.CertificateReviewUnqualifiedView
 
 import java.time.LocalDate
-
 import CertificateReviewUnqualifiedViewSpec.*
+import base.ViewSpecBase.excludeHelpLinkAndErrorMessageParagraphsSelector
+
 class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateReviewUnqualifiedView] {
   private def generateView(
       saoName: String,
@@ -105,6 +106,15 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
 
       doc.createTestsWithUnqualifiedCompanyDescriptionList(Seq())
 
+    }
+
+    "The content of SAO's name is properly escaped" in {
+      val unescapedText = "<script>alert(123)</script>"
+      val doc: Document = generateView(unescapedText, unqualifiedCompanies, 2)
+
+      doc.select(excludeHelpLinkAndErrorMessageParagraphsSelector).eachText().toArray.toSeq.mkString(",") must include(
+        unescapedText
+      )
     }
   }
   extension (doc: Document) {

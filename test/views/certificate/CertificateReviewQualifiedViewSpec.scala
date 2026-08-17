@@ -24,8 +24,8 @@ import org.jsoup.nodes.Document
 import views.html.certificate.CertificateReviewQualifiedView
 
 import java.time.LocalDate
-
 import CertificateReviewQualifiedViewSpec.*
+import base.ViewSpecBase.excludeHelpLinkAndErrorMessageParagraphsSelector
 
 class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQualifiedView] {
 
@@ -105,7 +105,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       )
     }
 
-    "When rows are and a different sao name are passed to the view must render populated table with differnt sao name" - {
+    "When rows are and a different sao name are passed to the view must render populated table with different sao name" - {
       val doc: Document = generateView(secondSaoName, qualifiedCompanies, 2)
 
       doc.createTestsWithStandardPageElements(
@@ -136,6 +136,15 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       doc.createTestsWithSubmissionButton(
         action = certificateRoutes.CertificateReviewQualifiedController.onSubmit(),
         buttonText = "Continue"
+      )
+    }
+
+    "The content of SAO's name is properly escaped" in {
+      val unescapedText = "<script>alert(123)</script>"
+      val doc: Document = generateView(unescapedText, qualifiedCompanies, 2)
+
+      doc.select(excludeHelpLinkAndErrorMessageParagraphsSelector).eachText().toArray.toSeq.mkString(",") must include(
+        unescapedText
       )
     }
   }
