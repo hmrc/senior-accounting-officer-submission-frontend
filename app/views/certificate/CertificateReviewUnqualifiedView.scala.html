@@ -35,7 +35,7 @@
 
     <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph2WithLink", certificateRoutes.CertificateUploadFormController.onPageLoad()))</p>
 
-    <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph3", saoName, unqualifiedCompanies.size))</p>
+    <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph3", HtmlFormat.escape(saoName), unqualifiedCompanies.size))</p>
 
     @for(unqualifiedCompany <- unqualifiedCompanies) {
         <dl class="govuk-summary-list">
