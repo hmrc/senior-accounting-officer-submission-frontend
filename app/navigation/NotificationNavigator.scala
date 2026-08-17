@@ -72,13 +72,6 @@ class NotificationNavigator @Inject() () extends Navigator {
               notificationRoutes.NotificationUploadFormController.onPageLoad()
             case _ => notificationRoutes.NotificationTaskListController.onPageLoad()
           }
-    case UploadTemplateTableErrorPage =>
-      userAnswers =>
-        userAnswers
-          .get(UploadTemplateTablePage)
-          .fold(routes.JourneyRecoveryController.onPageLoad()) { _ =>
-            notificationRoutes.NotificationUploadFormController.onPageLoad()
-          }
     case _ => _ => ???
   }
 

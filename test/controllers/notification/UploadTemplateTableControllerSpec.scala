@@ -22,7 +22,7 @@ import controllers.routes
 import models.upload.*
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{verify, when}
+import org.mockito.Mockito.{never, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.*
 import pages.notification.*
@@ -32,7 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.notification.UploadTemplateTableView
+import views.html.notification.{UploadTemplateTableErrorView, UploadTemplateTableView}
 
 import scala.concurrent.Future
 
@@ -84,6 +84,16 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
     .success
     .value
 
+  private val errorTableData = UploadTemplateTableData(
+    rows = Seq.empty,
+    errors = Seq(TemplateParseError(9, Some("Company UTR"), "missing_required_value", "UTR is required"))
+  )
+
+  private val populatedErrorAnswers = completedSaoDetailsAnswers
+    .set(UploadTemplateTablePage, errorTableData)
+    .success
+    .value
+
   "UploadTemplateTable Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -120,6 +130,39 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
         status(result) mustEqual SEE_OTHER
         header(HeaderNames.LOCATION, result) mustEqual Some(onwardRoute.url)
         verify(mockSessionRepository).set(populatedAnswers.set(UploadTemplateReviewPage, true).get)
+      }
+    }
+
+    "must return OK and the correct error view for a GET when the table data has errors" in {
+      val application = applicationBuilder(userAnswers = Some(populatedErrorAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[UploadTemplateTableErrorView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(errorTableData)(using request, messages(application)).toString
+      }
+    }
+
+    "must redirect to upload form for a POST when the table data has errors" in {
+      val mockSessionRepository = mock[SessionRepository]
+
+      val application = applicationBuilder(userAnswers = Some(populatedErrorAnswers))
+        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(POST, notificationRoutes.UploadTemplateTableController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual notificationRoutes.NotificationUploadFormController.onPageLoad().url
+        verify(mockSessionRepository, never()).set(any())
       }
     }
 

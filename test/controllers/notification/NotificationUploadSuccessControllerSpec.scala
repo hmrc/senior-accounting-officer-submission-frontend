@@ -276,7 +276,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustBe notificationRoutes.UploadTemplateTableErrorController.onPageLoad().url
+          redirectLocation(result).value mustBe notificationRoutes.UploadTemplateTableController.onPageLoad().url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             meq(UploadJourney.Notification),

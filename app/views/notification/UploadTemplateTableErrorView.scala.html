@@ -85,7 +85,7 @@
         </tbody>
     </table>
 
-    @formHelper(action = notificationRoutes.UploadTemplateTableErrorController.onSubmit()) {
+    @formHelper(action = notificationRoutes.UploadTemplateTableController.onSubmit()) {
         @govukButton(
             ButtonViewModel(messages("uploadTemplateTableError.continue").toText).withAttribute("id", "submit")
         )

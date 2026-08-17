@@ -71,7 +71,7 @@ class NotificationUploadSuccessController @Inject() (
           logger.warn(s"Uploaded template failed validation with ${errors.size} error(s)")
           saveTableDataAndRedirect(
             UploadTemplateTableData(rows = Seq.empty, errors = errors),
-            notificationRoutes.UploadTemplateTableErrorController.onPageLoad()
+            notificationRoutes.UploadTemplateTableController.onPageLoad()
           )
         case State.Result(reference, rows) =>
           logger.info(s"Uploaded template parsed successfully, reference: $reference, rows: ${rows.size}")
