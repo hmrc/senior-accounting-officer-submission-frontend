@@ -17,10 +17,8 @@
 package navigation
 
 import controllers.certificate.routes as certificateRoutes
-import controllers.routes
 import models.*
 import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
-import models.upload.UploadTemplateTableData
 import pages.*
 import pages.certificate.*
 import play.api.mvc.Call
@@ -38,13 +36,6 @@ class CertificateNavigator @Inject() () extends Navigator {
         certificateRoutes.CertificateTaskListController.onPageLoad(stage =
           CertificateTaskListStage.UploadSubmissionTemplateStage
         )
-    case CertificateUploadTemplateTableErrorPage =>
-      userAnswers =>
-        userAnswers
-          .get(CertificateUploadTemplateTablePage)
-          .fold(routes.JourneyRecoveryController.onPageLoad()) { _ =>
-            certificateRoutes.CertificateUploadFormController.onPageLoad()
-          }
     case CertificateReviewQualifiedPage =>
       _ => certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
     case CertificateReviewUnqualifiedPage =>

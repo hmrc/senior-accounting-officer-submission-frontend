@@ -105,8 +105,6 @@ POST        /certificate-only/change-sao-email                                  
 
 GET         /certificate/upload                                                       controllers.certificate.CertificateUploadFormController.onPageLoad()
 GET         /certificate/upload/success                                               controllers.certificate.CertificateUploadSuccessController.onPageLoad(key: Option[String])
-GET         /certificate/upload/table/error                                           controllers.certificate.CertificateUploadTemplateTableErrorController.onPageLoad()
-POST        /certificate/upload/table/error                                           controllers.certificate.CertificateUploadTemplateTableErrorController.onSubmit()
 
 GET         /certificateReviewQualified                                               controllers.certificate.CertificateReviewQualifiedController.onPageLoad()
 POST        /certificateReviewQualified                                               controllers.certificate.CertificateReviewQualifiedController.onSubmit()
