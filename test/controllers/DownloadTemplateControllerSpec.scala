@@ -40,7 +40,9 @@ class DownloadTemplateControllerSpec extends SpecBase {
 
         val contentDisposition = header("Content-Disposition", result)
 
-        contentDisposition mustBe Some("attachment; filename=Submission template v20.xlsx")
+        contentDisposition mustBe Some(
+          "attachment; filename=Senior Accounting Officer notification and certificate submission template.xlsx"
+        )
         contentType(result) mustBe Some("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
       }
 
