@@ -29,70 +29,121 @@ import scala.jdk.CollectionConverters.*
 
 class CertificateUploadTemplateTableErrorViewSpec extends ViewSpecBase[CertificateUploadTemplateTableErrorView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(tableData).toString)
+  private def generateView(data: UploadTemplateTableData): Document = Jsoup.parse(SUT(data).toString)
 
   "CertificateUploadTemplateTableErrorView" - {
-    val doc: Document = generateView()
 
-    doc.createTestsWithStandardPageElements(
-      pageTitle = pageTitle,
-      pageHeading = pageHeading,
-      showBackLink = false,
-      showIsThisPageNotWorkingProperlyLink = true,
-      hasError = false
-    )
+    invalidTemplates.foreach { case (testScenario, data) =>
+      def doc = generateView(data)
+      s"when the UploadTemplateTableData indicates $testScenario" - {
+        doc.createTestsWithStandardPageElements(
+          pageTitle = pageTitle,
+          pageHeading = pageHeading,
+          showBackLink = false,
+          showIsThisPageNotWorkingProperlyLink = true,
+          hasError = false
+        )
 
-    "must render error table columns and content" in {
-      val headings = doc.select("th.govuk-table__header").eachText()
-      headings must contain allOf ("Row", "Column", "Errors to Correct")
-      headings must not contain "Code"
+        doc.createTestsWithParagraphs(
+          Seq(
+            "The file you uploaded is not the Senior Accounting Officer notification and certificate submission template. Download a submission template and read guidance on how to complete it (opens in new tab)",
+            "Once you’ve completed the template, upload it again."
+          )
+        )
 
-      val tableRows = doc.select("tbody.govuk-table__body tr")
-      tableRows.size() mustBe 2
-      tableRows.first().select("td").first().text() mustBe "9"
-      tableRows.first().select("td").first().attr("rowspan") mustBe "2"
-      doc.select("tbody.govuk-table__body").text() must include("Enter a valid Company UTR. It must be 10 digits long")
-      doc.select("tbody.govuk-table__body").text() must include(
-        "Enter a valid Company CRN. It must be 8 characters long"
+        "must render a guidance link" in {
+          val link = doc.getMainContent
+            .select("a.govuk-link")
+            .asScala
+            .find(
+              _.text()
+                .contains("Download a submission template and read guidance on how to complete it (opens in new tab)")
+            )
+            .value
+          link.attr("href") mustBe routes.TemplateGuidanceController.onPageLoad().url
+          link.attr("target") mustBe "_blank"
+        }
+
+        doc.createTestsWithSubmissionButton(
+          certificateRoutes.CertificateReviewQualifiedController.onSubmit(),
+          "Upload a submission template"
+        )
+
+      }
+    }
+
+    "when the UploadTemplateTableData does not indicates an invalid template" - {
+      val doc: Document = generateView(tableData)
+
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
       )
-    }
 
-    "must render the problem summary and guidance link" in {
-      doc.text() must include("Your file has 2 errors.")
-      val link = doc.select("a.govuk-link").asScala.find(_.text().contains("Read guidance")).value
-      link.attr("href") mustBe routes.TemplateGuidanceController.onPageLoad().url
-      link.attr("target") mustBe "_blank"
-    }
+      "must render error table columns and content" in {
+        val headings = doc.select("th.govuk-table__header").eachText()
+        headings must contain allOf ("Row", "Column", "Errors to Correct")
+        headings must not contain "Code"
 
-    "must render return to file upload button" in {
-      doc.select("#submit").size() mustBe 1
-      doc.select("#submit").text() mustBe "Return to file upload"
-    }
+        val tableRows = doc.select("tbody.govuk-table__body tr")
+        tableRows.size() mustBe 2
+        tableRows.first().select("td").first().text() mustBe "9"
+        tableRows.first().select("td").first().attr("rowspan") mustBe "2"
+        doc.select("tbody.govuk-table__body").text() must include(
+          "Enter a valid Company UTR. It must be 10 digits long"
+        )
+        doc.select("tbody.govuk-table__body").text() must include(
+          "Enter a valid Company CRN. It must be 8 characters long"
+        )
+      }
 
-    doc.createTestsWithSubmissionButton(
-      action = certificateRoutes.CertificateReviewQualifiedController.onSubmit(),
-      buttonText = "Return to file upload"
-    )
+      "must render the problem summary and guidance link" in {
+        doc.text() must include("Your file has 2 errors.")
+        val link = doc.select("a.govuk-link").asScala.find(_.text().contains("Read guidance")).value
+        link.attr("href") mustBe routes.TemplateGuidanceController.onPageLoad().url
+        link.attr("target") mustBe "_blank"
+      }
 
-    "must render the errors table with row separators removed" in {
-      doc.select("table.upload-template-errors-table").size() mustBe 1
-    }
+      "must render return to file upload button" in {
+        doc.select("#submit").size() mustBe 1
+        doc.select("#submit").text() mustBe "Upload a submission template"
+      }
 
-    "must render separators only between different row numbers" in {
-      doc.select("tbody.govuk-table__body tr").get(0).hasClass("upload-template-errors-table__line-start") mustBe false
-      doc.select("tbody.govuk-table__body tr").get(1).hasClass("upload-template-errors-table__line-start") mustBe false
+      doc.createTestsWithSubmissionButton(
+        certificateRoutes.CertificateReviewQualifiedController.onSubmit(),
+        "Upload a submission template"
+      )
 
-      val docWithMultipleRows = Jsoup.parse(SUT(tableDataWithMultipleRows).toString)
-      val rows                = docWithMultipleRows.select("tbody.govuk-table__body tr")
+      "must render the errors table with row separators removed" in {
+        doc.select("table.upload-template-errors-table").size() mustBe 1
+      }
 
-      rows.get(0).hasClass("upload-template-errors-table__line-start") mustBe false
-      rows.get(1).hasClass("upload-template-errors-table__line-start") mustBe false
-      rows.get(2).hasClass("upload-template-errors-table__line-start") mustBe true
-      rows.get(3).hasClass("upload-template-errors-table__line-start") mustBe false
-    }
+      "must render separators only between different row numbers" in {
+        val docWithMultipleRows = generateView(tableDataWithMultipleRows)
 
-    "must load the stylesheet containing the errors table border override" in {
-      doc.select("""link[href*="stylesheets/application.css"]""").size() mustBe 1
+        docWithMultipleRows
+          .select("tbody.govuk-table__body tr")
+          .get(0)
+          .hasClass("upload-template-errors-table__line-start") mustBe false
+        docWithMultipleRows
+          .select("tbody.govuk-table__body tr")
+          .get(1)
+          .hasClass("upload-template-errors-table__line-start") mustBe false
+
+        val rows = docWithMultipleRows.select("tbody.govuk-table__body tr")
+
+        rows.get(0).hasClass("upload-template-errors-table__line-start") mustBe false
+        rows.get(1).hasClass("upload-template-errors-table__line-start") mustBe false
+        rows.get(2).hasClass("upload-template-errors-table__line-start") mustBe true
+        rows.get(3).hasClass("upload-template-errors-table__line-start") mustBe false
+      }
+
+      "must load the stylesheet containing the errors table border override" in {
+        doc.select("""link[href*="stylesheets/application.css"]""").size() mustBe 1
+      }
     }
   }
 }
@@ -100,6 +151,32 @@ class CertificateUploadTemplateTableErrorViewSpec extends ViewSpecBase[Certifica
 object CertificateUploadTemplateTableErrorViewSpec {
   val pageHeading = "There is a problem with your submission template file"
   val pageTitle   = "There is a problem with your submission template file"
+
+  val emptyTemplate: UploadTemplateTableData = UploadTemplateTableData(
+    rows = Seq.empty,
+    errors = Seq.empty
+  )
+
+  val invalidTemplates: Map[String, UploadTemplateTableData] = Map(
+    "the file is missing the section row"                        -> invalidTemplate("missing_section_row"),
+    "the section row in the file is invalid"                     -> invalidTemplate("invalid_section_row"),
+    "the file is missing the template header row"                -> invalidTemplate("missing_header_row"),
+    "the file has additional header columns"                     -> invalidTemplate("unexpected_header_columns"),
+    "the headers in the file do not match the expected template" -> invalidTemplate("header_mismatch"),
+    "the template empty"                                         -> emptyTemplate
+  )
+
+  private def invalidTemplate(code: String): UploadTemplateTableData = UploadTemplateTableData(
+    rows = Seq.empty,
+    errors = Seq(
+      TemplateParseError(
+        line = 9,
+        column = None,
+        code = code,
+        message = ""
+      )
+    )
+  )
 
   val tableData: UploadTemplateTableData = UploadTemplateTableData(
     rows = Seq.empty,

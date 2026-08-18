@@ -49,11 +49,31 @@
 
     <h1 class="govuk-heading-l">@messages("uploadTemplateTableError.heading")</h1>
 
+    @if(tableData.notSaoTemplateOrIsEmpty) {
+        @notSaoTemplate()
+    } else {
+        @invalidData()
+    }
+
+    @formHelper(action = certificateRoutes.CertificateReviewQualifiedController.onSubmit()) {
+        @govukButton(
+            ButtonViewModel(messages("certificateUploadForm.heading").toText).withAttribute("id", "submit")
+        )
+    }
+}
+
+@notSaoTemplate() = {
+    <p class="govuk-body">@Html(messages("uploadTemplateTableError.fileFormat.error.paragraph1WithLink", templateGuidanceLinkAttributes))</p>
+    <p class="govuk-body govuk-!-margin-bottom-8">@messages("uploadTemplateTableError.fileFormat.error.paragraph2")</p>
+}
+
+@invalidData() = {
     <p class="govuk-body">
         @Html(messages("uploadTemplateTableError.paragraph1WithLink", templateGuidanceLinkAttributes))
     </p>
 
     <h2 class="govuk-heading-m">@messages("uploadTemplateTableError.problems.heading")</h2>
+
     <p class="govuk-body">@messages("uploadTemplateTableError.problems.summary", tableData.errors.size.toString)</p>
 
     <table class="govuk-table govuk-!-font-size-16 upload-template-errors-table">
@@ -85,11 +105,6 @@
         </tbody>
     </table>
 
-    @formHelper(action = certificateRoutes.CertificateReviewQualifiedController.onSubmit()) {
-        @govukButton(
-            ButtonViewModel(messages("uploadTemplateTableError.continue").toText).withAttribute("id", "submit")
-        )
-    }
 }
 
 @templateGuidanceLinkAttributes = @{

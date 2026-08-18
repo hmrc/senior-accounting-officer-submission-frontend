@@ -544,19 +544,42 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
       }
 
       "must fail for" - {
+
+        Seq(
+          "emptyfile.csv",
+          "emptyTemplate.csv"
+        ).foreach { file =>
+          s"$file with the resultant UploadTemplateTableData.notSaoTemplateOrIsEmpty=true" in {
+            val csv: String =
+              readFile(s"templates/testonly/CSV scenarios/fail/$file")
+
+            val result = parser.parse(csv, notificationOnly = false)
+
+            val mappedUploadTemplateTableData = result match {
+              case Valid(rows)     => UploadTemplateTableData(rows = rows, errors = Seq.empty)
+              case Invalid(errors) => UploadTemplateTableData(rows = Seq.empty, errors = errors)
+            }
+
+            mappedUploadTemplateTableData.notSaoTemplateOrIsEmpty mustBe true
+          }
+        }
+
         Map(
           "Z Massive Fail (1000 Companies).csv"                              -> 6500,
           "Z Moderately Complex (4 SAOs - Submission A- AEFG) - Failure.csv" -> 4,
           "Certificate only Errors.csv"                                      -> 14
         ).foreach { case (file, expectedErrors) =>
-          s"$file" in {
+          s"$file with the resultant UploadTemplateTableData.notSaoTemplateOrIsEmpty=false" in {
             val csv: String =
               readFile(s"templates/testonly/CSV scenarios/fail/$file")
 
             val result = parser.parse(csv, notificationOnly = false)
 
             result mustBe an[Invalid]
-            result.asInstanceOf[Invalid].errors.length mustBe expectedErrors
+            val invalid = result.asInstanceOf[Invalid]
+            invalid.errors.length mustBe expectedErrors
+
+            UploadTemplateTableData(rows = Seq.empty, errors = invalid.errors).notSaoTemplateOrIsEmpty mustBe false
           }
         }
       }

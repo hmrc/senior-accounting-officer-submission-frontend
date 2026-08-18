@@ -35,6 +35,7 @@ import services.UpscanService.*
 import services.UpscanServiceSpec.*
 import services.csvparser.UploadTemplateCsvParser
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
+import utils.TestDataGenerator.*
 
 import scala.concurrent.Future
 import scala.util.Random
@@ -62,6 +63,86 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
     .build()
 
   "UpscanService.fileUploadState(UploadJourney.Notification)" - {
+
+    "must return State.ValidationFailed when the downloaded CSV is not empty" in {
+      val testResponse = HttpResponse(status = OK, body = testFileContent)
+
+      val rows = Seq(
+        ParsedSubmissionRow(
+          notification = NotificationFields(
+            companyName = "Acme Plc",
+            companyUtr = CompanyUtr(generateUtr),
+            companyCrn = Some(CompanyCrn(generateCrn)),
+            companyType = CompanyType.PLC,
+            companyStatus = CompanyStatus.Active,
+            financialYearEndDate = LocalDate.of(2025, 12, 31)
+          ),
+          certificate = None
+        )
+      )
+      val nonEmptyTemplate = TemplateParseResult.Valid(rows = rows)
+
+      when(mockUpscanDownloadConnector.download(any())(using any())).thenReturn(
+        Future.successful(testResponse)
+      )
+      when(mockUploadTemplateCsvParser.parse(any(), any[Messages], any()))
+        .thenReturn(nonEmptyTemplate)
+
+      val result = SUT
+        .fileUploadState(
+          UploadJourney.Notification,
+          userAnswersWithUploadStatus(
+            UploadJourney.Notification,
+            UploadStatus.UploadedSuccessfully(
+              name = "submission.csv",
+              mimeType = "",
+              downloadUrl = testDownloadUrl,
+              size = None
+            )
+          ),
+          Some(testFileReference)
+        )
+        .futureValue
+
+      result mustBe State.Result(testFileReference, rows)
+
+      verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
+      verify(mockUploadTemplateCsvParser, times(1)).parse(meq(testFileContent), any[Messages], meq(true))
+    }
+
+    "must return State.ValidationFailed when the downloaded CSV is empty" in {
+      val testResponse = HttpResponse(status = OK, body = testFileContent)
+
+      val emptyTemplate = TemplateParseResult.Valid(rows = Seq.empty)
+
+      when(mockUpscanDownloadConnector.download(any())(using any())).thenReturn(
+        Future.successful(testResponse)
+      )
+      when(mockUploadTemplateCsvParser.parse(any(), any[Messages], any()))
+        .thenReturn(emptyTemplate)
+
+      val result = SUT
+        .fileUploadState(
+          UploadJourney.Notification,
+          userAnswersWithUploadStatus(
+            UploadJourney.Notification,
+            UploadStatus.UploadedSuccessfully(
+              name = "submission.csv",
+              mimeType = "",
+              downloadUrl = testDownloadUrl,
+              size = None
+            )
+          ),
+          Some(testFileReference)
+        )
+        .futureValue
+
+      result mustBe State.ValidationFailed(Seq.empty)
+
+      verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
+      verify(mockUploadTemplateCsvParser, times(1)).parse(meq(testFileContent), any[Messages], meq(true))
+    }
+
     "must return State.NoReference when no reference is received" in {
       val result = SUT.fileUploadState(UploadJourney.Notification, emptyUserAnswers, None).futureValue
 
@@ -272,7 +353,7 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
       verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
     }
 
-    "must return State.RejectedByUpscan when the uploaded file is not a CSV" in {
+    "must return State.RejectedByUpscan when the uploaded file is empty" in {
       val result = SUT
         .fileUploadState(
           UploadJourney.Notification,

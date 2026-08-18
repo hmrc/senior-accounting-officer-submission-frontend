@@ -61,8 +61,10 @@ class UpscanService @Inject() (
           downloadConnector.download(downloadUrl).map {
             case HttpResponse(OK, body, _) =>
               uploadTemplateCsvParser.parse(body, notificationOnly = journey == Notification) match {
-                case TemplateParseResult.Valid(rows) =>
+                case TemplateParseResult.Valid(rows) if rows.nonEmpty =>
                   State.Result(reference, rows)
+                case TemplateParseResult.Valid(rows) =>
+                  State.ValidationFailed(Seq.empty)
                 case TemplateParseResult.Invalid(errors) =>
                   State.ValidationFailed(errors)
               }

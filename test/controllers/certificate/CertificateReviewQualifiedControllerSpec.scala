@@ -35,7 +35,6 @@ import repositories.SessionRepository
 import views.html.certificate.{CertificateReviewQualifiedView, CertificateUploadTemplateTableErrorView}
 
 import scala.concurrent.Future
-
 import scala.util.Random
 
 import java.time.LocalDate
