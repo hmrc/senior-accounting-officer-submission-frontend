@@ -18,16 +18,23 @@ package controllers.certificate
 
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
+import controllers.routes
 import models.QualifiedCompany
 import models.certificate.CertificateTaskListStage
 import models.upload.*
 import navigation.{CertificateNavigator, FakeCertificateNavigator}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.{never, verify, when}
+import org.scalatestplus.mockito.MockitoSugar
 import pages.certificate.CertificateUploadTemplateTablePage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import views.html.certificate.CertificateReviewQualifiedView
+import repositories.SessionRepository
+import views.html.certificate.{CertificateReviewQualifiedView, CertificateUploadTemplateTableErrorView}
+
+import scala.concurrent.Future
 
 import scala.util.Random
 
@@ -35,7 +42,7 @@ import java.time.LocalDate
 
 import CertificateReviewQualifiedControllerSpec.*
 
-class CertificateReviewQualifiedControllerSpec extends SpecBase {
+class CertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -72,11 +79,21 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
     }
 
     "must redirect to the next page for a POST" in {
+      val mockSessionRepository = mock[SessionRepository]
+      when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val application =
-        applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails))
+        applicationBuilder(userAnswers =
+          Some(
+            userAnswersWithCertificateSaoDetails
+              .set(CertificateUploadTemplateTablePage, testTemplateData)
+              .success
+              .value
+          )
+        )
           .overrides(
-            bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute))
+            bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
 
@@ -88,6 +105,78 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual onwardRoute.url
+        verify(mockSessionRepository).set(any())
+      }
+    }
+
+    "must return OK and the correct error view for a GET when the table data has errors" in {
+      val application = applicationBuilder(userAnswers =
+        Some(
+          userAnswersWithCertificateSaoDetails
+            .set(CertificateUploadTemplateTablePage, errorTemplateData)
+            .success
+            .value
+        )
+      ).build()
+
+      running(application) {
+        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        val view = application.injector.instanceOf[CertificateUploadTemplateTableErrorView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(errorTemplateData)(using request, messages(application)).toString
+      }
+    }
+
+    "must redirect to upload form for a POST when the table data has errors" in {
+      val mockSessionRepository = mock[SessionRepository]
+
+      val application = applicationBuilder(userAnswers =
+        Some(
+          userAnswersWithCertificateSaoDetails
+            .set(CertificateUploadTemplateTablePage, errorTemplateData)
+            .success
+            .value
+        )
+      ).overrides(bind[SessionRepository].toInstance(mockSessionRepository)).build()
+
+      running(application) {
+        val request = FakeRequest(POST, certificateRoutes.CertificateReviewQualifiedController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateUploadFormController.onPageLoad().url
+        verify(mockSessionRepository, never()).set(any())
+      }
+    }
+
+    "must redirect to Journey Recovery for GET when table data is missing" in {
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect to Journey Recovery for POST when table data is missing" in {
+      val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
+
+      running(application) {
+        val request = FakeRequest(POST, certificateRoutes.CertificateReviewQualifiedController.onSubmit().url)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
       }
     }
 
@@ -206,6 +295,11 @@ object CertificateReviewQualifiedControllerSpec {
       )
     ),
     errors = Seq.empty
+  )
+
+  val errorTemplateData: UploadTemplateTableData = UploadTemplateTableData(
+    rows = Seq.empty,
+    errors = Seq(TemplateParseError(9, Some("Company UTR"), "missing_required_value", "UTR is required"))
   )
 
   val testQualifiedCompanies: Seq[QualifiedCompany] = Seq(

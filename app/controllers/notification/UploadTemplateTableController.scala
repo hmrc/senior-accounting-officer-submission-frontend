@@ -17,8 +17,10 @@
 package controllers.notification
 
 import controllers.actions.*
+import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.NormalMode
+import models.upload.UploadTemplateTableData
 import navigation.NotificationNavigator
 import pages.notification.{UploadTemplateReviewPage, UploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -26,7 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.UploadTemplatePlaybackService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.notification.UploadTemplateTableView
+import views.html.notification.{UploadTemplateTableErrorView, UploadTemplateTableView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -40,6 +42,7 @@ class UploadTemplateTableController @Inject() (
     requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: UploadTemplateTableView,
+    errorView: UploadTemplateTableErrorView,
     playbackService: UploadTemplatePlaybackService,
     navigator: NotificationNavigator,
     sessionRepository: SessionRepository
@@ -49,18 +52,33 @@ class UploadTemplateTableController @Inject() (
 
   def onPageLoad(): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
-      playbackService
-        .getPlayback(request.userAnswers)
-        .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { playback =>
-          Ok(view(playback.tableData, playback.saoName))
+      request.userAnswers
+        .get(UploadTemplateTablePage)
+        .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { tableData =>
+          if tableData.errors.nonEmpty then {
+            Ok(errorView(tableData))
+          } else {
+            playbackService
+              .getPlayback(request.userAnswers)
+              .fold(Redirect(notificationRoutes.NotificationTaskListController.onPageLoad())) { playback =>
+                Ok(view(playback.tableData, playback.saoName))
+              }
+          }
         }
     }
 
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
-      for {
-        updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadTemplateReviewPage, true))
-        _              <- sessionRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, updatedAnswers))
+      request.userAnswers
+        .get(UploadTemplateTablePage)
+        .fold(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))) {
+          case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
+            Future.successful(Redirect(notificationRoutes.NotificationUploadFormController.onPageLoad()))
+          case _ =>
+            for {
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadTemplateReviewPage, true))
+              _              <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, updatedAnswers))
+        }
     }
 }

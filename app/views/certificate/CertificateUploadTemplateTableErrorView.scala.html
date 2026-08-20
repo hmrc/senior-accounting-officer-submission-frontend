@@ -85,7 +85,7 @@
         </tbody>
     </table>
 
-    @formHelper(action = certificateRoutes.CertificateUploadTemplateTableErrorController.onSubmit()) {
+    @formHelper(action = certificateRoutes.CertificateReviewQualifiedController.onSubmit()) {
         @govukButton(
             ButtonViewModel(messages("uploadTemplateTableError.continue").toText).withAttribute("id", "submit")
         )

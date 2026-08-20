@@ -17,6 +17,7 @@
 package controllers.certificate
 
 import controllers.actions.*
+import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import models.NormalMode
 import models.upload.*
@@ -30,7 +31,7 @@ import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.certificate.CertificateReviewQualifiedView
+import views.html.certificate.{CertificateReviewQualifiedView, CertificateUploadTemplateTableErrorView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -45,7 +46,8 @@ class CertificateReviewQualifiedController @Inject() (
     requireData: DataRequiredAction,
     requireUploadSubmissionTemplateStageUnlocked: RequireCertificateUploadSubmissionTemplateUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateReviewQualifiedView
+    view: CertificateReviewQualifiedView,
+    errorView: CertificateUploadTemplateTableErrorView
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -53,30 +55,42 @@ class CertificateReviewQualifiedController @Inject() (
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
-        {
-          val userAnswers = request.userAnswers
+        val userAnswers = request.userAnswers
 
-          (for {
-            saoName        <- userAnswers.get(CertificateSaoFullNamePage)
-            parsedTemplate <- userAnswers.get(CertificateUploadTemplateTablePage)
-            totalCompanies     = parsedTemplate.rows.size
-            qualifiedCompanies = parsedTemplate.rows.flatMap(_.toQualifiedCompany)
-          } yield Ok(
-            view(
-              saoName = saoName,
-              companyCount = totalCompanies,
-              qualifiedCompanies = qualifiedCompanies
-            )
-          )).fold(Redirect(routes.JourneyRecoveryController.onPageLoad()))(identity)
-        }
+        userAnswers
+          .get(CertificateUploadTemplateTablePage)
+          .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { parsedTemplate =>
+            if parsedTemplate.errors.nonEmpty then {
+              Ok(errorView(parsedTemplate))
+            } else {
+              userAnswers
+                .get(CertificateSaoFullNamePage)
+                .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { saoName =>
+                  Ok(
+                    view(
+                      saoName = saoName,
+                      companyCount = parsedTemplate.rows.size,
+                      qualifiedCompanies = parsedTemplate.rows.flatMap(_.toQualifiedCompany)
+                    )
+                  )
+                }
+            }
+          }
     }
 
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked).async {
       implicit request =>
-        for {
-          updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewQualifiedPage, true))
-          _              <- sessionRepository.set(updatedAnswers)
-        } yield Redirect(navigator.nextPage(CertificateReviewQualifiedPage, NormalMode, request.userAnswers))
+        request.userAnswers
+          .get(CertificateUploadTemplateTablePage)
+          .fold(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))) {
+            case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
+              Future.successful(Redirect(certificateRoutes.CertificateUploadFormController.onPageLoad()))
+            case _ =>
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewQualifiedPage, true))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(CertificateReviewQualifiedPage, NormalMode, updatedAnswers))
+          }
     }
 }

@@ -275,9 +275,7 @@ class CertificateUploadSuccessControllerSpec extends SpecBase with BeforeAndAfte
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustBe certificateRoutes.CertificateUploadTemplateTableErrorController
-            .onPageLoad()
-            .url
+          redirectLocation(result).value mustBe certificateRoutes.CertificateReviewQualifiedController.onPageLoad().url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             meq(UploadJourney.Certificate),

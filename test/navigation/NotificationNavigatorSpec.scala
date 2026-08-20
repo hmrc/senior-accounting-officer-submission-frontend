@@ -198,26 +198,6 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         ) mustBe notificationRoutes.NotificationUploadFormController.onPageLoad()
       }
 
-      "when on UploadTemplateTableErrorPage  must go to upload form page" in {
-        val userAnswers =
-          emptyUserAnswers
-            .set(
-              UploadTemplateTablePage,
-              UploadTemplateTableData(
-                rows = Seq.empty,
-                errors = Seq(models.upload.TemplateParseError(9, Some("Company UTR"), "missing_required_value", "x"))
-              )
-            )
-            .success
-            .value
-
-        navigator.nextPage(
-          UploadTemplateTableErrorPage,
-          NormalMode,
-          userAnswers
-        ) mustBe notificationRoutes.NotificationUploadFormController.onPageLoad()
-      }
-
       "when on UploadTemplateTablePage with no upload data, must go to journey recovery page" in {
         navigator.nextPage(
           UploadTemplateTablePage,

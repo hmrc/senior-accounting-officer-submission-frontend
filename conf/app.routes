@@ -66,8 +66,6 @@ GET         /notification/upload                                                
 GET         /notification/upload/success                                              controllers.notification.NotificationUploadSuccessController.onPageLoad(key: Option[String])
 GET         /notification/upload/table                                                controllers.notification.UploadTemplateTableController.onPageLoad()
 POST        /notification/upload/table                                                controllers.notification.UploadTemplateTableController.onSubmit()
-GET         /notification/upload/table/error                                          controllers.notification.UploadTemplateTableErrorController.onPageLoad()
-POST        /notification/upload/table/error                                          controllers.notification.UploadTemplateTableErrorController.onSubmit()
 
 GET         /notification/additional-information                                      controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/additional-information                                      controllers.notification.NotificationAdditionalInformationController.onSubmit(mode: Mode = NormalMode)
@@ -107,8 +105,6 @@ POST        /certificate-only/change-sao-email                                  
 
 GET         /certificate/upload                                                       controllers.certificate.CertificateUploadFormController.onPageLoad()
 GET         /certificate/upload/success                                               controllers.certificate.CertificateUploadSuccessController.onPageLoad(key: Option[String])
-GET         /certificate/upload/table/error                                           controllers.certificate.CertificateUploadTemplateTableErrorController.onPageLoad()
-POST        /certificate/upload/table/error                                           controllers.certificate.CertificateUploadTemplateTableErrorController.onSubmit()
 
 GET         /certificateReviewQualified                                               controllers.certificate.CertificateReviewQualifiedController.onPageLoad()
 POST        /certificateReviewQualified                                               controllers.certificate.CertificateReviewQualifiedController.onSubmit()
@@ -147,4 +143,3 @@ GET         /certificate/download                                               
 ##############################
 # combined journey routes
 ##############################
-
