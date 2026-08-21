@@ -117,7 +117,7 @@ class TaxRegimeParser @Inject() {
           Vector(
             TemplateParseError(
               line = lineNumber,
-              column = Some(ExpectedHeaders(columnIndex)),
+              column = Some(ColumnNameMessageKeys(columnIndex)),
               code = "invalid_tax_regime_value",
               message = rowErrorMessages.taxRegime
             )

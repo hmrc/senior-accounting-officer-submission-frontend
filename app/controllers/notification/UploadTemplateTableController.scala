@@ -55,7 +55,7 @@ class UploadTemplateTableController @Inject() (
       request.userAnswers
         .get(UploadTemplateTablePage)
         .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { tableData =>
-          if tableData.errors.nonEmpty then {
+          if tableData.hasErrors then {
             Ok(errorView(tableData))
           } else {
             playbackService
@@ -72,7 +72,7 @@ class UploadTemplateTableController @Inject() (
       request.userAnswers
         .get(UploadTemplateTablePage)
         .fold(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))) {
-          case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
+          case tableData if tableData.hasErrors =>
             Future.successful(Redirect(notificationRoutes.NotificationUploadFormController.onPageLoad()))
           case _ =>
             for {

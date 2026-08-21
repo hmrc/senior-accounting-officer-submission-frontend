@@ -18,5 +18,6 @@ Company name,CRN,UTR,Company type (select one),Company status (select one),Finan
 Your explanation should include:
 - why the SAO provided a qualified certificate
 - what went wrong with the tax accounting arrangements and why, not just a list of errors "
-Z Multiple A,12345678,1234567890,PLC,Active,31/12/2025,,,,,,,,,,,Unqualified,
-Z Multiple B,87654321,0987654321,LTD,Active,31/12/2025,,,,,,,,,,,Unqualified,
+Test company 1,12345678,1234567890,LTD,Active,31/12/2025,y,1,z,a,b,c,d,f,e,g,nqualified,
+Test company 2,12345678,1234567890,LTD,Active,31/12/2025,,,,x,,,,,,,unqualified,
+Test company 2,12345678,1234567890,LTD,Active,31/12/2025,,,,,,,,,,,unqualified,"reason"

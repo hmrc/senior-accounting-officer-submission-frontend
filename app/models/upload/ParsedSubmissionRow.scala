@@ -29,15 +29,15 @@ import java.time.temporal.ChronoField
 
 final case class ParsedSubmissionRow(
     notification: NotificationFields,
-    certificate: CertificateFields
+    certificate: Option[CertificateFields]
 )
 
 object ParsedSubmissionRow {
   given OFormat[ParsedSubmissionRow] = Json.format[ParsedSubmissionRow]
 
   extension (data: ParsedSubmissionRow) {
-    def toUnqualifiedCompany: Option[UnqualifiedCompany] =
-      if data.certificate.isQualified then None
+    def toUnqualifiedCompany: Option[UnqualifiedCompany] = data.certificate.flatMap { certificate =>
+      if certificate.isQualified then None
       else
         Some(
           UnqualifiedCompany(
@@ -49,9 +49,10 @@ object ParsedSubmissionRow {
             financialYearEndDate = data.notification.financialYearEndDate
           )
         )
+    }
 
-    def toQualifiedCompany: Option[QualifiedCompany] = {
-      if data.certificate.isQualified then
+    def toQualifiedCompany: Option[QualifiedCompany] = data.certificate.flatMap { certificate =>
+      if certificate.isQualified then
         Some(
           QualifiedCompany(
             name = data.notification.companyName,
@@ -60,17 +61,17 @@ object ParsedSubmissionRow {
             companyType = data.notification.companyType.toString,
             status = data.notification.companyStatus.toString,
             financialYearEndDate = data.notification.financialYearEndDate,
-            corporationTax = data.certificate.corporationTax,
-            valueAddedTax = data.certificate.valueAddedTax,
-            paye = data.certificate.paye,
-            insurancePremiumTax = data.certificate.insurancePremiumTax,
-            stampDutyLandTax = data.certificate.stampDutyLandTax,
-            stampDutyReserveTax = data.certificate.stampDutyReserveTax,
-            petroleumRevenueTax = data.certificate.petroleumRevenueTax,
-            customsDuties = data.certificate.customsDuties,
-            exciseDuties = data.certificate.exciseDuties,
-            bankLevy = data.certificate.bankLevy,
-            additionalInformation = data.certificate.additionalInformation.fold("")(s => s)
+            corporationTax = certificate.corporationTax,
+            valueAddedTax = certificate.valueAddedTax,
+            paye = certificate.paye,
+            insurancePremiumTax = certificate.insurancePremiumTax,
+            stampDutyLandTax = certificate.stampDutyLandTax,
+            stampDutyReserveTax = certificate.stampDutyReserveTax,
+            petroleumRevenueTax = certificate.petroleumRevenueTax,
+            customsDuties = certificate.customsDuties,
+            exciseDuties = certificate.exciseDuties,
+            bankLevy = certificate.bankLevy,
+            additionalInformation = certificate.additionalInformation.fold("")(s => s)
           )
         )
       else None

@@ -17,6 +17,7 @@
 package controllers
 
 import config.AppConfig
+import controllers.DownloadTemplateController.*
 import controllers.actions.IdentifierAction
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -37,7 +38,7 @@ class DownloadTemplateController @Inject (appConfig: AppConfig)(
 
   def downloadFile(): Action[AnyContent] = identify { implicit request =>
     {
-      val templateFile =
+      val templateFile: File =
         Option(getClass.getResource(appConfig.templateFile))
           .map(resource => new File(resource.toURI))
           .filter(file => file.exists && !file.isDirectory)
@@ -45,8 +46,14 @@ class DownloadTemplateController @Inject (appConfig: AppConfig)(
 
       Ok.sendFile(content = templateFile, inline = false)
         .withHeaders(
-          "Content-Disposition" -> s"attachment; filename=${templateFile.getName}"
+          "Content-Disposition" -> s"attachment; filename=$fileName${getFileExtension(appConfig.templateFile)}"
         )
     }
   }
+}
+
+object DownloadTemplateController {
+  private def getFileExtension(fileAsString: String): String =
+    fileAsString.split("\\.").lastOption.fold("")(ext => s".$ext")
+  def fileName = "Senior Accounting Officer notification and certificate submission template"
 }

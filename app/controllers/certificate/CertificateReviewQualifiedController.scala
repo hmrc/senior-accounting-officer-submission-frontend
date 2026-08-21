@@ -60,7 +60,7 @@ class CertificateReviewQualifiedController @Inject() (
         userAnswers
           .get(CertificateUploadTemplateTablePage)
           .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { parsedTemplate =>
-            if parsedTemplate.errors.nonEmpty then {
+            if parsedTemplate.hasErrors then {
               Ok(errorView(parsedTemplate))
             } else {
               userAnswers
@@ -84,7 +84,7 @@ class CertificateReviewQualifiedController @Inject() (
         request.userAnswers
           .get(CertificateUploadTemplateTablePage)
           .fold(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))) {
-            case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
+            case tableData if tableData.hasErrors =>
               Future.successful(Redirect(certificateRoutes.CertificateUploadFormController.onPageLoad()))
             case _ =>
               for {

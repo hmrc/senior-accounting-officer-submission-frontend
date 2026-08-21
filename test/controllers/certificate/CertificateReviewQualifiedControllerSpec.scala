@@ -35,7 +35,6 @@ import repositories.SessionRepository
 import views.html.certificate.{CertificateReviewQualifiedView, CertificateUploadTemplateTableErrorView}
 
 import scala.concurrent.Future
-
 import scala.util.Random
 
 import java.time.LocalDate
@@ -230,19 +229,21 @@ object CertificateReviewQualifiedControllerSpec {
           companyStatus = CompanyStatus.Active,
           financialYearEndDate = testDate1
         ),
-        certificate = CertificateFields(
-          corporationTax = false,
-          valueAddedTax = true,
-          paye = false,
-          insurancePremiumTax = true,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = true,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Qualified),
-          additionalInformation = Some("example additional information")
+        certificate = Some(
+          CertificateFields(
+            corporationTax = false,
+            valueAddedTax = true,
+            paye = false,
+            insurancePremiumTax = true,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = true,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Qualified),
+            additionalInformation = Some("example additional information")
+          )
         )
       ),
       ParsedSubmissionRow(
@@ -254,19 +255,21 @@ object CertificateReviewQualifiedControllerSpec {
           companyStatus = CompanyStatus.Dormant,
           financialYearEndDate = testDate2
         ),
-        certificate = CertificateFields(
-          corporationTax = false,
-          valueAddedTax = true,
-          paye = false,
-          insurancePremiumTax = true,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = true,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = true,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Qualified),
-          additionalInformation = Some("example additional information 2")
+        certificate = Some(
+          CertificateFields(
+            corporationTax = false,
+            valueAddedTax = true,
+            paye = false,
+            insurancePremiumTax = true,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = true,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = true,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Qualified),
+            additionalInformation = Some("example additional information 2")
+          )
         )
       ),
       ParsedSubmissionRow(
@@ -278,19 +281,21 @@ object CertificateReviewQualifiedControllerSpec {
           companyStatus = CompanyStatus.Dormant,
           financialYearEndDate = LocalDate.now()
         ),
-        certificate = CertificateFields(
-          corporationTax = false,
-          valueAddedTax = false,
-          paye = false,
-          insurancePremiumTax = false,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = Some(CertificateType.Unqualified),
-          additionalInformation = None
+        certificate = Some(
+          CertificateFields(
+            corporationTax = false,
+            valueAddedTax = false,
+            paye = false,
+            insurancePremiumTax = false,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = Some(CertificateType.Unqualified),
+            additionalInformation = None
+          )
         )
       )
     ),

@@ -25,9 +25,9 @@ object UploadTemplateCsvSchema {
 
   type CsvRow = Vector[String]
 
-  private val LinesToSkipBeforeSectionRow = 6
+  private val LinesToSkipBeforeSectionRow = 10
   val SectionLineNumber: Int              = LinesToSkipBeforeSectionRow + 1
-  val HeaderLineNumber: Int               = SectionLineNumber + 1
+  val HeaderLineNumber: Int               = SectionLineNumber + 2
 
   private val DataStartLineNumber: Int = HeaderLineNumber + 1
   val SectionRowIndex: Int             = SectionLineNumber - 1
@@ -42,14 +42,14 @@ object UploadTemplateCsvSchema {
 
   val ExpectedHeaders: Seq[String] = Seq(
     "Company name",
-    "Company UTR",
-    "Company CRN",
-    "Company type",
-    "Company status",
-    "Financial year end date",
+    "CRN",
+    "UTR",
+    "Company type (select one)",
+    "Company status (select one)",
+    "Financial year end (DD/MM/YYYY)",
     "Corporation tax",
-    "Value added tax",
-    "PAYE",
+    "VAT\n(Value added tax)",
+    "PAYE\n(Pay As You Earn)",
     "Insurance premium tax",
     "Stamp duty land tax",
     "Stamp duty reserve tax",
@@ -58,12 +58,33 @@ object UploadTemplateCsvSchema {
     "Excise Duties",
     "Bank Levy",
     "Certificate type",
-    "Additional information"
+    "Your explanation should include:\n- why the SAO provided a qualified certificate\n- what went wrong with the tax accounting arrangements and why, not just a list of errors"
+  )
+
+  val ColumnNameMessageKeys: Seq[String] = Seq(
+    "Company name",
+    "CRN",
+    "UTR",
+    "Company type (select one)",
+    "Company status (select one)",
+    "Financial year end (DD/MM/YYYY)",
+    "Corporation tax",
+    "VAT (Value added tax)",
+    "PAYE (Pay As You Earn)",
+    "Insurance premium tax",
+    "Stamp duty land tax",
+    "Stamp duty reserve tax",
+    "Petroleum revenue tax",
+    "Customs Duties",
+    "Excise Duties",
+    "Bank Levy",
+    "Certificate type",
+    "Explain why the certificate is qualified"
   )
 
   val CompanyNameIndex          = 0
-  val CompanyUtrIndex           = 1
-  val CompanyCrnIndex           = 2
+  val CompanyCrnIndex           = 1
+  val CompanyUtrIndex           = 2
   val CompanyTypeIndex          = 3
   val CompanyStatusIndex        = 4
   val FinancialYearEndDateIndex = 5
@@ -88,9 +109,6 @@ object UploadTemplateCsvSchema {
       .toFormatter
       .withResolverStyle(ResolverStyle.STRICT)
 
-  val CompanyNameRegex   = "^[A-Za-z0-9 &\\-\\.'’]{1,105}$"
-  val CompanyStatusRegex = "^[A-Za-z]{1,15}$"
-
   val TemplateFileErrorMessageKey =
     "uploadTemplateCsvParser.error.templateFile"
   val CompanyNameErrorMessageKey =
@@ -109,8 +127,12 @@ object UploadTemplateCsvSchema {
     "uploadTemplateCsvParser.error.taxRegime"
   val CertificateTypeErrorMessageKey =
     "uploadTemplateCsvParser.error.certificateType"
-  val AdditionalInformationErrorMessageKey =
-    "uploadTemplateCsvParser.error.additionalInformation"
+  val AdditionalInformationMissingErrorMessageKey =
+    "uploadTemplateCsvParser.error.additionalInformation.missing"
+  val AdditionalInformationTooLongErrorMessageKey =
+    "uploadTemplateCsvParser.error.additionalInformation.tooLong"
+  val AdditionalInformationProhibitedMessageKey =
+    "uploadTemplateCsvParser.error.additionalInformation.prohibited"
 
   def cellValue(row: CsvRow, index: Int): String =
     if index < row.length then row(index).trim else ""

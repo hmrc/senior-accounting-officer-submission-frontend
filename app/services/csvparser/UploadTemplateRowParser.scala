@@ -31,7 +31,9 @@ final case class UploadTemplateRowErrorMessages(
     financialYearEndDate: String,
     taxRegime: String,
     certificateType: String,
-    additionalInformation: String
+    additionalInformationMissing: String,
+    additionalInformationTooLong: String,
+    additionalInformationProhibited: String
 )
 
 class UploadTemplateRowParser @Inject() (
@@ -48,11 +50,12 @@ class UploadTemplateRowParser @Inject() (
   def parseDataRows(
       rows: Vector[CsvRow],
       rowErrorMessages: UploadTemplateRowErrorMessages,
-      templateFileErrorMessage: String
+      templateFileErrorMessage: String,
+      notificationOnly: Boolean
   ): TemplateParseResult = {
     val parsedRows =
       rows.zipWithIndex.drop(DataStartIndex).map { case (rawRow, idx) =>
-        parseDataRow(rawRow, idx + 1, rowErrorMessages, templateFileErrorMessage)
+        parseDataRow(rawRow, idx + 1, rowErrorMessages, templateFileErrorMessage, notificationOnly)
       }
 
     val errors = parsedRows.flatMap(_.errors)
@@ -64,7 +67,8 @@ class UploadTemplateRowParser @Inject() (
       rawRow: CsvRow,
       lineNumber: Int,
       rowErrorMessages: UploadTemplateRowErrorMessages,
-      templateFileErrorMessage: String
+      templateFileErrorMessage: String,
+      notificationOnly: Boolean
   ): ParsedRowResult = {
     val row = normalizedDataColumns(rawRow)
 
@@ -83,47 +87,72 @@ class UploadTemplateRowParser @Inject() (
     else {
       val companyResult = companyFieldParser.parse(lineNumber, row, rowErrorMessages)
       val taxResult     = taxRegimeParser.parse(lineNumber, row, rowErrorMessages)
-      val certResult    = certificateRulesValidator.parse(
-        lineNumber = lineNumber,
-        certificateTypeValue = row(CertificateTypeIndex),
-        additionalInformationValue = row(AdditionalInformationIndex),
-        taxFlags = taxResult.flags,
-        rowErrorMessages = rowErrorMessages
-      )
+      val certResult    =
+        if notificationOnly then
+          CertificateParseResult(certificateType = None, additionalInformation = None, errors = Vector.empty)
+        else
+          certificateRulesValidator.parse(
+            lineNumber = lineNumber,
+            certificateTypeValue = row(CertificateTypeIndex),
+            additionalInformationValue = row(AdditionalInformationIndex),
+            taxFlags = taxResult.flags,
+            rowErrorMessages = rowErrorMessages
+          )
 
       val rowErrors =
-        extraColumnErrors ++ companyResult.errors ++ taxResult.errors ++ certResult.errors
+        extraColumnErrors ++
+          companyResult.errors ++
+          (if notificationOnly then Seq.empty else taxResult.errors) ++
+          certResult.errors
 
       if rowErrors.nonEmpty then ParsedRowResult(None, rowErrors)
       else
-        val parsedRow =
-          for {
-            company  <- companyResult.fields
-            certType <- certResult.certificateType
-          } yield ParsedSubmissionRow(
-            notification = NotificationFields(
-              companyName = company.companyName,
-              companyUtr = company.companyUtr,
-              companyCrn = company.companyCrn,
-              companyType = company.companyType,
-              companyStatus = company.companyStatus,
-              financialYearEndDate = company.financialYearEndDate
-            ),
-            certificate = CertificateFields(
-              corporationTax = taxResult.flags.corporationTax,
-              valueAddedTax = taxResult.flags.valueAddedTax,
-              paye = taxResult.flags.paye,
-              insurancePremiumTax = taxResult.flags.insurancePremiumTax,
-              stampDutyLandTax = taxResult.flags.stampDutyLandTax,
-              stampDutyReserveTax = taxResult.flags.stampDutyReserveTax,
-              petroleumRevenueTax = taxResult.flags.petroleumRevenueTax,
-              customsDuties = taxResult.flags.customsDuties,
-              exciseDuties = taxResult.flags.exciseDuties,
-              bankLevy = taxResult.flags.bankLevy,
-              certificateType = Some(certType),
-              additionalInformation = certResult.additionalInformation
+        val parsedRow = {
+          if notificationOnly then
+            for {
+              company <- companyResult.fields
+            } yield ParsedSubmissionRow(
+              notification = NotificationFields(
+                companyName = company.companyName,
+                companyUtr = company.companyUtr,
+                companyCrn = company.companyCrn,
+                companyType = company.companyType,
+                companyStatus = company.companyStatus,
+                financialYearEndDate = company.financialYearEndDate
+              ),
+              certificate = None
             )
-          )
+          else
+            for {
+              company  <- companyResult.fields
+              certType <- certResult.certificateType
+            } yield ParsedSubmissionRow(
+              notification = NotificationFields(
+                companyName = company.companyName,
+                companyUtr = company.companyUtr,
+                companyCrn = company.companyCrn,
+                companyType = company.companyType,
+                companyStatus = company.companyStatus,
+                financialYearEndDate = company.financialYearEndDate
+              ),
+              certificate = Some(
+                CertificateFields(
+                  corporationTax = taxResult.flags.corporationTax,
+                  valueAddedTax = taxResult.flags.valueAddedTax,
+                  paye = taxResult.flags.paye,
+                  insurancePremiumTax = taxResult.flags.insurancePremiumTax,
+                  stampDutyLandTax = taxResult.flags.stampDutyLandTax,
+                  stampDutyReserveTax = taxResult.flags.stampDutyReserveTax,
+                  petroleumRevenueTax = taxResult.flags.petroleumRevenueTax,
+                  customsDuties = taxResult.flags.customsDuties,
+                  exciseDuties = taxResult.flags.exciseDuties,
+                  bankLevy = taxResult.flags.bankLevy,
+                  certificateType = Some(certType),
+                  additionalInformation = certResult.additionalInformation
+                )
+              )
+            )
+        }
 
         ParsedRowResult(row = parsedRow, errors = Vector.empty)
     }

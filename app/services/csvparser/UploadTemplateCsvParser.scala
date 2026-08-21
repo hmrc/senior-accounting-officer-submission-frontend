@@ -48,10 +48,16 @@ class UploadTemplateCsvParser @Inject() (
     financialYearEndDate = message(FinancialYearEndDateErrorMessageKey, messages),
     taxRegime = message(TaxRegimeErrorMessageKey, messages),
     certificateType = message(CertificateTypeErrorMessageKey, messages),
-    additionalInformation = message(AdditionalInformationErrorMessageKey, messages)
+    additionalInformationMissing = message(AdditionalInformationMissingErrorMessageKey, messages),
+    additionalInformationTooLong = message(AdditionalInformationTooLongErrorMessageKey, messages),
+    additionalInformationProhibited = message(AdditionalInformationProhibitedMessageKey, messages)
   )
 
-  def parse(csv: String, messages: Messages = messagesApi.preferred(Seq.empty)): TemplateParseResult = {
+  def parse(
+      csv: String,
+      messages: Messages = messagesApi.preferred(Seq.empty),
+      notificationOnly: Boolean
+  ): TemplateParseResult = {
     Try(parseCsvRows(csv)) match {
       case Failure(err) =>
         Invalid(
@@ -71,7 +77,13 @@ class UploadTemplateCsvParser @Inject() (
             structureValidator.validateHeaderRow(rows.lift(HeaderRowIndex), templateFileErrorMessage(messages))
 
         errors match {
-          case Nil      => rowParser.parseDataRows(rows, rowErrorMessages(messages), templateFileErrorMessage(messages))
+          case Nil =>
+            rowParser.parseDataRows(
+              rows,
+              rowErrorMessages(messages),
+              templateFileErrorMessage(messages),
+              notificationOnly
+            )
           case nonEmpty => Invalid(nonEmpty)
         }
     }

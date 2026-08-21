@@ -246,19 +246,21 @@ object NotificationSubmitServiceSpec {
           companyStatus = CompanyStatus.Active,
           financialYearEndDate = exampleAccPeriodEnd
         ),
-        certificate = CertificateFields(
-          corporationTax = false,
-          valueAddedTax = false,
-          paye = false,
-          insurancePremiumTax = false,
-          stampDutyLandTax = false,
-          stampDutyReserveTax = false,
-          petroleumRevenueTax = false,
-          customsDuties = false,
-          exciseDuties = false,
-          bankLevy = false,
-          certificateType = None,
-          additionalInformation = None
+        certificate = Some(
+          CertificateFields(
+            corporationTax = false,
+            valueAddedTax = false,
+            paye = false,
+            insurancePremiumTax = false,
+            stampDutyLandTax = false,
+            stampDutyReserveTax = false,
+            petroleumRevenueTax = false,
+            customsDuties = false,
+            exciseDuties = false,
+            bankLevy = false,
+            certificateType = None,
+            additionalInformation = None
+          )
         )
       )
     ),

@@ -24,6 +24,8 @@ import scala.util.Try
 import java.time.LocalDate
 import javax.inject.Inject
 
+import CompanyFieldParser.*
+
 final case class ParsedCompanyFields(
     companyName: String,
     companyUtr: CompanyUtr,
@@ -86,7 +88,7 @@ class CompanyFieldParser @Inject() () {
       value: String,
       rowErrorMessages: UploadTemplateRowErrorMessages
   ): (Option[String], Vector[TemplateParseError]) =
-    Option(value).filter(_.matches(CompanyNameRegex)).filter(_.length <= 105) match {
+    Option(value.trim).filter(value => value.nonEmpty && value.length <= companyNameMaxLength) match {
       case Some(validName) =>
         (Some(validName), Vector.empty)
       case None =>
@@ -95,7 +97,7 @@ class CompanyFieldParser @Inject() () {
           Vector(
             TemplateParseError(
               line = lineNumber,
-              column = Some(ExpectedHeaders(CompanyNameIndex)),
+              column = Some(ColumnNameMessageKeys(CompanyNameIndex)),
               code = "invalid_company_name",
               message = rowErrorMessages.companyName
             )
@@ -117,7 +119,7 @@ class CompanyFieldParser @Inject() () {
           Vector(
             TemplateParseError(
               line = lineNumber,
-              column = Some(ExpectedHeaders(CompanyUtrIndex)),
+              column = Some(ColumnNameMessageKeys(CompanyUtrIndex)),
               code = "invalid_company_utr",
               message = rowErrorMessages.companyUtr
             )
@@ -141,7 +143,7 @@ class CompanyFieldParser @Inject() () {
             Vector(
               TemplateParseError(
                 line = lineNumber,
-                column = Some(ExpectedHeaders(CompanyCrnIndex)),
+                column = Some(ColumnNameMessageKeys(CompanyCrnIndex)),
                 code = "invalid_company_crn",
                 message = rowErrorMessages.companyCrn
               )
@@ -164,7 +166,7 @@ class CompanyFieldParser @Inject() () {
           Vector(
             TemplateParseError(
               line = lineNumber,
-              column = Some(ExpectedHeaders(CompanyTypeIndex)),
+              column = Some(ColumnNameMessageKeys(CompanyTypeIndex)),
               code = "invalid_company_type",
               message = rowErrorMessages.companyType
             )
@@ -179,7 +181,6 @@ class CompanyFieldParser @Inject() () {
   ): (Option[CompanyStatus], Vector[TemplateParseError]) =
     CompanyStatus
       .fromString(value)
-      .filter(_ => value.matches(CompanyStatusRegex))
       .map(parsed => (Some(parsed), Vector.empty))
       .getOrElse(
         (
@@ -187,7 +188,7 @@ class CompanyFieldParser @Inject() () {
           Vector(
             TemplateParseError(
               line = lineNumber,
-              column = Some(ExpectedHeaders(CompanyStatusIndex)),
+              column = Some(ColumnNameMessageKeys(CompanyStatusIndex)),
               code = "invalid_company_status",
               message = rowErrorMessages.companyStatus
             )
@@ -208,11 +209,15 @@ class CompanyFieldParser @Inject() () {
           Vector(
             TemplateParseError(
               line = lineNumber,
-              column = Some(ExpectedHeaders(FinancialYearEndDateIndex)),
+              column = Some(ColumnNameMessageKeys(FinancialYearEndDateIndex)),
               code = "invalid_financial_year_end_date",
               message = rowErrorMessages.financialYearEndDate
             )
           )
         )
       )
+}
+
+object CompanyFieldParser {
+  val companyNameMaxLength: Int = 160
 }

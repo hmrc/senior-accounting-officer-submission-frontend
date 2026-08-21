@@ -19,7 +19,7 @@ package services
 import connectors.CertificateSubmissionConnector
 import models.UserAnswers
 import models.certificate.*
-import models.upload.ParsedSubmissionRow
+import models.upload.{CertificateFields, NotificationFields, ParsedSubmissionRow}
 import pages.certificate.*
 import play.api.Logging
 import play.api.libs.json.Json
@@ -79,7 +79,9 @@ class CertificateSubmissionService @Inject() (
       saoName   <- userAnswers.get(CertificateSaoFullNamePage).toRight("missing SAO name")
       saoEmail  <- userAnswers.get(CertificateSaoEmailPage).toRight("missing SAO email")
       tableData <- userAnswers.get(CertificateUploadTemplateTablePage).toRight("missing uploaded certificate data")
-      companies = tableData.rows.map(toCompany)
+      companies = tableData.rows.collect { case ParsedSubmissionRow(notification, Some(certificate)) =>
+        toCompany(notification, certificate)
+      }
       _ <- Either.cond(companies.nonEmpty, (), "missing companies")
     } yield CertificateSubmissionRequest(
       submitterName = submitterName(userAnswers),
@@ -97,25 +99,28 @@ class CertificateSubmissionService @Inject() (
       }
       .flatten
 
-  private def toCompany(row: ParsedSubmissionRow): CertificateSubmissionCompany =
+  private def toCompany(
+      notification: NotificationFields,
+      certificate: CertificateFields
+  ): CertificateSubmissionCompany =
     CertificateSubmissionCompany(
-      crn = row.notification.companyCrn.map(_.value),
-      utr = row.notification.companyUtr.value,
-      name = row.notification.companyName,
-      accPeriodEnd = row.notification.financialYearEndDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
-      status = row.notification.companyStatus,
-      `type` = row.notification.companyType,
-      isCorporationTaxQualified = row.certificate.corporationTax,
-      isVatQualified = row.certificate.valueAddedTax,
-      isPayeQualified = row.certificate.paye,
-      isInsurancePremiumTaxQualified = row.certificate.insurancePremiumTax,
-      isStampDutyLandTaxQualified = row.certificate.stampDutyLandTax,
-      isStampDutyReserveTaxQualified = row.certificate.stampDutyReserveTax,
-      isPetroleumRevenueTaxQualified = row.certificate.petroleumRevenueTax,
-      isCustomsDutiesQualified = row.certificate.customsDuties,
-      isExciseDutiesQualified = row.certificate.exciseDuties,
-      isBankLevyQualified = row.certificate.bankLevy,
-      qualificationStatement = row.certificate.additionalInformation
+      crn = notification.companyCrn.map(_.value),
+      utr = notification.companyUtr.value,
+      name = notification.companyName,
+      accPeriodEnd = notification.financialYearEndDate.format(DateTimeFormatter.ISO_LOCAL_DATE),
+      status = notification.companyStatus,
+      `type` = notification.companyType,
+      isCorporationTaxQualified = certificate.corporationTax,
+      isVatQualified = certificate.valueAddedTax,
+      isPayeQualified = certificate.paye,
+      isInsurancePremiumTaxQualified = certificate.insurancePremiumTax,
+      isStampDutyLandTaxQualified = certificate.stampDutyLandTax,
+      isStampDutyReserveTaxQualified = certificate.stampDutyReserveTax,
+      isPetroleumRevenueTaxQualified = certificate.petroleumRevenueTax,
+      isCustomsDutiesQualified = certificate.customsDuties,
+      isExciseDutiesQualified = certificate.exciseDuties,
+      isBankLevyQualified = certificate.bankLevy,
+      qualificationStatement = certificate.additionalInformation
     )
 
 }

@@ -6,7 +6,7 @@ How to complete this  ,,,,,,,,,,,,,,,,,
 3. Additional information (column R): You must add an explanation if the certificate is qualified and a tax regime is marked x. There is no character limit. You can write as much information as you would normally provide in an email to HMRC.,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,
 ,Notification,,,,Certificate,,,,,,,,,,,,
-Company name,Company UTR,Company CRN,Company type,Company status,Financial year end date,Corporation tax,Value added tax,PAYE,Insurance premium tax,Stamp duty land tax,Stamp duty reserve tax,Petroleum revenue tax,Customs Duties,Excise Duties,Bank Levy,Certificate type,Additional information 
+Company name,UTR,CRN,Company type,Company status,Financial year end date,Corporation tax,Value added tax,PAYE,Insurance premium tax,Stamp duty land tax,Stamp duty reserve tax,Petroleum revenue tax,Customs Duties,Excise Duties,Bank Levy,Certificate type,Additional information
 Z Moderately Complex A,111111111,11111111,PLC,Active,31/12/2025,,,,,,,,,,,Unqualified,
 Z Moderately Complex E,2222222222,22222222,PLC,Active,31/12/2025,,,,,,,,,,,Unqualified,
 Z Moderately Complex F,3333333333,33333333,PLC,Active,31/12/2025,,,,,,,,,,,Unqualified,

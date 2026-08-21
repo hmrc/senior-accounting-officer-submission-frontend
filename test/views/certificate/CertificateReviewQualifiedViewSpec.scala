@@ -17,6 +17,7 @@
 package views.certificate
 
 import base.ViewSpecBase
+import base.ViewSpecBase.excludeHelpLinkAndErrorMessageParagraphsSelector
 import controllers.certificate.routes as certificateRoutes
 import models.{QualifiedCompany, displayRegimes}
 import org.jsoup.Jsoup
@@ -24,8 +25,8 @@ import org.jsoup.nodes.Document
 import views.html.certificate.CertificateReviewQualifiedView
 
 import java.time.LocalDate
+
 import CertificateReviewQualifiedViewSpec.*
-import base.ViewSpecBase.excludeHelpLinkAndErrorMessageParagraphsSelector
 
 class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQualifiedView] {
 

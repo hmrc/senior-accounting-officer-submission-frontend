@@ -21,6 +21,8 @@ import services.csvparser.UploadTemplateCsvSchema.*
 
 import javax.inject.Inject
 
+import CertificateRulesValidator.*
+
 final case class CertificateParseResult(
     certificateType: Option[CertificateType],
     additionalInformation: Option[String],
@@ -83,7 +85,7 @@ class CertificateRulesValidator @Inject() () {
         Vector(
           TemplateParseError(
             line = lineNumber,
-            column = Some(ExpectedHeaders(CertificateTypeIndex)),
+            column = Some(ColumnNameMessageKeys(CertificateTypeIndex)),
             code = "invalid_certificate_type",
             message = rowErrorMessages.certificateType
           )
@@ -104,12 +106,34 @@ class CertificateRulesValidator @Inject() () {
       Vector(
         TemplateParseError(
           line = lineNumber,
-          column = Some(ExpectedHeaders(AdditionalInformationIndex)),
+          column = Some(ColumnNameMessageKeys(AdditionalInformationIndex)),
           code = "missing_qualified_reason",
-          message = rowErrorMessages.additionalInformation
+          message = rowErrorMessages.additionalInformationMissing
+        )
+      )
+    } else if hasAnyTaxRegimeSelected && value.length > additionalInformationMaxLength then {
+      Vector(
+        TemplateParseError(
+          line = lineNumber,
+          column = Some(ColumnNameMessageKeys(AdditionalInformationIndex)),
+          code = "qualified_reason_too_long",
+          message = rowErrorMessages.additionalInformationTooLong
+        )
+      )
+    } else if !hasAnyTaxRegimeSelected && value.nonEmpty then {
+      Vector(
+        TemplateParseError(
+          line = lineNumber,
+          column = Some(ColumnNameMessageKeys(AdditionalInformationIndex)),
+          code = "qualified_reason_is_prohibited",
+          message = rowErrorMessages.additionalInformationProhibited
         )
       )
     } else {
       Vector.empty
     }
+}
+
+object CertificateRulesValidator {
+  val additionalInformationMaxLength: Int = 5000
 }
