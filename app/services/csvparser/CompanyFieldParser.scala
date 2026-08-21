@@ -24,6 +24,8 @@ import scala.util.Try
 import java.time.LocalDate
 import javax.inject.Inject
 
+import CompanyFieldParser.*
+
 final case class ParsedCompanyFields(
     companyName: String,
     companyUtr: CompanyUtr,
@@ -86,7 +88,7 @@ class CompanyFieldParser @Inject() () {
       value: String,
       rowErrorMessages: UploadTemplateRowErrorMessages
   ): (Option[String], Vector[TemplateParseError]) =
-    Option(value.trim).filter(value => value.nonEmpty && value.length <= 160) match {
+    Option(value.trim).filter(value => value.nonEmpty && value.length <= companyNameMaxLength) match {
       case Some(validName) =>
         (Some(validName), Vector.empty)
       case None =>
@@ -214,4 +216,8 @@ class CompanyFieldParser @Inject() () {
           )
         )
       )
+}
+
+object CompanyFieldParser {
+  val companyNameMaxLength: Int = 160
 }

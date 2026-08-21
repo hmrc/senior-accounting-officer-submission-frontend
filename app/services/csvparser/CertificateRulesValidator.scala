@@ -21,6 +21,8 @@ import services.csvparser.UploadTemplateCsvSchema.*
 
 import javax.inject.Inject
 
+import CertificateRulesValidator.*
+
 final case class CertificateParseResult(
     certificateType: Option[CertificateType],
     additionalInformation: Option[String],
@@ -109,7 +111,7 @@ class CertificateRulesValidator @Inject() () {
           message = rowErrorMessages.additionalInformationMissing
         )
       )
-    } else if hasAnyTaxRegimeSelected && value.length > 5000 then {
+    } else if hasAnyTaxRegimeSelected && value.length > additionalInformationMaxLength then {
       Vector(
         TemplateParseError(
           line = lineNumber,
@@ -130,4 +132,8 @@ class CertificateRulesValidator @Inject() () {
     } else {
       Vector.empty
     }
+}
+
+object CertificateRulesValidator {
+  val additionalInformationMaxLength: Int = 5000
 }
