@@ -320,7 +320,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
       }
     }
 
-    "must return an error when a data row contains unexpected extra data columns" in {
+    "must ignore unexpected extra data columns" in {
       val rowWithExtraColumn = validQualifiedDataRow :+ "unexpected"
 
       val csv = toCsv(
@@ -329,18 +329,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
 
       val result = parser.parse(csv, notificationOnly = false)
 
-      result match {
-        case Invalid(errors) =>
-          errors must contain(
-            TemplateParseError(
-              line = 14,
-              column = None,
-              error = TemplateError.InvalidTemplateError
-            )
-          )
-        case _ =>
-          fail("Expected parser to fail when a row contains unexpected extra data columns")
-      }
+      result must not be an[Invalid]
     }
 
     "must return an invalid CSV error when CSV content cannot be parsed" in {

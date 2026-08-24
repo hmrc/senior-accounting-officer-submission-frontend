@@ -54,17 +54,7 @@ class UploadTemplateRowParser @Inject() (
   ): ParsedRowResult = {
     val row = normalizedDataColumns(rawRow)
 
-    val extraColumnErrors = Vector.from(
-      Option.when(rawRow.drop(ExpectedHeaders.length).exists(_.trim.nonEmpty))(
-        TemplateParseError(
-          line = lineNumber,
-          column = None,
-          error = TemplateError.InvalidTemplateError
-        )
-      )
-    )
-
-    if row.forall(_.isEmpty) then ParsedRowResult(None, extraColumnErrors)
+    if row.forall(_.isEmpty) then ParsedRowResult(None, Vector.empty)
     else {
       val companyResult = companyFieldParser.parse(lineNumber, row)
       val taxResult     = taxRegimeParser.parse(lineNumber, row)
@@ -80,8 +70,7 @@ class UploadTemplateRowParser @Inject() (
           )
 
       val rowErrors =
-        extraColumnErrors ++
-          companyResult.errors ++
+        companyResult.errors ++
           (if notificationOnly then Seq.empty else taxResult.errors) ++
           certResult.errors
 
