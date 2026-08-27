@@ -52,11 +52,10 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithASingleTextInputWithNoLabel(
             name = "value",
             label = pageHeading,
             value = "",
-            hint = None,
             hasError = false
           )
 
@@ -83,11 +82,10 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
             hasError = false
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithASingleTextInputWithNoLabel(
             name = "value",
             label = pageHeading,
             value = testInputValue,
-            hint = None,
             hasError = false
           )
 
@@ -114,11 +112,10 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
             hasError = true
           )
 
-          doc.createTestsWithASingleTextInput(
+          doc.createTestsWithASingleTextInputWithNoLabel(
             name = "value",
             label = pageHeading,
             value = "",
-            hint = None,
             hasError = true
           )
 
