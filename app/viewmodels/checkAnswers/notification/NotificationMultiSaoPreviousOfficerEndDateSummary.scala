@@ -25,6 +25,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import utils.DateTimeFormats.dateTimeFormat
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 object NotificationMultiSaoPreviousOfficerEndDateSummary {
 
