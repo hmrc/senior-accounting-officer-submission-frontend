@@ -27,6 +27,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 import play.twirl.api.HtmlFormat
+
 object NotificationMultiSaoPreviousOfficerNameSummary {
 
   def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
