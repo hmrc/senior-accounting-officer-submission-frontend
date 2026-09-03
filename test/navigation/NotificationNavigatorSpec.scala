@@ -336,12 +336,63 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
-      "when on NotificationMultiSaoAreAllAddedPage, must go to notification check your answers page" in {
-        navigator.nextPage(
-          NotificationMultiSaoAreAllAddedPage(0),
-          CheckMode,
-          emptyUserAnswers
-        ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+      "when on NotificationMultiSaoAreAllAddedPage" - {
+
+        val userAnswersWithMultipleCompleteSaos = emptyUserAnswers
+          .set(NotificationMoreThanOneSaoPage, true)
+          .get
+          .set(NotificationMultiSaoLastOfficerNamePage, "Firstname Lastname")
+          .get
+          .set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.now())
+          .get
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0), "Firstname Lastname II")
+          .get
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.now())
+          .get
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), LocalDate.now())
+          .get
+          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1), "Firstname Lastname III")
+          .get
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), LocalDate.now())
+          .get
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), LocalDate.now())
+          .get
+          .set(NotificationMultiSaoAreAllAddedPage(1), false)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2), "Firstname Lastname IV")
+          .get
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), LocalDate.now())
+          .get
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), LocalDate.now())
+          .get
+          .set(NotificationMultiSaoAreAllAddedPage(2), true)
+          .get
+
+        val userAnswersWithMultipleCompleteSaosAndOneIcompleteSao = userAnswersWithMultipleCompleteSaos
+          .set(NotificationMultiSaoAreAllAddedPage(2), false)
+          .get
+
+        "when the multi sao user answers are complete" - {
+          "go to notification check your answers page" in {
+            navigator.nextPage(
+              NotificationMultiSaoAreAllAddedPage(1),
+              CheckMode,
+              userAnswersWithMultipleCompleteSaos
+            ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+          }
+        }
+
+        "when the multi sao user answers are incomplete" - {
+          "go to previous sao name page at the right index" in {
+            navigator.nextPage(
+              NotificationMultiSaoAreAllAddedPage(1),
+              CheckMode,
+              userAnswersWithMultipleCompleteSaosAndOneIcompleteSao
+            ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 2)
+          }
+        }
       }
 
       "when on NotificationAdditionalInformationPage, must go to notification check your answers page" in {
