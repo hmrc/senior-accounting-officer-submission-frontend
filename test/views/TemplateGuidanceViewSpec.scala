@@ -19,15 +19,12 @@ package views
 import base.ViewSpecBase
 import controllers.routes
 import org.jsoup.Jsoup
-import org.jsoup.nodes.{Document, Element}
+import org.jsoup.nodes.Document
 import play.api.mvc.Call
 import views.TemplateGuidanceViewSpec.*
 import views.html.TemplateGuidanceView
 
 class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
-
-  val doc: Document        = Jsoup.parse(SUT().toString)
-  val mainContent: Element = doc.getMainContent
 
   private def generateView(isNewTab: Boolean = false): Document = {
     val view = SUT(isNewTab = isNewTab)
@@ -46,7 +43,7 @@ class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
       hasError = false
     )
 
-    doc.createTestWithSubmissionBtn(routes.SubmissionTypeController.onPageLoad(), submissionBtnText)
+    doc.createTestWithSubmissionButtonOutsideOfAForm(routes.SubmissionTypeController.onPageLoad(), submissionBtnText)
 
     doc.createTestsWithOrWithoutError(hasError = false)
 
@@ -98,7 +95,7 @@ class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
 
   extension (target: => Document) {
     def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
-      val headings = doc.getMainContent.getElementsByTag("h3")
+      val headings = target.getMainContent.getElementsByTag("h3")
       "must have expected number of headings" in {
         headings.size() mustBe subheadings.length
       }
@@ -117,7 +114,7 @@ class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
       }
     }
 
-    def createTestWithSubmissionBtn(action: Call, buttonText: String): Unit = {
+    def createTestWithSubmissionButtonOutsideOfAForm(action: Call, buttonText: String): Unit = {
       "must contain information to redirect user to the 'submission-type' page" in {
         action.method mustBe routes.SubmissionTypeController.onPageLoad().method
         action.url mustBe routes.SubmissionTypeController.onPageLoad().url
