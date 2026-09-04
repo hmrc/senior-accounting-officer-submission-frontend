@@ -54,13 +54,11 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageLabel,
+            label = pageHeading,
             value = "",
             hint = None,
             hasError = false
           )
-
-          doc.createTestsWithParagraphs(paragraphs)
 
           doc.createTestsForInputWidth()
 
@@ -87,13 +85,11 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageLabel,
+            label = pageHeading,
             value = testInputValue,
             hint = None,
             hasError = false
           )
-
-          doc.createTestsWithParagraphs(paragraphs)
 
           doc.createTestsForInputWidth()
 
@@ -120,13 +116,11 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
 
           doc.createTestsWithASingleTextInput(
             name = "value",
-            label = pageLabel,
+            label = pageHeading,
             value = "",
             hint = None,
             hasError = true
           )
-
-          doc.createTestsWithParagraphs(paragraphs)
 
           doc.createTestsForInputWidth()
 
@@ -145,13 +139,9 @@ class NotificationMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[Notificat
 }
 
 object NotificationMultiSaoLastOfficerNameViewSpec {
-  val pageHeading              = "Senior Accounting Officer details"
-  val pageTitle                = "Submit a notification - SAO full name"
-  val pageCaption              = "Submit a notification"
-  val paragraphs: List[String] = List(
-    "You told us more than one SAO held the role during the financial year. Enter the name of the last person who held the role. We’ll then ask you for details of the others who held the role earlier in the year."
-  )
-  val pageLabel = "What is the name of the last SAO?"
+  val pageHeading = "What is the name of the SAO at the end of the financial year?"
+  val pageTitle   = "What is the name of the SAO at the end of the financial year? - Submit a notification"
+  val pageCaption = "Submit a notification"
 
   val testInputValue = "myTestInputValue"
 }
