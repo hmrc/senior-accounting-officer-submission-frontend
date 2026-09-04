@@ -48,8 +48,6 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
 
   val loginContinueUrl: String = hubBaseUrl
 
-  def noEnrollmentKickoutUrl: String = config.get[String]("urls.kickoutPage")
-
   lazy val upscanInitiateV2Url: String = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
 
   lazy val internalAuthTestOnlyTokenUrl: String = servicesConfig.baseUrl("internal-auth") + "/test-only/token"
