@@ -27,8 +27,7 @@ import viewmodels.checkAnswers.notification.{
 import viewmodels.checkAnswers.notification.*
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import scala.annotation.tailrec
-import utils.MultiSaoUserAnswerHelpers.isSaoAtIndexCompleted
-import pages.notification.*
+import pages.notification.NotificationMultiSaoAreAllAddedPage
 
 class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
@@ -49,34 +48,25 @@ class NotificationCheckYourAnswersService {
     Seq(NotificationSingleSaoOfficerNameSummary.row(userAnswers))
   }
 
+  @tailrec
   private def rowsForMultipleSaos(
-      userAnswers: UserAnswers
+      userAnswers: UserAnswers,
+      index: Int = 0,
+      result: Seq[Option[SummaryListRow]] = Nil
   )(using Messages): Seq[Option[SummaryListRow]] = {
-
-    // DONE: figure out the last valid sao and only display up to that one
-    // TODO: display the last sao have added all as Yes and others as No
-    //
-    // maybe we need to check for the true value in have you added
-    // all, but also the last complete sao and not show everything
-    // after that
-
-    @tailrec
-    def recur(saoIndex: Int, result: Seq[Option[SummaryListRow]]): Seq[Option[SummaryListRow]] = {
-      if !isSaoAtIndexCompleted(userAnswers, saoIndex) || userAnswers.get(
-          NotificationMultiSaoAreAllAddedPage(saoIndex)
-        ) == Some(true)
-      then {
+    userAnswers.get(NotificationMultiSaoAreAllAddedPage(index)) match {
+      case Some(true) =>
         NotificationMultiSaoLastOfficerNameSummary.row(userAnswers)
           +: NotificationMultiSaoLastOfficerStartDateSummary.row(userAnswers)
-          +: (result ++ rowsForOneOfMultipleSaos(userAnswers, saoIndex))
-      } else {
-        recur(
-          saoIndex + 1,
-          result ++ rowsForOneOfMultipleSaos(userAnswers, saoIndex)
+          +: (result ++ rowsForOneOfMultipleSaos(userAnswers, index))
+      case Some(false) =>
+        rowsForMultipleSaos(
+          userAnswers,
+          index + 1,
+          result ++ rowsForOneOfMultipleSaos(userAnswers, index)
         )
-      }
+      case None => Nil
     }
-    recur(0, Nil)
   }
 
   private def rowsForOneOfMultipleSaos(userAnswers: UserAnswers, index: Int)(using

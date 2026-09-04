@@ -15,7 +15,6 @@
  */
 
 package navigation
-import utils.MultiSaoUserAnswerHelpers.isSaoAtIndexCompleted
 
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
@@ -28,7 +27,6 @@ import play.api.mvc.Call
 import javax.inject.{Inject, Singleton}
 import pages.Page.NOTIFICATION_PATH
 import scala.annotation.tailrec
-import utils.MultiSaoUserAnswerHelpers.finalCompleteSaoIndex
 
 @Singleton
 class NotificationNavigator @Inject() () extends Navigator {
@@ -112,20 +110,12 @@ class NotificationNavigator @Inject() () extends Navigator {
     case NotificationMultiSaoPreviousOfficerEndDatePage(_) =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoAreAllAddedPage(saoIndex) =>
-      userAnswers => {
-        val userSaidTheyHaveFinishedAddingSaos =
-          userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) == Some(true)
-
-        val answeringForFinalCompleteSao = finalCompleteSaoIndex(userAnswers) == saoIndex
-
-        if userSaidTheyHaveFinishedAddingSaos then {
+      userAnswers =>
+        if hasCompletedMoreSaoDetails(userAnswers) then {
           notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-        } else if answeringForFinalCompleteSao then {
-          notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
         } else {
-          notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+          notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
         }
-      }
     case NotificationAdditionalInformationPage =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case _ => _ => ???

@@ -44,8 +44,7 @@ class NotificationCheckYourAnswersController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData andThen requireData // andThen requireSubmitNotificationUnlocked
-    ) { implicit request =>
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
       val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
 
       Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))

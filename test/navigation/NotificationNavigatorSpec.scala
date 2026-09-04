@@ -373,8 +373,6 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         val userAnswersWithMultipleCompleteSaosAndOneIcompleteSao = userAnswersWithMultipleCompleteSaos
           .set(NotificationMultiSaoAreAllAddedPage(2), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(3), "Firstname Lastname V")
-          .get
 
         "when the multi sao user answers are complete" - {
           "go to notification check your answers page" in {
@@ -389,13 +387,12 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         "when the multi sao user answers are incomplete" - {
           "go to previous sao name page at the right index" in {
             navigator.nextPage(
-              NotificationMultiSaoAreAllAddedPage(2),
+              NotificationMultiSaoAreAllAddedPage(1),
               CheckMode,
               userAnswersWithMultipleCompleteSaosAndOneIcompleteSao
-            ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 3)
+            ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 2)
           }
         }
-        // TODO: add additional tests here
       }
 
       "when on NotificationAdditionalInformationPage, must go to notification check your answers page" in {
@@ -412,6 +409,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           navigator.nextPage(UnknownPage, CheckMode, emptyUserAnswers)
         }
       }
+
     }
   }
 }
