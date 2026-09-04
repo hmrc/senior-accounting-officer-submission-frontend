@@ -89,7 +89,7 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
         val result     = controller.onPageLoad()(FakeRequest())
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
+        redirectLocation(result).value mustBe appConfig.hubNotEnrolled
 
       }
     }
@@ -106,7 +106,7 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
         val result     = controller.onPageLoad()(FakeRequest())
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
+        redirectLocation(result).value mustBe appConfig.hubNotEnrolled
 
       }
     }
@@ -123,7 +123,7 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
         val result     = controller.onPageLoad()(FakeRequest())
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result).value mustBe appConfig.hubUnauthorisedUrl
+        redirectLocation(result).value mustBe appConfig.hubNotEnrolled
       }
     }
 
@@ -139,7 +139,7 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
         val result     = controller.onPageLoad()(FakeRequest())
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result) mustBe Some(appConfig.hubUnauthorisedUrl)
+        redirectLocation(result) mustBe Some(appConfig.hubNotEnrolled)
       }
     }
 
@@ -155,7 +155,7 @@ class AuthActionSpec extends SpecBase with GuiceOneAppPerSuite {
         val result     = controller.onPageLoad()(FakeRequest())
 
         status(result) mustBe SEE_OTHER
-        redirectLocation(result) mustBe Some(appConfig.hubUnauthorisedUrl)
+        redirectLocation(result) mustBe Some(appConfig.hubNotEnrolled)
       }
     }
 
