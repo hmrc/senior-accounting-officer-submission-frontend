@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.notification.*
+import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 
@@ -42,84 +42,69 @@ class NotificationMultiSaoPreviousOfficerEndDateSummarySpec extends SpecBase wit
     }
 
     "when there is a user answer for NotificationMultiSaoPreviousOfficerEndDatePage" - {
+      def testUserAnswers(answer: LocalDate) =
+        emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerEndDatePage(0), answer).get
 
-      "when end date is part of a complete chain of Sao answers" - {
+      def SUT(answer: LocalDate = LocalDate.now) =
+        NotificationMultiSaoPreviousOfficerEndDateSummary.row(testUserAnswers(answer), 0).get
 
-        val exampleDate = LocalDate.of(2000, 1, 1)
+      "must have expected key" in {
+        SUT().key mustBe keyText.toKey
+      }
 
-        val userAnswersWithTwoSaos = emptyUserAnswers
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), "Firstname Lastname")
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.now)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), LocalDate.now)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), "Firstname Lastname")
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), LocalDate.now)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), exampleDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), true)
-          .get
-
-        val sut = NotificationMultiSaoPreviousOfficerEndDateSummary
-          .row(userAnswersWithTwoSaos, 1)
-          .get
-
-        "must have expected key" in {
-          sut.key mustBe keyText.toKey
-        }
-
-        "must have expected value" - {
-          "must show '1 January 2000' when user answers is 1st Jan 2000" in {
-            sut.value.content mustBe HtmlContent(
-              s"""<span data-test-id="previous-sao-end-date-2">$expectedDate</span>"""
-            )
-          }
-        }
-
-        "must have expected action" - {
-          def actions = sut.actions
-
-          "must only have one action" in {
-            withClue("must be 1 action\n") {
-              actions.size mustBe 1
-            }
-            withClue("must be 1 item in the action\n") {
-              actions.head.items.size mustBe 1
-            }
-          }
-
-          def action = actions.head.items.head
-
-          "must have expected text" in {
-            action.content mustBe "Change".toText
-          }
-
-          "must have expected url" in {
-            action.href mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController
-              .onPageLoad(CheckMode, 1)
-              .url
-          }
-
-          "must have expected hidden text" in {
-            action.visuallyHiddenText.get mustBe "NotificationMultiSaoPreviousOfficerEndDate"
-          }
+      "expected value" - {
+        "must show '1 January 2000' when user answers is 1st Jan 2000" in {
+          SUT(answer = LocalDate.of(2000, 1, 1)).value.content mustBe HtmlContent(
+            s"""<span data-test-id="previous-sao-end-date-1">$expectedDate</span>"""
+          )
         }
       }
-      "when end date is not part of a complete chain of Sao answers" - {
-        val sut = NotificationMultiSaoPreviousOfficerEndDateSummary
-          .row(emptyUserAnswers, 0)
 
-        "None is returned" in {
-          sut mustBe None
+      "expected action" - {
+        def actions = SUT().actions
+
+        "must only have one action" in {
+          withClue("must be 1 action\n") {
+            actions.size mustBe 1
+          }
+          withClue("must be 1 item in the action\n") {
+            actions.head.items.size mustBe 1
+          }
+        }
+
+        def action = actions.head.items.head
+
+        "must have expected text" in {
+          action.content mustBe "Change".toText
+        }
+
+        "must have expected url" in {
+          action.href mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController
+            .onPageLoad(CheckMode)
+            .url
+        }
+
+        "must include the SAO index in the url" in {
+          val answers = emptyUserAnswers
+            .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), LocalDate.of(2000, 1, 1))
+            .get
+            .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), LocalDate.of(2000, 1, 1))
+            .get
+
+          val action = NotificationMultiSaoPreviousOfficerEndDateSummary.row(answers, 1).get.actions.head.items.head
+
+          action.href mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController
+            .onPageLoad(CheckMode, 1)
+            .url
+        }
+
+        "must have expected hidden text" in {
+          action.visuallyHiddenText.get mustBe "NotificationMultiSaoPreviousOfficerEndDate"
         }
       }
     }
   }
+
 }
 
 object NotificationMultiSaoPreviousOfficerEndDateSummarySpec {
