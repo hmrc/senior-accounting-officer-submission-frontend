@@ -15,6 +15,7 @@
  */
 
 package viewmodels.checkAnswers.notification
+import utils.MultiSaoUserAnswerHelpers.isInCompleteSaoChain
 
 import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
@@ -28,24 +29,31 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 object NotificationMultiSaoPreviousOfficerEndDateSummary {
 
-  def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex)).map { answer =>
-      given Lang = messages.lang
-      SummaryListRowViewModel(
-        key = messages("notificationMultiSaoPreviousOfficerEndDate.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(
-          HtmlContent(
-            s"""<span data-test-id="previous-sao-end-date-${saoIndex + 1}">${answer
-                .format(dateTimeFormat())}</span>"""
+  def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] = {
+    if isInCompleteSaoChain(answers, saoIndex) then {
+      answers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex)).map { answer =>
+        given Lang = messages.lang
+        SummaryListRowViewModel(
+          key = messages("notificationMultiSaoPreviousOfficerEndDate.checkYourAnswersLabel").toKey,
+          value = ValueViewModel(
+            HtmlContent(
+              s"""<span data-test-id="previous-sao-end-date-${saoIndex + 1}">${answer
+                  .format(dateTimeFormat())}</span>"""
+            )
+          ),
+          actions = Seq(
+            ActionItemViewModel(
+              messages("site.change").toText,
+              notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController
+                .onPageLoad(CheckMode, saoIndex)
+                .url
+            )
+              .withVisuallyHiddenText(messages("notificationMultiSaoPreviousOfficerEndDate.change.hidden"))
           )
-        ),
-        actions = Seq(
-          ActionItemViewModel(
-            messages("site.change").toText,
-            notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(CheckMode, saoIndex).url
-          )
-            .withVisuallyHiddenText(messages("notificationMultiSaoPreviousOfficerEndDate.change.hidden"))
         )
-      )
+      }
+    } else {
+      None
     }
+  }
 }

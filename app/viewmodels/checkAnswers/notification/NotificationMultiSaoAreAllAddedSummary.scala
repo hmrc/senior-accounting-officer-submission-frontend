@@ -15,6 +15,7 @@
  */
 
 package viewmodels.checkAnswers.notification
+import utils.MultiSaoUserAnswerHelpers.isInCompleteSaoChain
 
 import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
@@ -24,26 +25,32 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import utils.MultiSaoUserAnswerHelpers.finalCompleteSaoIndex
 
 object NotificationMultiSaoAreAllAddedSummary {
 
-  def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)).map { answer =>
-      val value = if answer then "site.yes" else "site.no"
-      SummaryListRowViewModel(
-        key = messages("notificationMultiSaoAreAllAdded.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(
-          HtmlContent(
-            s"""<span data-test-id="sao-are-all-added-${saoIndex + 1}">${messages(value)}</span>"""
+  def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] = {
+    if isInCompleteSaoChain(answers, saoIndex) then {
+      answers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)).map { answer =>
+        val value = if finalCompleteSaoIndex(answers) == saoIndex then "site.yes" else "site.no"
+        SummaryListRowViewModel(
+          key = messages("notificationMultiSaoAreAllAdded.checkYourAnswersLabel").toKey,
+          value = ValueViewModel(
+            HtmlContent(
+              s"""<span data-test-id="sao-are-all-added-${saoIndex + 1}">${messages(value)}</span>"""
+            )
+          ),
+          actions = Seq(
+            ActionItemViewModel(
+              messages("site.change").toText,
+              notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(CheckMode, saoIndex).url
+            )
+              .withVisuallyHiddenText(messages("notificationMultiSaoAreAllAdded.change.hidden"))
           )
-        ),
-        actions = Seq(
-          ActionItemViewModel(
-            messages("site.change").toText,
-            notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(CheckMode, saoIndex).url
-          )
-            .withVisuallyHiddenText(messages("notificationMultiSaoAreAllAdded.change.hidden"))
         )
-      )
+      }
+    } else {
+      None
     }
+  }
 }
