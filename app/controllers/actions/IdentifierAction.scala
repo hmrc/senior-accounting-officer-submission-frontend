@@ -57,13 +57,13 @@ class AuthenticatedIdentifierAction @Inject() (
       (internalId, saoSubscriptionId) match {
         case (Some(id), Some(subscriptionId)) => block(IdentifierRequest(request, id, subscriptionId))
         case (None, _)                        => throw new UnauthorizedException("Unable to retrieve internal Id")
-        case (_, None)                        => Future.successful(Redirect(config.hubUnauthorisedUrl))
+        case (_, None)                        => Future.successful(Redirect(config.hubNotEnrolled))
       }
     } recover {
       case _: NoActiveSession =>
         Redirect(config.loginContinueUrl)
       case _: AuthorisationException =>
-        Redirect(config.hubUnauthorisedUrl)
+        Redirect(config.hubNotEnrolled)
     }
   }
 }
