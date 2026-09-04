@@ -15,7 +15,6 @@
  */
 
 package viewmodels.checkAnswers.notification
-import utils.MultiSaoUserAnswerHelpers.isInCompleteSaoChain
 
 import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
@@ -29,31 +28,26 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 object NotificationMultiSaoPreviousOfficerStartDateSummary {
 
-  def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] = {
-    if isInCompleteSaoChain(answers, saoIndex) then {
-      answers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int)).map { answer =>
-        given Lang = messages.lang
-        SummaryListRowViewModel(
-          key = messages("notificationMultiSaoPreviousOfficerStartDate.checkYourAnswersLabel").toKey,
-          value = ValueViewModel(
-            HtmlContent(
-              s"""<span data-test-id="previous-sao-start-date-${saoIndex + 1}">${answer
-                  .format(dateTimeFormat())}</span>"""
-            )
-          ),
-          actions = Seq(
-            ActionItemViewModel(
-              messages("site.change").toText,
-              notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController
-                .onPageLoad(CheckMode, saoIndex)
-                .url
-            )
-              .withVisuallyHiddenText(messages("notificationMultiSaoPreviousOfficerStartDate.change.hidden"))
+  def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
+    answers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int)).map { answer =>
+      given Lang = messages.lang
+      SummaryListRowViewModel(
+        key = messages("notificationMultiSaoPreviousOfficerStartDate.checkYourAnswersLabel").toKey,
+        value = ValueViewModel(
+          HtmlContent(
+            s"""<span data-test-id="previous-sao-start-date-${saoIndex + 1}">${answer
+                .format(dateTimeFormat())}</span>"""
           )
+        ),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController
+              .onPageLoad(CheckMode, saoIndex)
+              .url
+          )
+            .withVisuallyHiddenText(messages("notificationMultiSaoPreviousOfficerStartDate.change.hidden"))
         )
-      }
-    } else {
-      None
+      )
     }
-  }
 }
