@@ -28,10 +28,23 @@ import views.html.notification.NotificationCheckYourAnswersView
 import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
+import models.UserAnswers
+import utils.MultiSaoUserAnswerHelpers.finalCompleteSaoIndex
+import pages.notification.NotificationMultiSaoAreAllAddedPage
+import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
+import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
+import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
+import play.api.libs.json.*
+import play.api.libs.json.Reads.*
+import play.api.libs.functional.syntax.*
+import repositories.SessionRepository
+import pages.notification.NotificationMoreThanOneSaoPage
+import pages.notification.NotificationSingleSaoOfficerNamePage
 
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
+    sessionRepository: SessionRepository,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
@@ -44,10 +57,15 @@ class NotificationCheckYourAnswersController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
-      val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
+      val fixedUserAnswers = fixupUserAnswers(request.userAnswers)
+      for {
+        _ <- sessionRepository.set(fixedUserAnswers)
+      } yield {
+        val summaryList = notificationCheckYourAnswersService.getSummaryList(fixedUserAnswers)
 
-      Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
+        Ok(view(summaryList, fixedUserAnswers.getFinancialYearEndDate))
+      }
     }
 
   def onSubmit(): Action[AnyContent] =
@@ -65,4 +83,49 @@ class NotificationCheckYourAnswersController @Inject() (
 
       }
     }
+
+  def fixupUserAnswers(userAnswers: UserAnswers): UserAnswers = {
+    val multiSaoNameKey      = NotificationMultiSaoPreviousOfficerNamePage(0).key
+    val multiSaoStartDateKey = NotificationMultiSaoPreviousOfficerStartDatePage(0).key
+    val multiSaoEndDateKey   = NotificationMultiSaoPreviousOfficerEndDatePage(0).key
+    val multiSaoAddedAllKey  = NotificationMultiSaoAreAllAddedPage(0).key
+
+    userAnswers.get(NotificationMoreThanOneSaoPage) match {
+      case Some(true) => {
+        val finalIndex = finalCompleteSaoIndex(userAnswers)
+
+        val takeFromArray = of[JsArray].map { case JsArray(contents) => JsArray(contents.take(finalIndex + 1)) }
+
+        val transformer = (__ \ "notification").json.update(
+          (__ \ multiSaoNameKey).json.update(takeFromArray)
+            andThen (__ \ multiSaoStartDateKey).json.update(takeFromArray)
+            andThen (__ \ multiSaoEndDateKey).json.update(takeFromArray)
+            andThen (__ \ multiSaoAddedAllKey).json.update(takeFromArray)
+            andThen (__ \ multiSaoAddedAllKey).json.update(of[JsArray].map { case JsArray(contents) =>
+              JsArray(contents.dropRight(1) :+ JsTrue)
+            })
+            andThen (__ \ NotificationSingleSaoOfficerNamePage.toString).json.prune
+        )
+
+        userAnswers.data.transform(transformer) match {
+          case JsError(_)                => ???
+          case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
+        }
+      }
+      case Some(false) => {
+        val transformer = (__ \ "notification").json.update(
+          (__ \ multiSaoNameKey).json.prune
+            andThen (__ \ multiSaoStartDateKey).json.prune
+            andThen (__ \ multiSaoEndDateKey).json.prune
+            andThen (__ \ multiSaoAddedAllKey).json.prune
+        )
+
+        userAnswers.data.transform(transformer) match {
+          case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
+          case JsError(_)                => ???
+        }
+      }
+      case None => ???
+    }
+  }
 }

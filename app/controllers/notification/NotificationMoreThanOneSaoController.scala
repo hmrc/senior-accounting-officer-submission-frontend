@@ -31,6 +31,20 @@ import views.html.notification.NotificationMoreThanOneSaoView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import models.UserAnswers
+import pages.notification.NotificationMultiSaoAreAllAddedPage
+import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
+import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
+import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
+import play.api.libs.json.JsArray
+import utils.MultiSaoUserAnswerHelpers.finalCompleteSaoIndex
+import play.api.libs.json.*
+import play.api.libs.json.Reads.*
+import play.api.libs.functional.syntax.*
+import pages.notification.NotificationSingleSaoOfficerNamePage
+import play.api.Logging
+import pages.notification.NotificationMultiSaoLastOfficerNamePage
+import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
 
 class NotificationMoreThanOneSaoController @Inject() (
     override val messagesApi: MessagesApi,
@@ -44,7 +58,8 @@ class NotificationMoreThanOneSaoController @Inject() (
     view: NotificationMoreThanOneSaoView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with Logging {
 
   val form: Form[Boolean] = formProvider()
 
@@ -63,8 +78,45 @@ class NotificationMoreThanOneSaoController @Inject() (
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationMoreThanOneSaoPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage, mode, updatedAnswers))
+              cleanedAnswers = fixupUserAnswers(updatedAnswers)
+              _ <- sessionRepository.set(cleanedAnswers)
+            } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage, mode, cleanedAnswers))
         )
+  }
+
+  def fixupUserAnswers(userAnswers: UserAnswers): UserAnswers = {
+    val singleSaoNameKey         = NotificationSingleSaoOfficerNamePage.toString
+    val multiSaoLastNameKey      = NotificationMultiSaoLastOfficerNamePage.toString
+    val multiSaoLastStartDateKey = NotificationMultiSaoLastOfficerStartDatePage.toString
+    val multiSaoNameKey          = NotificationMultiSaoPreviousOfficerNamePage(0).key
+    val multiSaoStartDateKey     = NotificationMultiSaoPreviousOfficerStartDatePage(0).key
+    val multiSaoEndDateKey       = NotificationMultiSaoPreviousOfficerEndDatePage(0).key
+    val multiSaoAddedAllKey      = NotificationMultiSaoAreAllAddedPage(0).key
+
+    userAnswers.get(NotificationMoreThanOneSaoPage) match {
+      case Some(true) => {
+        val transformer = (__ \ "notification" \ singleSaoNameKey).json.prune
+
+        userAnswers.data.transform(transformer) match {
+          case JsError(errors)           => ???
+          case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
+        }
+      }
+      case Some(false) => {
+        val transformer =
+          (__ \ "notification" \ multiSaoLastNameKey).json.prune andThen
+            (__ \ "notification" \ multiSaoLastStartDateKey).json.prune andThen
+            (__ \ "notification" \ multiSaoNameKey).json.prune andThen
+            (__ \ "notification" \ multiSaoStartDateKey).json.prune andThen
+            (__ \ "notification" \ multiSaoEndDateKey).json.prune andThen
+            (__ \ "notification" \ multiSaoAddedAllKey).json.prune
+
+        userAnswers.data.transform(transformer) match {
+          case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
+          case JsError(_)                => ???
+        }
+      }
+      case None => ???
+    }
   }
 }
