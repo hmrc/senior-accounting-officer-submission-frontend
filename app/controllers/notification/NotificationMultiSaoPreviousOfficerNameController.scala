@@ -88,6 +88,5 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
                 )
             )
       }
-
   }
 }

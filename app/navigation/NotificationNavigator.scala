@@ -111,6 +111,8 @@ class NotificationNavigator @Inject() () extends Navigator {
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoAreAllAddedPage(saoIndex) =>
       userAnswers =>
+        println("jacobwozere")
+        println(userAnswers.data)
         if hasCompletedMoreSaoDetails(userAnswers) then {
           notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
         } else {

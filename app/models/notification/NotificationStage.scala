@@ -72,8 +72,10 @@ object NotificationStage {
       case false =>
         userAnswers.get(NotificationSingleSaoOfficerNamePage).exists(_.trim.nonEmpty)
       case true =>
-        userAnswers.get(NotificationMultiSaoLastOfficerNamePage).exists(_.trim.nonEmpty) &&
-        hasCompletedMoreSaoDetails(userAnswers)
+        // TODO: revisit
+        userAnswers.get(NotificationMultiSaoLastOfficerNamePage).exists(_.trim.nonEmpty)
+      // &&
+      // hasCompletedMoreSaoDetails(userAnswers)
     }
 
   private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
