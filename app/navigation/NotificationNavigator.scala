@@ -92,14 +92,14 @@ class NotificationNavigator @Inject() () extends Navigator {
             if hasMultiSaoAnswers(userAnswers) then {
               notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
             } else {
-              notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
+              notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(AddSaoMode)
             }
           }
           case Some(false) => {
             if hasSingleSaoAnswers(userAnswers) then {
               notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
             } else {
-              notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
+              notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(AddSaoMode)
             }
           }
           case _ => ???
@@ -149,6 +149,12 @@ class NotificationNavigator @Inject() () extends Navigator {
   }
 
   val addSaoRouteMap: Page => UserAnswers => Call = {
+    case NotificationSingleSaoOfficerNamePage =>
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationMultiSaoLastOfficerNamePage =>
+      _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(AddSaoMode)
+    case NotificationMultiSaoLastOfficerStartDatePage =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(AddSaoMode)
     case NotificationMultiSaoAreAllAddedPage(saoIndex) =>
       userAnswers =>
         userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) match {
