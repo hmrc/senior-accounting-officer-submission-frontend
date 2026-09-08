@@ -25,6 +25,7 @@ import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.Logging
 import play.api.libs.json.*
+import play.api.libs.json.JsArray
 import play.api.libs.json.Reads.*
 
 import scala.annotation.tailrec

@@ -28,8 +28,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import viewmodels.checkAnswers.notification.NotificationMultiSaoPreviousOfficerEndDateSummarySpec.*
 
 import java.time.LocalDate
-import viewmodels.checkAnswers.notification.NotificationMultiSaoPreviousOfficerEndDateSummarySpec.*
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 class NotificationMultiSaoPreviousOfficerEndDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)

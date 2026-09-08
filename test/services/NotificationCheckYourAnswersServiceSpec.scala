@@ -36,14 +36,8 @@ import services.NotificationCheckYourAnswersServiceSpec.*
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import services.NotificationCheckYourAnswersServiceSpec.*
-import pages.notification.NotificationMultiSaoLastOfficerNamePage
-import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
+
 import java.time.LocalDate
-import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
-import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
-import pages.notification.NotificationMultiSaoAreAllAddedPage
-import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
 
 import java.time.LocalDate
 
