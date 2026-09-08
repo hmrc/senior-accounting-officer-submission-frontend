@@ -24,13 +24,13 @@ import pages.notification.*
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.SaoUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationMultiSaoAreAllAddedView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import services.SaoUserAnswersService
 
 class NotificationMultiSaoAreAllAddedController @Inject() (
     override val messagesApi: MessagesApi,

@@ -18,16 +18,17 @@ package services
 
 import models.UserAnswers
 import pages.notification.NotificationMoreThanOneSaoPage
+import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.notification.*
 import viewmodels.checkAnswers.notification.{
   NotificationAdditionalInformationSummary,
   NotificationSingleSaoOfficerNameSummary
 }
-import viewmodels.checkAnswers.notification.*
-import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+
 import scala.annotation.tailrec
-import pages.notification.NotificationMultiSaoAreAllAddedPage
 
 class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {

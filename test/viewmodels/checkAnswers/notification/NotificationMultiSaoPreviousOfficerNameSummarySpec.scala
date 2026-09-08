@@ -20,12 +20,12 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.CheckMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
-import pages.notification.NotificationMultiSaoLastOfficerNamePage
-import viewmodels.checkAnswers.notification.NotificationMultiSaoPreviousOfficerNameSummarySpec.*
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import viewmodels.checkAnswers.notification.NotificationMultiSaoPreviousOfficerNameSummarySpec.*
 
 class NotificationMultiSaoPreviousOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -110,7 +110,7 @@ class NotificationMultiSaoPreviousOfficerNameSummarySpec extends SpecBase with G
 }
 
 object NotificationMultiSaoPreviousOfficerNameSummarySpec {
-  val previousName = "Firstname Lastname"
-  val keyText      = s"SAO before $previousName"
-  val testName     = "Firstname Lastname II"
+  val previousName    = "Firstname Lastname"
+  val keyText: String = s"SAO before $previousName"
+  val testName        = "Firstname Lastname II"
 }
