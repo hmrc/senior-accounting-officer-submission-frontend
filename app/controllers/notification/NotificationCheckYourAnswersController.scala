@@ -18,8 +18,11 @@ package controllers.notification
 
 import controllers.actions.*
 import controllers.notification.routes as notificationRoutes
+import models.UserAnswers
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
+import services.SaoUserAnswersService
 import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -28,18 +31,6 @@ import views.html.notification.NotificationCheckYourAnswersView
 import scala.concurrent.ExecutionContext
 
 import javax.inject.Inject
-import models.UserAnswers
-import pages.notification.NotificationMultiSaoAreAllAddedPage
-import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
-import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
-import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
-import play.api.libs.json.*
-import play.api.libs.json.Reads.*
-import play.api.libs.functional.syntax.*
-import repositories.SessionRepository
-import pages.notification.NotificationMoreThanOneSaoPage
-import pages.notification.NotificationSingleSaoOfficerNamePage
-import services.SaoUserAnswersService
 
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
