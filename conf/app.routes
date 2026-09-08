@@ -32,11 +32,15 @@ GET         /notification/more-sao/submit-notification-full-name                
 POST        /notification/more-sao/submit-notification-full-name                      controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = NormalMode)
 GET         /notification/more-sao/change-submitNotification-full-name                controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/more-sao/change-submit-notification-full-name               controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = CheckMode)
+GET         /notification/more-sao/add-sao-submitNotification-full-name               controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode = AddSaoMode)
+POST        /notification/more-sao/add-sao-submit-notification-full-name              controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode = AddSaoMode)
 
 GET         /notification/more-sao/submit-notification-first-start-date               controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode = NormalMode)
 POST        /notification/more-sao/submit-notification-first-start-date               controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onSubmit(mode: Mode = NormalMode)
 GET         /notification/more-sao/change-submit-notification-first-start-date        controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/more-sao/change-submit-notification-first-start-date        controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onSubmit(mode: Mode = CheckMode)
+GET         /notification/more-sao/add-sao-submit-notification-first-start-date       controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode = AddSaoMode)
+POST        /notification/more-sao/add-sao-submit-notification-first-start-date       controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onSubmit(mode: Mode = AddSaoMode)
 
 GET         /notification/who-was-the-sao-before                                      controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(mode: Mode = NormalMode, saoIndex: Int ?= 0)
 POST        /notification/who-was-the-sao-before                                      controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode: Mode = NormalMode, saoIndex: Int ?= 0)
@@ -70,6 +74,8 @@ GET         /notification/one-sao/submit-notification-full-name                 
 POST        /notification/one-sao/submit-notification-full-name                       controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode = NormalMode)
 GET         /notification/one-sao/change-submit-notification-full-name                controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode = CheckMode)
 POST        /notification/one-sao/change-submit-notification-full-name                controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode = CheckMode)
+GET         /notification/one-sao/add-sao-submit-notification-full-name                controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode = AddSaoMode)
+POST        /notification/one-sao/add-sao-submit-notification-full-name                controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode = AddSaoMode)
 
 GET         /notification/upload                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
 GET         /notification/upload/success                                              controllers.notification.NotificationUploadSuccessController.onPageLoad(key: Option[String])
