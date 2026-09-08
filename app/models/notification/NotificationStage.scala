@@ -72,11 +72,14 @@ object NotificationStage {
       case false =>
         userAnswers.get(NotificationSingleSaoOfficerNamePage).exists(_.trim.nonEmpty)
       case true =>
-        // TODO: revisit
-        userAnswers.get(NotificationMultiSaoLastOfficerNamePage).exists(_.trim.nonEmpty)
-      // &&
-      // hasCompletedMoreSaoDetails(userAnswers)
+        userAnswers.get(NotificationMultiSaoLastOfficerNamePage).exists(_.trim.nonEmpty) &&
+        hasCompletedMoreSaoDetails(userAnswers)
     }
+
+  private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
+    (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0).key)
+      .asOpt[Seq[Boolean]]
+      .exists(_.contains(true))
 
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty) &&
