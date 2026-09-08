@@ -61,7 +61,7 @@ class CertificateUploadTemplateTableErrorViewSpec extends ViewSpecBase[Certifica
                 .contains("Download a submission template and read guidance on how to complete it (opens in new tab)")
             )
             .value
-          link.attr("href") mustBe routes.TemplateGuidanceController.onPageLoad().url
+          link.attr("href") mustBe routes.TemplateGuidanceController.onPageLoadNewTab().url
           link.attr("target") mustBe "_blank"
         }
 
@@ -104,7 +104,7 @@ class CertificateUploadTemplateTableErrorViewSpec extends ViewSpecBase[Certifica
       "must render the problem summary and guidance link" in {
         doc.text() must include("Your file has 2 errors.")
         val link = doc.select("a.govuk-link").asScala.find(_.text().contains("Read guidance")).value
-        link.attr("href") mustBe routes.TemplateGuidanceController.onPageLoad().url
+        link.attr("href") mustBe routes.TemplateGuidanceController.onPageLoadNewTab().url
         link.attr("target") mustBe "_blank"
       }
 
