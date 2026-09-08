@@ -26,10 +26,17 @@ import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
 import pages.Page.NOTIFICATION_PATH
-import scala.annotation.tailrec
 
 @Singleton
 class NotificationNavigator @Inject() () extends Navigator {
+
+  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
+    case NormalMode =>
+      normalRoutes(page)(userAnswers)
+    case CheckMode =>
+      checkRouteMap(page)(userAnswers)
+    case AddSaoMode => addSaoRouteMap(page)(userAnswers)
+  }
 
   override protected val normalRoutes: Page => UserAnswers => Call = {
     case NotificationAdditionalInformationPage =>
@@ -111,8 +118,6 @@ class NotificationNavigator @Inject() () extends Navigator {
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoAreAllAddedPage(saoIndex) =>
       userAnswers =>
-        println("jacobwozere")
-        println(userAnswers.data)
         if hasCompletedMoreSaoDetails(userAnswers) then {
           notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
         } else {
@@ -141,5 +146,23 @@ class NotificationNavigator @Inject() () extends Navigator {
     (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0).key)
       .asOpt[Seq[Boolean]]
       .exists(_.contains(true))
+  }
+
+  val addSaoRouteMap: Page => UserAnswers => Call = {
+    case NotificationMultiSaoAreAllAddedPage(saoIndex) =>
+      userAnswers =>
+        userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) match {
+          case Some(true)  => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+          case Some(false) =>
+            notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(AddSaoMode, saoIndex + 1)
+          case _ => ???
+        }
+    case NotificationMultiSaoPreviousOfficerNamePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(AddSaoMode, saoIndex)
+    case NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(AddSaoMode, saoIndex)
+    case NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(AddSaoMode, saoIndex)
+    case _ => _ => ???
   }
 }

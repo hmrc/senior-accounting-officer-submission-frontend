@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.notification
 
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
-import models.CheckMode
+import models.*
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.i18n.{Messages, MessagesApi}
@@ -78,7 +78,7 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
 
         "must have expected url" in {
           action.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
-            .onPageLoad(CheckMode)
+            .onPageLoad(AddSaoMode)
             .url
         }
 
@@ -92,12 +92,30 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
           val action = NotificationMultiSaoAreAllAddedSummary.row(answers, 1).get.actions.head.items.head
 
           action.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
-            .onPageLoad(CheckMode, 1)
+            .onPageLoad(AddSaoMode, 1)
             .url
         }
 
         "must have expected hidden text" in {
           action.visuallyHiddenText.get mustBe "NotificationMultiSaoAreAllAdded"
+        }
+
+        "must use the right mode" - {
+          "when yes use add sao mode" in {
+            SUT(answer =
+              true
+            ).actions.head.items.head.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
+              .onPageLoad(AddSaoMode)
+              .url
+          }
+
+          "when no use check mode" in {
+            SUT(answer =
+              false
+            ).actions.head.items.head.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
+              .onPageLoad(CheckMode)
+              .url
+          }
         }
       }
     }
