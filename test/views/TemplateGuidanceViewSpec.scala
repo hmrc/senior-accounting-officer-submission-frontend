@@ -167,8 +167,7 @@ object TemplateGuidanceViewSpec {
     "the reason the SAO decided to provide a qualified certificate",
     "what led to the errors, not just a list",
     "a notification only, we will process the notification details",
-    "a certificate only, we will process both sections – the certificate needs your company details from the notification section to be complete",
-    "a notification and a certificate together, we will process both sections"
+    "a certificate only, we will process both sections – the certificate needs your company details from the notification section to be complete"
   )
   val pageInsetText =
     "When you make a submission for more than one SAO, you must complete a separate template for each one."
