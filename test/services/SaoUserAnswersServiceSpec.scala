@@ -129,7 +129,7 @@ class SaoUserAnswersServiceSpec extends SpecBase {
     }
   }
 
-  "fixupUserAnswers" - {
+  "sanitiseUserAnswers" - {
     "user has provided details for a single sao" - {
       "multi sao user answers are pruned" in {
         val input = UserAnswers("test")
@@ -170,7 +170,7 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .set(NotificationSingleSaoOfficerNamePage, singleOfficerName)
           .get
 
-        val result = SUT.fixupUserAnswers(input)
+        val result = SUT.sanitiseUserAnswers(input)
         result.data mustBe expected.data
       }
     }
@@ -241,7 +241,7 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .set(NotificationMultiSaoAreAllAddedPage(2), true)
           .get
 
-        val result = SUT.fixupUserAnswers(input)
+        val result = SUT.sanitiseUserAnswers(input)
         result.data mustBe expected.data
       }
     }

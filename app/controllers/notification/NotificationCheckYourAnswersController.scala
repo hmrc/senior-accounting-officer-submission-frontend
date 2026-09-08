@@ -50,13 +50,13 @@ class NotificationCheckYourAnswersController @Inject() (
 
   def onPageLoad: Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-      val fixedUserAnswers = saoUserAnswersService.fixupUserAnswers(request.userAnswers)
+      val sanitisedUserAnswers = saoUserAnswersService.sanitiseUserAnswers(request.userAnswers)
       for {
-        _ <- sessionRepository.set(fixedUserAnswers)
+        _ <- sessionRepository.set(sanitisedUserAnswers)
       } yield {
-        val summaryList = notificationCheckYourAnswersService.getSummaryList(fixedUserAnswers)
+        val summaryList = notificationCheckYourAnswersService.getSummaryList(sanitisedUserAnswers)
 
-        Ok(view(summaryList, fixedUserAnswers.getFinancialYearEndDate))
+        Ok(view(summaryList, sanitisedUserAnswers.getFinancialYearEndDate))
       }
     }
 
