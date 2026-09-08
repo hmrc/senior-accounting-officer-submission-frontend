@@ -59,7 +59,7 @@ class SaoUserAnswersService @Inject {
     }
   }
 
-  def fixupUserAnswers(userAnswers: UserAnswers): UserAnswers = {
+  def sanitiseUserAnswers(userAnswers: UserAnswers): UserAnswers = {
     userAnswers.get(NotificationMoreThanOneSaoPage) match {
       case Some(true) => {
         val finalIndex = finalCompleteSaoIndex(userAnswers)
