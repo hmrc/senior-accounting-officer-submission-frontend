@@ -31,5 +31,6 @@ trait Navigator {
       normalRoutes(page)(userAnswers)
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
+    case _ => ???
   }
 }
