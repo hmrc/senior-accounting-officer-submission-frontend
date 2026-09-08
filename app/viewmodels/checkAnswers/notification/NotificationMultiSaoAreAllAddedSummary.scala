@@ -24,23 +24,26 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import models.AddSaoMode
 
 object NotificationMultiSaoAreAllAddedSummary {
 
   def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
     answers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)).map { answer =>
-      val value = if answer then "site.yes" else "site.no"
+      val messageKey = if answer then "site.yes" else "site.no"
       SummaryListRowViewModel(
         key = messages("notificationMultiSaoAreAllAdded.checkYourAnswersLabel").toKey,
         value = ValueViewModel(
           HtmlContent(
-            s"""<span data-test-id="sao-are-all-added-${saoIndex + 1}">${messages(value)}</span>"""
+            s"""<span data-test-id="sao-are-all-added-${saoIndex + 1}">${messages(messageKey)}</span>"""
           )
         ),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(CheckMode, saoIndex).url
+            notificationRoutes.NotificationMultiSaoAreAllAddedController
+              .onPageLoad(if answer then AddSaoMode else CheckMode, saoIndex)
+              .url
           )
             .withVisuallyHiddenText(messages("notificationMultiSaoAreAllAdded.change.hidden"))
         )
