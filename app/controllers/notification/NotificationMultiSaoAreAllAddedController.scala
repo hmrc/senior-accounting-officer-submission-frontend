@@ -30,12 +30,7 @@ import views.html.notification.NotificationMultiSaoAreAllAddedView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import models.UserAnswers
-import scala.annotation.tailrec
-import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
-import play.api.libs.json.*
-import play.api.libs.json.Reads.*
-import play.api.libs.functional.syntax.*
+import services.SaoUserAnswersService
 
 class NotificationMultiSaoAreAllAddedController @Inject() (
     override val messagesApi: MessagesApi,
@@ -46,7 +41,8 @@ class NotificationMultiSaoAreAllAddedController @Inject() (
     requireData: DataRequiredAction,
     formProvider: NotificationMultiSaoAreAllAddedFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationMultiSaoAreAllAddedView
+    view: NotificationMultiSaoAreAllAddedView,
+    saoUserAnswersService: SaoUserAnswersService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -68,37 +64,9 @@ class NotificationMultiSaoAreAllAddedController @Inject() (
             for {
               updatedAnswers <- Future
                 .fromTry(request.userAnswers.set(NotificationMultiSaoAreAllAddedPage(saoIndex), value))
-              cleanedAnswers = cleanupSaoData(updatedAnswers, saoIndex)
+              cleanedAnswers = saoUserAnswersService.cleanupMultiSaoDataAfterIndex(updatedAnswers, saoIndex)
               _ <- sessionRepository.set(cleanedAnswers)
             } yield Redirect(navigator.nextPage(NotificationMultiSaoAreAllAddedPage(saoIndex), mode, cleanedAnswers))
         )
-  }
-
-  def cleanupSaoData(userAnswers: UserAnswers, saoIndex: Int): UserAnswers = {
-    val userAnsweredYes = userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) == Some(true)
-
-    if userAnsweredYes then {
-
-      val nameKey      = NotificationMultiSaoPreviousOfficerNamePage(0).key
-      val startDateKey = NotificationMultiSaoPreviousOfficerStartDatePage(0).key
-      val endDateKey   = NotificationMultiSaoPreviousOfficerEndDatePage(0).key
-      val addedAllKey  = NotificationMultiSaoAreAllAddedPage(0).key
-
-      val takeFromArray = of[JsArray].map { case JsArray(contents) => JsArray(contents.take(saoIndex + 1)) }
-
-      val transformer = (__ \ "notification").json.update(
-        (__ \ nameKey).json.update(takeFromArray) andThen
-          (__ \ startDateKey).json.update(takeFromArray) andThen
-          (__ \ endDateKey).json.update(takeFromArray) andThen
-          (__ \ addedAllKey).json.update(takeFromArray)
-      )
-
-      userAnswers.data.transform(transformer) match {
-        case JsError(_)                => ???
-        case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
-      }
-    } else {
-      userAnswers
-    }
   }
 }
