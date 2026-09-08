@@ -21,11 +21,11 @@ import controllers.routes
 import models.*
 import models.upload.UploadTemplateTableData
 import pages.*
+import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
-import pages.Page.NOTIFICATION_PATH
 
 @Singleton
 class NotificationNavigator @Inject() () extends Navigator {

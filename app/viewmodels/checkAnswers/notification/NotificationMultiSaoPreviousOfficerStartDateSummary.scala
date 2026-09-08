@@ -20,11 +20,11 @@ import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
 import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
 import play.api.i18n.{Lang, Messages}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import utils.DateTimeFormats.dateTimeFormat
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 object NotificationMultiSaoPreviousOfficerStartDateSummary {
 

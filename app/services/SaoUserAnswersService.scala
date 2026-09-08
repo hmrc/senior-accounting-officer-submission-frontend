@@ -17,22 +17,24 @@
 package services
 
 import models.UserAnswers
-import scala.annotation.tailrec
 import pages.notification.*
-import play.api.libs.json.JsArray
 import play.api.libs.json.*
+import play.api.libs.json.JsArray
 import play.api.libs.json.Reads.*
+
+import scala.annotation.tailrec
+
 import javax.inject.Inject
 
 class SaoUserAnswersService @Inject {
 
-  val singleSaoNameKey         = NotificationSingleSaoOfficerNamePage.toString
-  val multiSaoLastNameKey      = NotificationMultiSaoLastOfficerNamePage.toString
-  val multiSaoLastStartDateKey = NotificationMultiSaoLastOfficerStartDatePage.toString
-  val multiSaoNameKey          = NotificationMultiSaoPreviousOfficerNamePage(0).key
-  val multiSaoStartDateKey     = NotificationMultiSaoPreviousOfficerStartDatePage(0).key
-  val multiSaoEndDateKey       = NotificationMultiSaoPreviousOfficerEndDatePage(0).key
-  val multiSaoAddedAllKey      = NotificationMultiSaoAreAllAddedPage(0).key
+  val singleSaoNameKey             = NotificationSingleSaoOfficerNamePage.toString
+  val multiSaoLastNameKey          = NotificationMultiSaoLastOfficerNamePage.toString
+  val multiSaoLastStartDateKey     = NotificationMultiSaoLastOfficerStartDatePage.toString
+  val multiSaoNameKey: String      = NotificationMultiSaoPreviousOfficerNamePage(0).key
+  val multiSaoStartDateKey: String = NotificationMultiSaoPreviousOfficerStartDatePage(0).key
+  val multiSaoEndDateKey: String   = NotificationMultiSaoPreviousOfficerEndDatePage(0).key
+  val multiSaoAddedAllKey: String  = NotificationMultiSaoAreAllAddedPage(0).key
 
   def cleanupMultiSaoDataAfterIndex(userAnswers: UserAnswers, saoIndex: Int): UserAnswers = {
     val userAnsweredYes = userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) == Some(true)

@@ -21,31 +21,20 @@ import forms.notification.NotificationMoreThanOneSaoFormProvider
 import models.Mode
 import navigation.NotificationNavigator
 import pages.notification.NotificationMoreThanOneSaoPage
+import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.*
+import play.api.libs.json.Reads.*
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.SaoUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationMoreThanOneSaoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import models.UserAnswers
-import pages.notification.NotificationMultiSaoAreAllAddedPage
-import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
-import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
-import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
-import play.api.libs.json.JsArray
-import play.api.libs.json.*
-import play.api.libs.json.Reads.*
-import play.api.libs.functional.syntax.*
-import pages.notification.NotificationSingleSaoOfficerNamePage
-import play.api.Logging
-import pages.notification.NotificationMultiSaoLastOfficerNamePage
-import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
-
-import services.SaoUserAnswersService
 
 class NotificationMoreThanOneSaoController @Inject() (
     override val messagesApi: MessagesApi,

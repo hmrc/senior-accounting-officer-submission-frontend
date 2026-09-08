@@ -78,11 +78,6 @@ object NotificationStage {
       // hasCompletedMoreSaoDetails(userAnswers)
     }
 
-  private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
-    (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0).key)
-      .asOpt[Seq[Boolean]]
-      .exists(_.contains(true))
-
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty) &&
       userAnswers.get(UploadTemplateReviewPage).contains(true)

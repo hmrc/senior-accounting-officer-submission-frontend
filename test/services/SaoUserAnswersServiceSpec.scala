@@ -17,10 +17,12 @@
 package services
 
 import base.SpecBase
-import java.time.LocalDate
-import pages.notification.*
-import SaoUserAnswersServiceSpec.*
 import models.UserAnswers
+import pages.notification.*
+
+import java.time.LocalDate
+
+import SaoUserAnswersServiceSpec.*
 
 class SaoUserAnswersServiceSpec extends SpecBase {
 
@@ -367,16 +369,16 @@ class SaoUserAnswersServiceSpec extends SpecBase {
 }
 
 object SaoUserAnswersServiceSpec {
-  val lastOfficerName           = "Firstname Lastname"
-  val previousOfficer1Name      = "Firstname Lastname II"
-  val previousOfficer1StartDate = LocalDate.of(1, 1, 1)
-  val previousOfficer1EndDate   = LocalDate.of(2, 2, 2)
-  val previousOfficer2Name      = "Firstname Lastname III"
-  val previousOfficer2StartDate = LocalDate.of(3, 3, 3)
-  val previousOfficer2EndDate   = LocalDate.of(4, 4, 4)
-  val previousOfficer3Name      = "Firstname Lastname IV"
-  val previousOfficer3StartDate = LocalDate.of(5, 3, 3)
-  val previousOfficer3EndDate   = LocalDate.of(6, 4, 4)
-  val singleOfficerName         = "Firstname Lastname V"
-  val previousOfficer4Name      = "Firstname Lastname VI"
+  val lastOfficerName                      = "Firstname Lastname"
+  val previousOfficer1Name                 = "Firstname Lastname II"
+  val previousOfficer1StartDate: LocalDate = LocalDate.of(1, 1, 1)
+  val previousOfficer1EndDate: LocalDate   = LocalDate.of(2, 2, 2)
+  val previousOfficer2Name                 = "Firstname Lastname III"
+  val previousOfficer2StartDate: LocalDate = LocalDate.of(3, 3, 3)
+  val previousOfficer2EndDate: LocalDate   = LocalDate.of(4, 4, 4)
+  val previousOfficer3Name                 = "Firstname Lastname IV"
+  val previousOfficer3StartDate: LocalDate = LocalDate.of(5, 3, 3)
+  val previousOfficer3EndDate: LocalDate   = LocalDate.of(6, 4, 4)
+  val singleOfficerName                    = "Firstname Lastname V"
+  val previousOfficer4Name                 = "Firstname Lastname VI"
 }

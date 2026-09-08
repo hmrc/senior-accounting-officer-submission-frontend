@@ -18,6 +18,12 @@ package services
 
 import base.SpecBase
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import pages.notification.NotificationMultiSaoAreAllAddedPage
+import pages.notification.NotificationMultiSaoLastOfficerNamePage
+import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
+import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
+import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
+import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
 import pages.notification.{
   NotificationAdditionalInformationPage,
   NotificationMoreThanOneSaoPage,
@@ -25,17 +31,12 @@ import pages.notification.{
 }
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.test.FakeRequest
+import services.NotificationCheckYourAnswersServiceSpec.*
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import services.NotificationCheckYourAnswersServiceSpec.*
-import pages.notification.NotificationMultiSaoLastOfficerNamePage
-import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
+
 import java.time.LocalDate
-import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
-import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
-import pages.notification.NotificationMultiSaoAreAllAddedPage
-import pages.notification.NotificationMultiSaoPreviousOfficerEndDatePage
 
 class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
@@ -302,17 +303,17 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 }
 
 object NotificationCheckYourAnswersServiceSpec {
-  val singleSaoName         = "Firstname Lastname"
-  val multiSaoName1         = "Firstname Lastname II"
-  val multiSaoName2         = "Firstname Lastname III"
-  val multiSaoName3         = "Firstname Lastname IV"
-  val multiSao1StartDate    = LocalDate.of(2024, 6, 1)
-  val multiSao2StartDate    = LocalDate.of(2024, 6, 2)
-  val multiSao3StartDate    = LocalDate.of(2024, 6, 3)
-  val multiSao1EndDate      = LocalDate.of(2024, 6, 4)
-  val multiSao2EndDate      = LocalDate.of(2024, 6, 5)
-  val multiSao3EndDate      = LocalDate.of(2024, 6, 6)
-  val additionalInformation = "Additional information is not that remarkable."
+  val singleSaoName                 = "Firstname Lastname"
+  val multiSaoName1                 = "Firstname Lastname II"
+  val multiSaoName2                 = "Firstname Lastname III"
+  val multiSaoName3                 = "Firstname Lastname IV"
+  val multiSao1StartDate: LocalDate = LocalDate.of(2024, 6, 1)
+  val multiSao2StartDate: LocalDate = LocalDate.of(2024, 6, 2)
+  val multiSao3StartDate: LocalDate = LocalDate.of(2024, 6, 3)
+  val multiSao1EndDate: LocalDate   = LocalDate.of(2024, 6, 4)
+  val multiSao2EndDate: LocalDate   = LocalDate.of(2024, 6, 5)
+  val multiSao3EndDate: LocalDate   = LocalDate.of(2024, 6, 6)
+  val additionalInformation         = "Additional information is not that remarkable."
 
   object SaoChange {
     val key        = "Did the SAO change during the financial year?"
@@ -321,14 +322,14 @@ object NotificationCheckYourAnswersServiceSpec {
   }
 
   object SaoName {
-    val key     = "Senior Accounting Officer"
-    val content = s"""<span data-test-id="sao-name-value">$singleSaoName</span>"""
+    val key             = "Senior Accounting Officer"
+    val content: String = s"""<span data-test-id="sao-name-value">$singleSaoName</span>"""
   }
 
   object AdditionalInformation {
-    val key                = "Additional information"
-    val providedContent    = s"""<span data-test-id="additional-information-value">$additionalInformation</span>"""
-    val notProvidedContent = """<span data-test-id="additional-information-value">Not provided</span>"""
+    val key                     = "Additional information"
+    val providedContent: String = s"""<span data-test-id="additional-information-value">$additionalInformation</span>"""
+    val notProvidedContent      = """<span data-test-id="additional-information-value">Not provided</span>"""
   }
 
   object LastSaoName {
