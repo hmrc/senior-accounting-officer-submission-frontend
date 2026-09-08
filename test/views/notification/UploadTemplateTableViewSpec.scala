@@ -109,10 +109,10 @@ object UploadTemplateTableViewSpec {
     errors = Seq.empty
   )
 
-  val pageHeading = "Review the companies in your notification"
-  val pageTitle   = "Review the companies in your notification - Submit a notification"
-  val saoName     = "Jane Smith"
-  val paragraphs  = Seq(
+  val pageHeading             = "Review the companies in your notification"
+  val pageTitle               = "Review the companies in your notification - Submit a notification"
+  val saoName                 = "Jane Smith"
+  val paragraphs: Seq[String] = Seq(
     s"This list is from your submission template. It shows ${tableData.rows.size} companies $saoName was responsible for in the financial year.",
     "If any companies details are missing or incorrect, upload an updated submission template before continuing."
   )
