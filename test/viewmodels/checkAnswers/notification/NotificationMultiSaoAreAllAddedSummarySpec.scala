@@ -78,7 +78,7 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
 
         "must have expected url" in {
           action.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
-            .onPageLoad(AddSaoMode)
+            .onPageLoad(TransactionMode)
             .url
         }
 
@@ -92,7 +92,7 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
           val action = NotificationMultiSaoAreAllAddedSummary.row(answers, 1).get.actions.head.items.head
 
           action.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
-            .onPageLoad(AddSaoMode, 1)
+            .onPageLoad(TransactionMode, 1)
             .url
         }
 
@@ -105,7 +105,7 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
             SUT(answer =
               true
             ).actions.head.items.head.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
-              .onPageLoad(AddSaoMode)
+              .onPageLoad(TransactionMode)
               .url
           }
 

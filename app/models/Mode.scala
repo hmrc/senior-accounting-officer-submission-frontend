@@ -20,17 +20,17 @@ import play.api.mvc.JavascriptLiteral
 
 sealed trait Mode
 
-case object CheckMode  extends Mode
-case object NormalMode extends Mode
-case object AddSaoMode extends Mode // TODO: remove when we start using a list pattern for multiple sao CYA
+case object CheckMode       extends Mode
+case object NormalMode      extends Mode
+case object TransactionMode extends Mode // TODO: remove when we start using a list pattern for multiple sao CYA
 
 object Mode {
 
   given jsLiteral: JavascriptLiteral[Mode] = new JavascriptLiteral[Mode] {
     override def to(value: Mode): String = value match {
-      case NormalMode => "NormalMode"
-      case CheckMode  => "CheckMode"
-      case AddSaoMode => "AddSaoMode"
+      case NormalMode      => "NormalMode"
+      case CheckMode       => "CheckMode"
+      case TransactionMode => "TransactionMode"
     }
   }
 
