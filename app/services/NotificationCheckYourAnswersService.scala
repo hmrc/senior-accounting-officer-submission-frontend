@@ -18,25 +18,79 @@ package services
 
 import models.UserAnswers
 import pages.notification.NotificationMoreThanOneSaoPage
+import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import viewmodels.checkAnswers.notification.*
 import viewmodels.checkAnswers.notification.{
   NotificationAdditionalInformationSummary,
   NotificationSingleSaoOfficerNameSummary
 }
 
+import scala.annotation.tailrec
+import models.NormalMode
+
 class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
     SummaryList(rows =
-      Seq(
-        userAnswers
-          .get(NotificationMoreThanOneSaoPage)
-          .flatMap {
-            case false => NotificationSingleSaoOfficerNameSummary.row(userAnswers)
-            case true  => None
-          },
-        Some(NotificationAdditionalInformationSummary.row(userAnswers))
+      (
+        NotificationMoreThanOneSaoSummary.row(userAnswers)
+          +: (userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
+            case Some(false) => rowsForSingleSao(userAnswers)
+            case Some(true)  => rowsForMultipleSaos(userAnswers)
+            case _           => ???
+          })
+          :+ Some(NotificationAdditionalInformationSummary.row(userAnswers))
       ).flatten
+    )
+  }
+
+  private def rowsForSingleSao(userAnswers: UserAnswers)(using Messages): Seq[Option[SummaryListRow]] = {
+    Seq(NotificationSingleSaoOfficerNameSummary.row(userAnswers))
+  }
+
+  @tailrec
+  private def rowsForMultipleSaos(
+      userAnswers: UserAnswers,
+      index: Int = 0,
+      result: Seq[Option[SummaryListRow]] = Nil
+  )(using Messages): Seq[Option[SummaryListRow]] = {
+    userAnswers.get(NotificationMultiSaoAreAllAddedPage(index)) match {
+      case Some(true) =>
+        NotificationMultiSaoLastOfficerNameSummary.row(userAnswers)
+          +: NotificationMultiSaoLastOfficerStartDateSummary.row(userAnswers)
+          +: (result ++ rowsForOneOfMultipleSaos(userAnswers, index))
+      case Some(false) =>
+        rowsForMultipleSaos(
+          userAnswers,
+          index + 1,
+          result ++ rowsForOneOfMultipleSaos(userAnswers, index)
+        )
+      case None => Nil
+    }
+  }
+
+  private def rowsForOneOfMultipleSaos(userAnswers: UserAnswers, index: Int)(using
+      Messages
+  ): Seq[Option[SummaryListRow]] = {
+    Seq(
+      NotificationMultiSaoPreviousOfficerNameSummary.row(
+        userAnswers,
+        index
+      ),
+      NotificationMultiSaoPreviousOfficerStartDateSummary.row(
+        userAnswers,
+        index
+      ),
+      NotificationMultiSaoPreviousOfficerEndDateSummary.row(
+        userAnswers,
+        index
+      ),
+      NotificationMultiSaoAreAllAddedSummary.row(
+        userAnswers,
+        index
+      )
     )
   }
 }

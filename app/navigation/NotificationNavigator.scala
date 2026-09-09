@@ -21,6 +21,7 @@ import controllers.routes
 import models.*
 import models.upload.UploadTemplateTableData
 import pages.*
+import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.mvc.Call
 
@@ -29,6 +30,14 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class NotificationNavigator @Inject() () extends Navigator {
 
+  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call = mode match {
+    case NormalMode =>
+      normalRoutes(page)(userAnswers)
+    case CheckMode =>
+      checkRouteMap(page)(userAnswers)
+    case TransactionMode => transactionRouteMap(page)(userAnswers)
+  }
+
   override protected val normalRoutes: Page => UserAnswers => Call = {
     case NotificationAdditionalInformationPage =>
       _ => notificationRoutes.ConfirmYourNotificationController.onPageLoad()
@@ -36,14 +45,14 @@ class NotificationNavigator @Inject() () extends Navigator {
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationConfirmationPage =>
       _ => notificationRoutes.NotificationTaskListController.onComplete()
-    case NotificationMoreThanOneSaoPage =>
+    case NotificationMoreThanOneSaoPage(NormalMode) =>
       userAnswers =>
-        userAnswers.get(NotificationMoreThanOneSaoPage) match {
+        userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
           case Some(true)  => notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
           case Some(false) => notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
           case _           => ???
         }
-    case NotificationSingleSaoOfficerNamePage =>
+    case NotificationSingleSaoOfficerNamePage(mode) =>
       _ => notificationRoutes.NotificationTaskListController.onPageLoad()
     case NotificationMultiSaoLastOfficerNamePage =>
       _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
@@ -76,11 +85,94 @@ class NotificationNavigator @Inject() () extends Navigator {
   }
 
   override protected val checkRouteMap: Page => UserAnswers => Call = {
-    case NotificationAdditionalInformationPage =>
+    case NotificationSingleSaoOfficerNamePage(mode) =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-    case NotificationSingleSaoOfficerNamePage =>
+    case NotificationMultiSaoLastOfficerNamePage =>
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationMultiSaoLastOfficerStartDatePage =>
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationMultiSaoPreviousOfficerNamePage(_) =>
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationMultiSaoPreviousOfficerStartDatePage(_) =>
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationMultiSaoPreviousOfficerEndDatePage(_) =>
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationMultiSaoAreAllAddedPage(saoIndex) =>
+      userAnswers =>
+        if hasCompletedMoreSaoDetails(userAnswers) then {
+          notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+        } else {
+          notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
+        }
+    case NotificationAdditionalInformationPage =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case _ => _ => ???
   }
 
+  private def hasSingleSaoAnswers(userAnswers: UserAnswers): Boolean = {
+    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).nonEmpty &&
+    userAnswers.get(NotificationSingleSaoOfficerNamePage(NormalMode)).nonEmpty
+  }
+
+  private def hasMultiSaoAnswers(userAnswers: UserAnswers): Boolean = {
+    userAnswers.get(NotificationMultiSaoLastOfficerNamePage).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(0)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(0)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(0)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoAreAllAddedPage(0)).nonEmpty
+  }
+
+  private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean = {
+    (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0).key)
+      .asOpt[Seq[Boolean]]
+      .exists(_.contains(true))
+  }
+
+  val transactionRouteMap: Page => UserAnswers => Call = {
+    case NotificationMoreThanOneSaoPage(_) =>
+      userAnswers =>
+        userAnswers.get(NotificationMoreThanOneSaoPage(TransactionMode)) match {
+          case Some(true) => {
+            if hasMultiSaoAnswers(userAnswers) then {
+              notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+            } else {
+              notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(TransactionMode)
+            }
+          }
+          case Some(false) => {
+            if hasSingleSaoAnswers(userAnswers) then {
+              notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+            } else {
+              notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(TransactionMode)
+            }
+          }
+          case _ => ???
+        }
+    case NotificationSingleSaoOfficerNamePage(mode) =>
+      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+    case NotificationMultiSaoLastOfficerNamePage =>
+      _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(TransactionMode)
+    case NotificationMultiSaoLastOfficerStartDatePage =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode)
+    case NotificationMultiSaoAreAllAddedPage(saoIndex) =>
+      userAnswers =>
+        userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) match {
+          case Some(true)  => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+          case Some(false) =>
+            notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(
+              TransactionMode,
+              saoIndex + 1
+            )
+          case _ => ???
+        }
+    case NotificationMultiSaoPreviousOfficerNamePage(saoIndex) =>
+      _ =>
+        notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(TransactionMode, saoIndex)
+    case NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(TransactionMode, saoIndex)
+    case NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex) =>
+      _ => notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(TransactionMode, saoIndex)
+    case _ => _ => ???
+  }
 }

@@ -18,8 +18,11 @@ package controllers.notification
 
 import controllers.actions.*
 import controllers.notification.routes as notificationRoutes
+import models.UserAnswers
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
+import services.SaoUserAnswersService
 import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -32,22 +35,29 @@ import javax.inject.Inject
 class NotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
+    sessionRepository: SessionRepository,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
     requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
     notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
-    notificationSubmitService: NotificationSubmitService
+    notificationSubmitService: NotificationSubmitService,
+    saoUserAnswersService: SaoUserAnswersService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
-      val summaryList = notificationCheckYourAnswersService.getSummaryList(request.userAnswers)
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
+      val sanitisedUserAnswers = saoUserAnswersService.sanitiseUserAnswers(request.userAnswers)
+      for {
+        _ <- sessionRepository.set(sanitisedUserAnswers)
+      } yield {
+        val summaryList = notificationCheckYourAnswersService.getSummaryList(sanitisedUserAnswers)
 
-      Ok(view(summaryList, request.userAnswers.getFinancialYearEndDate))
+        Ok(view(summaryList, sanitisedUserAnswers.getFinancialYearEndDate))
+      }
     }
 
   def onSubmit(): Action[AnyContent] =

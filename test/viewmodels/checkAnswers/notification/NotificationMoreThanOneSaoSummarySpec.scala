@@ -23,6 +23,8 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationMoreThanOneSaoPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import models.NormalMode
 
 class NotificationMoreThanOneSaoSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -39,21 +41,21 @@ class NotificationMoreThanOneSaoSummarySpec extends SpecBase with GuiceOneAppPer
 
     "when there is a user answer for NotificationMoreThanOneSaoPage" - {
       def testUserAnswers(answer: Boolean) =
-        emptyUserAnswers.set(NotificationMoreThanOneSaoPage, answer).get
+        emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), answer).get
 
       def SUT(answer: Boolean = true) = NotificationMoreThanOneSaoSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "notificationMoreThanOneSao".toKey
+        SUT().key mustBe "Did the SAO change during the financial year?".toKey
       }
 
       "expected value" - {
         "must show 'Yes' when user answers is true" in {
-          SUT(answer = true).value.content mustBe "Yes".toText
+          SUT(answer = true).value.content mustBe HtmlContent("""<span data-test-id="sao-change-value">Yes</span>""")
         }
 
         "must show 'No' when user answers is false" in {
-          SUT(answer = false).value.content mustBe "No".toText
+          SUT(answer = false).value.content mustBe HtmlContent("""<span data-test-id="sao-change-value">No</span>""")
         }
       }
 

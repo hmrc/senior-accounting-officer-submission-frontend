@@ -20,10 +20,11 @@ import controllers.actions.*
 import forms.notification.NotificationMultiSaoAreAllAddedFormProvider
 import models.Mode
 import navigation.NotificationNavigator
-import pages.notification.NotificationMultiSaoAreAllAddedPage
+import pages.notification.*
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.SaoUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationMultiSaoAreAllAddedView
 
@@ -40,7 +41,8 @@ class NotificationMultiSaoAreAllAddedController @Inject() (
     requireData: DataRequiredAction,
     formProvider: NotificationMultiSaoAreAllAddedFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationMultiSaoAreAllAddedView
+    view: NotificationMultiSaoAreAllAddedView,
+    saoUserAnswersService: SaoUserAnswersService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -62,8 +64,9 @@ class NotificationMultiSaoAreAllAddedController @Inject() (
             for {
               updatedAnswers <- Future
                 .fromTry(request.userAnswers.set(NotificationMultiSaoAreAllAddedPage(saoIndex), value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMultiSaoAreAllAddedPage(saoIndex), mode, updatedAnswers))
+              cleanedAnswers = saoUserAnswersService.cleanupMultiSaoDataAfterIndex(updatedAnswers, saoIndex)
+              _ <- sessionRepository.set(cleanedAnswers)
+            } yield Redirect(navigator.nextPage(NotificationMultiSaoAreAllAddedPage(saoIndex), mode, cleanedAnswers))
         )
   }
 }

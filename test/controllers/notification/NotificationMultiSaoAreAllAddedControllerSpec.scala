@@ -92,13 +92,13 @@ class NotificationMultiSaoAreAllAddedControllerSpec extends SpecBase with Mockit
     }
 
     "must redirect to the next page when valid data is submitted" in {
-
+      // FIXME: failing
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(completedMultipleSaoDetailsAnswers))
           .overrides(
             bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)

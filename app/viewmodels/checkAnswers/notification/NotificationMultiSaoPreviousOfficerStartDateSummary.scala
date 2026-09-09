@@ -20,6 +20,7 @@ import controllers.notification.routes as notificationRoutes
 import models.{CheckMode, UserAnswers}
 import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
 import play.api.i18n.{Lang, Messages}
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import utils.DateTimeFormats.dateTimeFormat
 import viewmodels.converters.*
@@ -32,11 +33,18 @@ object NotificationMultiSaoPreviousOfficerStartDateSummary {
       given Lang = messages.lang
       SummaryListRowViewModel(
         key = messages("notificationMultiSaoPreviousOfficerStartDate.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.format(dateTimeFormat()).toText),
+        value = ValueViewModel(
+          HtmlContent(
+            s"""<span data-test-id="previous-sao-start-date-${saoIndex + 1}">${answer
+                .format(dateTimeFormat())}</span>"""
+          )
+        ),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(CheckMode).url
+            notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController
+              .onPageLoad(CheckMode, saoIndex)
+              .url
           )
             .withVisuallyHiddenText(messages("notificationMultiSaoPreviousOfficerStartDate.change.hidden"))
         )

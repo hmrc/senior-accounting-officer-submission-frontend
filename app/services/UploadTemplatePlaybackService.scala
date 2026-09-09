@@ -23,6 +23,8 @@ import pages.notification.*
 
 import javax.inject.{Inject, Singleton}
 
+import models.NormalMode
+
 object UploadTemplatePlaybackService {
   final case class Playback(tableData: UploadTemplateTableData, saoName: String)
 }
@@ -39,8 +41,8 @@ class UploadTemplatePlaybackService @Inject() () {
     } yield Playback(tableData, saoName)
 
   private def getSaoName(userAnswers: UserAnswers): Option[String] =
-    userAnswers.get(NotificationMoreThanOneSaoPage).flatMap {
+    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).flatMap {
       case true  => userAnswers.get(NotificationMultiSaoLastOfficerNamePage)
-      case false => userAnswers.get(NotificationSingleSaoOfficerNamePage)
+      case false => userAnswers.get(NotificationSingleSaoOfficerNamePage(NormalMode))
     }
 }

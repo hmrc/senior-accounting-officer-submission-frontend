@@ -32,6 +32,8 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
+import models.NormalMode
+
 class NotificationSubmitService @Inject() (
     protectedServiceConnector: ProtectedServiceConnector,
     sessionRepository: SessionRepository
@@ -88,7 +90,7 @@ object NotificationSubmitService {
         }
       }
 
-      userAnswers.get(NotificationMoreThanOneSaoPage) match {
+      userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
         case Some(true) =>
           Sao(
             name = userAnswers
@@ -103,7 +105,7 @@ object NotificationSubmitService {
           List(
             Sao(
               name = userAnswers
-                .get(NotificationSingleSaoOfficerNamePage)
+                .get(NotificationSingleSaoOfficerNamePage(NormalMode))
                 .fold(???)(identity),
               fromDate = None,
               toDate = None
