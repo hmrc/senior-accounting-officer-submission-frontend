@@ -260,7 +260,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
                 NotificationMoreThanOneSaoPage,
                 CheckMode,
                 userAnswersWithSingleSaoAndNoData
-              ) mustBe notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(AddSaoMode)
+              ) mustBe notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(TransactionMode)
             }
           }
         }
@@ -282,7 +282,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
                 NotificationMoreThanOneSaoPage,
                 CheckMode,
                 userAnswersWithMultipleSaoAndNoData
-              ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(AddSaoMode)
+              ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(TransactionMode)
             }
           }
         }
@@ -417,7 +417,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         intercept[NotImplementedError] {
           navigator.nextPage(
             NotificationMultiSaoAreAllAddedPage(0),
-            AddSaoMode,
+            TransactionMode,
             emptyUserAnswers
           )
         }
@@ -426,7 +426,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
       "when on NotificationSingleSaoOfficerNamePage, must go to check your answers" in {
         navigator.nextPage(
           NotificationSingleSaoOfficerNamePage,
-          AddSaoMode,
+          TransactionMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
@@ -434,23 +434,23 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
       "when on NotificationMultiSaoLastOfficerNamePage, must go to last officer start date page" in {
         navigator.nextPage(
           NotificationMultiSaoLastOfficerNamePage,
-          AddSaoMode,
+          TransactionMode,
           emptyUserAnswers
-        ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(AddSaoMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(TransactionMode)
       }
 
       "when on NotificationMultiSaoLastOfficerStartDatePage, must go to check your answers" in {
         navigator.nextPage(
           NotificationMultiSaoLastOfficerStartDatePage,
-          AddSaoMode,
+          TransactionMode,
           emptyUserAnswers
-        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(AddSaoMode, 0)
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode, 0)
       }
 
       "when on NotificationMultiSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
         navigator.nextPage(
           NotificationMultiSaoAreAllAddedPage(0),
-          AddSaoMode,
+          TransactionMode,
           emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), true).success.value
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
@@ -458,39 +458,42 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
       "when on NotificationMultiSaoAreAllAddedPage, and the user answers no, must go to NotificationMultiSaoPreviousOfficerName page with an incremented saoIndex" in {
         navigator.nextPage(
           NotificationMultiSaoAreAllAddedPage(0),
-          AddSaoMode,
+          TransactionMode,
           emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), false).success.value
-        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(AddSaoMode, 1)
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode, 1)
       }
 
       "when on NotificationMultiSaoPreviousOfficerNamePage, must go to NotificationMultiSaoPreviousOfficerStartDate" in {
         navigator.nextPage(
           NotificationMultiSaoPreviousOfficerNamePage(0),
-          AddSaoMode,
+          TransactionMode,
           emptyUserAnswers
-        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(AddSaoMode, 0)
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(
+          TransactionMode,
+          0
+        )
       }
 
       "when on NotificationMultiSaoPreviousOfficerStartDatePage, must go to NotificationMultiSaoPreviousOfficerEndDate page" in {
         navigator.nextPage(
           NotificationMultiSaoPreviousOfficerStartDatePage(0),
-          AddSaoMode,
+          TransactionMode,
           emptyUserAnswers
-        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(AddSaoMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(TransactionMode)
       }
 
       "when on NotificationMultiSaoPreviousOfficerEndDatePage, must go to NotificationMultiSaoAreAllAdded page" in {
         navigator.nextPage(
           NotificationMultiSaoPreviousOfficerEndDatePage(0),
-          AddSaoMode,
+          TransactionMode,
           emptyUserAnswers
-        ) mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(AddSaoMode)
+        ) mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(TransactionMode)
       }
 
       "must throw an not-implemented error for an unspecified configuration" in {
         case object UnknownPage extends Page
         intercept[NotImplementedError] {
-          navigator.nextPage(UnknownPage, AddSaoMode, emptyUserAnswers)
+          navigator.nextPage(UnknownPage, TransactionMode, emptyUserAnswers)
         }
       }
     }
