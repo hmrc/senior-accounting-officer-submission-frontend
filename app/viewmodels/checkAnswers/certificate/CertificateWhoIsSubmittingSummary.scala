@@ -20,24 +20,17 @@ import controllers.certificate.routes as certificateRoutes
 import models.{CheckMode, UserAnswers}
 import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
+import utils.SummaryHelpers.renderValue
 
 object CertificateWhoIsSubmittingSummary {
-
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(CertificateWhoIsSubmittingPage).map { answer =>
-      val value = ValueViewModel(
-        HtmlContent(
-          HtmlFormat.escape(messages(s"certificateWhoIsSubmitting.$answer"))
-        )
-      )
       SummaryListRowViewModel(
         key = messages("certificateWhoIsSubmitting.checkYourAnswersLabel").toKey,
-        value = value,
+        value = renderValue(messages(s"certificateWhoIsSubmitting.$answer"), "who-is-submitting-value"),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,

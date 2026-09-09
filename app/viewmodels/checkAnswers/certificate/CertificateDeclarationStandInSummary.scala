@@ -20,20 +20,18 @@ import controllers.certificate.routes as certificateRoutes
 import models.{CheckMode, UserAnswers}
 import pages.certificate.CertificateDeclarationStandInPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
+import utils.SummaryHelpers.renderValue
 
 object CertificateDeclarationStandInSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(CertificateDeclarationStandInPage).map { answer =>
-      val value = HtmlFormat.escape(answer.StandInName).toString + "<br/>" + HtmlFormat.escape(answer.SaoName).toString
       SummaryListRowViewModel(
         key = messages("certificateDeclarationStandIn.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(HtmlContent(value)),
+        value = renderValue(answer.StandInName, "declaration-stand-in-value"),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,

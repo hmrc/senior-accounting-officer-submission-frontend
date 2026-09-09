@@ -23,6 +23,7 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
+import utils.SummaryHelpers.renderValue
 
 object CertificateSaoEmailSummary {
 
@@ -30,7 +31,7 @@ object CertificateSaoEmailSummary {
     answers.get(CertificateSaoEmailPage).map { answer =>
       SummaryListRowViewModel(
         key = messages("certificateSaoEmail.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.toText),
+        value = renderValue(answer, "sao-email-value"),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,

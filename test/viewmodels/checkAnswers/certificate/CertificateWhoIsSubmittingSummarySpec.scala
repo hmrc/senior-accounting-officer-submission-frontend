@@ -25,6 +25,7 @@ import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import CertificateWhoIsSubmittingSummarySpec.*
 
 class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -47,17 +48,17 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
         CertificateWhoIsSubmittingSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "certificateWhoIsSubmitting".toKey
+        SUT().key mustBe expectedKey.toKey
       }
 
       "expected value" - {
         "must show 'Option1' when user answers is sao" in {
-          SUT(answer = CertificateWhoIsSubmitting.Sao).value.content mustBe HtmlContent("I am the SAO")
+          SUT(answer = CertificateWhoIsSubmitting.Sao).value.content mustBe HtmlContent(saoText)
         }
 
         "must show 'Option2' when user answers is standIn" in {
           SUT(answer = CertificateWhoIsSubmitting.StandIn).value.content mustBe HtmlContent(
-            "I am authorised to submit on behalf of the SAO"
+            standInText
           )
         }
       }
@@ -93,4 +94,11 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
     }
   }
 
+}
+
+object CertificateWhoIsSubmittingSummarySpec {
+  val expectedKey     = "Who is submitting the certificate?"
+  val expectedValueId = "sao-who-is-submitting-value"
+  val saoText         = "The SAO"
+  val standInText     = "A person authorised to submit on behalf of the SAO"
 }
