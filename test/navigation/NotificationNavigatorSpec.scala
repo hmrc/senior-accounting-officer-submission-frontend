@@ -77,17 +77,17 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
         navigator.nextPage(
-          NotificationMoreThanOneSaoPage,
+          NotificationMoreThanOneSaoPage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMoreThanOneSaoPage, false).success.value
+          emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
         ) mustBe notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected Yes, must go to multiple sao name page" in {
         navigator.nextPage(
-          NotificationMoreThanOneSaoPage,
+          NotificationMoreThanOneSaoPage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMoreThanOneSaoPage, true).success.value
+          emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), true).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
       }
 
@@ -95,7 +95,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         navigator.nextPage(
           NotificationMultiSaoLastOfficerNamePage,
           NormalMode,
-          emptyUserAnswers.set(NotificationMoreThanOneSaoPage, true).success.value
+          emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), true).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
       }
 
@@ -159,9 +159,9 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationSingleSaoOfficerNamePage, must go to the submit notification start page" in {
         navigator.nextPage(
-          NotificationSingleSaoOfficerNamePage,
+          NotificationSingleSaoOfficerNamePage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage, "Firstname Lastname").success.value
+          emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage(NormalMode), "Firstname Lastname").success.value
         ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
@@ -214,17 +214,17 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
       "on NotificationMoreThanOneSaoPage" - {
 
         val userAnswersWithSingleSaoAndData = emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage, false)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), false)
           .get
-          .set(NotificationSingleSaoOfficerNamePage, "Firstname Lastname")
+          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Firstname Lastname")
           .get
 
         val userAnswersWithSingleSaoAndNoData = emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage, false)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), false)
           .get
 
         val userAnswersWithMultipleSaoAndData = emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, "Firstname Lastname")
           .get
@@ -240,14 +240,14 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           .get
 
         val userAnswersWithMultipleSaoAndNoData = emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
 
         "the user responds no meaning there is only one SAO" - {
           "user answers contains answers for the single SAO route" - {
             "we are redirected to the notification check your answers page" in {
               navigator.nextPage(
-                NotificationMoreThanOneSaoPage,
+                NotificationMoreThanOneSaoPage(NormalMode),
                 CheckMode,
                 userAnswersWithSingleSaoAndData
               ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -257,7 +257,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "user answers does not contain answers for the single SAO route" - {
             "we are redirected to the single sao name page in add sao mode" in {
               navigator.nextPage(
-                NotificationMoreThanOneSaoPage,
+                NotificationMoreThanOneSaoPage(NormalMode),
                 CheckMode,
                 userAnswersWithSingleSaoAndNoData
               ) mustBe notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(TransactionMode)
@@ -269,7 +269,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "user answers contains answers for the multiple SAO route" - {
             "we are redirected to the notification check your answers page" in {
               navigator.nextPage(
-                NotificationMoreThanOneSaoPage,
+                NotificationMoreThanOneSaoPage(NormalMode),
                 CheckMode,
                 userAnswersWithMultipleSaoAndData
               ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -279,7 +279,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "user answers does not contain answers for the multiple SAO route" - {
             "we are redirected to the NotificationMultiSaoLastOfficerNameController page in add sao mode" in {
               navigator.nextPage(
-                NotificationMoreThanOneSaoPage,
+                NotificationMoreThanOneSaoPage(NormalMode),
                 CheckMode,
                 userAnswersWithMultipleSaoAndNoData
               ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(TransactionMode)
@@ -290,7 +290,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationSingleSaoOfficerNamePage, must go to notification check your answers page" in {
         navigator.nextPage(
-          NotificationSingleSaoOfficerNamePage,
+          NotificationSingleSaoOfficerNamePage(NormalMode),
           CheckMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -339,7 +339,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
       "when on NotificationMultiSaoAreAllAddedPage" - {
 
         val userAnswersWithMultipleCompleteSaos = emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, "Firstname Lastname")
           .get
@@ -425,7 +425,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationSingleSaoOfficerNamePage, must go to check your answers" in {
         navigator.nextPage(
-          NotificationSingleSaoOfficerNamePage,
+          NotificationSingleSaoOfficerNamePage(NormalMode),
           TransactionMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()

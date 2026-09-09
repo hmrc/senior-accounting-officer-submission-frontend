@@ -24,6 +24,7 @@ import pages.notification.NotificationSingleSaoOfficerNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import models.NormalMode
 
 class NotificationSingleSaoOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -40,7 +41,7 @@ class NotificationSingleSaoOfficerNameSummarySpec extends SpecBase with GuiceOne
 
     "when there is a user answer for NotificationSingleSaoOfficerNamePage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage, answer).get
+        emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage(NormalMode), answer).get
 
       def SUT(answer: String = "") = NotificationSingleSaoOfficerNameSummary.row(testUserAnswers(answer)).get
 

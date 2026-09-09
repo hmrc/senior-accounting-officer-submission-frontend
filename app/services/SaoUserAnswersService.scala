@@ -26,9 +26,11 @@ import scala.annotation.tailrec
 
 import javax.inject.Inject
 
+import models.NormalMode
+
 class SaoUserAnswersService @Inject {
 
-  val singleSaoNameKey             = NotificationSingleSaoOfficerNamePage.toString
+  val singleSaoNameKey             = NotificationSingleSaoOfficerNamePage(NormalMode).toString
   val multiSaoLastNameKey          = NotificationMultiSaoLastOfficerNamePage.toString
   val multiSaoLastStartDateKey     = NotificationMultiSaoLastOfficerStartDatePage.toString
   val multiSaoNameKey: String      = NotificationMultiSaoPreviousOfficerNamePage(0).key
@@ -60,7 +62,7 @@ class SaoUserAnswersService @Inject {
   }
 
   def sanitiseUserAnswers(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers.get(NotificationMoreThanOneSaoPage) match {
+    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
       case Some(true) => {
         val finalIndex = finalCompleteSaoIndex(userAnswers)
 
@@ -117,7 +119,7 @@ class SaoUserAnswersService @Inject {
     * and vice versa.
     */
   def removeOtherSaoJourneyData(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers.get(NotificationMoreThanOneSaoPage) match {
+    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
       case Some(true) => {
         val transformer = (__ \ "notification" \ singleSaoNameKey).json.prune
 

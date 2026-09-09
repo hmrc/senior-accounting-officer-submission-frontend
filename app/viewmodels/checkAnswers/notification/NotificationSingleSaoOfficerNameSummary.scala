@@ -25,11 +25,12 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
+import models.NormalMode
 
 object NotificationSingleSaoOfficerNameSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationSingleSaoOfficerNamePage).map { answer =>
+    answers.get(NotificationSingleSaoOfficerNamePage(NormalMode)).map { answer =>
       SummaryListRowViewModel(
         key = messages("notificationSingleSaoOfficerName.checkYourAnswersLabel").toKey,
         value =
