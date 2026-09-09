@@ -53,33 +53,17 @@ enum NotificationStage(
 object NotificationStage {
 
   def taskListStage(userAnswers: UserAnswers): NotificationStage =
-    if !isProvideSaoDetailsComplete(userAnswers) then {
-      ProvideSaoDetails
-    } else if !isUploadNotificationTemplateComplete(userAnswers) then {
+    if !isUploadNotificationTemplateComplete(userAnswers) then {
       UploadSubmissionTemplateDetails
     } else {
       SubmitNotificationInfo
     }
 
   def canStartUploadNotificationTemplate(userAnswers: UserAnswers): Boolean =
-    isProvideSaoDetailsComplete(userAnswers)
+    true
 
   def canStartSubmitNotification(userAnswers: UserAnswers): Boolean =
-    isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers)
-
-  private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(NotificationMoreThanOneSaoPage).exists {
-      case false =>
-        userAnswers.get(NotificationSingleSaoOfficerNamePage).exists(_.trim.nonEmpty)
-      case true =>
-        userAnswers.get(NotificationMultiSaoLastOfficerNamePage).exists(_.trim.nonEmpty) &&
-        hasCompletedMoreSaoDetails(userAnswers)
-    }
-
-  private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
-    (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0).key)
-      .asOpt[Seq[Boolean]]
-      .exists(_.contains(true))
+    isUploadNotificationTemplateComplete(userAnswers)
 
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty) &&
