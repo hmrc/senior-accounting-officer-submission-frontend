@@ -93,7 +93,6 @@ template.guidance.subheading2.paragraph1 = You must complete the correct section
 template.guidance.subheading2.paragraph2 = If you choose to submit:
 template.guidance.subheading2.list1.item1 = a notification only, we will process the notification details
 template.guidance.subheading2.list1.item2 = a certificate only, we will process both sections – the certificate needs your company details from the notification section to be complete
-template.guidance.subheading2.list1.item3 = a notification and a certificate together, we will process both sections
 template.guidance.subheading2.paragraph3 = When you’ve completed your template, follow these steps.
 template.guidance.subheading2.list2.item1 = Save it as a CSV (comma delimited) (*.csv) file
 template.guidance.subheading2.list2.item2 = Upload the file to start your submission
