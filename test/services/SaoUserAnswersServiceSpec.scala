@@ -23,6 +23,7 @@ import pages.notification.*
 import java.time.LocalDate
 
 import SaoUserAnswersServiceSpec.*
+import models.NormalMode
 
 class SaoUserAnswersServiceSpec extends SpecBase {
 
@@ -33,7 +34,7 @@ class SaoUserAnswersServiceSpec extends SpecBase {
       "Subsequent multi sao data is removed from user answers" in {
 
         val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
           .get
@@ -63,7 +64,7 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
 
         val expected = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
           .get
@@ -93,7 +94,7 @@ class SaoUserAnswersServiceSpec extends SpecBase {
       "No change is made to user answers" in {
 
         val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
           .get
@@ -133,9 +134,9 @@ class SaoUserAnswersServiceSpec extends SpecBase {
     "user has provided details for a single sao" - {
       "multi sao user answers are pruned" in {
         val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, false)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), false)
           .get
-          .set(NotificationSingleSaoOfficerNamePage, singleOfficerName)
+          .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
           .get
@@ -165,9 +166,9 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
 
         val expected = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, false)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), false)
           .get
-          .set(NotificationSingleSaoOfficerNamePage, singleOfficerName)
+          .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
 
         val result = SUT.sanitiseUserAnswers(input)
@@ -178,9 +179,9 @@ class SaoUserAnswersServiceSpec extends SpecBase {
     "user has provided details for multiple saos" - {
       "single sao user answers are pruned, last complete sao is marked as the final sao and incomplete sao data is removed" in {
         val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
-          .set(NotificationSingleSaoOfficerNamePage, singleOfficerName)
+          .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
           .get
@@ -212,7 +213,7 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
 
         val expected = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
           .get
@@ -251,9 +252,9 @@ class SaoUserAnswersServiceSpec extends SpecBase {
     "user has provided details for a single sao" - {
       "multi sao user answers are pruned" in {
         val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, false)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), false)
           .get
-          .set(NotificationSingleSaoOfficerNamePage, singleOfficerName)
+          .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
           .get
@@ -283,9 +284,9 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
 
         val expected = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, false)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), false)
           .get
-          .set(NotificationSingleSaoOfficerNamePage, singleOfficerName)
+          .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
 
         val result = SUT.removeOtherSaoJourneyData(input)
@@ -296,9 +297,9 @@ class SaoUserAnswersServiceSpec extends SpecBase {
     "user has provided details for multiple saos" - {
       "single sao user answers are pruned" in {
         val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
-          .set(NotificationSingleSaoOfficerNamePage, singleOfficerName)
+          .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
           .get
@@ -330,7 +331,7 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
 
         val expected = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage, true)
+          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
           .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
           .get

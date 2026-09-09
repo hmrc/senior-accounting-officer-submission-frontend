@@ -38,6 +38,7 @@ import views.html.notification.{UploadTemplateTableErrorView, UploadTemplateTabl
 import scala.concurrent.Future
 
 import java.time.LocalDate
+import models.NormalMode
 
 class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
 
@@ -80,10 +81,10 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
     .set(UploadTemplateTablePage, tableData)
     .success
     .value
-    .set(NotificationMoreThanOneSaoPage, false)
+    .set(NotificationMoreThanOneSaoPage(NormalMode), false)
     .success
     .value
-    .set(NotificationSingleSaoOfficerNamePage, saoName)
+    .set(NotificationSingleSaoOfficerNamePage(NormalMode), saoName)
     .success
     .value
 

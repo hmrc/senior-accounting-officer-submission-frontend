@@ -37,6 +37,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 
 import java.time.LocalDate
+import models.NormalMode
 
 class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
@@ -47,9 +48,9 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
   "Single Sao" - {
     "additional information provided" in {
       val userAnswers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage, false)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
         .get
-        .set(NotificationSingleSaoOfficerNamePage, singleSaoName)
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
         .get
         .set(NotificationAdditionalInformationPage, Some(additionalInformation))
         .get
@@ -69,9 +70,9 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
     "additional information not provided" in {
       val userAnswers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage, false)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
         .get
-        .set(NotificationSingleSaoOfficerNamePage, singleSaoName)
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
         .get
 
       val result = SUT.getSummaryList(userAnswers)
@@ -89,7 +90,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
   "Multi Sao" - {
     "additional information provided" in {
       val userAnswers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage, true)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), true)
         .get
         .set(NotificationAdditionalInformationPage, Some(additionalInformation))
         .get
@@ -145,7 +146,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
     "additional information not provided" in {
       val userAnswers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage, true)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), true)
         .get
         .set(NotificationAdditionalInformationPage, None)
         .get
@@ -206,9 +207,9 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
       "when MoreThanOneSao is No" - {
         "Full Name is answered, must show the Full Name row" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage, false)
+            .set(NotificationMoreThanOneSaoPage(NormalMode), false)
             .get
-            .set(NotificationSingleSaoOfficerNamePage, singleSaoName)
+            .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
             .get
 
           val result = SUT.getSummaryList(userAnswers)
@@ -221,7 +222,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "Full Name is empty, must not show the Full Name row" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage, false)
+            .set(NotificationMoreThanOneSaoPage(NormalMode), false)
             .get
 
           val result = SUT.getSummaryList(userAnswers)
@@ -235,9 +236,9 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
       "when MoreThanOneSao is Yes" - {
         "must not show the Full Name row even if Full Name is answered" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage, true)
+            .set(NotificationMoreThanOneSaoPage(NormalMode), true)
             .get
-            .set(NotificationSingleSaoOfficerNamePage, singleSaoName)
+            .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
             .get
 
           val result = SUT.getSummaryList(userAnswers)
@@ -253,7 +254,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "when there are no answers for NotificationAdditionalInformationPage, must return 'Not provided'" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage, true)
+            .set(NotificationMoreThanOneSaoPage(NormalMode), true)
             .get
           val result = SUT.getSummaryList(userAnswers)
 
@@ -263,7 +264,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "when there are answers for NotificationAdditionalInformationPage, must return value" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage, true)
+            .set(NotificationMoreThanOneSaoPage(NormalMode), true)
             .get
             .set(NotificationAdditionalInformationPage, Some(additionalInformation))
             .get
@@ -278,7 +279,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "when there are no answers for NotificationAdditionalInformationPage, must return 'Not provided'" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage, false)
+            .set(NotificationMoreThanOneSaoPage(NormalMode), false)
             .get
           val result = SUT.getSummaryList(userAnswers)
 
@@ -288,7 +289,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "when there are answers for NotificationAdditionalInformationPage, must return value" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage, false)
+            .set(NotificationMoreThanOneSaoPage(NormalMode), false)
             .get
             .set(NotificationAdditionalInformationPage, Some(additionalInformation))
             .get

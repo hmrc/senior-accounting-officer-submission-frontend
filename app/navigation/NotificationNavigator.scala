@@ -35,7 +35,7 @@ class NotificationNavigator @Inject() () extends Navigator {
       normalRoutes(page)(userAnswers)
     case CheckMode =>
       checkRouteMap(page)(userAnswers)
-    case TransactionMode => addSaoRouteMap(page)(userAnswers)
+    case TransactionMode => transactionRouteMap(page)(userAnswers)
   }
 
   override protected val normalRoutes: Page => UserAnswers => Call = {
@@ -45,14 +45,14 @@ class NotificationNavigator @Inject() () extends Navigator {
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationConfirmationPage =>
       _ => notificationRoutes.NotificationTaskListController.onComplete()
-    case NotificationMoreThanOneSaoPage =>
+    case NotificationMoreThanOneSaoPage(NormalMode) =>
       userAnswers =>
-        userAnswers.get(NotificationMoreThanOneSaoPage) match {
+        userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
           case Some(true)  => notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
           case Some(false) => notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
           case _           => ???
         }
-    case NotificationSingleSaoOfficerNamePage =>
+    case NotificationSingleSaoOfficerNamePage(mode) =>
       _ => notificationRoutes.NotificationTaskListController.onPageLoad()
     case NotificationMultiSaoLastOfficerNamePage =>
       _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
@@ -85,26 +85,7 @@ class NotificationNavigator @Inject() () extends Navigator {
   }
 
   override protected val checkRouteMap: Page => UserAnswers => Call = {
-    case NotificationMoreThanOneSaoPage =>
-      userAnswers =>
-        userAnswers.get(NotificationMoreThanOneSaoPage) match {
-          case Some(true) => {
-            if hasMultiSaoAnswers(userAnswers) then {
-              notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-            } else {
-              notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(TransactionMode)
-            }
-          }
-          case Some(false) => {
-            if hasSingleSaoAnswers(userAnswers) then {
-              notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-            } else {
-              notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(TransactionMode)
-            }
-          }
-          case _ => ???
-        }
-    case NotificationSingleSaoOfficerNamePage =>
+    case NotificationSingleSaoOfficerNamePage(mode) =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoLastOfficerNamePage =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -129,8 +110,8 @@ class NotificationNavigator @Inject() () extends Navigator {
   }
 
   private def hasSingleSaoAnswers(userAnswers: UserAnswers): Boolean = {
-    userAnswers.get(NotificationMoreThanOneSaoPage).nonEmpty &&
-    userAnswers.get(NotificationSingleSaoOfficerNamePage).nonEmpty
+    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).nonEmpty &&
+    userAnswers.get(NotificationSingleSaoOfficerNamePage(NormalMode)).nonEmpty
   }
 
   private def hasMultiSaoAnswers(userAnswers: UserAnswers): Boolean = {
@@ -148,8 +129,27 @@ class NotificationNavigator @Inject() () extends Navigator {
       .exists(_.contains(true))
   }
 
-  val addSaoRouteMap: Page => UserAnswers => Call = {
-    case NotificationSingleSaoOfficerNamePage =>
+  val transactionRouteMap: Page => UserAnswers => Call = {
+    case NotificationMoreThanOneSaoPage(_) =>
+      userAnswers =>
+        userAnswers.get(NotificationMoreThanOneSaoPage(TransactionMode)) match {
+          case Some(true) => {
+            if hasMultiSaoAnswers(userAnswers) then {
+              notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+            } else {
+              notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(TransactionMode)
+            }
+          }
+          case Some(false) => {
+            if hasSingleSaoAnswers(userAnswers) then {
+              notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+            } else {
+              notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(TransactionMode)
+            }
+          }
+          case _ => ???
+        }
+    case NotificationSingleSaoOfficerNamePage(mode) =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoLastOfficerNamePage =>
       _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(TransactionMode)

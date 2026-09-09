@@ -17,8 +17,7 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
-import models.TransactionMode
-import models.{CheckMode, UserAnswers}
+import models.{TransactionMode, UserAnswers}
 import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
@@ -42,7 +41,7 @@ object NotificationMultiSaoAreAllAddedSummary {
           ActionItemViewModel(
             messages("site.change").toText,
             notificationRoutes.NotificationMultiSaoAreAllAddedController
-              .onPageLoad(if answer then TransactionMode else CheckMode, saoIndex)
+              .onPageLoad(TransactionMode, saoIndex)
               .url
           )
             .withVisuallyHiddenText(messages("notificationMultiSaoAreAllAdded.change.hidden"))

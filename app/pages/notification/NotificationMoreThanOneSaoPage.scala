@@ -19,10 +19,11 @@ package pages.notification
 import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+import models.Mode
 
-case object NotificationMoreThanOneSaoPage extends QuestionPage[Boolean] {
+final case class NotificationMoreThanOneSaoPage(mode: Mode) extends QuestionPage[Boolean] {
 
-  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ toString
+  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toString \ toString
 
   override def toString: String = "notificationMoreThanOneSao"
 }
