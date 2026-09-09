@@ -69,9 +69,11 @@ class NotificationMoreThanOneSaoController @Inject() (
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationMoreThanOneSaoPage, value))
-              cleanedAnswers = saoUserAnswersService.removeOtherSaoJourneyData(updatedAnswers)
-              _ <- sessionRepository.set(cleanedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage, mode, cleanedAnswers))
+              // cleanedAnswers = saoUserAnswersService.removeOtherSaoJourneyData(updatedAnswers)
+              // _ <- sessionRepository.set(cleanedAnswers)
+              _ <- sessionRepository.set(updatedAnswers)
+              // } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage, mode, cleanedAnswers))
+            } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage, mode, updatedAnswers))
         )
   }
 }
