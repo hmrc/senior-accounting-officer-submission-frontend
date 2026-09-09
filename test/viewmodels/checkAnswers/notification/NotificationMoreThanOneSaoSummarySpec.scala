@@ -24,6 +24,7 @@ import pages.notification.NotificationMoreThanOneSaoPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import models.NormalMode
 
 class NotificationMoreThanOneSaoSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -40,7 +41,7 @@ class NotificationMoreThanOneSaoSummarySpec extends SpecBase with GuiceOneAppPer
 
     "when there is a user answer for NotificationMoreThanOneSaoPage" - {
       def testUserAnswers(answer: Boolean) =
-        emptyUserAnswers.set(NotificationMoreThanOneSaoPage, answer).get
+        emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), answer).get
 
       def SUT(answer: Boolean = true) = NotificationMoreThanOneSaoSummary.row(testUserAnswers(answer)).get
 

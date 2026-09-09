@@ -35,6 +35,7 @@ import views.html.notification.NotificationMoreThanOneSaoView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import models.NormalMode
 
 class NotificationMoreThanOneSaoController @Inject() (
     override val messagesApi: MessagesApi,
@@ -55,7 +56,7 @@ class NotificationMoreThanOneSaoController @Inject() (
   val form: Form[Boolean] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(NotificationMoreThanOneSaoPage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -68,12 +69,13 @@ class NotificationMoreThanOneSaoController @Inject() (
 
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationMoreThanOneSaoPage, value))
+              updatedAnswers <- Future
+                .fromTry(request.userAnswers.set(NotificationMoreThanOneSaoPage(mode), value))
               // cleanedAnswers = saoUserAnswersService.removeOtherSaoJourneyData(updatedAnswers)
               // _ <- sessionRepository.set(cleanedAnswers)
               _ <- sessionRepository.set(updatedAnswers)
-              // } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage, mode, cleanedAnswers))
-            } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage, mode, updatedAnswers))
+              // } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage(NormalMode), mode, cleanedAnswers))
+            } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage(mode), mode, updatedAnswers))
         )
   }
 }

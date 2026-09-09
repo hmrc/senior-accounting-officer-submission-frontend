@@ -39,6 +39,7 @@ import utils.TestDataGenerator
 import scala.concurrent.Future
 
 import java.time.LocalDate
+import models.NormalMode
 
 class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
@@ -47,10 +48,10 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
     given HeaderCarrier = HeaderCarrier()
 
     val userAnswers = emptyUserAnswers
-      .set(NotificationMoreThanOneSaoPage, false)
+      .set(NotificationMoreThanOneSaoPage(NormalMode), false)
       .success
       .value
-      .set(NotificationSingleSaoOfficerNamePage, "Jackson Brown")
+      .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
       .success
       .value
       .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
@@ -114,10 +115,10 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
         .set(NotificationAdditionalInformationPage, Some(exampleAdditionalInformation))
         .success
         .value
-        .set(NotificationMoreThanOneSaoPage, moreThanOneSao)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), moreThanOneSao)
         .success
         .value
-        .set(NotificationSingleSaoOfficerNamePage, exampleSao1Name)
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), exampleSao1Name)
         .success
         .value
         .set(NotificationMultiSaoLastOfficerNamePage, exampleSao2Name)

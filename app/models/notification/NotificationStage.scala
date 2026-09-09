@@ -22,6 +22,7 @@ import pages.*
 import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.libs.json.*
+import models.NormalMode
 
 enum NotificationStage(
     val provideSaoDetailsStatus: TaskStatus = NotStarted,
@@ -53,17 +54,29 @@ enum NotificationStage(
 object NotificationStage {
 
   def taskListStage(userAnswers: UserAnswers): NotificationStage =
-    if !isUploadNotificationTemplateComplete(userAnswers) then {
+    if !isProvideSaoDetailsComplete(userAnswers) then {
+      ProvideSaoDetails
+    } else if !isUploadNotificationTemplateComplete(userAnswers) then {
       UploadSubmissionTemplateDetails
     } else {
       SubmitNotificationInfo
     }
 
   def canStartUploadNotificationTemplate(userAnswers: UserAnswers): Boolean =
-    true
+    isProvideSaoDetailsComplete(userAnswers)
 
   def canStartSubmitNotification(userAnswers: UserAnswers): Boolean =
-    isUploadNotificationTemplateComplete(userAnswers)
+    isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers)
+
+  private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean =
+    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).exists { case _ =>
+      true
+    }
+
+  private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
+    (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0).key)
+      .asOpt[Seq[Boolean]]
+      .exists(_.contains(true))
 
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty) &&

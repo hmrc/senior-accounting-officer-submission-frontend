@@ -29,13 +29,14 @@ import viewmodels.checkAnswers.notification.{
 }
 
 import scala.annotation.tailrec
+import models.NormalMode
 
 class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
     SummaryList(rows =
       (
         NotificationMoreThanOneSaoSummary.row(userAnswers)
-          +: (userAnswers.get(NotificationMoreThanOneSaoPage) match {
+          +: (userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
             case Some(false) => rowsForSingleSao(userAnswers)
             case Some(true)  => rowsForMultipleSaos(userAnswers)
             case _           => ???

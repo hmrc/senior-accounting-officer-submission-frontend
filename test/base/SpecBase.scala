@@ -62,10 +62,10 @@ trait SpecBase
 
   def completedSaoDetailsAnswers: UserAnswers =
     emptyUserAnswers
-      .set(NotificationMoreThanOneSaoPage, false)
+      .set(NotificationMoreThanOneSaoPage(NormalMode), false)
       .success
       .value
-      .set(NotificationSingleSaoOfficerNamePage, "Jackson Brown")
+      .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
       .success
       .value
 
@@ -83,7 +83,7 @@ trait SpecBase
 
   def completedMultipleSaoDetailsAnswers: UserAnswers =
     emptyUserAnswers
-      .set(NotificationMoreThanOneSaoPage, true)
+      .set(NotificationMoreThanOneSaoPage(NormalMode), true)
       .success
       .value
       .set(NotificationMultiSaoLastOfficerNamePage, "Jackson Brown")
