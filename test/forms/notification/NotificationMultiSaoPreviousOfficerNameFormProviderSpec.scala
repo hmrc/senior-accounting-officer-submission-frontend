@@ -18,7 +18,6 @@ package forms.notification
 
 import forms.behaviours.StringFieldBehaviours
 import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProviderSpec.*
-import forms.notification.NotificationSingleSaoOfficerNameFormProviderSpec.invalidSymbolsKey
 import play.api.data.FormError
 
 import scala.collection.immutable.ArraySeq
