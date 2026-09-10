@@ -84,11 +84,6 @@ trait Generators extends ModelGenerators {
   def nonEmptyString: Gen[String] =
     arbitrary[String] suchThat (_.nonEmpty)
 
-//  def stringsWithInvalidSymbols(maxLength: Int): Gen[String] = {
-//    for {
-//      length <- choose(1, maxLength)
-//    }
-//  }
   def stringsWithMaxLength(maxLength: Int): Gen[String] =
     for {
       length <- choose(1, maxLength)

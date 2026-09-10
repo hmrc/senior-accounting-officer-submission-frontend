@@ -34,7 +34,7 @@ class NotificationMultiSaoPreviousOfficerNameFormProviderSpec extends StringFiel
     behave like fieldThatBindsInvalidSymbols(
       form,
       fieldName,
-      FormError(fieldName, ArraySeq(NotificationMultiSaoPreviousOfficerNameFormProviderSpec.invalidSymbolsKey))
+      FormError(fieldName, ArraySeq(invalidSymbolsKey))
     )
 
     behave like fieldThatBindsValidData(

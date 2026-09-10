@@ -27,16 +27,12 @@ trait ErrorSummaryFluency {
 
   object ErrorSummaryViewModel {
 
-//    def apply(form: Form[?], errorLinkOverrides: Map[String, String] = Map.empty, placeholder: String)(using messages: M: Unit = {
-
-//    }
     def apply(
         form: Form[?],
         errorLinkOverrides: Map[String, String] = Map.empty
     )(using messages: Messages): ErrorSummary = {
 
       val errors = form.errors.map { error =>
-        form.data.get("value")
         ErrorLink(
           href = Some(s"#${errorLinkOverrides.getOrElse(error.key, error.key)}"),
           content = Text(messages(error.message, error.args*))
