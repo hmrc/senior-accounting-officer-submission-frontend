@@ -26,6 +26,7 @@ class CertificateSaoFullNameFormProvider @Inject() extends Mappings {
   def apply(): Form[String] =
     Form(
       "value" -> text("certificateSaoFullName.error.required")
-        .verifying(maxLength(254, "certificateSaoFullName.error.length"))
+        .verifying(maxLength(105, "certificateSaoFullName.error.length"))
+        .verifying(symbols("certificateSaoFullName.error.invalidSymbols"))
     )
 }

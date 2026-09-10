@@ -117,7 +117,7 @@ trait Constraints {
 
   protected def maximumCurrency(maximum: BigDecimal, errorKey: String)(using
       ev: Ordering[BigDecimal]
-  ): Constraint[BigDecimal] =
+  ): Constraint[BigDecimal] = {
     Constraint { input =>
       if input <= maximum then {
         Valid
@@ -125,4 +125,16 @@ trait Constraints {
         Invalid(errorKey, CurrencyFormatter.currencyFormat(maximum))
       }
     }
+  }
+
+  protected def symbols(errorKey: String): Constraint[String] = {
+    val invalidSymbolsRegex = """[<>"]""".r
+    Constraint { input =>
+      if invalidSymbolsRegex.findFirstMatchIn(input).nonEmpty then {
+        Invalid(errorKey)
+      } else {
+        Valid
+      }
+    }
+  }
 }

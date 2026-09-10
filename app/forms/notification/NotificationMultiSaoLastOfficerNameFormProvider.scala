@@ -26,6 +26,7 @@ class NotificationMultiSaoLastOfficerNameFormProvider @Inject() extends Mappings
   def apply(): Form[String] =
     Form(
       "value" -> text("notificationMultiSaoLastOfficerName.error.required")
-        .verifying(maxLength(254, "notificationMultiSaoLastOfficerName.error.length"))
+        .verifying(maxLength(105, "notificationMultiSaoLastOfficerName.error.length"))
+        .verifying(symbols("notificationMultiSaoLastOfficerName.error.invalidSymbols"))
     )
 }
