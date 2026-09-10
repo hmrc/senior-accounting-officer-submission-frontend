@@ -21,6 +21,7 @@ import config.AppConfig
 import controllers.DownloadTemplateControllerSpec.*
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.StreamConverters
+import org.apache.poi.ss.usermodel.DataValidationConstraint
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import play.api.http.Status
 import play.api.mvc.{AnyContentAsEmpty, Result}
@@ -29,6 +30,7 @@ import play.api.test.Helpers.*
 import uk.gov.hmrc.http.InternalServerException
 
 import scala.concurrent.Future
+import scala.jdk.CollectionConverters.*
 
 import java.io.InputStream
 
@@ -108,6 +110,49 @@ class DownloadTemplateControllerSpec extends SpecBase {
           Option(coreProps.getCreator) mustBe None
           Option(coreProps.getLastModifiedByUser) mustBe None
         }
+      }
+
+    }
+
+    "the returned Excel template must not have leading or trialing spaces in its dropdown formula's enums" in {
+      val app = applicationBuilder(userAnswers = None).build()
+
+      running(app) {
+
+        given Materializer = app.injector.instanceOf
+
+        val result = route(app, request).value
+
+        status(result) mustBe Status.OK
+
+        val workbook = contentAsXlsxWorkBook(result)
+
+        workbook
+          .getSheetAt(0)
+          .getDataValidations
+          .iterator()
+          .asScala
+          .filter(
+            _.getValidationConstraint.getValidationType == DataValidationConstraint.ValidationType.LIST
+          )
+          .foreach { v =>
+            val dropdownFormula = v.getValidationConstraint.getFormula1
+            val dropdownValues  = v.getValidationConstraint.getExplicitListValues
+            withClue(s"""Dropdown formulas must not include leading or trailing spaces
+                    |$dropdownFormula
+                    |Otherwise once selected, Excel will flag it as a validation error
+                    |
+                    |This test compares the formula split (by comma)
+                    |against getExplicitListValues which would be split + trim
+                    |e.g.
+                    |getFormula1=""Active,Administration ,Dormant,Liquidation""
+                    |getExplicitListValues=Array("Active", "Administration", "Dormant", "Liquidation")
+                    |\n""".stripMargin) {
+              val dropdownFormulaWithoutQuotes = dropdownFormula.replaceAll("""^"(.*)"$""", "$1")
+              dropdownFormulaWithoutQuotes.split(",") mustBe dropdownValues
+            }
+          }
+
       }
 
     }
