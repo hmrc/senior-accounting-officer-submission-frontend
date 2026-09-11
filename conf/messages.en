@@ -318,15 +318,17 @@ notificationSingleSaoOfficerName.heading = What is the name of the SAO?
 notificationSingleSaoOfficerName.caption = Submit a notification
 notificationSingleSaoOfficerName.checkYourAnswersLabel = Senior Accounting Officer
 notificationSingleSaoOfficerName.error.required = Enter the name of the SAO
-notificationSingleSaoOfficerName.error.length = The name you enter must be 254 characters or less
+notificationSingleSaoOfficerName.error.length = Name of the SAO must be 105 characters or less
+notificationSingleSaoOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
 notificationSingleSaoOfficerName.change.hidden = the senior accounting officer full name
 
 notificationMultiSaoPreviousOfficerName.title = Who was the SAO before the last SAO?
 notificationMultiSaoPreviousOfficerName.heading = Who was the SAO before {0}?
 notificationMultiSaoPreviousOfficerName.caption = Submit a notification
 notificationMultiSaoPreviousOfficerName.checkYourAnswersLabel = notificationMultiSaoPreviousOfficerName
-notificationMultiSaoPreviousOfficerName.error.required = Enter the name of the previous SAO
-notificationMultiSaoPreviousOfficerName.error.length = The name you enter must be 254 characters or less
+notificationMultiSaoPreviousOfficerName.error.required = Enter the name of the SAO before {0}
+notificationMultiSaoPreviousOfficerName.error.length = Name of the SAO must be 105 characters or less
+notificationMultiSaoPreviousOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
 notificationMultiSaoPreviousOfficerName.change.hidden = NotificationMultiSaoPreviousOfficerName
 
 notificationMultiSaoLastOfficerStartDate.title = What date did the last SAO become the SAO?
@@ -344,8 +346,9 @@ notificationMultiSaoLastOfficerName.title = What is the name of the SAO at the e
 notificationMultiSaoLastOfficerName.caption = Submit a notification
 notificationMultiSaoLastOfficerName.heading = What is the name of the SAO at the end of the financial year?
 notificationMultiSaoLastOfficerName.checkYourAnswersLabel = notificationMultiSaoLastOfficerName
-notificationMultiSaoLastOfficerName.error.required = Enter the name of the last SAO
-notificationMultiSaoLastOfficerName.error.length = The name you enter must be 254 characters or less
+notificationMultiSaoLastOfficerName.error.required = Enter the name of the SAO at the end of the financial year
+notificationMultiSaoLastOfficerName.error.length = Name of the SAO must be 105 characters or less
+notificationMultiSaoLastOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
 notificationMultiSaoLastOfficerName.change.hidden = NotificationMultiSaoLastOfficerName
 
 notificationMultiSaoPreviousOfficerStartDate.title = What date did the previous SAO responsibility start?
@@ -451,8 +454,9 @@ certificateSaoFullName.title = What is the name of the SAO responsible for the c
 certificateSaoFullName.heading = What is the name of the SAO responsible for the certificate?
 certificateSaoFullName.caption = Submit a certificate
 certificateSaoFullName.checkYourAnswersLabel = certificateSaoFullName
-certificateSaoFullName.error.required = Enter the name of the Senior Accounting Officer
-certificateSaoFullName.error.length = The name you enter must be 254 characters or less
+certificateSaoFullName.error.required = Enter the name of the SAO responsible for the certificate
+certificateSaoFullName.error.length = Name of the SAO must be 105 characters or less
+certificateSaoFullName.error.invalidSymbols = Name of the SAO must not include <, > or "
 certificateSaoFullName.change.hidden = CertificateSaoFullName
 
 certificateUploadForm.title = certificateUploadForm
@@ -530,8 +534,9 @@ certificateDeclarationSao.list1.item2 = you are the SAO submitting this certific
 certificateDeclarationSao.inset.text = If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels.
 certificateDeclarationSao.button = Confirm
 certificateDeclarationSao.checkYourAnswersLabel = certificateDeclarationSao
-certificateDeclarationSao.error.required = Enter the name of the Senior Accounting Officer who is authorised to submit the certificate
-certificateDeclarationSao.error.length = The authorised person name you enter must be 105 characters or less
+certificateDeclarationSao.error.required = Enter the name of the SAO authorised to submit the certificate
+certificateDeclarationSao.error.length = Name of the SAO must be 105 characters or less
+certificateDeclarationSao.error.invalidSymbols = Name of the SAO must not include <, > or "
 certificateDeclarationSao.change.hidden = CertificateDeclarationSao
 
 submissionType.caption = New submission

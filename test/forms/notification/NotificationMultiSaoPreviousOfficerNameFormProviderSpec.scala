@@ -17,19 +17,24 @@
 package forms.notification
 
 import forms.behaviours.StringFieldBehaviours
+import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProviderSpec.*
 import play.api.data.FormError
+
+import scala.collection.immutable.ArraySeq
 
 class NotificationMultiSaoPreviousOfficerNameFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKey = "notificationMultiSaoPreviousOfficerName.error.required"
-  val lengthKey   = "notificationMultiSaoPreviousOfficerName.error.length"
-  val maxLength   = 254
-
-  val form = new NotificationMultiSaoPreviousOfficerNameFormProvider()()
+  val form = new NotificationMultiSaoPreviousOfficerNameFormProvider()(Some(saoName))
 
   ".value" - {
 
     val fieldName = "value"
+
+    behave like fieldThatBindsInvalidSymbols(
+      form,
+      fieldName,
+      FormError(fieldName, ArraySeq(invalidSymbolsKey))
+    )
 
     behave like fieldThatBindsValidData(
       form,
@@ -47,19 +52,33 @@ class NotificationMultiSaoPreviousOfficerNameFormProviderSpec extends StringFiel
     behave like mandatoryField(
       form,
       fieldName,
-      requiredError = FormError(fieldName, requiredKey)
+      requiredError = FormError(fieldName, requiredKey, Seq(saoName))
     )
   }
 
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter the name of the previous SAO"
+      message = s"Enter the name of the SAO before {0}"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "The name you enter must be 254 characters or less"
+      message = "Name of the SAO must be 105 characters or less"
+    )
+
+    createTestWithErrorMessageAssertion(
+      key = invalidSymbolsKey,
+      message = "Name of the SAO must not include <, > or \""
     )
   }
+}
+
+object NotificationMultiSaoPreviousOfficerNameFormProviderSpec {
+
+  val saoName           = "example_name"
+  val requiredKey       = "notificationMultiSaoPreviousOfficerName.error.required"
+  val lengthKey         = "notificationMultiSaoPreviousOfficerName.error.length"
+  val invalidSymbolsKey = "notificationMultiSaoPreviousOfficerName.error.invalidSymbols"
+  val maxLength         = 105
 }

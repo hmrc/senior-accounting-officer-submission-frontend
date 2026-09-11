@@ -24,6 +24,26 @@ import play.api.data.{Form, FormError}
 
 trait FieldBehaviours extends FormSpec with ScalaCheckPropertyChecks with Generators {
 
+  def fieldThatBindsInvalidSymbols(form: Form[?], fieldName: String, expectedFormError: FormError): Unit = {
+    "must bind the invalid symbol, '>'" in {
+      val result = form.bind(Map(fieldName -> ">")).apply(fieldName)
+      result.value.value mustBe ">"
+      result.errors mustBe List(expectedFormError)
+    }
+
+    "must bind the invalid symbol, '<'" in {
+      val result = form.bind(Map(fieldName -> "<")).apply(fieldName)
+      result.value.value mustBe "<"
+      result.errors mustBe List(expectedFormError)
+    }
+
+    "must bind the invalid symbol, '\"'" in {
+      val result = form.bind(Map(fieldName -> "\"")).apply(fieldName)
+      result.value.value mustBe "\""
+      result.errors mustBe List(expectedFormError)
+    }
+
+  }
   def fieldThatBindsValidData(form: Form[?], fieldName: String, validDataGenerator: Gen[String]): Unit = {
 
     "must bind valid data" in {

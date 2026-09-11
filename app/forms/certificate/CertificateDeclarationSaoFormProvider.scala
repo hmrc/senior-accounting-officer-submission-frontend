@@ -31,5 +31,6 @@ class CertificateDeclarationSaoFormProvider @Inject() extends Mappings {
     Form(
       "value" -> text("certificateDeclarationSao.error.required")
         .verifying(maxLength(105, "certificateDeclarationSao.error.length"))
+        .verifying(symbols("certificateDeclarationSao.error.invalidSymbols"))
     )
 }
