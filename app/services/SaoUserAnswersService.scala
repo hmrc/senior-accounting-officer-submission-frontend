@@ -31,13 +31,14 @@ import play.api.Logging
 class SaoUserAnswersService extends Logging @Inject {
 
   val singleSaoNameKey             = NotificationSingleSaoOfficerNamePage(NormalMode).toString
-  val multiSaoLastNameKey          = NotificationMultiSaoLastOfficerNamePage.toString
-  val multiSaoLastStartDateKey     = NotificationMultiSaoLastOfficerStartDatePage.toString
+  val multiSaoLastNameKey          = NotificationMultiSaoLastOfficerNamePage(NormalMode).toString
+  val multiSaoLastStartDateKey     = NotificationMultiSaoLastOfficerStartDatePage(NormalMode).toString
   val multiSaoNameKey: String      = NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode).key
   val multiSaoStartDateKey: String = NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode).key
   val multiSaoEndDateKey: String   = NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode).key
   val multiSaoAddedAllKey: String  = NotificationMultiSaoAreAllAddedPage(0, NormalMode).key
 
+  // TODO: remove
   def cleanupMultiSaoDataAfterIndex(userAnswers: UserAnswers, saoIndex: Int): UserAnswers = {
     val userAnsweredYes = userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)) == Some(true)
 
