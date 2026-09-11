@@ -22,15 +22,27 @@ import play.api.data.Form
 import play.api.data.Forms.*
 
 import javax.inject.Inject
+import scala.util.matching.Regex
 
 class CertificateDeclarationStandInFormProvider @Inject() extends Mappings {
+
+  val illegalCharsRegex: Regex = """[<>"]""".r
+
 
   def apply(): Form[CertificateDeclarationStandIn] = Form(
     mapping(
       "StandInName" -> text("certificateDeclarationStandIn.error.standInName.required")
-        .verifying(maxLength(105, "certificateDeclarationStandIn.error.standInName.length")),
+        .verifying(maxLength(105, "certificateDeclarationStandIn.error.standInName.length"))
+        .verifying(
+          "certificateDeclarationStandIn.error.standInName.invalidChars",
+          name => illegalCharsRegex.findFirstIn(name).isEmpty
+        ),
       "SaoName" -> text("certificateDeclarationStandIn.error.saoName.required")
         .verifying(maxLength(105, "certificateDeclarationStandIn.error.saoName.length"))
+        .verifying(
+          "certificateDeclarationStandIn.error.saoName.invalidChars",
+          name => illegalCharsRegex.findFirstIn(name).isEmpty
+        )
     )(CertificateDeclarationStandIn.apply)(x => Some((x.StandInName, x.SaoName)))
   )
 }

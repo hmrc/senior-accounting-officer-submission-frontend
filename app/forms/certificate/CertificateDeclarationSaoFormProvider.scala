@@ -20,8 +20,12 @@ import forms.mappings.Mappings
 import play.api.data.Form
 
 import javax.inject.Inject
+import scala.util.matching.Regex
 
 class CertificateDeclarationSaoFormProvider @Inject() extends Mappings {
+
+  val illegalCharsRegex: Regex = """[<>"]""".r
+  
 
   def apply(): Form[String] =
     Form(

@@ -23,8 +23,10 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
 
   val requiredKeyStandInName = "certificateDeclarationStandIn.error.standInName.required"
   val lengthKeyStandInName   = "certificateDeclarationStandIn.error.standInName.length"
+  val requiredCharsStandInName = "certificateDeclarationStandIn.error.standInName.invalidChars"
   val requiredKeySaoName     = "certificateDeclarationStandIn.error.saoName.required"
   val lengthKeySaoName       = "certificateDeclarationStandIn.error.saoName.length"
+  val requiredCharsSAOName = "certificateDeclarationStandIn.saoName.standInName.invalidChars"
   val maxLength              = 105
 
   val form = new CertificateDeclarationStandInFormProvider()()
@@ -73,27 +75,28 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
       fieldName,
       requiredError = FormError(fieldName, requiredKeySaoName)
     )
+    
   }
 
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKeyStandInName,
-      message = "Enter the name of the person authorised to sign the certificate"
+      message = "Enter your full name"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKeyStandInName,
-      message = "The authorised person name you enter must be 105 characters or less"
+      message = "Your name must be 105 characters or less"
     )
 
     createTestWithErrorMessageAssertion(
       key = requiredKeySaoName,
-      message = "Enter the name of the Senior Accounting Officer who authorised you to submit the certificate"
+      message = "Enter the name of the SAO who authorised you to submit the certificate"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKeySaoName,
-      message = "The Senior Accounting Officer name you enter must be 105 characters or less"
+      message = "Name of the SAO must be 105 characters or less"
     )
 
   }

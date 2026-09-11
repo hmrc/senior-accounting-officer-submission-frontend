@@ -489,10 +489,12 @@ certificateDeclarationStandIn.standInName = StandInName
 certificateDeclarationStandIn.saoName = SaoName
 
 certificateDeclarationStandIn.checkYourAnswersLabel = CertificateDeclarationStandIn
-certificateDeclarationStandIn.error.standInName.required = Enter the name of the person authorised to sign the certificate
-certificateDeclarationStandIn.error.saoName.required = Enter the name of the Senior Accounting Officer who authorised you to submit the certificate
-certificateDeclarationStandIn.error.standInName.length = The authorised person name you enter must be 105 characters or less
-certificateDeclarationStandIn.error.saoName.length = The Senior Accounting Officer name you enter must be 105 characters or less
+certificateDeclarationStandIn.error.standInName.required = Enter your full name
+certificateDeclarationStandIn.error.saoName.required = Enter the name of the SAO who authorised you to submit the certificate
+certificateDeclarationStandIn.error.standInName.length = Your name must be 105 characters or less
+certificateDeclarationStandIn.error.saoName.length = Name of the SAO must be 105 characters or less
+certificateDeclarationStandIn.error.standInName.invalidChars = Your name must not include <, > or "
+certificateDeclarationStandIn.error.saoName.invalidChars = Name of the SAO must not include <, > or "
 certificateDeclarationStandIn.standInName.change.hidden = StandInName
 certificateDeclarationStandIn.saoName.change.hidden = SaoName
 
