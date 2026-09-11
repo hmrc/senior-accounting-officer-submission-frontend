@@ -26,6 +26,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import viewmodels.checkAnswers.notification.NotificationMultiSaoPreviousOfficerNameSummarySpec.*
+import models.NormalMode
 
 class NotificationMultiSaoPreviousOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -43,9 +44,9 @@ class NotificationMultiSaoPreviousOfficerNameSummarySpec extends SpecBase with G
     "when there is a user answer for NotificationMultiSaoPreviousOfficerNamePage" - {
       def testUserAnswers(answer: String) =
         emptyUserAnswers
-          .set(NotificationMultiSaoLastOfficerNamePage, previousName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), previousName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), answer)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), answer)
           .get
 
       def SUT(answer: String = "") = NotificationMultiSaoPreviousOfficerNameSummary.row(testUserAnswers(answer), 0).get
@@ -88,9 +89,15 @@ class NotificationMultiSaoPreviousOfficerNameSummarySpec extends SpecBase with G
 
         "must include the SAO index in the url" in {
           val answers = emptyUserAnswers
-            .set(NotificationMultiSaoPreviousOfficerNamePage(0), "testNotificationMultiSaoPreviousOfficerName")
+            .set(
+              NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode),
+              "testNotificationMultiSaoPreviousOfficerName"
+            )
             .get
-            .set(NotificationMultiSaoPreviousOfficerNamePage(1), "testNotificationMultiSaoPreviousOfficerName")
+            .set(
+              NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode),
+              "testNotificationMultiSaoPreviousOfficerName"
+            )
             .get
 
           val action = NotificationMultiSaoPreviousOfficerNameSummary.row(answers, 1).get.actions.head.items.head

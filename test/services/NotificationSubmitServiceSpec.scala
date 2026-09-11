@@ -121,28 +121,28 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
         .set(NotificationSingleSaoOfficerNamePage(NormalMode), exampleSao1Name)
         .success
         .value
-        .set(NotificationMultiSaoLastOfficerNamePage, exampleSao2Name)
+        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), exampleSao2Name)
         .success
         .value
-        .set(NotificationMultiSaoLastOfficerStartDatePage, exampleSao2StartDate)
+        .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), exampleSao2StartDate)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerNamePage(0), exampleSao3Name)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), exampleSao3Name)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), exampleSao3StartDate)
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), exampleSao3StartDate)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), exampleSao3EndDate)
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), exampleSao3EndDate)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerNamePage(1), exampleSao4Name)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), exampleSao4Name)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), exampleSao4StartDate)
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), exampleSao4StartDate)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), exampleSao4EndDate)
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), exampleSao4EndDate)
         .success
         .value
         .set(UploadTemplateTablePage, exampleTableData)

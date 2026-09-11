@@ -42,7 +42,7 @@ class UploadTemplatePlaybackService @Inject() () {
 
   private def getSaoName(userAnswers: UserAnswers): Option[String] =
     userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).flatMap {
-      case true  => userAnswers.get(NotificationMultiSaoLastOfficerNamePage)
+      case true  => userAnswers.get(NotificationMultiSaoLastOfficerNamePage(NormalMode))
       case false => userAnswers.get(NotificationSingleSaoOfficerNamePage(NormalMode))
     }
 }

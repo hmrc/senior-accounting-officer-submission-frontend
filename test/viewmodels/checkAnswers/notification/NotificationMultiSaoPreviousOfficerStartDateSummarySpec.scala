@@ -27,6 +27,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import viewmodels.checkAnswers.notification.NotificationMultiSaoPreviousOfficerStartDateSummarySpec.*
 
 import java.time.LocalDate
+import models.NormalMode
 
 class NotificationMultiSaoPreviousOfficerStartDateSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -43,7 +44,7 @@ class NotificationMultiSaoPreviousOfficerStartDateSummarySpec extends SpecBase w
 
     "when there is a user answer for NotificationMultiSaoPreviousOfficerStartDatePage" - {
       def testUserAnswers(answer: LocalDate) =
-        emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerStartDatePage(0), answer).get
+        emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), answer).get
 
       def SUT(answer: LocalDate = LocalDate.now) =
         NotificationMultiSaoPreviousOfficerStartDateSummary.row(testUserAnswers(answer), 0).get
@@ -86,9 +87,9 @@ class NotificationMultiSaoPreviousOfficerStartDateSummarySpec extends SpecBase w
 
         "must include the SAO index in the url" in {
           val answers = emptyUserAnswers
-            .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.of(2000, 1, 1))
+            .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), LocalDate.of(2000, 1, 1))
             .get
-            .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), LocalDate.of(2000, 1, 1))
+            .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), LocalDate.of(2000, 1, 1))
             .get
 
           val action = NotificationMultiSaoPreviousOfficerStartDateSummary.row(answers, 1).get.actions.head.items.head

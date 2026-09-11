@@ -58,7 +58,7 @@ class NotificationMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBas
   val saoName = "Firstname Lastname"
 
   val userAnswersWithSaoName: UserAnswers =
-    emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0), saoName).success.value
+    emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), saoName).success.value
 
   val saoIndex = 0
 
@@ -108,7 +108,7 @@ class NotificationMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBas
 
       val userAnswers =
         userAnswersWithSaoName
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex), validAnswer)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, NormalMode), validAnswer)
           .success
           .value
 

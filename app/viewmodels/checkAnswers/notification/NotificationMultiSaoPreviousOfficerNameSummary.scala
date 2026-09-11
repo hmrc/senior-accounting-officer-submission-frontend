@@ -25,20 +25,21 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
+import models.NormalMode
 
 object NotificationMultiSaoPreviousOfficerNameSummary {
 
   def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
     val priorSaoNamePage =
-      if saoIndex == 0 then { NotificationMultiSaoLastOfficerNamePage }
-      else { NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1) }
+      if saoIndex == 0 then { NotificationMultiSaoLastOfficerNamePage(NormalMode) }
+      else { NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1, NormalMode) }
 
     answers
       .get(
         priorSaoNamePage
       )
       .flatMap { priorSaoName =>
-        answers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)).map { answer =>
+        answers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, NormalMode)).map { answer =>
           SummaryListRowViewModel(
             key = messages(
               "notificationMultiSaoPreviousOfficerName.checkYourAnswersLabel",

@@ -93,7 +93,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoLastOfficerNameController, must go to more sao submit notification first date page" in {
         navigator.nextPage(
-          NotificationMultiSaoLastOfficerNamePage,
+          NotificationMultiSaoLastOfficerNamePage(NormalMode),
           NormalMode,
           emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), true).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
@@ -101,15 +101,18 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoLastOfficerStartDatePage, must go to who was the sao before page" in {
         navigator.nextPage(
-          NotificationMultiSaoLastOfficerStartDatePage,
+          NotificationMultiSaoLastOfficerStartDatePage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.of(2026, 5, 1)).success.value
+          emptyUserAnswers
+            .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.of(2026, 5, 1))
+            .success
+            .value
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
       }
 
       "when on NotificationMultiSaoPreviousOfficerNamePage, must go to NotificationMultiSaoPreviousOfficerStartDate" in {
         navigator.nextPage(
-          NotificationMultiSaoPreviousOfficerNamePage(0),
+          NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode),
           NormalMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(NormalMode, 0)
@@ -117,7 +120,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoPreviousOfficerStartDatePage, must go to NotificationMultiSaoPreviousOfficerEndDate page" in {
         navigator.nextPage(
-          NotificationMultiSaoPreviousOfficerStartDatePage(0),
+          NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode),
           NormalMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode)
@@ -125,7 +128,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoPreviousOfficerEndDatePage, must go to NotificationMultiSaoAreAllAdded page" in {
         navigator.nextPage(
-          NotificationMultiSaoPreviousOfficerEndDatePage(0),
+          NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode),
           NormalMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(NormalMode)
@@ -134,7 +137,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
       "when on NotificationMultiSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
-            NotificationMultiSaoAreAllAddedPage(0),
+            NotificationMultiSaoAreAllAddedPage(0, NormalMode),
             NormalMode,
             emptyUserAnswers
           )
@@ -143,17 +146,17 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
         navigator.nextPage(
-          NotificationMultiSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0, NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), true).success.value
+          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true).success.value
         ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on NotificationMultiSaoAreAllAddedPage, and the user answers no, must go to NotificationMultiSaoPreviousOfficerName page with an incremented saoIndex" in {
         navigator.nextPage(
-          NotificationMultiSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0, NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), false).success.value
+          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 1)
       }
 
@@ -226,17 +229,17 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         val userAnswersWithMultipleSaoAndData = emptyUserAnswers
           .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, "Firstname Lastname")
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), "Firstname Lastname")
           .get
-          .set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.now())
+          .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), "Firstname Lastname II")
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), "Firstname Lastname II")
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.now())
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), LocalDate.now())
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), true)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
           .get
 
         val userAnswersWithMultipleSaoAndNoData = emptyUserAnswers
@@ -298,7 +301,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoLastOfficerNamePage, must go to notification check your answers page" in {
         navigator.nextPage(
-          NotificationMultiSaoLastOfficerNamePage,
+          NotificationMultiSaoLastOfficerNamePage(NormalMode),
           CheckMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -306,7 +309,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoLastOfficerStartDatePage, must go to notification check your answers page" in {
         navigator.nextPage(
-          NotificationMultiSaoLastOfficerStartDatePage,
+          NotificationMultiSaoLastOfficerStartDatePage(NormalMode),
           CheckMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -314,7 +317,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoPreviousOfficerNamePage, must go to notification check your answers page" in {
         navigator.nextPage(
-          NotificationMultiSaoPreviousOfficerNamePage(0),
+          NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode),
           CheckMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -322,7 +325,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoPreviousOfficerStartDatePage, must go to notification check your answers page" in {
         navigator.nextPage(
-          NotificationMultiSaoPreviousOfficerStartDatePage(0),
+          NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode),
           CheckMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -330,7 +333,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoPreviousOfficerEndDatePage, must go to notification check your answers page" in {
         navigator.nextPage(
-          NotificationMultiSaoPreviousOfficerEndDatePage(0),
+          NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode),
           CheckMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -341,43 +344,43 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         val userAnswersWithMultipleCompleteSaos = emptyUserAnswers
           .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, "Firstname Lastname")
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), "Firstname Lastname")
           .get
-          .set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.now())
+          .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), "Firstname Lastname II")
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), "Firstname Lastname II")
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.now())
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), LocalDate.now())
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), "Firstname Lastname III")
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), "Firstname Lastname III")
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), LocalDate.now())
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), LocalDate.now())
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), false)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2), "Firstname Lastname IV")
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), "Firstname Lastname IV")
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), LocalDate.now())
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), LocalDate.now())
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), LocalDate.now())
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(2), true)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
           .get
 
         val userAnswersWithMultipleCompleteSaosAndOneIcompleteSao = userAnswersWithMultipleCompleteSaos
-          .set(NotificationMultiSaoAreAllAddedPage(2), false)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), false)
           .get
 
         "when the multi sao user answers are complete" - {
           "go to notification check your answers page" in {
             navigator.nextPage(
-              NotificationMultiSaoAreAllAddedPage(1),
+              NotificationMultiSaoAreAllAddedPage(1, NormalMode),
               CheckMode,
               userAnswersWithMultipleCompleteSaos
             ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
@@ -387,7 +390,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         "when the multi sao user answers are incomplete" - {
           "go to previous sao name page at the right index" in {
             navigator.nextPage(
-              NotificationMultiSaoAreAllAddedPage(1),
+              NotificationMultiSaoAreAllAddedPage(1, NormalMode),
               CheckMode,
               userAnswersWithMultipleCompleteSaosAndOneIcompleteSao
             ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 2)
@@ -416,7 +419,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
       "when on NotificationMultiSaoAreAllAddedPage, and no response is in the database, must throw an exception" in {
         intercept[NotImplementedError] {
           navigator.nextPage(
-            NotificationMultiSaoAreAllAddedPage(0),
+            NotificationMultiSaoAreAllAddedPage(0, NormalMode),
             TransactionMode,
             emptyUserAnswers
           )
@@ -433,7 +436,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoLastOfficerNamePage, must go to last officer start date page" in {
         navigator.nextPage(
-          NotificationMultiSaoLastOfficerNamePage,
+          NotificationMultiSaoLastOfficerNamePage(NormalMode),
           TransactionMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(TransactionMode)
@@ -441,7 +444,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoLastOfficerStartDatePage, must go to check your answers" in {
         navigator.nextPage(
-          NotificationMultiSaoLastOfficerStartDatePage,
+          NotificationMultiSaoLastOfficerStartDatePage(NormalMode),
           TransactionMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode, 0)
@@ -449,23 +452,23 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoAreAllAddedPage, and the user answers yes, must go to the notification task list" in {
         navigator.nextPage(
-          NotificationMultiSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0, NormalMode),
           TransactionMode,
-          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), true).success.value
+          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true).success.value
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
       "when on NotificationMultiSaoAreAllAddedPage, and the user answers no, must go to NotificationMultiSaoPreviousOfficerName page with an incremented saoIndex" in {
         navigator.nextPage(
-          NotificationMultiSaoAreAllAddedPage(0),
+          NotificationMultiSaoAreAllAddedPage(0, NormalMode),
           TransactionMode,
-          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), false).success.value
+          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false).success.value
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode, 1)
       }
 
       "when on NotificationMultiSaoPreviousOfficerNamePage, must go to NotificationMultiSaoPreviousOfficerStartDate" in {
         navigator.nextPage(
-          NotificationMultiSaoPreviousOfficerNamePage(0),
+          NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode),
           TransactionMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(
@@ -476,7 +479,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoPreviousOfficerStartDatePage, must go to NotificationMultiSaoPreviousOfficerEndDate page" in {
         navigator.nextPage(
-          NotificationMultiSaoPreviousOfficerStartDatePage(0),
+          NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode),
           TransactionMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(TransactionMode)
@@ -484,7 +487,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on NotificationMultiSaoPreviousOfficerEndDatePage, must go to NotificationMultiSaoAreAllAdded page" in {
         navigator.nextPage(
-          NotificationMultiSaoPreviousOfficerEndDatePage(0),
+          NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode),
           TransactionMode,
           emptyUserAnswers
         ) mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(TransactionMode)

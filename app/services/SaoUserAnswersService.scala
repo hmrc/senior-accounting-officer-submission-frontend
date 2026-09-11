@@ -19,7 +19,6 @@ package services
 import models.UserAnswers
 import pages.notification.*
 import play.api.libs.json.*
-import play.api.libs.json.JsArray
 import play.api.libs.json.Reads.*
 
 import scala.annotation.tailrec
@@ -27,19 +26,20 @@ import scala.annotation.tailrec
 import javax.inject.Inject
 
 import models.NormalMode
+import play.api.Logging
 
-class SaoUserAnswersService @Inject {
+class SaoUserAnswersService extends Logging @Inject {
 
   val singleSaoNameKey             = NotificationSingleSaoOfficerNamePage(NormalMode).toString
   val multiSaoLastNameKey          = NotificationMultiSaoLastOfficerNamePage.toString
   val multiSaoLastStartDateKey     = NotificationMultiSaoLastOfficerStartDatePage.toString
-  val multiSaoNameKey: String      = NotificationMultiSaoPreviousOfficerNamePage(0).key
-  val multiSaoStartDateKey: String = NotificationMultiSaoPreviousOfficerStartDatePage(0).key
-  val multiSaoEndDateKey: String   = NotificationMultiSaoPreviousOfficerEndDatePage(0).key
-  val multiSaoAddedAllKey: String  = NotificationMultiSaoAreAllAddedPage(0).key
+  val multiSaoNameKey: String      = NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode).key
+  val multiSaoStartDateKey: String = NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode).key
+  val multiSaoEndDateKey: String   = NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode).key
+  val multiSaoAddedAllKey: String  = NotificationMultiSaoAreAllAddedPage(0, NormalMode).key
 
   def cleanupMultiSaoDataAfterIndex(userAnswers: UserAnswers, saoIndex: Int): UserAnswers = {
-    val userAnsweredYes = userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) == Some(true)
+    val userAnsweredYes = userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)) == Some(true)
 
     if userAnsweredYes then {
 
@@ -61,16 +61,44 @@ class SaoUserAnswersService @Inject {
     }
   }
 
+  def jacobPrint[A](a: A): A = {
+    println(a)
+    a
+  }
+
   def sanitiseUserAnswers(userAnswers: UserAnswers): UserAnswers = {
     userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
-      case Some(true) => {
-        val finalIndex = finalCompleteSaoIndex(userAnswers)
+      case Some(true) =>
+        userAnswers
+          .clearShadowRealm()
+          .clearActualRealmSingleSao()
+          .sanitiseActualRealmMultiSao()
+          .copyActualRealmToShadowRealm()
+      case Some(false) =>
+        userAnswers
+          .clearShadowRealm()
+          .clearActualRealmMultiSao()
+          .copyActualRealmToShadowRealm()
+      case None => ???
+    }
+  }
 
-        val takeFromArray = of[JsArray].map { case JsArray(contents) => JsArray(contents.take(finalIndex + 1)) }
+  extension (userAnswers: UserAnswers) {
+    def copyActualRealmToShadowRealm(): UserAnswers = {
+      userAnswers.transformUserAnswers(
+        (__ \ "notification").json.update(
+          __.read[JsObject].map { o => Json.obj("Shadow" -> userAnswers.data("notification")("Actual")) }
+        )
+      )
+    }
 
-        val transformer =
-          (__ \ "notification" \ singleSaoNameKey).json.prune andThen
-            (__ \ "notification").json.update(
+    def sanitiseActualRealmMultiSao(): UserAnswers = {
+      val finalIndex    = finalCompleteSaoIndex(userAnswers)
+      val takeFromArray = of[JsArray].map { case JsArray(contents) => JsArray(contents.take(finalIndex + 1)) }
+      userAnswers
+        .transformUserAnswers(
+          (__ \ "notification" \ "Actual").json
+            .update(
               (__ \ multiSaoNameKey).json.update(takeFromArray) andThen
                 (__ \ multiSaoStartDateKey).json.update(takeFromArray) andThen
                 (__ \ multiSaoEndDateKey).json.update(takeFromArray) andThen
@@ -79,21 +107,77 @@ class SaoUserAnswersService @Inject {
                   JsArray(contents.dropRight(1) :+ JsTrue)
                 })
             )
+        )
+    }
 
-        userAnswers.data.transform(transformer) match {
-          case JsError(_)                => ???
-          case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
+    def clearActualRealmSingleSao(): UserAnswers = {
+      userAnswers.transformUserAnswers((__ \ "notification" \ "Actual" \ singleSaoNameKey).json.prune)
+    }
+
+    def clearActualRealmMultiSao(): UserAnswers = {
+      userAnswers.transformUserAnswers(
+        (__ \ "notification" \ "Actual" \ multiSaoLastNameKey).json.prune andThen
+          (__ \ "notification" \ "Actual" \ multiSaoLastStartDateKey).json.prune andThen
+          (__ \ "notification" \ "Actual" \ multiSaoNameKey).json.prune andThen
+          (__ \ "notification" \ "Actual" \ multiSaoStartDateKey).json.prune andThen
+          (__ \ "notification" \ "Actual" \ multiSaoEndDateKey).json.prune andThen
+          (__ \ "notification" \ "Actual" \ multiSaoAddedAllKey).json.prune
+      )
+    }
+
+    def clearShadowRealm(): UserAnswers = {
+      userAnswers.transformUserAnswers((__ \ "notification" \ "Shadow").json.prune)
+    }
+
+    def transformUserAnswers(transformer: Reads[JsObject]): UserAnswers = {
+      userAnswers.data.transform(transformer) match {
+        case JsError(error) => {
+          logger.error("Json transformation error: " + error)
+          ???
         }
+        case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
       }
-      case Some(false) => pruneMultiSaoAnswers(userAnswers)
-      case None        => ???
+    }
+
+  }
+
+  def removeShadow(userAnswers: UserAnswers): UserAnswers = {
+    val transformer = (__ \ "notification" \ "Shadow").json.prune
+    userAnswers.data.transform(transformer) match {
+      case JsError(_)                => ???
+      case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
+    }
+  }
+
+  def copyActualToShadow(userAnswers: UserAnswers): UserAnswers = {
+    val transformer =
+      (__ \ "notification" \ "Shadow").json.copyFrom((__ \ "notification" \ "Actual").json.pick) andThen (__).json
+        .update((__ \ "notification" \ "Actual").json.pick)
+
+    userAnswers.data.transform(transformer) match {
+      case JsError(_) =>
+        ???
+      case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
+    }
+  }
+
+  def copyShadowToActual(userAnswers: UserAnswers): UserAnswers = {
+    val transformer =
+      (__ \ "notification" \ "Actual").json.copyFrom((__ \ "notification" \ "Shadow").json.pick) andThen (__).json
+        .update((__ \ "notification" \ "Shadow").json.pick)
+
+    userAnswers.data.transform(transformer) match {
+      case JsError(_)                => ???
+      case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
     }
   }
 
   private def finalCompleteSaoIndex(userAnswers: UserAnswers): Int = {
     @tailrec
     def recur(saoIndex: Int): Int = {
-      if userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)) == Some(true) || !isSaoAtIndexCompleted(
+      if userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)) == Some(
+          true
+        ) || !isSaoAtIndexCompleted(
           userAnswers,
           saoIndex + 1
         )
@@ -107,10 +191,10 @@ class SaoUserAnswersService @Inject {
   }
 
   private def isSaoAtIndexCompleted(userAnswers: UserAnswers, saoIndex: Int): Boolean = {
-    userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)).nonEmpty &&
-    userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex)).nonEmpty &&
-    userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex)).nonEmpty &&
-    userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)).nonEmpty
+    userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, NormalMode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, NormalMode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, NormalMode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)).nonEmpty
   }
 
   /** Remove from useranswers data which concerns the other SAO flow.
@@ -135,12 +219,16 @@ class SaoUserAnswersService @Inject {
 
   private def pruneMultiSaoAnswers(userAnswers: UserAnswers): UserAnswers = {
     val transformer =
-      (__ \ "notification" \ multiSaoLastNameKey).json.prune andThen
-        (__ \ "notification" \ multiSaoLastStartDateKey).json.prune andThen
-        (__ \ "notification" \ multiSaoNameKey).json.prune andThen
-        (__ \ "notification" \ multiSaoStartDateKey).json.prune andThen
-        (__ \ "notification" \ multiSaoEndDateKey).json.prune andThen
-        (__ \ "notification" \ multiSaoAddedAllKey).json.prune
+      (__ \ "notification" \ "Shadow").json.prune andThen
+        (__ \ "notification" \ "Actual" \ multiSaoLastNameKey).json.prune andThen
+        (__ \ "notification" \ "Actual" \ multiSaoLastStartDateKey).json.prune andThen
+        (__ \ "notification" \ "Actual" \ multiSaoNameKey).json.prune andThen
+        (__ \ "notification" \ "Actual" \ multiSaoStartDateKey).json.prune andThen
+        (__ \ "notification" \ "Actual" \ multiSaoEndDateKey).json.prune andThen
+        (__ \ "notification" \ "Actual" \ multiSaoAddedAllKey).json.prune andThen
+        (__ \ "notification").read[JsObject].map { o =>
+          o ++ Json.obj("Shadow" -> (userAnswers.data("notification")("Actual")))
+        }
 
     userAnswers.data.transform(transformer) match {
       case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)

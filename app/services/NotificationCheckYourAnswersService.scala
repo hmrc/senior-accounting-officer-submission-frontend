@@ -23,10 +23,6 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.notification.*
-import viewmodels.checkAnswers.notification.{
-  NotificationAdditionalInformationSummary,
-  NotificationSingleSaoOfficerNameSummary
-}
 
 import scala.annotation.tailrec
 import models.NormalMode
@@ -56,7 +52,7 @@ class NotificationCheckYourAnswersService {
       index: Int = 0,
       result: Seq[Option[SummaryListRow]] = Nil
   )(using Messages): Seq[Option[SummaryListRow]] = {
-    userAnswers.get(NotificationMultiSaoAreAllAddedPage(index)) match {
+    userAnswers.get(NotificationMultiSaoAreAllAddedPage(index, NormalMode)) match {
       case Some(true) =>
         NotificationMultiSaoLastOfficerNameSummary.row(userAnswers)
           +: NotificationMultiSaoLastOfficerStartDateSummary.row(userAnswers)

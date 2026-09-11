@@ -54,7 +54,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
         .get
         .set(NotificationAdditionalInformationPage, Some(additionalInformation))
         .get
-        .set(NotificationMultiSaoAreAllAddedPage(0), true)
+        .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
         .get
 
       val result = SUT.getSummaryList(userAnswers)
@@ -94,25 +94,25 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
         .get
         .set(NotificationAdditionalInformationPage, Some(additionalInformation))
         .get
-        .set(NotificationMultiSaoLastOfficerNamePage, multiSaoName1)
+        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), multiSaoName1)
         .get
-        .set(NotificationMultiSaoLastOfficerStartDatePage, multiSao1StartDate)
+        .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), multiSao1StartDate)
         .get
-        .set(NotificationMultiSaoPreviousOfficerNamePage(0), multiSaoName2)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), multiSaoName2)
         .get
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), multiSao2StartDate)
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), multiSao2StartDate)
         .get
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), multiSao2EndDate)
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), multiSao2EndDate)
         .get
-        .set(NotificationMultiSaoAreAllAddedPage(0), false)
+        .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
         .get
-        .set(NotificationMultiSaoPreviousOfficerNamePage(1), multiSaoName3)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), multiSaoName3)
         .get
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), multiSao3StartDate)
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), multiSao3StartDate)
         .get
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), multiSao3EndDate)
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), multiSao3EndDate)
         .get
-        .set(NotificationMultiSaoAreAllAddedPage(1), true)
+        .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
         .get
 
       val result = SUT.getSummaryList(userAnswers)
@@ -150,25 +150,25 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
         .get
         .set(NotificationAdditionalInformationPage, None)
         .get
-        .set(NotificationMultiSaoLastOfficerNamePage, multiSaoName1)
+        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), multiSaoName1)
         .get
-        .set(NotificationMultiSaoLastOfficerStartDatePage, multiSao1StartDate)
+        .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), multiSao1StartDate)
         .get
-        .set(NotificationMultiSaoPreviousOfficerNamePage(0), multiSaoName2)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), multiSaoName2)
         .get
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), multiSao2StartDate)
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), multiSao2StartDate)
         .get
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), multiSao2EndDate)
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), multiSao2EndDate)
         .get
-        .set(NotificationMultiSaoAreAllAddedPage(0), false)
+        .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
         .get
-        .set(NotificationMultiSaoPreviousOfficerNamePage(1), multiSaoName3)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), multiSaoName3)
         .get
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), multiSao3StartDate)
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), multiSao3StartDate)
         .get
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), multiSao3EndDate)
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), multiSao3EndDate)
         .get
-        .set(NotificationMultiSaoAreAllAddedPage(1), true)
+        .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
         .get
 
       val result = SUT.getSummaryList(userAnswers)

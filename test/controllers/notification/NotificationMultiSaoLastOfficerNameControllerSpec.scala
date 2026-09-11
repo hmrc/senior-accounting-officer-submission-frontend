@@ -50,7 +50,7 @@ class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase wit
   val previousSaoName = "Previous Name"
 
   val userAnswersWithSaoName: UserAnswers =
-    emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage, saoName).success.value
+    emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage(NormalMode), saoName).success.value
 
   val saoIndex = 0
 
@@ -77,7 +77,7 @@ class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase wit
 
     "must use the previous indexed SAO name for a GET when the SAO index is greater than zero" in {
       val userAnswers = userAnswersWithSaoName
-        .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousSaoName)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousSaoName)
         .success
         .value
 
@@ -133,7 +133,10 @@ class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase wit
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        userAnswersWithSaoName.set(NotificationMultiSaoPreviousOfficerNamePage(saoIndex), "answer").success.value
+        userAnswersWithSaoName
+          .set(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, NormalMode), "answer")
+          .success
+          .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

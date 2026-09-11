@@ -16,6 +16,7 @@
 
 package controllers.notification
 
+import models.Realm.*
 import controllers.actions.*
 import forms.notification.NotificationSingleSaoOfficerNameFormProvider
 import models.Mode
@@ -28,13 +29,13 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationSingleSaoOfficerNameView
 import play.api.libs.json.*
-import play.api.libs.json.JsArray
 import play.api.libs.json.Reads.*
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 import models.UserAnswers
 import models.*
+import services.SaoUserAnswersService
 
 class NotificationSingleSaoOfficerNameController @Inject() (
     override val messagesApi: MessagesApi,
@@ -45,7 +46,8 @@ class NotificationSingleSaoOfficerNameController @Inject() (
     requireData: DataRequiredAction,
     formProvider: NotificationSingleSaoOfficerNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationSingleSaoOfficerNameView
+    view: NotificationSingleSaoOfficerNameView,
+    saoUserAnswersService: SaoUserAnswersService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -67,21 +69,25 @@ class NotificationSingleSaoOfficerNameController @Inject() (
             for {
               updatedAnswers <- Future
                 .fromTry(request.userAnswers.set(NotificationSingleSaoOfficerNamePage(mode), value))
-              maybeAppliedAnswers = commitTransaction(updatedAnswers)
+              maybeAppliedAnswers = commitTransaction(updatedAnswers, mode)
               _ <- sessionRepository.set(maybeAppliedAnswers)
             } yield Redirect(navigator.nextPage(NotificationSingleSaoOfficerNamePage(mode), mode, updatedAnswers))
         )
   }
 
-  def commitTransaction(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers.get(NotificationMoreThanOneSaoPage(TransactionMode)).fold(userAnswers) { moreThanOne =>
-      userAnswers.get(NotificationSingleSaoOfficerNamePage(TransactionMode)).fold(userAnswers) { name =>
-        userAnswers
-          .set(NotificationMoreThanOneSaoPage(NormalMode), moreThanOne)
-          .get
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), name)
-          .get
+  def commitTransaction(userAnswers: UserAnswers, mode: Mode): UserAnswers = {
+    if mode == TransactionMode then {
+      userAnswers.get(NotificationMoreThanOneSaoPage(TransactionMode)).fold(userAnswers) { moreThanOne =>
+        userAnswers.get(NotificationSingleSaoOfficerNamePage(TransactionMode)).fold(userAnswers) { name =>
+          userAnswers
+            .set(NotificationMoreThanOneSaoPage(NormalMode), moreThanOne)
+            .get
+            .set(NotificationSingleSaoOfficerNamePage(NormalMode), name)
+            .get
+        }
       }
+    } else {
+      userAnswers
     }
   }
 }

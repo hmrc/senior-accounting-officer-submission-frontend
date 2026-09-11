@@ -54,7 +54,7 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
     notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode).url
 
   val userAnswersWithSaoName: UserAnswers =
-    emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0), saoName).success.value
+    emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), saoName).success.value
 
   val saoIndex = 0
 
@@ -103,7 +103,10 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        userAnswersWithSaoName.set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex), validAnswer).success.value
+        userAnswersWithSaoName
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, NormalMode), validAnswer)
+          .success
+          .value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

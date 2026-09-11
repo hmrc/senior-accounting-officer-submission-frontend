@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
-import models.{TransactionMode, UserAnswers}
+import models.*
 import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
@@ -28,7 +28,7 @@ import viewmodels.govuk.summarylist.*
 object NotificationMultiSaoAreAllAddedSummary {
 
   def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)).map { answer =>
+    answers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)).map { answer =>
       val messageKey = if answer then "site.yes" else "site.no"
       SummaryListRowViewModel(
         key = messages("notificationMultiSaoAreAllAdded.checkYourAnswersLabel").toKey,

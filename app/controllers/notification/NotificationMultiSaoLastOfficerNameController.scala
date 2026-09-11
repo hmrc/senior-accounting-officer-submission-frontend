@@ -46,7 +46,8 @@ class NotificationMultiSaoLastOfficerNameController @Inject() (
     with I18nSupport {
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage).fold(form)(form.fill)
+    val preparedForm =
+      request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode)).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -59,9 +60,10 @@ class NotificationMultiSaoLastOfficerNameController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationMultiSaoLastOfficerNamePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMultiSaoLastOfficerNamePage, mode, updatedAnswers))
+              updatedAnswers <- Future
+                .fromTry(request.userAnswers.set(NotificationMultiSaoLastOfficerNamePage(mode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(NotificationMultiSaoLastOfficerNamePage(mode), mode, updatedAnswers))
         )
   }
 }

@@ -32,6 +32,7 @@ import views.html.notification.NotificationMultiSaoPreviousOfficerNameView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import models.NormalMode
 
 class NotificationMultiSaoPreviousOfficerNameController @Inject() (
     override val messagesApi: MessagesApi,
@@ -49,18 +50,18 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
 
   val form: Form[String] = formProvider()
 
-  private def saoNameForPage(saoIndex: Int, userAnswers: UserAnswers): Option[String] =
+  private def saoNameForPage(mode: Mode, saoIndex: Int, userAnswers: UserAnswers): Option[String] =
     if saoIndex == 0 then {
-      userAnswers.get(NotificationMultiSaoLastOfficerNamePage)
+      userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode)) // TODO: i bet this will be wrong later orz
     } else {
-      userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1))
+      userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1, mode)) // TODO: likewise orz
     }
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val preparedForm =
-        request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)).fold(form)(form.fill)
-      saoNameForPage(saoIndex, request.userAnswers)
+        request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)).fold(form)(form.fill)
+      saoNameForPage(mode, saoIndex, request.userAnswers)
         .fold(
           Redirect(routes.JourneyRecoveryController.onPageLoad())
         )(saoName => Ok(view(saoName, preparedForm, mode, saoIndex)))
@@ -69,7 +70,7 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      saoNameForPage(saoIndex, request.userAnswers) match {
+      saoNameForPage(mode, saoIndex, request.userAnswers) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
           form
@@ -80,10 +81,12 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(saoIndex), value))
+                    .fromTry(
+                      request.userAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode), value)
+                    )
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
-                  navigator.nextPage(NotificationMultiSaoPreviousOfficerNamePage(saoIndex), mode, updatedAnswers)
+                  navigator.nextPage(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode), mode, updatedAnswers)
                 )
             )
       }

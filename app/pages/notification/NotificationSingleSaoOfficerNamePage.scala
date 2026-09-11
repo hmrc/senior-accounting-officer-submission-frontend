@@ -20,10 +20,11 @@ import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 import models.Mode
+import models.Realm.toRealm
 
 final case class NotificationSingleSaoOfficerNamePage(mode: Mode) extends QuestionPage[String] {
 
-  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toString \ toString
+  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toRealm.toString \ toString
 
   override def toString: String = "notificationSingleSaoOfficerName"
 }

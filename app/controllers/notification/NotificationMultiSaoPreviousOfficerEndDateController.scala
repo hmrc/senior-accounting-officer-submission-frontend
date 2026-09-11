@@ -50,9 +50,9 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
     implicit request =>
       val form         = formProvider()
       val preparedForm =
-        request.userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex)).fold(form)(form.fill)
+        request.userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, mode)).fold(form)(form.fill)
       request.userAnswers
-        .get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)) match {
+        .get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
         case Some(saoName) => Ok(view(saoName, preparedForm, mode, saoIndex))
         case None          =>
           Redirect(
@@ -65,7 +65,7 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
-      request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)) match {
+      request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
           form
@@ -75,10 +75,13 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex), value))
+                    .fromTry(
+                      request.userAnswers.set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, mode), value)
+                    )
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
-                  navigator.nextPage(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex), mode, updatedAnswers)
+                  navigator
+                    .nextPage(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, mode), mode, updatedAnswers)
                 )
             )
       }

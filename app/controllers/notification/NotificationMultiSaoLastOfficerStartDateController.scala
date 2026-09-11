@@ -48,9 +48,10 @@ class NotificationMultiSaoLastOfficerStartDateController @Inject() (
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage).fold(form)(form.fill)
+    val preparedForm =
+      request.userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage(mode)).fold(form)(form.fill)
     request.userAnswers
-      .get(NotificationMultiSaoLastOfficerNamePage)
+      .get(NotificationMultiSaoLastOfficerNamePage(mode))
       .fold(
         Redirect(routes.JourneyRecoveryController.onPageLoad())
       )(saoName => Ok(view(saoName, preparedForm, mode)))
@@ -60,7 +61,7 @@ class NotificationMultiSaoLastOfficerStartDateController @Inject() (
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider()
-      request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage) match {
+      request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode)) match {
         case Some(saoName) =>
           form
             .bindFromRequest()
@@ -69,9 +70,11 @@ class NotificationMultiSaoLastOfficerStartDateController @Inject() (
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(NotificationMultiSaoLastOfficerStartDatePage, value))
+                    .fromTry(request.userAnswers.set(NotificationMultiSaoLastOfficerStartDatePage(mode), value))
                   _ <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(navigator.nextPage(NotificationMultiSaoLastOfficerStartDatePage, mode, updatedAnswers))
+                } yield Redirect(
+                  navigator.nextPage(NotificationMultiSaoLastOfficerStartDatePage(mode), mode, updatedAnswers)
+                )
             )
 
         case None => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
