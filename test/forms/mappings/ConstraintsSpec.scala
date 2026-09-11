@@ -222,26 +222,25 @@ class ConstraintsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
   }
   "symbols" - {
     "must return Valid for 'example_name'" in {
-      val result = symbols("example_name").apply("example_name")
+      val result = symbols("error.invalidSymbols").apply("example_name")
       result mustEqual Valid
     }
 
     "must return invalid for '>' " in {
-      val result = symbols(">").apply(">")
-      result mustEqual Invalid(">")
+      val result = symbols("error.invalidSymbols").apply(">")
+      result mustEqual Invalid("error.invalidSymbols")
     }
     "must return invalid for '<' " in {
-      val result = symbols("<")
-      result mustEqual Invalid("")
-
+      val result = symbols("error.invalidSymbols").apply("<")
+      result mustEqual Invalid("error.invalidSymbols")
     }
     "must return invalid for '\"' " in {
-      val result = symbols("\"")
-      result mustEqual Invalid("")
+      val result = symbols("error.invalidSymbols").apply("\"")
+      result mustEqual Invalid("error.invalidSymbols")
     }
     "must return invalid for string containing '<>\"' " in {
-      val result = symbols("example>na<me\"")
-      result mustEqual Invalid("")
+      val result = symbols("error.invalidSymbols").apply("example>na<me\"")
+      result mustEqual Invalid("error.invalidSymbols")
     }
   }
 }
