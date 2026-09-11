@@ -21,6 +21,8 @@ import models.Area.*
 import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+import models.*
+import models.Realm.*
 
 final case class NotificationMultiSaoAreAllAddedPage(saoIndex: Int, mode: Mode) extends QuestionPage[Boolean] {
 

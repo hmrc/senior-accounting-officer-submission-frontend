@@ -32,6 +32,10 @@ import views.html.notification.NotificationMultiSaoAreAllAddedView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import models.TransactionMode
+import models.UserAnswers
+import models.NormalMode
+import scala.annotation.tailrec
 
 class NotificationMultiSaoAreAllAddedController @Inject() (
     override val messagesApi: MessagesApi,
@@ -83,5 +87,88 @@ class NotificationMultiSaoAreAllAddedController @Inject() (
                 )
             )
         )
+  }
+
+  def commitTransaction(userAnswers: UserAnswers, mode: Mode, saoIndex: Int): UserAnswers = {
+    if mode == TransactionMode && userAnswers.get(
+        NotificationMultiSaoAreAllAddedPage(saoIndex, TransactionMode)
+      ) == Some(true)
+    then {
+      def commitOneSao(userAnswers: UserAnswers, saoIndex: Int): UserAnswers = {
+        userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, TransactionMode)).fold(userAnswers) {
+          previousOfficerName =>
+            userAnswers
+              .get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, TransactionMode))
+              .fold(userAnswers) { previousOfficerStartDate =>
+                userAnswers
+                  .get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, TransactionMode))
+                  .fold(userAnswers) { previousOfficerEndDate =>
+                    userAnswers
+                      .get(NotificationMultiSaoAreAllAddedPage(saoIndex, TransactionMode))
+                      .fold(userAnswers) { areAllAdded =>
+                        userAnswers
+                          .set(
+                            NotificationMultiSaoPreviousOfficerNamePage(saoIndex, NormalMode),
+                            previousOfficerName
+                          )
+                          .get
+                          .set(
+                            NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, NormalMode),
+                            previousOfficerStartDate
+                          )
+                          .get
+                          .set(
+                            NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, NormalMode),
+                            previousOfficerEndDate
+                          )
+                          .get
+                          .set(
+                            NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode),
+                            areAllAdded
+                          )
+                          .get
+                      }
+                  }
+              }
+        }
+      }
+
+      @tailrec
+      def recur(userAnswers: UserAnswers, saoIndex: Int): UserAnswers = {
+        if userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, TransactionMode)) == Some(true) then
+          commitOneSao(userAnswers, saoIndex)
+        else
+          recur(
+            commitOneSao(userAnswers, saoIndex),
+            saoIndex + 1
+          )
+      }
+      userAnswers
+        .get(NotificationMoreThanOneSaoPage(TransactionMode))
+        .fold(userAnswers) { moreThanOne =>
+          userAnswers.get(NotificationMultiSaoLastOfficerNamePage(TransactionMode)).fold(userAnswers) {
+            lastOfficerName =>
+              userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage(TransactionMode)).fold(userAnswers) {
+                lastOfficerStartDate =>
+                  recur(
+                    userAnswers
+                      .set(NotificationMoreThanOneSaoPage(NormalMode), moreThanOne)
+                      .get
+                      .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
+                      .get
+                      .set(
+                        NotificationMultiSaoLastOfficerStartDatePage(NormalMode),
+                        lastOfficerStartDate
+                      )
+                      .get,
+                    0
+                  )
+              }
+          }
+        }
+
+    } else {
+      userAnswers
+    }
   }
 }

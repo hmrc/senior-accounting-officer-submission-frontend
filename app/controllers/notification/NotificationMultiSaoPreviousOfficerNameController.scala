@@ -32,6 +32,7 @@ import views.html.notification.NotificationMultiSaoPreviousOfficerNameView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import models.NormalMode
 
 class NotificationMultiSaoPreviousOfficerNameController @Inject() (
     override val messagesApi: MessagesApi,

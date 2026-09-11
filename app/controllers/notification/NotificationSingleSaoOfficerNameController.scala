@@ -16,6 +16,7 @@
 
 package controllers.notification
 
+import models.Realm.*
 import controllers.actions.*
 import forms.notification.NotificationSingleSaoOfficerNameFormProvider
 import models.*
