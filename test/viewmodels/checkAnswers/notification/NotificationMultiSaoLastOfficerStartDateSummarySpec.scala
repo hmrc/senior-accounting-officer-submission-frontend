@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.notification
 
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
-import models.CheckMode
+import models.*
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
 import play.api.i18n.{Messages, MessagesApi}
@@ -43,7 +43,7 @@ class NotificationMultiSaoLastOfficerStartDateSummarySpec extends SpecBase with 
 
     "when there is a user answer for NotificationMultiSaoLastOfficerStartDatePage" - {
       def testUserAnswers(answer: LocalDate) =
-        emptyUserAnswers.set(NotificationMultiSaoLastOfficerStartDatePage, answer).get
+        emptyUserAnswers.set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), answer).get
 
       def SUT(answer: LocalDate = LocalDate.now) =
         NotificationMultiSaoLastOfficerStartDateSummary.row(testUserAnswers(answer)).get

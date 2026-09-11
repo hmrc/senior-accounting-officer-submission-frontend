@@ -176,7 +176,7 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
         .set(UploadTemplateTablePage, tableData)
         .success
         .value
-        .set(NotificationMultiSaoLastOfficerNamePage, lastSaoName)
+        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastSaoName)
         .success
         .value
 

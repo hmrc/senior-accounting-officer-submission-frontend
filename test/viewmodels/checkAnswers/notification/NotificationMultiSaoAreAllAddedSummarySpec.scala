@@ -40,7 +40,7 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
 
     "when there is a user answer for NotificationMultiSaoAreAllAddedPage" - {
       def testUserAnswers(answer: Boolean) =
-        emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), answer).get
+        emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), answer).get
 
       def SUT(answer: Boolean = true) = NotificationMultiSaoAreAllAddedSummary.row(testUserAnswers(answer), 0).get
 
@@ -84,9 +84,9 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
 
         "must include the SAO index in the url" in {
           val answers = emptyUserAnswers
-            .set(NotificationMultiSaoAreAllAddedPage(0), false)
+            .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
             .get
-            .set(NotificationMultiSaoAreAllAddedPage(1), true)
+            .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
             .get
 
           val action = NotificationMultiSaoAreAllAddedSummary.row(answers, 1).get.actions.head.items.head

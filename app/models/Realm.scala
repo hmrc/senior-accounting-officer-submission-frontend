@@ -14,22 +14,29 @@
  * limitations under the License.
  */
 
-package pages.notification
+package models
 
-import pages.Page.NOTIFICATION_PATH
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.api.mvc.JavascriptLiteral
 
-import java.time.LocalDate
-import models.Mode
-import models.Realm.*
+enum Realm {
+  case Actual, Shadow
+}
 
-final case class NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int, mode: Mode)
-    extends QuestionPage[LocalDate] {
+object Realm {
+  given jsLiteral: JavascriptLiteral[Realm] = new JavascriptLiteral[Realm] {
+    override def to(value: Realm): String = value match {
+      case Realm.Actual => "actual"
+      case Realm.Shadow => "shadow"
+    }
+  }
 
-  val key = "notificationMultiSaoPreviousOfficerStartDate"
-
-  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toRealm.toString \ key \ saoIndex
-
-  override def toString: String = s"$key[$saoIndex]"
+  extension (mode: Mode) {
+    def toRealm: Realm = {
+      mode match {
+        case NormalMode      => Realm.Actual
+        case CheckMode       => Realm.Actual
+        case TransactionMode => Realm.Shadow
+      }
+    }
+  }
 }

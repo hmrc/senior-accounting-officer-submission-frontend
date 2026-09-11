@@ -86,22 +86,22 @@ trait SpecBase
       .set(NotificationMoreThanOneSaoPage(NormalMode), true)
       .success
       .value
-      .set(NotificationMultiSaoLastOfficerNamePage, "Jackson Brown")
+      .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), "Jackson Brown")
       .success
       .value
-      .set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.of(2024, 1, 1))
+      .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.of(2024, 1, 1))
       .success
       .value
-      .set(NotificationMultiSaoPreviousOfficerNamePage(0), "Taylor Green")
+      .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), "Taylor Green")
       .success
       .value
-      .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.of(2023, 1, 1))
+      .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), LocalDate.of(2023, 1, 1))
       .success
       .value
-      .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), LocalDate.of(2023, 12, 31))
+      .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), LocalDate.of(2023, 12, 31))
       .success
       .value
-      .set(NotificationMultiSaoAreAllAddedPage(0), true)
+      .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
       .success
       .value
 

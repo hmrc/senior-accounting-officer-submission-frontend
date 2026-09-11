@@ -36,53 +36,53 @@ class SaoUserAnswersServiceSpec extends SpecBase {
         val input = UserAnswers("test")
           .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousOfficer1Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), previousOfficer1StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), previousOfficer1EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), previousOfficer2Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), previousOfficer2StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), previousOfficer2EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), true)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2), previousOfficer3Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), previousOfficer3StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), previousOfficer3EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(2), true)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
           .get
 
         val expected = UserAnswers("test")
           .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousOfficer1Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), previousOfficer1StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), previousOfficer1EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), previousOfficer2Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), previousOfficer2StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), previousOfficer2EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), true)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
           .get
 
         val result = SUT.cleanupMultiSaoDataAfterIndex(input, 1)
@@ -96,31 +96,31 @@ class SaoUserAnswersServiceSpec extends SpecBase {
         val input = UserAnswers("test")
           .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousOfficer1Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), previousOfficer1StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), previousOfficer1EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), previousOfficer2Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), previousOfficer2StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), previousOfficer2EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), false)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2), previousOfficer3Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), previousOfficer3StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), previousOfficer3EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(2), true)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
           .get
 
         val expected = input
@@ -138,31 +138,31 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
           .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousOfficer1Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), previousOfficer1StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), previousOfficer1EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), previousOfficer2Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), previousOfficer2StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), previousOfficer2EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), false)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2), previousOfficer3Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), previousOfficer3StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), previousOfficer3EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(2), true)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
           .get
 
         val expected = UserAnswers("test")
@@ -183,63 +183,63 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
           .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousOfficer1Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), previousOfficer1StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), previousOfficer1EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), previousOfficer2Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), previousOfficer2StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), previousOfficer2EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), false)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2), previousOfficer3Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), previousOfficer3StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), previousOfficer3EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(2), false)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(3), previousOfficer4Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(3, NormalMode), previousOfficer4Name)
           .get
 
         val expected = UserAnswers("test")
           .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousOfficer1Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), previousOfficer1StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), previousOfficer1EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), previousOfficer2Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), previousOfficer2StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), previousOfficer2EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), false)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2), previousOfficer3Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), previousOfficer3StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), previousOfficer3EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(2), true)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
           .get
 
         val result = SUT.sanitiseUserAnswers(input)
@@ -256,31 +256,31 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
           .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousOfficer1Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), previousOfficer1StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), previousOfficer1EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), previousOfficer2Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), previousOfficer2StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), previousOfficer2EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), false)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2), previousOfficer3Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), previousOfficer3StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), previousOfficer3EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(2), true)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
           .get
 
         val expected = UserAnswers("test")
@@ -301,65 +301,65 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
           .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousOfficer1Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), previousOfficer1StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), previousOfficer1EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), previousOfficer2Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), previousOfficer2StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), previousOfficer2EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), false)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2), previousOfficer3Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), previousOfficer3StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), previousOfficer3EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(2), false)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(3), previousOfficer4Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(3, NormalMode), previousOfficer4Name)
           .get
 
         val expected = UserAnswers("test")
           .set(NotificationMoreThanOneSaoPage(NormalMode), true)
           .get
-          .set(NotificationMultiSaoLastOfficerNamePage, lastOfficerName)
+          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0), previousOfficer1Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), previousOfficer1StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), previousOfficer1EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(0), false)
+          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1), previousOfficer2Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), previousOfficer2StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), previousOfficer2EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(1), false)
+          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2), previousOfficer3Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
           .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2), previousOfficer3StartDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
           .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2), previousOfficer3EndDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
           .get
-          .set(NotificationMultiSaoAreAllAddedPage(2), false)
+          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), false)
           .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(3), previousOfficer4Name)
+          .set(NotificationMultiSaoPreviousOfficerNamePage(3, NormalMode), previousOfficer4Name)
           .get
 
         val result = SUT.removeOtherSaoJourneyData(input)
