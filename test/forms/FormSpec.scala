@@ -20,13 +20,12 @@ import org.scalatest.OptionValues
 import org.scalatest.compatible.Assertion
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import play.api.Application
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.data.{Form, FormError}
 import play.api.i18n.Messages
 import play.api.i18n.MessagesApi
-import play.api.inject.guice.GuiceApplicationBuilder
 
-trait FormSpec extends AnyFreeSpec with Matchers with OptionValues {
+trait FormSpec extends AnyFreeSpec with Matchers with OptionValues with GuiceOneAppPerSuite {
 
   def checkForError(form: Form[?], data: Map[String, String], expectedErrors: Seq[FormError]): Assertion = {
 
@@ -48,12 +47,11 @@ trait FormSpec extends AnyFreeSpec with Matchers with OptionValues {
 
   lazy val emptyForm: Map[String, String] = Map[String, String]()
 
-  lazy val app: Application = GuiceApplicationBuilder().build()
-  def messages: Messages    = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
+  given messages: Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
 
-  def createTestWithErrorMessageAssertion(key: String, message: String): Unit = {
+  def createTestWithErrorMessageAssertion(key: String, message: String, args: Any*): Unit = {
     s"key $key is in messages file with expected value" in {
-      message mustEqual messages(key)
+      message mustEqual messages(key, args*)
     }
   }
 }

@@ -20,6 +20,7 @@ import com.github.tototoshi.csv.CSVReader
 import models.upload.TemplateParseResult.Invalid
 import models.upload.{TemplateParseError, TemplateParseResult}
 import services.csvparser.UploadTemplateCsvSchema.*
+import utils.{DateHelper, FutureDateHelper}
 
 import scala.util.{Failure, Success, Try}
 
@@ -28,7 +29,8 @@ import javax.inject.Inject
 
 class UploadTemplateCsvParser @Inject() (
     structureValidator: UploadTemplateStructureValidator,
-    rowParser: UploadTemplateRowParser
+    rowParser: UploadTemplateRowParser,
+    dateHelper: DateHelper
 ) {
 
   def parse(
@@ -54,6 +56,9 @@ class UploadTemplateCsvParser @Inject() (
 
         errors match {
           case Nil =>
+            // this caches the UK's current LocalDate to be used for the validation of the entire template
+            given FutureDateHelper = dateHelper.futureDateHelper
+
             rowParser.parseDataRows(
               rows,
               notificationOnly

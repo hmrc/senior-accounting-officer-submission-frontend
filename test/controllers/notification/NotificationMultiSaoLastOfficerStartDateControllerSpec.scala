@@ -26,7 +26,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.notification.{NotificationMultiSaoLastOfficerNamePage, NotificationMultiSaoLastOfficerStartDatePage}
-import play.api.i18n.Messages
+import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
@@ -40,40 +40,46 @@ import java.time.{LocalDate, ZoneOffset}
 
 class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase with MockitoSugar {
 
-  private given messages: Messages = stubMessages()
+  val testSaoName: String      = "Firstname Lastname"
+  val testValidDate: LocalDate = LocalDate.now(ZoneOffset.UTC).minusDays(1)
 
-  private val formProvider = new NotificationMultiSaoLastOfficerStartDateFormProvider()
-  private def form         = formProvider()
+  private def form(using app: Application) =
+    app.injector
+      .instanceOf[NotificationMultiSaoLastOfficerStartDateFormProvider]
+      .apply(testSaoName)(using messages(app))
 
   def onwardRoute: Call = Call("GET", "/foo")
-
-  val validAnswer: LocalDate = LocalDate.now(ZoneOffset.UTC)
-  val saoName: String        = "Firstname Lastname"
 
   lazy val notificationMultiSaoLastOfficerStartDateRoute: String =
     notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode).url
 
   val userAnswers: UserAnswers = emptyUserAnswers
-    .set(NotificationMultiSaoLastOfficerNamePage, saoName)
+    .set(NotificationMultiSaoLastOfficerNamePage, testSaoName)
     .success
     .value
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
     FakeRequest(GET, notificationMultiSaoLastOfficerStartDateRoute)
 
-  def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
+  def postRequest()(using Application): FakeRequest[AnyContentAsFormUrlEncoded] =
     FakeRequest(POST, notificationMultiSaoLastOfficerStartDateRoute)
       .withFormUrlEncodedBody(
-        "value.day"   -> validAnswer.getDayOfMonth.toString,
-        "value.month" -> validAnswer.getMonthValue.toString,
-        "value.year"  -> validAnswer.getYear.toString
+        "value.day"   -> testValidDate.getDayOfMonth.toString,
+        "value.month" -> testValidDate.getMonthValue.toString,
+        "value.year"  -> testValidDate.getYear.toString
       )
+
+  "test" in {
+    given application: Application = applicationBuilder(userAnswers = None).build()
+
+    form.fillAndValidate(testValidDate).errors mustBe Seq.empty
+  }
 
   "NotificationMultiSaoLastOfficerStartDate Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      given application: Application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
         val result = route(application, getRequest()).value
@@ -81,7 +87,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
         val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerStartDateView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form, NormalMode)(using
+        contentAsString(result) mustEqual view(testSaoName, form, NormalMode)(using
           getRequest(),
           messages(application)
         ).toString
@@ -90,7 +96,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
     "must redirect to journey recovery when sao name is not found in the database" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      given application: Application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
         val result = route(application, getRequest()).value
@@ -101,8 +107,9 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswersWithDate = userAnswers.set(NotificationMultiSaoLastOfficerStartDatePage, validAnswer).success.value
-      val application         = applicationBuilder(userAnswers = Some(userAnswersWithDate)).build()
+      val userAnswersWithDate =
+        userAnswers.set(NotificationMultiSaoLastOfficerStartDatePage, testValidDate).success.value
+      given application: Application = applicationBuilder(userAnswers = Some(userAnswersWithDate)).build()
 
       running(application) {
         val view = application.injector.instanceOf[NotificationMultiSaoLastOfficerStartDateView]
@@ -110,7 +117,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
         val result = route(application, getRequest()).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(saoName, form.fill(validAnswer), NormalMode)(using
+        contentAsString(result) mustEqual view(testSaoName, form.fill(testValidDate), NormalMode)(using
           getRequest(),
           messages(application)
         ).toString
@@ -123,7 +130,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-      val application =
+      given application: Application =
         applicationBuilder(userAnswers = Some(userAnswers))
           .overrides(
             bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
@@ -143,10 +150,10 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
       val userAnswers =
         emptyUserAnswers
-          .set(NotificationMultiSaoLastOfficerNamePage, saoName)
+          .set(NotificationMultiSaoLastOfficerNamePage, testSaoName)
           .success
           .value
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+      given application: Application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       val request =
         FakeRequest(POST, notificationMultiSaoLastOfficerStartDateRoute)
@@ -160,7 +167,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(saoName, boundForm, NormalMode)(using
+        contentAsString(result) mustEqual view(testSaoName, boundForm, NormalMode)(using
           request,
           messages(application)
         ).toString
@@ -169,7 +176,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
     "must redirect to Journey Recovery for a GET if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      given application: Application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
         val result = route(application, getRequest()).value
@@ -181,7 +188,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
 
-      val application = applicationBuilder(userAnswers = None).build()
+      given application: Application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
         val result = route(application, postRequest()).value
@@ -193,7 +200,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
     "must redirect to Journey Recovery for a POST if sao name not found in the database" in {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      given application: Application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
         val result = route(application, postRequest()).value

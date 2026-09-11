@@ -27,11 +27,13 @@ import utils.TestDataGenerator.generateAlphanumeric
 
 import scala.io.Source
 
-import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.{Clock, LocalDate}
 
 class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
 
-  private val parser = app.injector.instanceOf[UploadTemplateCsvParser]
+  private val parser                           = app.injector.instanceOf[UploadTemplateCsvParser]
+  private val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
   private def parsedRow(
       companyName: String,
@@ -374,6 +376,46 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
             TemplateError.TaxRegimeError,
             TemplateError.FinancialYearEndDateError,
             TemplateError.QualificationStatementMissingError
+          )
+        case _ =>
+          fail("Expected parser to fail when row values are invalid")
+      }
+    }
+
+    "must return validation error for financial year end date on the same day as today" in {
+      val badRow = validQualifiedDataRow
+        .updated(5, LocalDate.now(app.injector.instanceOf[Clock]).format(dateFormatter))
+
+      val csv = toCsv(
+        descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, badRow)
+      )
+
+      val result = parser.parse(csv, notificationOnly = false)
+
+      result match {
+        case Invalid(errors) =>
+          errors.map(_.error) must contain(
+            TemplateError.FinancialYearEndDateNotPastError
+          )
+        case _ =>
+          fail("Expected parser to fail when row values are invalid")
+      }
+    }
+
+    "must return validation error for financial year end date set in the future" in {
+      val badRow = validQualifiedDataRow
+        .updated(5, LocalDate.now(app.injector.instanceOf[Clock]).plusDays(1).format(dateFormatter))
+
+      val csv = toCsv(
+        descriptiveRows ++ sectionRows ++ Seq(UploadTemplateCsvParser.ExpectedHeaders, badRow)
+      )
+
+      val result = parser.parse(csv, notificationOnly = false)
+
+      result match {
+        case Invalid(errors) =>
+          errors.map(_.error) must contain(
+            TemplateError.FinancialYearEndDateNotPastError
           )
         case _ =>
           fail("Expected parser to fail when row values are invalid")

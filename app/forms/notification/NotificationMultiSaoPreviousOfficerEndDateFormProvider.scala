@@ -19,19 +19,23 @@ package forms.notification
 import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.i18n.Messages
+import utils.DateHelper
 
 import java.time.LocalDate
 import javax.inject.Inject
 
-class NotificationMultiSaoPreviousOfficerEndDateFormProvider @Inject() extends Mappings {
+class NotificationMultiSaoPreviousOfficerEndDateFormProvider @Inject() (dateHelper: DateHelper) extends Mappings {
 
-  def apply()(using messages: Messages): Form[LocalDate] =
+  def apply(previousSaoName: String)(using messages: Messages): Form[LocalDate] =
     Form(
       "value" -> localDate(
         invalidKey = "notificationMultiSaoPreviousOfficerEndDate.error.invalid",
         allRequiredKey = "notificationMultiSaoPreviousOfficerEndDate.error.required.all",
         twoRequiredKey = "notificationMultiSaoPreviousOfficerEndDate.error.required.two",
-        requiredKey = "notificationMultiSaoPreviousOfficerEndDate.error.required"
+        requiredKey = "notificationMultiSaoPreviousOfficerEndDate.error.required",
+        args = Seq(previousSaoName)
+      ).verifying(
+        maxDate(dateHelper.nowUkLocalDate.minusDays(1), "notificationMultiSaoPreviousOfficerEndDate.error.notPastDate")
       )
     )
 }

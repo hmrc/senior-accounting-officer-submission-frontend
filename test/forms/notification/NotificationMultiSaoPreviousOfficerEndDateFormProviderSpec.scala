@@ -17,52 +17,66 @@
 package forms.notification
 
 import forms.behaviours.DateBehaviours
-import play.api.i18n.Messages
-import play.api.test.Helpers.stubMessages
+import play.api.data.{Form, FormError}
 
-import java.time.{LocalDate, ZoneOffset}
+import java.time.{Clock, LocalDate}
 
 class NotificationMultiSaoPreviousOfficerEndDateFormProviderSpec extends DateBehaviours {
 
-  private given messages2: Messages = stubMessages()
-  val form                          = new NotificationMultiSaoPreviousOfficerEndDateFormProvider()()
+  val saoName               = "Firstname Lastname"
+  val form: Form[LocalDate] =
+    app.injector.instanceOf[NotificationMultiSaoPreviousOfficerEndDateFormProvider].apply(saoName)
 
   val requiredAllKey = "notificationMultiSaoPreviousOfficerEndDate.error.required.all"
   val requiredTwoKey = "notificationMultiSaoPreviousOfficerEndDate.error.required.two"
   val requiredKey    = "notificationMultiSaoPreviousOfficerEndDate.error.required"
   val invalidKey     = "notificationMultiSaoPreviousOfficerEndDate.error.invalid"
+  val notPastDateKey = "notificationMultiSaoPreviousOfficerEndDate.error.notPastDate"
 
   ".value" - {
 
     val validData = datesBetween(
       min = LocalDate.of(2000, 1, 1),
-      max = LocalDate.now(ZoneOffset.UTC)
+      max = LocalDate.now(app.injector.instanceOf[Clock]).minusDays(1)
     )
 
     behave like dateField(form, "value", validData)
 
-    behave like mandatoryDateField(form, "value", requiredAllKey)
+    behave like mandatoryDateField(form, "value", requiredAllKey, errorArgs = Seq(saoName))
+
+    behave like dateFieldWithMax(
+      form,
+      key = "value",
+      max = LocalDate.now(app.injector.instanceOf[Clock]).minusDays(1),
+      formError = FormError("value", notPastDateKey)
+    )
   }
 
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredAllKey,
-      message = "Enter the end date the SAO was responsible for the group’s tax accounting arrangements"
+      message = s"When did $saoName stop being the SAO",
+      args = saoName
     )
 
     createTestWithErrorMessageAssertion(
       key = requiredTwoKey,
-      message = "The date must include {0} and {1}"
+      message = "The date must include a {0} and a {1}"
     )
 
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "The date must include {0}"
+      message = "The date must include a {0}"
     )
 
     createTestWithErrorMessageAssertion(
       key = invalidKey,
-      message = "Enter the date in the correct format"
+      message = "End date of the SAO must be a real date"
+    )
+
+    createTestWithErrorMessageAssertion(
+      key = notPastDateKey,
+      message = "End date of the SAO must be in the past"
     )
   }
 }

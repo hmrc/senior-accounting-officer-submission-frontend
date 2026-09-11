@@ -47,21 +47,24 @@ class NotificationMultiSaoLastOfficerStartDateController @Inject() (
     with I18nSupport {
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val form         = formProvider()
-    val preparedForm = request.userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage).fold(form)(form.fill)
     request.userAnswers
       .get(NotificationMultiSaoLastOfficerNamePage)
       .fold(
         Redirect(routes.JourneyRecoveryController.onPageLoad())
-      )(saoName => Ok(view(saoName, preparedForm, mode)))
+      ) { saoName =>
+        val form         = formProvider(saoName)
+        val preparedForm = request.userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage).fold(form)(form.fill)
+
+        Ok(view(saoName, preparedForm, mode))
+      }
 
   }
 
   def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider()
       request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage) match {
         case Some(saoName) =>
+          val form = formProvider(saoName)
           form
             .bindFromRequest()
             .fold(
