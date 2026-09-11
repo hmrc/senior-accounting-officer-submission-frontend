@@ -23,7 +23,7 @@ import java.time.LocalDate
 
 trait Constraints {
 
-  private val invalidSymbolsRegex = """[<>"]""".r
+  private val InvalidSymbols = """[<>"]""".r
 
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
     Constraint { input =>
@@ -131,7 +131,7 @@ trait Constraints {
 
   protected def symbols(errorKey: String): Constraint[String] = {
     Constraint { input =>
-      if invalidSymbolsRegex.findFirstMatchIn(input).nonEmpty then {
+      if InvalidSymbols.findFirstMatchIn(input).isDefined then {
         Invalid(errorKey)
       } else {
         Valid

@@ -220,4 +220,28 @@ class ConstraintsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
       result mustEqual Invalid("error.max", CurrencyFormatter.currencyFormat(1))
     }
   }
+  "symbols" - {
+    "must return Valid for 'example_name'" in {
+      val result = symbols("example_name").apply("example_name")
+      result mustEqual Valid
+    }
+
+    "must return invalid for '>' " in {
+      val result = symbols(">").apply(">")
+      result mustEqual Invalid(">")
+    }
+    "must return invalid for '<' " in {
+      val result = symbols("<")
+      result mustEqual Invalid("")
+
+    }
+    "must return invalid for '\"' " in {
+      val result = symbols("\"")
+      result mustEqual Invalid("")
+    }
+    "must return invalid for string containg '<>\"' " in {
+      val result = symbols("example>na<me\"")
+      result mustEqual Invalid("")
+    }
+  }
 }
