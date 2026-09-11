@@ -23,9 +23,10 @@ import javax.inject.Inject
 
 class NotificationMultiSaoPreviousOfficerNameFormProvider @Inject() extends Mappings {
 
-  def apply(): Form[String] =
+  def apply(saoName: Option[String] = None): Form[String] =
     Form(
-      "value" -> text("notificationMultiSaoPreviousOfficerName.error.required")
-        .verifying(maxLength(254, "notificationMultiSaoPreviousOfficerName.error.length"))
+      "value" -> text("notificationMultiSaoPreviousOfficerName.error.required", Seq(saoName.fold("")(identity)))
+        .verifying(maxLength(105, "notificationMultiSaoPreviousOfficerName.error.length"))
+        .verifying(symbols("notificationMultiSaoPreviousOfficerName.error.invalidSymbols"))
     )
 }

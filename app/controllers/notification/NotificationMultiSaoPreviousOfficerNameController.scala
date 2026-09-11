@@ -58,8 +58,9 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val preparedForm =
+      val preparedForm = {
         request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)).fold(form)(form.fill)
+      }
       saoNameForPage(saoIndex, request.userAnswers)
         .fold(
           Redirect(routes.JourneyRecoveryController.onPageLoad())
@@ -72,7 +73,7 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
       saoNameForPage(saoIndex, request.userAnswers) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
-          form
+          formProvider(Option(saoName))
             .bindFromRequest()
             .fold(
               formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode, saoIndex))),

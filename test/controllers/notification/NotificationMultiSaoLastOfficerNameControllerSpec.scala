@@ -40,14 +40,14 @@ class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase wit
 
   def onwardRoute: Call = Call("GET", "/foo")
 
+  val saoName         = "Firstname Lastname"
+  val previousSaoName = "Previous Name"
+
   val formProvider       = new NotificationMultiSaoPreviousOfficerNameFormProvider()
-  val form: Form[String] = formProvider()
+  val form: Form[String] = formProvider(saoName = Some(saoName))
 
   lazy val notificationMultiSaoPreviousOfficerNameRoute: String =
     notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode).url
-
-  val saoName         = "Firstname Lastname"
-  val previousSaoName = "Previous Name"
 
   val userAnswersWithSaoName: UserAnswers =
     emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage, saoName).success.value

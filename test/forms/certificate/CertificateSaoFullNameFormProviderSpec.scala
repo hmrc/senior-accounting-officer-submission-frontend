@@ -17,19 +17,24 @@
 package forms.certificate
 
 import forms.behaviours.StringFieldBehaviours
+import forms.certificate.CertificateSaoFullNameFormProviderSpec.*
 import play.api.data.FormError
 
-class CertificateSaoFullNameFormProviderSpec extends StringFieldBehaviours {
+import scala.collection.immutable.ArraySeq
 
-  val requiredKey = "certificateSaoFullName.error.required"
-  val lengthKey   = "certificateSaoFullName.error.length"
-  val maxLength   = 254
+class CertificateSaoFullNameFormProviderSpec extends StringFieldBehaviours {
 
   val form = new CertificateSaoFullNameFormProvider()()
 
   ".value" - {
 
     val fieldName = "value"
+
+    behave like fieldThatBindsInvalidSymbols(
+      form,
+      fieldName,
+      FormError(fieldName, ArraySeq(invalidSymbolsKey))
+    )
 
     behave like fieldThatBindsValidData(
       form,
@@ -54,12 +59,24 @@ class CertificateSaoFullNameFormProviderSpec extends StringFieldBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter the name of the Senior Accounting Officer"
+      message = "Enter the name of the SAO responsible for the certificate"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "The name you enter must be 254 characters or less"
+      message = "Name of the SAO must be 105 characters or less"
+    )
+
+    createTestWithErrorMessageAssertion(
+      key = invalidSymbolsKey,
+      message = "Name of the SAO must not include <, > or \""
     )
   }
+}
+
+object CertificateSaoFullNameFormProviderSpec {
+  val requiredKey       = "certificateSaoFullName.error.required"
+  val lengthKey         = "certificateSaoFullName.error.length"
+  val invalidSymbolsKey = "certificateSaoFullName.error.invalidSymbols"
+  val maxLength         = 105
 }

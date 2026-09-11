@@ -23,6 +23,8 @@ import java.time.LocalDate
 
 trait Constraints {
 
+  private val InvalidSymbols = """[<>"]""".r
+
   protected def firstError[A](constraints: Constraint[A]*): Constraint[A] =
     Constraint { input =>
       constraints
@@ -117,7 +119,7 @@ trait Constraints {
 
   protected def maximumCurrency(maximum: BigDecimal, errorKey: String)(using
       ev: Ordering[BigDecimal]
-  ): Constraint[BigDecimal] =
+  ): Constraint[BigDecimal] = {
     Constraint { input =>
       if input <= maximum then {
         Valid
@@ -125,4 +127,15 @@ trait Constraints {
         Invalid(errorKey, CurrencyFormatter.currencyFormat(maximum))
       }
     }
+  }
+
+  protected def symbols(errorKey: String): Constraint[String] = {
+    Constraint { input =>
+      if InvalidSymbols.findFirstMatchIn(input).isDefined then {
+        Invalid(errorKey)
+      } else {
+        Valid
+      }
+    }
+  }
 }

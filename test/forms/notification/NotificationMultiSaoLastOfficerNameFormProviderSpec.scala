@@ -17,19 +17,24 @@
 package forms.notification
 
 import forms.behaviours.StringFieldBehaviours
+import forms.notification.NotificationMultiSaoLastOfficerNameFormProviderSpec.*
 import play.api.data.FormError
 
-class NotificationMultiSaoLastOfficerNameFormProviderSpec extends StringFieldBehaviours {
+import scala.collection.immutable.ArraySeq
 
-  val requiredKey = "notificationMultiSaoLastOfficerName.error.required"
-  val lengthKey   = "notificationMultiSaoLastOfficerName.error.length"
-  val maxLength   = 254
+class NotificationMultiSaoLastOfficerNameFormProviderSpec extends StringFieldBehaviours {
 
   val form = new NotificationMultiSaoLastOfficerNameFormProvider()()
 
   ".value" - {
 
     val fieldName = "value"
+
+    behave like fieldThatBindsInvalidSymbols(
+      form,
+      fieldName,
+      FormError(fieldName, ArraySeq(invalidSymbolsKey))
+    )
 
     behave like fieldThatBindsValidData(
       form,
@@ -54,12 +59,24 @@ class NotificationMultiSaoLastOfficerNameFormProviderSpec extends StringFieldBeh
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter the name of the last SAO"
+      message = "Enter the name of the SAO at the end of the financial year"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "The name you enter must be 254 characters or less"
+      message = "Name of the SAO must be 105 characters or less"
+    )
+
+    createTestWithErrorMessageAssertion(
+      key = invalidSymbolsKey,
+      message = "Name of the SAO must not include <, > or \""
     )
   }
+}
+
+object NotificationMultiSaoLastOfficerNameFormProviderSpec {
+  val requiredKey       = "notificationMultiSaoLastOfficerName.error.required"
+  val lengthKey         = "notificationMultiSaoLastOfficerName.error.length"
+  val invalidSymbolsKey = "notificationMultiSaoLastOfficerName.error.invalidSymbols"
+  val maxLength         = 105
 }

@@ -17,19 +17,24 @@
 package forms.notification
 
 import forms.behaviours.StringFieldBehaviours
+import forms.notification.NotificationSingleSaoOfficerNameFormProviderSpec.*
 import play.api.data.FormError
 
-class NotificationSingleSaoOfficerNameFormProviderSpec extends StringFieldBehaviours {
+import scala.collection.immutable.ArraySeq
 
-  val requiredKey = "notificationSingleSaoOfficerName.error.required"
-  val lengthKey   = "notificationSingleSaoOfficerName.error.length"
-  val maxLength   = 254
+class NotificationSingleSaoOfficerNameFormProviderSpec extends StringFieldBehaviours {
 
   val form = new NotificationSingleSaoOfficerNameFormProvider()()
 
   ".value input field" - {
 
     val fieldName = "value"
+
+    behave like fieldThatBindsInvalidSymbols(
+      form,
+      fieldName,
+      FormError(fieldName, ArraySeq(NotificationSingleSaoOfficerNameFormProviderSpec.invalidSymbolsKey))
+    )
 
     behave like fieldThatBindsValidData(
       form,
@@ -59,7 +64,19 @@ class NotificationSingleSaoOfficerNameFormProviderSpec extends StringFieldBehavi
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "The name you enter must be 254 characters or less"
+      message = "Name of the SAO must be 105 characters or less"
+    )
+
+    createTestWithErrorMessageAssertion(
+      key = invalidSymbolsKey,
+      message = "Name of the SAO must not include <, > or \""
     )
   }
+}
+
+object NotificationSingleSaoOfficerNameFormProviderSpec {
+  val requiredKey       = "notificationSingleSaoOfficerName.error.required"
+  val lengthKey         = "notificationSingleSaoOfficerName.error.length"
+  val invalidSymbolsKey = "notificationSingleSaoOfficerName.error.invalidSymbols"
+  val maxLength         = 105
 }
