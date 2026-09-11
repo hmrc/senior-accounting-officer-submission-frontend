@@ -239,7 +239,7 @@ class ConstraintsSpec extends AnyFreeSpec with Matchers with ScalaCheckPropertyC
       val result = symbols("\"")
       result mustEqual Invalid("")
     }
-    "must return invalid for string containg '<>\"' " in {
+    "must return invalid for string containing '<>\"' " in {
       val result = symbols("example>na<me\"")
       result mustEqual Invalid("")
     }
