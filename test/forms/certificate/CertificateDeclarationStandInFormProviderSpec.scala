@@ -19,14 +19,16 @@ package forms.certificate
 import forms.behaviours.StringFieldBehaviours
 import play.api.data.FormError
 
+import scala.collection.immutable.ArraySeq
+
 class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviours {
 
   val requiredKeyStandInName = "certificateDeclarationStandIn.error.standInName.required"
   val lengthKeyStandInName   = "certificateDeclarationStandIn.error.standInName.length"
-  val requiredCharsStandInName = "certificateDeclarationStandIn.error.standInName.invalidChars"
+  val requiredKeyCharsStandInName = "certificateDeclarationStandIn.error.standInName.invalidChars"
   val requiredKeySaoName     = "certificateDeclarationStandIn.error.saoName.required"
   val lengthKeySaoName       = "certificateDeclarationStandIn.error.saoName.length"
-  val requiredCharsSAOName = "certificateDeclarationStandIn.saoName.standInName.invalidChars"
+  val requiredKeyCharsSaoName = "certificateDeclarationStandIn.error.saoName.invalidChars"
   val maxLength              = 105
 
   val form = new CertificateDeclarationStandInFormProvider()()
@@ -52,6 +54,12 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
       fieldName,
       requiredError = FormError(fieldName, requiredKeyStandInName)
     )
+
+    behave like fieldThatBindsInvalidSymbols(
+      form,
+      fieldName,
+      FormError(fieldName, ArraySeq(requiredKeyCharsStandInName))
+    )
   }
 
   ".saoNameInputValue" - {
@@ -75,6 +83,12 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
       fieldName,
       requiredError = FormError(fieldName, requiredKeySaoName)
     )
+
+    behave like fieldThatBindsInvalidSymbols(
+      form,
+      fieldName,
+      FormError(fieldName, ArraySeq(requiredKeyCharsSaoName))
+    )
     
   }
 
@@ -90,6 +104,11 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
     )
 
     createTestWithErrorMessageAssertion(
+      key = requiredKeyCharsStandInName,
+      message = "Your name must not include <, > or \""
+    )
+
+    createTestWithErrorMessageAssertion(
       key = requiredKeySaoName,
       message = "Enter the name of the SAO who authorised you to submit the certificate"
     )
@@ -97,6 +116,11 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
     createTestWithErrorMessageAssertion(
       key = lengthKeySaoName,
       message = "Name of the SAO must be 105 characters or less"
+    )
+
+    createTestWithErrorMessageAssertion(
+      key = requiredKeyCharsSaoName,
+      message = "Name of the SAO must not include <, > or \""
     )
 
   }
