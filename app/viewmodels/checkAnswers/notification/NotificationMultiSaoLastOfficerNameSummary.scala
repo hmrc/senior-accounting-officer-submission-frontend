@@ -25,11 +25,12 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
+import models.NormalMode
 
 object NotificationMultiSaoLastOfficerNameSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMultiSaoLastOfficerNamePage).map { answer =>
+    answers.get(NotificationMultiSaoLastOfficerNamePage(NormalMode)).map { answer =>
       SummaryListRowViewModel(
         key = messages("notificationMultiSaoLastOfficerName.checkYourAnswersLabel").toKey,
         value = ValueViewModel(

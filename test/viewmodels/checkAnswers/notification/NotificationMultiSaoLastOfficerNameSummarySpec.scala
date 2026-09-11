@@ -25,6 +25,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import viewmodels.checkAnswers.notification.NotificationMultiSaoLastOfficerNameSummarySpec.*
+import models.NormalMode
 
 class NotificationMultiSaoLastOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -41,7 +42,7 @@ class NotificationMultiSaoLastOfficerNameSummarySpec extends SpecBase with Guice
 
     "when there is a user answer for NotificationMultiSaoLastOfficerNamePage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage, answer).get
+        emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage(NormalMode), answer).get
 
       def SUT(answer: String = "") = NotificationMultiSaoLastOfficerNameSummary.row(testUserAnswers(answer)).get
 

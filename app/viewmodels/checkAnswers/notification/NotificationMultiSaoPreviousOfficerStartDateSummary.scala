@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
-import models.{CheckMode, UserAnswers}
+import models.*
 import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
 import play.api.i18n.{Lang, Messages}
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
@@ -29,7 +29,7 @@ import viewmodels.govuk.summarylist.*
 object NotificationMultiSaoPreviousOfficerStartDateSummary {
 
   def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int)).map { answer =>
+    answers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, NormalMode)).map { answer =>
       given Lang = messages.lang
       SummaryListRowViewModel(
         key = messages("notificationMultiSaoPreviousOfficerStartDate.checkYourAnswersLabel").toKey,

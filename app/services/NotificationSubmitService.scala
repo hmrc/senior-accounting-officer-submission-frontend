@@ -72,17 +72,17 @@ object NotificationSubmitService {
       @tailrec
       def previousSaos(mongoSaoIndex: Int = 0, saos: List[Sao] = Nil): List[Sao] = {
         userAnswers
-          .get(NotificationMultiSaoPreviousOfficerNamePage(mongoSaoIndex)) match {
+          .get(NotificationMultiSaoPreviousOfficerNamePage(mongoSaoIndex, NormalMode)) match {
           case Some(name) =>
             previousSaos(
               mongoSaoIndex + 1,
               Sao(
                 name = name,
                 fromDate = userAnswers
-                  .get(NotificationMultiSaoPreviousOfficerStartDatePage(mongoSaoIndex))
+                  .get(NotificationMultiSaoPreviousOfficerStartDatePage(mongoSaoIndex, NormalMode))
                   .map(_.toString),
                 toDate = userAnswers
-                  .get(NotificationMultiSaoPreviousOfficerEndDatePage(mongoSaoIndex))
+                  .get(NotificationMultiSaoPreviousOfficerEndDatePage(mongoSaoIndex, NormalMode))
                   .map(_.toString)
               ) :: saos
             )
@@ -94,10 +94,10 @@ object NotificationSubmitService {
         case Some(true) =>
           Sao(
             name = userAnswers
-              .get(NotificationMultiSaoLastOfficerNamePage)
+              .get(NotificationMultiSaoLastOfficerNamePage(NormalMode))
               .fold(???)(identity),
             fromDate = userAnswers
-              .get(NotificationMultiSaoLastOfficerStartDatePage)
+              .get(NotificationMultiSaoLastOfficerStartDatePage(NormalMode))
               .map(_.toString),
             toDate = None
           ) :: previousSaos()

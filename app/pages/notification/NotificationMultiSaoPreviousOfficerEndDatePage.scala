@@ -22,11 +22,15 @@ import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-final case class NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex: Int) extends QuestionPage[LocalDate] {
+import models.*
+import models.Realm.*
+
+final case class NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex: Int, mode: Mode)
+    extends QuestionPage[LocalDate] {
 
   val key = "notificationMultiSaoPreviousOfficerEndDate"
 
-  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ key \ saoIndex
+  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toRealm.toString \ key \ saoIndex
 
   override def toString: String = s"$key[$saoIndex]"
 }
