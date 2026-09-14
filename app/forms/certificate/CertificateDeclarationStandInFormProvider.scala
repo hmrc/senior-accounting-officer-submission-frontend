@@ -33,16 +33,10 @@ class CertificateDeclarationStandInFormProvider @Inject() extends Mappings {
     mapping(
       "StandInName" -> text("certificateDeclarationStandIn.error.standInName.required")
         .verifying(maxLength(105, "certificateDeclarationStandIn.error.standInName.length"))
-        .verifying(
-          "certificateDeclarationStandIn.error.standInName.invalidChars",
-          name => illegalCharsRegex.findFirstIn(name).isEmpty
-        ),
+        .verifying(symbols("certificateDeclarationStandIn.error.standInName.invalidChars")),
       "SaoName" -> text("certificateDeclarationStandIn.error.saoName.required")
         .verifying(maxLength(105, "certificateDeclarationStandIn.error.saoName.length"))
-        .verifying(
-          "certificateDeclarationStandIn.error.saoName.invalidChars",
-          name => illegalCharsRegex.findFirstIn(name).isEmpty
-        )
+        .verifying(symbols("certificateDeclarationStandIn.error.saoName.invalidChars"))
     )(CertificateDeclarationStandIn.apply)(x => Some((x.StandInName, x.SaoName)))
   )
 }
