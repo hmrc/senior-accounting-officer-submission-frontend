@@ -25,6 +25,7 @@ import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import models.NormalMode
+import models.TransactionMode
 
 class NotificationMoreThanOneSaoSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -79,7 +80,7 @@ class NotificationMoreThanOneSaoSummarySpec extends SpecBase with GuiceOneAppPer
 
         "must have expected url" in {
           action.href mustBe notificationRoutes.NotificationMoreThanOneSaoController
-            .onPageLoad(CheckMode)
+            .onPageLoad(TransactionMode)
             .url
         }
 

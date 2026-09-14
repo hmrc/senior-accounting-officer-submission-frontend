@@ -38,35 +38,6 @@ class SaoUserAnswersService extends Logging @Inject {
   val multiSaoEndDateKey: String   = NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode).key
   val multiSaoAddedAllKey: String  = NotificationMultiSaoAreAllAddedPage(0, NormalMode).key
 
-  // TODO: remove
-  def cleanupMultiSaoDataAfterIndex(userAnswers: UserAnswers, saoIndex: Int): UserAnswers = {
-    val userAnsweredYes = userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)) == Some(true)
-
-    if userAnsweredYes then {
-
-      val takeFromArray = of[JsArray].map { case JsArray(contents) => JsArray(contents.take(saoIndex + 1)) }
-
-      val transformer = (__ \ "notification").json.update(
-        (__ \ multiSaoNameKey).json.update(takeFromArray) andThen
-          (__ \ multiSaoStartDateKey).json.update(takeFromArray) andThen
-          (__ \ multiSaoEndDateKey).json.update(takeFromArray) andThen
-          (__ \ multiSaoAddedAllKey).json.update(takeFromArray)
-      )
-
-      userAnswers.data.transform(transformer) match {
-        case JsError(_)                => ???
-        case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
-      }
-    } else {
-      userAnswers
-    }
-  }
-
-  def jacobPrint[A](a: A): A = {
-    println(a)
-    a
-  }
-
   def sanitiseUserAnswers(userAnswers: UserAnswers): UserAnswers = {
     userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
       case Some(true) =>
@@ -196,44 +167,5 @@ class SaoUserAnswersService extends Logging @Inject {
     userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, NormalMode)).nonEmpty &&
     userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, NormalMode)).nonEmpty &&
     userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)).nonEmpty
-  }
-
-  /** Remove from useranswers data which concerns the other SAO flow.
-    *
-    * If the user is providing answers for a single SAO, delete any answers they might have provided for multiple SAOs,
-    * and vice versa.
-    */
-  def removeOtherSaoJourneyData(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
-      case Some(true) => {
-        val transformer = (__ \ "notification" \ singleSaoNameKey).json.prune
-
-        userAnswers.data.transform(transformer) match {
-          case JsError(errors)           => ???
-          case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
-        }
-      }
-      case Some(false) => pruneMultiSaoAnswers(userAnswers)
-      case None        => ???
-    }
-  }
-
-  private def pruneMultiSaoAnswers(userAnswers: UserAnswers): UserAnswers = {
-    val transformer =
-      (__ \ "notification" \ "Shadow").json.prune andThen
-        (__ \ "notification" \ "Actual" \ multiSaoLastNameKey).json.prune andThen
-        (__ \ "notification" \ "Actual" \ multiSaoLastStartDateKey).json.prune andThen
-        (__ \ "notification" \ "Actual" \ multiSaoNameKey).json.prune andThen
-        (__ \ "notification" \ "Actual" \ multiSaoStartDateKey).json.prune andThen
-        (__ \ "notification" \ "Actual" \ multiSaoEndDateKey).json.prune andThen
-        (__ \ "notification" \ "Actual" \ multiSaoAddedAllKey).json.prune andThen
-        (__ \ "notification").read[JsObject].map { o =>
-          o ++ Json.obj("Shadow" -> (userAnswers.data("notification")("Actual")))
-        }
-
-    userAnswers.data.transform(transformer) match {
-      case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
-      case JsError(_)                => ???
-    }
   }
 }

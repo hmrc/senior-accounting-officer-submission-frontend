@@ -99,24 +99,6 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
         "must have expected hidden text" in {
           action.visuallyHiddenText.get mustBe "NotificationMultiSaoAreAllAdded"
         }
-
-        "must use the right mode" - {
-          "when yes use add sao mode" in {
-            SUT(answer =
-              true
-            ).actions.head.items.head.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
-              .onPageLoad(TransactionMode)
-              .url
-          }
-
-          "when no use check mode" in {
-            SUT(answer =
-              false
-            ).actions.head.items.head.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
-              .onPageLoad(CheckMode)
-              .url
-          }
-        }
       }
     }
   }

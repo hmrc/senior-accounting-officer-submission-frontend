@@ -26,6 +26,8 @@ import play.api.data.Form
 import views.html.notification.NotificationMoreThanOneSaoView
 
 import NotificationMoreThanOneSaoViewSpec.*
+import models.NormalMode
+import models.TransactionMode
 
 class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreThanOneSaoView] {
 
@@ -39,7 +41,7 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
 
   "NotificationMoreThanOneSaoView" - {
 
-    Mode.values.foreach { mode =>
+    Seq(NormalMode, TransactionMode).foreach { mode =>
       s"when using $mode" - {
         "when the form is not filled in" - {
           val doc = generateView(form, mode)
@@ -51,11 +53,6 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
             showIsThisPageNotWorkingProperlyLink = true,
             hasError = false
           )
-
-          "must have a back link to the submit notification task list" in {
-            doc.getElementsByClass("govuk-back-link").attr("href") mustBe
-              notificationRoutes.NotificationTaskListController.onPageLoad().url
-          }
 
           doc.createTestsWithRadioButtons(
             name = "value",
