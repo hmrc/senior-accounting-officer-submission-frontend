@@ -27,6 +27,7 @@ import javax.inject.Inject
 
 import models.NormalMode
 import play.api.Logging
+import models.TransactionMode
 
 class SaoUserAnswersService extends Logging @Inject {
 
@@ -167,5 +168,100 @@ class SaoUserAnswersService extends Logging @Inject {
     userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, NormalMode)).nonEmpty &&
     userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, NormalMode)).nonEmpty &&
     userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)).nonEmpty
+  }
+
+  def commitTransaction(userAnswers: UserAnswers): UserAnswers = {
+    if userAnswers.get(NotificationMoreThanOneSaoPage(TransactionMode)) == Some(true) then {
+      commitMultiSaoTransaction(userAnswers)
+    } else {
+      commitSingleSaoTransaction(userAnswers)
+    }
+  }
+
+  private def commitSingleSaoTransaction(userAnswers: UserAnswers): UserAnswers = {
+    userAnswers.get(NotificationMoreThanOneSaoPage(TransactionMode)).fold(userAnswers) { moreThanOne =>
+      userAnswers.get(NotificationSingleSaoOfficerNamePage(TransactionMode)).fold(userAnswers) { name =>
+        userAnswers
+          .set(NotificationMoreThanOneSaoPage(NormalMode), moreThanOne)
+          .get
+          .set(NotificationSingleSaoOfficerNamePage(NormalMode), name)
+          .get
+      }
+    }
+  }
+
+  private def commitMultiSaoTransaction(userAnswers: UserAnswers): UserAnswers = {
+    def commitOneSao(userAnswers: UserAnswers, saoIndex: Int): UserAnswers = {
+      userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, TransactionMode)).fold(userAnswers) {
+        previousOfficerName =>
+          userAnswers
+            .get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, TransactionMode))
+            .fold(userAnswers) { previousOfficerStartDate =>
+              userAnswers
+                .get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, TransactionMode))
+                .fold(userAnswers) { previousOfficerEndDate =>
+                  userAnswers
+                    .get(NotificationMultiSaoAreAllAddedPage(saoIndex, TransactionMode))
+                    .fold(userAnswers) { areAllAdded =>
+                      userAnswers
+                        .set(
+                          NotificationMultiSaoPreviousOfficerNamePage(saoIndex, NormalMode),
+                          previousOfficerName
+                        )
+                        .get
+                        .set(
+                          NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, NormalMode),
+                          previousOfficerStartDate
+                        )
+                        .get
+                        .set(
+                          NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, NormalMode),
+                          previousOfficerEndDate
+                        )
+                        .get
+                        .set(
+                          NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode),
+                          areAllAdded
+                        )
+                        .get
+                    }
+                }
+            }
+      }
+    }
+
+    @tailrec
+    def recur(userAnswers: UserAnswers, saoIndex: Int): UserAnswers = {
+      if userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, TransactionMode)) == Some(true) then {
+        commitOneSao(userAnswers, saoIndex)
+      } else {
+        recur(
+          commitOneSao(userAnswers, saoIndex),
+          saoIndex + 1
+        )
+      }
+    }
+    userAnswers
+      .get(NotificationMoreThanOneSaoPage(TransactionMode))
+      .fold(userAnswers) { moreThanOne =>
+        userAnswers.get(NotificationMultiSaoLastOfficerNamePage(TransactionMode)).fold(userAnswers) { lastOfficerName =>
+          userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage(TransactionMode)).fold(userAnswers) {
+            lastOfficerStartDate =>
+              recur(
+                userAnswers
+                  .set(NotificationMoreThanOneSaoPage(NormalMode), moreThanOne)
+                  .get
+                  .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
+                  .get
+                  .set(
+                    NotificationMultiSaoLastOfficerStartDatePage(NormalMode),
+                    lastOfficerStartDate
+                  )
+                  .get,
+                0
+              )
+          }
+        }
+      }
   }
 }

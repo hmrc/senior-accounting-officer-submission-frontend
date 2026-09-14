@@ -179,10 +179,132 @@ class SaoUserAnswersServiceSpec extends SpecBase {
       }
     }
   }
+
+  "commitTransaction" - {
+    "commiting a single sao transaction" in {
+      val input = UserAnswers("test")
+        .set(NotificationMoreThanOneSaoPage(TransactionMode), false)
+        .get
+        .set(NotificationSingleSaoOfficerNamePage(TransactionMode), singleOfficerName)
+        .get
+
+      val expected = UserAnswers("test")
+        .set(NotificationMoreThanOneSaoPage(TransactionMode), false)
+        .get
+        .set(NotificationSingleSaoOfficerNamePage(TransactionMode), singleOfficerName)
+        .get
+        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
+        .get
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
+        .get
+
+      val result = SUT.commitTransaction(input)
+      result.data mustBe expected.data
+    }
+    "commiting a multi sao transaction" in {
+      val input = UserAnswers("test")
+        .set(NotificationMoreThanOneSaoPage(TransactionMode), true)
+        .get
+        .set(NotificationMultiSaoLastOfficerNamePage(TransactionMode), lastOfficerName)
+        .get
+        .set(NotificationMultiSaoLastOfficerStartDatePage(TransactionMode), lastOfficerStartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0, TransactionMode), previousOfficer1Name)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, TransactionMode), previousOfficer1StartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, TransactionMode), previousOfficer1EndDate)
+        .get
+        .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerNamePage(1, TransactionMode), previousOfficer2Name)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, TransactionMode), previousOfficer2StartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, TransactionMode), previousOfficer2EndDate)
+        .get
+        .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerNamePage(2, TransactionMode), previousOfficer3Name)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, TransactionMode), previousOfficer3StartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, TransactionMode), previousOfficer3EndDate)
+        .get
+        .set(NotificationMultiSaoAreAllAddedPage(2, TransactionMode), true)
+        .get
+
+      val expected = UserAnswers("test")
+        .set(NotificationMoreThanOneSaoPage(NormalMode), true)
+        .get
+        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
+        .get
+        .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), lastOfficerStartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
+        .get
+        .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
+        .get
+        .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
+        .get
+        .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
+        .get
+        .set(NotificationMoreThanOneSaoPage(TransactionMode), true)
+        .get
+        .set(NotificationMultiSaoLastOfficerNamePage(TransactionMode), lastOfficerName)
+        .get
+        .set(NotificationMultiSaoLastOfficerStartDatePage(TransactionMode), lastOfficerStartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0, TransactionMode), previousOfficer1Name)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, TransactionMode), previousOfficer1StartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, TransactionMode), previousOfficer1EndDate)
+        .get
+        .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerNamePage(1, TransactionMode), previousOfficer2Name)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, TransactionMode), previousOfficer2StartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, TransactionMode), previousOfficer2EndDate)
+        .get
+        .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerNamePage(2, TransactionMode), previousOfficer3Name)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, TransactionMode), previousOfficer3StartDate)
+        .get
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, TransactionMode), previousOfficer3EndDate)
+        .get
+        .set(NotificationMultiSaoAreAllAddedPage(2, TransactionMode), true)
+        .get
+
+      val result = SUT.commitTransaction(input)
+      result.data mustBe expected.data
+    }
+  }
 }
 
 object SaoUserAnswersServiceSpec {
   val lastOfficerName                      = "Firstname Lastname"
+  val lastOfficerStartDate: LocalDate      = LocalDate.of(3, 2, 5)
   val previousOfficer1Name                 = "Firstname Lastname II"
   val previousOfficer1StartDate: LocalDate = LocalDate.of(1, 1, 1)
   val previousOfficer1EndDate: LocalDate   = LocalDate.of(2, 2, 2)
