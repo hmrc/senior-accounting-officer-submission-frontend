@@ -35,12 +35,12 @@ class $className$FormProviderSpec extends DateBehaviours {
 
     createTestWithErrorMessageAssertion(
       key = requiredTwoKey,
-      message = "The $className;format="decap"$ must include {0} and {1}"
+      message = "The $className;format="decap"$ must include a {0} and a {1}"
     )
 
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "The $className;format="decap"$ must include {0}"
+      message = "The $className;format="decap"$ must include a {0}"
     )
 
     createTestWithErrorMessageAssertion(
