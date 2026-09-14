@@ -16,11 +16,11 @@
 
 package pages.notification
 
+import models.*
+import models.Realm.*
 import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import models.*
-import models.Realm.*
 
 final case class NotificationMultiSaoLastOfficerNamePage(mode: Mode) extends QuestionPage[String] {
 

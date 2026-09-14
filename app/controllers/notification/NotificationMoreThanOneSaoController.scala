@@ -19,6 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import forms.notification.NotificationMoreThanOneSaoFormProvider
 import models.Mode
+import models.NormalMode
 import navigation.NotificationNavigator
 import pages.notification.NotificationMoreThanOneSaoPage
 import play.api.Logging
@@ -34,7 +35,6 @@ import views.html.notification.NotificationMoreThanOneSaoView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import models.NormalMode
 
 class NotificationMoreThanOneSaoController @Inject() (
     override val messagesApi: MessagesApi,

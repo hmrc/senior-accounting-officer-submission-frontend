@@ -16,11 +16,11 @@
 
 package pages.notification
 
+import models.Mode
+import models.Realm.toRealm
 import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import models.Mode
-import models.Realm.toRealm
 
 final case class NotificationSingleSaoOfficerNamePage(mode: Mode) extends QuestionPage[String] {
 

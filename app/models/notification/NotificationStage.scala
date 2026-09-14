@@ -16,13 +16,13 @@
 
 package models.notification
 
+import models.NormalMode
 import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
 import models.{TaskStatus, UserAnswers}
 import pages.*
 import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.libs.json.*
-import models.NormalMode
 
 enum NotificationStage(
     val provideSaoDetailsStatus: TaskStatus = NotStarted,
@@ -72,11 +72,6 @@ object NotificationStage {
     userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).exists { case _ =>
       true
     }
-
-  private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
-    (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0, NormalMode).key)
-      .asOpt[Seq[Boolean]]
-      .exists(_.contains(true))
 
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty) &&

@@ -16,14 +16,13 @@
 
 package services
 
+import models.NormalMode
 import models.UserAnswers
 import models.upload.UploadTemplateTableData
 import pages.*
 import pages.notification.*
 
 import javax.inject.{Inject, Singleton}
-
-import models.NormalMode
 
 object UploadTemplatePlaybackService {
   final case class Playback(tableData: UploadTemplateTableData, saoName: String)

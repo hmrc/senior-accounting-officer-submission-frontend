@@ -17,6 +17,7 @@
 package services
 
 import connectors.ProtectedServiceConnector
+import models.NormalMode
 import models.UserAnswers
 import models.notification.*
 import models.upload.UploadTemplateTableData
@@ -31,8 +32,6 @@ import scala.annotation.tailrec
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-
-import models.NormalMode
 
 class NotificationSubmitService @Inject() (
     protectedServiceConnector: ProtectedServiceConnector,

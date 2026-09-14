@@ -27,7 +27,6 @@ import pages.notification.*
 import services.csvparser.UploadTemplateCsvSchema.{Column, TemplateError}
 
 import java.time.LocalDate
-import scala.annotation.tailrec
 
 class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 

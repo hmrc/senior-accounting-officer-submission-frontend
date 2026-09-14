@@ -18,14 +18,13 @@ package viewmodels.checkAnswers.notification
 
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
-import models.CheckMode
+import models.NormalMode
+import models.TransactionMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationMoreThanOneSaoPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
-import models.NormalMode
-import models.TransactionMode
 
 class NotificationMoreThanOneSaoSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)

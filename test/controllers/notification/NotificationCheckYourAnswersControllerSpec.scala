@@ -20,11 +20,19 @@ import base.SpecBase
 import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.NormalMode
+import models.TransactionMode
+import models.UserAnswers
 import models.notification.NotificationSubmissionError
+import models.upload.UploadTemplateTableData
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
+import pages.notification.NotificationMoreThanOneSaoPage
+import pages.notification.NotificationSingleSaoOfficerNamePage
+import pages.notification.UploadTemplateReviewPage
+import pages.notification.UploadTemplateTablePage
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, Call, Request}
@@ -36,14 +44,6 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, InternalServerException}
 import views.html.notification.NotificationCheckYourAnswersView
 
 import scala.concurrent.Future
-import models.NormalMode
-import models.UserAnswers
-import models.upload.UploadTemplateTableData
-import pages.notification.NotificationMoreThanOneSaoPage
-import pages.notification.UploadTemplateTablePage
-import pages.notification.NotificationSingleSaoOfficerNamePage
-import pages.notification.UploadTemplateReviewPage
-import models.TransactionMode
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 

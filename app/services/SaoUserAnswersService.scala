@@ -16,8 +16,11 @@
 
 package services
 
+import models.NormalMode
+import models.TransactionMode
 import models.UserAnswers
 import pages.notification.*
+import play.api.Logging
 import play.api.libs.json.*
 import play.api.libs.json.Reads.*
 
@@ -25,19 +28,15 @@ import scala.annotation.tailrec
 
 import javax.inject.Inject
 
-import models.NormalMode
-import play.api.Logging
-import models.TransactionMode
-
 class SaoUserAnswersService extends Logging @Inject {
 
-  val singleSaoNameKey             = NotificationSingleSaoOfficerNamePage(NormalMode).toString
-  val multiSaoLastNameKey          = NotificationMultiSaoLastOfficerNamePage(NormalMode).toString
-  val multiSaoLastStartDateKey     = NotificationMultiSaoLastOfficerStartDatePage(NormalMode).toString
-  val multiSaoNameKey: String      = NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode).key
-  val multiSaoStartDateKey: String = NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode).key
-  val multiSaoEndDateKey: String   = NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode).key
-  val multiSaoAddedAllKey: String  = NotificationMultiSaoAreAllAddedPage(0, NormalMode).key
+  val singleSaoNameKey: String         = NotificationSingleSaoOfficerNamePage(NormalMode).toString
+  val multiSaoLastNameKey: String      = NotificationMultiSaoLastOfficerNamePage(NormalMode).toString
+  val multiSaoLastStartDateKey: String = NotificationMultiSaoLastOfficerStartDatePage(NormalMode).toString
+  val multiSaoNameKey: String          = NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode).key
+  val multiSaoStartDateKey: String     = NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode).key
+  val multiSaoEndDateKey: String       = NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode).key
+  val multiSaoAddedAllKey: String      = NotificationMultiSaoAreAllAddedPage(0, NormalMode).key
 
   def sanitiseUserAnswers(userAnswers: UserAnswers): UserAnswers = {
     userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {

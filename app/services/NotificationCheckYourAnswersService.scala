@@ -16,6 +16,7 @@
 
 package services
 
+import models.NormalMode
 import models.UserAnswers
 import pages.notification.NotificationMoreThanOneSaoPage
 import pages.notification.NotificationMultiSaoAreAllAddedPage
@@ -25,7 +26,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.notification.*
 
 import scala.annotation.tailrec
-import models.NormalMode
 
 class NotificationCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
