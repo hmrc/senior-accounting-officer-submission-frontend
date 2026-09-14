@@ -36,6 +36,14 @@ import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, InternalServerException}
 import views.html.notification.NotificationCheckYourAnswersView
 
 import scala.concurrent.Future
+import models.NormalMode
+import models.UserAnswers
+import models.upload.UploadTemplateTableData
+import pages.notification.NotificationMoreThanOneSaoPage
+import pages.notification.UploadTemplateTablePage
+import pages.notification.NotificationSingleSaoOfficerNamePage
+import pages.notification.UploadTemplateReviewPage
+import models.TransactionMode
 
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
@@ -47,7 +55,19 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       val mockService = mock[NotificationCheckYourAnswersService]
       when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
-      val userAnswers = completedNotificationReviewAnswers
+      val userAnswers = emptyUserAnswers
+        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
+        .get
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
+        .get
+        .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
+        .get
+        .set(UploadTemplateReviewPage, true)
+        .get
+        .set(NotificationMoreThanOneSaoPage(TransactionMode), false)
+        .get
+        .set(NotificationSingleSaoOfficerNamePage(TransactionMode), "Jackson Brown")
+        .get
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(

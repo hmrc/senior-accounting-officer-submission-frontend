@@ -24,111 +24,11 @@ import java.time.LocalDate
 
 import SaoUserAnswersServiceSpec.*
 import models.NormalMode
+import models.TransactionMode
 
 class SaoUserAnswersServiceSpec extends SpecBase {
 
   def SUT = new SaoUserAnswersService
-
-  "cleanupMultiSaoDataAfterIndex" - {
-    "User answered yes to are all saos added at provided sao index" - {
-      "Subsequent multi sao data is removed from user answers" in {
-
-        val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-          .get
-          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
-          .get
-
-        val expected = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-          .get
-          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
-          .get
-
-        val result = SUT.cleanupMultiSaoDataAfterIndex(input, 1)
-        result.data mustBe expected.data
-      }
-    }
-
-    "User answered no to are all saos added at provided sao index" - {
-      "No change is made to user answers" in {
-
-        val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-          .get
-          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
-          .get
-
-        val expected = input
-        val result   = SUT.cleanupMultiSaoDataAfterIndex(input, 0)
-        result.data mustBe expected.data
-      }
-    }
-  }
 
   "sanitiseUserAnswers" - {
     "user has provided details for a single sao" - {
@@ -169,6 +69,10 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .set(NotificationMoreThanOneSaoPage(NormalMode), false)
           .get
           .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
+          .get
+          .set(NotificationMoreThanOneSaoPage(TransactionMode), false)
+          .get
+          .set(NotificationSingleSaoOfficerNamePage(TransactionMode), singleOfficerName)
           .get
 
         val result = SUT.sanitiseUserAnswers(input)
@@ -241,128 +145,36 @@ class SaoUserAnswersServiceSpec extends SpecBase {
           .get
           .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
           .get
+          .set(NotificationMoreThanOneSaoPage(TransactionMode), true)
+          .get
+          .set(NotificationMultiSaoLastOfficerNamePage(TransactionMode), lastOfficerName)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerNamePage(0, TransactionMode), previousOfficer1Name)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, TransactionMode), previousOfficer1StartDate)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, TransactionMode), previousOfficer1EndDate)
+          .get
+          .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerNamePage(1, TransactionMode), previousOfficer2Name)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, TransactionMode), previousOfficer2StartDate)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, TransactionMode), previousOfficer2EndDate)
+          .get
+          .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerNamePage(2, TransactionMode), previousOfficer3Name)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, TransactionMode), previousOfficer3StartDate)
+          .get
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, TransactionMode), previousOfficer3EndDate)
+          .get
+          .set(NotificationMultiSaoAreAllAddedPage(2, TransactionMode), true)
+          .get
 
         val result = SUT.sanitiseUserAnswers(input)
-        result.data mustBe expected.data
-      }
-    }
-  }
-
-  "removeOtherSaoJourneyData" - {
-    "user has provided details for a single sao" - {
-      "multi sao user answers are pruned" in {
-        val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-          .get
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
-          .get
-          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), true)
-          .get
-
-        val expected = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-          .get
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
-          .get
-
-        val result = SUT.removeOtherSaoJourneyData(input)
-        result.data mustBe expected.data
-      }
-    }
-
-    "user has provided details for multiple saos" - {
-      "single sao user answers are pruned" in {
-        val input = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-          .get
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleOfficerName)
-          .get
-          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(3, NormalMode), previousOfficer4Name)
-          .get
-
-        val expected = UserAnswers("test")
-          .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-          .get
-          .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastOfficerName)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), previousOfficer1Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), previousOfficer1StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), previousOfficer1EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), previousOfficer2Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), previousOfficer2StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), previousOfficer2EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(2, NormalMode), previousOfficer3Name)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerStartDatePage(2, NormalMode), previousOfficer3StartDate)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(2, NormalMode), previousOfficer3EndDate)
-          .get
-          .set(NotificationMultiSaoAreAllAddedPage(2, NormalMode), false)
-          .get
-          .set(NotificationMultiSaoPreviousOfficerNamePage(3, NormalMode), previousOfficer4Name)
-          .get
-
-        val result = SUT.removeOtherSaoJourneyData(input)
         result.data mustBe expected.data
       }
     }

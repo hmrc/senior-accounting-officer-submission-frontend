@@ -148,7 +148,7 @@ class NotificationNavigator @Inject() () extends Navigator {
               notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(TransactionMode)
             }
           }
-          case _ => ???
+          case None => ???
         }
     case NotificationSingleSaoOfficerNamePage(_) =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
