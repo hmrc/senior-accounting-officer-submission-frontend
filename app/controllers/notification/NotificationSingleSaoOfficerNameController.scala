@@ -69,25 +69,13 @@ class NotificationSingleSaoOfficerNameController @Inject() (
             for {
               updatedAnswers <- Future
                 .fromTry(request.userAnswers.set(NotificationSingleSaoOfficerNamePage(mode), value))
-              maybeAppliedAnswers = commitTransaction(updatedAnswers, mode)
-              _ <- sessionRepository.set(maybeAppliedAnswers)
+              inTransactionMode = mode == TransactionMode
+              committedAnswers  =
+                if inTransactionMode
+                then { saoUserAnswersService.commitTransaction(updatedAnswers) }
+                else { updatedAnswers }
+              _ <- sessionRepository.set(committedAnswers)
             } yield Redirect(navigator.nextPage(NotificationSingleSaoOfficerNamePage(mode), mode, updatedAnswers))
         )
-  }
-
-  def commitTransaction(userAnswers: UserAnswers, mode: Mode): UserAnswers = {
-    if mode == TransactionMode then {
-      userAnswers.get(NotificationMoreThanOneSaoPage(TransactionMode)).fold(userAnswers) { moreThanOne =>
-        userAnswers.get(NotificationSingleSaoOfficerNamePage(TransactionMode)).fold(userAnswers) { name =>
-          userAnswers
-            .set(NotificationMoreThanOneSaoPage(NormalMode), moreThanOne)
-            .get
-            .set(NotificationSingleSaoOfficerNamePage(NormalMode), name)
-            .get
-        }
-      }
-    } else {
-      userAnswers
-    }
   }
 }
