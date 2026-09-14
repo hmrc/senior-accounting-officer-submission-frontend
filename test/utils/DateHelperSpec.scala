@@ -72,7 +72,7 @@ class DateHelperSpec extends SpecBase {
         val dateHelper       = SUT(testInstant)
         val futureDateHelper = dateHelper.futureDateHelper
 
-        import futureDateHelper.*
+        import futureDateHelper.isFutureDate
 
         val date = LocalDate.of(2020, 1, 26)
 
@@ -84,7 +84,7 @@ class DateHelperSpec extends SpecBase {
         val dateHelper       = SUT(testInstant)
         val futureDateHelper = dateHelper.futureDateHelper
 
-        import futureDateHelper.*
+        import futureDateHelper.isFutureDate
 
         val date = LocalDate.of(2020, 1, 27)
 
@@ -96,7 +96,7 @@ class DateHelperSpec extends SpecBase {
         val dateHelper       = SUT(testInstant)
         val futureDateHelper = dateHelper.futureDateHelper
 
-        import futureDateHelper.*
+        import futureDateHelper.isFutureDate
 
         val date = LocalDate.of(2020, 1, 28)
 
@@ -111,7 +111,7 @@ class DateHelperSpec extends SpecBase {
         val dateHelper       = SUT(testInstant)
         val futureDateHelper = dateHelper.futureDateHelper
 
-        import futureDateHelper.*
+        import futureDateHelper.isFutureDate
 
         val date = LocalDate.of(2020, 9, 26)
 
@@ -124,7 +124,7 @@ class DateHelperSpec extends SpecBase {
         val dateHelper       = SUT(testInstant)
         val futureDateHelper = dateHelper.futureDateHelper
 
-        import futureDateHelper.*
+        import futureDateHelper.isFutureDate
 
         val date = LocalDate.of(2020, 9, 27)
 
@@ -137,7 +137,7 @@ class DateHelperSpec extends SpecBase {
         val dateHelper       = SUT(testInstant)
         val futureDateHelper = dateHelper.futureDateHelper
 
-        import futureDateHelper.*
+        import futureDateHelper.isFutureDate
 
         val date = LocalDate.of(2020, 9, 27)
 
@@ -150,7 +150,7 @@ class DateHelperSpec extends SpecBase {
         val dateHelper       = SUT(testInstant)
         val futureDateHelper = dateHelper.futureDateHelper
 
-        import futureDateHelper.*
+        import futureDateHelper.isFutureDate
 
         val date = LocalDate.of(2020, 9, 28)
 
@@ -168,7 +168,7 @@ class DateHelperSpec extends SpecBase {
       val dateHelper       = SUT(testInstant)
       val futureDateHelper = dateHelper.futureDateHelper
 
-      import futureDateHelper.*
+      import futureDateHelper.isFutureDate
 
       val date = LocalDate.of(2020, 1, 27)
 
@@ -180,7 +180,7 @@ class DateHelperSpec extends SpecBase {
       val dateHelper       = SUT(testInstant)
       val futureDateHelper = dateHelper.futureDateHelper
 
-      import futureDateHelper.*
+      import futureDateHelper.isFutureDate
 
       val date = LocalDate.of(2020, 1, 27)
 
@@ -192,7 +192,7 @@ class DateHelperSpec extends SpecBase {
       val dateHelper       = SUT(testInstant)
       val futureDateHelper = dateHelper.futureDateHelper
 
-      import futureDateHelper.*
+      import futureDateHelper.isFutureDate
 
       val date = LocalDate.of(2020, 9, 27)
 
@@ -204,7 +204,7 @@ class DateHelperSpec extends SpecBase {
       val dateHelper       = SUT(testInstant)
       val futureDateHelper = dateHelper.futureDateHelper
 
-      import futureDateHelper.*
+      import futureDateHelper.isFutureDate
 
       val date = LocalDate.of(2020, 9, 28)
 

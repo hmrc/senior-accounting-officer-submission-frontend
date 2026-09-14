@@ -69,12 +69,6 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
         "value.year"  -> testValidDate.getYear.toString
       )
 
-  "test" in {
-    given application: Application = applicationBuilder(userAnswers = None).build()
-
-    form.fillAndValidate(testValidDate).errors mustBe Seq.empty
-  }
-
   "NotificationMultiSaoLastOfficerStartDate Controller" - {
 
     "must return OK and the correct view for a GET" in {

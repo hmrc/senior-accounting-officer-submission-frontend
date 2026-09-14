@@ -193,7 +193,7 @@ class CompanyFieldParser @Inject() () {
   )(using futureDateHelper: FutureDateHelper): (Option[LocalDate], Vector[TemplateParseError]) =
     Try(LocalDate.parse(value, FinancialYearEndDateFormatter)).toOption
       .map { parsed =>
-        import futureDateHelper.*
+        import futureDateHelper.isFutureDate
         if parsed.isFutureDate then
           (
             None,

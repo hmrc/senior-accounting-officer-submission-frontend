@@ -19,39 +19,42 @@ package controllers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
+import forms.notification.NotificationMultiSaoPreviousOfficerStartDateFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage}
+import pages.notification.{
+  NotificationMultiSaoPreviousOfficerNamePage,
+  NotificationMultiSaoPreviousOfficerStartDatePage
+}
 import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import views.html.notification.NotificationMultiSaoPreviousOfficerEndDateView
+import views.html.notification.NotificationMultiSaoPreviousOfficerStartDateView
 
 import scala.concurrent.Future
 
 import java.time.{LocalDate, ZoneOffset}
 
-class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with MockitoSugar {
+class NotificationMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBase with MockitoSugar {
 
+  val testSaoName              = "Firstname Lastname"
   val testValidDate: LocalDate = LocalDate.now(ZoneOffset.UTC).minusDays(1)
-  val testSaoName: String      = "Firstname Lastname"
 
   private def form(using app: Application) =
     app.injector
-      .instanceOf[NotificationMultiSaoPreviousOfficerEndDateFormProvider]
+      .instanceOf[NotificationMultiSaoPreviousOfficerStartDateFormProvider]
       .apply(testSaoName)(using messages(app))
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  lazy val notificationMultiSaoPreviousOfficerEndDateRoute: String =
-    notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode).url
+  lazy val notificationMultiSaoPreviousOfficerStartDateRoute: String =
+    notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(NormalMode).url
 
   val userAnswersWithSaoName: UserAnswers =
     emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0), testSaoName).success.value
@@ -59,17 +62,17 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
   val saoIndex = 0
 
   def getRequest(): FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, notificationMultiSaoPreviousOfficerEndDateRoute)
+    FakeRequest(GET, notificationMultiSaoPreviousOfficerStartDateRoute)
 
   def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, notificationMultiSaoPreviousOfficerEndDateRoute)
+    FakeRequest(POST, notificationMultiSaoPreviousOfficerStartDateRoute)
       .withFormUrlEncodedBody(
         "value.day"   -> testValidDate.getDayOfMonth.toString,
         "value.month" -> testValidDate.getMonthValue.toString,
         "value.year"  -> testValidDate.getYear.toString
       )
 
-  "NotificationMultiSaoPreviousOfficerEndDate Controller" - {
+  "NotificationMultiSaoPreviousOfficerStartDate Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
@@ -78,7 +81,7 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
       running(application) {
         val result = route(application, getRequest()).value
 
-        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerEndDateView]
+        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerStartDateView]
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(testSaoName, form, NormalMode, saoIndex)(using
@@ -104,14 +107,14 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
 
       val userAnswers =
         userAnswersWithSaoName
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex), testValidDate)
+          .set(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex), testValidDate)
           .success
           .value
 
       given application: Application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerEndDateView]
+        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerStartDateView]
 
         val result = route(application, getRequest()).value
 
@@ -145,18 +148,40 @@ class NotificationMoreSaoSecondEndDateControllerSpec extends SpecBase with Mocki
       }
     }
 
+    "must redirect to the journey recovery page when no sao name is available" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      given application: Application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(
+            bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(application) {
+        val result = route(application, postRequest()).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
     "must return a Bad Request and errors when invalid data is submitted" in {
 
       given application: Application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
 
       val request =
-        FakeRequest(POST, notificationMultiSaoPreviousOfficerEndDateRoute)
+        FakeRequest(POST, notificationMultiSaoPreviousOfficerStartDateRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       running(application) {
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
-        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerEndDateView]
+        val view = application.injector.instanceOf[NotificationMultiSaoPreviousOfficerStartDateView]
 
         val result = route(application, request).value
 

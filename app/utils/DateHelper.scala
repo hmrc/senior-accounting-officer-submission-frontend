@@ -27,13 +27,13 @@ class DateHelper @Inject() (clock: Clock) {
   def futureDateHelper: FutureDateHelper = FutureDateHelper(nowUkLocalDate)
 }
 
+object DateHelper {
+  val ukZoneId: ZoneId = ZoneId.of("Europe/London")
+}
+
 class FutureDateHelper private[utils] (nowUkLocalDate: LocalDate) {
   private val maxLocalDate = nowUkLocalDate.minusDays(1)
   extension (date: LocalDate) {
     def isFutureDate: Boolean = date.isAfter(maxLocalDate)
   }
-}
-
-object DateHelper {
-  val ukZoneId: ZoneId = ZoneId.of("Europe/London")
 }
