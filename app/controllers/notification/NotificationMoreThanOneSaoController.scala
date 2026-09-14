@@ -28,7 +28,6 @@ import play.api.libs.json.*
 import play.api.libs.json.Reads.*
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import services.SaoUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationMoreThanOneSaoView
 
@@ -46,8 +45,7 @@ class NotificationMoreThanOneSaoController @Inject() (
     requireData: DataRequiredAction,
     formProvider: NotificationMoreThanOneSaoFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationMoreThanOneSaoView,
-    saoUserAnswersService: SaoUserAnswersService
+    view: NotificationMoreThanOneSaoView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
@@ -71,10 +69,7 @@ class NotificationMoreThanOneSaoController @Inject() (
             for {
               updatedAnswers <- Future
                 .fromTry(request.userAnswers.set(NotificationMoreThanOneSaoPage(mode), value))
-              // cleanedAnswers = saoUserAnswersService.removeOtherSaoJourneyData(updatedAnswers)
-              // _ <- sessionRepository.set(cleanedAnswers)
               _ <- sessionRepository.set(updatedAnswers)
-              // } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage(NormalMode), mode, cleanedAnswers))
             } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage(mode), mode, updatedAnswers))
         )
   }
