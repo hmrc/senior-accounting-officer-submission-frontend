@@ -21,13 +21,13 @@ import models.certificate.CertificateDeclarationStandIn
 import play.api.data.Form
 import play.api.data.Forms.*
 
-import javax.inject.Inject
 import scala.util.matching.Regex
+
+import javax.inject.Inject
 
 class CertificateDeclarationStandInFormProvider @Inject() extends Mappings {
 
   val illegalCharsRegex: Regex = """[<>"]""".r
-
 
   def apply(): Form[CertificateDeclarationStandIn] = Form(
     mapping(

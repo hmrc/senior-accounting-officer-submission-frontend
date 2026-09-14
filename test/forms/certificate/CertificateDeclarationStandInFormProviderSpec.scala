@@ -23,13 +23,13 @@ import scala.collection.immutable.ArraySeq
 
 class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviours {
 
-  val requiredKeyStandInName = "certificateDeclarationStandIn.error.standInName.required"
-  val lengthKeyStandInName   = "certificateDeclarationStandIn.error.standInName.length"
+  val requiredKeyStandInName      = "certificateDeclarationStandIn.error.standInName.required"
+  val lengthKeyStandInName        = "certificateDeclarationStandIn.error.standInName.length"
   val requiredKeyCharsStandInName = "certificateDeclarationStandIn.error.standInName.invalidChars"
-  val requiredKeySaoName     = "certificateDeclarationStandIn.error.saoName.required"
-  val lengthKeySaoName       = "certificateDeclarationStandIn.error.saoName.length"
-  val requiredKeyCharsSaoName = "certificateDeclarationStandIn.error.saoName.invalidChars"
-  val maxLength              = 105
+  val requiredKeySaoName          = "certificateDeclarationStandIn.error.saoName.required"
+  val lengthKeySaoName            = "certificateDeclarationStandIn.error.saoName.length"
+  val requiredKeyCharsSaoName     = "certificateDeclarationStandIn.error.saoName.invalidChars"
+  val maxLength                   = 105
 
   val form = new CertificateDeclarationStandInFormProvider()()
   ".standInNameInputValue" - {
@@ -89,7 +89,7 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
       fieldName,
       FormError(fieldName, ArraySeq(requiredKeyCharsSaoName))
     )
-    
+
   }
 
   "error message keys must map to the expected text" - {
