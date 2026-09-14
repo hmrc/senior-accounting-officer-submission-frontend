@@ -39,7 +39,7 @@ class CertificateDeclarationSaoFormProviderSpec extends StringFieldBehaviours {
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      stringsWithoutInvalidSymbolsWithMaxLength(maxLength)
     )
 
     behave like fieldWithMaxLength(

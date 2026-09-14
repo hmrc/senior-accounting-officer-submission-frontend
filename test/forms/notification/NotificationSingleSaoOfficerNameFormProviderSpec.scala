@@ -39,7 +39,7 @@ class NotificationSingleSaoOfficerNameFormProviderSpec extends StringFieldBehavi
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      stringsWithoutInvalidSymbolsWithMaxLength(maxLength)
     )
 
     behave like fieldWithMaxLength(
