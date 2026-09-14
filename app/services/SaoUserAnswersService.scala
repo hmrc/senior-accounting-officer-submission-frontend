@@ -16,9 +16,12 @@
 
 package services
 
+import models.Area.COMMITTED_PATH
+import models.Area.TRANSACTION_PATH
 import models.NormalMode
 import models.TransactionMode
 import models.UserAnswers
+import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.Logging
 import play.api.libs.json.*
@@ -42,34 +45,36 @@ class SaoUserAnswersService extends Logging @Inject {
     userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
       case Some(true) =>
         userAnswers
-          .clearShadowRealm()
-          .clearActualRealmSingleSao()
-          .sanitiseActualRealmMultiSao()
-          .copyActualRealmToShadowRealm()
+          .clearTransactionArea()
+          .clearCommittedAreaSingleSao()
+          .sanitiseCommittedAreaMultiSao()
+          .copyCommittedAreaToTransactionArea()
       case Some(false) =>
         userAnswers
-          .clearShadowRealm()
-          .clearActualRealmMultiSao()
-          .copyActualRealmToShadowRealm()
+          .clearTransactionArea()
+          .clearCommittedAreaMultiSao()
+          .copyCommittedAreaToTransactionArea()
       case None => ???
     }
   }
 
   extension (userAnswers: UserAnswers) {
-    def copyActualRealmToShadowRealm(): UserAnswers = {
+    def copyCommittedAreaToTransactionArea(): UserAnswers = {
       userAnswers.transformUserAnswers(
-        (__ \ "notification").json.update(
-          __.read[JsObject].map { o => Json.obj("Shadow" -> userAnswers.data("notification")("Actual")) }
+        (__ \ NOTIFICATION_PATH).json.update(
+          __.read[JsObject].map { o =>
+            Json.obj(TRANSACTION_PATH -> userAnswers.data(NOTIFICATION_PATH)(COMMITTED_PATH))
+          }
         )
       )
     }
 
-    def sanitiseActualRealmMultiSao(): UserAnswers = {
+    def sanitiseCommittedAreaMultiSao(): UserAnswers = {
       val finalIndex    = finalCompleteSaoIndex(userAnswers)
       val takeFromArray = of[JsArray].map { case JsArray(contents) => JsArray(contents.take(finalIndex + 1)) }
       userAnswers
         .transformUserAnswers(
-          (__ \ "notification" \ "Actual").json
+          (__ \ NOTIFICATION_PATH \ COMMITTED_PATH).json
             .update(
               (__ \ multiSaoNameKey).json.update(takeFromArray) andThen
                 (__ \ multiSaoStartDateKey).json.update(takeFromArray) andThen
@@ -82,23 +87,23 @@ class SaoUserAnswersService extends Logging @Inject {
         )
     }
 
-    def clearActualRealmSingleSao(): UserAnswers = {
-      userAnswers.transformUserAnswers((__ \ "notification" \ "Actual" \ singleSaoNameKey).json.prune)
+    def clearCommittedAreaSingleSao(): UserAnswers = {
+      userAnswers.transformUserAnswers((__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ singleSaoNameKey).json.prune)
     }
 
-    def clearActualRealmMultiSao(): UserAnswers = {
+    def clearCommittedAreaMultiSao(): UserAnswers = {
       userAnswers.transformUserAnswers(
-        (__ \ "notification" \ "Actual" \ multiSaoLastNameKey).json.prune andThen
-          (__ \ "notification" \ "Actual" \ multiSaoLastStartDateKey).json.prune andThen
-          (__ \ "notification" \ "Actual" \ multiSaoNameKey).json.prune andThen
-          (__ \ "notification" \ "Actual" \ multiSaoStartDateKey).json.prune andThen
-          (__ \ "notification" \ "Actual" \ multiSaoEndDateKey).json.prune andThen
-          (__ \ "notification" \ "Actual" \ multiSaoAddedAllKey).json.prune
+        (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoLastNameKey).json.prune andThen
+          (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoLastStartDateKey).json.prune andThen
+          (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoNameKey).json.prune andThen
+          (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoStartDateKey).json.prune andThen
+          (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoEndDateKey).json.prune andThen
+          (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoAddedAllKey).json.prune
       )
     }
 
-    def clearShadowRealm(): UserAnswers = {
-      userAnswers.transformUserAnswers((__ \ "notification" \ "Shadow").json.prune)
+    def clearTransactionArea(): UserAnswers = {
+      userAnswers.transformUserAnswers((__ \ NOTIFICATION_PATH \ TRANSACTION_PATH).json.prune)
     }
 
     def transformUserAnswers(transformer: Reads[JsObject]): UserAnswers = {
@@ -114,7 +119,7 @@ class SaoUserAnswersService extends Logging @Inject {
   }
 
   def removeShadow(userAnswers: UserAnswers): UserAnswers = {
-    val transformer = (__ \ "notification" \ "Shadow").json.prune
+    val transformer = (__ \ NOTIFICATION_PATH \ TRANSACTION_PATH).json.prune
     userAnswers.data.transform(transformer) match {
       case JsError(_)                => ???
       case JsSuccess(updatedData, _) => userAnswers.copy(data = updatedData)
@@ -123,8 +128,9 @@ class SaoUserAnswersService extends Logging @Inject {
 
   def copyActualToShadow(userAnswers: UserAnswers): UserAnswers = {
     val transformer =
-      (__ \ "notification" \ "Shadow").json.copyFrom((__ \ "notification" \ "Actual").json.pick) andThen (__).json
-        .update((__ \ "notification" \ "Actual").json.pick)
+      (__ \ NOTIFICATION_PATH \ TRANSACTION_PATH).json
+        .copyFrom((__ \ NOTIFICATION_PATH \ COMMITTED_PATH).json.pick) andThen (__).json
+        .update((__ \ NOTIFICATION_PATH \ COMMITTED_PATH).json.pick)
 
     userAnswers.data.transform(transformer) match {
       case JsError(_) =>
@@ -135,8 +141,9 @@ class SaoUserAnswersService extends Logging @Inject {
 
   def copyShadowToActual(userAnswers: UserAnswers): UserAnswers = {
     val transformer =
-      (__ \ "notification" \ "Actual").json.copyFrom((__ \ "notification" \ "Shadow").json.pick) andThen (__).json
-        .update((__ \ "notification" \ "Shadow").json.pick)
+      (__ \ NOTIFICATION_PATH \ COMMITTED_PATH).json
+        .copyFrom((__ \ NOTIFICATION_PATH \ TRANSACTION_PATH).json.pick) andThen (__).json
+        .update((__ \ NOTIFICATION_PATH \ TRANSACTION_PATH).json.pick)
 
     userAnswers.data.transform(transformer) match {
       case JsError(_)                => ???

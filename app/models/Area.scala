@@ -18,24 +18,27 @@ package models
 
 import play.api.mvc.JavascriptLiteral
 
-enum Realm {
-  case Actual, Shadow
+enum Area {
+  case Committed, Transaction
 }
 
-object Realm {
-  given jsLiteral: JavascriptLiteral[Realm] = new JavascriptLiteral[Realm] {
-    override def to(value: Realm): String = value match {
-      case Realm.Actual => "actual"
-      case Realm.Shadow => "shadow"
+object Area {
+  val COMMITTED_PATH   = "Committed"
+  val TRANSACTION_PATH = "Transaction"
+
+  given jsLiteral: JavascriptLiteral[Area] = new JavascriptLiteral[Area] {
+    override def to(value: Area): String = value match {
+      case Area.Committed   => "committed"
+      case Area.Transaction => "transaction"
     }
   }
 
   extension (mode: Mode) {
-    def toRealm: Realm = {
+    def toArea: Area = {
       mode match {
-        case NormalMode      => Realm.Actual
-        case CheckMode       => Realm.Actual
-        case TransactionMode => Realm.Shadow
+        case NormalMode      => Area.Committed
+        case CheckMode       => Area.Committed
+        case TransactionMode => Area.Transaction
       }
     }
   }
