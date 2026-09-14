@@ -416,19 +416,68 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         }
 
         "when user answers no" - {
-          "go to previous sao name page at the right index" in {
-            val userAnswers = emptyUserAnswers
-              .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
-              .get
-              .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
-              .get
+          "when the users prior answer was yes" - {
+            "go to previous sao name page at the right index" in {
+              val userAnswers = emptyUserAnswers
+                .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+                .get
+                .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
+                .get
+                .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
+                .get
+                .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
+                .get
 
-            navigator.nextPage(
-              NotificationMultiSaoAreAllAddedPage(1, TransactionMode),
-              TransactionMode,
-              userAnswers
-            ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode, 2)
+              navigator.nextPage(
+                NotificationMultiSaoAreAllAddedPage(1, TransactionMode),
+                TransactionMode,
+                userAnswers
+              ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(
+                TransactionMode,
+                2
+              )
+            }
           }
+
+          "when the users prior answer was no" - {
+            "go to check your answers page" in {
+              val userAnswers = emptyUserAnswers
+                .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+                .get
+                .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
+                .get
+                .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
+                .get
+                .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
+                .get
+
+              navigator.nextPage(
+                NotificationMultiSaoAreAllAddedPage(1, TransactionMode),
+                TransactionMode,
+                userAnswers
+              ) mustBe notificationRoutes.NotificationCheckYourAnswersController
+                .onPageLoad()
+            }
+          }
+
+          "when the user has no prior answer" - {
+            "throw an exception" in {
+              val userAnswers = emptyUserAnswers
+                .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+                .get
+                .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
+                .get
+
+              intercept[NotImplementedError] {
+                navigator.nextPage(
+                  NotificationMultiSaoAreAllAddedPage(1, TransactionMode),
+                  TransactionMode,
+                  userAnswers
+                )
+              }
+            }
+          }
+
         }
 
         "when their is no answer to the question" - {
