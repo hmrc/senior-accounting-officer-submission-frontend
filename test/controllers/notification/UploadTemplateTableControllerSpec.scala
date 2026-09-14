@@ -19,6 +19,7 @@ package controllers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.NormalMode
 import models.upload.*
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
@@ -38,7 +39,6 @@ import views.html.notification.{UploadTemplateTableErrorView, UploadTemplateTabl
 import scala.concurrent.Future
 
 import java.time.LocalDate
-import models.NormalMode
 
 class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
 

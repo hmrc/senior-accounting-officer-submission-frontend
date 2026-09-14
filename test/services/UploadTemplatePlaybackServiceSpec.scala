@@ -17,13 +17,13 @@
 package services
 
 import base.SpecBase
+import models.NormalMode
 import models.upload.*
 import pages.*
 import pages.notification.*
 import services.UploadTemplatePlaybackService.Playback
 
 import java.time.LocalDate
-import models.NormalMode
 
 class UploadTemplatePlaybackServiceSpec extends SpecBase {
 

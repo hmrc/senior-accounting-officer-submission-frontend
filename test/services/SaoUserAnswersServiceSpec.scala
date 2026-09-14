@@ -17,14 +17,14 @@
 package services
 
 import base.SpecBase
+import models.NormalMode
+import models.TransactionMode
 import models.UserAnswers
 import pages.notification.*
 
 import java.time.LocalDate
 
 import SaoUserAnswersServiceSpec.*
-import models.NormalMode
-import models.TransactionMode
 
 class SaoUserAnswersServiceSpec extends SpecBase {
 

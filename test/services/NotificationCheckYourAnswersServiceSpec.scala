@@ -17,6 +17,7 @@
 package services
 
 import base.SpecBase
+import models.NormalMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationMultiSaoAreAllAddedPage
 import pages.notification.NotificationMultiSaoLastOfficerNamePage
@@ -37,7 +38,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 
 import java.time.LocalDate
-import models.NormalMode
 
 class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 

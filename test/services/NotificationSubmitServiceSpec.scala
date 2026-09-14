@@ -18,6 +18,7 @@ package services
 
 import base.SpecBase
 import connectors.ProtectedServiceConnector
+import models.NormalMode
 import models.UserAnswers
 import models.notification.*
 import models.upload.*
@@ -39,7 +40,6 @@ import utils.TestDataGenerator
 import scala.concurrent.Future
 
 import java.time.LocalDate
-import models.NormalMode
 
 class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 

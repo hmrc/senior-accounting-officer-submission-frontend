@@ -17,6 +17,7 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
+import models.NormalMode
 import models.{CheckMode, UserAnswers}
 import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
 import play.api.i18n.{Lang, Messages}
@@ -26,7 +27,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import utils.DateTimeFormats.dateTimeFormat
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
-import models.NormalMode
 
 object NotificationMultiSaoLastOfficerStartDateSummary {
 

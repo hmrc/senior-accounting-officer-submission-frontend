@@ -19,6 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import forms.notification.NotificationMultiSaoAreAllAddedFormProvider
 import models.Mode
+import models.TransactionMode
 import navigation.NotificationNavigator
 import pages.notification.*
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -31,10 +32,6 @@ import views.html.notification.NotificationMultiSaoAreAllAddedView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import models.TransactionMode
-import models.UserAnswers
-import models.NormalMode
-import scala.annotation.tailrec
 
 class NotificationMultiSaoAreAllAddedController @Inject() (
     override val messagesApi: MessagesApi,

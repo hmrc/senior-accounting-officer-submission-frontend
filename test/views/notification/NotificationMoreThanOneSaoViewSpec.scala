@@ -20,14 +20,14 @@ import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
 import forms.notification.NotificationMoreThanOneSaoFormProvider
 import models.Mode
+import models.NormalMode
+import models.TransactionMode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
 import views.html.notification.NotificationMoreThanOneSaoView
 
 import NotificationMoreThanOneSaoViewSpec.*
-import models.NormalMode
-import models.TransactionMode
 
 class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreThanOneSaoView] {
 

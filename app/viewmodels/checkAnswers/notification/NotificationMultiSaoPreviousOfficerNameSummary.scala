@@ -17,6 +17,7 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
+import models.NormalMode
 import models.{CheckMode, UserAnswers}
 import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
@@ -25,7 +26,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
-import models.NormalMode
 
 object NotificationMultiSaoPreviousOfficerNameSummary {
 
