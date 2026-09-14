@@ -16,8 +16,8 @@
 
 package pages.notification
 
+import models.Area.*
 import models.Mode
-import models.Realm.*
 import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
@@ -29,7 +29,7 @@ final case class NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int,
 
   val key = "notificationMultiSaoPreviousOfficerStartDate"
 
-  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toRealm.toString \ key \ saoIndex
+  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toArea.toString \ key \ saoIndex
 
   override def toString: String = s"$key[$saoIndex]"
 }

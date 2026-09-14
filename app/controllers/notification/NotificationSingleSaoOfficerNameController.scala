@@ -19,7 +19,6 @@ package controllers.notification
 import controllers.actions.*
 import forms.notification.NotificationSingleSaoOfficerNameFormProvider
 import models.*
-import models.Mode
 import navigation.NotificationNavigator
 import pages.notification.*
 import play.api.data.Form

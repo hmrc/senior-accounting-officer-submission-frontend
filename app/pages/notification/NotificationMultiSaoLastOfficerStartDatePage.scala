@@ -17,7 +17,7 @@
 package pages.notification
 
 import models.*
-import models.Realm.*
+import models.Area.*
 import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
@@ -26,7 +26,7 @@ import java.time.LocalDate
 
 final case class NotificationMultiSaoLastOfficerStartDatePage(mode: Mode) extends QuestionPage[LocalDate] {
 
-  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toRealm.toString \ toString
+  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toArea.toString \ toString
 
   override def toString: String = "notificationMultiSaoLastOfficerStartDate"
 }

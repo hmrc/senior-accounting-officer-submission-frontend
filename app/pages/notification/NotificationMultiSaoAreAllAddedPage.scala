@@ -17,7 +17,7 @@
 package pages.notification
 
 import models.*
-import models.Realm.*
+import models.Area.*
 import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
@@ -26,7 +26,7 @@ final case class NotificationMultiSaoAreAllAddedPage(saoIndex: Int, mode: Mode) 
 
   val key = "notificationMultiSaoAreAllAdded"
 
-  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toRealm.toString \ key \ saoIndex
+  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toArea.toString \ key \ saoIndex
 
   override def toString: String = s"$key[$saoIndex]"
 }
