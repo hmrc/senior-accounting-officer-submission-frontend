@@ -39,7 +39,7 @@ class NotificationMultiSaoPreviousOfficerNameFormProviderSpec extends StringFiel
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      stringsWithoutInvalidSymbolsWithMaxLength(maxLength)
     )
 
     behave like fieldWithMaxLength(
