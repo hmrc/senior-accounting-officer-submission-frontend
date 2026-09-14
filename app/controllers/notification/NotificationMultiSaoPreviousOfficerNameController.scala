@@ -52,9 +52,9 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
 
   private def saoNameForPage(mode: Mode, saoIndex: Int, userAnswers: UserAnswers): Option[String] =
     if saoIndex == 0 then {
-      userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode)) // TODO: i bet this will be wrong later orz
+      userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode))
     } else {
-      userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1, mode)) // TODO: likewise orz
+      userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1, mode))
     }
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
