@@ -17,9 +17,12 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
+import models.NormalMode
 import models.{CheckMode, UserAnswers}
+import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import pages.notification.NotificationMultiSaoPreviousOfficerNamePage
 import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
@@ -27,17 +30,31 @@ import viewmodels.govuk.summarylist.*
 object NotificationMultiSaoPreviousOfficerNameSummary {
 
   def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)).map { answer =>
-      SummaryListRowViewModel(
-        key = messages("notificationMultiSaoPreviousOfficerName.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.toText),
-        actions = Seq(
-          ActionItemViewModel(
-            messages("site.change").toText,
-            notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(CheckMode, saoIndex).url
-          )
-            .withVisuallyHiddenText(messages("notificationMultiSaoPreviousOfficerName.change.hidden"))
-        )
+    val priorSaoNamePage =
+      if saoIndex == 0 then { NotificationMultiSaoLastOfficerNamePage(NormalMode) }
+      else { NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1, NormalMode) }
+
+    answers
+      .get(
+        priorSaoNamePage
       )
-    }
+      .flatMap { priorSaoName =>
+        answers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, NormalMode)).map { answer =>
+          SummaryListRowViewModel(
+            key = messages(
+              "notificationMultiSaoPreviousOfficerName.checkYourAnswersLabel",
+              priorSaoName
+            ).toKey,
+            value =
+              ValueViewModel(HtmlContent(s"""<span data-test-id="previous-sao-name-${saoIndex + 1}">$answer</span>""")),
+            actions = Seq(
+              ActionItemViewModel(
+                messages("site.change").toText,
+                notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(CheckMode, saoIndex).url
+              )
+                .withVisuallyHiddenText(messages("notificationMultiSaoPreviousOfficerName.change.hidden"))
+            )
+          )
+        }
+      }
 }

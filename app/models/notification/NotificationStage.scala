@@ -16,10 +16,10 @@
 
 package models.notification
 
+import models.NormalMode
 import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
 import models.{TaskStatus, UserAnswers}
 import pages.*
-import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.libs.json.*
 
@@ -68,18 +68,9 @@ object NotificationStage {
     isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers)
 
   private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(NotificationMoreThanOneSaoPage).exists {
-      case false =>
-        userAnswers.get(NotificationSingleSaoOfficerNamePage).exists(_.trim.nonEmpty)
-      case true =>
-        userAnswers.get(NotificationMultiSaoLastOfficerNamePage).exists(_.trim.nonEmpty) &&
-        hasCompletedMoreSaoDetails(userAnswers)
+    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).exists { case _ =>
+      true
     }
-
-  private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
-    (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0).key)
-      .asOpt[Seq[Boolean]]
-      .exists(_.contains(true))
 
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty) &&

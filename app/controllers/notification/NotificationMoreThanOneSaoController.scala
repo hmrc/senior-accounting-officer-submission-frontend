@@ -19,10 +19,14 @@ package controllers.notification
 import controllers.actions.*
 import forms.notification.NotificationMoreThanOneSaoFormProvider
 import models.Mode
+import models.NormalMode
 import navigation.NotificationNavigator
 import pages.notification.NotificationMoreThanOneSaoPage
+import play.api.Logging
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.*
+import play.api.libs.json.Reads.*
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -44,12 +48,13 @@ class NotificationMoreThanOneSaoController @Inject() (
     view: NotificationMoreThanOneSaoView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with Logging {
 
   val form: Form[Boolean] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(NotificationMoreThanOneSaoPage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -62,9 +67,10 @@ class NotificationMoreThanOneSaoController @Inject() (
 
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationMoreThanOneSaoPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage, mode, updatedAnswers))
+              updatedAnswers <- Future
+                .fromTry(request.userAnswers.set(NotificationMoreThanOneSaoPage(mode), value))
+              _ <- sessionRepository.set(updatedAnswers)
+            } yield Redirect(navigator.nextPage(NotificationMoreThanOneSaoPage(mode), mode, updatedAnswers))
         )
   }
 }

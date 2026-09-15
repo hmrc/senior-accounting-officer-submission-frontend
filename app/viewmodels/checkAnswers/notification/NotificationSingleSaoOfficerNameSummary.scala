@@ -17,6 +17,7 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
+import models.NormalMode
 import models.{CheckMode, UserAnswers}
 import pages.notification.NotificationSingleSaoOfficerNamePage
 import play.api.i18n.Messages
@@ -29,7 +30,7 @@ import viewmodels.govuk.summarylist.*
 object NotificationSingleSaoOfficerNameSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationSingleSaoOfficerNamePage).map { answer =>
+    answers.get(NotificationSingleSaoOfficerNamePage(NormalMode)).map { answer =>
       SummaryListRowViewModel(
         key = messages("notificationSingleSaoOfficerName.checkYourAnswersLabel").toKey,
         value =

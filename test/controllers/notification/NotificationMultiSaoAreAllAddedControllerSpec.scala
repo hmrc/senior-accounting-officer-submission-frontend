@@ -72,7 +72,7 @@ class NotificationMultiSaoAreAllAddedControllerSpec extends SpecBase with Mockit
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(saoIndex), true).success.value
+        emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
@@ -92,13 +92,12 @@ class NotificationMultiSaoAreAllAddedControllerSpec extends SpecBase with Mockit
     }
 
     "must redirect to the next page when valid data is submitted" in {
-
       val mockSessionRepository = mock[SessionRepository]
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        applicationBuilder(userAnswers = Some(completedMultipleSaoDetailsAnswers))
           .overrides(
             bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)

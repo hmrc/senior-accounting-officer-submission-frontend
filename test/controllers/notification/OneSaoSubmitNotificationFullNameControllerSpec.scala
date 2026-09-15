@@ -66,7 +66,7 @@ class NotificationSingleSaoOfficerNameControllerSpec extends SpecBase with Mocki
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage, "answer").success.value
+      val userAnswers = emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage(NormalMode), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

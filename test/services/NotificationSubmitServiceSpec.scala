@@ -18,6 +18,7 @@ package services
 
 import base.SpecBase
 import connectors.ProtectedServiceConnector
+import models.NormalMode
 import models.UserAnswers
 import models.notification.*
 import models.upload.*
@@ -47,10 +48,10 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
     given HeaderCarrier = HeaderCarrier()
 
     val userAnswers = emptyUserAnswers
-      .set(NotificationMoreThanOneSaoPage, false)
+      .set(NotificationMoreThanOneSaoPage(NormalMode), false)
       .success
       .value
-      .set(NotificationSingleSaoOfficerNamePage, "Jackson Brown")
+      .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
       .success
       .value
       .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
@@ -114,34 +115,34 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
         .set(NotificationAdditionalInformationPage, Some(exampleAdditionalInformation))
         .success
         .value
-        .set(NotificationMoreThanOneSaoPage, moreThanOneSao)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), moreThanOneSao)
         .success
         .value
-        .set(NotificationSingleSaoOfficerNamePage, exampleSao1Name)
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), exampleSao1Name)
         .success
         .value
-        .set(NotificationMultiSaoLastOfficerNamePage, exampleSao2Name)
+        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), exampleSao2Name)
         .success
         .value
-        .set(NotificationMultiSaoLastOfficerStartDatePage, exampleSao2StartDate)
+        .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), exampleSao2StartDate)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerNamePage(0), exampleSao3Name)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), exampleSao3Name)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), exampleSao3StartDate)
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), exampleSao3StartDate)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), exampleSao3EndDate)
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), exampleSao3EndDate)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerNamePage(1), exampleSao4Name)
+        .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), exampleSao4Name)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1), exampleSao4StartDate)
+        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), exampleSao4StartDate)
         .success
         .value
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1), exampleSao4EndDate)
+        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), exampleSao4EndDate)
         .success
         .value
         .set(UploadTemplateTablePage, exampleTableData)

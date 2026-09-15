@@ -20,11 +20,19 @@ import base.SpecBase
 import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.NormalMode
+import models.TransactionMode
+import models.UserAnswers
 import models.notification.NotificationSubmissionError
+import models.upload.UploadTemplateTableData
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
 import org.scalatestplus.mockito.MockitoSugar.mock
+import pages.notification.NotificationMoreThanOneSaoPage
+import pages.notification.NotificationSingleSaoOfficerNamePage
+import pages.notification.UploadTemplateReviewPage
+import pages.notification.UploadTemplateTablePage
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, Call, Request}
@@ -47,7 +55,13 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       val mockService = mock[NotificationCheckYourAnswersService]
       when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
-      val userAnswers = completedNotificationReviewAnswers
+      val userAnswers = emptyUserAnswers
+        .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+        .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
+        .add(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
+        .add(UploadTemplateReviewPage, true)
+        .add(NotificationMoreThanOneSaoPage(TransactionMode), false)
+        .add(NotificationSingleSaoOfficerNamePage(TransactionMode), "Jackson Brown")
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(

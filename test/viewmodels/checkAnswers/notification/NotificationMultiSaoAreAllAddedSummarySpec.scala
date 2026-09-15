@@ -18,11 +18,12 @@ package viewmodels.checkAnswers.notification
 
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
-import models.CheckMode
+import models.*
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 
 class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -39,21 +40,21 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
 
     "when there is a user answer for NotificationMultiSaoAreAllAddedPage" - {
       def testUserAnswers(answer: Boolean) =
-        emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0), answer).get
+        emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), answer).get
 
       def SUT(answer: Boolean = true) = NotificationMultiSaoAreAllAddedSummary.row(testUserAnswers(answer), 0).get
 
       "must have expected key" in {
-        SUT().key mustBe "notificationMultiSaoAreAllAdded".toKey
+        SUT().key mustBe "Have you added all the SAOs for this notification?".toKey
       }
 
       "expected value" - {
         "must show 'Yes' when user answers is true" in {
-          SUT(answer = true).value.content mustBe "Yes".toText
+          SUT(answer = true).value.content mustBe HtmlContent("""<span data-test-id="sao-are-all-added-1">Yes</span>""")
         }
 
         "must show 'No' when user answers is false" in {
-          SUT(answer = false).value.content mustBe "No".toText
+          SUT(answer = false).value.content mustBe HtmlContent("""<span data-test-id="sao-are-all-added-1">No</span>""")
         }
       }
 
@@ -77,7 +78,21 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
 
         "must have expected url" in {
           action.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
-            .onPageLoad(CheckMode)
+            .onPageLoad(TransactionMode)
+            .url
+        }
+
+        "must include the SAO index in the url" in {
+          val answers = emptyUserAnswers
+            .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
+            .get
+            .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
+            .get
+
+          val action = NotificationMultiSaoAreAllAddedSummary.row(answers, 1).get.actions.head.items.head
+
+          action.href mustBe notificationRoutes.NotificationMultiSaoAreAllAddedController
+            .onPageLoad(TransactionMode, 1)
             .url
         }
 
@@ -87,5 +102,4 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
       }
     }
   }
-
 }
