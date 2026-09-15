@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.certificate
 
 import controllers.certificate.routes as certificateRoutes
-import models.{CheckMode, UserAnswers}
+import models.{TransactionMode, UserAnswers}
 import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -34,7 +34,7 @@ object CertificateWhoIsSubmittingSummary {
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(CheckMode).url
+            certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(TransactionMode).url
           )
             .withVisuallyHiddenText(messages("certificateWhoIsSubmitting.change.hidden"))
         )

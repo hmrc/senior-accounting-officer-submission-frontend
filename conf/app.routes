@@ -134,18 +134,22 @@ POST        /changeCertificateAdditionalInformation                             
 
 GET         /certificate-who-is-submitting                                            controllers.certificate.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate-who-is-submitting                                            controllers.certificate.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = NormalMode)
-GET         /change-certificate-who-is-submitting                                     controllers.certificate.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = CheckMode)
-POST        /change-certificate-who-is-submitting                                     controllers.certificate.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = CheckMode)
+GET         /transaction-certificate-who-is-submitting                                controllers.certificate.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode = TransactionMode)
+POST        /transaction-certificate-who-is-submitting                                controllers.certificate.CertificateWhoIsSubmittingController.onSubmit(mode: Mode = TransactionMode)
 
 GET         /certificate/submit-certificate-confirm-sao                               controllers.certificate.CertificateDeclarationSaoController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/submit-certificate-confirm-sao                               controllers.certificate.CertificateDeclarationSaoController.onSubmit(mode: Mode = NormalMode)
 GET         /certificate/change-submit-certificate-confirm-sao                        controllers.certificate.CertificateDeclarationSaoController.onPageLoad(mode: Mode = CheckMode)
 POST        /certificate/change-submit-certificate-confirm-sao                        controllers.certificate.CertificateDeclarationSaoController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/transaction-submit-certificate-confirm-sao                   controllers.certificate.CertificateDeclarationSaoController.onPageLoad(mode: Mode = TransactionMode)
+POST        /certificate/transaction-submit-certificate-confirm-sao                   controllers.certificate.CertificateDeclarationSaoController.onSubmit(mode: Mode = TransactionMode)
 
 GET         /certificate/declaration-stand-in                                         controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/declaration-stand-in                                         controllers.certificate.CertificateDeclarationStandInController.onSubmit(mode: Mode = NormalMode)
 GET         /certificate/change-declaration-stand-in                                  controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode = CheckMode)
 POST        /certificate/change-declaration-stand-in                                  controllers.certificate.CertificateDeclarationStandInController.onSubmit(mode: Mode = CheckMode)
+GET         /certificate/transaction-declaration-stand-in                             controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode = TransactionMode)
+POST        /certificate/transaction-declaration-stand-in                             controllers.certificate.CertificateDeclarationStandInController.onSubmit(mode: Mode = TransactionMode)
 
 GET         /certificateCheckYourAnswers                                              controllers.certificate.CertificateCheckYourAnswersController.onPageLoad()
 POST        /certificateCheckYourAnswers                                              controllers.certificate.CertificateCheckYourAnswersController.onSubmit()

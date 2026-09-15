@@ -28,6 +28,15 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class CertificateNavigator @Inject() () extends Navigator {
 
+  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
+    mode match {
+      case NormalMode =>
+        normalRoutes(page)(userAnswers)
+      case CheckMode =>
+        checkRouteMap(page)(userAnswers)
+      case TransactionMode => transactionRouteMap(page)(userAnswers)
+    }
+
   override protected val normalRoutes: Page => UserAnswers => Call = {
     case CertificateSaoFullNamePage =>
       _ => certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode)
@@ -76,4 +85,18 @@ class CertificateNavigator @Inject() () extends Navigator {
     case _ => _ => ???
   }
 
+  protected val transactionRouteMap: Page => UserAnswers => Call = {
+    case CertificateDeclarationSaoPage | CertificateDeclarationStandInPage =>
+      _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+    case CertificateWhoIsSubmittingPage =>
+      userAnswers =>
+        userAnswers.get(CertificateWhoIsSubmittingPage) match {
+          case Some(CertificateWhoIsSubmitting.Sao) =>
+            certificateRoutes.CertificateDeclarationSaoController.onPageLoad(TransactionMode)
+          case Some(CertificateWhoIsSubmitting.StandIn) =>
+            certificateRoutes.CertificateDeclarationStandInController.onPageLoad(TransactionMode)
+          case _ => ???
+        }
+    case _ => _ => ???
+  }
 }
