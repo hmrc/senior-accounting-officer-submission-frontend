@@ -126,6 +126,38 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "in Check mode" - {
 
+      "when on CertificateSaoFullNamePage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          CertificateSaoFullNamePage,
+          CheckMode,
+          emptyUserAnswers
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on CertificateSaoEmailPage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          CertificateSaoEmailPage,
+          CheckMode,
+          emptyUserAnswers
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on CertificateDeclarationSaoPage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          CertificateDeclarationSaoPage,
+          CheckMode,
+          emptyUserAnswers
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on CertificateDeclarationStandInPage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          CertificateDeclarationStandInPage,
+          CheckMode,
+          emptyUserAnswers
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
       "when on CertificateAdditionalInformationPage, must go to certificate check your answers page" in {
         navigator.nextPage(
           CertificateAdditionalInformationPage,

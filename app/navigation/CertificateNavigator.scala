@@ -63,6 +63,14 @@ class CertificateNavigator @Inject() () extends Navigator {
   }
 
   override protected val checkRouteMap: Page => UserAnswers => Call = {
+    case CertificateSaoFullNamePage =>
+      _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+    case CertificateSaoEmailPage =>
+      _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+    case CertificateDeclarationSaoPage =>
+      _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+    case CertificateDeclarationStandInPage =>
+      _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateAdditionalInformationPage =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case _ => _ => ???
