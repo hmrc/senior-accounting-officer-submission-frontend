@@ -19,13 +19,14 @@ package forms.notification
 import forms.mappings.Mappings
 import play.api.data.Form
 import play.api.i18n.Messages
+import utils.DateHelper
 
 import java.time.LocalDate
 import javax.inject.Inject
 
-class NotificationMultiSaoLastOfficerStartDateFormProvider @Inject() extends Mappings {
+class NotificationMultiSaoLastOfficerStartDateFormProvider @Inject() (dateHelper: DateHelper) extends Mappings {
 
-  def apply()(using messages: Messages): Form[LocalDate] =
+  def apply(lastSaoName: String)(using messages: Messages): Form[LocalDate] =
     Form(
       "value" -> localDate(
         // LDS ignore
@@ -35,7 +36,11 @@ class NotificationMultiSaoLastOfficerStartDateFormProvider @Inject() extends Map
         // LDS ignore
         twoRequiredKey = "notificationMultiSaoLastOfficerStartDate.error.required.two",
         // LDS ignore
-        requiredKey = "notificationMultiSaoLastOfficerStartDate.error.required"
+        requiredKey = "notificationMultiSaoLastOfficerStartDate.error.required",
+        args = Seq(lastSaoName)
+      ).verifying(
+        // LDS ignore
+        maxDate(dateHelper.nowUkLocalDate.minusDays(1), "notificationMultiSaoLastOfficerStartDate.error.notPastDate")
       )
     )
 }

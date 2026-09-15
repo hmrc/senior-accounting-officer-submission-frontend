@@ -17,7 +17,9 @@
 package services.csvparser
 
 import models.upload.*
+import services.csvparser.CompanyFieldParser.*
 import services.csvparser.UploadTemplateCsvSchema.*
+import utils.FutureDateHelper
 
 import scala.util.Try
 
@@ -25,8 +27,6 @@ import java.time.LocalDate
 import java.time.format.{DateTimeFormatter, DateTimeFormatterBuilder, ResolverStyle}
 import java.time.temporal.ChronoField
 import javax.inject.Inject
-
-import CompanyFieldParser.*
 
 final case class ParsedCompanyFields(
     companyName: String,
@@ -47,7 +47,7 @@ class CompanyFieldParser @Inject() () {
   def parse(
       lineNumber: Int,
       row: IndexedSeq[String]
-  ): CompanyFieldParseResult = {
+  )(using FutureDateHelper): CompanyFieldParseResult = {
     val (companyName, companyNameErrors) =
       parseCompanyNameValue(lineNumber, row(Column.CompanyName.columnIndex))
     val (companyUtr, companyUtrErrors) =
@@ -190,9 +190,23 @@ class CompanyFieldParser @Inject() () {
   private def parseFinancialYearEndDateValue(
       lineNumber: Int,
       value: String
-  ): (Option[LocalDate], Vector[TemplateParseError]) =
+  )(using futureDateHelper: FutureDateHelper): (Option[LocalDate], Vector[TemplateParseError]) =
     Try(LocalDate.parse(value, FinancialYearEndDateFormatter)).toOption
-      .map(parsed => (Some(parsed), Vector.empty))
+      .map { parsed =>
+        import futureDateHelper.isFutureDate
+        if parsed.isFutureDate then
+          (
+            None,
+            Vector(
+              TemplateParseError(
+                line = lineNumber,
+                column = Some(Column.FinancialYearEndDate),
+                error = TemplateError.FinancialYearEndDateNotPastError
+              )
+            )
+          )
+        else (Some(parsed), Vector.empty)
+      }
       .getOrElse(
         (
           None,

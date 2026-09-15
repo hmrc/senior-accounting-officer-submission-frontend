@@ -19,6 +19,7 @@ package services.csvparser
 import models.upload.*
 import models.upload.TemplateParseResult.{Invalid, Valid}
 import services.csvparser.UploadTemplateCsvSchema.*
+import utils.FutureDateHelper
 
 import javax.inject.Inject
 
@@ -36,7 +37,7 @@ class UploadTemplateRowParser @Inject() (
   def parseDataRows(
       rows: Vector[CsvRow],
       notificationOnly: Boolean
-  ): TemplateParseResult = {
+  )(using FutureDateHelper): TemplateParseResult = {
     val parsedRows =
       rows.zipWithIndex.drop(DataStartIndex).map { case (rawRow, idx) =>
         parseDataRow(rawRow, idx + 1, notificationOnly)
@@ -51,7 +52,8 @@ class UploadTemplateRowParser @Inject() (
       rawRow: CsvRow,
       lineNumber: Int,
       notificationOnly: Boolean
-  ): ParsedRowResult = {
+  )(using FutureDateHelper): ParsedRowResult = {
+
     val row = normalizedDataColumns(rawRow)
 
     if row.forall(_.isEmpty) then ParsedRowResult(None, Vector.empty)

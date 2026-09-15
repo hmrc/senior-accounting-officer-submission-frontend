@@ -104,8 +104,10 @@ object UploadTemplateCsvSchema {
     case CompanyTypeError          extends TemplateError("uploadTemplateCsvParser.error.companyType")
     case CompanyStatusError        extends TemplateError("uploadTemplateCsvParser.error.companyStatus")
     case FinancialYearEndDateError extends TemplateError("uploadTemplateCsvParser.error.financialYearEndDate")
-    case TaxRegimeError            extends TemplateError("uploadTemplateCsvParser.error.taxRegime")
-    case CertificateTypeError      extends TemplateError("uploadTemplateCsvParser.error.certificateType")
+    case FinancialYearEndDateNotPastError
+        extends TemplateError("uploadTemplateCsvParser.error.financialYearEndDate.notPastDate")
+    case TaxRegimeError       extends TemplateError("uploadTemplateCsvParser.error.taxRegime")
+    case CertificateTypeError extends TemplateError("uploadTemplateCsvParser.error.certificateType")
     case QualificationStatementMissingError
         extends TemplateError("uploadTemplateCsvParser.error.qualificationStatement.missing")
     case QualificationStatementTooLongError

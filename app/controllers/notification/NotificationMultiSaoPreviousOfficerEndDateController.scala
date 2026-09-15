@@ -48,13 +48,14 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val form         = formProvider()
-      val preparedForm =
-        request.userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex)).fold(form)(form.fill)
       request.userAnswers
         .get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)) match {
-        case Some(saoName) => Ok(view(saoName, preparedForm, mode, saoIndex))
-        case None          =>
+        case Some(saoName) =>
+          val form         = formProvider(saoName)
+          val preparedForm =
+            request.userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex)).fold(form)(form.fill)
+          Ok(view(saoName, preparedForm, mode, saoIndex))
+        case None =>
           Redirect(
             routes.JourneyRecoveryController
               .onPageLoad()
@@ -64,10 +65,10 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form = formProvider()
       request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
+          val form = formProvider(saoName)
           form
             .bindFromRequest()
             .fold(
