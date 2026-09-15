@@ -48,14 +48,10 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
   "Single Sao" - {
     "additional information provided" in {
       val userAnswers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-        .get
-        .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
-        .get
-        .set(NotificationAdditionalInformationPage, Some(additionalInformation))
-        .get
-        .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
-        .get
+        .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+        .add(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
+        .add(NotificationAdditionalInformationPage, Some(additionalInformation))
+        .add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
 
       val result = SUT.getSummaryList(userAnswers)
 
@@ -70,10 +66,8 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
     "additional information not provided" in {
       val userAnswers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-        .get
-        .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
-        .get
+        .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+        .add(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
 
       val result = SUT.getSummaryList(userAnswers)
 
@@ -90,30 +84,18 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
   "Multi Sao" - {
     "additional information provided" in {
       val userAnswers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-        .get
-        .set(NotificationAdditionalInformationPage, Some(additionalInformation))
-        .get
-        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), multiSaoName1)
-        .get
-        .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), multiSao1StartDate)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), multiSaoName2)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), multiSao2StartDate)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), multiSao2EndDate)
-        .get
-        .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), multiSaoName3)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), multiSao3StartDate)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), multiSao3EndDate)
-        .get
-        .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
-        .get
+        .add(NotificationMoreThanOneSaoPage(NormalMode), true)
+        .add(NotificationAdditionalInformationPage, Some(additionalInformation))
+        .add(NotificationMultiSaoLastOfficerNamePage(NormalMode), multiSaoName1)
+        .add(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), multiSao1StartDate)
+        .add(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), multiSaoName2)
+        .add(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), multiSao2StartDate)
+        .add(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), multiSao2EndDate)
+        .add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
+        .add(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), multiSaoName3)
+        .add(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), multiSao3StartDate)
+        .add(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), multiSao3EndDate)
+        .add(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
 
       val result = SUT.getSummaryList(userAnswers)
 
@@ -146,30 +128,18 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
     "additional information not provided" in {
       val userAnswers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-        .get
-        .set(NotificationAdditionalInformationPage, None)
-        .get
-        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), multiSaoName1)
-        .get
-        .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), multiSao1StartDate)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), multiSaoName2)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), multiSao2StartDate)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), multiSao2EndDate)
-        .get
-        .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), multiSaoName3)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), multiSao3StartDate)
-        .get
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), multiSao3EndDate)
-        .get
-        .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
-        .get
+        .add(NotificationMoreThanOneSaoPage(NormalMode), true)
+        .add(NotificationAdditionalInformationPage, None)
+        .add(NotificationMultiSaoLastOfficerNamePage(NormalMode), multiSaoName1)
+        .add(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), multiSao1StartDate)
+        .add(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), multiSaoName2)
+        .add(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), multiSao2StartDate)
+        .add(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), multiSao2EndDate)
+        .add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
+        .add(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), multiSaoName3)
+        .add(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), multiSao3StartDate)
+        .add(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), multiSao3EndDate)
+        .add(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
 
       val result = SUT.getSummaryList(userAnswers)
 
@@ -207,10 +177,8 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
       "when MoreThanOneSao is No" - {
         "Full Name is answered, must show the Full Name row" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-            .get
-            .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
-            .get
+            .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+            .add(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
 
           val result = SUT.getSummaryList(userAnswers)
 
@@ -222,8 +190,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "Full Name is empty, must not show the Full Name row" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-            .get
+            .add(NotificationMoreThanOneSaoPage(NormalMode), false)
 
           val result = SUT.getSummaryList(userAnswers)
 
@@ -236,10 +203,8 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
       "when MoreThanOneSao is Yes" - {
         "must not show the Full Name row even if Full Name is answered" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-            .get
-            .set(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
-            .get
+            .add(NotificationMoreThanOneSaoPage(NormalMode), true)
+            .add(NotificationSingleSaoOfficerNamePage(NormalMode), singleSaoName)
 
           val result = SUT.getSummaryList(userAnswers)
 
@@ -254,8 +219,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "when there are no answers for NotificationAdditionalInformationPage, must return 'Not provided'" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-            .get
+            .add(NotificationMoreThanOneSaoPage(NormalMode), true)
           val result = SUT.getSummaryList(userAnswers)
 
           result.rows(1).key.content mustBe Text(AdditionalInformation.key)
@@ -264,10 +228,8 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "when there are answers for NotificationAdditionalInformationPage, must return value" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-            .get
-            .set(NotificationAdditionalInformationPage, Some(additionalInformation))
-            .get
+            .add(NotificationMoreThanOneSaoPage(NormalMode), true)
+            .add(NotificationAdditionalInformationPage, Some(additionalInformation))
           val result = SUT.getSummaryList(userAnswers)
 
           result.rows(1).key.content mustBe Text(AdditionalInformation.key)
@@ -279,8 +241,7 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "when there are no answers for NotificationAdditionalInformationPage, must return 'Not provided'" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-            .get
+            .add(NotificationMoreThanOneSaoPage(NormalMode), false)
           val result = SUT.getSummaryList(userAnswers)
 
           result.rows(1).key.content mustBe Text(AdditionalInformation.key)
@@ -289,10 +250,8 @@ class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppP
 
         "when there are answers for NotificationAdditionalInformationPage, must return value" in {
           val userAnswers = emptyUserAnswers
-            .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-            .get
-            .set(NotificationAdditionalInformationPage, Some(additionalInformation))
-            .get
+            .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+            .add(NotificationAdditionalInformationPage, Some(additionalInformation))
           val result = SUT.getSummaryList(userAnswers)
 
           result.rows(1).key.content mustBe Text(AdditionalInformation.key)

@@ -134,9 +134,7 @@ class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase wit
 
       val userAnswers =
         userAnswersWithSaoName
-          .set(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, NormalMode), "answer")
-          .success
-          .value
+          .add(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, NormalMode), "answer")
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

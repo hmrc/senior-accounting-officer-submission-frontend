@@ -56,18 +56,12 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
       when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
       val userAnswers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-        .get
-        .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
-        .get
-        .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
-        .get
-        .set(UploadTemplateReviewPage, true)
-        .get
-        .set(NotificationMoreThanOneSaoPage(TransactionMode), false)
-        .get
-        .set(NotificationSingleSaoOfficerNamePage(TransactionMode), "Jackson Brown")
-        .get
+        .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+        .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
+        .add(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
+        .add(UploadTemplateReviewPage, true)
+        .add(NotificationMoreThanOneSaoPage(TransactionMode), false)
+        .add(NotificationSingleSaoOfficerNamePage(TransactionMode), "Jackson Brown")
 
       val application = applicationBuilder(userAnswers = Some(userAnswers))
         .overrides(
