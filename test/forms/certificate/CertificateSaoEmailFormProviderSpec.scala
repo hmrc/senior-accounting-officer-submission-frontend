@@ -72,7 +72,7 @@ class CertificateSaoEmailFormProviderSpec extends StringFieldBehaviours {
 
     createTestWithErrorMessageAssertion(
       key = formatKey,
-      message = "Enter the SAO name in the correct format, like name@example.com"
+      message = "Enter the email address in the correct format, like name@example.com"
     )
   }
 }
