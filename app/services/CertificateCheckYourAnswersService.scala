@@ -21,21 +21,25 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.checkAnswers.certificate.*
 import pages.certificate.CertificateWhoIsSubmittingPage
-import models.certificate.CertificateWhoIsSubmitting
+import models.certificate.CertificateWhoIsSubmitting.*
 
 class CertificateCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
-    val standInSubmitted = userAnswers.get(CertificateWhoIsSubmittingPage) == Some(CertificateWhoIsSubmitting.StandIn)
-
     SummaryList(rows =
-      Seq(
-        CertificateSaoFullNameSummary.row(userAnswers),
-        CertificateSaoEmailSummary.row(userAnswers),
-        CertificateWhoIsSubmittingSummary.row(userAnswers),
-        CertificateDeclarationSaoSummary.row(userAnswers),
-        if standInSubmitted then CertificateDeclarationStandInSummary.row(userAnswers) else None,
-        Some(CertificateAdditionalInformationSummary.row(userAnswers))
-      ).flatten
+      (CertificateSaoFullNameSummary.row(userAnswers)
+        +: CertificateSaoEmailSummary.row(userAnswers)
+        +: CertificateWhoIsSubmittingSummary.row(userAnswers)
+        +: (userAnswers.get(CertificateWhoIsSubmittingPage) match {
+          case Some(Sao)     => { Seq(CertificateDeclarationSaoSummary.row(userAnswers)) }
+          case Some(StandIn) => {
+            Seq(
+              CertificateDeclarationStandInSummary.standInRow(userAnswers),
+              CertificateDeclarationStandInSummary.saoRow(userAnswers)
+            )
+          }
+          case None => ???
+        })
+        :+ Some(CertificateAdditionalInformationSummary.row(userAnswers))).flatten
     )
   }
 }

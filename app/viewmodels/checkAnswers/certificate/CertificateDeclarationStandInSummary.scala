@@ -27,7 +27,7 @@ import utils.SummaryHelpers.renderValue
 
 object CertificateDeclarationStandInSummary {
 
-  def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
+  def standInRow(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
     answers.get(CertificateDeclarationStandInPage).map { answer =>
       SummaryListRowViewModel(
         key = messages("certificateDeclarationStandIn.checkYourAnswersLabel").toKey,
@@ -38,6 +38,21 @@ object CertificateDeclarationStandInSummary {
             certificateRoutes.CertificateDeclarationStandInController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden"))
+        )
+      )
+    }
+
+  def saoRow(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
+    answers.get(CertificateDeclarationStandInPage).map { answer =>
+      SummaryListRowViewModel(
+        key = messages("certificateDeclarationSao.checkYourAnswersLabel").toKey,
+        value = renderValue(answer.SaoName, "declaration-sao-value"),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            certificateRoutes.CertificateDeclarationStandInController.onPageLoad(CheckMode).url
+          )
+            .withVisuallyHiddenText(messages("certificateDeclarationSao.change.hidden"))
         )
       )
     }
