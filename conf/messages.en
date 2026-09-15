@@ -450,7 +450,7 @@ certificateSaoEmail.heading = What is the email address for {0}?
 certificateSaoEmail.hint = We’ll only use this to contact them about the company’s submission
 certificateSaoEmail.checkYourAnswersLabel = certificateSaoEmail
 certificateSaoEmail.error.required = Enter the email address of the Senior Accounting Officer
-certificateSaoEmail.error.format = Enter the SAO name in the correct format, like name@example.com
+certificateSaoEmail.error.format = Enter the email address in the correct format, like name@example.com
 certificateSaoEmail.error.length = SAO email address must be 254 characters or less
 certificateSaoEmail.change.hidden = CertificateSaoEmail
 
