@@ -157,7 +157,7 @@ object CertificateWhoIsSubmittingViewSpec {
     "We rely on the information provided to be accurate. The SAO is responsible for reviewing and approving the information before it is submitted, and for authorising someone to submit it on their behalf if they are not submitting it themselves."
   )
   val option1key   = "sao"
-  val option1Label = "I am the SAO"
+  val option1Label = "The SAO"
   val option2key   = "standIn"
-  val option2Label = "I am authorised to submit on behalf of the SAO"
+  val option2Label = "A person authorised to submit on behalf of the SAO"
 }

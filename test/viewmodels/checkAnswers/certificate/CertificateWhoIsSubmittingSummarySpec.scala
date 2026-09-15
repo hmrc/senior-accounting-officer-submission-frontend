@@ -53,12 +53,14 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
 
       "expected value" - {
         "must show 'Option1' when user answers is sao" in {
-          SUT(answer = CertificateWhoIsSubmitting.Sao).value.content mustBe HtmlContent(saoText)
+          SUT(answer = CertificateWhoIsSubmitting.Sao).value.content mustBe HtmlContent(
+            s"""<span data-test-id="$expectedValueId">$saoText</span>"""
+          )
         }
 
         "must show 'Option2' when user answers is standIn" in {
           SUT(answer = CertificateWhoIsSubmitting.StandIn).value.content mustBe HtmlContent(
-            standInText
+            s"""<span data-test-id="$expectedValueId">$standInText</span>"""
           )
         }
       }
@@ -98,7 +100,7 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
 
 object CertificateWhoIsSubmittingSummarySpec {
   val expectedKey     = "Who is submitting the certificate?"
-  val expectedValueId = "sao-who-is-submitting-value"
+  val expectedValueId = "who-is-submitting-value"
   val saoText         = "The SAO"
   val standInText     = "A person authorised to submit on behalf of the SAO"
 }

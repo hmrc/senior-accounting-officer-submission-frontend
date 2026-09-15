@@ -39,8 +39,6 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 
 import java.time.LocalDate
 
-import java.time.LocalDate
-
 class NotificationCheckYourAnswersServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
   def SUT: NotificationCheckYourAnswersService = app.injector.instanceOf[NotificationCheckYourAnswersService]
