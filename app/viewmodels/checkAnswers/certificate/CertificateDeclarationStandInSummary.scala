@@ -37,7 +37,7 @@ object CertificateDeclarationStandInSummary {
             messages("site.change").toText,
             certificateRoutes.CertificateDeclarationStandInController.onPageLoad(CheckMode).url
           )
-            .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden"))
+            .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden.standInName"))
         )
       )
     }
@@ -52,7 +52,7 @@ object CertificateDeclarationStandInSummary {
             messages("site.change").toText,
             certificateRoutes.CertificateDeclarationStandInController.onPageLoad(CheckMode).url
           )
-            .withVisuallyHiddenText(messages("certificateDeclarationSao.change.hidden"))
+            .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden.saoName"))
         )
       )
     }

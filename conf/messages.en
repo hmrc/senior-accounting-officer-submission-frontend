@@ -503,8 +503,8 @@ certificateDeclarationStandIn.error.standInName.length = Your name must be 105 c
 certificateDeclarationStandIn.error.saoName.length = Name of the SAO must be 105 characters or less
 certificateDeclarationStandIn.error.standInName.invalidChars = Your name must not include <, > or "
 certificateDeclarationStandIn.error.saoName.invalidChars = Name of the SAO must not include <, > or "
-certificateDeclarationStandIn.standInName.change.hidden = StandInName
-certificateDeclarationStandIn.saoName.change.hidden = SaoName
+certificateDeclarationStandIn.change.hidden.standInName = StandInName
+certificateDeclarationStandIn.change.hidden.saoName = SaoName
 
 certificateWhoIsSubmitting.title = Who is submitting the certificate?
 certificateWhoIsSubmitting.caption = Submit a certificate
