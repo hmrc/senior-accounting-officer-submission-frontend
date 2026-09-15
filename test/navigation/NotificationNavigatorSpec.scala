@@ -79,7 +79,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         navigator.nextPage(
           NotificationMoreThanOneSaoPage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
+          emptyUserAnswers.add(NotificationMoreThanOneSaoPage(NormalMode), false)
         ) mustBe notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode)
       }
 
@@ -87,7 +87,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         navigator.nextPage(
           NotificationMoreThanOneSaoPage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), true).success.value
+          emptyUserAnswers.add(NotificationMoreThanOneSaoPage(NormalMode), true)
         ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
       }
 
@@ -95,7 +95,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         navigator.nextPage(
           NotificationMultiSaoLastOfficerNamePage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), true).success.value
+          emptyUserAnswers.add(NotificationMoreThanOneSaoPage(NormalMode), true)
         ) mustBe notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
       }
 
@@ -104,9 +104,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           NotificationMultiSaoLastOfficerStartDatePage(NormalMode),
           NormalMode,
           emptyUserAnswers
-            .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.of(2026, 5, 1))
-            .success
-            .value
+            .add(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.of(2026, 5, 1))
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode)
       }
 
@@ -148,7 +146,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         navigator.nextPage(
           NotificationMultiSaoAreAllAddedPage(0, NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true).success.value
+          emptyUserAnswers.add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
         ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
@@ -156,7 +154,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         navigator.nextPage(
           NotificationMultiSaoAreAllAddedPage(0, NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false).success.value
+          emptyUserAnswers.add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
         ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, 1)
       }
 
@@ -164,16 +162,14 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         navigator.nextPage(
           NotificationSingleSaoOfficerNamePage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage(NormalMode), "Firstname Lastname").success.value
+          emptyUserAnswers.add(NotificationSingleSaoOfficerNamePage(NormalMode), "Firstname Lastname")
         ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
       }
 
       "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
         val userAnswers =
           emptyUserAnswers
-            .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
-            .success
-            .value
+            .add(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
 
         navigator.nextPage(
           UploadTemplateTablePage,
@@ -185,15 +181,13 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
       "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {
         val userAnswers =
           emptyUserAnswers
-            .set(
+            .add(
               UploadTemplateTablePage,
               UploadTemplateTableData(
                 rows = Seq.empty,
                 errors = Seq(models.upload.TemplateParseError(9, Some(Column.Utr), TemplateError.UtrError))
               )
             )
-            .success
-            .value
 
         navigator.nextPage(
           UploadTemplateTablePage,
@@ -284,12 +278,9 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "user answers contains previous answers for the single SAO route" - {
             "we are redirected to the notification check your answers page" in {
               val userAnswers = emptyUserAnswers
-                .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-                .get
-                .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Firstname Lastname")
-                .get
-                .set(NotificationMoreThanOneSaoPage(TransactionMode), false)
-                .get
+                .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+                .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Firstname Lastname")
+                .add(NotificationMoreThanOneSaoPage(TransactionMode), false)
 
               navigator.nextPage(
                 NotificationMoreThanOneSaoPage(TransactionMode),
@@ -302,10 +293,8 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "user answers does not contain previous answers for the single SAO route" - {
             "we are redirected to the single sao name page in add sao mode" in {
               val userAnswers = emptyUserAnswers
-                .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-                .get
-                .set(NotificationMoreThanOneSaoPage(TransactionMode), false)
-                .get
+                .add(NotificationMoreThanOneSaoPage(NormalMode), true)
+                .add(NotificationMoreThanOneSaoPage(TransactionMode), false)
 
               navigator.nextPage(
                 NotificationMoreThanOneSaoPage(NormalMode),
@@ -320,22 +309,14 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "user answers contains previous answers for the multiple SAO route" - {
             "we are redirected to the notification check your answers page" in {
               val userAnswers = emptyUserAnswers
-                .set(NotificationMoreThanOneSaoPage(NormalMode), true)
-                .get
-                .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), "Firstname Lastname")
-                .get
-                .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.now())
-                .get
-                .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), "Firstname Lastname II")
-                .get
-                .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), LocalDate.now())
-                .get
-                .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), LocalDate.now())
-                .get
-                .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
-                .get
-                .set(NotificationMoreThanOneSaoPage(TransactionMode), true)
-                .get
+                .add(NotificationMoreThanOneSaoPage(NormalMode), true)
+                .add(NotificationMultiSaoLastOfficerNamePage(NormalMode), "Firstname Lastname")
+                .add(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.now())
+                .add(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), "Firstname Lastname II")
+                .add(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), LocalDate.now())
+                .add(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), LocalDate.now())
+                .add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
+                .add(NotificationMoreThanOneSaoPage(TransactionMode), true)
 
               navigator.nextPage(
                 NotificationMoreThanOneSaoPage(NormalMode),
@@ -348,8 +329,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "user answers does not contain answers for the multiple SAO route" - {
             "we are redirected to the NotificationMultiSaoLastOfficerNameController page in add sao mode" in {
               val userAnswers = emptyUserAnswers
-                .set(NotificationMoreThanOneSaoPage(TransactionMode), true)
-                .get
+                .add(NotificationMoreThanOneSaoPage(TransactionMode), true)
 
               navigator.nextPage(
                 NotificationMoreThanOneSaoPage(NormalMode),
@@ -361,7 +341,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         }
 
         "the user has not previously responded, throw an exception" in {
-          val userAnswers = emptyUserAnswers.set(NotificationMoreThanOneSaoPage(TransactionMode), false).get
+          val userAnswers = emptyUserAnswers.add(NotificationMoreThanOneSaoPage(TransactionMode), false)
 
           intercept[NotImplementedError] {
             navigator.nextPage(
@@ -401,10 +381,8 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         "when user answers yes" - {
           "go to notification check your answers page" in {
             val userAnswers = emptyUserAnswers
-              .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
-              .get
-              .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), true)
-              .get
+              .add(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+              .add(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), true)
 
             navigator.nextPage(
               NotificationMultiSaoAreAllAddedPage(1, TransactionMode),
@@ -418,14 +396,10 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "when the users prior answer was yes" - {
             "go to previous sao name page at the right index" in {
               val userAnswers = emptyUserAnswers
-                .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
-                .get
-                .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
-                .get
-                .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-                .get
-                .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
-                .get
+                .add(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+                .add(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
+                .add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
+                .add(NotificationMultiSaoAreAllAddedPage(1, NormalMode), true)
 
               navigator.nextPage(
                 NotificationMultiSaoAreAllAddedPage(1, TransactionMode),
@@ -441,14 +415,10 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "when the users prior answer was no" - {
             "go to check your answers page" in {
               val userAnswers = emptyUserAnswers
-                .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
-                .get
-                .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
-                .get
-                .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
-                .get
-                .set(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
-                .get
+                .add(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+                .add(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
+                .add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), false)
+                .add(NotificationMultiSaoAreAllAddedPage(1, NormalMode), false)
 
               navigator.nextPage(
                 NotificationMultiSaoAreAllAddedPage(1, TransactionMode),
@@ -462,10 +432,8 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           "when the user has no prior answer" - {
             "throw an exception" in {
               val userAnswers = emptyUserAnswers
-                .set(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
-                .get
-                .set(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
-                .get
+                .add(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
+                .add(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
 
               intercept[NotImplementedError] {
                 navigator.nextPage(

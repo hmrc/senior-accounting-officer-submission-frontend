@@ -34,6 +34,7 @@ import play.api.test.FakeRequest
 import utils.TestDataGenerator
 
 import java.time.LocalDate
+import play.api.libs.json.Writes
 
 trait SpecBase
     extends AnyFreeSpec
@@ -132,4 +133,10 @@ trait SpecBase
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
       )
+
+  extension (userAnswers: UserAnswers) {
+    def add[A](page: QuestionPage[A], a: A)(using Writes[A]): UserAnswers = {
+      userAnswers.set(page, a).get
+    }
+  }
 }
