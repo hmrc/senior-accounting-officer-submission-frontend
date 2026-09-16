@@ -55,7 +55,7 @@ class NotificationMultiSaoPreviousOfficerEndDateFormProviderSpec extends DateBeh
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredAllKey,
-      message = s"When did $saoName stop being the SAO",
+      message = s"Enter the date $saoName stopped being the SAO",
       args = saoName
     )
 
