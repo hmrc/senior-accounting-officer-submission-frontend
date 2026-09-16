@@ -435,13 +435,14 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
                 .add(NotificationMultiSaoAreAllAddedPage(0, TransactionMode), false)
                 .add(NotificationMultiSaoAreAllAddedPage(1, TransactionMode), false)
 
-              intercept[NotImplementedError] {
-                navigator.nextPage(
-                  NotificationMultiSaoAreAllAddedPage(1, TransactionMode),
-                  TransactionMode,
-                  userAnswers
-                )
-              }
+              navigator.nextPage(
+                NotificationMultiSaoAreAllAddedPage(1, TransactionMode),
+                TransactionMode,
+                userAnswers
+              ) mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(
+                TransactionMode,
+                2
+              )
             }
           }
 

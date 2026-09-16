@@ -162,13 +162,12 @@ class NotificationNavigator @Inject() () extends Navigator {
           case Some(true)  => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
           case Some(false) =>
             userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)) match {
-              case Some(true) =>
+              case Some(true) | None =>
                 notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(
                   TransactionMode,
                   saoIndex + 1
                 )
               case Some(false) => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-              case None        => ???
             }
           case _ => ???
         }
