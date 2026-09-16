@@ -18,8 +18,6 @@ package services
 
 import models.*
 import models.Area.*
-import pages.Page.NOTIFICATION_PATH
-import pages.notification.*
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.libs.json.Reads.*
@@ -27,34 +25,27 @@ import play.api.libs.json.Reads.*
 import scala.annotation.tailrec
 
 import javax.inject.Inject
+import pages.certificate.*
+import models.certificate.CertificateWhoIsSubmitting
+import pages.Page.CERTIFICATE_PATH
 
-class SaoUserAnswersService extends Logging @Inject {
+class DeclarationUserAnswersService extends Logging @Inject {
 
-  val singleSaoNameKey: String         = NotificationSingleSaoOfficerNamePage(NormalMode).toString
-  val multiSaoLastNameKey: String      = NotificationMultiSaoLastOfficerNamePage(NormalMode).toString
-  val multiSaoLastStartDateKey: String = NotificationMultiSaoLastOfficerStartDatePage(NormalMode).toString
-  val multiSaoNameKey: String          = NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode).key
-  val multiSaoStartDateKey: String     = NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode).key
-  val multiSaoEndDateKey: String       = NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode).key
-  val multiSaoAddedAllKey: String      = NotificationMultiSaoAreAllAddedPage(0, NormalMode).key
+  val saoKey: String             = CertificateDeclarationSaoPage(NormalMode).toString
+  val standInKey: String         = CertificateDeclarationStandInPage(NormalMode).toString
+  val whoIsSubmittingKey: String = CertificateWhoIsSubmittingPage(NormalMode).toString
 
-  def jacobPrint[A](a: A): A = {
-    println(a)
-    a
-  }
-
-  def sanitiseUserAnswers(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
-      case Some(true) =>
+  def sanitise(userAnswers: UserAnswers): UserAnswers = {
+    userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
+      case Some(CertificateWhoIsSubmitting.Sao) =>
         userAnswers
           .clearTransactionArea()
-          .clearCommittedAreaSingleSao()
-          .sanitiseCommittedAreaMultiSao()
+          .clearCommittedAreaStandIn()
           .copyCommittedAreaToTransactionArea()
-      case Some(false) =>
+      case Some(CertificateWhoIsSubmitting.StandIn) =>
         userAnswers
           .clearTransactionArea()
-          .clearCommittedAreaMultiSao()
+          .clearCommittedAreaSao()
           .copyCommittedAreaToTransactionArea()
       case None => ???
     }
@@ -63,9 +54,9 @@ class SaoUserAnswersService extends Logging @Inject {
   extension (userAnswers: UserAnswers) {
     def copyCommittedAreaToTransactionArea(): UserAnswers = {
       userAnswers.transformUserAnswers(
-        (__ \ NOTIFICATION_PATH).json.update(
+        (__ \ CERTIFICATE_PATH).json.update(
           __.read[JsObject].map { o =>
-            Json.obj(TRANSACTION_PATH -> userAnswers.data(NOTIFICATION_PATH)(COMMITTED_PATH))
+            Json.obj(TRANSACTION_PATH -> userAnswers.data(CERTIFICATE_PATH)(COMMITTED_PATH))
           }
         )
       )
@@ -90,13 +81,13 @@ class SaoUserAnswersService extends Logging @Inject {
     }
 
     def clearCommittedAreaSingleSao(): UserAnswers = {
-      userAnswers.transformUserAnswers((__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ singleSaoNameKey).json.prune)
+      userAnswers.transformUserAnswers((__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ saoKey).json.prune)
     }
 
     def clearCommittedAreaMultiSao(): UserAnswers = {
       userAnswers.transformUserAnswers(
-        (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoLastNameKey).json.prune andThen
-          (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoLastStartDateKey).json.prune andThen
+        (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ standInKey).json.prune andThen
+          (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ whoIsSubmittingKey).json.prune andThen
           (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoNameKey).json.prune andThen
           (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoStartDateKey).json.prune andThen
           (__ \ NOTIFICATION_PATH \ COMMITTED_PATH \ multiSaoEndDateKey).json.prune andThen
