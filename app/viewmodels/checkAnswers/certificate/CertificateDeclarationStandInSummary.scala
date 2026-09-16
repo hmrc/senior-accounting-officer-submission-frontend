@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.certificate
 
 import controllers.certificate.routes as certificateRoutes
-import models.{CheckMode, UserAnswers}
+import models.*
 import pages.certificate.CertificateDeclarationStandInPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -28,7 +28,7 @@ import utils.SummaryHelpers.renderValue
 object CertificateDeclarationStandInSummary {
 
   def standInRow(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateDeclarationStandInPage).map { answer =>
+    answers.get(CertificateDeclarationStandInPage(NormalMode)).map { answer =>
       SummaryListRowViewModel(
         key = messages("certificateDeclarationStandIn.checkYourAnswersLabel").toKey,
         value = renderValue(answer.StandInName, "declaration-stand-in-value"),
@@ -43,7 +43,7 @@ object CertificateDeclarationStandInSummary {
     }
 
   def saoRow(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateDeclarationStandInPage).map { answer =>
+    answers.get(CertificateDeclarationStandInPage(NormalMode)).map { answer =>
       SummaryListRowViewModel(
         key = messages("certificateDeclarationSao.checkYourAnswersLabel").toKey,
         value = renderValue(answer.SaoName, "declaration-sao-value"),

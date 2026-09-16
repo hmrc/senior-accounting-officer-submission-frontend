@@ -37,6 +37,7 @@ import scala.concurrent.{ExecutionContext, Future}
 import java.time.LocalDate
 
 import CertificateSubmissionServiceSpec.*
+import models.NormalMode
 
 class CertificateSubmissionServiceSpec extends SpecBase {
 
@@ -179,10 +180,13 @@ object CertificateSubmissionServiceSpec {
       .set(CertificateSaoEmailPage, "sao@example.com")
       .success
       .value
-      .set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn)
+      .set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.StandIn)
       .success
       .value
-      .set(CertificateDeclarationStandInPage, CertificateDeclarationStandIn("Proxy Person", "Senior Officer"))
+      .set(
+        CertificateDeclarationStandInPage(NormalMode),
+        CertificateDeclarationStandIn("Proxy Person", "Senior Officer")
+      )
       .success
       .value
       .set(CertificateAdditionalInformationPage, Some("Certificate remarks"))

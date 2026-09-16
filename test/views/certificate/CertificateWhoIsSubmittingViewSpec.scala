@@ -18,7 +18,7 @@ package views.certificate
 
 import base.ViewSpecBase
 import forms.certificate.CertificateWhoIsSubmittingFormProvider
-import models.Mode
+import models.*
 import models.certificate.CertificateWhoIsSubmitting
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -39,7 +39,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 
   "CertificateWhoIsSubmittingView" - {
 
-    Mode.values.foreach { mode =>
+    Seq(NormalMode, TransactionMode).foreach { mode =>
       s"when using $mode" - {
         "when the form is not filled in" - {
           val doc = generateView(form, mode)

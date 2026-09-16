@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.certificate
 
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
-import models.CheckMode
+import models.*
 import models.certificate.CertificateWhoIsSubmitting
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.certificate.CertificateWhoIsSubmittingPage
@@ -42,7 +42,7 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
 
     "when there is a user answer for CertificateWhoIsSubmittingPage" - {
       def testUserAnswers(answer: CertificateWhoIsSubmitting) =
-        emptyUserAnswers.set(CertificateWhoIsSubmittingPage, answer).get
+        emptyUserAnswers.set(CertificateWhoIsSubmittingPage(NormalMode), answer).get
 
       def SUT(answer: CertificateWhoIsSubmitting = CertificateWhoIsSubmitting.Sao) =
         CertificateWhoIsSubmittingSummary.row(testUserAnswers(answer)).get
@@ -85,7 +85,7 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
 
         "must have expected url" in {
           action.href mustBe certificateRoutes.CertificateWhoIsSubmittingController
-            .onPageLoad(CheckMode)
+            .onPageLoad(TransactionMode)
             .url
         }
 

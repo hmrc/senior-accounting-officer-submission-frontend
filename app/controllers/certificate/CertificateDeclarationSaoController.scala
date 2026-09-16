@@ -46,7 +46,7 @@ class CertificateDeclarationSaoController @Inject() (
     with I18nSupport {
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(CertificateDeclarationSaoPage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(CertificateDeclarationSaoPage(mode)).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -59,9 +59,9 @@ class CertificateDeclarationSaoController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationSaoPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationSaoPage(mode), value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage(mode), mode, updatedAnswers))
         )
   }
 }

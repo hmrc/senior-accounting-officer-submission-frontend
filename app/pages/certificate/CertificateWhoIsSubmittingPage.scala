@@ -20,10 +20,12 @@ import models.certificate.CertificateWhoIsSubmitting
 import pages.Page.CERTIFICATE_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
+import models.*
+import models.Area.*
 
-case object CertificateWhoIsSubmittingPage extends QuestionPage[CertificateWhoIsSubmitting] {
+case class CertificateWhoIsSubmittingPage(mode: Mode) extends QuestionPage[CertificateWhoIsSubmitting] {
 
-  override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
+  override def path: JsPath = JsPath \ CERTIFICATE_PATH \ mode.toArea.toString \ toString
 
   override def toString: String = "certificateWhoIsSubmitting"
 }

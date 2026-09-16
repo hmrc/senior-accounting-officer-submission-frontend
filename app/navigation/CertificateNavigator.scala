@@ -54,16 +54,16 @@ class CertificateNavigator @Inject() () extends Navigator {
         )
     case CertificateAdditionalInformationPage =>
       _ => certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
-    case CertificateWhoIsSubmittingPage =>
+    case CertificateWhoIsSubmittingPage(_) =>
       userAnswers =>
-        userAnswers.get(CertificateWhoIsSubmittingPage) match {
+        userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
           case Some(CertificateWhoIsSubmitting.Sao) =>
             certificateRoutes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
           case Some(CertificateWhoIsSubmitting.StandIn) =>
             certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
           case _ => ???
         }
-    case CertificateDeclarationSaoPage | CertificateDeclarationStandInPage =>
+    case CertificateDeclarationSaoPage(_) | CertificateDeclarationStandInPage(_) =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateConfirmationPage =>
       _ => certificateRoutes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Complete)
@@ -76,9 +76,9 @@ class CertificateNavigator @Inject() () extends Navigator {
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateSaoEmailPage =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateDeclarationSaoPage =>
+    case CertificateDeclarationSaoPage(mode) =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateDeclarationStandInPage =>
+    case CertificateDeclarationStandInPage(mode) =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateAdditionalInformationPage =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
@@ -86,11 +86,11 @@ class CertificateNavigator @Inject() () extends Navigator {
   }
 
   protected val transactionRouteMap: Page => UserAnswers => Call = {
-    case CertificateDeclarationSaoPage | CertificateDeclarationStandInPage =>
+    case CertificateDeclarationSaoPage(TransactionMode) | CertificateDeclarationStandInPage(TransactionMode) =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateWhoIsSubmittingPage =>
+    case CertificateWhoIsSubmittingPage(mode) =>
       userAnswers =>
-        userAnswers.get(CertificateWhoIsSubmittingPage) match {
+        userAnswers.get(CertificateWhoIsSubmittingPage(mode)) match {
           case Some(CertificateWhoIsSubmitting.Sao) =>
             certificateRoutes.CertificateDeclarationSaoController.onPageLoad(TransactionMode)
           case Some(CertificateWhoIsSubmitting.StandIn) =>

@@ -18,7 +18,7 @@ package viewmodels.checkAnswers.certificate
 
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
-import models.CheckMode
+import models.*
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.certificate.CertificateDeclarationStandInPage
 import play.api.i18n.{Messages, MessagesApi}
@@ -42,7 +42,7 @@ class CertificateDeclarationStandInSummarySpec extends SpecBase with GuiceOneApp
 
     "when there is a user answer for CertificateDeclarationStandInPage" - {
       def testUserAnswers(answer: CertificateDeclarationStandIn) =
-        emptyUserAnswers.set(CertificateDeclarationStandInPage, answer).get
+        emptyUserAnswers.set(CertificateDeclarationStandInPage(NormalMode), answer).get
 
       def SUT(answer: CertificateDeclarationStandIn) =
         CertificateDeclarationStandInSummary.standInRow(testUserAnswers(answer)).get
@@ -100,7 +100,7 @@ class CertificateDeclarationStandInSummarySpec extends SpecBase with GuiceOneApp
 
     "when there is a user answer for CertificateDeclarationStandInPage" - {
       def testUserAnswers(answer: CertificateDeclarationStandIn) =
-        emptyUserAnswers.set(CertificateDeclarationStandInPage, answer).get
+        emptyUserAnswers.set(CertificateDeclarationStandInPage(NormalMode), answer).get
 
       def SUT(answer: CertificateDeclarationStandIn) =
         CertificateDeclarationStandInSummary.saoRow(testUserAnswers(answer)).get

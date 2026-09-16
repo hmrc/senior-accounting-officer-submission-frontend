@@ -25,7 +25,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
-
+import models.NormalMode
 import scala.concurrent.{ExecutionContext, Future}
 
 import java.time.format.DateTimeFormatter
@@ -93,9 +93,9 @@ class CertificateSubmissionService @Inject() (
 
   private def submitterName(userAnswers: UserAnswers): Option[String] =
     userAnswers
-      .get(CertificateWhoIsSubmittingPage)
+      .get(CertificateWhoIsSubmittingPage(NormalMode))
       .collect { case CertificateWhoIsSubmitting.StandIn =>
-        userAnswers.get(CertificateDeclarationStandInPage).map(_.StandInName)
+        userAnswers.get(CertificateDeclarationStandInPage(NormalMode)).map(_.StandInName)
       }
       .flatten
 

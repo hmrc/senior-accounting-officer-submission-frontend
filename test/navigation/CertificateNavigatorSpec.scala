@@ -85,23 +85,23 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationSao page" in {
         navigator.nextPage(
-          CertificateWhoIsSubmittingPage,
+          CertificateWhoIsSubmittingPage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.Sao).get
+          emptyUserAnswers.set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.Sao).get
         ) mustBe certificateRoutes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
       }
 
       "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationStandIn page" in {
         navigator.nextPage(
-          CertificateWhoIsSubmittingPage,
+          CertificateWhoIsSubmittingPage(NormalMode),
           NormalMode,
-          emptyUserAnswers.set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn).get
+          emptyUserAnswers.set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.StandIn).get
         ) mustBe certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
       }
 
       "when on CertificateDeclarationSao, must go to CertificateCheckYourAnswers page" in {
         navigator.nextPage(
-          CertificateDeclarationSaoPage,
+          CertificateDeclarationSaoPage(NormalMode),
           NormalMode,
           emptyUserAnswers
         ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
@@ -109,7 +109,7 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on CertificateDeclarationStandIn, must go to CertificateCheckYourAnswers page" in {
         navigator.nextPage(
-          CertificateDeclarationStandInPage,
+          CertificateDeclarationStandInPage(NormalMode),
           NormalMode,
           emptyUserAnswers
         ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
@@ -144,7 +144,7 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on CertificateDeclarationSaoPage, must go to certificate check your answers page" in {
         navigator.nextPage(
-          CertificateDeclarationSaoPage,
+          CertificateDeclarationSaoPage(CheckMode),
           CheckMode,
           emptyUserAnswers
         ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
@@ -152,7 +152,7 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
       "when on CertificateDeclarationStandInPage, must go to certificate check your answers page" in {
         navigator.nextPage(
-          CertificateDeclarationStandInPage,
+          CertificateDeclarationStandInPage(CheckMode),
           CheckMode,
           emptyUserAnswers
         ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()

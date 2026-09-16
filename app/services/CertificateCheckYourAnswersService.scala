@@ -22,6 +22,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.checkAnswers.certificate.*
 import pages.certificate.CertificateWhoIsSubmittingPage
 import models.certificate.CertificateWhoIsSubmitting.*
+import models.NormalMode
 
 class CertificateCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
@@ -29,7 +30,7 @@ class CertificateCheckYourAnswersService {
       (CertificateSaoFullNameSummary.row(userAnswers)
         +: CertificateSaoEmailSummary.row(userAnswers)
         +: CertificateWhoIsSubmittingSummary.row(userAnswers)
-        +: (userAnswers.get(CertificateWhoIsSubmittingPage) match {
+        +: (userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
           case Some(Sao)     => { Seq(CertificateDeclarationSaoSummary.row(userAnswers)) }
           case Some(StandIn) => {
             Seq(
