@@ -22,6 +22,8 @@ import models.{TaskStatus, UserAnswers}
 import pages.*
 import pages.notification.*
 import play.api.libs.json.*
+import models.Area.COMMITTED_PATH
+import pages.Page.NOTIFICATION_PATH
 
 enum NotificationStage(
     val provideSaoDetailsStatus: TaskStatus = NotStarted,
@@ -67,10 +69,20 @@ object NotificationStage {
   def canStartSubmitNotification(userAnswers: UserAnswers): Boolean =
     isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers)
 
-  private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).exists { case _ =>
-      true
-    }
+  private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean = {
+    val singleSaoCompleted = userAnswers
+      .get(NotificationSingleSaoOfficerNamePage(NormalMode))
+      .nonEmpty
+
+    val multiSaoCompleted =
+      (userAnswers.data \ NOTIFICATION_PATH \ COMMITTED_PATH \ NotificationMultiSaoAreAllAddedPage(0, NormalMode).key)
+        .asOpt[Seq[Boolean]] match {
+        case Some(booleans) => booleans.contains(true)
+        case None           => false
+      }
+
+    singleSaoCompleted || multiSaoCompleted
+  }
 
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty) &&
