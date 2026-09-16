@@ -19,11 +19,13 @@ package controllers.notification
 import controllers.actions.*
 import forms.notification.NotificationMultiSaoAreAllAddedFormProvider
 import models.Mode
+import models.TransactionMode
 import navigation.NotificationNavigator
-import pages.notification.NotificationMultiSaoAreAllAddedPage
+import pages.notification.*
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.SaoUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationMultiSaoAreAllAddedView
 
@@ -40,14 +42,16 @@ class NotificationMultiSaoAreAllAddedController @Inject() (
     requireData: DataRequiredAction,
     formProvider: NotificationMultiSaoAreAllAddedFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationMultiSaoAreAllAddedView
+    view: NotificationMultiSaoAreAllAddedView,
+    saoUserAnswersService: SaoUserAnswersService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val form         = formProvider()
-      val preparedForm = request.userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)).fold(form)(form.fill)
+      val preparedForm =
+        request.userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, mode)).fold(form)(form.fill)
       Ok(view(preparedForm, mode, saoIndex))
   }
 
@@ -61,9 +65,23 @@ class NotificationMultiSaoAreAllAddedController @Inject() (
           value =>
             for {
               updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(NotificationMultiSaoAreAllAddedPage(saoIndex), value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationMultiSaoAreAllAddedPage(saoIndex), mode, updatedAnswers))
+                .fromTry(request.userAnswers.set(NotificationMultiSaoAreAllAddedPage(saoIndex, mode), value))
+              userAddedAllSaos = updatedAnswers
+                .get(NotificationMultiSaoAreAllAddedPage(saoIndex, TransactionMode)) == Some(true)
+              inTransactionMode = mode == TransactionMode
+              committedAnswers  =
+                if inTransactionMode && userAddedAllSaos
+                then { saoUserAnswersService.commitTransaction(updatedAnswers) }
+                else { updatedAnswers }
+              _ <- sessionRepository.set(committedAnswers)
+            } yield Redirect(
+              navigator
+                .nextPage(
+                  NotificationMultiSaoAreAllAddedPage(saoIndex, mode),
+                  mode,
+                  committedAnswers
+                )
+            )
         )
   }
 }

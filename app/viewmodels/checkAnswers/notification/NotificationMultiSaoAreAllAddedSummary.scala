@@ -17,9 +17,10 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
-import models.{CheckMode, UserAnswers}
+import models.*
 import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.i18n.Messages
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
@@ -27,15 +28,21 @@ import viewmodels.govuk.summarylist.*
 object NotificationMultiSaoAreAllAddedSummary {
 
   def row(answers: UserAnswers, saoIndex: Int)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMultiSaoAreAllAddedPage(saoIndex)).map { answer =>
-      val value = if answer then "site.yes" else "site.no"
+    answers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)).map { answer =>
+      val messageKey = if answer then "site.yes" else "site.no"
       SummaryListRowViewModel(
         key = messages("notificationMultiSaoAreAllAdded.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(messages(value).toText),
+        value = ValueViewModel(
+          HtmlContent(
+            s"""<span data-test-id="sao-are-all-added-${saoIndex + 1}">${messages(messageKey)}</span>"""
+          )
+        ),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(CheckMode).url
+            notificationRoutes.NotificationMultiSaoAreAllAddedController
+              .onPageLoad(TransactionMode, saoIndex)
+              .url
           )
             .withVisuallyHiddenText(messages("notificationMultiSaoAreAllAdded.change.hidden"))
         )

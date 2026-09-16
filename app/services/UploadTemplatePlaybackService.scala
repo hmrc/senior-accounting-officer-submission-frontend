@@ -16,6 +16,7 @@
 
 package services
 
+import models.NormalMode
 import models.UserAnswers
 import models.upload.UploadTemplateTableData
 import pages.*
@@ -39,8 +40,8 @@ class UploadTemplatePlaybackService @Inject() () {
     } yield Playback(tableData, saoName)
 
   private def getSaoName(userAnswers: UserAnswers): Option[String] =
-    userAnswers.get(NotificationMoreThanOneSaoPage).flatMap {
-      case true  => userAnswers.get(NotificationMultiSaoLastOfficerNamePage)
-      case false => userAnswers.get(NotificationSingleSaoOfficerNamePage)
+    userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).flatMap {
+      case true  => userAnswers.get(NotificationMultiSaoLastOfficerNamePage(NormalMode))
+      case false => userAnswers.get(NotificationSingleSaoOfficerNamePage(NormalMode))
     }
 }

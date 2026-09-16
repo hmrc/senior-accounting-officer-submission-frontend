@@ -19,6 +19,7 @@ package controllers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.NormalMode
 import models.upload.*
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
@@ -80,10 +81,10 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
     .set(UploadTemplateTablePage, tableData)
     .success
     .value
-    .set(NotificationMoreThanOneSaoPage, false)
+    .set(NotificationMoreThanOneSaoPage(NormalMode), false)
     .success
     .value
-    .set(NotificationSingleSaoOfficerNamePage, saoName)
+    .set(NotificationSingleSaoOfficerNamePage(NormalMode), saoName)
     .success
     .value
 
@@ -175,7 +176,7 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
         .set(UploadTemplateTablePage, tableData)
         .success
         .value
-        .set(NotificationMultiSaoLastOfficerNamePage, lastSaoName)
+        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), lastSaoName)
         .success
         .value
 

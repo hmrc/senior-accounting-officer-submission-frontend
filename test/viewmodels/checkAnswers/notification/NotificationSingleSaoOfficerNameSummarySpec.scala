@@ -19,6 +19,7 @@ package viewmodels.checkAnswers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.CheckMode
+import models.NormalMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationSingleSaoOfficerNamePage
 import play.api.i18n.{Messages, MessagesApi}
@@ -40,7 +41,7 @@ class NotificationSingleSaoOfficerNameSummarySpec extends SpecBase with GuiceOne
 
     "when there is a user answer for NotificationSingleSaoOfficerNamePage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage, answer).get
+        emptyUserAnswers.set(NotificationSingleSaoOfficerNamePage(NormalMode), answer).get
 
       def SUT(answer: String = "") = NotificationSingleSaoOfficerNameSummary.row(testUserAnswers(answer)).get
 

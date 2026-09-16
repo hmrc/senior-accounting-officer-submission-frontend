@@ -18,13 +18,16 @@ package controllers.notification
 
 import controllers.actions.*
 import forms.notification.NotificationSingleSaoOfficerNameFormProvider
-import models.Mode
+import models.*
 import navigation.NotificationNavigator
-import pages.notification.NotificationSingleSaoOfficerNamePage
+import pages.notification.*
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.libs.json.*
+import play.api.libs.json.Reads.*
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.SaoUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationSingleSaoOfficerNameView
 
@@ -41,7 +44,8 @@ class NotificationSingleSaoOfficerNameController @Inject() (
     requireData: DataRequiredAction,
     formProvider: NotificationSingleSaoOfficerNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: NotificationSingleSaoOfficerNameView
+    view: NotificationSingleSaoOfficerNameView,
+    saoUserAnswersService: SaoUserAnswersService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -49,7 +53,7 @@ class NotificationSingleSaoOfficerNameController @Inject() (
   val form: Form[String] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(NotificationSingleSaoOfficerNamePage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(NotificationSingleSaoOfficerNamePage(mode)).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -61,9 +65,15 @@ class NotificationSingleSaoOfficerNameController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(NotificationSingleSaoOfficerNamePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationSingleSaoOfficerNamePage, mode, updatedAnswers))
+              updatedAnswers <- Future
+                .fromTry(request.userAnswers.set(NotificationSingleSaoOfficerNamePage(mode), value))
+              inTransactionMode = mode == TransactionMode
+              committedAnswers  =
+                if inTransactionMode
+                then { saoUserAnswersService.commitTransaction(updatedAnswers) }
+                else { updatedAnswers }
+              _ <- sessionRepository.set(committedAnswers)
+            } yield Redirect(navigator.nextPage(NotificationSingleSaoOfficerNamePage(mode), mode, updatedAnswers))
         )
   }
 }

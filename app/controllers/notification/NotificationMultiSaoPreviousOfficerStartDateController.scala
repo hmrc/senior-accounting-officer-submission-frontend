@@ -52,11 +52,13 @@ class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       request.userAnswers
-        .get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)) match {
+        .get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
         case Some(saoName) =>
           val form         = formProvider(saoName)
           val preparedForm =
-            request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex)).fold(form)(form.fill)
+            request.userAnswers
+              .get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
+              .fold(form)(form.fill)
           Ok(view(saoName, preparedForm, mode, saoIndex))
         case None => Redirect(routes.JourneyRecoveryController.onPageLoad())
       }
@@ -64,7 +66,7 @@ class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex)) match {
+      request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
         case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
         case Some(saoName) =>
           val form = formProvider(saoName)
@@ -75,10 +77,13 @@ class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
               value =>
                 for {
                   updatedAnswers <- Future
-                    .fromTry(request.userAnswers.set(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex), value))
+                    .fromTry(
+                      request.userAnswers.set(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode), value)
+                    )
                   _ <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(
-                  navigator.nextPage(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex), mode, updatedAnswers)
+                  navigator
+                    .nextPage(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode), mode, updatedAnswers)
                 )
             )
       }
