@@ -18,7 +18,7 @@ package controllers.certificate
 
 import controllers.actions.*
 import forms.certificate.CertificateDeclarationSaoFormProvider
-import models.Mode
+import models.*
 import navigation.CertificateNavigator
 import pages.certificate.CertificateDeclarationSaoPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,6 +30,7 @@ import views.html.certificate.CertificateDeclarationSaoView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import services.DeclarationUserAnswersService
 
 class CertificateDeclarationSaoController @Inject() (
     override val messagesApi: MessagesApi,
@@ -40,6 +41,7 @@ class CertificateDeclarationSaoController @Inject() (
     requireData: DataRequiredAction,
     formProvider: CertificateDeclarationSaoFormProvider,
     val controllerComponents: MessagesControllerComponents,
+    declarationUserAnswersService: DeclarationUserAnswersService,
     view: CertificateDeclarationSaoView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
@@ -60,8 +62,13 @@ class CertificateDeclarationSaoController @Inject() (
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationSaoPage(mode), value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage(mode), mode, updatedAnswers))
+              inTransactionMode = mode == TransactionMode
+              committedAnswers  =
+                if inTransactionMode
+                then { declarationUserAnswersService.commitTransaction(updatedAnswers) }
+                else { updatedAnswers }
+              _ <- sessionRepository.set(committedAnswers)
+            } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage(mode), mode, committedAnswers))
         )
   }
 }

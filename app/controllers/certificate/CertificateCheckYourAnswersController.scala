@@ -22,8 +22,7 @@ import pages.certificate.CertificateSubmissionTokenPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.*
 import repositories.SessionRepository
-import services.CertificateCheckYourAnswersService
-import services.CertificateSubmissionService
+import services.*
 import services.CertificateSubmissionService.CertificateSubmissionResult
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -44,18 +43,20 @@ class CertificateCheckYourAnswersController @Inject() (
     sessionRepository: SessionRepository,
     certificateCheckYourAnswersService: CertificateCheckYourAnswersService,
     certificateSubmissionService: CertificateSubmissionService,
+    declarationUserAnswersService: DeclarationUserAnswersService,
     view: CertificateCheckYourAnswersView
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    val summaryList = certificateCheckYourAnswersService.getSummaryList(request.userAnswers)
-    val token       = UUID.randomUUID().toString
+    val sanitisedAnswers = declarationUserAnswersService.sanitise(request.userAnswers)
+    val summaryList      = certificateCheckYourAnswersService.getSummaryList(sanitisedAnswers)
+    val token            = UUID.randomUUID().toString
 
     for {
-      updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateSubmissionTokenPage, token))
-      _              <- sessionRepository.set(updatedAnswers)
+      updatedAnswers <- Future.fromTry(sanitisedAnswers.set(CertificateSubmissionTokenPage, token))
+      _              <- sessionRepository.set(sanitisedAnswers)
     } yield Ok(view(summaryList, token))
   }
 
