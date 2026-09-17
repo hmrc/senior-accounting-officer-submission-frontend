@@ -84,10 +84,10 @@ class DeclarationUserAnswersService extends Logging @Inject {
   }
 
   def commitTransaction(userAnswers: UserAnswers): UserAnswers = {
-    if userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode)) == Some(CertificateWhoIsSubmitting.Sao) then {
-      commitSaoDeclarationTransaction(userAnswers)
-    } else {
-      commitStandInDeclarationTransaction(userAnswers)
+    userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode)) match {
+      case Some(CertificateWhoIsSubmitting.Sao)     => commitSaoDeclarationTransaction(userAnswers)
+      case Some(CertificateWhoIsSubmitting.StandIn) => commitStandInDeclarationTransaction(userAnswers)
+      case None                                     => ???
     }
   }
 
