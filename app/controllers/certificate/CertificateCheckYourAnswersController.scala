@@ -56,7 +56,7 @@ class CertificateCheckYourAnswersController @Inject() (
 
     for {
       updatedAnswers <- Future.fromTry(sanitisedAnswers.set(CertificateSubmissionTokenPage, token))
-      _              <- sessionRepository.set(sanitisedAnswers)
+      _              <- sessionRepository.set(updatedAnswers)
     } yield Ok(view(summaryList, token))
   }
 

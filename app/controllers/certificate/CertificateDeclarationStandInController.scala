@@ -18,7 +18,7 @@ package controllers.certificate
 
 import controllers.actions.*
 import forms.certificate.CertificateDeclarationStandInFormProvider
-import models.Mode
+import models.*
 import navigation.CertificateNavigator
 import pages.certificate.CertificateDeclarationStandInPage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,6 +30,7 @@ import views.html.certificate.CertificateDeclarationStandInView
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
+import services.DeclarationUserAnswersService
 
 class CertificateDeclarationStandInController @Inject() (
     override val messagesApi: MessagesApi,
@@ -40,7 +41,8 @@ class CertificateDeclarationStandInController @Inject() (
     requireData: DataRequiredAction,
     formProvider: CertificateDeclarationStandInFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: CertificateDeclarationStandInView
+    view: CertificateDeclarationStandInView,
+    declarationUserAnswersService: DeclarationUserAnswersService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -60,7 +62,12 @@ class CertificateDeclarationStandInController @Inject() (
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationStandInPage(mode), value))
-              _              <- sessionRepository.set(updatedAnswers)
+              inTransactionMode = mode == TransactionMode
+              committedAnswers  =
+                if inTransactionMode
+                then { declarationUserAnswersService.commitTransaction(updatedAnswers) }
+                else { updatedAnswers }
+              _ <- sessionRepository.set(committedAnswers)
             } yield Redirect(navigator.nextPage(CertificateDeclarationStandInPage(mode), mode, updatedAnswers))
         )
   }

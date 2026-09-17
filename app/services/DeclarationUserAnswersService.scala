@@ -58,15 +58,13 @@ class DeclarationUserAnswersService extends Logging @Inject {
 
     def clearCommittedAreaStandIn(): UserAnswers = {
       userAnswers.transformUserAnswers(
-        (__ \ CERTIFICATE_PATH \ COMMITTED_PATH \ whoIsSubmittingKey).json.prune
-          andThen (__ \ CERTIFICATE_PATH \ COMMITTED_PATH \ standInKey).json.prune
+        (__ \ CERTIFICATE_PATH \ COMMITTED_PATH \ standInKey).json.prune
       )
     }
 
     def clearCommittedAreaSao(): UserAnswers = {
       userAnswers.transformUserAnswers(
-        (__ \ CERTIFICATE_PATH \ COMMITTED_PATH \ whoIsSubmittingKey).json.prune
-          andThen (__ \ CERTIFICATE_PATH \ COMMITTED_PATH \ saoKey).json.prune
+        (__ \ CERTIFICATE_PATH \ COMMITTED_PATH \ saoKey).json.prune
       )
     }
 

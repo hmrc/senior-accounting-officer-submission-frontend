@@ -88,14 +88,26 @@ class CertificateNavigator @Inject() () extends Navigator {
   protected val transactionRouteMap: Page => UserAnswers => Call = {
     case CertificateDeclarationSaoPage(TransactionMode) | CertificateDeclarationStandInPage(TransactionMode) =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateWhoIsSubmittingPage(mode) =>
+    case CertificateWhoIsSubmittingPage(TransactionMode) =>
       userAnswers =>
-        userAnswers.get(CertificateWhoIsSubmittingPage(mode)) match {
+        userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
           case Some(CertificateWhoIsSubmitting.Sao) =>
-            certificateRoutes.CertificateDeclarationSaoController.onPageLoad(TransactionMode)
+            userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode)) match {
+              case Some(CertificateWhoIsSubmitting.Sao) =>
+                certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+              case Some(CertificateWhoIsSubmitting.StandIn) =>
+                certificateRoutes.CertificateDeclarationStandInController.onPageLoad(TransactionMode)
+              case None => ???
+            }
           case Some(CertificateWhoIsSubmitting.StandIn) =>
-            certificateRoutes.CertificateDeclarationStandInController.onPageLoad(TransactionMode)
-          case _ => ???
+            userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode)) match {
+              case Some(CertificateWhoIsSubmitting.Sao) =>
+                certificateRoutes.CertificateDeclarationSaoController.onPageLoad(TransactionMode)
+              case Some(CertificateWhoIsSubmitting.StandIn) =>
+                certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+              case None => ???
+            }
+          case None => ???
         }
     case _ => _ => ???
   }
