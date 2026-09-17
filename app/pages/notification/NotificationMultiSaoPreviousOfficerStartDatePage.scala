@@ -23,8 +23,6 @@ import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import java.time.LocalDate
-import models.Mode
-import models.Realm.*
 
 final case class NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int, mode: Mode)
     extends QuestionPage[LocalDate] {
