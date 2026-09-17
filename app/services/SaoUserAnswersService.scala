@@ -38,11 +38,6 @@ class SaoUserAnswersService extends Logging @Inject {
   val multiSaoEndDateKey: String       = NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode).key
   val multiSaoAddedAllKey: String      = NotificationMultiSaoAreAllAddedPage(0, NormalMode).key
 
-  def jacobPrint[A](a: A): A = {
-    println(a)
-    a
-  }
-
   def sanitiseUserAnswers(userAnswers: UserAnswers): UserAnswers = {
     userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
       case Some(true) =>
