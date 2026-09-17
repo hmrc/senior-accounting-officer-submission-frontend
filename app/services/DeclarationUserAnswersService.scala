@@ -93,27 +93,27 @@ class DeclarationUserAnswersService extends Logging @Inject {
   }
 
   private def commitSaoDeclarationTransaction(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode)).fold(userAnswers) { whoSubmits =>
-      userAnswers.get(CertificateDeclarationSaoPage(TransactionMode)).fold(userAnswers) { saoName =>
-        userAnswers
-          .set(CertificateWhoIsSubmittingPage(NormalMode), whoSubmits)
-          .get
-          .set(CertificateDeclarationSaoPage(NormalMode), saoName)
-          .get
-      }
-    }
+    (for {
+      whoSubmits <- userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode))
+      saoName    <- userAnswers.get(CertificateDeclarationSaoPage(TransactionMode))
+    } yield {
+      userAnswers
+        .set(CertificateWhoIsSubmittingPage(NormalMode), whoSubmits)
+        .flatMap(_.set(CertificateDeclarationSaoPage(NormalMode), saoName))
+        .getOrElse(???)
+    }).getOrElse(???)
   }
 
   private def commitStandInDeclarationTransaction(userAnswers: UserAnswers): UserAnswers = {
-    userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode)).fold(userAnswers) { whoSubmits =>
-      userAnswers.get(CertificateDeclarationStandInPage(TransactionMode)).fold(userAnswers) { standIn =>
-        userAnswers
-          .set(CertificateWhoIsSubmittingPage(NormalMode), whoSubmits)
-          .get
-          .set(CertificateDeclarationStandInPage(NormalMode), standIn)
-          .get
-      }
-    }
+    (for {
+      whoSubmits <- userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode))
+      standIn    <- userAnswers.get(CertificateDeclarationStandInPage(TransactionMode))
+    } yield {
+      userAnswers
+        .set(CertificateWhoIsSubmittingPage(NormalMode), whoSubmits)
+        .flatMap(_.set(CertificateDeclarationStandInPage(NormalMode), standIn))
+        .getOrElse(???)
+    }).getOrElse(???)
   }
 }
 
