@@ -172,7 +172,141 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           navigator.nextPage(UnknownPage, CheckMode, emptyUserAnswers)
         }
       }
+    }
 
+    "in Transaction mode" - {
+      "when on CertificateDeclarationSaoPage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          CertificateDeclarationSaoPage(TransactionMode),
+          TransactionMode,
+          emptyUserAnswers
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on CertificateDeclarationStandInPage, must go to certificate check your answers page" in {
+        navigator.nextPage(
+          CertificateDeclarationStandInPage(TransactionMode),
+          TransactionMode,
+          emptyUserAnswers
+        ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "when on CertificateWhoIsSubmittingPage" - {
+        "the user previously indicated they wanted to provide an sao declaration" - {
+          "the user then indicated they wanted to provide an sao declaration again" - {
+            "we are redirected to the certificate check your answers page" in {
+              val userAnswers =
+                emptyUserAnswers
+                  .add(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.Sao)
+                  .add(CertificateWhoIsSubmittingPage(TransactionMode), CertificateWhoIsSubmitting.Sao)
+
+              navigator.nextPage(
+                CertificateWhoIsSubmittingPage(TransactionMode),
+                TransactionMode,
+                userAnswers
+              ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+            }
+          }
+
+          "the user then indicated they wanted to provide a stand in declaration instead" - {
+            "we are redirected to the stand in declaration page" in {
+              val userAnswers =
+                emptyUserAnswers
+                  .add(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.Sao)
+                  .add(CertificateWhoIsSubmittingPage(TransactionMode), CertificateWhoIsSubmitting.StandIn)
+
+              navigator.nextPage(
+                CertificateWhoIsSubmittingPage(TransactionMode),
+                TransactionMode,
+                userAnswers
+              ) mustBe certificateRoutes.CertificateDeclarationStandInController.onPageLoad(TransactionMode)
+            }
+          }
+
+          "no answer was provided" - {
+            "throw an exception" in {
+              val userAnswers =
+                emptyUserAnswers
+                  .add(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.Sao)
+
+              intercept[NotImplementedError] {
+                navigator.nextPage(
+                  CertificateWhoIsSubmittingPage(TransactionMode),
+                  TransactionMode,
+                  userAnswers
+                )
+              }
+            }
+          }
+        }
+
+        "the user previously indicated they wanted to provide a stand in declaration" - {
+          "the user then indicated they wanted to provide an sao declaration instead" - {
+            "we are redirected to the sao declaration page" in {
+              val userAnswers =
+                emptyUserAnswers
+                  .add(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.StandIn)
+                  .add(CertificateWhoIsSubmittingPage(TransactionMode), CertificateWhoIsSubmitting.Sao)
+
+              navigator.nextPage(
+                CertificateWhoIsSubmittingPage(TransactionMode),
+                TransactionMode,
+                userAnswers
+              ) mustBe certificateRoutes.CertificateDeclarationSaoController.onPageLoad(TransactionMode)
+            }
+          }
+
+          "the user then indicated they wanted to provide a stand in declaration again" - {
+            "we are redirected to the certificate check your answers page" in {
+              val userAnswers =
+                emptyUserAnswers
+                  .add(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.StandIn)
+                  .add(CertificateWhoIsSubmittingPage(TransactionMode), CertificateWhoIsSubmitting.StandIn)
+
+              navigator.nextPage(
+                CertificateWhoIsSubmittingPage(TransactionMode),
+                TransactionMode,
+                userAnswers
+              ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+            }
+          }
+
+          "no answer was provided" - {
+            "throw an exception" in {
+              val userAnswers =
+                emptyUserAnswers
+                  .add(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.StandIn)
+
+              intercept[NotImplementedError] {
+                navigator.nextPage(
+                  CertificateWhoIsSubmittingPage(TransactionMode),
+                  TransactionMode,
+                  userAnswers
+                )
+              }
+            }
+          }
+        }
+
+        "no previous indication of the declaration type is found" - {
+          "throw an exception" in {
+            intercept[NotImplementedError] {
+              navigator.nextPage(
+                CertificateWhoIsSubmittingPage(TransactionMode),
+                TransactionMode,
+                emptyUserAnswers
+              )
+            }
+          }
+        }
+      }
+
+      "must throw an not-implemented error for an unspecified configuration" in {
+        case object UnknownPage extends Page
+        intercept[NotImplementedError] {
+          navigator.nextPage(UnknownPage, TransactionMode, emptyUserAnswers)
+        }
+      }
     }
   }
 }
