@@ -21,9 +21,9 @@ import models.*
 import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import utils.SummaryHelpers.renderValue
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
-import utils.SummaryHelpers.renderValue
 
 object CertificateWhoIsSubmittingSummary {
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =

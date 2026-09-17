@@ -23,8 +23,9 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.certificate.CertificateSaoEmailPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
-import CertificateSaoEmailSummarySpec.*
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+
+import CertificateSaoEmailSummarySpec.*
 
 class CertificateSaoEmailSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)

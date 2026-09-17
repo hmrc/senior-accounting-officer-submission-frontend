@@ -16,12 +16,12 @@
 
 package pages.certificate
 
+import models.*
+import models.Area.*
 import models.certificate.CertificateWhoIsSubmitting
 import pages.Page.CERTIFICATE_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import models.*
-import models.Area.*
 
 case class CertificateWhoIsSubmittingPage(mode: Mode) extends QuestionPage[CertificateWhoIsSubmitting] {
 

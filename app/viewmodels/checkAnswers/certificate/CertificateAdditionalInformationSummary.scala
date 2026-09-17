@@ -21,9 +21,9 @@ import models.{CheckMode, UserAnswers}
 import pages.certificate.CertificateAdditionalInformationPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import utils.SummaryHelpers.renderValue
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
-import utils.SummaryHelpers.renderValue
 
 object CertificateAdditionalInformationSummary {
 

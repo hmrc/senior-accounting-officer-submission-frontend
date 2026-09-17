@@ -18,14 +18,15 @@ package services
 
 import models.*
 import models.Area.*
+import models.certificate.CertificateWhoIsSubmitting
+import pages.Page.CERTIFICATE_PATH
+import pages.certificate.*
 import play.api.Logging
 import play.api.libs.json.*
 import play.api.libs.json.Reads.*
 
 import javax.inject.Inject
-import pages.certificate.*
-import models.certificate.CertificateWhoIsSubmitting
-import pages.Page.CERTIFICATE_PATH
+
 import DeclarationUserAnswersService.*
 
 class DeclarationUserAnswersService extends Logging @Inject {

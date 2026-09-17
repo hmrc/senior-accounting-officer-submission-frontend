@@ -16,12 +16,12 @@
 
 package pages.certificate
 
+import models.*
+import models.Area.*
 import models.certificate.CertificateDeclarationStandIn
 import pages.Page.CERTIFICATE_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import models.*
-import models.Area.*
 
 case class CertificateDeclarationStandInPage(mode: Mode) extends QuestionPage[CertificateDeclarationStandIn] {
 

@@ -16,13 +16,13 @@
 
 package services
 
+import models.NormalMode
 import models.UserAnswers
+import models.certificate.CertificateWhoIsSubmitting.*
+import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.checkAnswers.certificate.*
-import pages.certificate.CertificateWhoIsSubmittingPage
-import models.certificate.CertificateWhoIsSubmitting.*
-import models.NormalMode
 
 class CertificateCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {

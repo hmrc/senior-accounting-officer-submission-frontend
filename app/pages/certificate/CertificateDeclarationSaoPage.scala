@@ -16,11 +16,11 @@
 
 package pages.certificate
 
+import models.*
+import models.Area.*
 import pages.Page.CERTIFICATE_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
-import models.*
-import models.Area.*
 
 case class CertificateDeclarationSaoPage(mode: Mode) extends QuestionPage[String] {
 

@@ -18,6 +18,7 @@ package services
 
 import base.SpecBase
 import connectors.CertificateSubmissionConnector
+import models.NormalMode
 import models.UserAnswers
 import models.certificate.*
 import models.upload.*
@@ -37,7 +38,6 @@ import scala.concurrent.{ExecutionContext, Future}
 import java.time.LocalDate
 
 import CertificateSubmissionServiceSpec.*
-import models.NormalMode
 
 class CertificateSubmissionServiceSpec extends SpecBase {
 

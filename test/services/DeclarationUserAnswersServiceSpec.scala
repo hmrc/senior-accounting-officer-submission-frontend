@@ -18,9 +18,9 @@ package services
 
 import base.SpecBase
 import models.*
+import models.certificate.CertificateDeclarationStandIn
 import models.certificate.CertificateWhoIsSubmitting
 import pages.certificate.*
-import models.certificate.CertificateDeclarationStandIn
 
 class DeclarationUserAnswersServiceSpec extends SpecBase {
 

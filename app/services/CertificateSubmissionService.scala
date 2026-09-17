@@ -17,6 +17,7 @@
 package services
 
 import connectors.CertificateSubmissionConnector
+import models.NormalMode
 import models.UserAnswers
 import models.certificate.*
 import models.upload.{CertificateFields, NotificationFields, ParsedSubmissionRow}
@@ -25,7 +26,7 @@ import play.api.Logging
 import play.api.libs.json.Json
 import repositories.SessionRepository
 import uk.gov.hmrc.http.HeaderCarrier
-import models.NormalMode
+
 import scala.concurrent.{ExecutionContext, Future}
 
 import java.time.format.DateTimeFormatter

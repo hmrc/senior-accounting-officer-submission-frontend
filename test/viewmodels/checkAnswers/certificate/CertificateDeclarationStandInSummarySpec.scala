@@ -19,13 +19,14 @@ package viewmodels.checkAnswers.certificate
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.*
+import models.certificate.CertificateDeclarationStandIn
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.certificate.CertificateDeclarationStandInPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
-import CertificateDeclarationStandInSummarySpec.*
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
-import models.certificate.CertificateDeclarationStandIn
+
+import CertificateDeclarationStandInSummarySpec.*
 
 class CertificateDeclarationStandInSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -148,11 +149,11 @@ class CertificateDeclarationStandInSummarySpec extends SpecBase with GuiceOneApp
 }
 
 object CertificateDeclarationStandInSummarySpec {
-  val expectedSaoKey         = "SAO name on the declaration"
-  val expectedStandInKey     = "Authorised name on the declaration"
-  val standInName            = "Firstname Lastname"
-  val saoName                = "Firstname Lastname II"
-  val expectedStandInValueId = "declaration-stand-in-value"
-  val expectedSaoValueId     = "declaration-sao-value"
-  val expectedValue          = CertificateDeclarationStandIn(standInName, saoName)
+  val expectedSaoKey                               = "SAO name on the declaration"
+  val expectedStandInKey                           = "Authorised name on the declaration"
+  val standInName                                  = "Firstname Lastname"
+  val saoName                                      = "Firstname Lastname II"
+  val expectedStandInValueId                       = "declaration-stand-in-value"
+  val expectedSaoValueId                           = "declaration-sao-value"
+  val expectedValue: CertificateDeclarationStandIn = CertificateDeclarationStandIn(standInName, saoName)
 }

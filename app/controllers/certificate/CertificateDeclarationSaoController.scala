@@ -24,13 +24,13 @@ import pages.certificate.CertificateDeclarationSaoPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.DeclarationUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.certificate.CertificateDeclarationSaoView
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
-import services.DeclarationUserAnswersService
 
 class CertificateDeclarationSaoController @Inject() (
     override val messagesApi: MessagesApi,

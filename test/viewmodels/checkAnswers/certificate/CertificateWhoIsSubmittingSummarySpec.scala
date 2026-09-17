@@ -25,6 +25,7 @@ import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+
 import CertificateWhoIsSubmittingSummarySpec.*
 
 class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPerSuite {

@@ -19,13 +19,14 @@ package viewmodels.checkAnswers.certificate
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.CheckMode
+import models.NormalMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.certificate.CertificateDeclarationSaoPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
-import CertificateDeclarationSaoSummarySpec.*
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
-import models.NormalMode
+
+import CertificateDeclarationSaoSummarySpec.*
 
 class CertificateDeclarationSaoSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
