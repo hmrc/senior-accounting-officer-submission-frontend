@@ -62,9 +62,8 @@ class CertificateDeclarationStandInController @Inject() (
           value =>
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationStandInPage(mode), value))
-              inTransactionMode = mode == TransactionMode
-              committedAnswers  =
-                if inTransactionMode
+              committedAnswers =
+                if mode == TransactionMode
                 then { declarationUserAnswersService.commitTransaction(updatedAnswers) }
                 else { updatedAnswers }
               _ <- sessionRepository.set(committedAnswers)
