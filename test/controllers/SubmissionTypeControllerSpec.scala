@@ -33,6 +33,8 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.SubmissionTypeView
+import play.api.Configuration
+
 
 import scala.concurrent.Future
 
@@ -46,6 +48,8 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
   val form: Form[SubmissionType] = formProvider()
 
   val mockSessionRepository: SessionRepository = mock[SessionRepository]
+
+
 
   override def beforeEach(): Unit = {
     reset(mockSessionRepository)
@@ -61,12 +65,14 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
       running(application) {
         val request = FakeRequest(GET, submissionTypeRoute)
 
+        val config = application.injector.instanceOf[Configuration]
+
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[SubmissionTypeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, true)(using request, messages(application)).toString
       }
     }
 
@@ -79,12 +85,15 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
       running(application) {
         val request = FakeRequest(GET, submissionTypeRoute)
 
+        val config = application.injector.instanceOf[Configuration]
+
+
         val view = application.injector.instanceOf[SubmissionTypeView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(SubmissionType.values.head))(using
+        contentAsString(result) mustEqual view(form.fill(SubmissionType.values.head), true)(using
           request,
           messages(application)
         ).toString
@@ -122,6 +131,9 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
           FakeRequest(POST, submissionTypeRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
+        val config = application.injector.instanceOf[Configuration]
+
+
         val boundForm = form.bind(Map("value" -> "invalid value"))
 
         val view = application.injector.instanceOf[SubmissionTypeView]
@@ -129,7 +141,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, true)(using request, messages(application)).toString
       }
     }
 

@@ -18,6 +18,9 @@ GET         /senior-accounting-officer/submission/test-only/poi/xssf            
 GET         /senior-accounting-officer/submission/test-only/poi/sxssf                         controllers.testonly.TestPoiController.testSxssf(rows:Int ?= 1000, impl: String ?= "D")
 GET         /senior-accounting-officer/submission/test-only/poi/deferred-sxssf                controllers.testonly.TestPoiController.testDeferredSxssf(rows:Int ?= 1000, impl: String ?= "D")
 
+GET       /senior-accounting-officer/submission/test-only/feature-toggle                     controllers.testonly.FeatureToggleController.get()
+POST      /senior-accounting-officer/submission/test-only/feature-toggle                     controllers.testonly.FeatureToggleController.update()
+
 
 GET         /senior-accounting-officer/submission/test-only/pdf                               controllers.testonly.TestPdfController.testPdf(rows:Int ?= 6000)
 GET         /senior-accounting-officer/submission/test-only/pdf/open-html-to-pdf              controllers.testonly.TestPdfController.openHtml()

@@ -127,13 +127,16 @@ trait RadiosFluency {
       )
 
     def withDivider(insertionIndex: Int, dividerText: String): Radios = {
-      radios.copy(
-        items = radios.items.patch(
-          from = insertionIndex,
-          other = Seq(RadioItem(divider = Some(dividerText))),
-          replaced = 0
+      radios.items.length match {
+        case a if a != insertionIndex => radios.copy(
+          items = radios.items.patch(
+            from = insertionIndex,
+            other = Seq(RadioItem(divider = Some(dividerText))),
+            replaced = 0
+          )
         )
-      )
+        case _ => radios
+      }
     }
   }
 }

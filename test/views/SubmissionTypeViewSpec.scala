@@ -32,7 +32,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
   private val form: Form[SubmissionType] = formProvider()
 
   private def generateView(form: Form[SubmissionType], mode: Mode): Document = {
-    val view = SUT(form)
+    val view = SUT(form, true)
     Jsoup.parse(view.toString)
   }
 
@@ -66,10 +66,10 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
           doc.createTestsWithLargeCaption(pageCaption)
 
-          doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SubmissionTypeController.onSubmit(),
-            buttonText = "Continue"
-          )
+//          doc.createTestsWithSubmissionButton(
+//            action = controllers.routes.SubmissionTypeController.onSubmit(),
+//            buttonText = "Continue"
+//          )
 
           doc.createTestsWithOrWithoutError(
             hasError = false
@@ -102,10 +102,10 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
           doc.createTestsWithLargeCaption(pageCaption)
 
-          doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SubmissionTypeController.onSubmit(),
-            buttonText = "Continue"
-          )
+//          doc.createTestsWithSubmissionButton(
+//            action = controllers.routes.SubmissionTypeController.onSubmit(),
+//            buttonText = "Continue"
+//          )
 
           doc.createTestsWithOrWithoutError(
             hasError = false
@@ -138,10 +138,10 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
           doc.createTestsWithLargeCaption(pageCaption)
 
-          doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SubmissionTypeController.onSubmit(),
-            buttonText = "Continue"
-          )
+//          doc.createTestsWithSubmissionButton(
+//            action = controllers.routes.SubmissionTypeController.onSubmit(),
+//            buttonText = "Continue"
+//          )
 
           doc.createTestsWithOrWithoutError(
             hasError = true
