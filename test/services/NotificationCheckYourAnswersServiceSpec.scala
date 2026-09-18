@@ -282,12 +282,12 @@ object NotificationCheckYourAnswersServiceSpec {
   }
 
   object SaoName {
-    val key             = "Senior Accounting Officer"
+    val key             = "SAO name"
     val content: String = s"""<span data-test-id="sao-name-value">$singleSaoName</span>"""
   }
 
   object AdditionalInformation {
-    val key                     = "Additional information"
+    val key                     = "Additional information about your notification"
     val providedContent: String = s"""<span data-test-id="additional-information-value">$additionalInformation</span>"""
     val notProvidedContent      = """<span data-test-id="additional-information-value">Not provided</span>"""
   }
