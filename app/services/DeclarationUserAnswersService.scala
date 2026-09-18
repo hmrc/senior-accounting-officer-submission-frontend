@@ -51,7 +51,7 @@ class DeclarationUserAnswersService extends Logging @Inject {
       userAnswers.transformUserAnswers(
         (__ \ CERTIFICATE_PATH).json.update(
           __.read[JsObject].map { o =>
-            Json.obj(TRANSACTION_PATH -> userAnswers.data(CERTIFICATE_PATH)(COMMITTED_PATH))
+            Json.obj(TRANSACTION_PATH -> (userAnswers.data \ CERTIFICATE_PATH \ COMMITTED_PATH).getOrElse(???))
           }
         )
       )
