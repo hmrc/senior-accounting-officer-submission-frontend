@@ -19,7 +19,6 @@ package controllers.notification
 import controllers.actions.*
 import forms.notification.NotificationMoreThanOneSaoFormProvider
 import models.Mode
-import models.NormalMode
 import navigation.NotificationNavigator
 import pages.notification.NotificationMoreThanOneSaoPage
 import play.api.Logging

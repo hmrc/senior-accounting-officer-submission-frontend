@@ -52,7 +52,7 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
         doc.createTestsWithStandardPageElements(
           pageTitle = pageTitle,
           pageHeading = pageHeading,
-          showBackLink = true,
+          showBackLink = false,
           showIsThisPageNotWorkingProperlyLink = true,
           hasError = false
         )

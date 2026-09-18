@@ -21,12 +21,11 @@ import models.NormalMode
 import models.TransactionMode
 import models.UserAnswers
 import pages.notification.*
+import play.api.libs.json.Writes
 
 import java.time.LocalDate
 
 import SaoUserAnswersServiceSpec.*
-import play.api.libs.json.Writes
-import pages.QuestionPage
 
 class SaoUserAnswersServiceSpec extends SpecBase {
 
