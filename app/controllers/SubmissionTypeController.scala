@@ -16,9 +16,10 @@
 
 package controllers
 
+import config.FeatureConfigSupport
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, SubmissionType, UserAnswers}
 import navigation.AgnosticNavigator
 import pages.SubmissionTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -26,9 +27,11 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmissionTypeView
+import play.api.Configuration
+import models.FeatureToggle
+import models.FeatureToggle.CombinedJourney
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.Inject
 
 class SubmissionTypeController @Inject() (
@@ -36,35 +39,31 @@ class SubmissionTypeController @Inject() (
     sessionRepository: SessionRepository,
     navigator: AgnosticNavigator,
     identify: IdentifierAction,
-    getData: DataRetrievalAction,
+    //getData: DataRetrievalAction,
     formProvider: SubmissionTypeFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: SubmissionTypeView
-)(using ec: ExecutionContext)
+)(using ec: ExecutionContext)(using config : Configuration)
     extends FrontendBaseController
-    with I18nSupport {
-  def onPageLoad(): Action[AnyContent] = (identify andThen getData) { implicit request =>
+    with I18nSupport 
+    with FeatureConfigSupport {
+  def onPageLoad(): Action[AnyContent] = (identify) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.flatMap(_.get(SubmissionTypePage)).fold(form)(form.fill)
-    Ok(view(preparedForm))
+    //val preparedForm = request.userAnswers.flatMap(_.get(SubmissionTypePage)).fold(form)(form.fill)
+    isEnabled(CombinedJourney)
+    Ok(view(form, isEnabled(CombinedJourney)))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
+  def onSubmit(): Action[AnyContent] = (identify).async { implicit request =>
     val form = formProvider()
     form
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, isEnabled(CombinedJourney)))),
         value =>
           for {
-            updatedAnswers <- Future
-              .fromTry(
-                request.userAnswers
-                  .fold(UserAnswers(request.userId))(identity)
-                  .set(SubmissionTypePage, value)
-              )
-            _ <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(SubmissionTypePage, NormalMode, updatedAnswers))
+            _ <- sessionRepository.set(UserAnswers("yes"))
+          } yield Redirect(navigator.nextPage(SubmissionTypePage, NormalMode, UserAnswers("yes")))
       )
   }
 }
