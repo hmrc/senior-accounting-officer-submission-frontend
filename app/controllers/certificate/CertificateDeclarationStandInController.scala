@@ -67,7 +67,7 @@ class CertificateDeclarationStandInController @Inject() (
                 then { declarationUserAnswersService.commitTransaction(updatedAnswers) }
                 else { updatedAnswers }
               _ <- sessionRepository.set(committedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateDeclarationStandInPage(mode), mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(CertificateDeclarationStandInPage(mode), mode, committedAnswers))
         )
   }
 }
