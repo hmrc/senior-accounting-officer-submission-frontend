@@ -18,7 +18,8 @@ package navigation
 
 import controllers.certificate.routes as certificateRoutes
 import models.*
-import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
+import models.certificate.CertificateTaskListStage
+import models.certificate.CertificateWhoIsSubmitting.*
 import pages.*
 import pages.certificate.*
 import play.api.mvc.Call
@@ -57,9 +58,9 @@ class CertificateNavigator @Inject() () extends Navigator {
     case CertificateWhoIsSubmittingPage(_) =>
       userAnswers =>
         userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
-          case Some(CertificateWhoIsSubmitting.Sao) =>
+          case Some(Sao) =>
             certificateRoutes.CertificateDeclarationSaoController.onPageLoad(NormalMode)
-          case Some(CertificateWhoIsSubmitting.StandIn) =>
+          case Some(StandIn) =>
             certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode)
           case _ => ???
         }
@@ -90,24 +91,18 @@ class CertificateNavigator @Inject() () extends Navigator {
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateWhoIsSubmittingPage(TransactionMode) =>
       userAnswers =>
-        userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
-          case Some(CertificateWhoIsSubmitting.Sao) =>
-            userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode)) match {
-              case Some(CertificateWhoIsSubmitting.Sao) =>
-                certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-              case Some(CertificateWhoIsSubmitting.StandIn) =>
-                certificateRoutes.CertificateDeclarationStandInController.onPageLoad(TransactionMode)
-              case None => ???
-            }
-          case Some(CertificateWhoIsSubmitting.StandIn) =>
-            userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode)) match {
-              case Some(CertificateWhoIsSubmitting.Sao) =>
-                certificateRoutes.CertificateDeclarationSaoController.onPageLoad(TransactionMode)
-              case Some(CertificateWhoIsSubmitting.StandIn) =>
-                certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-              case None => ???
-            }
-          case None => ???
+        val committedAnswer   = userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode))
+        val transactionAnswer = userAnswers.get(CertificateWhoIsSubmittingPage(TransactionMode))
+        (committedAnswer, transactionAnswer) match {
+          case (Some(Sao), Some(Sao)) =>
+            certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+          case (Some(Sao), Some(StandIn)) =>
+            certificateRoutes.CertificateDeclarationStandInController.onPageLoad(TransactionMode)
+          case (Some(StandIn), Some(Sao)) =>
+            certificateRoutes.CertificateDeclarationSaoController.onPageLoad(TransactionMode)
+          case (Some(StandIn), Some(StandIn)) =>
+            certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
+          case _ => ???
         }
     case _ => _ => ???
   }
