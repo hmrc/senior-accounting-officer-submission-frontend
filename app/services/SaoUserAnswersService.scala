@@ -16,11 +16,8 @@
 
 package services
 
-import models.Area.COMMITTED_PATH
-import models.Area.TRANSACTION_PATH
-import models.NormalMode
-import models.TransactionMode
-import models.UserAnswers
+import models.*
+import models.Area.*
 import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.Logging

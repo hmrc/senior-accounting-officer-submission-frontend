@@ -23,6 +23,9 @@ import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.certificate.CertificateSaoFullNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+
+import CertificateSaoFullNameSummarySpec.*
 
 class CertificateSaoFullNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -44,12 +47,14 @@ class CertificateSaoFullNameSummarySpec extends SpecBase with GuiceOneAppPerSuit
       def SUT(answer: String = "") = CertificateSaoFullNameSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "certificateSaoFullName".toKey
+        SUT().key mustBe expectedKey.toKey
       }
 
       "expected value" - {
         "must show 'testCertificateSaoFullName' when user answers is 'testCertificateSaoFullName'" in {
-          SUT(answer = "testCertificateSaoFullName").value.content mustBe "testCertificateSaoFullName".toText
+          SUT(answer = expectedValue).value.content mustBe HtmlContent(
+            s"""<span data-test-id="$expectedValueId">$expectedValue</span>"""
+          )
         }
       }
 
@@ -83,5 +88,10 @@ class CertificateSaoFullNameSummarySpec extends SpecBase with GuiceOneAppPerSuit
       }
     }
   }
+}
 
+object CertificateSaoFullNameSummarySpec {
+  val expectedKey     = "SAO name"
+  val expectedValue   = "testCertificateSaoFullName"
+  val expectedValueId = "sao-full-name-value"
 }

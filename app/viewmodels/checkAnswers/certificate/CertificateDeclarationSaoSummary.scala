@@ -17,20 +17,21 @@
 package viewmodels.checkAnswers.certificate
 
 import controllers.certificate.routes as certificateRoutes
-import models.{CheckMode, UserAnswers}
+import models.*
 import pages.certificate.CertificateDeclarationSaoPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import utils.SummaryHelpers.renderValue
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
 object CertificateDeclarationSaoSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateDeclarationSaoPage).map { answer =>
+    answers.get(CertificateDeclarationSaoPage(NormalMode)).map { answer =>
       SummaryListRowViewModel(
         key = messages("certificateDeclarationSao.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.toText),
+        value = renderValue(answer, "declaration-sao-value"),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,

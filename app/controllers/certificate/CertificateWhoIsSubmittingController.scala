@@ -46,7 +46,7 @@ class CertificateWhoIsSubmittingController @Inject() (
     with I18nSupport {
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(CertificateWhoIsSubmittingPage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(CertificateWhoIsSubmittingPage(mode)).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -59,9 +59,9 @@ class CertificateWhoIsSubmittingController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateWhoIsSubmittingPage, value))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateWhoIsSubmittingPage(mode), value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateWhoIsSubmittingPage, mode, updatedAnswers))
+            } yield Redirect(navigator.nextPage(CertificateWhoIsSubmittingPage(mode), mode, updatedAnswers))
         )
   }
 }

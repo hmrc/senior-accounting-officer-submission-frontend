@@ -17,6 +17,7 @@
 package services
 
 import connectors.CertificateSubmissionConnector
+import models.NormalMode
 import models.UserAnswers
 import models.certificate.*
 import models.upload.{CertificateFields, NotificationFields, ParsedSubmissionRow}
@@ -93,9 +94,9 @@ class CertificateSubmissionService @Inject() (
 
   private def submitterName(userAnswers: UserAnswers): Option[String] =
     userAnswers
-      .get(CertificateWhoIsSubmittingPage)
+      .get(CertificateWhoIsSubmittingPage(NormalMode))
       .collect { case CertificateWhoIsSubmitting.StandIn =>
-        userAnswers.get(CertificateDeclarationStandInPage).map(_.StandInName)
+        userAnswers.get(CertificateDeclarationStandInPage(NormalMode)).map(_.StandInName)
       }
       .flatten
 

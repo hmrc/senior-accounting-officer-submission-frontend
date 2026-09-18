@@ -20,9 +20,8 @@ import controllers.certificate.routes as certificateRoutes
 import models.{CheckMode, UserAnswers}
 import pages.certificate.CertificateAdditionalInformationPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import utils.SummaryHelpers.renderValue
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
@@ -36,11 +35,7 @@ object CertificateAdditionalInformationSummary {
 
     SummaryListRowViewModel(
       key = messages("certificateAdditionalInformation.checkYourAnswersLabel").toKey,
-      value = ValueViewModel(
-        HtmlContent(
-          s"""<span data-test-id="additional-information-value">${HtmlFormat.escape(additionalInformation)}</span>"""
-        )
-      ),
+      value = renderValue(additionalInformation, "additional-information-value"),
       actions = Seq(
         ActionItemViewModel(
           messages("site.change").toText,

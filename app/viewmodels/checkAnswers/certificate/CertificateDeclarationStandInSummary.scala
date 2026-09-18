@@ -17,29 +17,42 @@
 package viewmodels.checkAnswers.certificate
 
 import controllers.certificate.routes as certificateRoutes
-import models.{CheckMode, UserAnswers}
+import models.*
 import pages.certificate.CertificateDeclarationStandInPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import utils.SummaryHelpers.renderValue
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
 object CertificateDeclarationStandInSummary {
 
-  def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateDeclarationStandInPage).map { answer =>
-      val value = HtmlFormat.escape(answer.StandInName).toString + "<br/>" + HtmlFormat.escape(answer.SaoName).toString
+  def standInRow(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
+    answers.get(CertificateDeclarationStandInPage(NormalMode)).map { answer =>
       SummaryListRowViewModel(
         key = messages("certificateDeclarationStandIn.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(HtmlContent(value)),
+        value = renderValue(answer.StandInName, "declaration-stand-in-value"),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
             certificateRoutes.CertificateDeclarationStandInController.onPageLoad(CheckMode).url
           )
-            .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden"))
+            .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden.standInName"))
+        )
+      )
+    }
+
+  def saoRow(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
+    answers.get(CertificateDeclarationStandInPage(NormalMode)).map { answer =>
+      SummaryListRowViewModel(
+        key = messages("certificateDeclarationSao.checkYourAnswersLabel").toKey,
+        value = renderValue(answer.SaoName, "declaration-sao-value"),
+        actions = Seq(
+          ActionItemViewModel(
+            messages("site.change").toText,
+            certificateRoutes.CertificateDeclarationStandInController.onPageLoad(CheckMode).url
+          )
+            .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden.saoName"))
         )
       )
     }

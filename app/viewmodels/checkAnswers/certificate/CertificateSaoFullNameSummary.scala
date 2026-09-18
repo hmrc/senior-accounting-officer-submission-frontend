@@ -21,6 +21,7 @@ import models.{CheckMode, UserAnswers}
 import pages.certificate.CertificateSaoFullNamePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import utils.SummaryHelpers
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
@@ -30,7 +31,7 @@ object CertificateSaoFullNameSummary {
     answers.get(CertificateSaoFullNamePage).map { answer =>
       SummaryListRowViewModel(
         key = messages("certificateSaoFullName.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.toText),
+        value = SummaryHelpers.renderValue(answer, "sao-full-name-value"),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,

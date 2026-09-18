@@ -26,11 +26,9 @@ import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.Page.CERTIFICATE_PATH
 import pages.certificate.CertificateDeclarationStandInPage
 import play.api.data.Form
 import play.api.inject.bind
-import play.api.libs.json.Json
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -50,15 +48,9 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
     certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode).url
 
   val userAnswers: UserAnswers =
-    emptyUserAnswers.copy(data =
-      Json.obj(
-        CERTIFICATE_PATH -> Json.obj(
-          CertificateDeclarationStandInPage.toString -> Json.obj(
-            "StandInName" -> "value 1",
-            "SaoName"     -> "value 2"
-          )
-        )
-      )
+    emptyUserAnswers.add(
+      CertificateDeclarationStandInPage(NormalMode),
+      CertificateDeclarationStandIn("value 1", "value 2")
     )
 
   "CertificateDeclarationStandIn Controller" - {

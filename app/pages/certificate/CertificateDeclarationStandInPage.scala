@@ -16,14 +16,16 @@
 
 package pages.certificate
 
+import models.*
+import models.Area.*
 import models.certificate.CertificateDeclarationStandIn
 import pages.Page.CERTIFICATE_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object CertificateDeclarationStandInPage extends QuestionPage[CertificateDeclarationStandIn] {
+case class CertificateDeclarationStandInPage(mode: Mode) extends QuestionPage[CertificateDeclarationStandIn] {
 
-  override def path: JsPath = JsPath \ CERTIFICATE_PATH \ toString
+  override def path: JsPath = JsPath \ CERTIFICATE_PATH \ mode.toArea.toString \ toString
 
   override def toString: String = "certificateDeclarationStandIn"
 }

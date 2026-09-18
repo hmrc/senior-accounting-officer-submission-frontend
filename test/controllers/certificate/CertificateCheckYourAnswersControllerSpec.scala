@@ -26,8 +26,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.CertificateCheckYourAnswersService
-import services.CertificateSubmissionService
+import services.*
 import services.CertificateSubmissionService.CertificateSubmissionResult
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import views.html.certificate.CertificateCheckYourAnswersView
@@ -39,14 +38,18 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
   "CertificateCheckYourAnswers Controller" - {
 
     "must return OK and the correct view for a GET" in {
-      val mockService = mock[CertificateCheckYourAnswersService]
+      val mockCheckYourAnswersService = mock[CertificateCheckYourAnswersService]
+      val mockUserAnswersService      = mock[DeclarationUserAnswersService]
 
-      when(mockService.getSummaryList(any())(using any())).thenReturn(SummaryList())
+      when(mockCheckYourAnswersService.getSummaryList(any())(using any())).thenReturn(SummaryList())
 
       val testAnswers = emptyUserAnswers
 
+      when(mockUserAnswersService.sanitise(any())).thenReturn(testAnswers)
+
       val application = applicationBuilder(userAnswers = Some(testAnswers))
-        .overrides(bind[CertificateCheckYourAnswersService].toInstance(mockService))
+        .overrides(bind[CertificateCheckYourAnswersService].toInstance(mockCheckYourAnswersService))
+        .overrides(bind[DeclarationUserAnswersService].toInstance(mockUserAnswersService))
         .build()
 
       running(application) {
@@ -60,7 +63,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
 
         status(result) mustEqual OK
         contentAsString(result) mustEqual view(SummaryList(), token)(using request, messages(application)).toString
-        verify(mockService).getSummaryList(meq(testAnswers))(using any())
+        verify(mockCheckYourAnswersService).getSummaryList(meq(testAnswers))(using any())
       }
     }
 

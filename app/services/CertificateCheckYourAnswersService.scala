@@ -16,17 +16,35 @@
 
 package services
 
+import models.NormalMode
 import models.UserAnswers
+import models.certificate.CertificateWhoIsSubmitting.*
+import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.checkAnswers.certificate.*
 
 class CertificateCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
-    SummaryList(rows =
-      Seq(
-        Some(CertificateAdditionalInformationSummary.row(userAnswers))
-      ).flatten
+    val staticRows = Seq(
+      CertificateSaoFullNameSummary.row(userAnswers),
+      CertificateSaoEmailSummary.row(userAnswers),
+      CertificateWhoIsSubmittingSummary.row(userAnswers)
     )
+
+    val declarationRows = userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
+      case Some(Sao)     => { Seq(CertificateDeclarationSaoSummary.row(userAnswers)) }
+      case Some(StandIn) => {
+        Seq(
+          CertificateDeclarationStandInSummary.standInRow(userAnswers),
+          CertificateDeclarationStandInSummary.saoRow(userAnswers)
+        )
+      }
+      case None => ???
+    }
+
+    val additionalInformationRows = Seq(Some(CertificateAdditionalInformationSummary.row(userAnswers)))
+
+    SummaryList(rows = (staticRows ++ declarationRows ++ additionalInformationRows).flatten)
   }
 }

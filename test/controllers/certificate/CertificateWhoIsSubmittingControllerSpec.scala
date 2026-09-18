@@ -68,7 +68,7 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers = emptyUserAnswers
-        .set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.values.head)
+        .set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.values.head)
         .success
         .value
 
