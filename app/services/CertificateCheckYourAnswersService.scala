@@ -26,21 +26,25 @@ import viewmodels.checkAnswers.certificate.*
 
 class CertificateCheckYourAnswersService {
   def getSummaryList(userAnswers: UserAnswers)(using Messages): SummaryList = {
-    SummaryList(rows =
-      (CertificateSaoFullNameSummary.row(userAnswers)
-        +: CertificateSaoEmailSummary.row(userAnswers)
-        +: CertificateWhoIsSubmittingSummary.row(userAnswers)
-        +: (userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
-          case Some(Sao)     => { Seq(CertificateDeclarationSaoSummary.row(userAnswers)) }
-          case Some(StandIn) => {
-            Seq(
-              CertificateDeclarationStandInSummary.standInRow(userAnswers),
-              CertificateDeclarationStandInSummary.saoRow(userAnswers)
-            )
-          }
-          case None => ???
-        })
-        :+ Some(CertificateAdditionalInformationSummary.row(userAnswers))).flatten
+    val staticRows = Seq(
+      CertificateSaoFullNameSummary.row(userAnswers),
+      CertificateSaoEmailSummary.row(userAnswers),
+      CertificateWhoIsSubmittingSummary.row(userAnswers)
     )
+
+    val declarationRows = userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
+      case Some(Sao)     => { Seq(CertificateDeclarationSaoSummary.row(userAnswers)) }
+      case Some(StandIn) => {
+        Seq(
+          CertificateDeclarationStandInSummary.standInRow(userAnswers),
+          CertificateDeclarationStandInSummary.saoRow(userAnswers)
+        )
+      }
+      case None => ???
+    }
+
+    val additionalInformationRows = Seq(Some(CertificateAdditionalInformationSummary.row(userAnswers)))
+
+    SummaryList(rows = (staticRows ++ declarationRows ++ additionalInformationRows).flatten)
   }
 }
