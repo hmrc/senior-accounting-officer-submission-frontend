@@ -29,7 +29,7 @@ class NotificationAdditionalInformationSummarySpec extends CheckYourAnswersSpecB
   "NotificationAdditionalInformationSummary.row" - {
     "must render the expected key text" in {
       renderSummaryRow(NotificationAdditionalInformationSummary.row(testUserAnswers)).renderedKeyText mustBe
-        "Additional information"
+        "Additional information about your notification"
     }
 
     "must render the supplied value" in {

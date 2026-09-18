@@ -46,7 +46,7 @@ class NotificationSingleSaoOfficerNameSummarySpec extends SpecBase with GuiceOne
       def SUT(answer: String = "") = NotificationSingleSaoOfficerNameSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "Senior Accounting Officer".toKey
+        SUT().key mustBe "SAO name".toKey
       }
 
       "expected value" - {
