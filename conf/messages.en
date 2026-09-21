@@ -257,7 +257,7 @@ notificationMoreThanOneSao.no = Only one person held the role for the entire fin
 uploadTemplateTable.title = Review the companies in your notification
 uploadTemplateTable.caption = Submit a notification
 uploadTemplateTable.heading = Review the companies in your notification
-uploadTemplateTable.paragraph1 = This list is from your submission template. It shows {0} companies {1} was responsible for in the financial year.
+uploadTemplateTable.paragraph1.plural = This list is from your submission template. It shows {0} companies {1} was responsible for in the financial year.
 uploadTemplateTable.paragraph1.singular = This list is from your submission template. It shows {0} company {1} was responsible for in the financial year.
 uploadTemplateTable.paragraph2WithLink = If any companies details are missing or incorrect, <a class="govuk-link" href="{0}">upload an updated submission template</a> before continuing.
 uploadTemplateTable.parsedData.empty = No parsed rows
@@ -396,10 +396,10 @@ confirmYourNotification.list1.item2 = if the company deliberately provides false
 certificateReviewQualified.title = Review the companies with a qualified certificate
 certificateReviewQualified.heading = Review the companies with a qualified certificate
 certificateReviewQualified.caption = Submit a certificate
-certificateReviewQualified.paragraph1 = This list is from the certificate details in your submission template. There were {0} companies your SAO was responsible for in a previous financial year.
+certificateReviewQualified.paragraph1.plural = This list is from the certificate details in your submission template. There were {0} companies your SAO was responsible for in a previous financial year.
 certificateReviewQualified.paragraph1.singular = This list is from the certificate details in your submission template. There was {0} company your SAO was responsible for in a previous financial year.
 certificateReviewQualified.paragraph2WithLink = If any companies listed are missing or incorrect, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
-certificateReviewQualified.paragraph3 = In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer, hereby certify that <b>{1}</b> companies did not have appropriate tax accounting arrangements.
+certificateReviewQualified.paragraph3.plural = In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer, hereby certify that <b>{1}</b> companies did not have appropriate tax accounting arrangements.
 certificateReviewQualified.paragraph3.singular = In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer, hereby certify that <b>{1}</b> company did not have appropriate tax accounting arrangements.
 certificateReviewQualified.rows.name = Company name
 certificateReviewQualified.rows.utr = UTR
@@ -423,10 +423,10 @@ certificateReviewQualified.taxRegimes.bankLevy = Bank Levy
 certificateReviewUnqualified.title = Review the companies with an unqualified certificate
 certificateReviewUnqualified.heading = Review the companies with an unqualified certificate
 certificateReviewUnqualified.caption = Submit a certificate
-certificateReviewUnqualified.paragraph1 = This list is from the certificate details in your submission template. There were {0} companies your SAO was responsible for in a previous financial year.
+certificateReviewUnqualified.paragraph1.plural = This list is from the certificate details in your submission template. There were {0} companies your SAO was responsible for in a previous financial year.
 certificateReviewUnqualified.paragraph1.singular = This list is from the certificate details in your submission template. There was {0} company your SAO was responsible for in a previous financial year.
 certificateReviewUnqualified.paragraph2WithLink = If any companies listed are missing or incorrect, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
-certificateReviewUnqualified.paragraph3 = In accordance with Paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer hereby certify that <b>{1}</b> companies had appropriate tax accounting arrangements throughout the year.
+certificateReviewUnqualified.paragraph3.plural = In accordance with Paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer hereby certify that <b>{1}</b> companies had appropriate tax accounting arrangements throughout the year.
 certificateReviewUnqualified.paragraph3.singular = In accordance with Paragraph 2, Schedule 46 of the Finance Act 2009, I {0}, the Senior Accounting Officer hereby certify that <b>{1}</b> company had appropriate tax accounting arrangements throughout the year.
 certificateReviewUnqualified.rows.companyName = Company name
 certificateReviewUnqualified.rows.utr = UTR

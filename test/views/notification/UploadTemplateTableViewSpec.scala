@@ -43,7 +43,7 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       hasError = false
     )
 
-    doc.createTestsWithParagraphs(paragraphs)
+    doc.createTestsWithParagraphs(paragraphsWithOneCompany)
 
     doc.createTestsWithCaption(pageCaption)
 
@@ -65,12 +65,10 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       doc.select("tbody.govuk-table__body tr").get(0).select("td").get(5).text() mustBe "1 January 2026"
     }
 
-    "must use plural wording when more than one company is present" in {
+    "must use plural wording when more than one company is present" - {
       val multipleCompaniesDoc = generateView(tableData.copy(rows = tableData.rows ++ tableData.rows))
 
-      multipleCompaniesDoc.getMainContent.text() must include(
-        s"This list is from your submission template. It shows 2 companies $saoName was responsible for in the financial year."
-      )
+      multipleCompaniesDoc.createTestsWithParagraphs(paragraphsWithTwoCompanies)
     }
 
     doc.createTestsWithSubmissionButton(
@@ -122,11 +120,15 @@ object UploadTemplateTableViewSpec {
     errors = Seq.empty
   )
 
-  val pageHeading             = "Review the companies in your notification"
-  val pageTitle               = "Review the companies in your notification - Submit a notification"
-  val saoName                 = "Jane Smith"
-  val paragraphs: Seq[String] = Seq(
-    s"This list is from your submission template. It shows ${tableData.rows.size} company $saoName was responsible for in the financial year.",
+  val pageHeading                           = "Review the companies in your notification"
+  val pageTitle                             = "Review the companies in your notification - Submit a notification"
+  val saoName                               = "Jane Smith"
+  val paragraphsWithOneCompany: Seq[String] = Seq(
+    s"This list is from your submission template. It shows 1 company $saoName was responsible for in the financial year.",
+    "If any companies details are missing or incorrect, upload an updated submission template before continuing."
+  )
+  val paragraphsWithTwoCompanies: Seq[String] = Seq(
+    s"This list is from your submission template. It shows 2 companies $saoName was responsible for in the financial year.",
     "If any companies details are missing or incorrect, upload an updated submission template before continuing."
   )
   val pageCaption = "Submit a notification"

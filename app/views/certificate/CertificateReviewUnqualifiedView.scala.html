@@ -25,8 +25,8 @@
 
 @(saoName: String, unqualifiedCompanies: Seq[UnqualifiedCompany], companyCount: Int)(using request: Request[?], messages: Messages)
 
-@paragraph1Key = @{if companyCount == 1 then "certificateReviewUnqualified.paragraph1.singular" else "certificateReviewUnqualified.paragraph1"}
-@paragraph3Key = @{if unqualifiedCompanies.size == 1 then "certificateReviewUnqualified.paragraph3.singular" else "certificateReviewUnqualified.paragraph3"}
+@paragraph1Key = @{if companyCount == 1 then "certificateReviewUnqualified.paragraph1.singular" else "certificateReviewUnqualified.paragraph1.plural"}
+@paragraph3Key = @{if unqualifiedCompanies.size == 1 then "certificateReviewUnqualified.paragraph3.singular" else "certificateReviewUnqualified.paragraph3.plural"}
 
 @layout(pageTitle = titleNoForm(messages("certificateReviewUnqualified.title"))) {
 
