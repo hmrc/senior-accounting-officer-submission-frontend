@@ -66,10 +66,10 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
           doc.createTestsWithLargeCaption(pageCaption)
 
-//          doc.createTestsWithSubmissionButton(
-//            action = controllers.routes.SubmissionTypeController.onSubmit(),
-//            buttonText = "Continue"
-//          )
+          doc.createTestsWithSubmissionButton(
+            action = controllers.routes.SubmissionTypeController.onSubmit(),
+            buttonText = "Continue"
+          )
 
           doc.createTestsWithOrWithoutError(
             hasError = false
@@ -102,10 +102,10 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
           doc.createTestsWithLargeCaption(pageCaption)
 
-//          doc.createTestsWithSubmissionButton(
-//            action = controllers.routes.SubmissionTypeController.onSubmit(),
-//            buttonText = "Continue"
-//          )
+          doc.createTestsWithSubmissionButton(
+            action = controllers.routes.SubmissionTypeController.onSubmit(),
+            buttonText = "Continue"
+          )
 
           doc.createTestsWithOrWithoutError(
             hasError = false
@@ -138,10 +138,10 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
           doc.createTestsWithLargeCaption(pageCaption)
 
-//          doc.createTestsWithSubmissionButton(
-//            action = controllers.routes.SubmissionTypeController.onSubmit(),
-//            buttonText = "Continue"
-//          )
+          doc.createTestsWithSubmissionButton(
+            action = controllers.routes.SubmissionTypeController.onSubmit(),
+            buttonText = "Continue"
+          )
 
           doc.createTestsWithOrWithoutError(
             hasError = true

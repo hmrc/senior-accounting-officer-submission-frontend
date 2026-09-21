@@ -17,25 +17,25 @@
 package controllers.testonly
 
 import config.FeatureToggleSupport
-import controllers.actions.*
-import models.{FeatureToggle, Mode}
-import navigation.AgnosticNavigator
-import pages.FeatureTogglePage
+import models.FeatureToggle
 import play.api.Configuration
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.testonly.FeatureToggleView
-import play.api.Configuration
-import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
 
-class FeatureToggleController @Inject()(
-                                        override val messagesApi: MessagesApi,
-                                        val controllerComponents: MessagesControllerComponents,
-                                        featureToggleView: FeatureToggleView
-                                      )(using ec: ExecutionContext) (using config : Configuration) extends FrontendBaseController with I18nSupport with FeatureToggleSupport {
+import scala.concurrent.ExecutionContext
+
+import javax.inject.Inject
+
+class FeatureToggleController @Inject() (
+    override val messagesApi: MessagesApi,
+    val controllerComponents: MessagesControllerComponents,
+    featureToggleView: FeatureToggleView
+)(using ec: ExecutionContext)(using config: Configuration)
+    extends FrontendBaseController
+    with I18nSupport
+    with FeatureToggleSupport {
   def get: Action[AnyContent] = Action { implicit request =>
     Ok(featureToggleView())
   }

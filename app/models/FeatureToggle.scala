@@ -24,12 +24,12 @@ import viewmodels.govuk.checkbox.*
 
 enum FeatureToggle(val key: String, val name: String) {
   override def toString: String = s"features.$key"
-  
+
   case CombinedJourney extends FeatureToggle("combined", "Combined")
 }
 
 object FeatureToggle extends FeatureConfigSupport {
-  
+
   def checkboxItems(using config: Configuration): Seq[CheckboxItem] =
     FeatureToggle.values.toSeq.zipWithIndex.map { case (value, index) =>
       CheckboxItem(
