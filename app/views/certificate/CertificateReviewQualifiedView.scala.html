@@ -25,17 +25,20 @@
 
 @(saoName: String, companyCount: Int, qualifiedCompanies: Seq[QualifiedCompany])(using request: Request[?], messages: Messages)
 
+@paragraph1Key = @{if companyCount == 1 then "certificateReviewQualified.paragraph1.singular" else "certificateReviewQualified.paragraph1"}
+@paragraph3Key = @{if qualifiedCompanies.size == 1 then "certificateReviewQualified.paragraph3.singular" else "certificateReviewQualified.paragraph3"}
+
 @layout(pageTitle = titleNoForm(messages("certificateReviewQualified.title"))) {
 
     <span class="govuk-caption-l">@messages("certificateReviewQualified.caption")</span>
 
     <h1 class="govuk-heading-l">@messages("certificateReviewQualified.heading")</h1>
 
-    <p class="govuk-body">@messages("certificateReviewQualified.paragraph1", companyCount)</p>
+    <p class="govuk-body">@messages(paragraph1Key, companyCount)</p>
 
     <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph2WithLink", certificateRoutes.CertificateUploadFormController.onPageLoad()))</p>
 
-    <p class="govuk-body">@Html(messages("certificateReviewQualified.paragraph3", HtmlFormat.escape(saoName), qualifiedCompanies.size))</p>
+    <p class="govuk-body">@Html(messages(paragraph3Key, HtmlFormat.escape(saoName), qualifiedCompanies.size))</p>
 
     @for(qualifiedCompany <- qualifiedCompanies) {
         <dl class="govuk-summary-list">

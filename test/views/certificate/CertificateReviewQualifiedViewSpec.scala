@@ -106,6 +106,18 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       )
     }
 
+    "When one company is passed to the view must render singular wording" - {
+      val doc = generateView(firstSaoName, qualifiedCompanies.take(1), 1)
+
+      doc.createTestsWithParagraphs(
+        Seq(firstParagraphOneCompany, secondParagraph, thirdParagraphOneQualifiedCompany)
+      )
+
+      "must have bold text denoting one qualified company" in {
+        doc.select("b").get(0).text() mustBe "1"
+      }
+    }
+
     "When rows are and a different sao name are passed to the view must render populated table with different sao name" - {
       val doc: Document = generateView(secondSaoName, qualifiedCompanies, 2)
 
@@ -202,12 +214,16 @@ object CertificateReviewQualifiedViewSpec {
     "This list is from the certificate details in your submission template. There were 0 companies your SAO was responsible for in a previous financial year."
   val firstParagraphTwoCompanies =
     "This list is from the certificate details in your submission template. There were 2 companies your SAO was responsible for in a previous financial year."
+  val firstParagraphOneCompany =
+    "This list is from the certificate details in your submission template. There was 1 company your SAO was responsible for in a previous financial year."
   val secondParagraph =
     "If any companies listed are missing or incorrect, upload an updated submission template before continuing."
   val thirdParagraphZeroQualifiedCompanies =
     "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that 0 companies did not have appropriate tax accounting arrangements."
   val thirdParagraphTwoQualifiedCompanies =
     "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that 2 companies did not have appropriate tax accounting arrangements."
+  val thirdParagraphOneQualifiedCompany =
+    "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that 1 company did not have appropriate tax accounting arrangements."
   val thirdParagraphTwoQualifiedCompaniesDifferentSao =
     "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname II, the Senior Accounting Officer, hereby certify that 2 companies did not have appropriate tax accounting arrangements."
   val firstSaoName                  = "Firstname Lastname"

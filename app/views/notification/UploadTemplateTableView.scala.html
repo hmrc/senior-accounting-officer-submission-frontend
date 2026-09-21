@@ -15,6 +15,7 @@
  *@
 
 @import controllers.notification.{ routes => notificationRoutes }
+@import utils.DateTimeFormats.dateTimeFormat
 @this(
         layout: templates.Layout,
         formHelper: FormWithCSRF,
@@ -32,11 +33,13 @@
 }
 
 @uploadUrl = @{notificationRoutes.NotificationUploadFormController.onPageLoad().url}
+@companyCount = @{tableData.rows.size}
+@paragraph1Key = @{if companyCount == 1 then "uploadTemplateTable.paragraph1.singular" else "uploadTemplateTable.paragraph1"}
 
 @layout(pageTitle = titleNoForm(messages("uploadTemplateTable.title"), Some("section.notification"))) {
     <span class="govuk-caption-m">@messages("uploadTemplateTable.caption")</span>
     <h1 class="govuk-heading-l">@messages("uploadTemplateTable.heading")</h1>
-    <p class="govuk-body">@messages("uploadTemplateTable.paragraph1", tableData.rows.size.toString, saoName)</p>
+    <p class="govuk-body">@messages(paragraph1Key, companyCount.toString, saoName)</p>
     <p class="govuk-body">
         @Html(messages("uploadTemplateTable.paragraph2WithLink", uploadUrl))
     </p>
@@ -66,7 +69,7 @@
                         <td class="govuk-table__cell">@row.notification.companyUtr.value</td>
                         <td class="govuk-table__cell">@row.notification.companyType</td>
                         <td class="govuk-table__cell">@row.notification.companyStatus</td>
-                        <td class="govuk-table__cell">@row.notification.financialYearEndDateDisplay</td>
+                        <td class="govuk-table__cell">@row.notification.financialYearEndDate.format(dateTimeFormat()(using messages.lang))</td>
                     </tr>
                 }
             }

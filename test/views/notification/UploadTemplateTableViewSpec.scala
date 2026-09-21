@@ -29,7 +29,8 @@ import UploadTemplateTableViewSpec.*
 
 class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(tableData, saoName).toString)
+  private def generateView(data: UploadTemplateTableData = tableData): Document =
+    Jsoup.parse(SUT(data, saoName).toString)
 
   "UploadTemplateTableView" - {
     val doc: Document = generateView()
@@ -60,6 +61,18 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       doc.select(".govuk-pagination").size() mustBe 0
     }
 
+    "must display the financial year end date in the long format" in {
+      doc.select("tbody.govuk-table__body tr").get(0).select("td").get(5).text() mustBe "1 January 2026"
+    }
+
+    "must use plural wording when more than one company is present" in {
+      val multipleCompaniesDoc = generateView(tableData.copy(rows = tableData.rows ++ tableData.rows))
+
+      multipleCompaniesDoc.getMainContent.text() must include(
+        s"This list is from your submission template. It shows 2 companies $saoName was responsible for in the financial year."
+      )
+    }
+
     doc.createTestsWithSubmissionButton(
       action = notificationRoutes.UploadTemplateTableController.onSubmit(),
       buttonText = "Continue"
@@ -86,7 +99,7 @@ object UploadTemplateTableViewSpec {
           companyCrn = Some(CompanyCrn("12345678")),
           companyType = CompanyType.PLC,
           companyStatus = CompanyStatus.Active,
-          financialYearEndDate = LocalDate.of(2025, 12, 31)
+          financialYearEndDate = LocalDate.of(2026, 1, 1)
         ),
         certificate = Some(
           CertificateFields(
@@ -113,7 +126,7 @@ object UploadTemplateTableViewSpec {
   val pageTitle               = "Review the companies in your notification - Submit a notification"
   val saoName                 = "Jane Smith"
   val paragraphs: Seq[String] = Seq(
-    s"This list is from your submission template. It shows ${tableData.rows.size} companies $saoName was responsible for in the financial year.",
+    s"This list is from your submission template. It shows ${tableData.rows.size} company $saoName was responsible for in the financial year.",
     "If any companies details are missing or incorrect, upload an updated submission template before continuing."
   )
   val pageCaption = "Submit a notification"

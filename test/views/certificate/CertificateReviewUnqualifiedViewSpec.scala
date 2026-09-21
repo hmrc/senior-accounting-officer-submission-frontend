@@ -109,6 +109,16 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
 
     }
 
+    "will use singular wording when one company is present" - {
+      val doc = generateView(saoName, unqualifiedCompanies.take(1), 1)
+
+      doc.createTestsWithParagraphs(paragraphsWithOneCompany)
+
+      "must have bold text denoting one unqualified company" in {
+        doc.select("b").get(0).text() mustBe "1"
+      }
+    }
+
     "The content of SAO's name is properly escaped" in {
       val unescapedText = "<script>alert(123)</script>"
       val doc: Document = generateView(unescapedText, unqualifiedCompanies, 2)
@@ -175,6 +185,12 @@ object CertificateReviewUnqualifiedViewSpec {
     "This list is from the certificate details in your submission template. There were 0 companies your SAO was responsible for in a previous financial year.",
     "If any companies listed are missing or incorrect, upload an updated submission template before continuing.",
     "In accordance with Paragraph 2, Schedule 46 of the Finance Act 2009, I , the Senior Accounting Officer hereby certify that 0 companies had appropriate tax accounting arrangements throughout the year."
+  )
+
+  val paragraphsWithOneCompany: Seq[String] = Seq(
+    "This list is from the certificate details in your submission template. There was 1 company your SAO was responsible for in a previous financial year.",
+    "If any companies listed are missing or incorrect, upload an updated submission template before continuing.",
+    "In accordance with Paragraph 2, Schedule 46 of the Finance Act 2009, I example sao name, the Senior Accounting Officer hereby certify that 1 company had appropriate tax accounting arrangements throughout the year."
   )
 
   private val testDate1 = LocalDate.of(2026, 1, 1)
