@@ -86,10 +86,7 @@ final case class NotificationFields(
     companyType: CompanyType,
     companyStatus: CompanyStatus,
     financialYearEndDate: LocalDate
-) {
-  def financialYearEndDateDisplay: String =
-    financialYearEndDate.format(NotificationFields.JsonDateFormatter)
-}
+)
 
 object NotificationFields {
   private[upload] val JsonDateFormatter =
