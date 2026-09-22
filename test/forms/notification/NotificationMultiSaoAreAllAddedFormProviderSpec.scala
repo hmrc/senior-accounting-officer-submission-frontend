@@ -46,8 +46,7 @@ class NotificationMultiSaoAreAllAddedFormProviderSpec extends BooleanFieldBehavi
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message =
-        "Select yes if you have added all the SAOs for this notification"
+      message = "Select yes if you have added all the SAOs for this notification"
     )
   }
 }
