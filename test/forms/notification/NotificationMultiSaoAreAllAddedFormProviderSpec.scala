@@ -47,7 +47,7 @@ class NotificationMultiSaoAreAllAddedFormProviderSpec extends BooleanFieldBehavi
     createTestWithErrorMessageAssertion(
       key = requiredKey,
       message =
-        "Select ’Yes’ if you have added all the Senior Accounting Officers for the financial year this notification relates to"
+        "Select yes if you have added all the SAOs for this notification"
     )
   }
 }
