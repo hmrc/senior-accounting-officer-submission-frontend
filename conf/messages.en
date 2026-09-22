@@ -132,8 +132,8 @@ notificationAdditionalInformation.list1.item1 = a company’s status changing, s
 notificationAdditionalInformation.list1.item2 = anything else relevant to the companies listed
 notificationAdditionalInformation.label = Is there anything else we should know about your notification?
 notificationAdditionalInformation.checkYourAnswersLabel = Additional information about your notification
-notificationAdditionalInformation.error.required = Enter information about your notification or skip
-notificationAdditionalInformation.error.length = Additional information must be 5000 characters or less
+notificationAdditionalInformation.error.required = Enter information about your notification, or select skip if there’s nothing to add
+notificationAdditionalInformation.error.length = Additional information about your notification must be 5000 characters or less
 notificationAdditionalInformation.change.hidden =  the additional information supplied for the notification (Financial year end {0})
 
 notificationCheckYourAnswers.title = Check your answers
