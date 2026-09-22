@@ -370,7 +370,7 @@ notificationMultiSaoAreAllAdded.title = Have you added all the SAOs for this not
 notificationMultiSaoAreAllAdded.heading = Have you added all the SAOs for this notification?
 notificationMultiSaoAreAllAdded.caption = Submit a notification
 notificationMultiSaoAreAllAdded.checkYourAnswersLabel = Have you added all the SAOs for this notification?
-notificationMultiSaoAreAllAdded.error.required = Select ’Yes’ if you have added all the Senior Accounting Officers for the financial year this notification relates to
+notificationMultiSaoAreAllAdded.error.required = Select yes if you have added all the SAOs for this notification
 notificationMultiSaoAreAllAdded.change.hidden = NotificationMultiSaoAreAllAdded
 
 notificationMultiSaoPreviousOfficerEndDate.title = What date did the previous SAO responsibility stop?
