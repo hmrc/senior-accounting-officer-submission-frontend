@@ -66,12 +66,12 @@ class NotificationMultiSaoLastOfficerStartDateFormProviderSpec extends DateBehav
 
     createTestWithErrorMessageAssertion(
       key = requiredTwoKey,
-      message = "The date must include a {0} and a {1}"
+      message = "Enter the date {2} became the SAO"
     )
 
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "The date must include a {0}"
+      message = "Enter the date {1} became the SAO"
     )
 
     createTestWithErrorMessageAssertion(

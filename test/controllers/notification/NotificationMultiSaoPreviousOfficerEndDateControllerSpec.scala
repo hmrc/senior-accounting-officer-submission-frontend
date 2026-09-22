@@ -54,7 +54,7 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
     notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode).url
 
   val userAnswersWithSaoName: UserAnswers =
-    emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0), testSaoName).success.value
+    emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), testSaoName).success.value
 
   val saoIndex = 0
 
@@ -104,7 +104,7 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
 
       val userAnswers =
         userAnswersWithSaoName
-          .set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex), testValidDate)
+          .set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, NormalMode), testValidDate)
           .success
           .value
 

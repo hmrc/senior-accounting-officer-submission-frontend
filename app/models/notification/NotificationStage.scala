@@ -16,6 +16,8 @@
 
 package models.notification
 
+import models.Area.COMMITTED_PATH
+import models.NormalMode
 import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
 import models.{TaskStatus, UserAnswers}
 import pages.*
@@ -67,19 +69,20 @@ object NotificationStage {
   def canStartSubmitNotification(userAnswers: UserAnswers): Boolean =
     isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers)
 
-  private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean =
-    userAnswers.get(NotificationMoreThanOneSaoPage).exists {
-      case false =>
-        userAnswers.get(NotificationSingleSaoOfficerNamePage).exists(_.trim.nonEmpty)
-      case true =>
-        userAnswers.get(NotificationMultiSaoLastOfficerNamePage).exists(_.trim.nonEmpty) &&
-        hasCompletedMoreSaoDetails(userAnswers)
-    }
+  private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean = {
+    val singleSaoCompleted = userAnswers
+      .get(NotificationSingleSaoOfficerNamePage(NormalMode))
+      .nonEmpty
 
-  private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean =
-    (userAnswers.data \ NOTIFICATION_PATH \ NotificationMultiSaoAreAllAddedPage(0).key)
-      .asOpt[Seq[Boolean]]
-      .exists(_.contains(true))
+    val multiSaoCompleted =
+      (userAnswers.data \ NOTIFICATION_PATH \ COMMITTED_PATH \ NotificationMultiSaoAreAllAddedPage(0, NormalMode).key)
+        .asOpt[Seq[Boolean]] match {
+        case Some(booleans) => booleans.contains(true)
+        case None           => false
+      }
+
+    singleSaoCompleted || multiSaoCompleted
+  }
 
   private def isUploadNotificationTemplateComplete(userAnswers: UserAnswers): Boolean =
     userAnswers.get(UploadTemplateTablePage).exists(_.errors.isEmpty) &&

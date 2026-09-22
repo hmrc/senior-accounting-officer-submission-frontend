@@ -29,7 +29,8 @@ import UploadTemplateTableViewSpec.*
 
 class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] {
 
-  private def generateView(): Document = Jsoup.parse(SUT(tableData, saoName).toString)
+  private def generateView(data: UploadTemplateTableData = tableData): Document =
+    Jsoup.parse(SUT(data, saoName).toString)
 
   "UploadTemplateTableView" - {
     val doc: Document = generateView()
@@ -42,7 +43,7 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       hasError = false
     )
 
-    doc.createTestsWithParagraphs(paragraphs)
+    doc.createTestsWithParagraphs(paragraphsWithOneCompany)
 
     doc.createTestsWithCaption(pageCaption)
 
@@ -58,6 +59,16 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       val headings = doc.select("th.govuk-table__header").eachText()
       headings must contain allOf ("Company name", "UTR", "CRN", "Type", "Status", "Financial year end")
       doc.select(".govuk-pagination").size() mustBe 0
+    }
+
+    "must display the financial year end date in the long format" in {
+      doc.select("tbody.govuk-table__body tr").get(0).select("td").get(5).text() mustBe "1 January 2026"
+    }
+
+    "must use plural wording when more than one company is present" - {
+      val multipleCompaniesDoc = generateView(tableData.copy(rows = tableData.rows ++ tableData.rows))
+
+      multipleCompaniesDoc.createTestsWithParagraphs(paragraphsWithTwoCompanies)
     }
 
     doc.createTestsWithSubmissionButton(
@@ -86,7 +97,7 @@ object UploadTemplateTableViewSpec {
           companyCrn = Some(CompanyCrn("12345678")),
           companyType = CompanyType.PLC,
           companyStatus = CompanyStatus.Active,
-          financialYearEndDate = LocalDate.of(2025, 12, 31)
+          financialYearEndDate = LocalDate.of(2026, 1, 1)
         ),
         certificate = Some(
           CertificateFields(
@@ -109,11 +120,15 @@ object UploadTemplateTableViewSpec {
     errors = Seq.empty
   )
 
-  val pageHeading             = "Review the companies in your notification"
-  val pageTitle               = "Review the companies in your notification - Submit a notification"
-  val saoName                 = "Jane Smith"
-  val paragraphs: Seq[String] = Seq(
-    s"This list is from your submission template. It shows ${tableData.rows.size} companies $saoName was responsible for in the financial year.",
+  val pageHeading                           = "Review the companies in your notification"
+  val pageTitle                             = "Review the companies in your notification - Submit a notification"
+  val saoName                               = "Jane Smith"
+  val paragraphsWithOneCompany: Seq[String] = Seq(
+    s"This list is from your submission template. It shows 1 company $saoName was responsible for in the financial year.",
+    "If any companies details are missing or incorrect, upload an updated submission template before continuing."
+  )
+  val paragraphsWithTwoCompanies: Seq[String] = Seq(
+    s"This list is from your submission template. It shows 2 companies $saoName was responsible for in the financial year.",
     "If any companies details are missing or incorrect, upload an updated submission template before continuing."
   )
   val pageCaption = "Submit a notification"

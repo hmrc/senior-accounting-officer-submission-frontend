@@ -17,6 +17,7 @@
 package services
 
 import base.SpecBase
+import models.NormalMode
 import models.upload.*
 import pages.*
 import pages.notification.*
@@ -67,10 +68,10 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(UploadTemplateTablePage, tableData)
         .success
         .value
-        .set(NotificationMoreThanOneSaoPage, false)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
         .success
         .value
-        .set(NotificationSingleSaoOfficerNamePage, "Jane Smith")
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jane Smith")
         .success
         .value
 
@@ -82,13 +83,13 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(UploadTemplateTablePage, tableData)
         .success
         .value
-        .set(NotificationMoreThanOneSaoPage, true)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), true)
         .success
         .value
-        .set(NotificationSingleSaoOfficerNamePage, "Ignored Name")
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Ignored Name")
         .success
         .value
-        .set(NotificationMultiSaoLastOfficerNamePage, "John Smith")
+        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), "John Smith")
         .success
         .value
 
@@ -97,10 +98,10 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
 
     "must return None when table data is missing" in {
       val answers = emptyUserAnswers
-        .set(NotificationMoreThanOneSaoPage, false)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
         .success
         .value
-        .set(NotificationSingleSaoOfficerNamePage, "Jane Smith")
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jane Smith")
         .success
         .value
 
@@ -112,7 +113,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(UploadTemplateTablePage, tableData)
         .success
         .value
-        .set(NotificationMoreThanOneSaoPage, false)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), false)
         .success
         .value
 
@@ -124,7 +125,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(UploadTemplateTablePage, tableData)
         .success
         .value
-        .set(NotificationMoreThanOneSaoPage, true)
+        .set(NotificationMoreThanOneSaoPage(NormalMode), true)
         .success
         .value
 
@@ -136,7 +137,7 @@ class UploadTemplatePlaybackServiceSpec extends SpecBase {
         .set(UploadTemplateTablePage, tableData)
         .success
         .value
-        .set(NotificationSingleSaoOfficerNamePage, "Jane Smith")
+        .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jane Smith")
         .success
         .value
 

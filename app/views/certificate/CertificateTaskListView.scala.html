@@ -27,7 +27,7 @@
 
 @(state: CertificateTaskListState)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("certificateTaskList.title"))) {
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("certificateTaskList.title"))) {
 
     <h1 class="govuk-heading-l">@messages("certificateTaskList.heading")</h1>
 

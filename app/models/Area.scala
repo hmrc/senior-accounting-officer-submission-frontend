@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,21 +18,28 @@ package models
 
 import play.api.mvc.JavascriptLiteral
 
-sealed trait Mode
+enum Area {
+  case Committed, Transaction
+}
 
-case object CheckMode       extends Mode
-case object NormalMode      extends Mode
-case object TransactionMode extends Mode // TODO: remove when we start using a list pattern for multiple sao CYA
+object Area {
+  val COMMITTED_PATH   = "Committed"
+  val TRANSACTION_PATH = "Transaction"
 
-object Mode {
-
-  given jsLiteral: JavascriptLiteral[Mode] = new JavascriptLiteral[Mode] {
-    override def to(value: Mode): String = value match {
-      case NormalMode      => "NormalMode"
-      case CheckMode       => "CheckMode"
-      case TransactionMode => "TransactionMode"
+  given jsLiteral: JavascriptLiteral[Area] = new JavascriptLiteral[Area] {
+    override def to(value: Area): String = value match {
+      case Area.Committed   => "committed"
+      case Area.Transaction => "transaction"
     }
   }
 
-  val values: List[Mode] = List(NormalMode, CheckMode)
+  extension (mode: Mode) {
+    def toArea: Area = {
+      mode match {
+        case NormalMode      => Area.Committed
+        case CheckMode       => Area.Committed
+        case TransactionMode => Area.Transaction
+      }
+    }
+  }
 }

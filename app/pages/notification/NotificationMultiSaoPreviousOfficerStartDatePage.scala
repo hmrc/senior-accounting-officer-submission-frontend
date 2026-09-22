@@ -16,17 +16,20 @@
 
 package pages.notification
 
+import models.Area.*
+import models.Mode
 import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
 import java.time.LocalDate
 
-final case class NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int) extends QuestionPage[LocalDate] {
+final case class NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex: Int, mode: Mode)
+    extends QuestionPage[LocalDate] {
 
   val key = "notificationMultiSaoPreviousOfficerStartDate"
 
-  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ key \ saoIndex
+  override def path: JsPath = JsPath \ NOTIFICATION_PATH \ mode.toArea.toString \ key \ saoIndex
 
   override def toString: String = s"$key[$saoIndex]"
 }

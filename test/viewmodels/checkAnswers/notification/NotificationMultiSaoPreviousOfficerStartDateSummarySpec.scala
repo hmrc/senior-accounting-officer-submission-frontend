@@ -19,10 +19,13 @@ package viewmodels.checkAnswers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.CheckMode
+import models.NormalMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationMultiSaoPreviousOfficerStartDatePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import viewmodels.checkAnswers.notification.NotificationMultiSaoPreviousOfficerStartDateSummarySpec.*
 
 import java.time.LocalDate
 
@@ -41,18 +44,20 @@ class NotificationMultiSaoPreviousOfficerStartDateSummarySpec extends SpecBase w
 
     "when there is a user answer for NotificationMultiSaoPreviousOfficerStartDatePage" - {
       def testUserAnswers(answer: LocalDate) =
-        emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerStartDatePage(0), answer).get
+        emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), answer).get
 
       def SUT(answer: LocalDate = LocalDate.now) =
         NotificationMultiSaoPreviousOfficerStartDateSummary.row(testUserAnswers(answer), 0).get
 
       "must have expected key" in {
-        SUT().key mustBe "NotificationMultiSaoPreviousOfficerStartDate".toKey
+        SUT().key mustBe keyText.toKey
       }
 
       "expected value" - {
         "must show '1 January 2000' when user answers is 1st Jan 2000" in {
-          SUT(answer = LocalDate.of(2000, 1, 1)).value.content mustBe "1 January 2000".toText
+          SUT(answer = LocalDate.of(2000, 1, 1)).value.content mustBe HtmlContent(
+            """<span data-test-id="previous-sao-start-date-1">1 January 2000</span>"""
+          )
         }
       }
 
@@ -80,6 +85,20 @@ class NotificationMultiSaoPreviousOfficerStartDateSummarySpec extends SpecBase w
             .url
         }
 
+        "must include the SAO index in the url" in {
+          val answers = emptyUserAnswers
+            .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), LocalDate.of(2000, 1, 1))
+            .get
+            .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), LocalDate.of(2000, 1, 1))
+            .get
+
+          val action = NotificationMultiSaoPreviousOfficerStartDateSummary.row(answers, 1).get.actions.head.items.head
+
+          action.href mustBe notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController
+            .onPageLoad(CheckMode, 1)
+            .url
+        }
+
         "must have expected hidden text" in {
           action.visuallyHiddenText.get mustBe "NotificationMultiSaoPreviousOfficerStartDate"
         }
@@ -87,4 +106,8 @@ class NotificationMultiSaoPreviousOfficerStartDateSummarySpec extends SpecBase w
     }
   }
 
+}
+
+object NotificationMultiSaoPreviousOfficerStartDateSummarySpec {
+  val keyText = "Start date"
 }

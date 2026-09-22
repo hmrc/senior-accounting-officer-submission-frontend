@@ -17,9 +17,12 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
+import models.NormalMode
 import models.{CheckMode, UserAnswers}
 import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import play.api.i18n.Messages
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
@@ -27,10 +30,14 @@ import viewmodels.govuk.summarylist.*
 object NotificationMultiSaoLastOfficerNameSummary {
 
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(NotificationMultiSaoLastOfficerNamePage).map { answer =>
+    answers.get(NotificationMultiSaoLastOfficerNamePage(NormalMode)).map { answer =>
       SummaryListRowViewModel(
         key = messages("notificationMultiSaoLastOfficerName.checkYourAnswersLabel").toKey,
-        value = ValueViewModel(answer.toText),
+        value = ValueViewModel(
+          HtmlContent(
+            s"""<span data-test-id="final-sao-name">${HtmlFormat.escape(answer)}</span>"""
+          )
+        ),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,

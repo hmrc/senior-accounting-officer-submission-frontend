@@ -19,10 +19,13 @@ package viewmodels.checkAnswers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.CheckMode
+import models.NormalMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import viewmodels.checkAnswers.notification.NotificationMultiSaoLastOfficerNameSummarySpec.*
 
 class NotificationMultiSaoLastOfficerNameSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -39,19 +42,19 @@ class NotificationMultiSaoLastOfficerNameSummarySpec extends SpecBase with Guice
 
     "when there is a user answer for NotificationMultiSaoLastOfficerNamePage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage, answer).get
+        emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage(NormalMode), answer).get
 
       def SUT(answer: String = "") = NotificationMultiSaoLastOfficerNameSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "notificationMultiSaoLastOfficerName".toKey
+        SUT().key mustBe keyText.toKey
       }
 
       "expected value" - {
-        "must show 'testNotificationMultiSaoLastOfficerName' when user answers is 'testNotificationMultiSaoLastOfficerName'" in {
-          SUT(answer =
-            "testNotificationMultiSaoLastOfficerName"
-          ).value.content mustBe "testNotificationMultiSaoLastOfficerName".toText
+        "must show expected sao name" in {
+          SUT(answer = testOfficerName).value.content mustBe HtmlContent(
+            s"""<span data-test-id="final-sao-name">$testOfficerName</span>"""
+          )
         }
       }
 
@@ -85,5 +88,9 @@ class NotificationMultiSaoLastOfficerNameSummarySpec extends SpecBase with Guice
       }
     }
   }
+}
 
+object NotificationMultiSaoLastOfficerNameSummarySpec {
+  val keyText         = "SAO at the end of the financial year"
+  val testOfficerName = "Firstname Lastname"
 }

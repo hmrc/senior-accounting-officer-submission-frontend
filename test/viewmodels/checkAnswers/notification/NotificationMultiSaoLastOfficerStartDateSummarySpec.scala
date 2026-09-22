@@ -18,11 +18,13 @@ package viewmodels.checkAnswers.notification
 
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
-import models.CheckMode
+import models.*
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import viewmodels.checkAnswers.notification.NotificationMultiSaoLastOfficerStartDateSummarySpec.*
 
 import java.time.LocalDate
 
@@ -41,18 +43,20 @@ class NotificationMultiSaoLastOfficerStartDateSummarySpec extends SpecBase with 
 
     "when there is a user answer for NotificationMultiSaoLastOfficerStartDatePage" - {
       def testUserAnswers(answer: LocalDate) =
-        emptyUserAnswers.set(NotificationMultiSaoLastOfficerStartDatePage, answer).get
+        emptyUserAnswers.set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), answer).get
 
       def SUT(answer: LocalDate = LocalDate.now) =
         NotificationMultiSaoLastOfficerStartDateSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "NotificationMultiSaoLastOfficerStartDate".toKey
+        SUT().key mustBe keyText.toKey
       }
 
       "expected value" - {
         "must show '1 January 2000' when user answers is 1st Jan 2000" in {
-          SUT(answer = LocalDate.of(2000, 1, 1)).value.content mustBe "1 January 2000".toText
+          SUT(answer = LocalDate.of(2000, 1, 1)).value.content mustBe HtmlContent(
+            s"""<span data-test-id="final-sao-start-date">$expectedDate</span>"""
+          )
         }
       }
 
@@ -87,4 +91,9 @@ class NotificationMultiSaoLastOfficerStartDateSummarySpec extends SpecBase with 
     }
   }
 
+}
+
+object NotificationMultiSaoLastOfficerStartDateSummarySpec {
+  val keyText      = "Start date"
+  val expectedDate = "1 January 2000"
 }

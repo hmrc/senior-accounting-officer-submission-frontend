@@ -30,6 +30,7 @@ import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.Writes
 import play.api.test.FakeRequest
 import utils.TestDataGenerator
 
@@ -62,10 +63,10 @@ trait SpecBase
 
   def completedSaoDetailsAnswers: UserAnswers =
     emptyUserAnswers
-      .set(NotificationMoreThanOneSaoPage, false)
+      .set(NotificationMoreThanOneSaoPage(NormalMode), false)
       .success
       .value
-      .set(NotificationSingleSaoOfficerNamePage, "Jackson Brown")
+      .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
       .success
       .value
 
@@ -83,25 +84,25 @@ trait SpecBase
 
   def completedMultipleSaoDetailsAnswers: UserAnswers =
     emptyUserAnswers
-      .set(NotificationMoreThanOneSaoPage, true)
+      .set(NotificationMoreThanOneSaoPage(NormalMode), true)
       .success
       .value
-      .set(NotificationMultiSaoLastOfficerNamePage, "Jackson Brown")
+      .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), "Jackson Brown")
       .success
       .value
-      .set(NotificationMultiSaoLastOfficerStartDatePage, LocalDate.of(2024, 1, 1))
+      .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.of(2024, 1, 1))
       .success
       .value
-      .set(NotificationMultiSaoPreviousOfficerNamePage(0), "Taylor Green")
+      .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), "Taylor Green")
       .success
       .value
-      .set(NotificationMultiSaoPreviousOfficerStartDatePage(0), LocalDate.of(2023, 1, 1))
+      .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), LocalDate.of(2023, 1, 1))
       .success
       .value
-      .set(NotificationMultiSaoPreviousOfficerEndDatePage(0), LocalDate.of(2023, 12, 31))
+      .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), LocalDate.of(2023, 12, 31))
       .success
       .value
-      .set(NotificationMultiSaoAreAllAddedPage(0), true)
+      .set(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
       .success
       .value
 
@@ -132,4 +133,10 @@ trait SpecBase
         bind[IdentifierAction].to[FakeIdentifierAction],
         bind[DataRetrievalAction].toInstance(new FakeDataRetrievalAction(userAnswers))
       )
+
+  extension (userAnswers: UserAnswers) {
+    def add[A](page: QuestionPage[A], a: A)(using Writes[A]): UserAnswers = {
+      userAnswers.set(page, a).get
+    }
+  }
 }
