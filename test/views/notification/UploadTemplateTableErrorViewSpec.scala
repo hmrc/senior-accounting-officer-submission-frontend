@@ -40,7 +40,7 @@ class UploadTemplateTableErrorViewSpec extends ViewSpecBase[UploadTemplateTableE
         "The file you uploaded is not the Senior Accounting Officer notification and certificate submission template. Download a submission template and read guidance on how to complete it (opens in new tab)",
         "Once you’ve completed the template, upload it again."
       ),
-      "the template empty" -> Seq(
+      "the template is empty" -> Seq(
         "Your template does not contain any information. Download a submission template and read guidance on how to complete it (opens in new tab)",
         "Once you’ve completed the template, upload it again."
       )
@@ -167,7 +167,7 @@ object UploadTemplateTableErrorViewSpec {
 
   val invalidTemplates: Map[String, UploadTemplateTableData] = Map(
     "the template is invalid" -> invalidTemplate,
-    "the template empty"      -> emptyTemplate
+    "the template is empty"   -> emptyTemplate
   )
 
   private def invalidTemplate: UploadTemplateTableData = UploadTemplateTableData(
