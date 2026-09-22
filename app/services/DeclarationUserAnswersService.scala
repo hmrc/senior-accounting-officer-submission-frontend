@@ -29,7 +29,7 @@ import javax.inject.Inject
 
 import DeclarationUserAnswersService.*
 
-class DeclarationUserAnswersService extends Logging @Inject {
+class DeclarationUserAnswersService @Inject extends Logging {
   def sanitise(userAnswers: UserAnswers): UserAnswers = {
     userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)) match {
       case Some(CertificateWhoIsSubmitting.Sao) =>
@@ -47,33 +47,33 @@ class DeclarationUserAnswersService extends Logging @Inject {
   }
 
   extension (userAnswers: UserAnswers) {
-    def copyCommittedAreaToTransactionArea(): UserAnswers = {
+    private def copyCommittedAreaToTransactionArea(): UserAnswers = {
       userAnswers.transformUserAnswers(
         (__ \ CERTIFICATE_PATH).json.update(
-          __.read[JsObject].map { o =>
+          __.read[JsObject].map { _ =>
             Json.obj(TRANSACTION_PATH -> (userAnswers.data \ CERTIFICATE_PATH \ COMMITTED_PATH).getOrElse(???))
           }
         )
       )
     }
 
-    def clearCommittedAreaStandIn(): UserAnswers = {
+    private def clearCommittedAreaStandIn(): UserAnswers = {
       userAnswers.transformUserAnswers(
         (__ \ CERTIFICATE_PATH \ COMMITTED_PATH \ standInKey).json.prune
       )
     }
 
-    def clearCommittedAreaSao(): UserAnswers = {
+    private def clearCommittedAreaSao(): UserAnswers = {
       userAnswers.transformUserAnswers(
         (__ \ CERTIFICATE_PATH \ COMMITTED_PATH \ saoKey).json.prune
       )
     }
 
-    def clearTransactionArea(): UserAnswers = {
+    private def clearTransactionArea(): UserAnswers = {
       userAnswers.transformUserAnswers((__ \ CERTIFICATE_PATH \ TRANSACTION_PATH).json.prune)
     }
 
-    def transformUserAnswers(transformer: Reads[JsObject]): UserAnswers = {
+    private def transformUserAnswers(transformer: Reads[JsObject]): UserAnswers = {
       userAnswers.data.transform(transformer) match {
         case JsError(error) => {
           logger.error("Json transformation error: " + error)
@@ -118,7 +118,6 @@ class DeclarationUserAnswersService extends Logging @Inject {
 }
 
 object DeclarationUserAnswersService {
-  val saoKey: String             = CertificateDeclarationSaoPage(NormalMode).toString
-  val standInKey: String         = CertificateDeclarationStandInPage(NormalMode).toString
-  val whoIsSubmittingKey: String = CertificateWhoIsSubmittingPage(NormalMode).toString
+  val saoKey: String     = CertificateDeclarationSaoPage(NormalMode).toString
+  val standInKey: String = CertificateDeclarationStandInPage(NormalMode).toString
 }

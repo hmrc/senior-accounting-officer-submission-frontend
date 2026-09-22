@@ -22,7 +22,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Value
 import viewmodels.govuk.summarylist.ValueViewModel
 
 object SummaryHelpers {
-  def renderValue[A](value: String, testId: String): Value = {
+  def renderValue(value: String, testId: String): Value = {
     ValueViewModel(
       HtmlContent(s"""<span data-test-id="$testId">${HtmlFormat.escape(value)}</span>""")
     )

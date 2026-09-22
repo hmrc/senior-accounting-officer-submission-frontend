@@ -77,9 +77,9 @@ class CertificateNavigator @Inject() () extends Navigator {
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateSaoEmailPage =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateDeclarationSaoPage(mode) =>
+    case CertificateDeclarationSaoPage(_) =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateDeclarationStandInPage(mode) =>
+    case CertificateDeclarationStandInPage(_) =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
     case CertificateAdditionalInformationPage =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
