@@ -18,12 +18,13 @@ package controllers.certificate
 
 import controllers.actions.*
 import forms.certificate.CertificateDeclarationSaoFormProvider
-import models.Mode
+import models.*
 import navigation.CertificateNavigator
 import pages.certificate.CertificateDeclarationSaoPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.DeclarationUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.certificate.CertificateDeclarationSaoView
 
@@ -40,13 +41,14 @@ class CertificateDeclarationSaoController @Inject() (
     requireData: DataRequiredAction,
     formProvider: CertificateDeclarationSaoFormProvider,
     val controllerComponents: MessagesControllerComponents,
+    declarationUserAnswersService: DeclarationUserAnswersService,
     view: CertificateDeclarationSaoView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
   def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
     val form         = formProvider()
-    val preparedForm = request.userAnswers.get(CertificateDeclarationSaoPage).fold(form)(form.fill)
+    val preparedForm = request.userAnswers.get(CertificateDeclarationSaoPage(mode)).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
@@ -59,9 +61,13 @@ class CertificateDeclarationSaoController @Inject() (
           formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
           value =>
             for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationSaoPage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage, mode, updatedAnswers))
+              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationSaoPage(mode), value))
+              committedAnswers =
+                if mode == TransactionMode
+                then { declarationUserAnswersService.commitTransaction(updatedAnswers) }
+                else { updatedAnswers }
+              _ <- sessionRepository.set(committedAnswers)
+            } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage(mode), mode, committedAnswers))
         )
   }
 }

@@ -17,31 +17,24 @@
 package viewmodels.checkAnswers.certificate
 
 import controllers.certificate.routes as certificateRoutes
-import models.{CheckMode, UserAnswers}
+import models.*
 import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.Messages
-import play.twirl.api.HtmlFormat
-import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import utils.SummaryHelpers.renderValue
 import viewmodels.converters.*
 import viewmodels.govuk.summarylist.*
 
 object CertificateWhoIsSubmittingSummary {
-
   def row(answers: UserAnswers)(using messages: Messages): Option[SummaryListRow] =
-    answers.get(CertificateWhoIsSubmittingPage).map { answer =>
-      val value = ValueViewModel(
-        HtmlContent(
-          HtmlFormat.escape(messages(s"certificateWhoIsSubmitting.$answer"))
-        )
-      )
+    answers.get(CertificateWhoIsSubmittingPage(NormalMode)).map { answer =>
       SummaryListRowViewModel(
         key = messages("certificateWhoIsSubmitting.checkYourAnswersLabel").toKey,
-        value = value,
+        value = renderValue(messages(s"certificateWhoIsSubmitting.$answer"), "who-is-submitting-value"),
         actions = Seq(
           ActionItemViewModel(
             messages("site.change").toText,
-            certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(CheckMode).url
+            certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(TransactionMode).url
           )
             .withVisuallyHiddenText(messages("certificateWhoIsSubmitting.change.hidden"))
         )

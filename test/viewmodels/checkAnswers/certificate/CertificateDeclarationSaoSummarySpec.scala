@@ -19,10 +19,14 @@ package viewmodels.checkAnswers.certificate
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.CheckMode
+import models.NormalMode
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.certificate.CertificateDeclarationSaoPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+
+import CertificateDeclarationSaoSummarySpec.*
 
 class CertificateDeclarationSaoSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -39,18 +43,18 @@ class CertificateDeclarationSaoSummarySpec extends SpecBase with GuiceOneAppPerS
 
     "when there is a user answer for CertificateDeclarationSaoPage" - {
       def testUserAnswers(answer: String) =
-        emptyUserAnswers.set(CertificateDeclarationSaoPage, answer).get
+        emptyUserAnswers.set(CertificateDeclarationSaoPage(NormalMode), answer).get
 
       def SUT(answer: String = "") = CertificateDeclarationSaoSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "certificateDeclarationSao".toKey
+        SUT().key mustBe expectedKey.toKey
       }
 
       "expected value" - {
-        "must show 'testCertificateDeclarationSao' when user answers is 'testCertificateDeclarationSao'" in {
-          SUT(answer = "testCertificateDeclarationSao").value.content mustBe "testCertificateDeclarationSao".toText
-        }
+        SUT(answer = expectedValue).value.content mustBe HtmlContent(
+          s"""<span data-test-id="$expectedValueId">$expectedValue</span>"""
+        )
       }
 
       "expected action" - {
@@ -83,5 +87,10 @@ class CertificateDeclarationSaoSummarySpec extends SpecBase with GuiceOneAppPerS
       }
     }
   }
+}
 
+object CertificateDeclarationSaoSummarySpec {
+  val expectedKey     = "SAO name on the declaration"
+  val expectedValue   = "testDeclarationSao"
+  val expectedValueId = "declaration-sao-value"
 }

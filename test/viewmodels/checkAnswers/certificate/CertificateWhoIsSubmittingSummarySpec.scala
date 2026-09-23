@@ -18,13 +18,15 @@ package viewmodels.checkAnswers.certificate
 
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
-import models.CheckMode
+import models.*
 import models.certificate.CertificateWhoIsSubmitting
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.i18n.{Messages, MessagesApi}
 import uk.gov.hmrc.govukfrontend.views.Implicits.RichString
 import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+
+import CertificateWhoIsSubmittingSummarySpec.*
 
 class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPerSuite {
   given Messages = app.injector.instanceOf[MessagesApi].preferred(Seq.empty)
@@ -41,23 +43,25 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
 
     "when there is a user answer for CertificateWhoIsSubmittingPage" - {
       def testUserAnswers(answer: CertificateWhoIsSubmitting) =
-        emptyUserAnswers.set(CertificateWhoIsSubmittingPage, answer).get
+        emptyUserAnswers.set(CertificateWhoIsSubmittingPage(NormalMode), answer).get
 
       def SUT(answer: CertificateWhoIsSubmitting = CertificateWhoIsSubmitting.Sao) =
         CertificateWhoIsSubmittingSummary.row(testUserAnswers(answer)).get
 
       "must have expected key" in {
-        SUT().key mustBe "certificateWhoIsSubmitting".toKey
+        SUT().key mustBe expectedKey.toKey
       }
 
       "expected value" - {
         "must show 'Option1' when user answers is sao" in {
-          SUT(answer = CertificateWhoIsSubmitting.Sao).value.content mustBe HtmlContent("I am the SAO")
+          SUT(answer = CertificateWhoIsSubmitting.Sao).value.content mustBe HtmlContent(
+            s"""<span data-test-id="$expectedValueId">$saoText</span>"""
+          )
         }
 
         "must show 'Option2' when user answers is standIn" in {
           SUT(answer = CertificateWhoIsSubmitting.StandIn).value.content mustBe HtmlContent(
-            "I am authorised to submit on behalf of the SAO"
+            s"""<span data-test-id="$expectedValueId">$standInText</span>"""
           )
         }
       }
@@ -82,7 +86,7 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
 
         "must have expected url" in {
           action.href mustBe certificateRoutes.CertificateWhoIsSubmittingController
-            .onPageLoad(CheckMode)
+            .onPageLoad(TransactionMode)
             .url
         }
 
@@ -93,4 +97,11 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
     }
   }
 
+}
+
+object CertificateWhoIsSubmittingSummarySpec {
+  val expectedKey     = "Who is submitting the certificate?"
+  val expectedValueId = "who-is-submitting-value"
+  val saoText         = "The SAO"
+  val standInText     = "A person authorised to submit on behalf of the SAO"
 }

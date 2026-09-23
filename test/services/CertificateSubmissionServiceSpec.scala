@@ -18,6 +18,7 @@ package services
 
 import base.SpecBase
 import connectors.CertificateSubmissionConnector
+import models.NormalMode
 import models.UserAnswers
 import models.certificate.*
 import models.upload.*
@@ -179,10 +180,13 @@ object CertificateSubmissionServiceSpec {
       .set(CertificateSaoEmailPage, "sao@example.com")
       .success
       .value
-      .set(CertificateWhoIsSubmittingPage, CertificateWhoIsSubmitting.StandIn)
+      .set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.StandIn)
       .success
       .value
-      .set(CertificateDeclarationStandInPage, CertificateDeclarationStandIn("Proxy Person", "Senior Officer"))
+      .set(
+        CertificateDeclarationStandInPage(NormalMode),
+        CertificateDeclarationStandIn("Proxy Person", "Senior Officer")
+      )
       .success
       .value
       .set(CertificateAdditionalInformationPage, Some("Certificate remarks"))

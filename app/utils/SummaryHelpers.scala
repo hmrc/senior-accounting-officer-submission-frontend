@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package pages.certificate
+package utils
 
-import models.*
-import models.Area.*
-import models.certificate.CertificateWhoIsSubmitting
-import pages.Page.CERTIFICATE_PATH
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import play.twirl.api.HtmlFormat
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.HtmlContent
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.Value
+import viewmodels.govuk.summarylist.ValueViewModel
 
-case class CertificateWhoIsSubmittingPage(mode: Mode) extends QuestionPage[CertificateWhoIsSubmitting] {
-
-  override def path: JsPath = JsPath \ CERTIFICATE_PATH \ mode.toArea.toString \ toString
-
-  override def toString: String = "certificateWhoIsSubmitting"
+object SummaryHelpers {
+  def renderValue(value: String, testId: String): Value = {
+    ValueViewModel(
+      HtmlContent(s"""<span data-test-id="$testId">${HtmlFormat.escape(value)}</span>""")
+    )
+  }
 }
