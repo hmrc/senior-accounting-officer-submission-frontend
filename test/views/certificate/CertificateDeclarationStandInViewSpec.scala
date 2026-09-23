@@ -184,9 +184,9 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 }
 
 object CertificateDeclarationStandInViewSpec {
-  val pageTitle   = "Confirm the certificate"
+  val pageTitle   = "Declaration – Submit a certificate"
   val pageCaption = "Submit a certificate"
-  val pageHeading = "Confirm the certificate"
+  val pageHeading = "Declaration"
 
   val pageParagraphs: Seq[String] = Seq(
     "It is your responsibility to make sure the SAO has reviewed and approved everything before you submit.",

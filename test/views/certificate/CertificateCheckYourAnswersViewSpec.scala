@@ -246,7 +246,7 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
 
 object CertificateCheckYourAnswersViewSpec {
   val pageHeading                = "Check your answers"
-  val pageTitle                  = "Check your answers"
+  val pageTitle                  = "Check your answers – Submit a certificate"
   val pageCaption                = "Submit a certificate"
   val pageButtonText             = "Confirm and submit"
   val certificateSubmissionToken = "test-token"
