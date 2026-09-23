@@ -52,7 +52,7 @@
 
     @if(tableData.isEmpty) {
         @emptyTemplate()
-    } else if(tableData.notSaoTemplate) {
+    } else if(tableData.notSaoTemplateOrIsEmpty) {
         @notSaoTemplate()
     } else {
         @invalidData()

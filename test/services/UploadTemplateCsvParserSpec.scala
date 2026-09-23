@@ -577,7 +577,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
           "emptyfile.csv",
           "emptyTemplate.csv"
         ).foreach { file =>
-          s"$file with the resultant UploadTemplateTableData.notSaoTemplate=true" in {
+          s"$file with the resultant UploadTemplateTableData.notSaoTemplateOrIsEmpty=true" in {
             val csv: String =
               readFile(s"templates/testonly/CSV scenarios/fail/$file")
 
@@ -588,7 +588,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
               case Invalid(errors) => UploadTemplateTableData(rows = Seq.empty, errors = errors)
             }
 
-            (mappedUploadTemplateTableData.notSaoTemplate || mappedUploadTemplateTableData.isEmpty) mustBe true
+            mappedUploadTemplateTableData.notSaoTemplateOrIsEmpty mustBe true
           }
         }
 
@@ -597,7 +597,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
           "Z Moderately Complex (4 SAOs - Submission A- AEFG) - Failure.csv" -> 4,
           "Certificate only Errors.csv"                                      -> 14
         ).foreach { case (file, expectedErrors) =>
-          s"$file with the resultant UploadTemplateTableData.notSaoTemplate=false" in {
+          s"$file with the resultant UploadTemplateTableData.notSaoTemplateOrIsEmpty=false" in {
             val csv: String =
               readFile(s"templates/testonly/CSV scenarios/fail/$file")
 
@@ -607,7 +607,7 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
             val invalid = result.asInstanceOf[Invalid]
             invalid.errors.length mustBe expectedErrors
 
-            UploadTemplateTableData(rows = Seq.empty, errors = invalid.errors).notSaoTemplate mustBe false
+            UploadTemplateTableData(rows = Seq.empty, errors = invalid.errors).notSaoTemplateOrIsEmpty mustBe false
           }
         }
       }
