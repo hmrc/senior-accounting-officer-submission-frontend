@@ -61,7 +61,6 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
     featureToggleSupport.disable(CombinedJourney)
   }
 
-
   "SubmissionType Controller" - {
 
     "when feature toggle is off" - {
