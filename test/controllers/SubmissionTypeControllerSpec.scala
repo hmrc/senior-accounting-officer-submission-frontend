@@ -17,6 +17,7 @@
 package controllers
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import forms.SubmissionTypeFormProvider
 import models.FeatureToggle.CombinedJourney
 import models.SubmissionType
@@ -34,7 +35,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.SubmissionTypeView
-import config.FeatureToggleSupport
+
 import scala.concurrent.Future
 
 class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
@@ -46,7 +47,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
   val formProvider               = new SubmissionTypeFormProvider()
   val form: Form[SubmissionType] = formProvider()
 
-  val mockSessionRepository: SessionRepository = mock[SessionRepository]
+  val mockSessionRepository: SessionRepository   = mock[SessionRepository]
   val featureToggleSupport: FeatureToggleSupport = mock[FeatureToggleSupport]
 
   override def beforeEach(): Unit = {
