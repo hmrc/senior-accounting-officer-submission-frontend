@@ -39,7 +39,7 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      stringsWithoutInvalidSymbolsWithMaxLength(maxLength)
     )
 
     behave like fieldWithMaxLength(
@@ -68,7 +68,7 @@ class CertificateDeclarationStandInFormProviderSpec extends StringFieldBehaviour
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      stringsWithMaxLength(maxLength)
+      stringsWithoutInvalidSymbolsWithMaxLength(maxLength)
     )
 
     behave like fieldWithMaxLength(

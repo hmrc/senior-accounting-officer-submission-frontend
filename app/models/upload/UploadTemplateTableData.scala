@@ -28,10 +28,10 @@ object UploadTemplateTableData {
   given OFormat[UploadTemplateTableData] = Json.format[UploadTemplateTableData]
 
   extension (data: UploadTemplateTableData) {
-    def isEmpty: Boolean        = data.errors.isEmpty && data.rows.isEmpty
-    def notSaoTemplate: Boolean =
-      data.errors.exists(e => e.error == TemplateError.InvalidTemplateError)
-    def hasErrors = data.notSaoTemplate || data.errors.nonEmpty
+    def isEmpty: Boolean                 = data.errors.isEmpty && data.rows.isEmpty
+    def notSaoTemplateOrIsEmpty: Boolean =
+      isEmpty || data.errors.exists(e => e.error == TemplateError.InvalidTemplateError)
+    def hasErrors = data.notSaoTemplateOrIsEmpty || data.errors.nonEmpty
   }
 
 }
