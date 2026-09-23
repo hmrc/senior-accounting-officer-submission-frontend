@@ -18,6 +18,7 @@ package controllers
 
 import base.SpecBase
 import forms.SubmissionTypeFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.SubmissionType
 import navigation.{AgnosticNavigator, FakeAgnosticNavigator}
 import org.mockito.ArgumentMatchers.{any, argThat}
@@ -33,7 +34,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.SubmissionTypeView
-
+import config.FeatureToggleSupport
 import scala.concurrent.Future
 
 class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
@@ -46,6 +47,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
   val form: Form[SubmissionType] = formProvider()
 
   val mockSessionRepository: SessionRepository = mock[SessionRepository]
+  val featureToggleSupport: FeatureToggleSupport = mock[FeatureToggleSupport]
 
   override def beforeEach(): Unit = {
     reset(mockSessionRepository)
@@ -57,6 +59,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
     "when feature toggle is off" - {
 
       "must return OK and the correct view for a GET" in {
+        featureToggleSupport.enable(CombinedJourney)
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -70,9 +73,12 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(form, false)(using request, messages(application)).toString
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
+        featureToggleSupport.enable(CombinedJourney)
 
         val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.init.head).success.value
 
@@ -91,9 +97,12 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
             messages(application)
           ).toString
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
 
       "must redirect to the next page when valid data is submitted" in {
+        featureToggleSupport.enable(CombinedJourney)
 
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -113,9 +122,12 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).value mustEqual onwardRoute.url
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
 
       "must return a Bad Request and errors when invalid data is submitted" in {
+        featureToggleSupport.enable(CombinedJourney)
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
@@ -133,9 +145,13 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
           status(result) mustEqual BAD_REQUEST
           contentAsString(result) mustEqual view(boundForm, false)(using request, messages(application)).toString
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
 
       "create a new mongo entry if no existing data is found" in {
+        featureToggleSupport.enable(CombinedJourney)
+
         val application = applicationBuilder(userAnswers = None)
           .overrides(
             bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
@@ -162,12 +178,15 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
             true
           })
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
     }
 
     "when feature toggle is on" - {
 
       "must return OK and the correct view for a GET" in {
+        featureToggleSupport.enable(CombinedJourney)
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .configure("features.combined" -> true)
@@ -183,9 +202,12 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(form, true)(using request, messages(application)).toString
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
+        featureToggleSupport.enable(CombinedJourney)
 
         val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.init.head).success.value
 
@@ -206,9 +228,12 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
             messages(application)
           ).toString
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
 
       "must redirect to the next page when valid data is submitted" in {
+        featureToggleSupport.enable(CombinedJourney)
 
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers))
@@ -229,9 +254,12 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).value mustEqual onwardRoute.url
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
 
       "must return a Bad Request and errors when invalid data is submitted" in {
+        featureToggleSupport.enable(CombinedJourney)
 
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .configure("features.combined" -> true)
@@ -251,9 +279,13 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
           status(result) mustEqual BAD_REQUEST
           contentAsString(result) mustEqual view(boundForm, true)(using request, messages(application)).toString
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
 
       "create a new mongo entry if no existing data is found" in {
+        featureToggleSupport.enable(CombinedJourney)
+
         val application = applicationBuilder(userAnswers = None)
           .overrides(
             bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
@@ -281,6 +313,8 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
             true
           })
         }
+
+        featureToggleSupport.disable(CombinedJourney)
       }
     }
 
