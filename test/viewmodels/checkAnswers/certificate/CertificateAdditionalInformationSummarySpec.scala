@@ -28,7 +28,7 @@ class CertificateAdditionalInformationSummarySpec extends CheckYourAnswersSpecBa
   "CertificateAdditionalInformationSummary.row" - {
     "must render the expected key text" in {
       renderSummaryRow(CertificateAdditionalInformationSummary.row(testUserAnswers)).renderedKeyText mustBe
-        "Additional information"
+        "Additional information about your certificate"
     }
 
     "must render the supplied value" in {
