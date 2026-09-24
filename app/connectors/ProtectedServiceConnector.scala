@@ -32,14 +32,39 @@ import scala.concurrent.Future
 import java.util.UUID
 import javax.inject.Inject
 
+import ProtectedServiceConnector.*
+
 class ProtectedServiceConnector @Inject() (appConfig: AppConfig, httpClient: HttpClientV2)(using
     ec: ExecutionContext
 ) {
-  def postNotification(request: NotificationRequest)(using hc: HeaderCarrier): Future[HttpResponse] = {
+
+  def postLegacyNotification(request: NotificationRequest)(using hc: HeaderCarrier): Future[HttpResponse] = {
     httpClient
       .post(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/notification")
       .withBody(Json.toJson(request))
       .setHeader("correlationId" -> UUID.randomUUID().toString)
       .execute[HttpResponse]
   }
+
+  def postNotification(request: NotificationRequest)(using hc: HeaderCarrier): Future[PostNotificationResponse] = {
+    val correlationId = UUID.randomUUID().toString
+    httpClient
+      .post(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/notification/workitems")
+      .withBody(Json.toJson(request))
+      .setHeader("correlationId" -> correlationId)
+      .execute[HttpResponse]
+      .map(res => PostNotificationResponse(correlationId = correlationId, res))
+  }
+
+  def getSubmissionStatus(correlationId: String)(using hc: HeaderCarrier): Future[HttpResponse] = {
+    httpClient
+      .get(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/notification/status")
+      .setHeader("correlationId" -> correlationId)
+      .execute[HttpResponse]
+  }
+
+}
+
+object ProtectedServiceConnector {
+  final case class PostNotificationResponse(correlationId: String, underlying: HttpResponse)
 }

@@ -394,6 +394,10 @@ confirmYourNotification.paragraph2 = By submitting this notification, you confir
 confirmYourNotification.list1.item1 = the information you have provided is complete and correct to the best of your knowledge
 confirmYourNotification.list1.item2 = if the company deliberately provides false or incomplete information, or fails to report changes, it may be liable for a £5,000 penalty
 
+notificationSubmissionInProgress.title = Submitting your notification
+notificationSubmissionInProgress.heading = Submitting your notification
+notificationSubmissionInProgress.paragraph1 = This may take a few minutes
+
 certificateReviewQualified.title = Review the companies with a qualified certificate
 certificateReviewQualified.heading = Review the companies with a qualified certificate
 certificateReviewQualified.caption = Submit a certificate
