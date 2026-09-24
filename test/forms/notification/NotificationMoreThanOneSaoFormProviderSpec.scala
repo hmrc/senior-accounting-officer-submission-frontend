@@ -46,7 +46,7 @@ class NotificationMoreThanOneSaoFormProviderSpec extends BooleanFieldBehaviours 
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Select ‘Yes’ if there was more than one SAO because the SAO changed during the financial year"
+      message = "Select yes, if the SAO changed during the financial year you are submitting for"
     )
   }
 }
