@@ -17,6 +17,7 @@
 package connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
+import config.AppConfig
 import connectors.UpscanInitiateConnectorISpec.*
 import models.upscan.{UploadJourney, UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.http.HeaderNames
@@ -35,7 +36,7 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
   given HeaderCarrier = HeaderCarrier()
 
   lazy val SUT = app.injector.instanceOf[UpscanInitiateConnector]
-
+  
   given Request[?] = FakeRequest()
 
   "UpscanInitiateConnector.initiateV2(Notification)" must {
@@ -100,7 +101,10 @@ class UpscanInitiateConnectorISpec extends ISpecBase {
 
 }
 
-object UpscanInitiateConnectorISpec {
+object UpscanInitiateConnectorISpec extends ISpecBase{
+
+  def appConfig: AppConfig = app.injector.instanceOf[AppConfig]
+  
   val fakeUpscanInitiateResponse = UpscanInitiateResponse(
     reference = "foo",
     postTarget = "bar",
@@ -111,12 +115,14 @@ object UpscanInitiateConnectorISpec {
     successRedirect = Some(
       "http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"
     ),
-    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload")
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload"),
+    maximumFileSize = Some(appConfig.maxUploadFileSizeBytes)
   )
 
   val expectedCertificateRequest = UpscanInitiateRequestV2(
     callbackUrl = "http://localhost:10058/internal/upscan-callback?journey=certificate",
     successRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload/success"),
-    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload")
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload"),
+    maximumFileSize = Some(appConfig.maxUploadFileSizeBytes)
   )
 }

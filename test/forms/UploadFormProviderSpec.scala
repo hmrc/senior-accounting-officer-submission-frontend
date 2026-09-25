@@ -50,7 +50,7 @@ class UploadFormProviderSpec extends FieldBehaviours {
 
     createTestWithErrorMessageAssertion(
       key = "upload.error.EntityTooLarge",
-      message = "The selected file must be smaller than 100MB"
+      message = "The selected file could not be uploaded. Check it is a CSV, smaller than 10MB and try again"
     )
 
     createTestWithErrorMessageAssertion(

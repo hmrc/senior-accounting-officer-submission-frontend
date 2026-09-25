@@ -40,7 +40,8 @@ class UpscanInitiateConnector @Inject() (
     val request = UpscanInitiateRequestV2(
       callbackUrl = appConfig.upscanCallbackTarget(journey),
       successRedirect = Some(appConfig.host + successRedirect(journey)),
-      errorRedirect = Some(appConfig.host + errorRedirect(journey))
+      errorRedirect = Some(appConfig.host + errorRedirect(journey)),
+      maximumFileSize = Some(appConfig.maxUploadFileSizeBytes)
     )
 
     httpClient
