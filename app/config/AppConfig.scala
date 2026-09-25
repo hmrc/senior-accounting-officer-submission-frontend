@@ -65,6 +65,7 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   val timeout: Int   = config.get[Int]("timeout-dialog.timeout")
   val countdown: Int = config.get[Int]("timeout-dialog.countdown")
 
+  val maxUploadFileSizeBytes: Int = config.get[Int]("object-store.max-upload-file-size")
 }
 
 object AppConfig {

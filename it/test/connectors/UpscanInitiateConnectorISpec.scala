@@ -111,12 +111,14 @@ object UpscanInitiateConnectorISpec {
     successRedirect = Some(
       "http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"
     ),
-    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload")
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload"),
+    maximumFileSize = Some(UpscanInitiateConnector.MaxFileSizeBytes)
   )
 
   val expectedCertificateRequest = UpscanInitiateRequestV2(
     callbackUrl = "http://localhost:10058/internal/upscan-callback?journey=certificate",
     successRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload/success"),
-    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload")
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload"),
+    maximumFileSize = Some(UpscanInitiateConnector.MaxFileSizeBytes)
   )
 }
