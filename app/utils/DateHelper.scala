@@ -28,7 +28,8 @@ class DateHelper @Inject() (clock: Clock) {
 }
 
 object DateHelper {
-  val ukZoneId: ZoneId = ZoneId.of("Europe/London")
+  val ukZoneId: ZoneId                  = ZoneId.of("Europe/London")
+  val beginningOf20thCentury: LocalDate = LocalDate.of(1900, 1, 1)
 }
 
 class FutureDateHelper private[utils] (nowUkLocalDate: LocalDate) {

@@ -35,6 +35,7 @@ class NotificationMultiSaoPreviousOfficerEndDateFormProvider @Inject() (dateHelp
         requiredKey = "notificationMultiSaoPreviousOfficerEndDate.error.required",
         args = Seq(previousSaoName)
       ).verifying(
+        minDate(DateHelper.beginningOf20thCentury, "notificationMultiSaoPreviousOfficerEndDate.error.invalid"),
         maxDate(dateHelper.nowUkLocalDate.minusDays(1), "notificationMultiSaoPreviousOfficerEndDate.error.notPastDate")
       )
     )
