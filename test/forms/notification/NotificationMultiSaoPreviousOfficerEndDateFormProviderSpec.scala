@@ -36,7 +36,7 @@ class NotificationMultiSaoPreviousOfficerEndDateFormProviderSpec extends DateBeh
   ".value" - {
 
     val validData = datesBetween(
-      min = LocalDate.of(1, 1, 1),
+      min = LocalDate.of(1900, 1, 1),
       max = LocalDate.now(app.injector.instanceOf[Clock]).minusDays(1)
     )
 
@@ -54,7 +54,7 @@ class NotificationMultiSaoPreviousOfficerEndDateFormProviderSpec extends DateBeh
     behave like dateFieldWithMin(
       form,
       key = "value",
-      min = LocalDate.of(1, 1, 1),
+      min = LocalDate.of(1900, 1, 1),
       formError = FormError("value", invalidKey)
     )
   }
