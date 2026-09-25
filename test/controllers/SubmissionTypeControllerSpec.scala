@@ -17,7 +17,9 @@
 package controllers
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import forms.SubmissionTypeFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.SubmissionType
 import navigation.{AgnosticNavigator, FakeAgnosticNavigator}
 import org.mockito.ArgumentMatchers.{any, argThat}
@@ -45,120 +47,245 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
   val formProvider               = new SubmissionTypeFormProvider()
   val form: Form[SubmissionType] = formProvider()
 
-  val mockSessionRepository: SessionRepository = mock[SessionRepository]
+  val mockSessionRepository: SessionRepository   = mock[SessionRepository]
+  val featureToggleSupport: FeatureToggleSupport = mock[FeatureToggleSupport]
 
   override def beforeEach(): Unit = {
     reset(mockSessionRepository)
     when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+    featureToggleSupport.enable(CombinedJourney)
+
+  }
+
+  override def afterEach(): Unit = {
+    featureToggleSupport.disable(CombinedJourney)
   }
 
   "SubmissionType Controller" - {
 
-    "must return OK and the correct view for a GET" in {
+    "when feature toggle is off" - {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "must return OK and the correct view for a GET" in {
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
-      running(application) {
-        val request = FakeRequest(GET, submissionTypeRoute)
+        running(application) {
+          val request = FakeRequest(GET, submissionTypeRoute)
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        val view = application.injector.instanceOf[SubmissionTypeView]
+          val view = application.injector.instanceOf[SubmissionTypeView]
 
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form)(using request, messages(application)).toString
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, false)(using request, messages(application)).toString
+        }
+
       }
-    }
 
-    "must populate the view correctly on a GET when the question has previously been answered" in {
+      "must populate the view correctly on a GET when the question has previously been answered" in {
+        val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.init.head).success.value
 
-      val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.head).success.value
+        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
-      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        running(application) {
+          val request = FakeRequest(GET, submissionTypeRoute)
 
-      running(application) {
-        val request = FakeRequest(GET, submissionTypeRoute)
+          val view = application.injector.instanceOf[SubmissionTypeView]
 
-        val view = application.injector.instanceOf[SubmissionTypeView]
+          val result = route(application, request).value
 
-        val result = route(application, request).value
-
-        status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(SubmissionType.values.head))(using
-          request,
-          messages(application)
-        ).toString
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form.fill(SubmissionType.values.init.head), false)(using
+            request,
+            messages(application)
+          ).toString
+        }
       }
-    }
 
-    "must redirect to the next page when valid data is submitted" in {
+      "must redirect to the next page when valid data is submitted" in {
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers))
+            .overrides(
+              bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
+              bind[SessionRepository].toInstance(mockSessionRepository)
+            )
+            .build()
 
-      val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        running(application) {
+          val request =
+            FakeRequest(POST, submissionTypeRoute)
+              .withFormUrlEncodedBody(("value", SubmissionType.values.init.head.toString))
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual onwardRoute.url
+        }
+      }
+
+      "must return a Bad Request and errors when invalid data is submitted" in {
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+
+        running(application) {
+          val request =
+            FakeRequest(POST, submissionTypeRoute)
+              .withFormUrlEncodedBody(("value", "invalid value"))
+
+          val boundForm = form.bind(Map("value" -> "invalid value"))
+
+          val view = application.injector.instanceOf[SubmissionTypeView]
+
+          val result = route(application, request).value
+
+          status(result) mustEqual BAD_REQUEST
+          contentAsString(result) mustEqual view(boundForm, false)(using request, messages(application)).toString
+        }
+      }
+
+      "create a new mongo entry if no existing data is found" in {
+        val application = applicationBuilder(userAnswers = None)
           .overrides(
             bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
 
-      running(application) {
-        val request =
-          FakeRequest(POST, submissionTypeRoute)
-            .withFormUrlEncodedBody(("value", SubmissionType.values.head.toString))
+        running(application) {
+          val request =
+            FakeRequest(POST, submissionTypeRoute)
+              .withFormUrlEncodedBody(("value", SubmissionType.values.head.toString))
 
-        val result = route(application, request).value
+          val result = route(application, request).value
 
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual onwardRoute.url
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual onwardRoute.url
+
+          verify(mockSessionRepository, times(1)).set(argThat { insertedUserAnswer =>
+            insertedUserAnswer.id mustBe userAnswersId
+            insertedUserAnswer.data mustBe Json.parse(
+              s"""{"submissionType":"${SubmissionType.values.head.toString}"}"""
+            )
+            true
+          })
+        }
       }
     }
 
-    "must return a Bad Request and errors when invalid data is submitted" in {
+    "when feature toggle is on" - {
 
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      "must return OK and the correct view for a GET" in {
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .configure("features.combined" -> true)
+          .build()
 
-      running(application) {
-        val request =
-          FakeRequest(POST, submissionTypeRoute)
-            .withFormUrlEncodedBody(("value", "invalid value"))
+        running(application) {
+          val request = FakeRequest(GET, submissionTypeRoute)
 
-        val boundForm = form.bind(Map("value" -> "invalid value"))
+          val result = route(application, request).value
 
-        val view = application.injector.instanceOf[SubmissionTypeView]
+          val view = application.injector.instanceOf[SubmissionTypeView]
 
-        val result = route(application, request).value
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form, true)(using request, messages(application)).toString
+        }
+      }
 
-        status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm)(using request, messages(application)).toString
+      "must populate the view correctly on a GET when the question has previously been answered" in {
+        val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.init.head).success.value
+
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
+          .configure("features.combined" -> true)
+          .build()
+
+        running(application) {
+          val request = FakeRequest(GET, submissionTypeRoute)
+
+          val view = application.injector.instanceOf[SubmissionTypeView]
+
+          val result = route(application, request).value
+
+          status(result) mustEqual OK
+          contentAsString(result) mustEqual view(form.fill(SubmissionType.values.init.head), true)(using
+            request,
+            messages(application)
+          ).toString
+        }
+      }
+
+      "must redirect to the next page when valid data is submitted" in {
+        val application =
+          applicationBuilder(userAnswers = Some(emptyUserAnswers))
+            .overrides(
+              bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
+              bind[SessionRepository].toInstance(mockSessionRepository)
+            )
+            .configure("features.combined" -> true)
+            .build()
+
+        running(application) {
+          val request =
+            FakeRequest(POST, submissionTypeRoute)
+              .withFormUrlEncodedBody(("value", SubmissionType.values.init.head.toString))
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual onwardRoute.url
+        }
+      }
+
+      "must return a Bad Request and errors when invalid data is submitted" in {
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .configure("features.combined" -> true)
+          .build()
+
+        running(application) {
+          val request =
+            FakeRequest(POST, submissionTypeRoute)
+              .withFormUrlEncodedBody(("value", "invalid value"))
+
+          val boundForm = form.bind(Map("value" -> "invalid value"))
+
+          val view = application.injector.instanceOf[SubmissionTypeView]
+
+          val result = route(application, request).value
+
+          status(result) mustEqual BAD_REQUEST
+          contentAsString(result) mustEqual view(boundForm, true)(using request, messages(application)).toString
+        }
+      }
+
+      "create a new mongo entry if no existing data is found" in {
+        val application = applicationBuilder(userAnswers = None)
+          .overrides(
+            bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .configure("features.combined" -> true)
+          .build()
+
+        running(application) {
+          val request =
+            FakeRequest(POST, submissionTypeRoute)
+              .withFormUrlEncodedBody(("value", SubmissionType.values.head.toString))
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+
+          redirectLocation(result).value mustEqual onwardRoute.url
+
+          verify(mockSessionRepository, times(1)).set(argThat { insertedUserAnswer =>
+            insertedUserAnswer.id mustBe userAnswersId
+            insertedUserAnswer.data mustBe Json.parse(
+              s"""{"submissionType":"${SubmissionType.values.head.toString}"}"""
+            )
+            true
+          })
+        }
       }
     }
 
-    "create a new mongo entry if no existing data is found" in {
-      val application = applicationBuilder(userAnswers = None)
-        .overrides(
-          bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
-          bind[SessionRepository].toInstance(mockSessionRepository)
-        )
-        .build()
-
-      running(application) {
-        val request =
-          FakeRequest(POST, submissionTypeRoute)
-            .withFormUrlEncodedBody(("value", SubmissionType.values.head.toString))
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-
-        redirectLocation(result).value mustEqual onwardRoute.url
-
-        verify(mockSessionRepository, times(1)).set(argThat { insertedUserAnswer =>
-          insertedUserAnswer.id mustBe userAnswersId
-          insertedUserAnswer.data mustBe Json.parse(s"""{"submissionType":"${SubmissionType.values.head.toString}"}""")
-          true
-        })
-      }
-    }
   }
 
 }

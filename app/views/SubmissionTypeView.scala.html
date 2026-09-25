@@ -22,7 +22,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[?])(using request: Request[?], messages: Messages)
+@(form: Form[?], isCombinedJourneyEnabled: Boolean)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("submissionType.title"))) {
 
@@ -35,14 +35,22 @@
         <span class="govuk-caption-l">@messages("submissionType.caption")</span>
 
         @govukRadios(
-            RadiosViewModel(
-                field  = form("value"),
-                legend = LegendViewModel(messages("submissionType.heading").toText).asPageHeading(LegendSize.Large),
-                items  = SubmissionType.options
-            ).withDivider(
-                insertionIndex = 2,
-                dividerText = messages("submissionType.radioDivider")
-            )
+            if(isCombinedJourneyEnabled){
+                RadiosViewModel(
+                    field  = form("value"),
+                    legend = LegendViewModel(messages("submissionType.heading").toText).asPageHeading(LegendSize.Large),
+                    items  = SubmissionType.options(isCombinedJourneyEnabled)
+                ).withDivider(
+                    insertionIndex = 2,
+                    dividerText = messages("submissionType.radioDivider")
+                )
+            } else {
+                RadiosViewModel(
+                    field  = form("value"),
+                    legend = LegendViewModel(messages("submissionType.heading").toText).asPageHeading(LegendSize.Large),
+                    items  = SubmissionType.options(isCombinedJourneyEnabled)
+                )
+            }
         )
 
         @govukButton(

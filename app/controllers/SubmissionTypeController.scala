@@ -16,11 +16,15 @@
 
 package controllers
 
+import config.FeatureConfigSupport
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
-import models.{NormalMode, UserAnswers}
+import models.FeatureToggle
+import models.FeatureToggle.CombinedJourney
+import models.{NormalMode, SubmissionType, UserAnswers}
 import navigation.AgnosticNavigator
 import pages.SubmissionTypePage
+import play.api.Configuration
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -40,13 +44,14 @@ class SubmissionTypeController @Inject() (
     formProvider: SubmissionTypeFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: SubmissionTypeView
-)(using ec: ExecutionContext)
+)(using ec: ExecutionContext)(using config: Configuration)
     extends FrontendBaseController
-    with I18nSupport {
+    with I18nSupport
+    with FeatureConfigSupport {
   def onPageLoad(): Action[AnyContent] = (identify andThen getData) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.flatMap(_.get(SubmissionTypePage)).fold(form)(form.fill)
-    Ok(view(preparedForm))
+    Ok(view(preparedForm, isEnabled(CombinedJourney)))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
@@ -54,7 +59,7 @@ class SubmissionTypeController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, isEnabled(CombinedJourney)))),
         value =>
           for {
             updatedAnswers <- Future

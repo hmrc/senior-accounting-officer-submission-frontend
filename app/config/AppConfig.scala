@@ -17,6 +17,7 @@
 package config
 
 import controllers.internal.routes
+import models.FeatureToggle.*
 import models.upscan.UploadJourney
 import play.api.Configuration
 import play.api.mvc.RequestHeader
@@ -25,7 +26,8 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 import javax.inject.{Inject, Singleton}
 
 @Singleton
-class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration) {
+class AppConfig @Inject() (servicesConfig: ServicesConfig, val config: Configuration) extends FeatureConfigSupport {
+  given Configuration = config
 
   val cacheTtl: Long = config.get[Int]("mongodb.timeToLiveInSeconds")
 
@@ -49,6 +51,7 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, config: Configuration
   val loginContinueUrl: String = hubBaseUrl
 
   lazy val upscanInitiateV2Url: String = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
+  def combinedJourneyEnabled: Boolean  = isEnabled(CombinedJourney)
 
   lazy val internalAuthTestOnlyTokenUrl: String = servicesConfig.baseUrl("internal-auth") + "/test-only/token"
 
