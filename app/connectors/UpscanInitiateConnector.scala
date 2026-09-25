@@ -31,10 +31,6 @@ import scala.concurrent.{ExecutionContext, Future}
 
 import javax.inject.Inject
 
-object UpscanInitiateConnector {
-  val MaxFileSizeBytes: Int = 10 * 1024 * 1024 // 10MB
-}
-
 class UpscanInitiateConnector @Inject() (
     httpClient: HttpClientV2,
     appConfig: AppConfig
