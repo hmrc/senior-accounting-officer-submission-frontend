@@ -90,6 +90,8 @@ POST        /notification/change-additional-information                         
 GET         /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
 POST        /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
 
+GET         /notification/submission-in-progress                                         controllers.notification.NotificationSubmissionInProgressController.onPageLoad()
+
 GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onSubmit()
 

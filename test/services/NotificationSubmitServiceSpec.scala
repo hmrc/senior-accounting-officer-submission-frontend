@@ -43,7 +43,7 @@ import java.time.LocalDate
 
 class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
-  "NotificationSubmitService.submit" - {
+  "NotificationSubmitService.legacySubmit" - {
 
     given HeaderCarrier = HeaderCarrier()
 
@@ -66,7 +66,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
       running(application) {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
-        val result = SUT.submit(userAnswers).futureValue
+        val result = SUT.legacySubmit(userAnswers).futureValue
         result mustBe Right(exampleNotificationReference)
       }
     }
@@ -79,7 +79,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
       running(application) {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
-        val result = SUT.submit(userAnswers).futureValue
+        val result = SUT.legacySubmit(userAnswers).futureValue
         result.isLeft mustBe true
         result.left.map(error => error.message mustBe expectedHttpFailureMessage)
       }
@@ -88,7 +88,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
     def configureApplication(mockConnectorResponse: HttpResponse, mockRepositoryResponse: Boolean): Application = {
       val mockConnector = mock[ProtectedServiceConnector]
 
-      when(mockConnector.postNotification(any())(using any[HeaderCarrier]())) thenReturn Future.successful(
+      when(mockConnector.postLegacyNotification(any())(using any[HeaderCarrier]())) thenReturn Future.successful(
         mockConnectorResponse
       )
 
