@@ -457,7 +457,7 @@ certificateSaoEmail.hint = We’ll only use this to contact them about the compa
 certificateSaoEmail.checkYourAnswersLabel = SAO email address
 certificateSaoEmail.error.required = Enter the email address of the SAO
 certificateSaoEmail.error.format = Email address must be in the correct format, like name@example.com
-certificateSaoEmail.error.length = Email address you enter must be 254 characters or less
+certificateSaoEmail.error.length = Email address must be 254 characters or less
 certificateSaoEmail.change.hidden = CertificateSaoEmail
 
 certificateSaoFullName.title = What is the name of the SAO responsible for the certificate?

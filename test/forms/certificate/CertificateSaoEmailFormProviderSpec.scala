@@ -67,7 +67,7 @@ class CertificateSaoEmailFormProviderSpec extends StringFieldBehaviours {
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "Email address you enter must be 254 characters or less"
+      message = "Email address must be 254 characters or less"
     )
 
     createTestWithErrorMessageAssertion(
