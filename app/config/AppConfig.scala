@@ -50,8 +50,8 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, val config: Configura
 
   val loginContinueUrl: String = hubBaseUrl
 
-  lazy val upscanInitiateV2Url: String = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
-  def combinedJourneyEnabled: Boolean  = isEnabled(CombinedJourney)
+  lazy val upscanInitiateV2Url: String  = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
+  def isCombinedJourneyEnabled: Boolean = isEnabled(CombinedJourney)
 
   lazy val internalAuthTestOnlyTokenUrl: String = servicesConfig.baseUrl("internal-auth") + "/test-only/token"
 

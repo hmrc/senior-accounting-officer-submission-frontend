@@ -20,7 +20,7 @@ import base.SpecBase
 import config.FeatureToggleSupport
 import forms.SubmissionTypeFormProvider
 import models.FeatureToggle.CombinedJourney
-import models.SubmissionType
+import models.{SubmissionType, UserAnswers}
 import navigation.{AgnosticNavigator, FakeAgnosticNavigator}
 import org.mockito.ArgumentMatchers.{any, argThat}
 import org.mockito.Mockito.*
@@ -49,12 +49,12 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
 
   val mockSessionRepository: SessionRepository   = mock[SessionRepository]
   val featureToggleSupport: FeatureToggleSupport = mock[FeatureToggleSupport]
+  val testUserAnswers: UserAnswers               = emptyUserAnswers
 
   override def beforeEach(): Unit = {
+    featureToggleSupport.disable(CombinedJourney)
     reset(mockSessionRepository)
     when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
-    featureToggleSupport.enable(CombinedJourney)
-
   }
 
   override def afterEach(): Unit = {
@@ -66,7 +66,9 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
     "when feature toggle is off" - {
 
       "must return OK and the correct view for a GET" in {
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .configure("features.combined" -> false)
+          .build()
 
         running(application) {
           val request = FakeRequest(GET, submissionTypeRoute)
@@ -84,7 +86,9 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
       "must populate the view correctly on a GET when the question has previously been answered" in {
         val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.init.head).success.value
 
-        val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(userAnswers))
+          .configure("features.combined" -> false)
+          .build()
 
         running(application) {
           val request = FakeRequest(GET, submissionTypeRoute)
@@ -123,7 +127,9 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
       }
 
       "must return a Bad Request and errors when invalid data is submitted" in {
-        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+        val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .configure("features.combined" -> false)
+          .build()
 
         running(application) {
           val request =
@@ -178,12 +184,12 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
           .configure("features.combined" -> true)
           .build()
 
+        val view = application.injector.instanceOf[SubmissionTypeView]
+
         running(application) {
           val request = FakeRequest(GET, submissionTypeRoute)
 
           val result = route(application, request).value
-
-          val view = application.injector.instanceOf[SubmissionTypeView]
 
           status(result) mustEqual OK
           contentAsString(result) mustEqual view(form, true)(using request, messages(application)).toString

@@ -35,21 +35,20 @@
         <span class="govuk-caption-l">@messages("submissionType.caption")</span>
 
         @govukRadios(
-            if(isCombinedJourneyEnabled){
-                RadiosViewModel(
-                    field  = form("value"),
-                    legend = LegendViewModel(messages("submissionType.heading").toText).asPageHeading(LegendSize.Large),
-                    items  = SubmissionType.options(isCombinedJourneyEnabled)
-                ).withDivider(
-                    insertionIndex = 2,
-                    dividerText = messages("submissionType.radioDivider")
-                )
-            } else {
-                RadiosViewModel(
+            {
+                val radios = RadiosViewModel(
                     field  = form("value"),
                     legend = LegendViewModel(messages("submissionType.heading").toText).asPageHeading(LegendSize.Large),
                     items  = SubmissionType.options(isCombinedJourneyEnabled)
                 )
+                if(isCombinedJourneyEnabled){
+                    radios.withDivider(
+                        insertionIndex = 2,
+                        dividerText = messages("submissionType.radioDivider")
+                    )
+                } else {
+                    radios
+                }
             }
         )
 

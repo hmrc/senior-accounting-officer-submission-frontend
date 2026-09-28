@@ -41,7 +41,7 @@ object SubmissionType extends Enumerable.Implicits[SubmissionType] with FeatureC
         )
       }
     else {
-      values.init.map { value =>
+      values.filterNot(_ == Combined).map { value =>
         RadioItem(
           content = Text(messages(s"submissionType.${value.toString}")),
           value = Some(value.toString),

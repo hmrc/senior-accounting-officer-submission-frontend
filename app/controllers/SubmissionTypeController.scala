@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.AppConfig
 import config.FeatureConfigSupport
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
@@ -37,6 +38,7 @@ import javax.inject.Inject
 
 class SubmissionTypeController @Inject() (
     override val messagesApi: MessagesApi,
+    appConfig: AppConfig,
     sessionRepository: SessionRepository,
     navigator: AgnosticNavigator,
     identify: IdentifierAction,
@@ -51,7 +53,7 @@ class SubmissionTypeController @Inject() (
   def onPageLoad(): Action[AnyContent] = (identify andThen getData) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.flatMap(_.get(SubmissionTypePage)).fold(form)(form.fill)
-    Ok(view(preparedForm, isEnabled(CombinedJourney)))
+    Ok(view(preparedForm, appConfig.isCombinedJourneyEnabled))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
