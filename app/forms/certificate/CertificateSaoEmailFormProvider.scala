@@ -29,6 +29,7 @@ class CertificateSaoEmailFormProvider @Inject() extends Mappings {
     Form(
       "value" -> text("certificateSaoEmail.error.required")
         .verifying(maxLength(254, "certificateSaoEmail.error.length"))
+        .verifying(symbols("certificateSaoFullName.error.invalidSymbols"))
         .verifying(regexp(emailRegEx, "certificateSaoEmail.error.format"))
     )
 }
