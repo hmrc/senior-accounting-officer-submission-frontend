@@ -62,17 +62,17 @@ class CertificateSaoEmailFormProviderSpec extends StringFieldBehaviours {
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter the email address of the Senior Accounting Officer"
+      message = "Enter the email address of the SAO"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "SAO email address must be 254 characters or less"
+      message = "Email address must be 254 characters or less"
     )
 
     createTestWithErrorMessageAssertion(
       key = formatKey,
-      message = "Enter the email address in the correct format, like name@example.com"
+      message = "Email address must be in the correct format, like name@example.com"
     )
   }
 }
