@@ -520,7 +520,7 @@ certificateWhoIsSubmitting.paragraph2 = We rely on the information provided to b
 certificateWhoIsSubmitting.sao = The SAO
 certificateWhoIsSubmitting.standIn = A person authorised to submit on behalf of the SAO
 certificateWhoIsSubmitting.checkYourAnswersLabel = Who is submitting the certificate?
-certificateWhoIsSubmitting.error.required = Select I am the SAO if you are the SAO submitting the certificate
+certificateWhoIsSubmitting.error.required = Select who is submitting the certificate
 certificateWhoIsSubmitting.change.hidden = CertificateWhoIsSubmitting
 
 certificateCheckYourAnswers.title = Check your answers – Submit a certificate
