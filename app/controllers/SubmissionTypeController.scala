@@ -61,7 +61,7 @@ class SubmissionTypeController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors, isEnabled(CombinedJourney)))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, appConfig.isCombinedJourneyEnabled))),
         value =>
           for {
             updatedAnswers <- Future
