@@ -458,7 +458,6 @@ certificateSaoEmail.checkYourAnswersLabel = SAO email address
 certificateSaoEmail.error.required = Enter the email address of the SAO
 certificateSaoEmail.error.format = Email address must be in the correct format, like name@example.com
 certificateSaoEmail.error.length = Email address you enter must be 254 characters or less
-certificateSaoFullName.error.invalidSymbols = Name of the SAO must not include <, > or "
 certificateSaoEmail.change.hidden = CertificateSaoEmail
 
 certificateSaoFullName.title = What is the name of the SAO responsible for the certificate?
