@@ -16,8 +16,6 @@
 
 package models
 
-import viewmodels.govuk.checkbox.*
-
 enum FeatureToggle(val key: String, val name: String) {
   override def toString: String = s"features.$key"
   case CombinedJourney extends FeatureToggle("combined", "Combined")
