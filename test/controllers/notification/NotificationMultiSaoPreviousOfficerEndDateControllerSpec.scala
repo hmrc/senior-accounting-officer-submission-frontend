@@ -25,7 +25,11 @@ import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage, NotificationMultiSaoPreviousOfficerStartDatePage}
+import pages.notification.{
+  NotificationMultiSaoPreviousOfficerEndDatePage,
+  NotificationMultiSaoPreviousOfficerNamePage,
+  NotificationMultiSaoPreviousOfficerStartDatePage
+}
 import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -40,8 +44,8 @@ import java.time.{LocalDate, ZoneOffset}
 
 class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase with MockitoSugar {
 
-  val testValidDate: LocalDate = LocalDate.now(ZoneOffset.UTC).minusDays(1)
-  val testSaoName: String      = "Firstname Lastname"
+  val testValidDate: LocalDate    = LocalDate.now(ZoneOffset.UTC).minusDays(1)
+  val testSaoName: String         = "Firstname Lastname"
   val testSaoStartDate: LocalDate = LocalDate.now(ZoneOffset.UTC).minusDays(2)
 
   private def form(using app: Application) =
@@ -55,9 +59,13 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
     notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode).url
 
   val userAnswersWithSaoNameAndStartDate: UserAnswers =
-    emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), testSaoName).success.value
-      .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), testSaoStartDate).success.value
-
+    emptyUserAnswers
+      .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), testSaoName)
+      .success
+      .value
+      .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), testSaoStartDate)
+      .success
+      .value
 
   val saoIndex = 0
 
@@ -76,7 +84,8 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
 
     "must return OK and the correct view for a GET" in {
 
-      given application: Application = applicationBuilder(userAnswers = Some(userAnswersWithSaoNameAndStartDate)).build()
+      given application: Application =
+        applicationBuilder(userAnswers = Some(userAnswersWithSaoNameAndStartDate)).build()
 
       running(application) {
         val result = route(application, getRequest()).value
@@ -150,7 +159,8 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      given application: Application = applicationBuilder(userAnswers = Some(userAnswersWithSaoNameAndStartDate)).build()
+      given application: Application =
+        applicationBuilder(userAnswers = Some(userAnswersWithSaoNameAndStartDate)).build()
 
       val request =
         FakeRequest(POST, notificationMultiSaoPreviousOfficerEndDateRoute)

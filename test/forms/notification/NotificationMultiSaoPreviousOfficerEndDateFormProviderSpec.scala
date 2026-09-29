@@ -23,15 +23,15 @@ import java.time.{Clock, LocalDate}
 
 class NotificationMultiSaoPreviousOfficerEndDateFormProviderSpec extends DateBehaviours {
 
-  val saoName               = "Firstname Lastname"
+  val saoName                                                                   = "Firstname Lastname"
   def form(saoStartDate: LocalDate = LocalDate.of(1900, 1, 1)): Form[LocalDate] =
     app.injector.instanceOf[NotificationMultiSaoPreviousOfficerEndDateFormProvider].apply(saoName, saoStartDate)
 
-  val requiredAllKey = "notificationMultiSaoPreviousOfficerEndDate.error.required.all"
-  val requiredTwoKey = "notificationMultiSaoPreviousOfficerEndDate.error.required.two"
-  val requiredKey    = "notificationMultiSaoPreviousOfficerEndDate.error.required"
-  val invalidKey     = "notificationMultiSaoPreviousOfficerEndDate.error.invalid"
-  val notPastDateKey = "notificationMultiSaoPreviousOfficerEndDate.error.notPastDate"
+  val requiredAllKey            = "notificationMultiSaoPreviousOfficerEndDate.error.required.all"
+  val requiredTwoKey            = "notificationMultiSaoPreviousOfficerEndDate.error.required.two"
+  val requiredKey               = "notificationMultiSaoPreviousOfficerEndDate.error.required"
+  val invalidKey                = "notificationMultiSaoPreviousOfficerEndDate.error.invalid"
+  val notPastDateKey            = "notificationMultiSaoPreviousOfficerEndDate.error.notPastDate"
   val endDateBeforeStartDateKey = "notificationMultiSaoPreviousOfficerEndDate.error.endDateBeforeStartDate"
 
   ".value" - {
