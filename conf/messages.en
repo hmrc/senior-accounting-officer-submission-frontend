@@ -27,7 +27,7 @@ error.summary.title = There is a problem
 upload.label = Upload a file
 upload.error.quarantine = The selected file contains a virus
 upload.error.rejected = The selected file must be a CSV
-upload.error.unknown = The selected file could not be uploaded – try again
+upload.error.unknown = The selected file could not be uploaded. Check it is a CSV, smaller than 10MB and try again
 upload.error.EntityTooLarge = The selected file could not be uploaded. Check it is a CSV, smaller than 10MB and try again
 
 upload.success.title.notification = Upload a submission template for your notification
@@ -446,8 +446,8 @@ certificateAdditionalInformation.list1.item2 = a company’s status changing, su
 certificateAdditionalInformation.list1.item3 = anything else relevant to the companies listed or SAO
 certificateAdditionalInformation.label = Provide information about your certificate
 certificateAdditionalInformation.checkYourAnswersLabel = Additional information about your certificate
-certificateAdditionalInformation.error.required = Enter information about your certificate or skip
-certificateAdditionalInformation.error.length = Additional information must be 5000 characters or less
+certificateAdditionalInformation.error.required = Enter information about your certificate, or select skip if there''s nothing to add
+certificateAdditionalInformation.error.length = Additional information about your certificate must be 5000 characters or less
 certificateAdditionalInformation.change.hidden = the additional information supplied for the certificate
 
 certificateSaoEmail.title = What is the email address for the SAO?

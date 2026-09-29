@@ -55,7 +55,7 @@ class UploadFormProviderSpec extends FieldBehaviours {
 
     createTestWithErrorMessageAssertion(
       key = "upload.error.unknown",
-      message = "The selected file could not be uploaded – try again"
+      message = "The selected file could not be uploaded. Check it is a CSV, smaller than 10MB and try again"
     )
   }
 }
