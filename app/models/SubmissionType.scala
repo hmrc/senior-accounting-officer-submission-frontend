@@ -16,7 +16,6 @@
 
 package models
 
-import config.FeatureConfigSupport
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.Aliases.Text
 import uk.gov.hmrc.govukfrontend.views.viewmodels.radios.RadioItem
@@ -27,20 +26,20 @@ enum SubmissionType(override val toString: String) {
   case Combined     extends SubmissionType("combined")
 }
 
-object SubmissionType extends Enumerable.Implicits[SubmissionType] with FeatureConfigSupport {
+object SubmissionType extends Enumerable.Implicits[SubmissionType] {
 
   override def members: Array[SubmissionType] = SubmissionType.values
 
   def options(isCombinedJourneyEnabled: Boolean)(using messages: Messages): Seq[RadioItem] = {
-    if isCombinedJourneyEnabled then
-      values.map { value =>
+    if isCombinedJourneyEnabled then {
+      (values.filterNot(_ == Combined) :+ Combined).map { value =>
         RadioItem(
           content = Text(messages(s"submissionType.${value.toString}")),
           value = Some(value.toString),
           id = Some(s"value_${value.ordinal}")
         )
       }
-    else {
+    } else {
       values.filterNot(_ == Combined).map { value =>
         RadioItem(
           content = Text(messages(s"submissionType.${value.toString}")),

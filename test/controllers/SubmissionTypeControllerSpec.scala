@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import config.FeatureToggleSupport
+import config.FeatureConfigSupport
 import forms.SubmissionTypeFormProvider
 import models.FeatureToggle.CombinedJourney
 import models.{SubmissionType, UserAnswers}
@@ -26,7 +26,9 @@ import org.mockito.ArgumentMatchers.{any, argThat}
 import org.mockito.Mockito.*
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
+import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.SubmissionTypePage
+import play.api.Configuration
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.libs.json.Json
@@ -38,26 +40,31 @@ import views.html.SubmissionTypeView
 
 import scala.concurrent.Future
 
-class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
-
+class SubmissionTypeControllerSpec
+    extends SpecBase
+    with GuiceOneAppPerSuite
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureConfigSupport {
   def onwardRoute: Call = Call("GET", "/foo")
+
+  given Configuration = app.injector.instanceOf[Configuration]
 
   lazy val submissionTypeRoute: String = routes.SubmissionTypeController.onPageLoad().url
 
   val formProvider               = new SubmissionTypeFormProvider()
   val form: Form[SubmissionType] = formProvider()
 
-  val mockSessionRepository: SessionRepository   = mock[SessionRepository]
-  val featureToggleSupport: FeatureToggleSupport = mock[FeatureToggleSupport]
+  val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
   override def beforeEach(): Unit = {
-    featureToggleSupport.disable(CombinedJourney)
+    disable(CombinedJourney)
     reset(mockSessionRepository)
     when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
   }
 
   override def afterEach(): Unit = {
-    featureToggleSupport.disable(CombinedJourney)
+    disable(CombinedJourney)
   }
 
   "SubmissionType Controller" - {
@@ -179,6 +186,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
     "when feature toggle is on" - {
 
       "must return OK and the correct view for a GET" in {
+        enable(CombinedJourney)
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .configure("features.combined" -> true)
           .build()
@@ -196,6 +204,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
       }
 
       "must populate the view correctly on a GET when the question has previously been answered" in {
+        enable(CombinedJourney)
         val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.init.head).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
@@ -218,6 +227,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
       }
 
       "must redirect to the next page when valid data is submitted" in {
+        enable(CombinedJourney)
         val application =
           applicationBuilder(userAnswers = Some(emptyUserAnswers))
             .overrides(
@@ -240,6 +250,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
       }
 
       "must return a Bad Request and errors when invalid data is submitted" in {
+        enable(CombinedJourney)
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
           .configure("features.combined" -> true)
           .build()
@@ -261,6 +272,7 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
       }
 
       "create a new mongo entry if no existing data is found" in {
+        enable(CombinedJourney)
         val application = applicationBuilder(userAnswers = None)
           .overrides(
             bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
