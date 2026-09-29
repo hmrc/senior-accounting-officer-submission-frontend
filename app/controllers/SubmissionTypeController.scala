@@ -20,8 +20,6 @@ import config.AppConfig
 import config.FeatureConfigSupport
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
-import models.FeatureToggle
-import models.FeatureToggle.CombinedJourney
 import models.{NormalMode, SubmissionType, UserAnswers}
 import navigation.AgnosticNavigator
 import pages.SubmissionTypePage
