@@ -25,7 +25,11 @@ import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage}
+import pages.notification.{
+  NotificationMultiSaoPreviousOfficerEndDatePage,
+  NotificationMultiSaoPreviousOfficerNamePage,
+  NotificationMultiSaoPreviousOfficerStartDatePage
+}
 import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -40,21 +44,24 @@ import java.time.{LocalDate, ZoneOffset}
 
 class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase with MockitoSugar {
 
-  val testValidDate: LocalDate = LocalDate.now(ZoneOffset.UTC).minusDays(1)
-  val testSaoName: String      = "Firstname Lastname"
+  val testValidDate: LocalDate    = LocalDate.now(ZoneOffset.UTC).minusDays(1)
+  val testSaoName: String         = "Firstname Lastname"
+  val testSaoStartDate: LocalDate = LocalDate.now(ZoneOffset.UTC).minusDays(2)
 
   private def form(using app: Application) =
     app.injector
       .instanceOf[NotificationMultiSaoPreviousOfficerEndDateFormProvider]
-      .apply(testSaoName)(using messages(app))
+      .apply(testSaoName, testSaoStartDate)(using messages(app))
 
   def onwardRoute: Call = Call("GET", "/foo")
 
   lazy val notificationMultiSaoPreviousOfficerEndDateRoute: String =
     notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode).url
 
-  val userAnswersWithSaoName: UserAnswers =
-    emptyUserAnswers.set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), testSaoName).success.value
+  val userAnswersWithSaoNameAndStartDate: UserAnswers =
+    emptyUserAnswers
+      .add(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), testSaoName)
+      .add(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), testSaoStartDate)
 
   val saoIndex = 0
 
@@ -73,7 +80,8 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
 
     "must return OK and the correct view for a GET" in {
 
-      given application: Application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
+      given application: Application =
+        applicationBuilder(userAnswers = Some(userAnswersWithSaoNameAndStartDate)).build()
 
       running(application) {
         val result = route(application, getRequest()).value
@@ -103,7 +111,7 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
       val userAnswers =
-        userAnswersWithSaoName
+        userAnswersWithSaoNameAndStartDate
           .set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, NormalMode), testValidDate)
           .success
           .value
@@ -130,7 +138,7 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
       given application: Application =
-        applicationBuilder(userAnswers = Some(userAnswersWithSaoName))
+        applicationBuilder(userAnswers = Some(userAnswersWithSaoNameAndStartDate))
           .overrides(
             bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
@@ -147,7 +155,8 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
 
     "must return a Bad Request and errors when invalid data is submitted" in {
 
-      given application: Application = applicationBuilder(userAnswers = Some(userAnswersWithSaoName)).build()
+      given application: Application =
+        applicationBuilder(userAnswers = Some(userAnswersWithSaoNameAndStartDate)).build()
 
       val request =
         FakeRequest(POST, notificationMultiSaoPreviousOfficerEndDateRoute)

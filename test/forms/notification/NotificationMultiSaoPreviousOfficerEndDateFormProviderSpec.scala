@@ -23,15 +23,16 @@ import java.time.{Clock, LocalDate}
 
 class NotificationMultiSaoPreviousOfficerEndDateFormProviderSpec extends DateBehaviours {
 
-  val saoName               = "Firstname Lastname"
-  val form: Form[LocalDate] =
-    app.injector.instanceOf[NotificationMultiSaoPreviousOfficerEndDateFormProvider].apply(saoName)
+  val saoName                                                                   = "Firstname Lastname"
+  def form(saoStartDate: LocalDate = LocalDate.of(1900, 1, 1)): Form[LocalDate] =
+    app.injector.instanceOf[NotificationMultiSaoPreviousOfficerEndDateFormProvider].apply(saoName, saoStartDate)
 
-  val requiredAllKey = "notificationMultiSaoPreviousOfficerEndDate.error.required.all"
-  val requiredTwoKey = "notificationMultiSaoPreviousOfficerEndDate.error.required.two"
-  val requiredKey    = "notificationMultiSaoPreviousOfficerEndDate.error.required"
-  val invalidKey     = "notificationMultiSaoPreviousOfficerEndDate.error.invalid"
-  val notPastDateKey = "notificationMultiSaoPreviousOfficerEndDate.error.notPastDate"
+  val requiredAllKey            = "notificationMultiSaoPreviousOfficerEndDate.error.required.all"
+  val requiredTwoKey            = "notificationMultiSaoPreviousOfficerEndDate.error.required.two"
+  val requiredKey               = "notificationMultiSaoPreviousOfficerEndDate.error.required"
+  val invalidKey                = "notificationMultiSaoPreviousOfficerEndDate.error.invalid"
+  val notPastDateKey            = "notificationMultiSaoPreviousOfficerEndDate.error.notPastDate"
+  val endDateBeforeStartDateKey = "notificationMultiSaoPreviousOfficerEndDate.error.endDateBeforeStartDate"
 
   ".value" - {
 
@@ -40,23 +41,32 @@ class NotificationMultiSaoPreviousOfficerEndDateFormProviderSpec extends DateBeh
       max = LocalDate.now(app.injector.instanceOf[Clock]).minusDays(1)
     )
 
-    behave like dateField(form, "value", validData)
+    behave like dateField(form(), "value", validData)
 
-    behave like mandatoryDateField(form, "value", requiredAllKey, errorArgs = Seq(saoName))
+    behave like mandatoryDateField(form(), "value", requiredAllKey, errorArgs = Seq(saoName))
 
     behave like dateFieldWithMax(
-      form,
+      form(),
       key = "value",
       max = LocalDate.now(app.injector.instanceOf[Clock]).minusDays(1),
       formError = FormError("value", notPastDateKey)
     )
 
     behave like dateFieldWithMin(
-      form,
+      form(saoStartDate = LocalDate.of(1889, 1, 1)),
       key = "value",
       min = LocalDate.of(1900, 1, 1),
       formError = FormError("value", invalidKey)
     )
+
+    "fail to bind when previous SAO end date is before previous SAO start date" - {
+      behave like dateFieldWithMin(
+        form(saoStartDate = LocalDate.of(2000, 1, 1)),
+        key = "value",
+        min = LocalDate.of(1950, 1, 1),
+        formError = FormError("value", endDateBeforeStartDateKey)
+      )
+    }
   }
 
   "error message keys must map to the expected text" - {

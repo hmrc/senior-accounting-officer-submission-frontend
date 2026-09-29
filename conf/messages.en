@@ -384,6 +384,7 @@ notificationMultiSaoPreviousOfficerEndDate.error.required.two = The date must in
 notificationMultiSaoPreviousOfficerEndDate.error.required = The date must include a {0}
 notificationMultiSaoPreviousOfficerEndDate.error.invalid = End date of the SAO must be a real date
 notificationMultiSaoPreviousOfficerEndDate.error.notPastDate = End date of the SAO must be in the past
+notificationMultiSaoPreviousOfficerEndDate.error.endDateBeforeStartDate = The end date must be the same as or after the start date
 notificationMultiSaoPreviousOfficerEndDate.change.hidden = NotificationMultiSaoPreviousOfficerEndDate
 
 confirmYourNotification.title = Confirm your notification
