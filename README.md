@@ -21,7 +21,7 @@ To run the service locally, stop the service manager instance using
 
 Run the frontend locally using
 
-`sbt run`
+`sbt -Dapplication.router=testOnlyDoNotUseInAppConf.Routes run`
 
 This service is localed on http://localhost:10058/senior-accounting-officer/submission/, however the user journeys begin from
 `SENIOR_ACCOUNTING_OFFICER_HUB_FRONTEND` on http://localhost:10056/senior-accounting-officer/
