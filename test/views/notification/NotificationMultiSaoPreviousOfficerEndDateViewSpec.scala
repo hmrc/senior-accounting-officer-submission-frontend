@@ -34,7 +34,7 @@ class NotificationMultiSaoPreviousOfficerEndDateViewSpec
     extends ViewSpecBase[NotificationMultiSaoPreviousOfficerEndDateView] {
 
   private val formProvider          = app.injector.instanceOf[NotificationMultiSaoPreviousOfficerEndDateFormProvider]
-  private val form: Form[LocalDate] = formProvider(saoName)
+  private val form: Form[LocalDate] = formProvider(saoName, saoStartDate)
 
   private def generateView(form: Form[LocalDate], mode: Mode): Document = {
     val view = SUT(saoName, form, mode, saoIndex)
@@ -138,6 +138,7 @@ object NotificationMultiSaoPreviousOfficerEndDateViewSpec {
   val pageTitle   = "What date did the previous SAO responsibility stop? - Submit a notification"
   val saoIndex    = 3
   val saoName     = "Firstname Lastname"
+  val saoStartDate = LocalDate.of(1999, 1, 1)
   val pageCaption = "Submit a notification"
   val pageHint    = "For example 01 6 2024"
 }

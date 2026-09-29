@@ -26,7 +26,7 @@ import javax.inject.Inject
 
 class NotificationMultiSaoPreviousOfficerEndDateFormProvider @Inject() (dateHelper: DateHelper) extends Mappings {
 
-  def apply(previousSaoName: String)(using messages: Messages): Form[LocalDate] =
+  def apply(previousSaoName: String, previousSaoStartDate: LocalDate)(using messages: Messages): Form[LocalDate] =
     Form(
       "value" -> localDate(
         invalidKey = "notificationMultiSaoPreviousOfficerEndDate.error.invalid",
@@ -36,6 +36,7 @@ class NotificationMultiSaoPreviousOfficerEndDateFormProvider @Inject() (dateHelp
         args = Seq(previousSaoName)
       ).verifying(
         minDate(DateHelper.beginningOf20thCentury, "notificationMultiSaoPreviousOfficerEndDate.error.invalid"),
+        minDate(previousSaoStartDate, "notificationMultiSaoPreviousOfficerEndDate.error.endDateBeforeStartDate"),
         maxDate(dateHelper.nowUkLocalDate.minusDays(1), "notificationMultiSaoPreviousOfficerEndDate.error.notPastDate")
       )
     )

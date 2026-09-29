@@ -21,7 +21,7 @@ import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
 import models.Mode
 import navigation.NotificationNavigator
-import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage}
+import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage, NotificationMultiSaoPreviousOfficerStartDatePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -48,16 +48,15 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      request.userAnswers
-        .get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
-        case Some(saoName) =>
-          val form         = formProvider(saoName)
+      (request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)), request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))) match {
+        case (Some(saoName), Some(saoStartDate)) =>
+          val form         = formProvider(saoName, saoStartDate)
           val preparedForm =
             request.userAnswers
               .get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, mode))
               .fold(form)(form.fill)
           Ok(view(saoName, preparedForm, mode, saoIndex))
-        case None =>
+        case _ =>
           Redirect(
             routes.JourneyRecoveryController
               .onPageLoad()
@@ -67,10 +66,9 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
-        case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
-        case Some(saoName) =>
-          val form = formProvider(saoName)
+      (request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)), request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))) match {
+        case (Some(saoName), Some(saoStartDate)) =>
+          val form = formProvider(saoName, saoStartDate)
           form
             .bindFromRequest()
             .fold(
@@ -87,6 +85,7 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
                     .nextPage(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, mode), mode, updatedAnswers)
                 )
             )
+        case _ => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
       }
   }
 }
