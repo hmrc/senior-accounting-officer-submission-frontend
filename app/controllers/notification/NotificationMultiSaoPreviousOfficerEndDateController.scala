@@ -52,7 +52,7 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val saoNameAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
+      val saoNameAnswer      = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
       val saoStartPageAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
 
       (saoNameAnswer, saoStartPageAnswer) match {
@@ -73,7 +73,7 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val saoNameAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
+      val saoNameAnswer      = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
       val saoStartPageAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
 
       (saoNameAnswer, saoStartPageAnswer) match {
