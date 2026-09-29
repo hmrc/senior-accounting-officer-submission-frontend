@@ -31,23 +31,14 @@ object SubmissionType extends Enumerable.Implicits[SubmissionType] {
   override def members: Array[SubmissionType] = SubmissionType.values
 
   def options(isCombinedJourneyEnabled: Boolean)(using messages: Messages): Seq[RadioItem] = {
-    if isCombinedJourneyEnabled then {
-      (values.filterNot(_ == Combined) :+ Combined).map { value =>
-        RadioItem(
-          content = Text(messages(s"submissionType.${value.toString}")),
-          value = Some(value.toString),
-          id = Some(s"value_${value.ordinal}")
-        )
-      }
-    } else {
-      values.filterNot(_ == Combined).map { value =>
-        RadioItem(
-          content = Text(messages(s"submissionType.${value.toString}")),
-          value = Some(value.toString),
-          id = Some(s"value_${value.ordinal}")
-        )
-      }
+    val x = if isCombinedJourneyEnabled then { (values.filterNot(_ == Combined) :+ Combined) }
+    else { values.filterNot(_ == Combined) }
+    x.map { value =>
+      RadioItem(
+        content = Text(messages(s"submissionType.${value.toString}")),
+        value = Some(value.toString),
+        id = Some(s"value_${value.ordinal}")
+      )
     }
-
   }
 }
