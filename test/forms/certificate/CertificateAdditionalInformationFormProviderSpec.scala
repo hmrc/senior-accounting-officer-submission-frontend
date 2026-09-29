@@ -54,7 +54,7 @@ class CertificateAdditionalInformationFormProviderSpec extends StringFieldBehavi
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter information about your certificate, or select skip if there's nothing to add"
+      message = "Enter information about your certificate, or select skip if there’s nothing to add"
     )
 
     createTestWithErrorMessageAssertion(

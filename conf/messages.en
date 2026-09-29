@@ -446,7 +446,7 @@ certificateAdditionalInformation.list1.item2 = a company’s status changing, su
 certificateAdditionalInformation.list1.item3 = anything else relevant to the companies listed or SAO
 certificateAdditionalInformation.label = Provide information about your certificate
 certificateAdditionalInformation.checkYourAnswersLabel = Additional information about your certificate
-certificateAdditionalInformation.error.required = Enter information about your certificate, or select skip if there''s nothing to add
+certificateAdditionalInformation.error.required = Enter information about your certificate, or select skip if there’s nothing to add
 certificateAdditionalInformation.error.length = Additional information about your certificate must be 5000 characters or less
 certificateAdditionalInformation.change.hidden = the additional information supplied for the certificate
 
