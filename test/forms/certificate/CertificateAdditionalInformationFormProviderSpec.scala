@@ -54,12 +54,12 @@ class CertificateAdditionalInformationFormProviderSpec extends StringFieldBehavi
   "error message keys must map to the expected text" - {
     createTestWithErrorMessageAssertion(
       key = requiredKey,
-      message = "Enter information about your certificate or skip"
+      message = "Enter information about your certificate, or select skip if there’s nothing to add"
     )
 
     createTestWithErrorMessageAssertion(
       key = lengthKey,
-      message = "Additional information must be 5000 characters or less"
+      message = "Additional information about your certificate must be 5000 characters or less"
     )
   }
 }
