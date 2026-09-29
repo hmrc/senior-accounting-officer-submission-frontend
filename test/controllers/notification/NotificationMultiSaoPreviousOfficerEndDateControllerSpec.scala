@@ -60,12 +60,8 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
 
   val userAnswersWithSaoNameAndStartDate: UserAnswers =
     emptyUserAnswers
-      .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), testSaoName)
-      .success
-      .value
-      .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), testSaoStartDate)
-      .success
-      .value
+      .add(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), testSaoName)
+      .add(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), testSaoStartDate)
 
   val saoIndex = 0
 

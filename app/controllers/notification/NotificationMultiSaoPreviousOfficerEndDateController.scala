@@ -52,10 +52,10 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
 
   def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      (
-        request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)),
-        request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
-      ) match {
+      val saoNameAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
+      val saoStartPageAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
+
+      (saoNameAnswer, saoStartPageAnswer) match {
         case (Some(saoName), Some(saoStartDate)) =>
           val form         = formProvider(saoName, saoStartDate)
           val preparedForm =
@@ -73,10 +73,10 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      (
-        request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)),
-        request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
-      ) match {
+      val saoNameAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
+      val saoStartPageAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
+
+      (saoNameAnswer, saoStartPageAnswer) match {
         case (Some(saoName), Some(saoStartDate)) =>
           val form = formProvider(saoName, saoStartDate)
           form
