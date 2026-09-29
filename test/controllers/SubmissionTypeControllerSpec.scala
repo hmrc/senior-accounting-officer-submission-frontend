@@ -49,7 +49,6 @@ class SubmissionTypeControllerSpec extends SpecBase with MockitoSugar with Befor
 
   val mockSessionRepository: SessionRepository   = mock[SessionRepository]
   val featureToggleSupport: FeatureToggleSupport = mock[FeatureToggleSupport]
-  val testUserAnswers: UserAnswers               = emptyUserAnswers
 
   override def beforeEach(): Unit = {
     featureToggleSupport.disable(CombinedJourney)
