@@ -73,7 +73,6 @@ class SubmissionTypeControllerSpec
 
       "must return OK and the correct view for a GET" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .configure("features.combined" -> false)
           .build()
 
         running(application) {
@@ -93,7 +92,6 @@ class SubmissionTypeControllerSpec
         val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.init.head).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
-          .configure("features.combined" -> false)
           .build()
 
         running(application) {
@@ -134,7 +132,6 @@ class SubmissionTypeControllerSpec
 
       "must return a Bad Request and errors when invalid data is submitted" in {
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .configure("features.combined" -> false)
           .build()
 
         running(application) {
@@ -188,7 +185,6 @@ class SubmissionTypeControllerSpec
       "must return OK and the correct view for a GET" in {
         enable(CombinedJourney)
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .configure("features.combined" -> true)
           .build()
 
         val view = application.injector.instanceOf[SubmissionTypeView]
@@ -208,7 +204,6 @@ class SubmissionTypeControllerSpec
         val userAnswers = emptyUserAnswers.set(SubmissionTypePage, SubmissionType.values.init.head).success.value
 
         val application = applicationBuilder(userAnswers = Some(userAnswers))
-          .configure("features.combined" -> true)
           .build()
 
         running(application) {
@@ -234,7 +229,6 @@ class SubmissionTypeControllerSpec
               bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
               bind[SessionRepository].toInstance(mockSessionRepository)
             )
-            .configure("features.combined" -> true)
             .build()
 
         running(application) {
@@ -252,7 +246,6 @@ class SubmissionTypeControllerSpec
       "must return a Bad Request and errors when invalid data is submitted" in {
         enable(CombinedJourney)
         val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-          .configure("features.combined" -> true)
           .build()
 
         running(application) {
@@ -278,7 +271,6 @@ class SubmissionTypeControllerSpec
             bind[AgnosticNavigator].toInstance(FakeAgnosticNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
-          .configure("features.combined" -> true)
           .build()
 
         running(application) {

@@ -23,7 +23,6 @@ import forms.SubmissionTypeFormProvider
 import models.{NormalMode, SubmissionType, UserAnswers}
 import navigation.AgnosticNavigator
 import pages.SubmissionTypePage
-import play.api.Configuration
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -44,7 +43,7 @@ class SubmissionTypeController @Inject() (
     formProvider: SubmissionTypeFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: SubmissionTypeView
-)(using ec: ExecutionContext)(using config: Configuration)
+)(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
     with FeatureConfigSupport {

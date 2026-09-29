@@ -36,12 +36,13 @@
 
         @govukRadios(
             {
+                val combinedJourney = isCombinedJourneyEnabled
                 val radios = RadiosViewModel(
                     field  = form("value"),
                     legend = LegendViewModel(messages("submissionType.heading").toText).asPageHeading(LegendSize.Large),
-                    items  = SubmissionType.options(isCombinedJourneyEnabled)
+                    items  = SubmissionType.options(combinedJourney)
                 )
-                if(isCombinedJourneyEnabled){
+                if(combinedJourney){
                     radios.withDivider(
                         insertionIndex = 2,
                         dividerText = messages("submissionType.radioDivider")
