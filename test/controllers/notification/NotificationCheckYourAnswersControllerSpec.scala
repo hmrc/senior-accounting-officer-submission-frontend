@@ -35,6 +35,7 @@ import pages.notification.UploadTemplateReviewPage
 import pages.notification.UploadTemplateTablePage
 import play.api.i18n.Messages
 import play.api.inject.bind
+import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.mvc.{AnyContentAsEmpty, Call, Request}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -48,6 +49,9 @@ import scala.concurrent.Future
 class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
   def onwardRoute: Call = Call("GET", "/foo")
+
+  override protected def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
+    super.applicationBuilder(userAnswers).configure("features.use-work-items" -> "false")
 
   "NotificationCheckYourAnswers Controller" - {
 
@@ -105,7 +109,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
         val mockNotificationSubmitService = mock[NotificationSubmitService]
 
-        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
+        when(mockNotificationSubmitService.legacySubmit(any())(using any[HeaderCarrier]()))
           .thenReturn(Future.successful(Right(exampleNotificationReference)))
 
         val application =
@@ -156,7 +160,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
         val mockNotificationSubmitService = mock[NotificationSubmitService]
 
-        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
+        when(mockNotificationSubmitService.legacySubmit(any())(using any[HeaderCarrier]()))
           .thenReturn(
             Future.successful(
               Left(NotificationSubmissionError.HttpError(HttpResponse(INTERNAL_SERVER_ERROR)))

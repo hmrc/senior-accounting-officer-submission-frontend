@@ -17,16 +17,17 @@
 package services
 
 import connectors.ProtectedServiceConnector
-import models.NormalMode
-import models.UserAnswers
+import connectors.ProtectedServiceConnector.*
 import models.notification.*
 import models.upload.UploadTemplateTableData
+import models.{NormalMode, UserAnswers}
 import pages.notification.*
-import play.api.http.Status.OK
+import play.api.http.Status.{ACCEPTED, NO_CONTENT, OK}
 import play.api.libs.json.Json
 import repositories.SessionRepository
 import services.NotificationSubmitService.*
 import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.HttpResponse
 
 import scala.annotation.tailrec
 import scala.concurrent.{ExecutionContext, Future}
@@ -39,9 +40,11 @@ class NotificationSubmitService @Inject() (
 )(using
     ec: ExecutionContext
 ) {
-  def submit(userAnswers: UserAnswers)(using HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
+  def legacySubmit(
+      userAnswers: UserAnswers
+  )(using HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
     protectedServiceConnector
-      .postNotification(userAnswers.toNotification)
+      .postLegacyNotification(userAnswers.toNotification)
       .flatMap { response =>
         response.status match {
           case OK => {
@@ -54,6 +57,30 @@ class NotificationSubmitService @Inject() (
         }
       }
   }
+
+  def submit(userAnswers: UserAnswers)(using HeaderCarrier): Future[Either[NotificationSubmissionError, Unit]] = {
+    protectedServiceConnector
+      .postNotification(userAnswers.toNotification)
+      .flatMap { case PostNotificationResponse(correlationId, response) =>
+        response.status match {
+          case ACCEPTED =>
+            for {
+              // TODO create a blocker to redirect user on any of the notification only pages
+              //  to the in progress page when this flag is on
+              updatedAnswer <- Future.fromTry(userAnswers.set(SubmissionInProgress, correlationId))
+              _             <- sessionRepository.set(updatedAnswer)
+            } yield Right(())
+          case _ => Future.successful(Left(NotificationSubmissionError.HttpError(response)))
+        }
+      }
+  }
+
+  def getSubmissionStatus(correlationId: String)(using HeaderCarrier): Future[Either[Int, Option[String]]] =
+    protectedServiceConnector.getSubmissionStatus(correlationId).map {
+      case HttpResponse(OK, submissionId, _) => Right(Some(submissionId))
+      case HttpResponse(NO_CONTENT, _, _)    => Right(None)
+      case HttpResponse(status, _, _)        => Left(status)
+    }
 }
 
 object NotificationSubmitService {

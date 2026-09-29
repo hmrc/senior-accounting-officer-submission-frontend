@@ -55,7 +55,7 @@ class ProtectedServiceConnectorISpec extends ISpecBase {
 
       val result: HttpResponse =
         SUT
-          .postNotification(
+          .postLegacyNotification(
             NotificationRequest(
               companies = List(
                 Company(
