@@ -17,6 +17,7 @@
 package views.certificate
 
 import base.ViewSpecBase
+import config.AppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.certificate.CertificateConfirmationView
@@ -29,8 +30,8 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
 
   "CertificateConfirmationView" - {
     "when displayLink is true" - {
-      val displayLink   = true
-      val doc: Document = generateView(displayLink)
+      AppConfig.setValue("hub-frontend.host", hubHost)
+      val doc: Document = generateView(displayLink = true)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -80,6 +81,14 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
           destinationUrl = "#"
         )
 
+      doc.getMainContent
+        .select("p a#account-homepage-link")
+        .first()
+        .createTestWithLink(
+          linkText = accountHomepageLinkText,
+          destinationUrl = accountHomepageLinkUrl
+        )
+
       doc.createTestsForSubheadings(pageSubheadings)
       doc.createTestsWithOrWithoutError(hasError = false)
       doc.createTestsWithSubmissionButton(
@@ -89,8 +98,8 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
     }
 
     "when displayLink is false" - {
-      val displayLink   = false
-      val doc: Document = generateView(displayLink)
+      AppConfig.setValue("hub-frontend.host", hubHost)
+      val doc: Document = generateView(displayLink = false)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -132,6 +141,14 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
           destinationUrl = "#"
         )
 
+      doc.getMainContent
+        .select("p a#account-homepage-link")
+        .first()
+        .createTestWithLink(
+          linkText = accountHomepageLinkText,
+          destinationUrl = accountHomepageLinkUrl
+        )
+
       doc.createTestsForSubheadings(pageSubheadings)
       doc.createTestsWithOrWithoutError(hasError = false)
       doc.createTestsWithSubmissionButton(
@@ -171,7 +188,7 @@ object CertificateConfirmationViewSpec {
     "We’ve sent a confirmation email to all the contacts you gave during registration.",
     "If you need to keep a record of your answers, you can:",
     "Your certificate has been received by HMRC. A member of compliance staff may contact you if they need more information.",
-    "You can now make another submission on your account homepage."
+    "You can submit a notification or another certificate from your account homepage."
   )
   val pageListItemsWhenLinkDisplayed: Seq[String] = Seq(
     "Download a PDF - save a copy of all the answers you submitted now. You may not be able to download a PDF if you leave this page",
@@ -183,4 +200,8 @@ object CertificateConfirmationViewSpec {
   val pageDownload                 = "Download a PDF"
   val pagePrint                    = "Print this page"
   val pageSubheadings: Seq[String] = Seq("What happens next")
+
+  val accountHomepageLinkText        = "account homepage"
+  val hubHost                        = "testHubUrl"
+  val accountHomepageLinkUrl: String = s"$hubHost/senior-accounting-officer"
 }
