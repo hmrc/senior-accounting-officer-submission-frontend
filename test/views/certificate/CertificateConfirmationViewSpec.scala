@@ -17,6 +17,7 @@
 package views.certificate
 
 import base.ViewSpecBase
+import config.AppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.certificate.CertificateConfirmationView
@@ -29,8 +30,8 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
 
   "CertificateConfirmationView" - {
     "when displayLink is true" - {
-      val displayLink   = true
-      val doc: Document = generateView(displayLink)
+      AppConfig.setValue("hub-frontend.host", hubHost)
+      val doc: Document = generateView(displayLink = true)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -80,6 +81,14 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
           destinationUrl = "#"
         )
 
+      doc.getMainContent
+        .select("p a#account-homepage-link")
+        .first()
+        .createTestWithLink(
+          linkText = accountHomepageLinkText,
+          destinationUrl = accountHomepageLinkUrl
+        )
+
       doc.createTestsForSubheadings(pageSubheadings)
       doc.createTestsWithOrWithoutError(hasError = false)
       doc.createTestsWithSubmissionButton(
@@ -89,8 +98,8 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
     }
 
     "when displayLink is false" - {
-      val displayLink   = false
-      val doc: Document = generateView(displayLink)
+      AppConfig.setValue("hub-frontend.host", hubHost)
+      val doc: Document = generateView(displayLink = false)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -130,6 +139,14 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
         .createTestWithLink(
           linkText = pagePrint,
           destinationUrl = "#"
+        )
+
+      doc.getMainContent
+        .select("p a#account-homepage-link")
+        .first()
+        .createTestWithLink(
+          linkText = accountHomepageLinkText,
+          destinationUrl = accountHomepageLinkUrl
         )
 
       doc.createTestsForSubheadings(pageSubheadings)
@@ -183,4 +200,8 @@ object CertificateConfirmationViewSpec {
   val pageDownload                 = "Download a PDF"
   val pagePrint                    = "Print this page"
   val pageSubheadings: Seq[String] = Seq("What happens next")
+
+  val accountHomepageLinkText        = "account homepage"
+  val hubHost                        = "testHubUrl"
+  val accountHomepageLinkUrl: String = s"$hubHost/senior-accounting-officer"
 }
