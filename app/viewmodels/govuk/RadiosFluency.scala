@@ -119,6 +119,17 @@ trait RadiosFluency {
       )
     }
 
+    def withSubheadings(subheadings: Seq[String]): Radios =
+      radios.withFormGroup(
+        radios.formGroup.copy(beforeInput =
+          radios.formGroup.beforeInput.fold(Some(HtmlContent("")))(content =>
+            Some(HtmlContent(s"""${content.asHtml} ${subheadings
+                .map(subheading => s"""<h2 class="govuk-heading-m">$subheading</h2>""")
+                .mkString}"""))
+          )
+        )
+      )
+
     def withParagraphs(paragraphs: Seq[String]): Radios =
       radios.withFormGroup(
         radios.formGroup.copy(beforeInput =

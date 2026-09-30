@@ -28,7 +28,8 @@ import CertificateTaskListViewSpec.*
 
 class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] {
 
-  private def generateView(state: CertificateTaskListState): Document = Jsoup.parse(SUT(state).toString)
+  private def generateView(state: CertificateTaskListState, certificateReference: Option[String]): Document =
+    Jsoup.parse(SUT(state, certificateReference).toString)
 
   "CertificateTaskListView" - {
 
@@ -44,10 +45,12 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
           provideSaoDetailsStage = provideSaoDetailsStageStatus,
           uploadSubmissionTemplateStage = uploadSubmissionTemplateStatus,
           submitCertificateStage = submitCertificateStageStatus,
-          showContinueButton = showButton
+          showViewYourConfirmationButton = showButton
         )
 
-        val doc: Document = generateView(state)
+        val certificateReference = if showButton then Some(certificateRef) else None
+
+        val doc: Document = generateView(state, certificateReference)
 
         doc.createTestsWithStandardPageElements(
           pageTitle = pageTitle,
@@ -152,8 +155,11 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
         }
       }
 
-      if expectedState.showContinueButton then {
-        doc.createTestsWithSubmissionButton(certificateRoutes.CertificateTaskListController.onSubmit(), pageButtonText)
+      if expectedState.showViewYourConfirmationButton then {
+        doc.createTestsWithSubmissionButton(
+          certificateRoutes.CertificateTaskListController.onSubmit(certificateRef),
+          pageButtonText
+        )
       } else {
         s"must not have a form" in {
           val form = doc.select("form")
@@ -180,10 +186,11 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
 object CertificateTaskListViewSpec {
   val pageHeading    = "Submit a certificate"
   val pageTitle      = "Submit a certificate"
-  val pageButtonText = "Go back to the homepage"
+  val pageButtonText = "View your confirmation"
+  val certificateRef = "certificateRef"
 
   val paragraphs: Seq[String] = Seq(
-    "Submit a certificate and confirm who is responsible for the group’s tax accounting arrangements for the financial year."
+    "Submit a certificate to confirm who the SAO is and whether your company’s tax accounting arrangements were up to standard for a previous financial year."
   )
 
   val provideSaoDetailsLinkText        = "Provide the SAO’s details"
