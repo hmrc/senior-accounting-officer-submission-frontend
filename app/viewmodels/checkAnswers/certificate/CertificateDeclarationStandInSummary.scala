@@ -38,6 +38,7 @@ object CertificateDeclarationStandInSummary {
             certificateRoutes.CertificateDeclarationStandInController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden.standInName"))
+            .withAttribute("data-test-id", "change-declaration-stand-in-link")
         )
       )
     }
@@ -53,6 +54,7 @@ object CertificateDeclarationStandInSummary {
             certificateRoutes.CertificateDeclarationStandInController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("certificateDeclarationStandIn.change.hidden.saoName"))
+            .withAttribute("data-test-id", "change-declaration-sao-link")
         )
       )
     }

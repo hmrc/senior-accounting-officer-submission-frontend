@@ -59,6 +59,7 @@ class CertificateAdditionalInformationSummarySpec extends CheckYourAnswersSpecBa
         s"the additional information supplied for the certificate"
       action.select("span.govuk-visually-hidden").remove()
       action.text() mustBe "Change"
+      action.attr("data-test-id") mustBe "change-additional-information-link"
     }
 
     def renderRow(answer: String): Element = {

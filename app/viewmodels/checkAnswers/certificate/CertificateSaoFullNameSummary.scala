@@ -38,6 +38,7 @@ object CertificateSaoFullNameSummary {
             certificateRoutes.CertificateSaoFullNameController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("certificateSaoFullName.change.hidden"))
+            .withAttribute("data-test-id", "change-sao-full-name-link")
         )
       )
     }

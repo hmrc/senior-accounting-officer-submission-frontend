@@ -93,15 +93,19 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
         "must have expected hidden text" in {
           action.visuallyHiddenText.get mustBe "CertificateWhoIsSubmitting"
         }
+
+        "must have expected id" in {
+          action.attributes("data-test-id") mustBe expectedActionId
+        }
       }
     }
   }
-
 }
 
 object CertificateWhoIsSubmittingSummarySpec {
-  val expectedKey     = "Who is submitting the certificate?"
-  val expectedValueId = "who-is-submitting-value"
-  val saoText         = "The SAO"
-  val standInText     = "A person authorised to submit on behalf of the SAO"
+  val expectedKey      = "Who is submitting the certificate?"
+  val expectedValueId  = "who-is-submitting-value"
+  val saoText          = "The SAO"
+  val standInText      = "A person authorised to submit on behalf of the SAO"
+  val expectedActionId = "change-who-is-submitting-link"
 }

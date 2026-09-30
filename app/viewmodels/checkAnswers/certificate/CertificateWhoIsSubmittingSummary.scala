@@ -37,6 +37,7 @@ object CertificateWhoIsSubmittingSummary {
             certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(TransactionMode).url
           )
             .withVisuallyHiddenText(messages("certificateWhoIsSubmitting.change.hidden"))
+            .withAttribute("data-test-id", "change-who-is-submitting-link")
         )
       )
     }
