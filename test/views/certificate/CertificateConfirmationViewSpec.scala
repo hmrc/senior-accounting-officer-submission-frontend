@@ -171,7 +171,7 @@ object CertificateConfirmationViewSpec {
     "We’ve sent a confirmation email to all the contacts you gave during registration.",
     "If you need to keep a record of your answers, you can:",
     "Your certificate has been received by HMRC. A member of compliance staff may contact you if they need more information.",
-    "You can now make another submission on your account homepage."
+    "You can submit a notification or another certificate from your account homepage."
   )
   val pageListItemsWhenLinkDisplayed: Seq[String] = Seq(
     "Download a PDF - save a copy of all the answers you submitted now. You may not be able to download a PDF if you leave this page",
