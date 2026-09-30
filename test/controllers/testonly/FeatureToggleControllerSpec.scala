@@ -17,7 +17,7 @@
 package controllers.testonly
 
 import base.SpecBase
-import config.{FeatureConfigSupport}
+import config.FeatureConfigSupport
 import models.FeatureToggle
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.i18n.Messages
@@ -27,11 +27,7 @@ import play.api.test.Helpers.*
 import play.api.{Application, Configuration}
 import views.html.testonly.FeatureToggleView
 
-class FeatureToggleControllerSpec
-    extends SpecBase
-    with GuiceOneAppPerSuite
-    with FeatureConfigSupport 
-    {
+class FeatureToggleControllerSpec extends SpecBase with GuiceOneAppPerSuite with FeatureConfigSupport {
 
   override def fakeApplication(): Application =
     applicationBuilder(userAnswers = Some(emptyUserAnswers))

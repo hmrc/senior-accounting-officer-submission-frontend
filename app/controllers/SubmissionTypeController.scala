@@ -16,7 +16,7 @@
 
 package controllers
 
-import config.{AppConfig}
+import config.AppConfig
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
 import models.{NormalMode, SubmissionType, UserAnswers}
@@ -29,6 +29,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmissionTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import javax.inject.Inject
 
 class SubmissionTypeController @Inject() (

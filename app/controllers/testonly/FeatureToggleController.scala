@@ -16,7 +16,7 @@
 
 package controllers.testonly
 
-import config.{FeatureConfigSupport}
+import config.FeatureConfigSupport
 import models.FeatureToggle
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -25,7 +25,7 @@ import views.html.testonly.FeatureToggleView
 
 import javax.inject.Inject
 
-class FeatureToggleController @Inject()(
+class FeatureToggleController @Inject() (
     override val messagesApi: MessagesApi,
     featureToggleView: FeatureToggleView,
     val controllerComponents: MessagesControllerComponents
