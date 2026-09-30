@@ -16,8 +16,7 @@
 
 package controllers
 
-import config.AppConfig
-import config.FeatureConfigSupport
+import config.{AppConfig}
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
 import models.{NormalMode, SubmissionType, UserAnswers}
@@ -30,7 +29,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.SubmissionTypeView
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.Inject
 
 class SubmissionTypeController @Inject() (
@@ -45,8 +43,7 @@ class SubmissionTypeController @Inject() (
     view: SubmissionTypeView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
-    with I18nSupport
-    with FeatureConfigSupport {
+    with I18nSupport {
   def onPageLoad(): Action[AnyContent] = (identify andThen getData) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.flatMap(_.get(SubmissionTypePage)).fold(form)(form.fill)

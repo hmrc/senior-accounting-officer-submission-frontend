@@ -16,10 +16,9 @@
 
 package config
 
+import config.FeatureToggleConstants.*
 import models.FeatureToggle
 import play.api.Configuration
-
-import FeatureToggleConstants.*
 
 object FeatureToggleConstants {
   val FEATURE_SWITCH_ON  = "true"

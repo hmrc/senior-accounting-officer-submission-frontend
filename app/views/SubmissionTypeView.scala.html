@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import models.SubmissionType.Combined
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -44,7 +46,7 @@
                 )
                 if(combinedJourney){
                     radios.withDivider(
-                        insertionIndex = 2,
+                        insertionIndex = SubmissionType.options(combinedJourney).indexWhere(_.value == Option("combined")),
                         dividerText = messages("submissionType.radioDivider")
                     )
                 } else {

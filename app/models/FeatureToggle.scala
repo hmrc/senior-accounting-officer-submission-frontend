@@ -16,7 +16,26 @@
 
 package models
 
+import config.FeatureConfigSupport
+import play.api.Configuration
+import uk.gov.hmrc.govukfrontend.views.viewmodels.checkboxes.CheckboxItem
+import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
+
 enum FeatureToggle(val key: String, val name: String) {
   override def toString: String = s"features.$key"
   case CombinedJourney extends FeatureToggle("combined", "Combined")
+}
+
+object FeatureToggle extends FeatureConfigSupport {
+
+  def checkboxItems(using config: Configuration): Seq[CheckboxItem] =
+    FeatureToggle.values.toSeq.zipWithIndex.map { case (value, index) =>
+      CheckboxItem(
+        content = Text(value.name),
+        id = Some(value.key),
+        name = Some(value.key),
+        value = index.toString,
+        checked = isEnabled(value)
+      )
+    }
 }
