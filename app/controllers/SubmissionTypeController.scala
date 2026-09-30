@@ -16,9 +16,10 @@
 
 package controllers
 
+import config.AppConfig
 import controllers.actions.*
 import forms.SubmissionTypeFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, SubmissionType, UserAnswers}
 import navigation.AgnosticNavigator
 import pages.SubmissionTypePage
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -33,6 +34,7 @@ import javax.inject.Inject
 
 class SubmissionTypeController @Inject() (
     override val messagesApi: MessagesApi,
+    appConfig: AppConfig,
     sessionRepository: SessionRepository,
     navigator: AgnosticNavigator,
     identify: IdentifierAction,
@@ -46,7 +48,7 @@ class SubmissionTypeController @Inject() (
   def onPageLoad(): Action[AnyContent] = (identify andThen getData) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.flatMap(_.get(SubmissionTypePage)).fold(form)(form.fill)
-    Ok(view(preparedForm))
+    Ok(view(preparedForm, appConfig.isCombinedJourneyEnabled))
   }
 
   def onSubmit(): Action[AnyContent] = (identify andThen getData).async { implicit request =>
@@ -54,7 +56,7 @@ class SubmissionTypeController @Inject() (
     form
       .bindFromRequest()
       .fold(
-        formWithErrors => Future.successful(BadRequest(view(formWithErrors))),
+        formWithErrors => Future.successful(BadRequest(view(formWithErrors, appConfig.isCombinedJourneyEnabled))),
         value =>
           for {
             updatedAnswers <- Future

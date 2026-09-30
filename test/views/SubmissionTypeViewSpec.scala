@@ -31,8 +31,8 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
   private val formProvider               = app.injector.instanceOf[SubmissionTypeFormProvider]
   private val form: Form[SubmissionType] = formProvider()
 
-  private def generateView(form: Form[SubmissionType], mode: Mode): Document = {
-    val view = SUT(form)
+  private def generateView(form: Form[SubmissionType], mode: Mode, isCombinedJourneyEnabled: Boolean): Document = {
+    val view = SUT(form, isCombinedJourneyEnabled)
     Jsoup.parse(view.toString)
   }
 
@@ -40,112 +40,215 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
-        "when the form is not filled in" - {
-          val doc = generateView(form, mode)
+        "when the feature switch is on" - {
+          "when the form is not filled in" - {
+            val doc = generateView(form, mode, true)
 
-          doc.createTestsWithStandardPageElements(
-            pageTitle = pageTitle,
-            pageHeading = pageHeading,
-            showBackLink = true,
-            showIsThisPageNotWorkingProperlyLink = true,
-            hasError = false
-          )
+            doc.createTestsWithStandardPageElements(
+              pageTitle = pageTitle,
+              pageHeading = pageHeading,
+              showBackLink = true,
+              showIsThisPageNotWorkingProperlyLink = true,
+              hasError = false
+            )
 
-          doc.createTestsWithRadioButtons(
-            name = "value",
-            radios = List(
-              radio(value = option1key, label = option1Label),
-              radio(value = option2key, label = option2Label),
-              radio(value = option3key, label = option3Label)
-            ),
-            isChecked = None,
-            hasError = false
-          )
+            doc.createTestsWithRadioButtons(
+              name = "value",
+              radios = List(
+                radio(value = option1key, label = option1Label),
+                radio(value = option2key, label = option2Label),
+                radio(value = option3key, label = option3Label)
+              ),
+              isChecked = None,
+              hasError = false
+            )
 
-          doc.createTestsWithRadioButtonDivider(radioButtonDivider)
+            doc.createTestsWithRadioButtonDivider(radioButtonDivider)
 
-          doc.createTestsWithLargeCaption(pageCaption)
+            doc.createTestsWithLargeCaption(pageCaption)
 
-          doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SubmissionTypeController.onSubmit(),
-            buttonText = "Continue"
-          )
+            doc.createTestsWithSubmissionButton(
+              action = controllers.routes.SubmissionTypeController.onSubmit(),
+              buttonText = "Continue"
+            )
 
-          doc.createTestsWithOrWithoutError(
-            hasError = false
-          )
+            doc.createTestsWithOrWithoutError(
+              hasError = false
+            )
+          }
+
+          "when the form is filled in" - {
+            val doc = generateView(form.bind(Map("value" -> option1key)), mode, true)
+
+            doc.createTestsWithStandardPageElements(
+              pageTitle = pageTitle,
+              pageHeading = pageHeading,
+              showBackLink = true,
+              showIsThisPageNotWorkingProperlyLink = true,
+              hasError = false
+            )
+
+            doc.createTestsWithRadioButtons(
+              name = "value",
+              radios = List(
+                radio(value = option1key, label = option1Label),
+                radio(value = option2key, label = option2Label),
+                radio(value = option3key, label = option3Label)
+              ),
+              isChecked = Some(radio(value = option1key, label = option1Label)),
+              hasError = false
+            )
+
+            doc.createTestsWithRadioButtonDivider(radioButtonDivider)
+
+            doc.createTestsWithLargeCaption(pageCaption)
+
+            doc.createTestsWithSubmissionButton(
+              action = controllers.routes.SubmissionTypeController.onSubmit(),
+              buttonText = "Continue"
+            )
+
+            doc.createTestsWithOrWithoutError(
+              hasError = false
+            )
+          }
+
+          "when the form has errors" - {
+            val doc = generateView(form.withError("value", "broken"), mode, true)
+
+            doc.createTestsWithStandardPageElements(
+              pageTitle = pageTitle,
+              pageHeading = pageHeading,
+              showBackLink = true,
+              showIsThisPageNotWorkingProperlyLink = true,
+              hasError = true
+            )
+
+            doc.createTestsWithRadioButtons(
+              name = "value",
+              radios = List(
+                radio(value = option1key, label = option1Label),
+                radio(value = option2key, label = option2Label),
+                radio(value = option3key, label = option3Label)
+              ),
+              isChecked = None,
+              hasError = true
+            )
+
+            doc.createTestsWithRadioButtonDivider(radioButtonDivider)
+
+            doc.createTestsWithLargeCaption(pageCaption)
+
+            doc.createTestsWithSubmissionButton(
+              action = controllers.routes.SubmissionTypeController.onSubmit(),
+              buttonText = "Continue"
+            )
+
+            doc.createTestsWithOrWithoutError(
+              hasError = true
+            )
+          }
         }
 
-        "when the form is filled in" - {
-          val doc = generateView(form.bind(Map("value" -> option1key)), mode)
+        "when the feature switch is off" - {
+          "when the form is not filled in" - {
+            val doc = generateView(form, mode, false)
 
-          doc.createTestsWithStandardPageElements(
-            pageTitle = pageTitle,
-            pageHeading = pageHeading,
-            showBackLink = true,
-            showIsThisPageNotWorkingProperlyLink = true,
-            hasError = false
-          )
+            doc.createTestsWithStandardPageElements(
+              pageTitle = pageTitle,
+              pageHeading = pageHeading,
+              showBackLink = true,
+              showIsThisPageNotWorkingProperlyLink = true,
+              hasError = false
+            )
 
-          doc.createTestsWithRadioButtons(
-            name = "value",
-            radios = List(
-              radio(value = option1key, label = option1Label),
-              radio(value = option2key, label = option2Label),
-              radio(value = option3key, label = option3Label)
-            ),
-            isChecked = Some(radio(value = option1key, label = option1Label)),
-            hasError = false
-          )
+            doc.createTestsWithRadioButtons(
+              name = "value",
+              radios = List(
+                radio(value = option1key, label = option1Label),
+                radio(value = option2key, label = option2Label)
+              ),
+              isChecked = None,
+              hasError = false
+            )
 
-          doc.createTestsWithRadioButtonDivider(radioButtonDivider)
+            doc.createTestsWithLargeCaption(pageCaption)
 
-          doc.createTestsWithLargeCaption(pageCaption)
+            doc.createTestsWithSubmissionButton(
+              action = controllers.routes.SubmissionTypeController.onSubmit(),
+              buttonText = "Continue"
+            )
 
-          doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SubmissionTypeController.onSubmit(),
-            buttonText = "Continue"
-          )
+            doc.createTestsWithOrWithoutError(
+              hasError = false
+            )
+          }
 
-          doc.createTestsWithOrWithoutError(
-            hasError = false
-          )
-        }
+          "when the form is filled in" - {
+            val doc = generateView(form.bind(Map("value" -> option1key)), mode, false)
 
-        "when the form has errors" - {
-          val doc = generateView(form.withError("value", "broken"), mode)
+            doc.createTestsWithStandardPageElements(
+              pageTitle = pageTitle,
+              pageHeading = pageHeading,
+              showBackLink = true,
+              showIsThisPageNotWorkingProperlyLink = true,
+              hasError = false
+            )
 
-          doc.createTestsWithStandardPageElements(
-            pageTitle = pageTitle,
-            pageHeading = pageHeading,
-            showBackLink = true,
-            showIsThisPageNotWorkingProperlyLink = true,
-            hasError = true
-          )
+            doc.createTestsWithRadioButtons(
+              name = "value",
+              radios = List(
+                radio(value = option1key, label = option1Label),
+                radio(value = option2key, label = option2Label)
+              ),
+              isChecked = Some(radio(value = option1key, label = option1Label)),
+              hasError = false
+            )
 
-          doc.createTestsWithRadioButtons(
-            name = "value",
-            radios = List(
-              radio(value = option1key, label = option1Label),
-              radio(value = option2key, label = option2Label),
-              radio(value = option3key, label = option3Label)
-            ),
-            isChecked = None,
-            hasError = true
-          )
+            doc.createTestsWithLargeCaption(pageCaption)
 
-          doc.createTestsWithRadioButtonDivider(radioButtonDivider)
+            doc.createTestsWithSubmissionButton(
+              action = controllers.routes.SubmissionTypeController.onSubmit(),
+              buttonText = "Continue"
+            )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+            doc.createTestsWithOrWithoutError(
+              hasError = false
+            )
+          }
 
-          doc.createTestsWithSubmissionButton(
-            action = controllers.routes.SubmissionTypeController.onSubmit(),
-            buttonText = "Continue"
-          )
+          "when the form has errors" - {
+            val doc = generateView(form.withError("value", "broken"), mode, false)
 
-          doc.createTestsWithOrWithoutError(
-            hasError = true
-          )
+            doc.createTestsWithStandardPageElements(
+              pageTitle = pageTitle,
+              pageHeading = pageHeading,
+              showBackLink = true,
+              showIsThisPageNotWorkingProperlyLink = true,
+              hasError = true
+            )
+
+            doc.createTestsWithRadioButtons(
+              name = "value",
+              radios = List(
+                radio(value = option1key, label = option1Label),
+                radio(value = option2key, label = option2Label)
+              ),
+              isChecked = None,
+              hasError = true
+            )
+
+            doc.createTestsWithLargeCaption(pageCaption)
+
+            doc.createTestsWithSubmissionButton(
+              action = controllers.routes.SubmissionTypeController.onSubmit(),
+              buttonText = "Continue"
+            )
+
+            doc.createTestsWithOrWithoutError(
+              hasError = true
+            )
+          }
         }
       }
     }

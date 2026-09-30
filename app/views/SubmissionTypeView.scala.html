@@ -14,6 +14,8 @@
  * limitations under the License.
  *@
 
+@import models.SubmissionType.Combined
+
 @this(
     layout: templates.Layout,
     formHelper: FormWithCSRF,
@@ -22,7 +24,7 @@
     govukButton: GovukButton
 )
 
-@(form: Form[?])(using request: Request[?], messages: Messages)
+@(form: Form[?], isCombinedJourneyEnabled: Boolean)(using request: Request[?], messages: Messages)
 
 @layout(pageTitle = title(form, messages("submissionType.title"))) {
 
@@ -35,14 +37,22 @@
         <span class="govuk-caption-l">@messages("submissionType.caption")</span>
 
         @govukRadios(
-            RadiosViewModel(
-                field  = form("value"),
-                legend = LegendViewModel(messages("submissionType.heading").toText).asPageHeading(LegendSize.Large),
-                items  = SubmissionType.options
-            ).withDivider(
-                insertionIndex = 2,
-                dividerText = messages("submissionType.radioDivider")
-            )
+            {
+                val combinedJourney = isCombinedJourneyEnabled
+                val radios = RadiosViewModel(
+                    field  = form("value"),
+                    legend = LegendViewModel(messages("submissionType.heading").toText).asPageHeading(LegendSize.Large),
+                    items  = SubmissionType.options(combinedJourney)
+                )
+                if(combinedJourney){
+                    radios.withDivider(
+                        insertionIndex = SubmissionType.options(combinedJourney).indexWhere(_.value == Option("combined")),
+                        dividerText = messages("submissionType.radioDivider")
+                    )
+                } else {
+                    radios
+                }
+            }
         )
 
         @govukButton(
