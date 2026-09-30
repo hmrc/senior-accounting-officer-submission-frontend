@@ -25,13 +25,15 @@ object FeatureToggleConstants {
   val FEATURE_SWITCH_OFF = "false"
 }
 
-trait FeatureConfigSupport {
+trait FeatureToggleSupport {
   def enable(featureSwitch: FeatureToggle): Unit =
     sys.props += featureSwitch.toString -> FEATURE_SWITCH_ON: Unit
 
   def disable(featureSwitch: FeatureToggle): Unit =
     sys.props += featureSwitch.toString -> FEATURE_SWITCH_OFF: Unit
+}
 
+trait FeatureConfigSupport {
   def isEnabled(featureSwitch: FeatureToggle)(using config: Configuration): Boolean = {
     val key = featureSwitch.toString
     sys.props

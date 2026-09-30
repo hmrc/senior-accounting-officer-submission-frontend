@@ -17,7 +17,7 @@
 package controllers
 
 import base.SpecBase
-import config.FeatureConfigSupport
+import config.FeatureToggleSupport
 import forms.SubmissionTypeFormProvider
 import models.FeatureToggle.CombinedJourney
 import models.{SubmissionType, UserAnswers}
@@ -45,7 +45,7 @@ class SubmissionTypeControllerSpec
     with GuiceOneAppPerSuite
     with MockitoSugar
     with BeforeAndAfterEach
-    with FeatureConfigSupport {
+    with FeatureToggleSupport {
   def onwardRoute: Call = Call("GET", "/foo")
 
   given Configuration = app.injector.instanceOf[Configuration]
