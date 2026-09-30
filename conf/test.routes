@@ -1,0 +1,22 @@
+
+GET         /poi                               controllers.testonly.TestPoiController.testUiPage()
+POST        /poi                               controllers.testonly.TestPoiController.onSubmit()
+GET         /poi/xssf                          controllers.testonly.TestPoiController.testXssf(rows:Int ?= 1000, impl: String ?= "D")
+GET         /poi/sxssf                         controllers.testonly.TestPoiController.testSxssf(rows:Int ?= 1000, impl: String ?= "D")
+GET         /poi/deferred-sxssf                controllers.testonly.TestPoiController.testDeferredSxssf(rows:Int ?= 1000, impl: String ?= "D")
+
+GET         /pdf                               controllers.testonly.TestPdfController.testPdf(rows:Int ?= 6000)
+GET         /pdf/open-html-to-pdf              controllers.testonly.TestPdfController.openHtml()
+POST        /pdf/open-html-to-pdf              controllers.testonly.TestPdfController.onSubmit()
+GET         /pdf/open-html-to-pdf/example      controllers.testonly.TestPdfController.example(rows:Int ?= 10)
+
++nocsrf
+POST        /internal-auth/object-store        controllers.testonly.InternalAuthTestOnlyController.grantSaoObjectStoreAccess()
+
+GET         /documentum-package/:submissionId/:fileName        controllers.testonly.DocumentumPackageTestOnlyController.download(submissionId, fileName)
+GET         /object-store/list                                 controllers.testonly.ObjectStoreViewerController.listDirectory(stubInternalAuth:Boolean ?= true)
+GET         /object-store/download                             controllers.testonly.ObjectStoreViewerController.download(location:String, fileName:String)
+GET         /object-store/delete                               controllers.testonly.ObjectStoreViewerController.delete(location:String, fileName:String)
+
+GET         /feature-toggle                     controllers.testonly.FeatureToggleController.get()
+POST        /feature-toggle                     controllers.testonly.FeatureToggleController.update()
