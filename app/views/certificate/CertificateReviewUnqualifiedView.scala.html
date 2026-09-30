@@ -28,7 +28,7 @@
 @paragraph1Key = @{if companyCount == 1 then "certificateReviewUnqualified.paragraph1.singular" else "certificateReviewUnqualified.paragraph1.plural"}
 @paragraph3Key = @{if unqualifiedCompanies.size == 1 then "certificateReviewUnqualified.paragraph3.singular" else "certificateReviewUnqualified.paragraph3.plural"}
 
-@layout(pageTitle = titleNoForm(messages("certificateReviewUnqualified.title"))) {
+@layout(pageTitle = titleNoForm(messages("certificateReviewUnqualified.title"), Some(messages("certificateReviewUnqualified.caption")))) {
 
     <span class="govuk-caption-l">@messages("certificateReviewUnqualified.caption")</span>
 
@@ -37,6 +37,8 @@
     <p class="govuk-body">@messages(paragraph1Key, companyCount)</p>
 
     <p class="govuk-body">@Html(messages("certificateReviewUnqualified.paragraph2WithLink", certificateRoutes.CertificateUploadFormController.onPageLoad()))</p>
+
+    <hr style="border: 0; border-top: 1px solid; color: var(--govuk-border-colour,#cecece);"/>
 
     <p class="govuk-body">@Html(messages(paragraph3Key, HtmlFormat.escape(saoName), unqualifiedCompanies.size))</p>
 

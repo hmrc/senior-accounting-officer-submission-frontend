@@ -60,7 +60,7 @@ class CertificateUploadFormViewSpec extends ViewSpecBase[CertificateUploadFormVi
         hiddenFields.get(1).attr("value") mustBe "testValue2"
       }
 
-      doc.createTestsWithLargeCaption(captionText)
+      doc.createTestsWithLargeCaption(pageCaption)
 
       doc.createTestsWithParagraphs(paragraphs)
 
@@ -137,10 +137,9 @@ class CertificateUploadFormViewSpec extends ViewSpecBase[CertificateUploadFormVi
 }
 
 object CertificateUploadFormViewSpec {
-  val pageHeading = "Upload a submission template"
-  val pageTitle   = "Upload a submission template for your certificate"
-
-  val captionText = "Submit a certificate"
+  val pageHeading       = "Upload a submission template"
+  val pageCaption       = "Submit a certificate"
+  val pageTitle: String = s"$pageHeading - $pageCaption"
 
   val paragraphs: List[String] = List(
     "The template must be uploaded in CSV format. If your template is saved as .xls or .xlsx, save it again as a CSV (comma delimited) (.csv) file before uploading.",

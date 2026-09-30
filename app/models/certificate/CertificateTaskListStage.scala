@@ -41,28 +41,28 @@ object CertificateTaskListStage {
             provideSaoDetailsStage = TaskStatus.NotStarted,
             uploadSubmissionTemplateStage = TaskStatus.CannotStartYet,
             submitCertificateStage = TaskStatus.CannotStartYet,
-            showContinueButton = false
+            showViewYourConfirmationButton = false
           )
         case CertificateTaskListStage.UploadSubmissionTemplateStage =>
           CertificateTaskListState(
             provideSaoDetailsStage = TaskStatus.Completed,
             uploadSubmissionTemplateStage = TaskStatus.NotStarted,
             submitCertificateStage = TaskStatus.CannotStartYet,
-            showContinueButton = false
+            showViewYourConfirmationButton = false
           )
         case CertificateTaskListStage.SubmitCertificateStage =>
           CertificateTaskListState(
             provideSaoDetailsStage = TaskStatus.Completed,
             uploadSubmissionTemplateStage = TaskStatus.Completed,
             submitCertificateStage = TaskStatus.NotStarted,
-            showContinueButton = false
+            showViewYourConfirmationButton = false
           )
         case CertificateTaskListStage.Complete =>
           CertificateTaskListState(
             provideSaoDetailsStage = TaskStatus.Completed,
             uploadSubmissionTemplateStage = TaskStatus.Completed,
             submitCertificateStage = TaskStatus.Completed,
-            showContinueButton = true
+            showViewYourConfirmationButton = true
           )
       }
     }

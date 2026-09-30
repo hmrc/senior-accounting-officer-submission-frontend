@@ -72,7 +72,7 @@ class CertificateCheckYourAnswersController @Inject() (
           .flatMap {
             case CertificateSubmissionResult.Submitted(certificateRef) =>
               Future.successful(
-                Redirect(certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef))
+                Redirect(certificateRoutes.CertificateTaskListController.onPageLoadComplete(certificateRef))
               )
             case CertificateSubmissionResult.Duplicate =>
               Future.successful(Redirect(certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()))

@@ -75,11 +75,8 @@
 
         <h2 class="govuk-heading-m">@messages("certificateConfirmation.subheading")</h2>
         <p class="govuk-body">@messages("certificateConfirmation.paragraph3")</p>
-        <p class="govuk-body">@Html(messages("certificateConfirmation.paragraph4WithLink", appConfig.hubBaseUrl))</p>
+        <p class="govuk-body">@Html(messages("certificateConfirmation.paragraph4").replace("{0}", appConfig.hubBaseUrl))</p>
 
-
-        @govukButton(
-            ButtonViewModel(messages("site.continue").toText).withAttribute("id", "submit")
-        )
+        <div class="govuk-inset-text">@messages("certificateConfirmation.inset")</div>
     }
 }

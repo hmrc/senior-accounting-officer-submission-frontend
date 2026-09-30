@@ -105,8 +105,8 @@ POST        /notification/confirm-your-notification                             
 GET         /certificate/task-list/1                                                  controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.ProvideSaoDetailsStage)
 GET         /certificate/task-list/2                                                  controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.UploadSubmissionTemplateStage)
 GET         /certificate/task-list/3                                                  controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.SubmitCertificateStage)
-GET         /certificate/task-list/complete                                           controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.Complete)
-POST        /certificate/task-list                                                    controllers.certificate.CertificateTaskListController.onSubmit()
+GET         /certificate/task-list/complete                                           controllers.certificate.CertificateTaskListController.onPageLoadComplete(stage: CertificateTaskListStage = CertificateTaskListStage.Complete, certificateReference: String)
+POST        /certificate/task-list                                                    controllers.certificate.CertificateTaskListController.onSubmit(certificateReference: String)
 
 GET         /certificate/submit-certificate-sao-full-name                             controllers.certificate.CertificateSaoFullNameController.onPageLoad(mode: Mode = NormalMode)
 POST        /certificate/submit-certificate-sao-full-name                             controllers.certificate.CertificateSaoFullNameController.onSubmit(mode: Mode = NormalMode)

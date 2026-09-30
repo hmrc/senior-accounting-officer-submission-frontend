@@ -54,6 +54,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 
           doc.createTestsWithLargeCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
+          doc.createTestsForSubHeadings(subheadings)
 
           doc.createTestsWithRadioButtons(
             name = "value",
@@ -88,6 +89,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 
           doc.createTestsWithLargeCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
+          doc.createTestsForSubHeadings(subheadings)
 
           doc.createTestsWithRadioButtons(
             name = "value",
@@ -122,6 +124,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 
           doc.createTestsWithLargeCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
+          doc.createTestsForSubHeadings(subheadingsPageError)
 
           doc.createTestsWithRadioButtons(
             name = "value",
@@ -146,18 +149,35 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
     }
 
   }
+  extension (target: => Document) {
+    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
+      val headings = target.getMainContent.getElementsByTag("h2")
+      "must have expected number of headings" in {
+        headings.size() mustBe subheadings.length
+      }
+      subheadings.zipWithIndex.foreach((subheading, i) => {
+        s"must have heading '$subheading'" in {
+          headings.get(i).text mustBe subheading
+        }
+      })
+    }
+  }
 }
 
 object CertificateWhoIsSubmittingViewSpec {
   val pageCaption             = "Submit a certificate"
-  val pageHeading             = "Who is submitting the certificate?"
-  val pageTitle               = "Who is submitting the certificate?"
+  val pageHeading             = "Certificate submission and authorisation"
+  val pageTitle: String       = s"$pageHeading - $pageCaption"
   val paragraphs: Seq[String] = Seq(
-    "HMRC need to know if the certificate will be submitted by the SAO or by someone authorised to act on their behalf. This allows us to show the correct declaration for the person submitting it.",
-    "We rely on the information provided to be accurate. The SAO is responsible for reviewing and approving the information before it is submitted, and for authorising someone to submit it on their behalf if they are not submitting it themselves."
+    "HMRC needs to know if the certificate will be submitted by the SAO or by someone authorised to act on their behalf.",
+    "The SAO must review and approve the certificate and authorise anyone submitting on their behalf."
   )
-  val option1key   = "sao"
-  val option1Label = "The SAO"
-  val option2key   = "standIn"
-  val option2Label = "A person authorised to submit on behalf of the SAO"
+  val subheadings: Seq[String] = Seq(
+    "Who is submitting the certificate?"
+  )
+  val subheadingsPageError: Seq[String] = Seq("There is a problem") ++ subheadings
+  val option1key                        = "sao"
+  val option1Label                      = "The SAO"
+  val option2key                        = "standIn"
+  val option2Label                      = "A person authorised to submit on behalf of the SAO"
 }

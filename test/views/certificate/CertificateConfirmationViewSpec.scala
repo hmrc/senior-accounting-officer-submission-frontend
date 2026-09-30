@@ -27,11 +27,12 @@ import CertificateConfirmationViewSpec.*
 class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmationView] {
 
   private def generateView(displayLink: Boolean): Document = Jsoup.parse(SUT(certificateRef, displayLink).toString)
-
+  private val appConfig                                    = app.injector.instanceOf[AppConfig]
   "CertificateConfirmationView" - {
+
     "when displayLink is true" - {
-      AppConfig.setValue("hub-frontend.host", hubHost)
-      val doc: Document = generateView(displayLink = true)
+      val displayLink   = true
+      val doc: Document = generateView(displayLink)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -81,25 +82,15 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
           destinationUrl = "#"
         )
 
-      doc.getMainContent
-        .select("p a#account-homepage-link")
-        .first()
-        .createTestWithLink(
-          linkText = accountHomepageLinkText,
-          destinationUrl = accountHomepageLinkUrl
-        )
-
+      doc.createTestForAccountHomepageLink(expectedLinkText = pageAccountPage, destinationUrl = appConfig.hubBaseUrl)
+      doc.createTestForInsetText(pageInsets)
       doc.createTestsForSubheadings(pageSubheadings)
       doc.createTestsWithOrWithoutError(hasError = false)
-      doc.createTestsWithSubmissionButton(
-        controllers.certificate.routes.CertificateConfirmationController.onSubmit(),
-        "Continue"
-      )
     }
 
     "when displayLink is false" - {
-      AppConfig.setValue("hub-frontend.host", hubHost)
-      val doc: Document = generateView(displayLink = false)
+      val displayLink   = false
+      val doc: Document = generateView(displayLink)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -141,20 +132,9 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
           destinationUrl = "#"
         )
 
-      doc.getMainContent
-        .select("p a#account-homepage-link")
-        .first()
-        .createTestWithLink(
-          linkText = accountHomepageLinkText,
-          destinationUrl = accountHomepageLinkUrl
-        )
-
+      doc.createTestForAccountHomepageLink(expectedLinkText = pageAccountPage, destinationUrl = appConfig.hubBaseUrl)
       doc.createTestsForSubheadings(pageSubheadings)
       doc.createTestsWithOrWithoutError(hasError = false)
-      doc.createTestsWithSubmissionButton(
-        controllers.certificate.routes.CertificateConfirmationController.onSubmit(),
-        "Continue"
-      )
     }
   }
 
@@ -170,13 +150,24 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
         }
       })
     }
+
+    def createTestForAccountHomepageLink(expectedLinkText: String, destinationUrl: String): Unit = {
+      val homepageLink = target.select(s"a[href=${appConfig.hubBaseUrl}]")
+      println(homepageLink)
+
+      "must have account homepage link" in {
+        homepageLink.size() mustBe 2
+        homepageLink.get(1).text() mustBe expectedLinkText
+        homepageLink.get(1).attr("href") mustBe destinationUrl
+      }
+    }
   }
 
 }
 
 object CertificateConfirmationViewSpec {
-  val pageHeading = "Certificate submitted"
-  val pageTitle   = "Certificate submitted"
+  val pageHeading       = "Certificate submitted"
+  val pageTitle: String = s"$pageHeading"
 
   val certificateRef          = "SAOCRT0123456789"
   val pageDownloadUrl: String =
@@ -185,23 +176,24 @@ object CertificateConfirmationViewSpec {
   val panelBody: String = s"Your reference number $certificateRef"
 
   val pageParagraphs: Seq[String] = Seq(
-    "We’ve sent a confirmation email to all the contacts you gave during registration.",
-    "If you need to keep a record of your answers, you can:",
-    "Your certificate has been received by HMRC. A member of compliance staff may contact you if they need more information.",
+    "HMRC has received your certificate. We’ve sent a confirmation email to all the contacts you provided during registration.",
+    "To keep a record of your submission, you can:",
+    "Someone from HMRC may contact you if they need more information.",
     "You can submit a notification or another certificate from your account homepage."
   )
   val pageListItemsWhenLinkDisplayed: Seq[String] = Seq(
-    "Download a PDF - save a copy of all the answers you submitted now. You may not be able to download a PDF if you leave this page",
-    "Print this page - print a paper copy of this confirmation page"
+    "download a PDF to save a copy of all the answers. You may not be able to do this after you leave this page",
+    "print this page to keep a paper copy of your confirmation"
   )
-  val pageListItemsWhenLinkNotDisplayed: Seq[String] = Seq(
-    "Print this page - print a paper copy of this confirmation page"
-  )
-  val pageDownload                 = "Download a PDF"
-  val pagePrint                    = "Print this page"
-  val pageSubheadings: Seq[String] = Seq("What happens next")
 
-  val accountHomepageLinkText        = "account homepage"
-  val hubHost                        = "testHubUrl"
-  val accountHomepageLinkUrl: String = s"$hubHost/senior-accounting-officer"
+  val pageInsets =
+    "If you later realise the information is incorrect, contact your Customer Compliance Manager (CCM) if you have one, or email wmbc.saomailbox@hmrc.gov.uk for support."
+
+  val pageListItemsWhenLinkNotDisplayed: Seq[String] = Seq(
+    "print this page to keep a paper copy of your confirmation"
+  )
+  val pageDownload                 = "download a PDF"
+  val pagePrint                    = "print this page"
+  val pageAccountPage              = "account homepage"
+  val pageSubheadings: Seq[String] = Seq("What happens next")
 }

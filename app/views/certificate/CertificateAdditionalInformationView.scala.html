@@ -30,7 +30,7 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("certificateAdditionalInformation.title"))) {
+@layout(pageTitle = title(form, messages("certificateAdditionalInformation.title"), Some(messages("certificateAdditionalInformation.caption")))) {
 
     @formHelper(action = certificateRoutes.CertificateAdditionalInformationController.onSubmit(mode)) {
 
@@ -45,7 +45,6 @@
         <ul class="govuk-list govuk-list--bullet">
             <li>@messages("certificateAdditionalInformation.list1.item1")</li>
             <li>@messages("certificateAdditionalInformation.list1.item2")</li>
-            <li>@messages("certificateAdditionalInformation.list1.item3")</li>
         </ul>
 
         @govukTextArea(

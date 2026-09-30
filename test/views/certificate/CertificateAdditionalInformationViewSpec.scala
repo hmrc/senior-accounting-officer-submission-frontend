@@ -168,17 +168,16 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
 
 object CertificateAdditionalInformationViewSpec {
   val pageCaption             = "Submit a certificate"
-  val pageHeading             = "Additional information and explanation"
-  val pageTitle               = "Additional information and explanation"
+  val pageHeading             = "Additional information about your certificate"
+  val pageTitle: String       = s"$pageHeading - $pageCaption"
   val testInputValue          = "myTestInputValue"
-  val textAreaLabel           = "Provide information about your certificate"
+  val textAreaLabel           = "Is there anything else we should know about your certificate?"
   val paragraphs: Seq[String] = Seq(
-    "Tell us if there’s anything we should know about your certificate or the companies listed.",
+    "Tell us if there’s anything we should know about your certificate.",
     "This could include:"
   )
   val bulletPoints: Seq[String] = Seq(
-    "an explanation of why the SAO provided a qualified certificate",
     "a company’s status changing, such as becoming dormant or going into liquidation",
-    "anything else relevant to the companies listed or SAO"
+    "anything else relevant to the SAO or companies listed"
   )
 }

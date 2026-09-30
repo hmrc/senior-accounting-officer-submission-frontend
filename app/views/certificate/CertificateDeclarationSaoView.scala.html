@@ -27,7 +27,7 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("certificateDeclarationSao.title"))) {
+@layout(pageTitle = title(form, messages("certificateDeclarationSao.title"), Some(messages("certificateDeclarationSao.caption")))) {
 
     @formHelper(action = certificateRoutes.CertificateDeclarationSaoController.onSubmit(mode)) {
 
@@ -48,21 +48,13 @@
 
         <p class="govuk-body">@messages("certificateDeclarationSao.paragraph3")</p>
 
-        <div class="govuk-inset-text">
-            @messages("certificateDeclarationSao.inset.text")
-        </div>
-
-
-        <h2 class="govuk-heading-s">
-            @messages("certificateDeclarationSao.subheading")
-        </h2>
+        <p class="govuk-body">@messages("certificateDeclarationSao.paragraph4")</p>
 
         @govukInput(
             InputViewModel(
                 field = form("value"),
-                label = LabelViewModel(messages("certificateDeclarationSao.label").toText)
+                label = LabelViewModel(messages("certificateDeclarationSao.inputLabel").toText)
             )
-            .withHint(HintViewModel(HtmlContent(messages("certificateDeclarationSao.hint"))))
             .withWidth(Fixed20)
         )
 
