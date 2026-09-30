@@ -73,9 +73,8 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       verify(sessionRepository, never()).clear(any())
 
       val request = requestCaptor.getValue
-      request.submitterName.value mustBe "Proxy Person"
       request.saoName mustBe "Senior Officer"
-      request.saoNameOnDeclaration mustBe "Senior Officer"
+      request.saoDeclarationName mustBe "Senior Officer"
       request.saoEmail mustBe "sao@example.com"
       request.remarks.value mustBe "Certificate remarks"
 
@@ -127,7 +126,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val request = requestCaptor.getValue
       request.submitterName.value mustBe "Proxy Person"
       request.saoName mustBe "Senior Officer"
-      request.saoNameOnDeclaration mustBe "Declared Senior Officer"
+      request.saoDeclarationName mustBe "Declared Senior Officer"
       request.saoEmail mustBe "sao@example.com"
       request.remarks.value mustBe "Certificate remarks"
 

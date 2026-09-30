@@ -138,7 +138,7 @@ object CertificateSubmissionRequestFormatSpec {
     CertificateSubmissionRequest(
       submitterName = Some("Proxy Person"),
       saoName = "Senior Officer",
-      saoNameOnDeclaration = "Senior Officer",
+      saoDeclarationName = "Senior Officer",
       saoEmail = "sao@example.com",
       companies = Seq(company),
       remarks = Some("Certificate remarks")
@@ -148,7 +148,7 @@ object CertificateSubmissionRequestFormatSpec {
     s"""{
       |  "submitterName": "Proxy Person",
       |  "saoName": "Senior Officer",
-      |  "saoNameOnDeclaration": "Senior Officer",
+      |  "saoDeclarationName": "Senior Officer",
       |  "saoEmail": "sao@example.com",
       |  "companies": [
       |    {
