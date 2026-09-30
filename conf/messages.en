@@ -565,7 +565,7 @@ certificateConfirmation.reference.text = Your reference number
 certificateConfirmation.paragraph1 = HMRC has received your certificate. We’ve sent a confirmation email to all the contacts you provided during registration.
 certificateConfirmation.paragraph2 = To keep a record of your submission, you can:
 certificateConfirmation.paragraph3 = Someone from HMRC may contact you if they need more information.
-certificateConfirmation.paragraph4 = You can submit a notification or another certificate from your <a href="{0}"> account homepage</a>.
+certificateConfirmation.paragraph4WithLink = You can submit a notification or another certificate from your <a href="{0}" class="govuk-link" id="account-homepage-link"> account homepage</a>.
 certificateConfirmation.downloadPdf = download a PDF
 certificateConfirmation.printPage = print this page
 certificateConfirmation.list1.item1 = to save a copy of all the answers. You may not be able to do this after you leave this page
