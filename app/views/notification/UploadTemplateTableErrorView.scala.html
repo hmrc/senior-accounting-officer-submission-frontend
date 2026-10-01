@@ -25,7 +25,7 @@
 @(tableData: models.upload.UploadTemplateTableData)(using request: Request[?], messages: Messages)
 
 @asDisplay(value: Option[String]) = {
-    @value.fold("-")(identity)
+    @value.fold("Not provided")(identity)
 }
 
 @maximumLinesWithErrorsToDisplay = @{ 50 }
