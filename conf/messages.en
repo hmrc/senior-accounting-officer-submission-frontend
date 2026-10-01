@@ -449,7 +449,7 @@ certificateAdditionalInformation.label = Provide information about your certific
 certificateAdditionalInformation.checkYourAnswersLabel = Additional information about your certificate
 certificateAdditionalInformation.error.required = Enter information about your certificate, or select skip if there’s nothing to add
 certificateAdditionalInformation.error.length = Additional information about your certificate must be 5000 characters or less
-certificateAdditionalInformation.change.hidden = the additional information supplied for the certificate
+certificateAdditionalInformation.change.hidden = The additional information about your certificate
 
 certificateSaoEmail.title = What is the email address for the SAO?
 certificateSaoEmail.caption = Submit a certificate
@@ -459,7 +459,7 @@ certificateSaoEmail.checkYourAnswersLabel = SAO email address
 certificateSaoEmail.error.required = Enter the email address of the SAO
 certificateSaoEmail.error.format = Email address must be in the correct format, like name@example.com
 certificateSaoEmail.error.length = Email address must be 254 characters or less
-certificateSaoEmail.change.hidden = CertificateSaoEmail
+certificateSaoEmail.change.hidden = The email address of the SAO
 
 certificateSaoFullName.title = What is the name of the SAO responsible for the certificate?
 certificateSaoFullName.heading = What is the name of the SAO responsible for the certificate?
@@ -468,7 +468,7 @@ certificateSaoFullName.checkYourAnswersLabel = SAO name
 certificateSaoFullName.error.required = Enter the name of the SAO responsible for the certificate
 certificateSaoFullName.error.length = Name of the SAO must be 105 characters or less
 certificateSaoFullName.error.invalidSymbols = Name of the SAO must not include <, > or "
-certificateSaoFullName.change.hidden = CertificateSaoFullName
+certificateSaoFullName.change.hidden = The name of the SAO
 
 certificateUploadForm.title = certificateUploadForm
 certificateUploadForm.heading = certificateUploadForm
@@ -507,8 +507,8 @@ certificateDeclarationStandIn.error.standInName.length = Your name must be 105 c
 certificateDeclarationStandIn.error.saoName.length = Name of the SAO must be 105 characters or less
 certificateDeclarationStandIn.error.standInName.invalidChars = Your name must not include <, > or "
 certificateDeclarationStandIn.error.saoName.invalidChars = Name of the SAO must not include <, > or "
-certificateDeclarationStandIn.change.hidden.standInName = StandInName
-certificateDeclarationStandIn.change.hidden.saoName = SaoName
+certificateDeclarationStandIn.change.hidden.standInName = The authorised name of the SAO on the declaration
+certificateDeclarationStandIn.change.hidden.saoName = The name of the SAO on the declaration
 
 certificateWhoIsSubmitting.title = Who is submitting the certificate?
 certificateWhoIsSubmitting.caption = Submit a certificate
@@ -519,7 +519,7 @@ certificateWhoIsSubmitting.sao = The SAO
 certificateWhoIsSubmitting.standIn = A person authorised to submit on behalf of the SAO
 certificateWhoIsSubmitting.checkYourAnswersLabel = Who is submitting the certificate?
 certificateWhoIsSubmitting.error.required = Select who is submitting the certificate
-certificateWhoIsSubmitting.change.hidden = CertificateWhoIsSubmitting
+certificateWhoIsSubmitting.change.hidden = Who is submitting the certificate
 
 certificateCheckYourAnswers.title = Check your answers – Submit a certificate
 certificateCheckYourAnswers.heading = Check your answers
@@ -545,7 +545,7 @@ certificateDeclarationSao.checkYourAnswersLabel = SAO name on the declaration
 certificateDeclarationSao.error.required = Enter the name of the SAO authorised to submit the certificate
 certificateDeclarationSao.error.length = Name of the SAO must be 105 characters or less
 certificateDeclarationSao.error.invalidSymbols = Name of the SAO must not include <, > or "
-certificateDeclarationSao.change.hidden = CertificateDeclarationSao
+certificateDeclarationSao.change.hidden = The name of the SAO on the declaration
 
 submissionType.caption = New submission
 submissionType.title = What would you like to submit?

@@ -56,7 +56,7 @@ class CertificateAdditionalInformationSummarySpec extends CheckYourAnswersSpecBa
       action
         .attr("href") mustBe certificateRoutes.CertificateAdditionalInformationController.onPageLoad(CheckMode).url
       action.select("span.govuk-visually-hidden").text() mustBe
-        s"the additional information supplied for the certificate"
+        s"The additional information about your certificate"
       action.select("span.govuk-visually-hidden").remove()
       action.text() mustBe "Change"
       action.attr("data-test-id") mustBe "change-additional-information-link"
