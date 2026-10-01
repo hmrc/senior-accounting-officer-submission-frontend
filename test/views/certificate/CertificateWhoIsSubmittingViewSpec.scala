@@ -167,7 +167,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 object CertificateWhoIsSubmittingViewSpec {
   val pageCaption             = "Submit a certificate"
   val pageHeading             = "Certificate submission and authorisation"
-  val pageTitle: String       = s"$pageHeading - $pageCaption"
+  val pageTitle: String       = "Certificate submission and authorisation - Submit a certificate"
   val paragraphs: Seq[String] = Seq(
     "HMRC needs to know if the certificate will be submitted by the SAO or by someone authorised to act on their behalf.",
     "The SAO must review and approve the certificate and authorise anyone submitting on their behalf."
@@ -175,7 +175,7 @@ object CertificateWhoIsSubmittingViewSpec {
   val subheadings: Seq[String] = Seq(
     "Who is submitting the certificate?"
   )
-  val subheadingsPageError: Seq[String] = Seq("There is a problem") ++ subheadings
+  val subheadingsPageError: Seq[String] = Seq("There is a problem", "Who is submitting the certificate?")
   val option1key                        = "sao"
   val option1Label                      = "The SAO"
   val option2key                        = "standIn"

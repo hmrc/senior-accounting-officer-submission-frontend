@@ -31,8 +31,7 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
   "CertificateConfirmationView" - {
 
     "when displayLink is true" - {
-      val displayLink   = true
-      val doc: Document = generateView(displayLink)
+      val doc: Document = generateView(displayLink = true)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -83,14 +82,13 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
         )
 
       doc.createTestForAccountHomepageLink(expectedLinkText = pageAccountPage, destinationUrl = appConfig.hubBaseUrl)
-      doc.createTestForInsetText(pageInsets)
+      doc.createTestForInsetText(pageInsetText)
       doc.createTestsForSubheadings(pageSubheadings)
       doc.createTestsWithOrWithoutError(hasError = false)
     }
 
     "when displayLink is false" - {
-      val displayLink   = false
-      val doc: Document = generateView(displayLink)
+      val doc: Document = generateView(displayLink = false)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -153,7 +151,6 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
 
     def createTestForAccountHomepageLink(expectedLinkText: String, destinationUrl: String): Unit = {
       val homepageLink = target.select(s"a[href=${appConfig.hubBaseUrl}]")
-      println(homepageLink)
 
       "must have account homepage link" in {
         homepageLink.size() mustBe 2
@@ -167,7 +164,7 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
 
 object CertificateConfirmationViewSpec {
   val pageHeading       = "Certificate submitted"
-  val pageTitle: String = s"$pageHeading"
+  val pageTitle: String = "Certificate submitted"
 
   val certificateRef          = "SAOCRT0123456789"
   val pageDownloadUrl: String =
@@ -186,7 +183,7 @@ object CertificateConfirmationViewSpec {
     "print this page to keep a paper copy of your confirmation"
   )
 
-  val pageInsets =
+  val pageInsetText =
     "If you later realise the information is incorrect, contact your Customer Compliance Manager (CCM) if you have one, or email wmbc.saomailbox@hmrc.gov.uk for support."
 
   val pageListItemsWhenLinkNotDisplayed: Seq[String] = Seq(

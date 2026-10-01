@@ -161,7 +161,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
 object CertificateReviewUnqualifiedViewSpec {
   val pageHeading             = "Review the companies with an unqualified certificate"
   val pageCaption             = "Submit a certificate"
-  val pageTitle: String       = s"$pageHeading - $pageCaption"
+  val pageTitle: String       = "Review the companies with an unqualified certificate - Submit a certificate"
   val linkLocator             = ".govuk-body:nth-of-type(2) .govuk-link"
   val linkText                = "upload an updated submission template"
   val paragraphs: Seq[String] = Seq(

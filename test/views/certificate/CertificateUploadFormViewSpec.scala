@@ -139,7 +139,7 @@ class CertificateUploadFormViewSpec extends ViewSpecBase[CertificateUploadFormVi
 object CertificateUploadFormViewSpec {
   val pageHeading       = "Upload a submission template"
   val pageCaption       = "Submit a certificate"
-  val pageTitle: String = s"$pageHeading - $pageCaption"
+  val pageTitle: String = "Upload a submission template - Submit a certificate"
 
   val paragraphs: List[String] = List(
     "The template must be uploaded in CSV format. If your template is saved as .xls or .xlsx, save it again as a CSV (comma delimited) (.csv) file before uploading.",

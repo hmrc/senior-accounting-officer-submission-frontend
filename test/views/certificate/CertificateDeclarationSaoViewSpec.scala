@@ -149,10 +149,10 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
 object CertificateDeclarationSaoViewSpec {
   val pageHeading                           = "Declaration"
   val pageCaption                           = "Submit a certificate"
-  val pageTitle: String                     = s"$pageHeading - $pageCaption"
+  val pageTitle: String                     = "Declaration - Submit a certificate"
   val inputLabel                            = "Enter your full name"
   val pageSubHeadings: Seq[String]          = Seq("Declaration")
-  val pageSubHeadingsWithError: Seq[String] = Seq("There is a problem") ++ pageSubHeadings
+  val pageSubHeadingsWithError: Seq[String] = Seq("There is a problem", "Declaration")
   val pageButton                            = "Confirm"
   val testInputValue                        = "myTestInputValue"
   val pageParagraphs: Seq[String]           = Seq(
