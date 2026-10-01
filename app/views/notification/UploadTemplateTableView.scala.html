@@ -25,11 +25,11 @@
 @(tableData: models.upload.UploadTemplateTableData, saoName: String)(using request: Request[?], messages: Messages)
 
 @asDisplay(value: Option[String]) = {
-    @value.getOrElse("-")
+    @value.getOrElse("Not provided")
 }
 
 @asDisplayCrn(value: Option[models.upload.CompanyCrn]) = {
-    @value.map(_.value).getOrElse("-")
+    @value.map(_.value).getOrElse("Not provided")
 }
 
 @uploadUrl = @{notificationRoutes.NotificationUploadFormController.onPageLoad().url}
