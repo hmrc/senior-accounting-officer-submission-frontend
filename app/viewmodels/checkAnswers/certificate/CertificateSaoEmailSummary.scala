@@ -38,6 +38,7 @@ object CertificateSaoEmailSummary {
             certificateRoutes.CertificateSaoEmailController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("certificateSaoEmail.change.hidden"))
+            .withAttribute("data-test-id", "change-sao-email-link")
         )
       )
     }

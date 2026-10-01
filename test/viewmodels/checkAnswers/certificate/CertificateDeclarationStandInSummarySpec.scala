@@ -85,6 +85,10 @@ class CertificateDeclarationStandInSummarySpec extends SpecBase with GuiceOneApp
         "must have expected hidden text" in {
           action.visuallyHiddenText.get mustBe "StandInName"
         }
+
+        "must have expected id" in {
+          action.attributes("data-test-id") mustBe expectedStandInActionId
+        }
       }
     }
   }
@@ -143,17 +147,24 @@ class CertificateDeclarationStandInSummarySpec extends SpecBase with GuiceOneApp
         "must have expected hidden text" in {
           action.visuallyHiddenText.get mustBe "SaoName"
         }
+
+        "must have expected id" in {
+          action.attributes("data-test-id") mustBe expectedSaoActionId
+        }
       }
     }
   }
 }
 
 object CertificateDeclarationStandInSummarySpec {
-  val expectedSaoKey                               = "SAO name on the declaration"
-  val expectedStandInKey                           = "Authorised name on the declaration"
-  val standInName                                  = "Firstname Lastname"
-  val saoName                                      = "Firstname Lastname II"
-  val expectedStandInValueId                       = "declaration-stand-in-value"
-  val expectedSaoValueId                           = "declaration-sao-value"
+  val expectedSaoKey          = "SAO name on the declaration"
+  val expectedStandInKey      = "Authorised name on the declaration"
+  val standInName             = "Firstname Lastname"
+  val saoName                 = "Firstname Lastname II"
+  val expectedStandInValueId  = "declaration-stand-in-value"
+  val expectedSaoValueId      = "declaration-sao-value"
+  val expectedSaoActionId     = "change-declaration-sao-link"
+  val expectedStandInActionId = "change-declaration-stand-in-link"
+
   val expectedValue: CertificateDeclarationStandIn = CertificateDeclarationStandIn(standInName, saoName)
 }

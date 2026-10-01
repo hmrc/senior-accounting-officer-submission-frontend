@@ -85,6 +85,10 @@ class CertificateSaoEmailSummarySpec extends SpecBase with GuiceOneAppPerSuite {
         "must have expected hidden text" in {
           action.visuallyHiddenText.get mustBe "CertificateSaoEmail"
         }
+
+        "must have expected id" in {
+          action.attributes("data-test-id") mustBe expectedActionId
+        }
       }
     }
   }
@@ -92,7 +96,8 @@ class CertificateSaoEmailSummarySpec extends SpecBase with GuiceOneAppPerSuite {
 }
 
 object CertificateSaoEmailSummarySpec {
-  val expectedKey     = "SAO email address"
-  val expectedValue   = "testCertificateSaoEmail"
-  val expectedValueId = "sao-email-value"
+  val expectedKey      = "SAO email address"
+  val expectedValue    = "testCertificateSaoEmail"
+  val expectedValueId  = "sao-email-value"
+  val expectedActionId = "change-sao-email-link"
 }

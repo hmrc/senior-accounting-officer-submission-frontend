@@ -38,6 +38,7 @@ object CertificateDeclarationSaoSummary {
             certificateRoutes.CertificateDeclarationSaoController.onPageLoad(CheckMode).url
           )
             .withVisuallyHiddenText(messages("certificateDeclarationSao.change.hidden"))
+            .withAttribute("data-test-id", "change-declaration-sao-link")
         )
       )
     }

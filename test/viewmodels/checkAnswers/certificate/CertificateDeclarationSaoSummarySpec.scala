@@ -84,13 +84,18 @@ class CertificateDeclarationSaoSummarySpec extends SpecBase with GuiceOneAppPerS
         "must have expected hidden text" in {
           action.visuallyHiddenText.get mustBe "CertificateDeclarationSao"
         }
+
+        "must have expected id" in {
+          action.attributes("data-test-id") mustBe expectedActionId
+        }
       }
     }
   }
 }
 
 object CertificateDeclarationSaoSummarySpec {
-  val expectedKey     = "SAO name on the declaration"
-  val expectedValue   = "testDeclarationSao"
-  val expectedValueId = "declaration-sao-value"
+  val expectedKey      = "SAO name on the declaration"
+  val expectedValue    = "testDeclarationSao"
+  val expectedValueId  = "declaration-sao-value"
+  val expectedActionId = "change-declaration-sao-link"
 }
