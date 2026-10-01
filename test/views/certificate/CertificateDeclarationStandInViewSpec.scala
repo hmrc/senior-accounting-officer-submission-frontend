@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package views.certificate
 
 import base.ViewSpecBase
@@ -54,7 +53,6 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
-          doc.createTestForInsetText(pageInset)
           doc.createTestsForSubHeadings(pageSubheading)
 
           doc.createTestMustShowNumberOfInputs(2)
@@ -62,14 +60,14 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
             name = "StandInName",
             label = pageInput1Label,
             value = "",
-            hint = Some(pageInput1Hint),
+            hint = None,
             hasError = false
           )
           doc.createTestMustShowTextInput(
             name = "SaoName",
             label = pageInput2Label,
             value = "",
-            hint = Some(pageInput2Hint),
+            hint = None,
             hasError = false
           )
 
@@ -96,7 +94,6 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
-          doc.createTestForInsetText(pageInset)
           doc.createTestsForSubHeadings(pageSubheading)
 
           doc.createTestMustShowNumberOfInputs(2)
@@ -104,14 +101,14 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
             name = "StandInName",
             label = pageInput1Label,
             value = testInput1Value,
-            hint = Some(pageInput1Hint),
+            hint = None,
             hasError = false
           )
           doc.createTestMustShowTextInput(
             name = "SaoName",
             label = pageInput2Label,
             value = testInput2Value,
-            hint = Some(pageInput2Hint),
+            hint = None,
             hasError = false
           )
 
@@ -138,7 +135,6 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
-          doc.createTestForInsetText(pageInset)
           doc.createTestsForSubHeadings(pageSubheading)
 
           doc.createTestMustShowNumberOfInputs(2)
@@ -146,14 +142,14 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
             name = "StandInName",
             label = pageInput1Label,
             value = "",
-            hint = Some(pageInput1Hint),
+            hint = None,
             hasError = true
           )
           doc.createTestMustShowTextInput(
             name = "SaoName",
             label = pageInput2Label,
             value = "",
-            hint = Some(pageInput2Hint),
+            hint = None,
             hasError = true
           )
 
@@ -171,13 +167,13 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
   }
 
   extension (doc: => Document) {
-    def createTestsForSubHeadings(subheadings: String): Unit = {
+    def createTestsForSubHeadings(expectedSubheading: String): Unit = {
       val subheadings = doc.getMainContent.select("h2").not(".govuk-error-summary__title")
       "must have expected number of subheadings" in {
         subheadings.size() mustBe 1
       }
-      s"must have heading '$pageSubheading'" in {
-        subheadings.get(0).text mustBe pageSubheading
+      s"must have heading '$expectedSubheading'" in {
+        subheadings.get(0).text mustBe expectedSubheading
       }
     }
   }
@@ -189,25 +185,20 @@ object CertificateDeclarationStandInViewSpec {
   val pageHeading = "Declaration"
 
   val pageParagraphs: Seq[String] = Seq(
-    "It is your responsibility to make sure the SAO has reviewed and approved everything before you submit.",
+    "It is your responsibility to make sure the SAO has reviewed and approved the certificate before you submit.",
     "By submitting this certificate, you confirm that:",
     "If you deliberately give wrong or incomplete information, or do not report changes, the SAO may have to pay a penalty of £5,000."
   )
 
   val pageBullets: Seq[String] = Seq(
-    "the information is complete and correct",
+    "the information provided is complete and correct",
     "you have been authorised by the SAO to submit this certificate"
   )
 
-  val pageInset =
-    "If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels."
-  val pageSubheading  = "Declaration"
-  val pageInput1Label = "I confirm that I am authorised to submit this certificate."
-  val pageInput1Hint  = "Insert your full name (person submitting)"
-  val pageInput2Label = "Name of the SAO who authorised you:"
-  val pageInput2Hint  = "Insert full name"
+  val pageSubheading  = "I confirm that I am authorised to submit this certificate."
+  val pageInput1Label = "Enter your full name"
+  val pageInput2Label = "Enter the full name of the SAO who authorised you"
   val testInput1Value = "test value 1"
   val testInput2Value = "test value 2"
   val pageButtonText  = "Confirm"
-
 }

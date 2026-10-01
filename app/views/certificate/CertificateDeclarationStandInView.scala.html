@@ -47,10 +47,6 @@
 
         <p class="govuk-body">@messages("certificateDeclarationStandIn.paragraph3")</p>
 
-        <div class="govuk-inset-text">
-            @messages("certificateDeclarationStandIn.insetText")
-        </div>
-
         <h2 class="govuk-heading-s">
             @messages("certificateDeclarationStandIn.subheading")
         </h2>
@@ -60,7 +56,6 @@
                 field = form("StandInName"),
                 label = LabelViewModel(messages("certificateDeclarationStandIn.input1Label").toText)
             )
-            .withHint(HintViewModel(HtmlContent(messages("certificateDeclarationStandIn.input1Hint"))))
             .withWidth(Fixed20)
         )
 
@@ -69,7 +64,6 @@
                 field = form("SaoName"),
                 label = LabelViewModel(messages("certificateDeclarationStandIn.input2Label").toText)
             )
-            .withHint(HintViewModel(HtmlContent(messages("certificateDeclarationStandIn.input2Hint"))))
             .withWidth(Fixed20)
         )
 
