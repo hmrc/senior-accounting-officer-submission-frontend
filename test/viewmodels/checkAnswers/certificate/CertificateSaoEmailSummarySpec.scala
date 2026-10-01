@@ -83,7 +83,7 @@ class CertificateSaoEmailSummarySpec extends SpecBase with GuiceOneAppPerSuite {
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "CertificateSaoEmail"
+          action.visuallyHiddenText.get mustBe "The email address of the SAO"
         }
 
         "must have expected id" in {

@@ -83,7 +83,7 @@ class CertificateDeclarationStandInSummarySpec extends SpecBase with GuiceOneApp
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "StandInName"
+          action.visuallyHiddenText.get mustBe "The authorised name of the SAO on the declaration"
         }
 
         "must have expected id" in {
@@ -145,7 +145,7 @@ class CertificateDeclarationStandInSummarySpec extends SpecBase with GuiceOneApp
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "SaoName"
+          action.visuallyHiddenText.get mustBe "The name of the SAO on the declaration"
         }
 
         "must have expected id" in {

@@ -82,7 +82,7 @@ class CertificateDeclarationSaoSummarySpec extends SpecBase with GuiceOneAppPerS
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "CertificateDeclarationSao"
+          action.visuallyHiddenText.get mustBe "The name of the SAO on the declaration"
         }
 
         "must have expected id" in {

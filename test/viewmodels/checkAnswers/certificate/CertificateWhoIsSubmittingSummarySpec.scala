@@ -91,7 +91,7 @@ class CertificateWhoIsSubmittingSummarySpec extends SpecBase with GuiceOneAppPer
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "CertificateWhoIsSubmitting"
+          action.visuallyHiddenText.get mustBe "Who is submitting the certificate"
         }
 
         "must have expected id" in {
