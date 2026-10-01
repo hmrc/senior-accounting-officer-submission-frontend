@@ -212,7 +212,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
 object CertificateReviewQualifiedViewSpec {
   val pageHeading                 = "Review the companies with a qualified certificate"
   val pageCaption                 = "Submit a certificate"
-  val pageTitle: String           = s"$pageHeading - $pageCaption"
+  val pageTitle: String           = "Review the companies with a qualified certificate - Submit a certificate"
   val hrStyle                     = "border: 0; border-top: 1px solid; color: var(--govuk-border-colour,#cecece);"
   val firstParagraphZeroCompanies =
     "This list is from the certificate details in your submission template. There were 0 companies the SAO was responsible for in a previous financial year."
@@ -220,9 +220,8 @@ object CertificateReviewQualifiedViewSpec {
     "This list is from the certificate details in your submission template. There were 2 companies the SAO was responsible for in a previous financial year."
   val firstParagraphOneCompany =
     "This list is from the certificate details in your submission template. There was 1 company the SAO was responsible for in a previous financial year."
-  val secondParagraph: String = {
+  val secondParagraph =
     "If any companies listed are missing or incorrect, upload an updated submission template before continuing."
-  }
   val thirdParagraphZeroQualifiedCompanies =
     "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that 0 companies did not have appropriate tax accounting arrangements."
   val thirdParagraphTwoQualifiedCompanies =

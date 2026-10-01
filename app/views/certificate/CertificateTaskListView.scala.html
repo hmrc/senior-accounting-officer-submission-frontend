@@ -58,14 +58,17 @@
             status = state.submitCertificateStage
         )
     </ul>
+    @None
 
-    @if(state.showViewYourConfirmationButton && certificateReference.isDefined) {
-        @formHelper(action = certificateRoutes.CertificateTaskListController.onSubmit(certificateReference.get)) {
-            @govukButton(
-                ButtonViewModel(messages("certificateTaskList.certificateConfirmationButton").toText)
-                    .withAttribute("id", "submit")
-            )     
+    @if(state.showViewYourConfirmationButton) {
+        @certificateReference.fold(identity)( reference =>
+        formHelper(action = certificateRoutes.CertificateTaskListController.onSubmit(reference)) {
+        govukButton(
+            ButtonViewModel(messages("certificateTaskList.certificateConfirmationButton").toText)
+                .withAttribute("id", "submit")
+            )
         }
+        )
     }
 }
 
