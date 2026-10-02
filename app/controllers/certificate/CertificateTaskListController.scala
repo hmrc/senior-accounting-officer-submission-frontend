@@ -44,7 +44,13 @@ class CertificateTaskListController @Inject() (
       }
   }
 
-  def onSubmit: Action[AnyContent] = identify {
-    Redirect(appConfig.hubBaseUrl)
+  def onPageLoadComplete(stage: CertificateTaskListStage, certificateReference: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      {
+        Ok(view(stage.toState(), Some(certificateReference)))
+      }
+    }
+  def onSubmit(certificateRef: String): Action[AnyContent] = identify {
+    Redirect(routes.CertificateConfirmationController.onPageLoad(certificateRef))
   }
 }

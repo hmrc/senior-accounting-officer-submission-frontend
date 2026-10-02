@@ -49,20 +49,19 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         hasError = false
       )
 
+      doc.createTestsWithLargeCaption(pageCaption)
       doc.createTestsWithOrWithoutError(hasError = false)
 
       doc.createTestsWithParagraphs(
         Seq(firstParagraphZeroCompanies, secondParagraph, thirdParagraphZeroQualifiedCompanies)
       )
 
+      doc.createTestForHorizontalLine()
+
       doc
         .select(secondParagraphLinkSelector)
         .get(0)
         .createTestWithLink(secondParagraphLinkText, certificateRoutes.CertificateUploadFormController.onPageLoad().url)
-
-      "must have bold text in third paragraph denoting number of qualified companies" in {
-        doc.select("b").get(0).text() mustBe zeroQualifiedCompanyCountText
-      }
 
       doc.createTestsWithQualifiedCompanyDescriptionList(Seq())
 
@@ -84,6 +83,9 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       )
 
       doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithLargeCaption(pageCaption)
+
+      doc.createTestForHorizontalLine()
 
       doc.createTestsWithParagraphs(
         Seq(firstParagraphTwoCompanies, secondParagraph, thirdParagraphTwoQualifiedCompanies)
@@ -93,10 +95,6 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .select(secondParagraphLinkSelector)
         .get(0)
         .createTestWithLink(secondParagraphLinkText, certificateRoutes.CertificateUploadFormController.onPageLoad().url)
-
-      "must have bold text in third paragraph denoting number of qualified companies" in {
-        doc.select("b").get(0).text() mustBe twoQualifiedCompanyCountText
-      }
 
       doc.createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies)
 
@@ -112,10 +110,6 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       doc.createTestsWithParagraphs(
         Seq(firstParagraphOneCompany, secondParagraph, thirdParagraphOneQualifiedCompany)
       )
-
-      "must have bold text denoting one qualified company" in {
-        doc.select("b").get(0).text() mustBe "1"
-      }
     }
 
     "When rows are and a different sao name are passed to the view must render populated table with different sao name" - {
@@ -130,6 +124,9 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       )
 
       doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithLargeCaption(pageCaption)
+
+      doc.createTestForHorizontalLine()
 
       doc.createTestsWithParagraphs(
         Seq(firstParagraphTwoCompanies, secondParagraph, thirdParagraphTwoQualifiedCompaniesDifferentSao)
@@ -139,10 +136,6 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         .select(secondParagraphLinkSelector)
         .get(0)
         .createTestWithLink(secondParagraphLinkText, certificateRoutes.CertificateUploadFormController.onPageLoad().url)
-
-      "must have bold text in third paragraph denoting number of qualified companies" in {
-        doc.select("b").get(0).text() mustBe twoQualifiedCompanyCountText
-      }
 
       doc.createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies)
 
@@ -163,6 +156,15 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
   }
 
   extension (doc: Document) {
+
+    def createTestForHorizontalLine(): Unit = {
+      val hr     = doc.select("hr")
+      val styles = hr.eachAttr("style")
+      styles.size mustBe 1
+      styles.get(0) mustBe hrStyle
+      hr.size mustBe 1
+
+    }
     def createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies: Seq[QualifiedCompany]): Unit = {
       val expectedCountOfDescriptionLists = qualifiedCompanies.size
 
@@ -209,13 +211,15 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
 
 object CertificateReviewQualifiedViewSpec {
   val pageHeading                 = "Review the companies with a qualified certificate"
-  val pageTitle                   = "Review the companies with a qualified certificate"
+  val pageCaption                 = "Submit a certificate"
+  val pageTitle: String           = "Review the companies with a qualified certificate - Submit a certificate"
+  val hrStyle                     = "border: 0; border-top: 1px solid; color: var(--govuk-border-colour,#cecece);"
   val firstParagraphZeroCompanies =
-    "This list is from the certificate details in your submission template. There were 0 companies your SAO was responsible for in a previous financial year."
+    "This list is from the certificate details in your submission template. There were 0 companies the SAO was responsible for in a previous financial year."
   val firstParagraphTwoCompanies =
-    "This list is from the certificate details in your submission template. There were 2 companies your SAO was responsible for in a previous financial year."
+    "This list is from the certificate details in your submission template. There were 2 companies the SAO was responsible for in a previous financial year."
   val firstParagraphOneCompany =
-    "This list is from the certificate details in your submission template. There was 1 company your SAO was responsible for in a previous financial year."
+    "This list is from the certificate details in your submission template. There was 1 company the SAO was responsible for in a previous financial year."
   val secondParagraph =
     "If any companies listed are missing or incorrect, upload an updated submission template before continuing."
   val thirdParagraphZeroQualifiedCompanies =

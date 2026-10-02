@@ -31,7 +31,7 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
         provideSaoDetailsStage = TaskStatus.NotStarted,
         uploadSubmissionTemplateStage = TaskStatus.CannotStartYet,
         submitCertificateStage = TaskStatus.CannotStartYet,
-        showContinueButton = false
+        showViewYourConfirmationButton = false
       )
 
       result mustBe expected
@@ -45,7 +45,7 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
         provideSaoDetailsStage = TaskStatus.Completed,
         uploadSubmissionTemplateStage = TaskStatus.NotStarted,
         submitCertificateStage = TaskStatus.CannotStartYet,
-        showContinueButton = false
+        showViewYourConfirmationButton = false
       )
 
       result mustBe expected
@@ -60,7 +60,7 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
         provideSaoDetailsStage = TaskStatus.Completed,
         uploadSubmissionTemplateStage = TaskStatus.Completed,
         submitCertificateStage = TaskStatus.NotStarted,
-        showContinueButton = false
+        showViewYourConfirmationButton = false
       )
 
       result mustBe expected
@@ -75,7 +75,7 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
         provideSaoDetailsStage = TaskStatus.Completed,
         uploadSubmissionTemplateStage = TaskStatus.Completed,
         submitCertificateStage = TaskStatus.Completed,
-        showContinueButton = true
+        showViewYourConfirmationButton = true
       )
 
       result mustBe expected

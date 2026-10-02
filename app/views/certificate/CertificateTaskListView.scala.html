@@ -25,7 +25,7 @@
     appConfig: AppConfig
 )
 
-@(state: CertificateTaskListState)(using request: Request[?], messages: Messages)
+@(state: CertificateTaskListState,  certificateReference: Option[String] = None)(using request: Request[?], messages: Messages)
 
 @layout(showBackLink = false, pageTitle = titleNoForm(messages("certificateTaskList.title"))) {
 
@@ -58,14 +58,17 @@
             status = state.submitCertificateStage
         )
     </ul>
+    @None
 
-    @if(state.showContinueButton) {
-        @formHelper(action = certificateRoutes.CertificateTaskListController.onSubmit()) {
-            @govukButton(
-                ButtonViewModel(messages("certificateTaskList.homepageButton").toText)
-                    .withAttribute("id", "submit")
-            )     
+    @if(state.showViewYourConfirmationButton) {
+        @certificateReference.fold(identity)( reference =>
+        formHelper(action = certificateRoutes.CertificateTaskListController.onSubmit(reference)) {
+        govukButton(
+            ButtonViewModel(messages("certificateTaskList.certificateConfirmationButton").toText)
+                .withAttribute("id", "submit")
+            )
         }
+        )
     }
 }
 

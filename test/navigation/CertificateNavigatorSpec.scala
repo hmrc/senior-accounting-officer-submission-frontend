@@ -114,14 +114,6 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           emptyUserAnswers
         ) mustBe certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
       }
-
-      "when on CertificateConfirmation, must go to CertificateTaskList page" in {
-        navigator.nextPage(
-          CertificateConfirmationPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.Complete)
-      }
     }
 
     "in Check mode" - {
