@@ -100,7 +100,7 @@ class NotificationMultiSaoPreviousOfficerStartDateSummarySpec extends SpecBase w
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMultiSaoPreviousOfficerStartDate"
+          action.visuallyHiddenText.get mustBe "the start date of the SAO before the last one"
         }
       }
     }
