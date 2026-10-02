@@ -47,7 +47,7 @@ object NotificationAdditionalInformationSummary {
           notificationRoutes.NotificationAdditionalInformationController.onPageLoad(CheckMode).url
         )
           .withVisuallyHiddenText(
-            messages("notificationAdditionalInformation.change.hidden", answers.getFinancialYearEndDate)
+            messages("notificationAdditionalInformation.change.hidden")
           )
           .withAttribute("data-test-id", "change-additional-information-link")
       )

@@ -83,7 +83,7 @@ class NotificationSingleSaoOfficerNameSummarySpec extends SpecBase with GuiceOne
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "the senior accounting officer full name"
+          action.visuallyHiddenText.get mustBe "the name of the SAO"
         }
       }
     }

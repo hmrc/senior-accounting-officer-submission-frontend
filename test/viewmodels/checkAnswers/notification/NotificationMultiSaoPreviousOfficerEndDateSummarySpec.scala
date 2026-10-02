@@ -100,7 +100,7 @@ class NotificationMultiSaoPreviousOfficerEndDateSummarySpec extends SpecBase wit
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMultiSaoPreviousOfficerEndDate"
+          action.visuallyHiddenText.get mustBe "the end date of the SAO before the last one"
         }
       }
     }

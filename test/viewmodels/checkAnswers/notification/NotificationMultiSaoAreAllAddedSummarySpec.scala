@@ -97,7 +97,7 @@ class NotificationMultiSaoAreAllAddedSummarySpec extends SpecBase with GuiceOneA
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMultiSaoAreAllAdded"
+          action.visuallyHiddenText.get mustBe "if there are more SAO in the notification"
         }
       }
     }

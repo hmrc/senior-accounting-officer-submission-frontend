@@ -83,7 +83,7 @@ class NotificationMultiSaoLastOfficerNameSummarySpec extends SpecBase with Guice
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMultiSaoLastOfficerName"
+          action.visuallyHiddenText.get mustBe "the name of the SAO at the end of the financial year"
         }
       }
     }

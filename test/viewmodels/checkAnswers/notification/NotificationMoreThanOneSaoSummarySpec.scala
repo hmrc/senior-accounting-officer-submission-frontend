@@ -84,7 +84,7 @@ class NotificationMoreThanOneSaoSummarySpec extends SpecBase with GuiceOneAppPer
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMoreThanOneSao"
+          action.visuallyHiddenText.get mustBe "if there was more than one SAO during the financial year"
         }
       }
     }
