@@ -283,7 +283,7 @@ uploadTemplateTableError.errors.none = No parse errors
 uploadTemplateTableError.errors.line = Row
 uploadTemplateTableError.errors.column = Column
 uploadTemplateTableError.errors.message = Errors to Correct
-uploadTemplateTableError.empty = Not provided
+uploadTemplateTableError.emptyField = Not provided
 
 uploadTemplateCsvParser.column.CompanyName = Company Name
 uploadTemplateCsvParser.column.Crn = CRN
