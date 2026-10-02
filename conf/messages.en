@@ -577,3 +577,9 @@ certificateUploadForm.caption = Submit a certificate
 certificateUploadForm.paragraph1 = The template must be uploaded in CSV format. If your template is saved as .xls or .xlsx, save it again as a CSV (comma delimited) (.csv) file before uploading.
 certificateUploadForm.paragraph2 = Read guidance on how to complete the submission template (opens in new tab)
 certificateUploadForm.inset.text = If your group has more than one SAO, you must submit a separate certificate for each one. After you complete this submission, you can start another certificate.
+
+pageNotFound.title = Error: Page not found
+pageNotFound.heading = Page not found
+pageNotFound.paragraph1 = If you typed the web address, check it is correct.
+pageNotFound.paragraph2 = If you pasted the web address, check you copied the entire address.
+pageNotFound.paragraph3WithLink = If the web address is correct or you selected a link or button, contact your Customer Compliance Manager (CCM) if you have one, or email <a href="mailto:wmbc.saomailbox@hmrc.gov.uk" class="govuk-link">wmbc.saomailbox@hmrc.gov.uk</a> for support.

@@ -32,4 +32,10 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
       html.contentType mustBe "text/html"
     }
   }
+  "NotFoundError must" - {
+    "render HTML" in {
+      val html = handler.notFoundTemplate(fakeRequest).futureValue
+      html.contentType mustBe "text/html"
+    }
+  }
 }
