@@ -25,7 +25,7 @@
 @(tableData: models.upload.UploadTemplateTableData)(using request: Request[?], messages: Messages)
 
 @asDisplay(value: Option[String]) = {
-    @value.fold("Not provided")(identity)
+    @value.fold(messages("uploadTemplateTableError.empty"))(identity)
 }
 
 @maximumLinesWithErrorsToDisplay = @{ 50 }

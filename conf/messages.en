@@ -268,6 +268,7 @@ uploadTemplateTable.table.companyCrn = CRN
 uploadTemplateTable.table.companyType = Type
 uploadTemplateTable.table.companyStatus = Status
 uploadTemplateTable.table.financialYearEndDate = Financial year end
+uploadTemplateTable.table.emptyField = Not provided
 
 uploadTemplateTableError.title = There is a problem with your submission template file
 uploadTemplateTableError.caption = Submit a notification
@@ -282,6 +283,7 @@ uploadTemplateTableError.errors.none = No parse errors
 uploadTemplateTableError.errors.line = Row
 uploadTemplateTableError.errors.column = Column
 uploadTemplateTableError.errors.message = Errors to Correct
+uploadTemplateTableError.empty = Not provided
 
 uploadTemplateCsvParser.column.CompanyName = Company Name
 uploadTemplateCsvParser.column.Crn = CRN
