@@ -20,7 +20,7 @@ import play.api.i18n.MessagesApi
 import play.api.mvc.RequestHeader
 import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
-import views.html.ErrorTemplate
+import views.html.{ErrorTemplate, PageNotFoundView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -29,6 +29,7 @@ import javax.inject.{Inject, Singleton}
 @Singleton
 class ErrorHandler @Inject() (
     errorTemplate: ErrorTemplate,
+    pageNotFoundView: PageNotFoundView,
     override val messagesApi: MessagesApi
 )(implicit override val ec: ExecutionContext)
     extends FrontendErrorHandler {
@@ -37,4 +38,7 @@ class ErrorHandler @Inject() (
       request: RequestHeader
   ): Future[Html] =
     Future.successful(errorTemplate(pageTitle, heading, message))
+
+  override def notFoundTemplate(implicit request: RequestHeader): Future[Html] =
+    Future.successful(pageNotFoundView())
 }
