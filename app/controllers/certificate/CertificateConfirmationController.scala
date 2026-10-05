@@ -17,9 +17,7 @@
 package controllers.certificate
 
 import controllers.actions.*
-import models.NormalMode
 import navigation.CertificateNavigator
-import pages.certificate.CertificateConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.ObjectStoreService
@@ -55,8 +53,4 @@ class CertificateConfirmationController @Inject() (
           )
       }
     }
-
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Redirect(navigator.nextPage(CertificateConfirmationPage, NormalMode, request.userAnswers))
-  }
 }

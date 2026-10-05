@@ -155,7 +155,6 @@ GET         /certificateCheckYourAnswers                                        
 POST        /certificateCheckYourAnswers                                              controllers.certificate.CertificateCheckYourAnswersController.onSubmit()
 
 GET         /certificate-confirmation                                                 controllers.certificate.CertificateConfirmationController.onPageLoad(certificateIdReferenceNumber: String)
-POST        /certificate-confirmation                                                 controllers.certificate.CertificateConfirmationController.onSubmit()
 
 GET         /certificate/download                                                     controllers.DownloadPdfController.certificate(certificateReference: String)
 

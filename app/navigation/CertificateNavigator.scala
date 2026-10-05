@@ -66,8 +66,6 @@ class CertificateNavigator @Inject() () extends Navigator {
         }
     case CertificateDeclarationSaoPage(_) | CertificateDeclarationStandInPage(_) =>
       _ => certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()
-    case CertificateConfirmationPage =>
-      _ => certificateRoutes.CertificateTaskListController.onPageLoad(stage = CertificateTaskListStage.Complete)
     case _ =>
       _ => ???
   }
