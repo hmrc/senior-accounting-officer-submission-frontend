@@ -108,7 +108,7 @@ class NotificationMultiSaoPreviousOfficerNameSummarySpec extends SpecBase with G
         }
 
         "must have expected hidden text" in {
-          action.visuallyHiddenText.get mustBe "NotificationMultiSaoPreviousOfficerName"
+          action.visuallyHiddenText.get mustBe "the name of the SAO before the last one"
         }
       }
     }

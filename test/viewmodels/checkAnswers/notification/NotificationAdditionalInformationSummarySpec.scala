@@ -57,7 +57,7 @@ class NotificationAdditionalInformationSummarySpec extends CheckYourAnswersSpecB
       action
         .attr("href") mustBe notificationRoutes.NotificationAdditionalInformationController.onPageLoad(CheckMode).url
       action.select("span.govuk-visually-hidden").text() mustBe
-        s"the additional information supplied for the notification (Financial year end $testDate)"
+        "the additional information about your notification"
       action.select("span.govuk-visually-hidden").remove()
       action.text() mustBe "Change"
     }

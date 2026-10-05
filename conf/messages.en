@@ -134,7 +134,7 @@ notificationAdditionalInformation.label = Is there anything else we should know 
 notificationAdditionalInformation.checkYourAnswersLabel = Additional information about your notification
 notificationAdditionalInformation.error.required = Enter information about your notification, or select skip if there’s nothing to add
 notificationAdditionalInformation.error.length = Additional information about your notification must be 5000 characters or less
-notificationAdditionalInformation.change.hidden =  the additional information supplied for the notification (Financial year end {0})
+notificationAdditionalInformation.change.hidden = the additional information about your notification
 
 notificationCheckYourAnswers.title = Check your answers
 notificationCheckYourAnswers.heading = Check your answers
@@ -250,7 +250,7 @@ notificationMoreThanOneSao.title = Did the SAO change during the financial year 
 notificationMoreThanOneSao.heading = Did the SAO change during the financial year you are submitting for?
 notificationMoreThanOneSao.checkYourAnswersLabel = Did the SAO change during the financial year?
 notificationMoreThanOneSao.error.required = Select yes, if the SAO changed during the financial year you are submitting for
-notificationMoreThanOneSao.change.hidden = NotificationMoreThanOneSao
+notificationMoreThanOneSao.change.hidden = if there was more than one SAO during the financial year
 notificationMoreThanOneSao.yes = There was more than one SAO, the SAO changed during the financial year
 notificationMoreThanOneSao.no = Only one person held the role for the entire financial year
 
@@ -325,7 +325,7 @@ notificationSingleSaoOfficerName.checkYourAnswersLabel = SAO name
 notificationSingleSaoOfficerName.error.required = Enter the name of the SAO
 notificationSingleSaoOfficerName.error.length = Name of the SAO must be 105 characters or less
 notificationSingleSaoOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
-notificationSingleSaoOfficerName.change.hidden = the senior accounting officer full name
+notificationSingleSaoOfficerName.change.hidden = the name of the SAO
 
 notificationMultiSaoPreviousOfficerName.title = Who was the SAO before the last SAO?
 notificationMultiSaoPreviousOfficerName.heading = Who was the SAO before {0}?
@@ -334,7 +334,7 @@ notificationMultiSaoPreviousOfficerName.checkYourAnswersLabel = SAO before {0}
 notificationMultiSaoPreviousOfficerName.error.required = Enter the name of the SAO before {0}
 notificationMultiSaoPreviousOfficerName.error.length = Name of the SAO must be 105 characters or less
 notificationMultiSaoPreviousOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
-notificationMultiSaoPreviousOfficerName.change.hidden = NotificationMultiSaoPreviousOfficerName
+notificationMultiSaoPreviousOfficerName.change.hidden = the name of the SAO before the last one
 
 notificationMultiSaoLastOfficerStartDate.title = What date did the last SAO become the SAO?
 notificationMultiSaoLastOfficerStartDate.heading = What date did {0} become the SAO?
@@ -346,7 +346,7 @@ notificationMultiSaoLastOfficerStartDate.error.required = Enter the date {1} bec
 notificationMultiSaoLastOfficerStartDate.error.required.two = Enter the date {2} became the SAO
 notificationMultiSaoLastOfficerStartDate.error.invalid = Start date of the SAO must be a real date
 notificationMultiSaoLastOfficerStartDate.error.notPastDate = Start date of the SAO must be in the past
-notificationMultiSaoLastOfficerStartDate.change.hidden = NotificationMultiSaoLastOfficerStartDate
+notificationMultiSaoLastOfficerStartDate.change.hidden = the start date of the SAO at the end of the financial year
 
 notificationMultiSaoLastOfficerName.title = What is the name of the SAO at the end of the financial year?
 notificationMultiSaoLastOfficerName.caption = Submit a notification
@@ -355,7 +355,7 @@ notificationMultiSaoLastOfficerName.checkYourAnswersLabel = SAO at the end of th
 notificationMultiSaoLastOfficerName.error.required = Enter the name of the SAO at the end of the financial year
 notificationMultiSaoLastOfficerName.error.length = Name of the SAO must be 105 characters or less
 notificationMultiSaoLastOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
-notificationMultiSaoLastOfficerName.change.hidden = NotificationMultiSaoLastOfficerName
+notificationMultiSaoLastOfficerName.change.hidden = the name of the SAO at the end of the financial year
 
 notificationMultiSaoPreviousOfficerStartDate.title = What date did the previous SAO responsibility start?
 notificationMultiSaoPreviousOfficerStartDate.heading = When did {0} become the SAO?
@@ -367,14 +367,14 @@ notificationMultiSaoPreviousOfficerStartDate.error.required.two = The date must 
 notificationMultiSaoPreviousOfficerStartDate.error.required = The date must include a {0}
 notificationMultiSaoPreviousOfficerStartDate.error.invalid = Start date of the SAO must be a real date
 notificationMultiSaoPreviousOfficerStartDate.error.notPastDate = Start date of the SAO must be in the past
-notificationMultiSaoPreviousOfficerStartDate.change.hidden = NotificationMultiSaoPreviousOfficerStartDate
+notificationMultiSaoPreviousOfficerStartDate.change.hidden = the start date of the SAO before the last one
 
 notificationMultiSaoAreAllAdded.title = Have you added all the SAOs for this notification?
 notificationMultiSaoAreAllAdded.heading = Have you added all the SAOs for this notification?
 notificationMultiSaoAreAllAdded.caption = Submit a notification
 notificationMultiSaoAreAllAdded.checkYourAnswersLabel = Have you added all the SAOs for this notification?
 notificationMultiSaoAreAllAdded.error.required = Select yes if you have added all the SAOs for this notification
-notificationMultiSaoAreAllAdded.change.hidden = NotificationMultiSaoAreAllAdded
+notificationMultiSaoAreAllAdded.change.hidden = if there are more SAO in the notification
 
 notificationMultiSaoPreviousOfficerEndDate.title = What date did the previous SAO responsibility stop?
 notificationMultiSaoPreviousOfficerEndDate.caption = Submit a notification
@@ -387,7 +387,7 @@ notificationMultiSaoPreviousOfficerEndDate.error.required = The date must includ
 notificationMultiSaoPreviousOfficerEndDate.error.invalid = End date of the SAO must be a real date
 notificationMultiSaoPreviousOfficerEndDate.error.notPastDate = End date of the SAO must be in the past
 notificationMultiSaoPreviousOfficerEndDate.error.endDateBeforeStartDate = The end date must be the same as or after the start date
-notificationMultiSaoPreviousOfficerEndDate.change.hidden = NotificationMultiSaoPreviousOfficerEndDate
+notificationMultiSaoPreviousOfficerEndDate.change.hidden = the end date of the SAO before the last one
 
 confirmYourNotification.title = Confirm your notification
 confirmYourNotification.caption = Submit a notification
