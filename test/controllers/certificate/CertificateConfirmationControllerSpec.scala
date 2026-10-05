@@ -19,11 +19,9 @@ package controllers.certificate
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
-import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
-import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
@@ -104,21 +102,6 @@ class CertificateConfirmationControllerSpec extends SpecBase {
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
         }
-      }
-    }
-
-    "must redirect to the next page for a POST" in {
-      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .overrides(bind[CertificateNavigator].toInstance(new FakeCertificateNavigator(onwardRoute)))
-        .build()
-
-      running(application) {
-        val request = FakeRequest(POST, certificateRoutes.CertificateConfirmationController.onSubmit().url)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        header(HeaderNames.LOCATION, result) mustEqual Some(onwardRoute.url)
       }
     }
   }

@@ -21,15 +21,12 @@
 @this(
     layout: templates.Layout,
     govukButton: GovukButton,
-    formHelper: FormWithCSRF,
     appConfig: AppConfig
 )
 
 @(certificateReference: String, displayPdfLink: Boolean)(using request: Request[?], messages: Messages)
 
 @layout(showBackLink = false, pageTitle = titleNoForm(messages("certificateConfirmation.title"))) {
-
-    @formHelper(action = certificateRoutes.CertificateConfirmationController.onSubmit()) {
 
         <div class="govuk-panel govuk-panel--confirmation">
             <h1 class="govuk-panel__title">
@@ -78,5 +75,4 @@
         <p class="govuk-body">@Html(messages("certificateConfirmation.paragraph4WithLink", appConfig.hubBaseUrl))</p>
 
         <div class="govuk-inset-text">@messages("certificateConfirmation.inset")</div>
-    }
 }
