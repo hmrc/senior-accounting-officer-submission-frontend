@@ -1,0 +1,13 @@
+@this(
+layout: templates.Layout,
+govukButton: GovukButton
+)
+
+@()(using request: Request[?], messages: Messages)
+
+@layout(pageTitle = titleNoForm(messages("systemError.title"))) {
+
+<h1 class="govuk-heading-l">@messages("systemError.heading")</h1>
+<p class="govuk-body">@messages("unexpectedError.paragraph1")</p>
+<p class="govuk-body">@messages("unexpectedError.paragraph2")</p>
+}
