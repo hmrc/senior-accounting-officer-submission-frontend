@@ -146,8 +146,8 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
 }
 
 object CertificateSaoFullNameViewSpec {
-  val pageHeading    = "What is the name of the SAO responsible for the certificate?"
-  val pageTitle      = "What is the name of the SAO responsible for the certificate?"
-  val pageCaption    = "Submit a certificate"
-  val testInputValue = "myTestInputValue"
+  val pageHeading       = "What is the name of the SAO responsible for the certificate?"
+  val pageCaption       = "Submit a certificate"
+  val pageTitle: String = "What is the name of the SAO responsible for the certificate? - Submit a certificate"
+  val testInputValue    = "myTestInputValue"
 }

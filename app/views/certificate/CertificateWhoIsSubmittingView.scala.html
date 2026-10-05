@@ -27,7 +27,7 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("certificateWhoIsSubmitting.title"))) {
+@layout(pageTitle = title(form, messages("certificateWhoIsSubmitting.title"), Some(messages("certificateWhoIsSubmitting.caption")))) {
 
     @formHelper(action = certificateRoutes.CertificateWhoIsSubmittingController.onSubmit(mode), Symbol("autoComplete") -> "off") {
 
@@ -49,6 +49,7 @@
                     messages("certificateWhoIsSubmitting.paragraph2")
                 )
             )
+            .withSubheading(messages("certificateWhoIsSubmitting.label"))
         )
 
         @govukButton(

@@ -119,12 +119,24 @@ trait RadiosFluency {
       )
     }
 
-    def withParagraphs(paragraphs: Seq[String]): Radios =
+    def withSubheading(subheading: String): Radios = {
+      val sub = s"""<h2 class="govuk-heading-m">$subheading</h2>"""
+      radios.withFormGroup(
+        radios.formGroup.copy(beforeInput =
+          radios.formGroup.beforeInput.fold(Some(HtmlContent("")))(content =>
+            Some(HtmlContent(s"${content.asHtml} $sub"))
+          )
+        )
+      )
+    }
+
+    def withParagraphs(paragraphs: Seq[String]): Radios = {
       radios.withFormGroup(
         radios.formGroup.copy(beforeInput =
           Some(HtmlContent(paragraphs.map(paragraph => s"""<p class="govuk-body">$paragraph</p>""").mkString))
         )
       )
+    }
 
     def withDivider(insertionIndex: Int, dividerText: String): Radios = {
       radios.copy(

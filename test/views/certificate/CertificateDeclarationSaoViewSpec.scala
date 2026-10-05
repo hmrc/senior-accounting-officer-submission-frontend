@@ -55,7 +55,7 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
             name = "value",
             label = inputLabel,
             value = "",
-            hint = Some(inputHint),
+            hint = None,
             hasError = false
           )
 
@@ -71,8 +71,6 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
           doc.createTestsWithLargeCaption(pageCaption)
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
-          doc.createTestForInsetText(pageInsetText)
-          doc.createTestsForSubHeadings(pageSubHeadings)
           doc.createTestsForInputWidth()
         }
 
@@ -91,7 +89,7 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
             name = "value",
             label = inputLabel,
             value = testInputValue,
-            hint = Some(inputHint),
+            hint = None,
             hasError = false
           )
 
@@ -107,8 +105,6 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
           doc.createTestsWithLargeCaption(pageCaption)
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
-          doc.createTestForInsetText(pageInsetText)
-          doc.createTestsForSubHeadings(pageSubHeadings)
           doc.createTestsForInputWidth()
         }
 
@@ -127,7 +123,7 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
             name = "value",
             label = inputLabel,
             value = "",
-            hint = Some(inputHint),
+            hint = None,
             hasError = true
           )
 
@@ -143,47 +139,30 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
           doc.createTestsWithLargeCaption(pageCaption)
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
-          doc.createTestForInsetText(pageInsetText)
-          doc.createTestsForSubHeadings(pageSubHeadingsWithError)
           doc.createTestsForInputWidth()
         }
       }
     }
   }
-  extension (target: => Document) {
-    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
-      val headings = target.getMainContent.getElementsByTag("h2")
-      "must have expected number of headings" in {
-        headings.size() mustBe subheadings.length
-      }
-      subheadings.zipWithIndex.foreach((subheading, i) => {
-        s"must have heading '$subheading'" in {
-          headings.get(i).text mustBe subheading
-        }
-      })
-    }
-  }
 }
 
 object CertificateDeclarationSaoViewSpec {
-  val pageHeading                  = "Confirm the certificate"
-  val pageTitle                    = "Confirm the certificate"
-  val inputLabel                   = "I am the Senior Accounting Officer with the authority to submit this certificate:"
-  val inputHint                    = "Insert full name"
-  val pageSubHeadings: Seq[String] = Seq("Declaration")
-  val pageSubHeadingsWithError: Seq[String] = Seq("There is a problem", "Declaration")
+  val pageHeading                           = "Declaration"
   val pageCaption                           = "Submit a certificate"
+  val pageTitle: String                     = "Declaration - Submit a certificate"
+  val inputLabel                            = "Enter your full name"
+  val pageSubHeadings: Seq[String]          = Seq("Declaration")
+  val pageSubHeadingsWithError: Seq[String] = Seq("There is a problem", "Declaration")
   val pageButton                            = "Confirm"
   val testInputValue                        = "myTestInputValue"
   val pageParagraphs: Seq[String]           = Seq(
-    "As the SAO it is your responsibility to make sure you have reviewed and approved everything before you submit.",
+    "As the SAO, it is your responsibility to review and approve the certificate before you submit.",
     "By submitting this certificate, you confirm that:",
-    "if you deliberately give wrong or incomplete information, or do not report changes, the SAO may have to pay a penalty of £5,000."
+    "If you deliberately give wrong or incomplete information, or do not report changes, you may have to pay a penalty of £5,000.",
+    "I confirm that I am the Senior Accounting Officer with the authority to submit this certificate:"
   )
   val pageBullets: Seq[String] = Seq(
-    "the information is complete and correct",
+    "the information you have provided is complete and correct",
     "you are the SAO submitting this certificate"
   )
-  val pageInsetText =
-    "If you realise the information you submitted is incorrect, contact HMRC using your usual compliance contact or existing support channels."
 }

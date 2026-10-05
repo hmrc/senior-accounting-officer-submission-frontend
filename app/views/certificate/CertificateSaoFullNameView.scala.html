@@ -27,7 +27,7 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("certificateSaoFullName.title"))) {
+@layout(pageTitle = title(form, messages("certificateSaoFullName.title"), Some(messages("certificateSaoFullName.caption")))) {
 
     @formHelper(action = certificateRoutes.CertificateSaoFullNameController.onSubmit(mode)) {
 

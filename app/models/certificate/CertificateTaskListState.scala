@@ -21,5 +21,5 @@ final case class CertificateTaskListState(
     provideSaoDetailsStage: TaskStatus,
     uploadSubmissionTemplateStage: TaskStatus,
     submitCertificateStage: TaskStatus,
-    showContinueButton: Boolean
+    showViewYourConfirmationButton: Boolean
 )
