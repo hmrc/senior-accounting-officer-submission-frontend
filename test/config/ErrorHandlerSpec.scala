@@ -38,4 +38,10 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
       html.contentType mustBe "text/html"
     }
   }
+  "internalServerErrorTemplate must" - {
+    "render HTML" in {
+      val html = handler.internalServerErrorTemplate(fakeRequest).futureValue
+      html.contentType mustBe "text/html"
+    }
+  }
 }
