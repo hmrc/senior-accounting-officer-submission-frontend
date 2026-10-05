@@ -61,7 +61,7 @@
     @None
 
     @if(state.showViewYourConfirmationButton) {
-        @certificateReference.fold(identity)( reference =>
+        @certificateReference.fold(???)( reference =>
         formHelper(action = certificateRoutes.CertificateTaskListController.onSubmit(reference)) {
         govukButton(
             ButtonViewModel(messages("certificateTaskList.certificateConfirmationButton").toText)
