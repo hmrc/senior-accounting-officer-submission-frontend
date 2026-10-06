@@ -77,12 +77,9 @@ class CertificateSubmissionService @Inject() (
       userAnswers: UserAnswers
   ): Either[String, CertificateSubmissionRequest] =
     for {
-      saoName  <- userAnswers.get(CertificateSaoFullNamePage).toRight("missing SAO name")
-      saoEmail <- userAnswers.get(CertificateSaoEmailPage).toRight("missing SAO email")
-      saoNameOnDeclaration = userAnswers
-        .get(CertificateDeclarationStandInPage(NormalMode))
-        .map(_.SaoName)
-        .getOrElse(saoName)
+      saoName            <- userAnswers.get(CertificateSaoFullNamePage).toRight("missing SAO name")
+      saoEmail           <- userAnswers.get(CertificateSaoEmailPage).toRight("missing SAO email")
+      saoDeclarationName <- declarationName(userAnswers).toRight("missing SAO declaration name")
       tableData <- userAnswers.get(CertificateUploadTemplateTablePage).toRight("missing uploaded certificate data")
       companies = tableData.rows.collect { case ParsedSubmissionRow(notification, Some(certificate)) =>
         toCompany(notification, certificate)
@@ -91,11 +88,19 @@ class CertificateSubmissionService @Inject() (
     } yield CertificateSubmissionRequest(
       submitterName = submitterName(userAnswers),
       saoName = saoName,
-      saoDeclarationName = saoNameOnDeclaration,
+      saoDeclarationName = saoDeclarationName,
       saoEmail = saoEmail,
       companies = companies,
       remarks = userAnswers.getNullable(CertificateAdditionalInformationPage)
     )
+
+  private def declarationName(userAnswers: UserAnswers): Option[String] =
+    userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode)).flatMap {
+      case CertificateWhoIsSubmitting.Sao =>
+        userAnswers.get(CertificateDeclarationSaoPage(NormalMode))
+      case CertificateWhoIsSubmitting.StandIn =>
+        userAnswers.get(CertificateDeclarationStandInPage(NormalMode)).map(_.SaoName)
+    }
 
   private def submitterName(userAnswers: UserAnswers): Option[String] =
     userAnswers

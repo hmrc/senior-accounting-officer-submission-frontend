@@ -49,7 +49,7 @@ class CertificateSubmissionRequestFormatSpec extends SpecBase {
       json.validate[CertificateSubmissionRequest] mustBe JsSuccess(requestWithoutOptionalValues)
     }
 
-    for name <- Seq("saoName", "saoEmail", "companies") yield {
+    for name <- Seq("saoName", "saoDeclarationName", "saoEmail", "companies") yield {
       s"must fail to read when a required '$name' field is missing" in {
         val result = requestJson.as[JsObject].-(name).validate[CertificateSubmissionRequest]
 
@@ -138,7 +138,7 @@ object CertificateSubmissionRequestFormatSpec {
     CertificateSubmissionRequest(
       submitterName = Some("Proxy Person"),
       saoName = "Senior Officer",
-      saoDeclarationName = "Senior Officer",
+      saoDeclarationName = "Declaration Officer",
       saoEmail = "sao@example.com",
       companies = Seq(company),
       remarks = Some("Certificate remarks")
@@ -148,7 +148,7 @@ object CertificateSubmissionRequestFormatSpec {
     s"""{
       |  "submitterName": "Proxy Person",
       |  "saoName": "Senior Officer",
-      |  "saoDeclarationName": "Senior Officer",
+      |  "saoDeclarationName": "Declaration Officer",
       |  "saoEmail": "sao@example.com",
       |  "companies": [
       |    {

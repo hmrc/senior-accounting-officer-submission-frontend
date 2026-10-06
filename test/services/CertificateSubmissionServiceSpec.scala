@@ -74,7 +74,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
       val request = requestCaptor.getValue
       request.saoName mustBe "Senior Officer"
-      request.saoDeclarationName mustBe "Senior Officer"
+      request.saoDeclarationName mustBe "SAO Declaration Signatory"
       request.saoEmail mustBe "sao@example.com"
       request.remarks.value mustBe "Certificate remarks"
 
@@ -126,7 +126,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val request = requestCaptor.getValue
       request.submitterName.value mustBe "Proxy Person"
       request.saoName mustBe "Senior Officer"
-      request.saoDeclarationName mustBe "Declared Senior Officer"
+      request.saoDeclarationName mustBe "Declaration Officer"
       request.saoEmail mustBe "sao@example.com"
       request.remarks.value mustBe "Certificate remarks"
 
@@ -147,6 +147,53 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       company.isCustomsDutiesQualified mustBe false
       company.isExciseDutiesQualified mustBe false
       company.isBankLevyQualified mustBe false
+    }
+
+    "must send the SAO declaration name separately when the SAO submits" in {
+      val connector         = mock[CertificateSubmissionConnector]
+      val sessionRepository = mock[SessionRepository]
+      val requestCaptor     = ArgumentCaptor.forClass(classOf[CertificateSubmissionRequest])
+      val answers           = standInUserAnswers
+        .set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.Sao)
+        .success
+        .value
+        .set(CertificateDeclarationSaoPage(NormalMode), "SAO Declaration Signatory")
+        .success
+        .value
+
+      when(sessionRepository.claimCertificateSubmissionToken(eqTo(userAnswersId), eqTo("token")))
+        .thenReturn(Future.successful(true))
+      when(connector.submit(any())(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResponse("CRT0123456789")))
+      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
+
+      val service = new CertificateSubmissionService(connector, sessionRepository)
+
+      service.submit(userAnswersId, answers, "token").futureValue mustBe
+        CertificateSubmissionResult.Submitted("CRT0123456789")
+      verify(connector).submit(requestCaptor.capture())(using any())
+      requestCaptor.getValue.saoName mustBe "Senior Officer"
+      requestCaptor.getValue.saoDeclarationName mustBe "SAO Declaration Signatory"
+      requestCaptor.getValue.submitterName mustBe None
+    }
+
+    for submitter <- CertificateWhoIsSubmitting.values yield {
+      s"must not submit or claim the token when the $submitter declaration is missing" in {
+        val connector         = mock[CertificateSubmissionConnector]
+        val sessionRepository = mock[SessionRepository]
+        val answers           = standInUserAnswers
+          .set(CertificateWhoIsSubmittingPage(NormalMode), submitter)
+          .success
+          .value
+          .remove(CertificateDeclarationStandInPage(NormalMode))
+          .success
+          .value
+        val service = new CertificateSubmissionService(connector, sessionRepository)
+
+        service.submit(userAnswersId, answers, "token").futureValue mustBe CertificateSubmissionResult.MissingData
+        verify(sessionRepository, never()).claimCertificateSubmissionToken(any(), any())
+        verify(connector, never()).submit(any())(using any())
+      }
     }
 
     "must not call the connector when the token has already been used" in {
@@ -235,6 +282,9 @@ object CertificateSubmissionServiceSpec {
       .set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.Sao)
       .success
       .value
+      .set(CertificateDeclarationSaoPage(NormalMode), "SAO Declaration Signatory")
+      .success
+      .value
       .set(CertificateAdditionalInformationPage, Some("Certificate remarks"))
       .success
       .value
@@ -255,7 +305,7 @@ object CertificateSubmissionServiceSpec {
       .value
       .set(
         CertificateDeclarationStandInPage(NormalMode),
-        CertificateDeclarationStandIn("Proxy Person", "Declared Senior Officer")
+        CertificateDeclarationStandIn("Proxy Person", "Declaration Officer")
       )
       .success
       .value
