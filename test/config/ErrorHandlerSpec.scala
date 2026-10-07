@@ -17,8 +17,10 @@
 package config
 
 import base.SpecBase
+import com.mongodb.MongoException
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.test.FakeRequest
+import play.api.test.Helpers.*
 
 class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
 
@@ -32,16 +34,66 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
       html.contentType mustBe "text/html"
     }
   }
+
   "NotFoundError must" - {
     "render HTML" in {
       val html = handler.notFoundTemplate(fakeRequest).futureValue
       html.contentType mustBe "text/html"
     }
   }
+
   "internalServerErrorTemplate must" - {
     "render HTML" in {
       val html = handler.internalServerErrorTemplate(fakeRequest).futureValue
       html.contentType mustBe "text/html"
+    }
+  }
+
+  "onServerError must" - {
+
+    "redirect to JourneyRecoveryController with the notification section when a MongoException occurs on a notification path" in {
+      val request = FakeRequest("GET", "/senior-accounting-officer/submission/notification/check-your-answers")
+      val result  = handler.onServerError(request, new MongoException("boom")).futureValue
+
+      result.header.status mustBe SEE_OTHER
+      result.header.headers.get(LOCATION) mustBe Some(
+        controllers.routes.JourneyRecoveryController.onPageLoad(section = Some("section.notification")).url
+      )
+    }
+
+    "redirect to JourneyRecoveryController with the certificate section when a MongoException occurs on a certificate path" in {
+      val request = FakeRequest("GET", "/senior-accounting-officer/submission/certificate/check-your-answers")
+      val result  = handler.onServerError(request, new MongoException("boom")).futureValue
+
+      result.header.headers.get(LOCATION) mustBe Some(
+        controllers.routes.JourneyRecoveryController.onPageLoad(section = Some("section.certificate")).url
+      )
+    }
+
+    "redirect to JourneyRecoveryController with no section when a MongoException occurs on an unrelated path" in {
+      val request = FakeRequest("GET", "/senior-accounting-officer/submission/some-other-path")
+      val result  = handler.onServerError(request, new MongoException("boom")).futureValue
+
+      result.header.headers.get(LOCATION) mustBe Some(
+        controllers.routes.JourneyRecoveryController.onPageLoad().url
+      )
+    }
+
+    "detect a MongoException wrapped inside another exception's cause" in {
+      val request      = FakeRequest("GET", "/senior-accounting-officer/submission/notification/check-your-answers")
+      val wrappedMongo = new RuntimeException("wrapper", new MongoException("boom"))
+      val result       = handler.onServerError(request, wrappedMongo).futureValue
+
+      result.header.headers.get(LOCATION) mustBe Some(
+        controllers.routes.JourneyRecoveryController.onPageLoad(section = Some("section.notification")).url
+      )
+    }
+
+    "fall back to the default error handling for a non-Mongo exception" in {
+      val request = FakeRequest("GET", "/senior-accounting-officer/submission/notification/check-your-answers")
+      val result  = handler.onServerError(request, new RuntimeException("not mongo related")).futureValue
+
+      result.header.status mustBe INTERNAL_SERVER_ERROR
     }
   }
 }

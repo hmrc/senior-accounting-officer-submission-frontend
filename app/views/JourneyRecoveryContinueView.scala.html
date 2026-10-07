@@ -19,9 +19,9 @@
     govukButton: GovukButton
 )
 
-@(continueUrl: String)(using request: Request[?], messages: Messages)
+@(continueUrl: String, section: Option[String])(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("journeyRecovery.continue.title"))) {
+@layout(pageTitle = titleNoForm(messages("journeyRecovery.continue.title"), section)) {
 
     <h1 class="govuk-heading-xl">@messages("journeyRecovery.continue.heading")</h1>
 

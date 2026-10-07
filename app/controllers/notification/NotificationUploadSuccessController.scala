@@ -55,7 +55,11 @@ class NotificationUploadSuccessController @Inject() (
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
       upscanService.fileUploadState(UploadJourney.Notification, request.userAnswers, key).flatMap {
         case State.NoReference =>
-          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification"))
+            )
+          )
         case State.WaitingForUpscan =>
           Future.successful(Ok(view()))
         case State.QuarantinedByUpscan =>

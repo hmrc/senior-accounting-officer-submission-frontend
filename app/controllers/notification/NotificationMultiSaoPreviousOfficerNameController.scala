@@ -62,7 +62,7 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
         request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)).fold(form)(form.fill)
       saoNameForPage(mode, saoIndex, request.userAnswers)
         .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad())
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification")))
         )(saoName => Ok(view(saoName, preparedForm, mode, saoIndex)))
 
   }
@@ -70,7 +70,12 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       saoNameForPage(mode, saoIndex, request.userAnswers) match {
-        case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case None =>
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification"))
+            )
+          )
         case Some(saoName) =>
           formProvider(Option(saoName))
             .bindFromRequest()

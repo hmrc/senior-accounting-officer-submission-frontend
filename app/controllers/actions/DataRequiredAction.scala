@@ -31,11 +31,16 @@ class DataRequiredActionImpl @Inject() (implicit val executionContext: Execution
 
     request.userAnswers match {
       case None =>
-        Future.successful(Left(Redirect(routes.JourneyRecoveryController.onPageLoad())))
+        Future.successful(Left(Redirect(routes.JourneyRecoveryController.onPageLoad(section = sectionFor(request)))))
       case Some(data) =>
         Future.successful(Right(DataRequest(request.request, request.userId, request.saoSubscriptionId, data)))
     }
   }
+
+  private def sectionFor(request: OptionalDataRequest[?]): Option[String] =
+    if request.path.contains("/notification/") then Some("journeyRecovery.section.notification")
+    else if request.path.contains("/certificate/") then Some("journeyRecovery.section.certificate")
+    else None
 }
 
 trait DataRequiredAction extends ActionRefiner[OptionalDataRequest, DataRequest]

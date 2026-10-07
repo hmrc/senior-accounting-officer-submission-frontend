@@ -51,7 +51,7 @@ class CertificateSaoEmailController @Inject() (
     request.userAnswers
       .get(CertificateSaoFullNamePage)
       .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
+        Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.certificate")))
       )(saoName => Ok(view(saoName, preparedForm, mode)))
   }
 
@@ -70,7 +70,10 @@ class CertificateSaoEmailController @Inject() (
                   _              <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(navigator.nextPage(CertificateSaoEmailPage, mode, updatedAnswers))
             )
-        case None => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case None =>
+          Future.successful(
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.certificate")))
+          )
       }
   }
 }

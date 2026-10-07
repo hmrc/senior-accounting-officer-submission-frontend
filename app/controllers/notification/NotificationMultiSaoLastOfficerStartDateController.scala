@@ -50,7 +50,7 @@ class NotificationMultiSaoLastOfficerStartDateController @Inject() (
     request.userAnswers
       .get(NotificationMultiSaoLastOfficerNamePage(mode))
       .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
+        Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification")))
       ) { saoName =>
         val form         = formProvider(saoName)
         val preparedForm =
@@ -80,7 +80,12 @@ class NotificationMultiSaoLastOfficerStartDateController @Inject() (
                 )
             )
 
-        case None => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case None =>
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification"))
+            )
+          )
       }
   }
 }

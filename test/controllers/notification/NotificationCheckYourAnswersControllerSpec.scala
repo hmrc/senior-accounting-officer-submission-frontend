@@ -96,7 +96,9 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some("journeyRecovery.section.notification"))
+          .url
       }
     }
 
@@ -148,7 +150,9 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+            .onPageLoad(section = Some("journeyRecovery.section.notification"))
+            .url
         }
       }
 

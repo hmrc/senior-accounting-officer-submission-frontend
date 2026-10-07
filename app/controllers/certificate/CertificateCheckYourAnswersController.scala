@@ -65,7 +65,12 @@ class CertificateCheckYourAnswersController @Inject() (
 
     request.body.asFormUrlEncoded.flatMap(submissionToken) match {
       case None =>
-        Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
+        Future.successful(
+          Redirect(
+            controllers.routes.JourneyRecoveryController
+              .onPageLoad(section = Some("journeyRecovery.section.certificate"))
+          )
+        )
       case Some(token) =>
         certificateSubmissionService
           .submit(request.userId, request.userAnswers, token)

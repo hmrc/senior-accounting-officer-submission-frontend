@@ -16,11 +16,14 @@
 
 package config
 
+import com.mongodb.MongoException
+import play.api.Logging
 import play.api.i18n.MessagesApi
-import play.api.mvc.RequestHeader
+import play.api.mvc.Results.Redirect
+import play.api.mvc.{RequestHeader, Result}
 import play.twirl.api.Html
 import uk.gov.hmrc.play.bootstrap.frontend.http.FrontendErrorHandler
-import views.html.{ErrorTemplate, PageNotFoundView, UnexpectedErrorView}
+import views.html.{ErrorTemplate, PageNotFoundView}
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -30,20 +33,37 @@ import javax.inject.{Inject, Singleton}
 class ErrorHandler @Inject() (
     errorTemplate: ErrorTemplate,
     pageNotFoundView: PageNotFoundView,
-    unexpectedErrorView: UnexpectedErrorView,
     override val messagesApi: MessagesApi
 )(implicit override val ec: ExecutionContext)
-    extends FrontendErrorHandler {
+    extends FrontendErrorHandler
+    with Logging {
 
   override def standardErrorTemplate(pageTitle: String, heading: String, message: String)(implicit
       request: RequestHeader
   ): Future[Html] =
     Future.successful(errorTemplate(pageTitle, heading, message))
 
-  override def internalServerErrorTemplate(implicit request: RequestHeader): Future[Html] = {
-    Future.successful(unexpectedErrorView())
-  }
-
   override def notFoundTemplate(implicit request: RequestHeader): Future[Html] =
     Future.successful(pageNotFoundView())
+
+  override def onServerError(request: RequestHeader, exception: Throwable): Future[Result] =
+    if isMongoFailure(exception) then {
+      Future.successful(
+        Redirect(controllers.routes.JourneyRecoveryController.onPageLoad(section = sectionFor(request)))
+      )
+    } else {
+      super.onServerError(request, exception)
+    }
+
+  private def sectionFor(request: RequestHeader): Option[String] =
+    if request.path.contains("/notification/") then Some("section.notification")
+    else if request.path.contains("/certificate/") then Some("section.certificate")
+    else None
+
+  private def isMongoFailure(throwable: Throwable): Boolean =
+    throwable match {
+      case _: MongoException => true
+      case other             => Option(other.getCause).exists(isMongoFailure)
+    }
+
 }

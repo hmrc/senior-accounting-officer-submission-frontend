@@ -60,14 +60,20 @@ class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
               .get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
               .fold(form)(form.fill)
           Ok(view(saoName, preparedForm, mode, saoIndex))
-        case None => Redirect(routes.JourneyRecoveryController.onPageLoad())
+        case None =>
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification")))
       }
   }
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
-        case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case None =>
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification"))
+            )
+          )
         case Some(saoName) =>
           val form = formProvider(saoName)
           form

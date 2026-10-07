@@ -54,7 +54,9 @@ class UploadTemplateTableController @Inject() (
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
       request.userAnswers
         .get(UploadTemplateTablePage)
-        .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { tableData =>
+        .fold(
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification")))
+        ) { tableData =>
           if tableData.hasErrors then {
             Ok(errorView(tableData))
           } else {
@@ -71,7 +73,13 @@ class UploadTemplateTableController @Inject() (
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
       request.userAnswers
         .get(UploadTemplateTablePage)
-        .fold(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))) {
+        .fold(
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification"))
+            )
+          )
+        ) {
           case tableData if tableData.hasErrors =>
             Future.successful(Redirect(notificationRoutes.NotificationUploadFormController.onPageLoad()))
           case _ =>

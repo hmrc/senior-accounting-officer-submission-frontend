@@ -54,7 +54,9 @@ class CertificateUploadSuccessController @Inject() (
     (identify andThen getData andThen requireData).async { implicit request =>
       upscanService.fileUploadState(UploadJourney.Certificate, request.userAnswers, key).flatMap {
         case State.NoReference =>
-          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          Future.successful(
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.certificate")))
+          )
         case State.WaitingForUpscan =>
           Future.successful(Ok(view()))
         case State.QuarantinedByUpscan =>

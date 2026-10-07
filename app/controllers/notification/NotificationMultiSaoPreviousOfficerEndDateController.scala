@@ -95,7 +95,12 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
                     .nextPage(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, mode), mode, updatedAnswers)
                 )
             )
-        case _ => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case _ =>
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification"))
+            )
+          )
       }
   }
 }

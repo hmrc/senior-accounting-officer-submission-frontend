@@ -68,7 +68,9 @@ class CertificateReviewUnqualifiedController @Inject() (
               companyCount = totalCompanies
             )
           )
-        }).fold(Redirect(routes.JourneyRecoveryController.onPageLoad()))(identity)
+        }).fold(
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.certificate")))
+        )(identity)
     }
 
   def onSubmit(): Action[AnyContent] =
