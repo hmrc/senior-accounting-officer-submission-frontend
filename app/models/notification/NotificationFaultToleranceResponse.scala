@@ -17,15 +17,9 @@
 package models.notification
 
 import play.api.libs.json.{Json, OFormat}
-import uk.gov.hmrc.http.HttpReads.Implicits.*
 
-final case class NotificationRequest(
-    companies: List[Company],
-    saos: List[Sao],
-    remarks: Option[String],
-    idempotencyKey: Option[String]
-)
+final case class NotificationFaultToleranceResponse(idempotencyKey: String)
 
-object NotificationRequest {
-  given format: OFormat[NotificationRequest] = Json.format
+object NotificationFaultToleranceResponse {
+  given format: OFormat[NotificationFaultToleranceResponse] = Json.format
 }

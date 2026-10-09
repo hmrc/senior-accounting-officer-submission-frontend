@@ -16,6 +16,7 @@
 
 package controllers.certificate
 
+import config.AppConfig
 import controllers.actions.*
 import controllers.certificate.routes as certificateRoutes
 import models.JourneySection
@@ -45,7 +46,8 @@ class CertificateCheckYourAnswersController @Inject() (
     certificateCheckYourAnswersService: CertificateCheckYourAnswersService,
     certificateSubmissionService: CertificateSubmissionService,
     declarationUserAnswersService: DeclarationUserAnswersService,
-    view: CertificateCheckYourAnswersView
+    view: CertificateCheckYourAnswersView,
+    appConfig: AppConfig
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -61,34 +63,31 @@ class CertificateCheckYourAnswersController @Inject() (
     } yield Ok(view(summaryList, token))
   }
 
-  def onSubmit(): Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
-    given HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-
-    request.body.asFormUrlEncoded.flatMap(submissionToken) match {
-      case None =>
-        Future.successful(
-          Redirect(
-            controllers.routes.JourneyRecoveryController
-              .onPageLoad(section = Some(JourneySection.Certificate))
-          )
-        )
-      case Some(token) =>
-        certificateSubmissionService
-          .submit(request.userId, request.userAnswers, token)
-          .flatMap {
+  def onSubmit(): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      given HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+      request.body.asFormUrlEncoded.flatMap(submissionToken) match {
+        case None =>
+          Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
+        case Some(token) =>
+          val submission =
+            if appConfig.faultToleranceEnabled then
+              certificateSubmissionService.submitWithFaultTolerance(request.userId, request.userAnswers, token)
+            else certificateSubmissionService.submit(request.userId, request.userAnswers, token)
+          submission.map {
             case CertificateSubmissionResult.Submitted(certificateRef) =>
-              Future.successful(
-                Redirect(certificateRoutes.CertificateTaskListController.onPageLoadComplete(certificateRef))
-              )
+              Redirect(certificateRoutes.CertificateTaskListController.onPageLoadComplete(certificateRef))
+            case CertificateSubmissionResult.Pending(idempotencyKey) =>
+              Redirect(certificateRoutes.CertificatePendingController.onPageLoad(idempotencyKey))
             case CertificateSubmissionResult.Duplicate =>
-              Future.successful(Redirect(certificateRoutes.CertificateCheckYourAnswersController.onPageLoad()))
+              Redirect(certificateRoutes.CertificateCheckYourAnswersController.onPageLoad())
             case CertificateSubmissionResult.MissingData =>
-              Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
+              Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
             case CertificateSubmissionResult.Failed =>
-              Future.failed(CertificateCheckYourAnswersController.SubmissionFailedException)
+              throw CertificateCheckYourAnswersController.SubmissionFailedException
           }
+      }
     }
-  }
 
   private def submissionToken(form: Map[String, Seq[String]]): Option[String] =
     form.collectFirst { case (CertificateCheckYourAnswersController.TokenField, token +: _) =>
