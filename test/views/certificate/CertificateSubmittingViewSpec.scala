@@ -53,5 +53,5 @@ class CertificateSubmittingViewSpec extends ViewSpecBase[CertificateSubmittingVi
 object CertificateSubmittingViewSpec {
   val panelTitle: String   = "Submitting your certificate"
   val panelHeading: String = "Submitting your certificate"
-  val waitText: String = "This may take a few minutes - do not close or refresh the page."
+  val waitText: String     = "This may take a few minutes - do not close or refresh the page."
 }

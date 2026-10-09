@@ -53,5 +53,5 @@ class NotificationSubmittingViewSpec extends ViewSpecBase[NotificationSubmitting
 object NotificationSubmittingViewSpec {
   val panelTitle: String   = "Submitting your notification"
   val panelHeading: String = "Submitting your notification"
-  val waitText: String = "This may take a few minutes - do not close or refresh the page."
+  val waitText: String     = "This may take a few minutes - do not close or refresh the page."
 }
