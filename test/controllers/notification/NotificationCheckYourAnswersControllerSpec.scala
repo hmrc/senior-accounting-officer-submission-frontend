@@ -20,9 +20,7 @@ import base.SpecBase
 import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import models.NormalMode
-import models.TransactionMode
-import models.UserAnswers
+import models.*
 import models.notification.NotificationSubmissionError
 import models.upload.UploadTemplateTableData
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
@@ -97,7 +95,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.notification"))
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
           .url
       }
     }
@@ -151,7 +149,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase {
 
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-            .onPageLoad(section = Some("journeyRecovery.section.notification"))
+            .onPageLoad(section = Some(JourneySection.Notification.toString))
             .url
         }
       }

@@ -19,6 +19,7 @@ package controllers.certificate
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
+import models.JourneySection
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.*
@@ -80,7 +81,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.certificate"))
+          .onPageLoad(section = Some(JourneySection.Certificate.toString))
           .url
       }
     }

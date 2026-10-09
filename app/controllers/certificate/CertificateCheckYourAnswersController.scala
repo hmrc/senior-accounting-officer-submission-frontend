@@ -18,6 +18,7 @@ package controllers.certificate
 
 import controllers.actions.*
 import controllers.certificate.routes as certificateRoutes
+import models.JourneySection
 import pages.certificate.CertificateSubmissionTokenPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.*
@@ -68,7 +69,7 @@ class CertificateCheckYourAnswersController @Inject() (
         Future.successful(
           Redirect(
             controllers.routes.JourneyRecoveryController
-              .onPageLoad(section = Some("journeyRecovery.section.certificate"))
+              .onPageLoad(section = Some(JourneySection.Certificate.toString))
           )
         )
       case Some(token) =>

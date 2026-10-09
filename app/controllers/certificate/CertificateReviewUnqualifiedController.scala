@@ -18,8 +18,8 @@ package controllers.certificate
 
 import controllers.actions.*
 import controllers.routes
-import models.NormalMode
 import models.upload.*
+import models.{JourneySection, NormalMode}
 import navigation.CertificateNavigator
 import pages.certificate.{
   CertificateReviewUnqualifiedPage,
@@ -69,7 +69,7 @@ class CertificateReviewUnqualifiedController @Inject() (
             )
           )
         }).fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.certificate")))
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString)))
         )(identity)
     }
 

@@ -86,7 +86,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).get mustEqual routes.JourneyRecoveryController
-            .onPageLoad(section = Some("journeyRecovery.section.notification"))
+            .onPageLoad(section = Some(JourneySection.Notification.toString))
             .url
 
           verify(mockUpscanService, times(1)).fileUploadState(
@@ -117,7 +117,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
 
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).get mustEqual routes.JourneyRecoveryController
-            .onPageLoad(section = Some("journeyRecovery.section.notification"))
+            .onPageLoad(section = Some(JourneySection.Notification.toString))
             .url
 
           verify(mockUpscanService, times(1)).fileUploadState(

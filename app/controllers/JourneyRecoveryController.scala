@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions.IdentifierAction
+import models.JourneySection
 import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -48,8 +49,10 @@ class JourneyRecoveryController @Inject() (
         }
       }
 
+      val journeySection: Option[JourneySection] = section.flatMap(raw => JourneySection.values.find(_.toString == raw))
+
       safeUrl
-        .map(url => Ok(continueView(url, section)))
-        .getOrElse(Ok(startAgainView(section)))
+        .map(url => Ok(continueView(url, journeySection)))
+        .getOrElse(Ok(startAgainView(journeySection)))
     }
 }

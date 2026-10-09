@@ -21,7 +21,7 @@ import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import forms.certificate.CertificateDeclarationStandInFormProvider
 import models.certificate.CertificateDeclarationStandIn
-import models.{NormalMode, UserAnswers}
+import models.{JourneySection, NormalMode, UserAnswers}
 import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -147,7 +147,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.certificate"))
+          .onPageLoad(section = Some(JourneySection.Certificate.toString))
           .url
       }
     }
@@ -165,7 +165,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.certificate"))
+          .onPageLoad(section = Some(JourneySection.Certificate.toString))
           .url
       }
     }

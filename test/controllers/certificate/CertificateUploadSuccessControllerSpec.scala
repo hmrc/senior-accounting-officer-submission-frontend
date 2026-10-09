@@ -85,7 +85,7 @@ class CertificateUploadSuccessControllerSpec extends SpecBase with BeforeAndAfte
 
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).get mustEqual routes.JourneyRecoveryController
-            .onPageLoad(section = Some("journeyRecovery.section.certificate"))
+            .onPageLoad(section = Some(JourneySection.Certificate.toString))
             .url
 
           verify(mockUpscanService, times(1)).fileUploadState(
@@ -116,7 +116,7 @@ class CertificateUploadSuccessControllerSpec extends SpecBase with BeforeAndAfte
 
           status(result) mustEqual SEE_OTHER
           redirectLocation(result).get mustEqual routes.JourneyRecoveryController
-            .onPageLoad(section = Some("journeyRecovery.section.certificate"))
+            .onPageLoad(section = Some(JourneySection.Certificate.toString))
             .url
 
           verify(mockUpscanService, times(1)).fileUploadState(

@@ -1,5 +1,5 @@
 /*
- * Copyright 2026 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package views
 
 import base.ViewSpecBase
 import config.AppConfig
+import models.JourneySection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.JourneyRecoveryStartAgainView
@@ -26,7 +27,7 @@ import JourneyRecoveryStartAgainViewSpec.*
 
 class JourneyRecoveryStartAgainViewSpec extends ViewSpecBase[JourneyRecoveryStartAgainView] {
 
-  private def generateView(section: Option[String]): Document = Jsoup.parse(SUT(section).toString)
+  private def generateView(section: Option[JourneySection]): Document = Jsoup.parse(SUT(section).toString)
 
   private def createTestWithStartAgainButton(doc: Document): Unit =
     "must have a start again button linking to the hub" in {
@@ -56,7 +57,7 @@ class JourneyRecoveryStartAgainViewSpec extends ViewSpecBase[JourneyRecoveryStar
 
     "when the notification section is provided" - {
       AppConfig.setValue("hub-frontend.host", hubHost)
-      val doc: Document = generateView(section = Some("journeyRecovery.section.notification"))
+      val doc: Document = generateView(section = Some(JourneySection.Notification))
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitleWithNotificationSection,
@@ -73,7 +74,7 @@ class JourneyRecoveryStartAgainViewSpec extends ViewSpecBase[JourneyRecoveryStar
 
     "when the certificate section is provided" - {
       AppConfig.setValue("hub-frontend.host", hubHost)
-      val doc: Document = generateView(section = Some("journeyRecovery.section.certificate"))
+      val doc: Document = generateView(section = Some(JourneySection.Certificate))
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitleWithCertificateSection,

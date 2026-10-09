@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerStartDateFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{JourneySection, NormalMode, UserAnswers}
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -100,7 +100,7 @@ class NotificationMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBas
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.notification"))
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
           .url
       }
     }
@@ -169,7 +169,7 @@ class NotificationMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBas
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.notification"))
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
           .url
       }
     }
@@ -206,7 +206,7 @@ class NotificationMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBas
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.notification"))
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
           .url
       }
     }
@@ -220,7 +220,7 @@ class NotificationMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBas
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.notification"))
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
           .url
       }
     }

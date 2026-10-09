@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerStartDateFormProvider
-import models.Mode
+import models.{JourneySection, Mode}
 import navigation.NotificationNavigator
 import pages.notification.{
   NotificationMultiSaoPreviousOfficerNamePage,
@@ -61,7 +61,7 @@ class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
               .fold(form)(form.fill)
           Ok(view(saoName, preparedForm, mode, saoIndex))
         case None =>
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification")))
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification.toString)))
       }
   }
 
@@ -71,7 +71,7 @@ class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
         case None =>
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification"))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification.toString))
             )
           )
         case Some(saoName) =>

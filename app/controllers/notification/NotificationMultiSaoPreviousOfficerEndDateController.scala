@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
-import models.Mode
+import models.{JourneySection, Mode}
 import navigation.NotificationNavigator
 import pages.notification.{
   NotificationMultiSaoPreviousOfficerEndDatePage,
@@ -98,7 +98,7 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
         case _ =>
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.notification"))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification.toString))
             )
           )
       }

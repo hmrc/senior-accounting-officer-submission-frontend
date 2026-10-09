@@ -18,6 +18,7 @@ package config
 
 import base.SpecBase
 import com.mongodb.MongoException
+import models.JourneySection
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
@@ -57,7 +58,9 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
 
       result.header.status mustBe SEE_OTHER
       result.header.headers.get(LOCATION) mustBe Some(
-        controllers.routes.JourneyRecoveryController.onPageLoad(section = Some("section.notification")).url
+        controllers.routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .url
       )
     }
 
@@ -66,7 +69,7 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
       val result  = handler.onServerError(request, new MongoException("boom")).futureValue
 
       result.header.headers.get(LOCATION) mustBe Some(
-        controllers.routes.JourneyRecoveryController.onPageLoad(section = Some("section.certificate")).url
+        controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString)).url
       )
     }
 
@@ -85,7 +88,9 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
       val result       = handler.onServerError(request, wrappedMongo).futureValue
 
       result.header.headers.get(LOCATION) mustBe Some(
-        controllers.routes.JourneyRecoveryController.onPageLoad(section = Some("section.notification")).url
+        controllers.routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .url
       )
     }
 

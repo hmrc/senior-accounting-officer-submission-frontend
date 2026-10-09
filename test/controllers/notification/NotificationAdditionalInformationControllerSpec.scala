@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import forms.notification.NotificationAdditionalInformationFormProvider
-import models.NormalMode
+import models.{JourneySection, NormalMode}
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -145,7 +145,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.notification"))
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
           .url
       }
     }
@@ -177,7 +177,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.notification"))
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
           .url
       }
     }

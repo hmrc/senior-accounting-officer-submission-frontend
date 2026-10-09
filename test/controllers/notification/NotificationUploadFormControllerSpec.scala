@@ -20,6 +20,7 @@ import base.SpecBase
 import connectors.UpscanInitiateConnector
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.JourneySection
 import models.upscan.*
 import org.mockito.ArgumentMatchers.{any, argThat, eq as meq}
 import org.mockito.Mockito.{times, verify, when}
@@ -199,7 +200,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some("journeyRecovery.section.notification"))
+          .onPageLoad(section = Some(JourneySection.Notification.toString))
           .url
       }
     }

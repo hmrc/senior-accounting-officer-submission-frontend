@@ -19,8 +19,8 @@ package controllers.certificate
 import controllers.actions.*
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
-import models.NormalMode
 import models.upload.*
+import models.{JourneySection, NormalMode}
 import navigation.CertificateNavigator
 import pages.certificate.{
   CertificateReviewQualifiedPage,
@@ -60,7 +60,7 @@ class CertificateReviewQualifiedController @Inject() (
         userAnswers
           .get(CertificateUploadTemplateTablePage)
           .fold(
-            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.certificate")))
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString)))
           ) { parsedTemplate =>
             if parsedTemplate.hasErrors then {
               Ok(errorView(parsedTemplate))
@@ -69,7 +69,7 @@ class CertificateReviewQualifiedController @Inject() (
                 .get(CertificateSaoFullNamePage)
                 .fold(
                   Redirect(
-                    routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.certificate"))
+                    routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString))
                   )
                 ) { saoName =>
                   Ok(
@@ -93,7 +93,7 @@ class CertificateReviewQualifiedController @Inject() (
             Future
               .successful(
                 Redirect(
-                  routes.JourneyRecoveryController.onPageLoad(section = Some("journeyRecovery.section.certificate"))
+                  routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString))
                 )
               )
           ) {
