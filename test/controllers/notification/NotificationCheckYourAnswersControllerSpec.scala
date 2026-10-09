@@ -22,6 +22,7 @@ import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
+import models.FeatureToggle.FaultTolerance
 import models.notification.NotificationSubmissionError
 import models.upload.UploadTemplateTableData
 import navigation.{FakeNotificationNavigator, NotificationNavigator}

@@ -68,7 +68,11 @@ class CertificateCheckYourAnswersController @Inject() (
       given HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       request.body.asFormUrlEncoded.flatMap(submissionToken) match {
         case None =>
-          Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
+          Future.successful(
+            Redirect(
+              controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate))
+            )
+          )
         case Some(token) =>
           val submission =
             if appConfig.faultToleranceEnabled then

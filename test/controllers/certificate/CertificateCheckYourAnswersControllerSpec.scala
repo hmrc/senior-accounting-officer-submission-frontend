@@ -20,8 +20,8 @@ import base.SpecBase
 import config.FeatureToggleSupport
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
-import models.JourneySection
 import models.FeatureToggle.FaultTolerance
+import models.JourneySection
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.*
