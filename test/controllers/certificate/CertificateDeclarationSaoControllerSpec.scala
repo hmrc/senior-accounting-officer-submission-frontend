@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import forms.certificate.CertificateDeclarationSaoFormProvider
-import models.NormalMode
+import models.{JourneySection, NormalMode}
 import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -141,7 +141,9 @@ class CertificateDeclarationSaoControllerSpec extends SpecBase with MockitoSugar
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Certificate))
+          .url
       }
     }
 
@@ -157,7 +159,9 @@ class CertificateDeclarationSaoControllerSpec extends SpecBase with MockitoSugar
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Certificate))
+          .url
       }
     }
   }

@@ -17,6 +17,7 @@
 package controllers.actions
 
 import controllers.routes
+import models.JourneySection
 import models.requests.{DataRequest, OptionalDataRequest}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionRefiner, Result}
@@ -31,11 +32,19 @@ class DataRequiredActionImpl @Inject() (implicit val executionContext: Execution
 
     request.userAnswers match {
       case None =>
-        Future.successful(Left(Redirect(routes.JourneyRecoveryController.onPageLoad())))
+        Future.successful(
+          Left(Redirect(routes.JourneyRecoveryController.onPageLoad(section = sectionFor(request.path))))
+        )
       case Some(data) =>
         Future.successful(Right(DataRequest(request.request, request.userId, request.saoSubscriptionId, data)))
     }
   }
+
+  private def sectionFor(path: String): Option[JourneySection] =
+    if path.contains("/notification/") then Some(JourneySection.Notification)
+    else if path.contains("/certificate/") then Some(JourneySection.Certificate)
+    else None
+
 }
 
 trait DataRequiredAction extends ActionRefiner[OptionalDataRequest, DataRequest]

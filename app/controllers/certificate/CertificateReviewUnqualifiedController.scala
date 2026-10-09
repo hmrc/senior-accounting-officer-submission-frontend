@@ -18,8 +18,8 @@ package controllers.certificate
 
 import controllers.actions.*
 import controllers.routes
-import models.NormalMode
 import models.upload.*
+import models.{JourneySection, NormalMode}
 import navigation.CertificateNavigator
 import pages.certificate.{
   CertificateReviewUnqualifiedPage,
@@ -54,7 +54,6 @@ class CertificateReviewUnqualifiedController @Inject() (
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
         val userAnswers = request.userAnswers
-
         (for {
           saoName        <- userAnswers.get(CertificateSaoFullNamePage)
           parsedTemplate <- userAnswers.get(CertificateUploadTemplateTablePage)
@@ -68,7 +67,9 @@ class CertificateReviewUnqualifiedController @Inject() (
               companyCount = totalCompanies
             )
           )
-        }).fold(Redirect(routes.JourneyRecoveryController.onPageLoad()))(identity)
+        }).fold(
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
+        )(identity)
     }
 
   def onSubmit(): Action[AnyContent] =

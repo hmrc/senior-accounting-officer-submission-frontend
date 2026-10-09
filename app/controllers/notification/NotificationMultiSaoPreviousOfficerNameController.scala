@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProvider
-import models.{Mode, UserAnswers}
+import models.{JourneySection, Mode, UserAnswers}
 import navigation.NotificationNavigator
 import pages.notification.{NotificationMultiSaoLastOfficerNamePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.data.Form
@@ -62,7 +62,7 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
         request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)).fold(form)(form.fill)
       saoNameForPage(mode, saoIndex, request.userAnswers)
         .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad())
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification)))
         )(saoName => Ok(view(saoName, preparedForm, mode, saoIndex)))
 
   }
@@ -70,7 +70,12 @@ class NotificationMultiSaoPreviousOfficerNameController @Inject() (
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       saoNameForPage(mode, saoIndex, request.userAnswers) match {
-        case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case None =>
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
+            )
+          )
         case Some(saoName) =>
           formProvider(Option(saoName))
             .bindFromRequest()

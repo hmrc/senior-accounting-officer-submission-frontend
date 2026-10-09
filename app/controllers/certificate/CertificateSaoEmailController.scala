@@ -19,7 +19,7 @@ package controllers.certificate
 import controllers.actions.*
 import controllers.routes
 import forms.certificate.CertificateSaoEmailFormProvider
-import models.Mode
+import models.{JourneySection, Mode}
 import navigation.CertificateNavigator
 import pages.certificate.{CertificateSaoEmailPage, CertificateSaoFullNamePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -51,7 +51,7 @@ class CertificateSaoEmailController @Inject() (
     request.userAnswers
       .get(CertificateSaoFullNamePage)
       .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
+        Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
       )(saoName => Ok(view(saoName, preparedForm, mode)))
   }
 
@@ -70,7 +70,10 @@ class CertificateSaoEmailController @Inject() (
                   _              <- sessionRepository.set(updatedAnswers)
                 } yield Redirect(navigator.nextPage(CertificateSaoEmailPage, mode, updatedAnswers))
             )
-        case None => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case None =>
+          Future.successful(
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
+          )
       }
   }
 }

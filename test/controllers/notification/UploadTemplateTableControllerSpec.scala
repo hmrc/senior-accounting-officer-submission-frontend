@@ -19,8 +19,8 @@ package controllers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import models.NormalMode
 import models.upload.*
+import models.{JourneySection, NormalMode}
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, verify, when}
@@ -203,7 +203,9 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Notification))
+          .url
       }
     }
 
@@ -230,7 +232,9 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Notification))
+          .url
       }
     }
   }

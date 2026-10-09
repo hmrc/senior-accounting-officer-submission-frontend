@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 package controllers
 
 import controllers.actions.IdentifierAction
+import models.JourneySection
 import play.api.Logging
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -36,19 +37,23 @@ class JourneyRecoveryController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad(continueUrl: Option[RedirectUrl] = None): Action[AnyContent] = identify { implicit request =>
-    val safeUrl: Option[String] = continueUrl.flatMap { unsafeUrl =>
-      unsafeUrl.getEither(OnlyRelative) match {
-        case Right(safeUrl) =>
-          Some(safeUrl.url)
-        case Left(message) =>
-          logger.info(message)
-          None
+  def onPageLoad(
+      continueUrl: Option[RedirectUrl] = None,
+      section: Option[JourneySection] = None
+  ): Action[AnyContent] =
+    identify { implicit request =>
+      val safeUrl: Option[String] = continueUrl.flatMap { unsafeUrl =>
+        unsafeUrl.getEither(OnlyRelative) match {
+          case Right(safeUrl) =>
+            Some(safeUrl.url)
+          case Left(message) =>
+            logger.info(message)
+            None
+        }
       }
-    }
 
-    safeUrl
-      .map(url => Ok(continueView(url)))
-      .getOrElse(Ok(startAgainView()))
-  }
+      safeUrl
+        .map(url => Ok(continueView(url, section)))
+        .getOrElse(Ok(startAgainView(section)))
+    }
 }

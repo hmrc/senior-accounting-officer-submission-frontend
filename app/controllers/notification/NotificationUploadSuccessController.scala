@@ -19,6 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.JourneySection
 import models.requests.DataRequest
 import models.upload.UploadTemplateTableData
 import models.upscan.UploadJourney
@@ -55,7 +56,11 @@ class NotificationUploadSuccessController @Inject() (
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
       upscanService.fileUploadState(UploadJourney.Notification, request.userAnswers, key).flatMap {
         case State.NoReference =>
-          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
+            )
+          )
         case State.WaitingForUpscan =>
           Future.successful(Ok(view()))
         case State.QuarantinedByUpscan =>

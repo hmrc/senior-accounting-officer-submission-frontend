@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoLastOfficerStartDateFormProvider
-import models.Mode
+import models.{JourneySection, Mode}
 import navigation.NotificationNavigator
 import pages.notification.{NotificationMultiSaoLastOfficerNamePage, NotificationMultiSaoLastOfficerStartDatePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -50,7 +50,7 @@ class NotificationMultiSaoLastOfficerStartDateController @Inject() (
     request.userAnswers
       .get(NotificationMultiSaoLastOfficerNamePage(mode))
       .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad())
+        Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification)))
       ) { saoName =>
         val form         = formProvider(saoName)
         val preparedForm =
@@ -80,7 +80,12 @@ class NotificationMultiSaoLastOfficerStartDateController @Inject() (
                 )
             )
 
-        case None => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case None =>
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
+            )
+          )
       }
   }
 }

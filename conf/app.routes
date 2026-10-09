@@ -5,9 +5,9 @@ GET         /assets/*file                                                       
 
 GET         /refresh-session                                                          controllers.KeepAliveController.keepAlive()
 
-GET         /there-is-a-problem                                                       controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[RedirectUrl] ?= None)
+GET         /there-is-a-problem                                                      controllers.JourneyRecoveryController.onPageLoad(continueUrl: Option[uk.gov.hmrc.play.bootstrap.binders.RedirectUrl] ?= None, section: Option[models.JourneySection] ?= None)
 
-GET         /template-guidance                                                        controllers.TemplateGuidanceController.onPageLoad()
+GET         /template-guidance                                                       controllers.TemplateGuidanceController.onPageLoad()
 GET         /template-guidance/new-tab                                               controllers.TemplateGuidanceController.onPageLoadNewTab()
 
 GET         /notification/template/download                                           controllers.DownloadTemplateController.downloadFile()

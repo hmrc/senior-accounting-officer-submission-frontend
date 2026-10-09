@@ -19,8 +19,8 @@ package controllers.notification
 import controllers.actions.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import models.NormalMode
 import models.upload.UploadTemplateTableData
+import models.{JourneySection, NormalMode}
 import navigation.NotificationNavigator
 import pages.notification.{UploadTemplateReviewPage, UploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -54,7 +54,9 @@ class UploadTemplateTableController @Inject() (
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
       request.userAnswers
         .get(UploadTemplateTablePage)
-        .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { tableData =>
+        .fold(
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification)))
+        ) { tableData =>
           if tableData.hasErrors then {
             Ok(errorView(tableData))
           } else {
@@ -71,7 +73,13 @@ class UploadTemplateTableController @Inject() (
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
       request.userAnswers
         .get(UploadTemplateTablePage)
-        .fold(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))) {
+        .fold(
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
+            )
+          )
+        ) {
           case tableData if tableData.hasErrors =>
             Future.successful(Redirect(notificationRoutes.NotificationUploadFormController.onPageLoad()))
           case _ =>

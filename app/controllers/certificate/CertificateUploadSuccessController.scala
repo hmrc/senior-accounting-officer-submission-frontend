@@ -19,6 +19,7 @@ package controllers.certificate
 import controllers.actions.*
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
+import models.JourneySection
 import models.requests.DataRequest
 import models.upload.UploadTemplateTableData
 import models.upscan.UploadJourney
@@ -54,7 +55,9 @@ class CertificateUploadSuccessController @Inject() (
     (identify andThen getData andThen requireData).async { implicit request =>
       upscanService.fileUploadState(UploadJourney.Certificate, request.userAnswers, key).flatMap {
         case State.NoReference =>
-          Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+          Future.successful(
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
+          )
         case State.WaitingForUpscan =>
           Future.successful(Ok(view()))
         case State.QuarantinedByUpscan =>

@@ -35,12 +35,14 @@ upload.success.title.certificate = Upload a submission template for your certifi
 upload.success.heading = Your submission template is uploading
 upload.success.paragraph1 = This may take a few minutes
 
-journeyRecovery.continue.title = Sorry, there is a problem with the service
+journeyRecovery.continue.title = Error: Sorry, there is a problem with the service
 journeyRecovery.continue.heading = Sorry, there is a problem with the service
-journeyRecovery.continue.guidance = [Add content to explain how to proceed.]
-journeyRecovery.startAgain.title = Sorry, there is a problem with the service
+journeyRecovery.continue.guidance = We were unable to access your data due to a technical problem.
+journeyRecovery.startAgain.title = Error: Sorry, there is a problem with the service
 journeyRecovery.startAgain.heading = Sorry, there is a problem with the service
-journeyRecovery.startAgain.guidance = [Add content to explain why the user needs to start again.]
+journeyRecovery.startAgain.guidance = We were unable to access your data due to a technical problem.
+journeyRecovery.section.notification = Notification
+journeyRecovery.section.certificate = Certificate
 
 timeout.title = You’re about to be signed out
 timeout.message = For security reasons, you will be signed out of this service in

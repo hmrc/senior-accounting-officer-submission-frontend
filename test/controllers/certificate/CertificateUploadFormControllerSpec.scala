@@ -20,6 +20,7 @@ import base.SpecBase
 import connectors.UpscanInitiateConnector
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
+import models.JourneySection
 import models.certificate.CertificateTaskListStage
 import models.upscan.*
 import org.mockito.ArgumentMatchers.{any, argThat, eq as meq}
@@ -199,7 +200,9 @@ class CertificateUploadFormControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Certificate))
+          .url
       }
     }
 

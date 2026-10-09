@@ -85,7 +85,9 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           application.injector.instanceOf[NotificationUploadSuccessView]
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).get mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          redirectLocation(result).get mustEqual routes.JourneyRecoveryController
+            .onPageLoad(section = Some(JourneySection.Notification))
+            .url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             meq(UploadJourney.Notification),
@@ -114,7 +116,9 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).get mustEqual routes.JourneyRecoveryController.onPageLoad().url
+          redirectLocation(result).get mustEqual routes.JourneyRecoveryController
+            .onPageLoad(section = Some(JourneySection.Notification))
+            .url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             meq(UploadJourney.Notification),

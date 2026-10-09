@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoLastOfficerStartDateFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{JourneySection, NormalMode, UserAnswers}
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -95,7 +95,9 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
       running(application) {
         val result = route(application, getRequest()).value
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Notification))
+          .url
       }
     }
 
@@ -176,7 +178,9 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
         val result = route(application, getRequest()).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Notification))
+          .url
       }
     }
 
@@ -188,7 +192,9 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
         val result = route(application, postRequest()).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Notification))
+          .url
       }
     }
 
@@ -200,7 +206,9 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
         val result = route(application, postRequest()).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Notification))
+          .url
       }
     }
   }

@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerStartDateFormProvider
-import models.Mode
+import models.{JourneySection, Mode}
 import navigation.NotificationNavigator
 import pages.notification.{
   NotificationMultiSaoPreviousOfficerNamePage,
@@ -60,14 +60,20 @@ class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
               .get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
               .fold(form)(form.fill)
           Ok(view(saoName, preparedForm, mode, saoIndex))
-        case None => Redirect(routes.JourneyRecoveryController.onPageLoad())
+        case None =>
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification)))
       }
   }
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
-        case None          => Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))
+        case None =>
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
+            )
+          )
         case Some(saoName) =>
           val form = formProvider(saoName)
           form

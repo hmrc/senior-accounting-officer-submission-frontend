@@ -19,8 +19,8 @@ package controllers.certificate
 import controllers.actions.*
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
-import models.NormalMode
 import models.upload.*
+import models.{JourneySection, NormalMode}
 import navigation.CertificateNavigator
 import pages.certificate.{
   CertificateReviewQualifiedPage,
@@ -59,13 +59,19 @@ class CertificateReviewQualifiedController @Inject() (
 
         userAnswers
           .get(CertificateUploadTemplateTablePage)
-          .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { parsedTemplate =>
+          .fold(
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
+          ) { parsedTemplate =>
             if parsedTemplate.hasErrors then {
               Ok(errorView(parsedTemplate))
             } else {
               userAnswers
                 .get(CertificateSaoFullNamePage)
-                .fold(Redirect(routes.JourneyRecoveryController.onPageLoad())) { saoName =>
+                .fold(
+                  Redirect(
+                    routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate))
+                  )
+                ) { saoName =>
                   Ok(
                     view(
                       saoName = saoName,
@@ -83,7 +89,14 @@ class CertificateReviewQualifiedController @Inject() (
       implicit request =>
         request.userAnswers
           .get(CertificateUploadTemplateTablePage)
-          .fold(Future.successful(Redirect(routes.JourneyRecoveryController.onPageLoad()))) {
+          .fold(
+            Future
+              .successful(
+                Redirect(
+                  routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate))
+                )
+              )
+          ) {
             case tableData if tableData.hasErrors =>
               Future.successful(Redirect(certificateRoutes.CertificateUploadFormController.onPageLoad()))
             case _ =>

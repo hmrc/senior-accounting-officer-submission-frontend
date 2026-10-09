@@ -22,9 +22,16 @@
     appConfig: AppConfig
 )
 
-@()(using request: Request[?], messages: Messages)
+@(section: Option[models.JourneySection])(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = titleNoForm(messages("journeyRecovery.startAgain.title"))) {
+@sectionMessageKey = @{
+    section.map {
+        case JourneySection.Notification => "journeyRecovery.section.notification"
+        case JourneySection.Certificate  => "journeyRecovery.section.certificate"
+    }
+}
+
+@layout(pageTitle = titleNoForm(messages("journeyRecovery.startAgain.title"), sectionMessageKey)) {
 
     <h1 class="govuk-heading-xl">@messages("journeyRecovery.startAgain.heading")</h1>
 
@@ -37,3 +44,4 @@
         )
     </p>
 }
+
