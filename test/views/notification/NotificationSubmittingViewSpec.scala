@@ -21,7 +21,7 @@ import config.AppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.notification.NotificationSubmittingView
-import views.notification.NotificationSubmittingViewSpec.{panelHeading, panelTitle}
+import views.notification.NotificationSubmittingViewSpec.{panelHeading, panelTitle, waitText}
 
 class NotificationSubmittingViewSpec extends ViewSpecBase[NotificationSubmittingView] {
 
@@ -39,6 +39,10 @@ class NotificationSubmittingViewSpec extends ViewSpecBase[NotificationSubmitting
         hasError = false
       )
 
+      "must have a paragraph telling the user that it may take a few minutes" in {
+        doc.getElementById("wait-text").text() mustBe waitText
+      }
+
       "must have a spinner" in {
         doc.select("div.loader").size() mustBe 1
       }
@@ -49,4 +53,5 @@ class NotificationSubmittingViewSpec extends ViewSpecBase[NotificationSubmitting
 object NotificationSubmittingViewSpec {
   val panelTitle: String   = "Submitting your notification"
   val panelHeading: String = "Submitting your notification"
+  val waitText: String = "This may take a few minutes - do not close or refresh the page."
 }

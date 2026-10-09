@@ -20,7 +20,7 @@ import base.ViewSpecBase
 import config.AppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.certificate.CertificateSubmittingViewSpec.{panelHeading, panelTitle}
+import views.certificate.CertificateSubmittingViewSpec.{panelHeading, panelTitle, waitText}
 import views.html.certificate.CertificateSubmittingView
 
 class CertificateSubmittingViewSpec extends ViewSpecBase[CertificateSubmittingView] {
@@ -39,6 +39,10 @@ class CertificateSubmittingViewSpec extends ViewSpecBase[CertificateSubmittingVi
         hasError = false
       )
 
+      "must have a paragraph telling the user that it may take a few minutes" in {
+        doc.getElementById("wait-text").text() mustBe waitText
+      }
+
       "must have a spinner" in {
         doc.select("div.loader").size() mustBe 1
       }
@@ -49,4 +53,5 @@ class CertificateSubmittingViewSpec extends ViewSpecBase[CertificateSubmittingVi
 object CertificateSubmittingViewSpec {
   val panelTitle: String   = "Submitting your certificate"
   val panelHeading: String = "Submitting your certificate"
+  val waitText: String = "This may take a few minutes - do not close or refresh the page."
 }
