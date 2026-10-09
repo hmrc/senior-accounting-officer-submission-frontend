@@ -135,7 +135,7 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual certificateRoutes.CertificatePendingController
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateSubmittingController
           .onPageLoad("key")
           .url
       }

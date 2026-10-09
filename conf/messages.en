@@ -151,6 +151,10 @@ submitNotification.paragraph2 = By sending the notification you agree that the i
 submitNotification.inset.text = If you later realise you’ve submitted incorrect information, contact your Customer Compliance Manager if you have one, or the Customer Engagement Team for support.
 submitNotification.button = Confirm and submit
 
+notificationSubmitting.title = Submitting your notification
+notificationSubmitting.heading = Submitting your notification
+notificationSubmitting.paragraph1 = This may take a few minutes - do not close or refresh the page.
+
 notificationConfirmation.title = Notification submitted
 notificationConfirmation.heading = Notification submitted
 notificationConfirmation.reference.text = Your reference number
@@ -560,6 +564,10 @@ submissionType.radioDivider = or
 submissionType.checkYourAnswersLabel = submissionType
 submissionType.error.required = Select what you would like to submit
 submissionType.change.hidden = SubmissionType
+
+certificateSubmitting.title = Submitting your certificate
+certificateSubmitting.heading = Submitting your certificate
+certificateSubmitting.paragraph1 = This may take a few minutes - do not close or refresh the page.
 
 certificateConfirmation.title = Certificate submitted
 certificateConfirmation.heading = Certificate submitted

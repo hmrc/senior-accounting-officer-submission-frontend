@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package views.certificate
+package views.notification
 
 import base.ViewSpecBase
 import config.AppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
-import views.html.certificate.CertificatePendingView
-import views.notification.NotificationPendingViewSpec.panelTitle
+import views.html.notification.NotificationSubmittingView
+import views.notification.NotificationSubmittingViewSpec.{panelHeading, panelTitle}
 
-class CertificatePendingViewSpec extends ViewSpecBase[CertificatePendingView] {
+class NotificationSubmittingViewSpec extends ViewSpecBase[NotificationSubmittingView] {
 
-  "CertificatePendingView" - {
+  "NotificationSubmittingView" - {
     "must generate a view" - {
       AppConfig.setValue("senior-accounting-officer-hub-frontend.host", "hub-url")
 
@@ -33,8 +33,8 @@ class CertificatePendingViewSpec extends ViewSpecBase[CertificatePendingView] {
 
       doc.createTestsWithStandardPageElements(
         pageTitle = panelTitle,
-        pageHeading = panelTitle,
-        showBackLink = false,
+        pageHeading = panelHeading,
+        showBackLink = true,
         showIsThisPageNotWorkingProperlyLink = true,
         hasError = false
       )
@@ -46,6 +46,7 @@ class CertificatePendingViewSpec extends ViewSpecBase[CertificatePendingView] {
   }
 }
 
-object CertificatePendingViewSpec {
-  val panelTitle: String = "Certificate pending"
+object NotificationSubmittingViewSpec {
+  val panelTitle: String   = "Submitting your notification"
+  val panelHeading: String = "Submitting your notification"
 }

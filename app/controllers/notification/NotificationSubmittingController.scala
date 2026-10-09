@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package controllers.certificate
+package controllers.notification
 
 import com.google.inject.Inject
 import controllers.actions.*
-import controllers.certificate.routes as certificateRoutes
+import controllers.notification.routes as notificationRoutes
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.CertificateSubmissionService
-import services.CertificateSubmissionService.CertificateSubmissionResult
+import services.NotificationSubmitService
+import services.NotificationSubmitService.NotificationState.{Failure, Pending, Success}
 import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import views.html.certificate.CertificationPendingView
+import views.html.notification.NotificationSubmittingView
 
 import scala.concurrent.ExecutionContext
 
-class CertificatePendingController @Inject() (
-    view: CertificationPendingView,
-    certificateSubmissionService: CertificateSubmissionService,
+class NotificationSubmittingController @Inject() (
+    view: NotificationSubmittingView,
+    notificationSubmitService: NotificationSubmitService,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
@@ -42,11 +42,12 @@ class CertificatePendingController @Inject() (
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      certificateSubmissionService.getStateOfWorkItem(idempotencyKey).map {
-        case CertificateSubmissionResult.Submitted(certificateRef) =>
-          Redirect(certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef))
-        case CertificateSubmissionResult.Pending(_) => Ok(view())
-        case _ => throw new InternalServerException(s"Error getting certificate state")
+      notificationSubmitService.getStateOfWorkItem(idempotencyKey).map {
+        case Success(notificationRef) =>
+          Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationRef))
+        case Pending(_)      => Ok(view())
+        case Failure(status) =>
+          throw new InternalServerException(s"Error getting notification state with status $status")
       }
     }
 }

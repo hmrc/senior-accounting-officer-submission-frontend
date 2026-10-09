@@ -18,7 +18,9 @@ package connectors
 
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import connectors.CertificateSubmissionConnectorISpec.{testBody, testBodyFaultTolerance}
-import models.certificate.{CertificateFaultToleranceResponse, CertificateSubmissionRequest, CertificateSubmissionResponse}
+import models.certificate.CertificateSubmissionRequestFormatSpec.company
+import models.certificate.{CertificateFaultToleranceResponse, CertificateSubmissionCompany, CertificateSubmissionRequest, CertificateSubmissionResponse}
+import models.upload.{CompanyStatus, CompanyType}
 import play.api.http.Status.{ACCEPTED, CREATED, NO_CONTENT}
 import play.api.libs.json.Json
 import support.ISpecBase

@@ -71,7 +71,8 @@ class NotificationCheckYourAnswersController @Inject() (
             .map {
               _.fold(
                 error => throw new InternalServerException(error.message),
-                idempotencyKey => Redirect(notificationRoutes.NotificationPendingController.onPageLoad(idempotencyKey))
+                idempotencyKey =>
+                  Redirect(notificationRoutes.NotificationSubmittingController.onPageLoad(idempotencyKey))
               )
             }
         } else {

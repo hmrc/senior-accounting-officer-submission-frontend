@@ -78,7 +78,7 @@ class CertificateCheckYourAnswersController @Inject() (
             case CertificateSubmissionResult.Submitted(certificateRef) =>
               Redirect(certificateRoutes.CertificateTaskListController.onPageLoadComplete(certificateRef))
             case CertificateSubmissionResult.Pending(idempotencyKey) =>
-              Redirect(certificateRoutes.CertificatePendingController.onPageLoad(idempotencyKey))
+              Redirect(certificateRoutes.CertificateSubmittingController.onPageLoad(idempotencyKey))
             case CertificateSubmissionResult.Duplicate =>
               Redirect(certificateRoutes.CertificateCheckYourAnswersController.onPageLoad())
             case CertificateSubmissionResult.MissingData =>

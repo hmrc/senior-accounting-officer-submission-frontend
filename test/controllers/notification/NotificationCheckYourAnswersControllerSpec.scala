@@ -162,7 +162,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase with FeatureTo
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual notificationRoutes.NotificationPendingController
+          redirectLocation(result).value mustEqual notificationRoutes.NotificationSubmittingController
             .onPageLoad(
               "key"
             )

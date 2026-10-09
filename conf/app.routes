@@ -90,7 +90,7 @@ POST        /notification/change-additional-information                         
 GET         /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
 POST        /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
 
-GET         /notification/pending                                                     controllers.notification.NotificationPendingController.onPageLoad(idempotencyKey: String)
+GET         /notification/submitting                                                  controllers.notification.NotificationSubmittingController.onPageLoad(idempotencyKey: String)
 
 GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onSubmit()
@@ -156,7 +156,7 @@ POST        /certificate/transaction-declaration-stand-in                       
 GET         /certificateCheckYourAnswers                                              controllers.certificate.CertificateCheckYourAnswersController.onPageLoad()
 POST        /certificateCheckYourAnswers                                              controllers.certificate.CertificateCheckYourAnswersController.onSubmit()
 
-GET         /certificate/pending                                                      controllers.certificate.CertificatePendingController.onPageLoad(idempotencyKey: String)
+GET         /certificate/submitting                                                   controllers.certificate.CertificateSubmittingController.onPageLoad(idempotencyKey: String)
 
 GET         /certificate-confirmation                                                 controllers.certificate.CertificateConfirmationController.onPageLoad(certificateIdReferenceNumber: String)
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package controllers.certificate
+package controllers.notification
 
 import base.SpecBase
 import models.UserAnswers
@@ -27,83 +27,83 @@ import play.api.inject
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.CertificateSubmissionService
-import services.CertificateSubmissionService.CertificateSubmissionResult
+import services.NotificationSubmitService
+import services.NotificationSubmitService.NotificationState
 import uk.gov.hmrc.http.InternalServerException
 
 import scala.concurrent.Future
 
-class CertificatePendingControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
+class NotificationSubmittingControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
 
-  val mockCertificateSubmitService: CertificateSubmissionService = mock[CertificateSubmissionService]
+  val mockNotificationSubmitService: NotificationSubmitService = mock[NotificationSubmitService]
 
   override def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder =
     super
       .applicationBuilder(Some(emptyUserAnswers))
       .overrides(
-        inject.bind[CertificateSubmissionService].toInstance(mockCertificateSubmitService)
+        inject.bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
       )
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockCertificateSubmitService)
+    reset(mockNotificationSubmitService)
   }
 
-  "CertificatePendingController.onPageLoad" - {
+  "NotificationPendingController.onPageLoad" - {
     "must return OK and the correct view" - {
-      "when CertificateSubmissionService returns a pending result" in {
-        when(mockCertificateSubmitService.getStateOfWorkItem(any())(using any()))
-          .thenReturn(Future.successful(CertificateSubmissionResult.Pending("key")))
+      "when notificationSubmitService returns a pending result" in {
+        when(mockNotificationSubmitService.getStateOfWorkItem(any())(using any()))
+          .thenReturn(Future.successful(NotificationState.Pending("key")))
 
         val application = applicationBuilder().build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.CertificatePendingController.onPageLoad("key").url)
+          val request = FakeRequest(GET, routes.NotificationSubmittingController.onPageLoad("key").url)
           val result  = route(application, request).value
 
           status(result) mustEqual Status.OK
 
-          verify(mockCertificateSubmitService, times(1)).getStateOfWorkItem(any())(using any())
+          verify(mockNotificationSubmitService, times(1)).getStateOfWorkItem(any())(using any())
         }
       }
     }
 
-    "must return a redirect to the certificate confirmation page" - {
-      "when CertificateSubmissionService returns a submitted result" in {
-        when(mockCertificateSubmitService.getStateOfWorkItem(any())(using any()))
-          .thenReturn(Future.successful(CertificateSubmissionResult.Submitted("notificationRef")))
+    "must return a redirect to the notification confirmation page" - {
+      "when notificationSubmitService returns a success result" in {
+        when(mockNotificationSubmitService.getStateOfWorkItem(any())(using any()))
+          .thenReturn(Future.successful(NotificationState.Success("notificationRef")))
 
         val application = applicationBuilder().build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.CertificatePendingController.onPageLoad("key").url)
+          val request = FakeRequest(GET, routes.NotificationSubmittingController.onPageLoad("key").url)
           val result  = route(application, request).value
 
           status(result) mustEqual Status.SEE_OTHER
-          redirectLocation(result).value mustEqual routes.CertificateConfirmationController
+          redirectLocation(result).value mustEqual routes.NotificationConfirmationController
             .onPageLoad("notificationRef")
             .url
 
-          verify(mockCertificateSubmitService, times(1)).getStateOfWorkItem(any())(using any())
+          verify(mockNotificationSubmitService, times(1)).getStateOfWorkItem(any())(using any())
         }
       }
     }
 
     "must return an exception" - {
       "when notificationSubmitService returns a failure" in {
-        when(mockCertificateSubmitService.getStateOfWorkItem(any())(using any()))
-          .thenReturn(Future.successful(CertificateSubmissionResult.Failed))
+        when(mockNotificationSubmitService.getStateOfWorkItem(any())(using any()))
+          .thenReturn(Future.successful(NotificationState.Failure(500)))
 
         val application = applicationBuilder().build()
 
         running(application) {
-          val request = FakeRequest(GET, routes.CertificatePendingController.onPageLoad("key").url)
+          val request = FakeRequest(GET, routes.NotificationSubmittingController.onPageLoad("key").url)
           val result  = route(application, request).value
 
           intercept[InternalServerException] {
             await(result)
           }
-          verify(mockCertificateSubmitService, times(1)).getStateOfWorkItem(any())(using any())
+          verify(mockNotificationSubmitService, times(1)).getStateOfWorkItem(any())(using any())
         }
       }
     }
