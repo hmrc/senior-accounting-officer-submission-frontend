@@ -141,7 +141,8 @@ object CertificateSubmissionRequestFormatSpec {
       saoDeclarationName = "Declaration Officer",
       saoEmail = "sao@example.com",
       companies = Seq(company),
-      remarks = Some("Certificate remarks")
+      remarks = Some("Certificate remarks"),
+      idempotencyKey = None
     )
 
   def certificateSubmissionRequestJson: JsValue = Json.parse(

@@ -23,13 +23,15 @@ import models.certificate.*
 import models.upload.{CertificateFields, NotificationFields, ParsedSubmissionRow}
 import pages.certificate.*
 import play.api.Logging
-import play.api.libs.json.Json
+import play.api.http.Status.{CREATED, NO_CONTENT, OK}
+import play.api.libs.json.{JsSuccess, Json}
 import repositories.SessionRepository
-import uk.gov.hmrc.http.HeaderCarrier
+import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 import java.time.format.DateTimeFormatter
+import java.util.UUID
 import javax.inject.Inject
 
 class CertificateSubmissionService @Inject() (
@@ -45,7 +47,7 @@ class CertificateSubmissionService @Inject() (
       userAnswers: UserAnswers,
       token: String
   )(using HeaderCarrier): Future[CertificateSubmissionResult] =
-    buildRequest(userAnswers) match {
+    buildRequest(userAnswers, None) match {
       case Left(error) =>
         logger.warn(s"Certificate submission could not be built: $error")
         Future.successful(CertificateSubmissionResult.MissingData)
@@ -73,8 +75,65 @@ class CertificateSubmissionService @Inject() (
         }
     }
 
+  def submitWithFaultTolerance(
+      userId: String,
+      userAnswers: UserAnswers,
+      token: String
+  )(using HeaderCarrier): Future[CertificateSubmissionResult] =
+    buildRequest(userAnswers, Some(generateIdempotencyKey)) match {
+      case Left(error) =>
+        logger.warn(s"Certificate submission could not be built: $error")
+        Future.successful(CertificateSubmissionResult.MissingData)
+      case Right(request) =>
+        sessionRepository.claimCertificateSubmissionToken(userId, token).flatMap {
+          case false =>
+            logger.warn("Certificate submission token was missing or already used")
+            Future.successful(CertificateSubmissionResult.Duplicate)
+          case true =>
+            connector
+              .submitWithFaultTolerance(request)
+              .flatMap { response =>
+                sessionRepository
+                  .set(userAnswers.copy(data = Json.obj()))
+                  .recover { case e =>
+                    logger.warn(s"Certificate submitted but wiping journey data failed", e)
+                    true
+                  }
+                  .map(_ => CertificateSubmissionResult.Pending(response.idempotencyKey))
+              }
+              .recover { case e =>
+                logger.error("Certificate submission failed", e)
+                CertificateSubmissionResult.Failed
+              }
+        }
+    }
+
+  def getStateOfWorkItem(
+      idempotencyKey: String
+  )(using HeaderCarrier): Future[CertificateSubmissionResult] =
+    connector
+      .getStateOfWorkItem(idempotencyKey)
+      .map {
+        case response if response.status == OK =>
+          response.json.validate[CertificateSubmissionResponse] match {
+            case JsSuccess(value, _) => CertificateSubmissionResult.Submitted(value.certificateRef)
+            case _                   =>
+              throw UpstreamErrorResponse(
+                "Certificate submission response did not contain a valid certificateRef",
+                CREATED
+              )
+          }
+        case response if response.status == NO_CONTENT => CertificateSubmissionResult.Pending(idempotencyKey)
+        case response                                  => throw UpstreamErrorResponse(response.body, response.status)
+      }
+      .recover { case e =>
+        logger.error("Certificate submission failed", e)
+        CertificateSubmissionResult.Failed
+      }
+
   private def buildRequest(
-      userAnswers: UserAnswers
+      userAnswers: UserAnswers,
+      idempotencyKey: Option[String]
   ): Either[String, CertificateSubmissionRequest] =
     for {
       saoName            <- userAnswers.get(CertificateSaoFullNamePage).toRight("missing SAO name")
@@ -91,7 +150,8 @@ class CertificateSubmissionService @Inject() (
       saoDeclarationName = saoDeclarationName,
       saoEmail = saoEmail,
       companies = companies,
-      remarks = userAnswers.getNullable(CertificateAdditionalInformationPage)
+      remarks = userAnswers.getNullable(CertificateAdditionalInformationPage),
+      idempotencyKey = idempotencyKey
     )
 
   private def declarationName(userAnswers: UserAnswers): Option[String] =
@@ -134,11 +194,13 @@ class CertificateSubmissionService @Inject() (
       qualificationStatement = certificate.qualificationStatement
     )
 
+  private def generateIdempotencyKey = UUID.randomUUID().toString
 }
 
 object CertificateSubmissionService {
   enum CertificateSubmissionResult {
     case Submitted(certificateRef: String)
+    case Pending(idempotencyKey: String)
     case MissingData
     case Duplicate
     case Failed

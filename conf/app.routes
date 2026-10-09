@@ -90,6 +90,8 @@ POST        /notification/change-additional-information                         
 GET         /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
 POST        /notification/check-your-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
 
+GET         /notification/submitting                                                  controllers.notification.NotificationSubmittingController.onPageLoad(idempotencyKey: String)
+
 GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 POST        /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onSubmit()
 
@@ -153,6 +155,8 @@ POST        /certificate/transaction-declaration-stand-in                       
 
 GET         /certificateCheckYourAnswers                                              controllers.certificate.CertificateCheckYourAnswersController.onPageLoad()
 POST        /certificateCheckYourAnswers                                              controllers.certificate.CertificateCheckYourAnswersController.onSubmit()
+
+GET         /certificate/submitting                                                   controllers.certificate.CertificateSubmittingController.onPageLoad(idempotencyKey: String)
 
 GET         /certificate-confirmation                                                 controllers.certificate.CertificateConfirmationController.onPageLoad(certificateIdReferenceNumber: String)
 

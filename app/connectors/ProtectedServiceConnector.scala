@@ -42,4 +42,21 @@ class ProtectedServiceConnector @Inject() (appConfig: AppConfig, httpClient: Htt
       .setHeader("correlationId" -> UUID.randomUUID().toString)
       .execute[HttpResponse]
   }
+
+  def postNotificationWithFaultTolerance(
+      request: NotificationRequest
+  )(using hc: HeaderCarrier): Future[HttpResponse] = {
+    httpClient
+      .post(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/v2/notification")
+      .withBody(Json.toJson(request))
+      .setHeader("correlationId" -> UUID.randomUUID().toString)
+      .execute[HttpResponse]
+  }
+
+  def getStateOfWorkItem(idempotencyKey: String)(using hc: HeaderCarrier): Future[HttpResponse] = {
+    httpClient
+      .get(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/v2/notification/$idempotencyKey")
+      .setHeader("correlationId" -> UUID.randomUUID().toString)
+      .execute[HttpResponse]
+  }
 }

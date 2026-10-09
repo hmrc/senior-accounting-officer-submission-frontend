@@ -32,7 +32,7 @@ import play.api.inject.bind
 import play.api.libs.json.Json
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import services.NotificationSubmitService.toNotification
+import services.NotificationSubmitService.{NotificationState, toNotification}
 import services.NotificationSubmitServiceSpec.*
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse}
 import utils.TestDataGenerator
@@ -109,6 +109,119 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
     }
   }
 
+  "NotificationSubmitService.submitWithFaultTolerance" - {
+
+    given HeaderCarrier = HeaderCarrier()
+
+    val userAnswers = emptyUserAnswers
+      .set(NotificationMoreThanOneSaoPage(NormalMode), false)
+      .success
+      .value
+      .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
+      .success
+      .value
+      .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
+      .success
+      .value
+
+    "must return notification response on success" in {
+      val application = configureApplication(
+        HttpResponse(ACCEPTED, Json.obj("idempotencyKey" -> exampleNotificationReference).toString),
+        true
+      )
+
+      running(application) {
+        val SUT    = application.injector.instanceOf[NotificationSubmitService]
+        val result = SUT.submitWithFaultTolerance(userAnswers).futureValue
+        result mustBe Right(exampleNotificationReference)
+      }
+    }
+
+    "must return error on http failure" in {
+      val application = configureApplication(
+        HttpResponse(INTERNAL_SERVER_ERROR),
+        true
+      )
+
+      running(application) {
+        val SUT    = application.injector.instanceOf[NotificationSubmitService]
+        val result = SUT.submitWithFaultTolerance(userAnswers).futureValue
+        result.isLeft mustBe true
+        result.left.map(error => error.message mustBe expectedHttpFailureMessage)
+      }
+    }
+
+    def configureApplication(mockConnectorResponse: HttpResponse, mockRepositoryResponse: Boolean): Application = {
+      val mockConnector = mock[ProtectedServiceConnector]
+
+      when(mockConnector.postNotificationWithFaultTolerance(any())(using any[HeaderCarrier]())) thenReturn Future
+        .successful(
+          mockConnectorResponse
+        )
+
+      val mockRepository = mock[SessionRepository]
+
+      when(mockRepository.set(any())).thenReturn(
+        Future.successful(
+          mockRepositoryResponse
+        )
+      )
+
+      applicationBuilder(userAnswers = Some(userAnswers))
+        .overrides(
+          bind[ProtectedServiceConnector].toInstance(mockConnector),
+          bind[SessionRepository].toInstance(mockRepository)
+        )
+        .build()
+    }
+  }
+
+  "NotificationSubmitService.getStateOfWorkItem" - {
+
+    given HeaderCarrier = HeaderCarrier()
+
+    "must return submitted state on success" in {
+      val application = configureApplication(
+        HttpResponse(OK, Json.obj("notificationRef" -> exampleNotificationReference).toString)
+      )
+
+      running(application) {
+        val SUT    = application.injector.instanceOf[NotificationSubmitService]
+        val result = SUT.getStateOfWorkItem("key").futureValue
+        result mustBe NotificationState.Success(exampleNotificationReference)
+      }
+    }
+
+    "must return pending state when backend returns no content" in {
+      val application = configureApplication(
+        HttpResponse(NO_CONTENT)
+      )
+
+      running(application) {
+        val SUT    = application.injector.instanceOf[NotificationSubmitService]
+        val result = SUT.getStateOfWorkItem("key").futureValue
+        result mustBe NotificationState.Pending("key")
+      }
+    }
+
+    def configureApplication(mockConnectorResponse: HttpResponse): Application = {
+      val mockConnector = mock[ProtectedServiceConnector]
+
+      when(mockConnector.getStateOfWorkItem(any())(using any[HeaderCarrier]())) thenReturn Future.successful(
+        mockConnectorResponse
+      )
+
+      val mockRepository = mock[SessionRepository]
+
+      applicationBuilder(userAnswers = None)
+        .overrides(
+          bind[ProtectedServiceConnector].toInstance(mockConnector),
+          bind[SessionRepository].toInstance(mockRepository)
+        )
+        .build()
+    }
+  }
+
   "NotificationSubmitService.toNotification" - {
     def buildUserAnswers(moreThanOneSao: Boolean): UserAnswers = {
       emptyUserAnswers
@@ -165,10 +278,11 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
             `type` = CompanyType.LTD
           )
         ),
-        remarks = Some(exampleAdditionalInformation)
+        remarks = Some(exampleAdditionalInformation),
+        idempotencyKey = Some("key")
       )
 
-      val result = userAnswers.toNotification
+      val result = userAnswers.toNotification(Some("key"))
 
       result mustBe expected
     }
@@ -204,10 +318,11 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
             `type` = CompanyType.LTD
           )
         ),
-        remarks = Some(exampleAdditionalInformation)
+        remarks = Some(exampleAdditionalInformation),
+        idempotencyKey = Some("key")
       )
 
-      val result = userAnswers.toNotification
+      val result = userAnswers.toNotification(Some("key"))
 
       result mustBe expected
     }
@@ -216,6 +331,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
 object NotificationSubmitServiceSpec {
   val exampleNotificationReference       = "appleBananaCitrue"
+  val exampleIdempotencyKey              = "idemKey"
   val expectedHttpFailureMessage: String = s"Notification submit HTTP call failed with code ${INTERNAL_SERVER_ERROR}"
 
   val exampleAdditionalInformation    = "example additional information"
