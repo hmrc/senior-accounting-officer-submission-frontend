@@ -200,7 +200,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       }
     }

@@ -145,7 +145,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       }
     }
@@ -177,7 +177,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       }
     }

@@ -58,7 +58,7 @@ class NotificationUploadSuccessController @Inject() (
         case State.NoReference =>
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification.toString))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
             )
           )
         case State.WaitingForUpscan =>

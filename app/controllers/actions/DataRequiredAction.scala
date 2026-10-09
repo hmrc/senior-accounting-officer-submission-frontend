@@ -40,9 +40,9 @@ class DataRequiredActionImpl @Inject() (implicit val executionContext: Execution
     }
   }
 
-  private def sectionFor(path: String): Option[String] =
-    if path.contains("/notification/") then Some(JourneySection.Notification.toString)
-    else if path.contains("/certificate/") then Some(JourneySection.Certificate.toString)
+  private def sectionFor(path: String): Option[JourneySection] =
+    if path.contains("/notification/") then Some(JourneySection.Notification)
+    else if path.contains("/certificate/") then Some(JourneySection.Certificate)
     else None
 
 }

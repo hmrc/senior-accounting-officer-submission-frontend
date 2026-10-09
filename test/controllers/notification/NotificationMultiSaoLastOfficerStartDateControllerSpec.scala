@@ -96,7 +96,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
         val result = route(application, getRequest()).value
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       }
     }
@@ -179,7 +179,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       }
     }
@@ -193,7 +193,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       }
     }
@@ -207,7 +207,7 @@ class NotificationMultiSaoLastOfficerStartDateControllerSpec extends SpecBase wi
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       }
     }

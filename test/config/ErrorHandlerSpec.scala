@@ -59,7 +59,7 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
       result.header.status mustBe SEE_OTHER
       result.header.headers.get(LOCATION) mustBe Some(
         controllers.routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       )
     }
@@ -69,7 +69,7 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
       val result  = handler.onServerError(request, new MongoException("boom")).futureValue
 
       result.header.headers.get(LOCATION) mustBe Some(
-        controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString)).url
+        controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)).url
       )
     }
 
@@ -89,7 +89,7 @@ class ErrorHandlerSpec extends SpecBase with GuiceOneAppPerSuite {
 
       result.header.headers.get(LOCATION) mustBe Some(
         controllers.routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       )
     }

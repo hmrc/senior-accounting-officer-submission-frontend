@@ -61,7 +61,7 @@ class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
               .fold(form)(form.fill)
           Ok(view(saoName, preparedForm, mode, saoIndex))
         case None =>
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification.toString)))
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification)))
       }
   }
 
@@ -71,7 +71,7 @@ class NotificationMultiSaoPreviousOfficerStartDateController @Inject() (
         case None =>
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification.toString))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
             )
           )
         case Some(saoName) =>

@@ -60,7 +60,7 @@ class CertificateReviewQualifiedController @Inject() (
         userAnswers
           .get(CertificateUploadTemplateTablePage)
           .fold(
-            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString)))
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
           ) { parsedTemplate =>
             if parsedTemplate.hasErrors then {
               Ok(errorView(parsedTemplate))
@@ -69,7 +69,7 @@ class CertificateReviewQualifiedController @Inject() (
                 .get(CertificateSaoFullNamePage)
                 .fold(
                   Redirect(
-                    routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString))
+                    routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate))
                   )
                 ) { saoName =>
                   Ok(
@@ -93,7 +93,7 @@ class CertificateReviewQualifiedController @Inject() (
             Future
               .successful(
                 Redirect(
-                  routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString))
+                  routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate))
                 )
               )
           ) {

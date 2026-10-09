@@ -142,7 +142,7 @@ class CertificateDeclarationSaoControllerSpec extends SpecBase with MockitoSugar
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Certificate.toString))
+          .onPageLoad(section = Some(JourneySection.Certificate))
           .url
       }
     }
@@ -160,7 +160,7 @@ class CertificateDeclarationSaoControllerSpec extends SpecBase with MockitoSugar
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Certificate.toString))
+          .onPageLoad(section = Some(JourneySection.Certificate))
           .url
       }
     }

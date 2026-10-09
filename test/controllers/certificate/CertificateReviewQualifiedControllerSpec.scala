@@ -164,7 +164,7 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSuga
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Certificate.toString))
+          .onPageLoad(section = Some(JourneySection.Certificate))
           .url
       }
     }
@@ -179,7 +179,7 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSuga
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Certificate.toString))
+          .onPageLoad(section = Some(JourneySection.Certificate))
           .url
       }
     }

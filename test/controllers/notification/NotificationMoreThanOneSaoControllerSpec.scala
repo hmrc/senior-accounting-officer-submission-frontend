@@ -133,7 +133,7 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       }
     }
@@ -150,7 +150,7 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-          .onPageLoad(section = Some(JourneySection.Notification.toString))
+          .onPageLoad(section = Some(JourneySection.Notification))
           .url
       }
     }

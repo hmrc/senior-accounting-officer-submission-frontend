@@ -54,7 +54,6 @@ class CertificateReviewUnqualifiedController @Inject() (
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
         val userAnswers = request.userAnswers
-
         (for {
           saoName        <- userAnswers.get(CertificateSaoFullNamePage)
           parsedTemplate <- userAnswers.get(CertificateUploadTemplateTablePage)
@@ -69,7 +68,7 @@ class CertificateReviewUnqualifiedController @Inject() (
             )
           )
         }).fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate.toString)))
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
         )(identity)
     }
 

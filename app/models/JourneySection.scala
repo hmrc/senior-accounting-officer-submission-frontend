@@ -16,7 +16,29 @@
 
 package models
 
-enum JourneySection(val messageKey: String) {
-  case Notification extends JourneySection("journeyRecovery.section.notification")
-  case Certificate  extends JourneySection("journeyRecovery.section.certificate")
+import play.api.mvc.QueryStringBindable
+
+enum JourneySection {
+  case Notification
+  case Certificate
+}
+
+object JourneySection {
+
+  given QueryStringBindable[JourneySection] = new QueryStringBindable[JourneySection] {
+
+    private val stringBindable = summon[QueryStringBindable[String]]
+
+    override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, JourneySection]] =
+      stringBindable.bind(key, params).map {
+        case Right(value) =>
+          JourneySection.values
+            .find(_.toString == value)
+            .toRight(s"Unknown JourneySection: $value")
+        case Left(error) => Left(error)
+      }
+
+    override def unbind(key: String, value: JourneySection): String =
+      stringBindable.unbind(key, value.toString)
+  }
 }

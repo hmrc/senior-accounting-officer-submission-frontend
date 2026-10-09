@@ -69,7 +69,7 @@ class CertificateCheckYourAnswersController @Inject() (
         Future.successful(
           Redirect(
             controllers.routes.JourneyRecoveryController
-              .onPageLoad(section = Some(JourneySection.Certificate.toString))
+              .onPageLoad(section = Some(JourneySection.Certificate))
           )
         )
       case Some(token) =>

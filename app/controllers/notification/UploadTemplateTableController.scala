@@ -55,7 +55,7 @@ class UploadTemplateTableController @Inject() (
       request.userAnswers
         .get(UploadTemplateTablePage)
         .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification.toString)))
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification)))
         ) { tableData =>
           if tableData.hasErrors then {
             Ok(errorView(tableData))
@@ -76,7 +76,7 @@ class UploadTemplateTableController @Inject() (
         .fold(
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification.toString))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
             )
           )
         ) {

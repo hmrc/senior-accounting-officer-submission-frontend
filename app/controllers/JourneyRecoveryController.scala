@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,10 @@ class JourneyRecoveryController @Inject() (
     with I18nSupport
     with Logging {
 
-  def onPageLoad(continueUrl: Option[RedirectUrl] = None, section: Option[String] = None): Action[AnyContent] =
+  def onPageLoad(
+      continueUrl: Option[RedirectUrl] = None,
+      section: Option[JourneySection] = None
+  ): Action[AnyContent] =
     identify { implicit request =>
       val safeUrl: Option[String] = continueUrl.flatMap { unsafeUrl =>
         unsafeUrl.getEither(OnlyRelative) match {
@@ -49,10 +52,8 @@ class JourneyRecoveryController @Inject() (
         }
       }
 
-      val journeySection: Option[JourneySection] = section.flatMap(raw => JourneySection.values.find(_.toString == raw))
-
       safeUrl
-        .map(url => Ok(continueView(url, journeySection)))
-        .getOrElse(Ok(startAgainView(journeySection)))
+        .map(url => Ok(continueView(url, section)))
+        .getOrElse(Ok(startAgainView(section)))
     }
 }

@@ -98,7 +98,7 @@ class NotificationMultiSaoPreviousOfficerEndDateController @Inject() (
         case _ =>
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification.toString))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
             )
           )
       }
