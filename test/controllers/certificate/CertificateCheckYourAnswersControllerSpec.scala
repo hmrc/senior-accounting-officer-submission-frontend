@@ -17,12 +17,15 @@
 package controllers.certificate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
+import models.FeatureToggle.FaultTolerance
 import models.JourneySection
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.*
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -34,7 +37,21 @@ import views.html.certificate.CertificateCheckYourAnswersView
 
 import scala.concurrent.Future
 
-class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar {
+class CertificateCheckYourAnswersControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(FaultTolerance)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(FaultTolerance)
+  }
 
   "CertificateCheckYourAnswers Controller" - {
 
@@ -86,7 +103,8 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
       }
     }
 
-    "must submit the certificate and redirect to certificate task list for a POST" in {
+    "must submit the certificate and redirect to certificate task list for a POST - fault tolerance disabled" in {
+      disable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
       val certificateRef        = "CRT0123456789"
 
@@ -112,7 +130,34 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
       }
     }
 
-    "must fail when submission fails so the error handler can render the 500 page" in {
+    "must submit the certificate and redirect to certificate task list for a POST - fault tolerance enabled" in {
+      enable(FaultTolerance)
+      val mockSubmissionService = mock[CertificateSubmissionService]
+
+      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"))(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResult.Pending("key")))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CertificateSubmissionService].toInstance(mockSubmissionService))
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateRoutes.CertificateCheckYourAnswersController.onSubmit().url)
+            .withFormUrlEncodedBody("certificateSubmissionToken" -> "token")
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateSubmittingController
+          .onPageLoad("key")
+          .url
+      }
+    }
+
+    "must fail when submission fails so the error handler can render the 500 page - fault tolerance disabled" in {
+      disable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
       when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
@@ -134,7 +179,31 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
       }
     }
 
-    "must redirect to Journey Recovery when required submission data is missing" in {
+    "must fail when submission fails so the error handler can render the 500 page - fault tolerance enabled" in {
+      enable(FaultTolerance)
+      val mockSubmissionService = mock[CertificateSubmissionService]
+
+      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"))(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResult.Failed))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CertificateSubmissionService].toInstance(mockSubmissionService))
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateRoutes.CertificateCheckYourAnswersController.onSubmit().url)
+            .withFormUrlEncodedBody("certificateSubmissionToken" -> "token")
+
+        val result = route(application, request).value
+
+        result.failed.futureValue mustBe CertificateCheckYourAnswersController.SubmissionFailedException
+      }
+    }
+
+    "must redirect to Journey Recovery when required submission data is missing - fault tolerance disabled" in {
+      disable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
       when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
@@ -157,10 +226,61 @@ class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSug
       }
     }
 
-    "must redirect back to check your answers when the submission token has already been used" in {
+    "must redirect to Journey Recovery when required submission data is missing - fault tolerance enabled" in {
+      enable(FaultTolerance)
+      val mockSubmissionService = mock[CertificateSubmissionService]
+
+      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"))(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResult.MissingData))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CertificateSubmissionService].toInstance(mockSubmissionService))
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateRoutes.CertificateCheckYourAnswersController.onSubmit().url)
+            .withFormUrlEncodedBody("certificateSubmissionToken" -> "token")
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
+
+    "must redirect back to check your answers when the submission token has already been used - fault tolerance disabled" in {
+      disable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
       when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
+        .thenReturn(Future.successful(CertificateSubmissionResult.Duplicate))
+
+      val application =
+        applicationBuilder(userAnswers = Some(emptyUserAnswers))
+          .overrides(bind[CertificateSubmissionService].toInstance(mockSubmissionService))
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateRoutes.CertificateCheckYourAnswersController.onSubmit().url)
+            .withFormUrlEncodedBody("certificateSubmissionToken" -> "token")
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateCheckYourAnswersController
+          .onPageLoad()
+          .url
+      }
+    }
+
+    "must redirect back to check your answers when the submission token has already been used - fault tolerance enabled" in {
+      enable(FaultTolerance)
+      val mockSubmissionService = mock[CertificateSubmissionService]
+
+      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"))(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Duplicate))
 
       val application =

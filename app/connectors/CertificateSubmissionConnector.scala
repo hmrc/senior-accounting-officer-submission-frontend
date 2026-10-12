@@ -17,8 +17,12 @@
 package connectors
 
 import config.AppConfig
-import models.certificate.{CertificateSubmissionRequest, CertificateSubmissionResponse}
-import play.api.http.Status.CREATED
+import models.certificate.{
+  CertificateFaultToleranceResponse,
+  CertificateSubmissionRequest,
+  CertificateSubmissionResponse
+}
+import play.api.http.Status.{ACCEPTED, CREATED}
 import play.api.libs.json.{JsSuccess, Json}
 import play.api.libs.ws.writeableOf_JsValue
 import uk.gov.hmrc.http.*
@@ -54,4 +58,32 @@ class CertificateSubmissionConnector @Inject() (
         case response =>
           throw UpstreamErrorResponse(response.body, response.status)
       }
+
+  def submitWithFaultTolerance(
+      request: CertificateSubmissionRequest
+  )(using HeaderCarrier): Future[CertificateFaultToleranceResponse] =
+    httpClient
+      .post(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/v2/certificate")
+      .withBody(Json.toJson(request))
+      .setHeader("correlationId" -> UUID.randomUUID().toString)
+      .execute[HttpResponse]
+      .map {
+        case response if response.status == ACCEPTED =>
+          response.json.validate[CertificateFaultToleranceResponse] match {
+            case JsSuccess(value, _) => value
+            case _                   =>
+              throw UpstreamErrorResponse(
+                "Certificate submission response did not contain a valid idempotencyKey",
+                ACCEPTED
+              )
+          }
+        case response =>
+          throw UpstreamErrorResponse(response.body, response.status)
+      }
+
+  def getStateOfWorkItem(idempotencyKey: String)(using HeaderCarrier): Future[HttpResponse] =
+    httpClient
+      .get(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/v2/certificate/$idempotencyKey")
+      .setHeader("correlationId" -> UUID.randomUUID().toString)
+      .execute[HttpResponse]
 }

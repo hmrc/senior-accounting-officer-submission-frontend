@@ -25,7 +25,8 @@ final case class CertificateSubmissionRequest(
     saoDeclarationName: String,
     saoEmail: String,
     companies: Seq[CertificateSubmissionCompany],
-    remarks: Option[String]
+    remarks: Option[String],
+    idempotencyKey: Option[String]
 )
 
 object CertificateSubmissionRequest {

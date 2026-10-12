@@ -22,7 +22,8 @@ import uk.gov.hmrc.http.HttpReads.Implicits.*
 final case class NotificationRequest(
     companies: List[Company],
     saos: List[Sao],
-    remarks: Option[String]
+    remarks: Option[String],
+    idempotencyKey: Option[String]
 )
 
 object NotificationRequest {
