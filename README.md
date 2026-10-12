@@ -1,13 +1,6 @@
-
->>  **Current sbt issue**:
-> [12/12/25] "Terminal weirdness" with sbt and giter8 (g8) scaffolds refers to several interactive shell issues where user input is not handled or displayed correctly during template generation. This often manifests when using sbt new or g8Scaffold and is frequently caused by sbt's Super Shell interfering with interactive prompts
->
->Current workaround is to run the following command:
->> `sbt --supershell=false`
-
 # senior-accounting-officer-submission-frontend
 
-This frontend allows customers with SAO (Senior Accounting Officer) enrolment to submit their SAO notification and certificate.
+This frontend allows customers with an SAO (Senior Accounting Officer) enrolment to submit their SAO notification and certificate.
 
 ## How to use the service
 
@@ -23,10 +16,10 @@ Run the frontend locally using
 
 `sbt -Dapplication.router=testOnlyDoNotUseInAppConf.Routes run`
 
-This service is localed on http://localhost:10058/senior-accounting-officer/submission/, however the user journeys begin from
+This service is located on http://localhost:10058/senior-accounting-officer/submission/, however the user journeys begin from
 `SENIOR_ACCOUNTING_OFFICER_HUB_FRONTEND` on http://localhost:10056/senior-accounting-officer/
 
-### Running acceptance tests against this branch
+### Running acceptance tests against this repository
 
 From this repo, run:
 
@@ -38,9 +31,19 @@ To run a different acceptance-tests script, set `ACCEPTANCE_TEST_SCRIPT`, for ex
 
 `ACCEPTANCE_TEST_SCRIPT=run_all_tests.sh scripts/run_acceptance_tests.sh`
 
+### Feature toggles
+
+All feature toggles are defined in `application.conf` under `features`.
+The internal model for feature toggles are kept at `models.config.FeatureToggle`.
+
+If test-only routes are enabled, then feature toggles can be configured for a given instance at runtime via
+
+http://localhost:10057/senior-accounting-officer/submission/test-only/feature-toggle
+
 ## Scaffolding new pages
-To scaffold a new page, run `g8Scaffold <page_type_parameter>` in sbt shell. you can see the available scaffolds in the `.g8` directory. 
-Now execute the `migrate.sh` shell script to move the generated code into the correct place, do a `sbt clean compile` to ensure the new routes are available.
+
+To scaffold a new page, run `g8Scaffold <page_type_parameter>` in sbt shell. you can see the available scaffolds in the `.g8` directory.
+Then execute the `migrate.sh` shell script to move the generated code into the correct place, do a `sbt clean compile` to ensure the new routes are available.
 
 ## Upload state persistence
 
@@ -51,16 +54,6 @@ The upload reference is written when upload initiation succeeds, before the form
 Upscan callback processing updates the same `user-answers` document by reference, so there is no separate upload tracker collection.
 
 The upload state inherits the same TTL policy as the journey document because it is stored in `user-answers`. A returning user can still continue and submit the journey as long as that journey document has not expired.
-
-# ADR
-This project uses ADR to [adr-tools](https://github.com/npryce/adr-tools) to record architecture decisions.
-After installing the tool ensure to execute
-
-`adr init doc/architecture/decisions`
-
-but delete the new `*-record-architecture-decisions.md`
-
-This is so it would sync the output directory so that subsequent docs are placed under `doc/architecture` otherwise the default will go into `doc/adr/`
 
 ### License
 
