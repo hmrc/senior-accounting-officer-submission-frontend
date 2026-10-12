@@ -49,7 +49,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
         hasError = false
       )
 
-      doc.createTestsWithLargeCaption(pageCaption)
+      doc.createTestsWithCaption(pageCaption)
       doc.createTestsWithOrWithoutError(hasError = false)
 
       doc.createTestsWithParagraphs(
@@ -83,7 +83,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       )
 
       doc.createTestsWithOrWithoutError(hasError = false)
-      doc.createTestsWithLargeCaption(pageCaption)
+      doc.createTestsWithCaption(pageCaption)
 
       doc.createTestForHorizontalLine()
 
@@ -124,7 +124,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       )
 
       doc.createTestsWithOrWithoutError(hasError = false)
-      doc.createTestsWithLargeCaption(pageCaption)
+      doc.createTestsWithCaption(pageCaption)
 
       doc.createTestForHorizontalLine()
 

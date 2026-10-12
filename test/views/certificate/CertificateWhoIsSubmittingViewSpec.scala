@@ -52,7 +52,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
           doc.createTestsForSubHeadings(subheadings)
 
@@ -87,7 +87,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
           doc.createTestsForSubHeadings(subheadings)
 
@@ -122,7 +122,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
             hasError = true
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
           doc.createTestsForSubHeadings(subheadingsPageError)
 

@@ -64,7 +64,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             buttonText = "Continue"
           )
 
-          doc.createTestsWithLargeCaption(
+          doc.createTestsWithCaption(
             pageCaption
           )
 
@@ -103,7 +103,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             buttonText = "Continue"
           )
 
-          doc.createTestsWithLargeCaption(
+          doc.createTestsWithCaption(
             pageCaption
           )
 
@@ -142,7 +142,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
             buttonText = "Continue"
           )
 
-          doc.createTestsWithLargeCaption(
+          doc.createTestsWithCaption(
             pageCaption
           )
 

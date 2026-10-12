@@ -60,7 +60,7 @@ class CertificateUploadFormViewSpec extends ViewSpecBase[CertificateUploadFormVi
         hiddenFields.get(1).attr("value") mustBe "testValue2"
       }
 
-      doc.createTestsWithLargeCaption(pageCaption)
+      doc.createTestsWithCaption(pageCaption)
 
       doc.createTestsWithParagraphs(paragraphs)
 

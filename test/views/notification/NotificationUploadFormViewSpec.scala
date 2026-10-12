@@ -110,7 +110,7 @@ class NotificationUploadFormViewSpec extends ViewSpecBase[NotificationUploadForm
         hiddenFields.get(1).attr("value") mustBe "testValue2"
       }
 
-      doc.createTestsWithLargeCaption(captionText)
+      doc.createTestsWithCaption(captionText)
 
       doc.createTestsWithParagraphs(paragraphs)
 

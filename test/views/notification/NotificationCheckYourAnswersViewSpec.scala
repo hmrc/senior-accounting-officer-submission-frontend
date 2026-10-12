@@ -72,7 +72,7 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      doc.createTestsWithLargeCaption(
+      doc.createTestsWithCaption(
         pageCaption
       )
 
@@ -159,7 +159,7 @@ class NotificationCheckYourAnswersViewSpec extends ViewSpecBase[NotificationChec
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      doc.createTestsWithLargeCaption(
+      doc.createTestsWithCaption(
         pageCaption
       )
 

@@ -68,7 +68,7 @@ class NotificationMultiSaoPreviousOfficerEndDateViewSpec
 
           doc.createTestsWithOrWithoutError(hasError = false)
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestMustShowHint(pageHint)
         }
@@ -96,7 +96,7 @@ class NotificationMultiSaoPreviousOfficerEndDateViewSpec
 
           doc.createTestsWithOrWithoutError(hasError = false)
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestMustShowHint(pageHint)
         }
@@ -124,7 +124,7 @@ class NotificationMultiSaoPreviousOfficerEndDateViewSpec
 
           doc.createTestsWithOrWithoutError(hasError = true)
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestMustShowHint(pageHint)
         }

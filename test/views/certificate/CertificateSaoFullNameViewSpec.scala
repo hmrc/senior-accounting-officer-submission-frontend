@@ -59,7 +59,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = controllers.certificate.routes.CertificateSaoFullNameController.onSubmit(mode),
@@ -93,7 +93,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = controllers.certificate.routes.CertificateSaoFullNameController.onSubmit(mode),
@@ -127,7 +127,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
             hasError = true
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = controllers.certificate.routes.CertificateSaoFullNameController.onSubmit(mode),

@@ -52,7 +52,7 @@ class NotificationMultiSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationM
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(
+          doc.createTestsWithCaption(
             caption = pageCaption
           )
 
@@ -87,7 +87,7 @@ class NotificationMultiSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationM
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(
+          doc.createTestsWithCaption(
             caption = pageCaption
           )
 
@@ -122,7 +122,7 @@ class NotificationMultiSaoAreAllAddedViewSpec extends ViewSpecBase[NotificationM
             hasError = true
           )
 
-          doc.createTestsWithLargeCaption(
+          doc.createTestsWithCaption(
             caption = pageCaption
           )
 

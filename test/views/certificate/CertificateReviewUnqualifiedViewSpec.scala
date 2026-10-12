@@ -49,7 +49,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         hasError = false
       )
 
-      doc.createTestsWithLargeCaption(pageCaption)
+      doc.createTestsWithCaption(pageCaption)
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
@@ -81,7 +81,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         hasError = false
       )
 
-      doc.createTestsWithLargeCaption(pageCaption)
+      doc.createTestsWithCaption(pageCaption)
 
       doc.createTestsWithOrWithoutError(hasError = false)
 

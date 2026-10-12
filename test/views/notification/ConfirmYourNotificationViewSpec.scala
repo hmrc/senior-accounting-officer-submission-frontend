@@ -39,7 +39,7 @@ class ConfirmYourNotificationViewSpec extends ViewSpecBase[ConfirmYourNotificati
     )
 
     doc.createTestsWithOrWithoutError(hasError = false)
-    doc.createTestsWithLargeCaption(pageCaption)
+    doc.createTestsWithCaption(pageCaption)
     doc.createTestsWithParagraphs(pageParagraphs)
     doc.createTestsWithBulletPoints(pageBullets)
   }

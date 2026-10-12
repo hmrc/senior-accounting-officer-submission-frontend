@@ -60,7 +60,7 @@ class NotificationMultiSaoPreviousOfficerNameViewSpec
             hint = None,
             hasError = false
           )
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode, saoIndex),

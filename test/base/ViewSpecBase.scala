@@ -779,21 +779,6 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         caption: String
     )(using pos: Position): Unit = {
       createTestWithCountOfElement(
-        selector = "span.govuk-caption-m",
-        count = 1,
-        description = "captions"
-      )
-      createTestsWithOrderOfElements(
-        selector = "span.govuk-caption-m",
-        texts = Seq(caption),
-        description = "captions"
-      )
-    }
-
-    def createTestsWithLargeCaption(
-        caption: String
-    )(using pos: Position): Unit = {
-      createTestWithCountOfElement(
         selector = "span.govuk-caption-l",
         count = 1,
         description = "captions"

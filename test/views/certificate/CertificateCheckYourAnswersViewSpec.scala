@@ -69,7 +69,7 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      doc.createTestsWithLargeCaption(
+      doc.createTestsWithCaption(
         pageCaption
       )
 
@@ -163,7 +163,7 @@ class CertificateCheckYourAnswersViewSpec extends ViewSpecBase[CertificateCheckY
 
       doc.createTestsWithOrWithoutError(hasError = false)
 
-      doc.createTestsWithLargeCaption(
+      doc.createTestsWithCaption(
         pageCaption
       )
 
