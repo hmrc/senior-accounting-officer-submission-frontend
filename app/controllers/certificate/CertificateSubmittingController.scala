@@ -42,7 +42,7 @@ class CertificateSubmittingController @Inject() (
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      certificateSubmissionService.getStateOfWorkItem(idempotencyKey).map {
+      certificateSubmissionService.getStateOfWorkItem(idempotencyKey, request.userAnswers).map {
         case CertificateSubmissionResult.Submitted(certificateRef) =>
           Redirect(certificateRoutes.CertificateConfirmationController.onPageLoad(certificateRef))
         case CertificateSubmissionResult.Pending(_) => Ok(view())

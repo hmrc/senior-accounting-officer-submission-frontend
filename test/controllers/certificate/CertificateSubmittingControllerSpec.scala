@@ -52,7 +52,7 @@ class CertificateSubmittingControllerSpec extends SpecBase with MockitoSugar wit
   "CertificatePendingController.onPageLoad" - {
     "must return OK and the correct view" - {
       "when CertificateSubmissionService returns a pending result" in {
-        when(mockCertificateSubmitService.getStateOfWorkItem(any())(using any()))
+        when(mockCertificateSubmitService.getStateOfWorkItem(any(), any())(using any()))
           .thenReturn(Future.successful(CertificateSubmissionResult.Pending("key")))
 
         val application = applicationBuilder().build()
@@ -63,14 +63,14 @@ class CertificateSubmittingControllerSpec extends SpecBase with MockitoSugar wit
 
           status(result) mustEqual Status.OK
 
-          verify(mockCertificateSubmitService, times(1)).getStateOfWorkItem(any())(using any())
+          verify(mockCertificateSubmitService, times(1)).getStateOfWorkItem(any(), any())(using any())
         }
       }
     }
 
     "must return a redirect to the certificate confirmation page" - {
       "when CertificateSubmissionService returns a submitted result" in {
-        when(mockCertificateSubmitService.getStateOfWorkItem(any())(using any()))
+        when(mockCertificateSubmitService.getStateOfWorkItem(any(), any())(using any()))
           .thenReturn(Future.successful(CertificateSubmissionResult.Submitted("notificationRef")))
 
         val application = applicationBuilder().build()
@@ -84,14 +84,14 @@ class CertificateSubmittingControllerSpec extends SpecBase with MockitoSugar wit
             .onPageLoad("notificationRef")
             .url
 
-          verify(mockCertificateSubmitService, times(1)).getStateOfWorkItem(any())(using any())
+          verify(mockCertificateSubmitService, times(1)).getStateOfWorkItem(any(), any())(using any())
         }
       }
     }
 
     "must return an exception" - {
       "when notificationSubmitService returns a failure" in {
-        when(mockCertificateSubmitService.getStateOfWorkItem(any())(using any()))
+        when(mockCertificateSubmitService.getStateOfWorkItem(any(), any())(using any()))
           .thenReturn(Future.successful(CertificateSubmissionResult.Failed))
 
         val application = applicationBuilder().build()
@@ -103,7 +103,7 @@ class CertificateSubmittingControllerSpec extends SpecBase with MockitoSugar wit
           intercept[InternalServerException] {
             await(result)
           }
-          verify(mockCertificateSubmitService, times(1)).getStateOfWorkItem(any())(using any())
+          verify(mockCertificateSubmitService, times(1)).getStateOfWorkItem(any(), any())(using any())
         }
       }
     }

@@ -24,12 +24,12 @@ import models.certificate.*
 import models.upload.*
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.{any, eq as eqTo}
-import org.mockito.Mockito.{never, verify, when}
+import org.mockito.Mockito.*
 import org.scalatest.TryValues.convertTryToSuccessOrFailure
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.certificate.*
 import play.api.http.Status.{INTERNAL_SERVER_ERROR, NO_CONTENT, OK}
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import repositories.SessionRepository
 import services.CertificateSubmissionService.CertificateSubmissionResult
 import uk.gov.hmrc.http.HeaderCarrier
@@ -271,8 +271,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
   }
 
   "CertificateSubmissionService.submitWithFaultTolerance" - {
-
-    "must build the certificate payload for sao, call the connector, wipe the Mongo data, and return the certificate ref" in {
+    "must build the certificate payload for sao, call the connector, and return the certificate ref" in {
       val connector         = mock[CertificateSubmissionConnector]
       val sessionRepository = mock[SessionRepository]
       val requestCaptor     = ArgumentCaptor.forClass(classOf[CertificateSubmissionRequest])
@@ -294,8 +293,10 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
       val userAnswersCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
       verify(sessionRepository).set(userAnswersCaptor.capture())
+      val capturedCertificate = (userAnswersCaptor.getValue.data \ "certificate").as[JsObject]
       userAnswersCaptor.getValue.id mustBe userAnswersId
-      userAnswersCaptor.getValue.data mustBe Json.obj()
+      (capturedCertificate \ "certificateIdempotencyKey").asOpt[String] must not be empty
+      (capturedCertificate - "certificateIdempotencyKey") mustBe (saoUserAnswers.data \ "certificate").as[JsObject]
       verify(sessionRepository, never()).clear(any())
 
       val request = requestCaptor.getValue
@@ -323,7 +324,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       company.isBankLevyQualified mustBe false
     }
 
-    "must build the certificate payload for standIn, call the connector, wipe the Mongo data, and return the certificate ref" in {
+    "must build the certificate payload for standIn, call the connector, and return the certificate ref" in {
       val connector         = mock[CertificateSubmissionConnector]
       val sessionRepository = mock[SessionRepository]
       val requestCaptor     = ArgumentCaptor.forClass(classOf[CertificateSubmissionRequest])
@@ -345,8 +346,10 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
       val userAnswersCaptor = ArgumentCaptor.forClass(classOf[UserAnswers])
       verify(sessionRepository).set(userAnswersCaptor.capture())
+      val capturedCertificate = (userAnswersCaptor.getValue.data \ "certificate").as[JsObject]
       userAnswersCaptor.getValue.id mustBe userAnswersId
-      userAnswersCaptor.getValue.data mustBe Json.obj()
+      (capturedCertificate \ "certificateIdempotencyKey").asOpt[String] must not be empty
+      (capturedCertificate - "certificateIdempotencyKey") mustBe (standInUserAnswers.data \ "certificate").as[JsObject]
       verify(sessionRepository, never()).clear(any())
 
       val request = requestCaptor.getValue
@@ -381,6 +384,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
       when(sessionRepository.claimCertificateSubmissionToken(eqTo(userAnswersId), eqTo("token")))
         .thenReturn(Future.successful(false))
+      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
@@ -390,7 +394,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
       result mustBe CertificateSubmissionResult.Duplicate
       verify(connector, never()).submitWithFaultTolerance(any())(using any())
-      verify(sessionRepository, never()).set(any())
+      verify(sessionRepository, times(1)).set(any())
     }
 
     "must retain Mongo data when the connector fails" in {
@@ -401,6 +405,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
         .thenReturn(Future.successful(true))
       when(connector.submitWithFaultTolerance(any())(using any()))
         .thenReturn(Future.failed(new RuntimeException("boom")))
+      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
@@ -409,7 +414,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
         .futureValue
 
       result mustBe CertificateSubmissionResult.Failed
-      verify(sessionRepository, never()).set(any())
+      verify(sessionRepository, times(1)).set(any())
     }
 
     "must still succeed when the certificate is submitted but wiping the session data fails" in {
@@ -437,6 +442,8 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val sessionRepository = mock[SessionRepository]
       val service           = new CertificateSubmissionService(connector, sessionRepository)
 
+      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
+
       val result = service
         .submitWithFaultTolerance(userAnswersId, emptyUserAnswers, "token")
         .futureValue
@@ -444,6 +451,34 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       result mustBe CertificateSubmissionResult.MissingData
       verify(sessionRepository, never()).claimCertificateSubmissionToken(any(), any())
       verify(connector, never()).submitWithFaultTolerance(any())(using any())
+    }
+
+    "must reuse the idempotency key if it's already been stored in mongo" in {
+      val connector         = mock[CertificateSubmissionConnector]
+      val sessionRepository = mock[SessionRepository]
+      val requestCaptor     = ArgumentCaptor.forClass(classOf[CertificateSubmissionRequest])
+
+      when(sessionRepository.claimCertificateSubmissionToken(eqTo(userAnswersId), eqTo("token")))
+        .thenReturn(Future.successful(true))
+      when(connector.submitWithFaultTolerance(any())(using any()))
+        .thenReturn(Future.successful(CertificateFaultToleranceResponse("idemKey")))
+      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
+
+      val service                      = new CertificateSubmissionService(connector, sessionRepository)
+      def saoAnswersWithIdempotencyKey =
+        saoUserAnswers
+          .set(CertificateIdempotencyKey, Some("idemKey"))
+          .success
+          .value
+
+      val result = service
+        .submitWithFaultTolerance(userAnswersId, saoAnswersWithIdempotencyKey, "token")
+        .futureValue
+
+      result mustBe CertificateSubmissionResult.Pending("idemKey")
+      verify(connector).submitWithFaultTolerance(requestCaptor.capture())(using any())
+      verify(sessionRepository, never()).clear(any())
+      verify(sessionRepository, never()).set(any())
     }
   }
 
@@ -454,11 +489,12 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
       when(connector.getStateOfWorkItem(any())(using any()))
         .thenReturn(Future.successful(HttpResponse(status = OK, body = """{"certificateRef": "certificateRef"}""")))
+      when(sessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .getStateOfWorkItem("key")
+        .getStateOfWorkItem("key", emptyUserAnswers)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Submitted("certificateRef")
@@ -475,7 +511,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .getStateOfWorkItem("key")
+        .getStateOfWorkItem("key", emptyUserAnswers)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Pending("key")
@@ -492,7 +528,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .getStateOfWorkItem("key")
+        .getStateOfWorkItem("key", emptyUserAnswers)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Failed

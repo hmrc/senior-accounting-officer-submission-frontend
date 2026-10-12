@@ -79,52 +79,65 @@ class CertificateSubmissionService @Inject() (
       userId: String,
       userAnswers: UserAnswers,
       token: String
-  )(using HeaderCarrier): Future[CertificateSubmissionResult] =
-    buildRequest(userAnswers, Some(generateIdempotencyKey)) match {
-      case Left(error) =>
-        logger.warn(s"Certificate submission could not be built: $error")
-        Future.successful(CertificateSubmissionResult.MissingData)
-      case Right(request) =>
-        sessionRepository.claimCertificateSubmissionToken(userId, token).flatMap {
-          case false =>
-            logger.warn("Certificate submission token was missing or already used")
-            Future.successful(CertificateSubmissionResult.Duplicate)
-          case true =>
-            connector
-              .submitWithFaultTolerance(request)
-              .flatMap { response =>
-                sessionRepository
-                  .set(userAnswers.copy(data = Json.obj()))
-                  .recover { case e =>
-                    logger.warn(s"Certificate submitted but wiping journey data failed", e)
-                    true
-                  }
-                  .map(_ => CertificateSubmissionResult.Pending(response.idempotencyKey))
-              }
-              .recover { case e =>
-                logger.error("Certificate submission failed", e)
-                CertificateSubmissionResult.Failed
-              }
-        }
+  )(using HeaderCarrier): Future[CertificateSubmissionResult] = {
+    getIdempotencyKey(userAnswers).flatMap { idempotencyKey =>
+      buildRequest(userAnswers, Some(idempotencyKey)) match {
+        case Left(error) =>
+          logger.warn(s"Certificate submission could not be built: $error")
+          Future.successful(CertificateSubmissionResult.MissingData)
+        case Right(request) =>
+          sessionRepository.claimCertificateSubmissionToken(userId, token).flatMap {
+            case false =>
+              logger.warn("Certificate submission token was missing or already used")
+              Future.successful(CertificateSubmissionResult.Duplicate)
+            case true =>
+              connector
+                .submitWithFaultTolerance(request)
+                .flatMap { response => Future.successful(CertificateSubmissionResult.Pending(response.idempotencyKey)) }
+                .recover { case e =>
+                  logger.error("Certificate submission failed", e)
+                  CertificateSubmissionResult.Failed
+                }
+          }
+      }
     }
+  }
 
   def getStateOfWorkItem(
-      idempotencyKey: String
+      idempotencyKey: String,
+      userAnswers: UserAnswers
   )(using HeaderCarrier): Future[CertificateSubmissionResult] =
     connector
       .getStateOfWorkItem(idempotencyKey)
-      .map {
+      .flatMap {
         case response if response.status == OK =>
           response.json.validate[CertificateSubmissionResponse] match {
-            case JsSuccess(value, _) => CertificateSubmissionResult.Submitted(value.certificateRef)
-            case _                   =>
-              throw UpstreamErrorResponse(
-                "Certificate submission response did not contain a valid certificateRef",
-                CREATED
+            case JsSuccess(value, _) =>
+              sessionRepository
+                .set(userAnswers.copy(data = Json.obj()))
+                .recover { case e =>
+                  logger.warn(s"Certificate submitted but wiping journey data failed", e)
+                  true
+                }
+                .map(_ => CertificateSubmissionResult.Submitted(value.certificateRef))
+            case _ =>
+              Future.failed(
+                UpstreamErrorResponse(
+                  "Certificate submission response did not contain a valid certificateRef",
+                  CREATED
+                )
               )
           }
-        case response if response.status == NO_CONTENT => CertificateSubmissionResult.Pending(idempotencyKey)
-        case response                                  => throw UpstreamErrorResponse(response.body, response.status)
+
+        case response if response.status == NO_CONTENT =>
+          Future.successful(
+            CertificateSubmissionResult.Pending(idempotencyKey)
+          )
+
+        case response =>
+          Future.failed(
+            UpstreamErrorResponse(response.body, response.status)
+          )
       }
       .recover { case e =>
         logger.error("Certificate submission failed", e)
@@ -194,7 +207,20 @@ class CertificateSubmissionService @Inject() (
       qualificationStatement = certificate.qualificationStatement
     )
 
-  private def generateIdempotencyKey = UUID.randomUUID().toString
+  private def getIdempotencyKey(userAnswers: UserAnswers): Future[String] =
+    userAnswers
+      .getNullable(CertificateIdempotencyKey)
+      .fold {
+        val newKey = UUID.randomUUID().toString
+        for {
+          updatedAnswers <- Future.fromTry(
+            userAnswers.set(CertificateIdempotencyKey, Some(newKey))
+          )
+          _ <- sessionRepository.set(updatedAnswers).recover { case e =>
+            logger.warn(s"New idempotency key created but setting it to session failed", e)
+          }
+        } yield newKey
+      }(Future.successful)
 }
 
 object CertificateSubmissionService {

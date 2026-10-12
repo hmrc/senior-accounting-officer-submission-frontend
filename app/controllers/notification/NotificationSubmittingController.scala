@@ -42,7 +42,7 @@ class NotificationSubmittingController @Inject() (
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      notificationSubmitService.getStateOfWorkItem(idempotencyKey).map {
+      notificationSubmitService.getStateOfWorkItem(idempotencyKey, request.userAnswers).map {
         case Success(notificationRef) =>
           Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationRef))
         case Pending(_)      => Ok(view())

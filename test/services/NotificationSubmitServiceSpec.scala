@@ -175,7 +175,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
       running(application) {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
-        val result = SUT.getStateOfWorkItem("key").futureValue
+        val result = SUT.getStateOfWorkItem("key", emptyUserAnswers).futureValue
         result mustBe NotificationState.Success(exampleNotificationReference)
       }
     }
@@ -187,7 +187,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
       running(application) {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
-        val result = SUT.getStateOfWorkItem("key").futureValue
+        val result = SUT.getStateOfWorkItem("key", emptyUserAnswers).futureValue
         result mustBe NotificationState.Pending("key")
       }
     }

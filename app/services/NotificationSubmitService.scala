@@ -60,21 +60,23 @@ class NotificationSubmitService @Inject() (
   def submitWithFaultTolerance(
       userAnswers: UserAnswers
   )(using HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
-    protectedServiceConnector
-      .postNotificationWithFaultTolerance(userAnswers.toNotification(Some(generateIdempotencyKey)))
-      .flatMap { response =>
-        response.status match {
-          case ACCEPTED =>
-            val idempotencyKey = Json.parse(response.body).as[NotificationFaultToleranceResponse].idempotencyKey
-            sessionRepository
-              .set(userAnswers.copy(data = Json.obj()))
-              .map(_ => Right(idempotencyKey))
-          case _ => Future.successful(Left(NotificationSubmissionError.HttpError(response)))
+    getIdempotencyKey(userAnswers).flatMap { idempotencyKey =>
+      protectedServiceConnector
+        .postNotificationWithFaultTolerance(userAnswers.toNotification(Some(idempotencyKey)))
+        .flatMap { response =>
+          response.status match {
+            case ACCEPTED =>
+              val idempotencyKey = Json.parse(response.body).as[NotificationFaultToleranceResponse].idempotencyKey
+              Future.successful(Right(idempotencyKey))
+            case _ => Future.successful(Left(NotificationSubmissionError.HttpError(response)))
+          }
         }
-      }
+    }
   }
 
-  def getStateOfWorkItem(idempotencyKey: String)(using HeaderCarrier): Future[NotificationState] = {
+  def getStateOfWorkItem(idempotencyKey: String, userAnswers: UserAnswers)(using
+      HeaderCarrier
+  ): Future[NotificationState] = {
     protectedServiceConnector
       .getStateOfWorkItem(idempotencyKey)
       .flatMap { response =>
@@ -83,13 +85,25 @@ class NotificationSubmitService @Inject() (
             Future.successful(Pending(idempotencyKey))
           case OK =>
             val notificationReference = Json.parse(response.body).as[NotificationResponse].notificationRef
+            sessionRepository.set(userAnswers.copy(data = Json.obj()))
             Future.successful(NotificationState.Success(notificationReference))
           case _ => Future.successful(NotificationState.Failure(response.status))
         }
       }
   }
 
-  private def generateIdempotencyKey = UUID.randomUUID().toString
+  private def getIdempotencyKey(userAnswers: UserAnswers): Future[String] =
+    userAnswers
+      .getNullable(NotificationIdempotencyKey)
+      .fold {
+        val newKey = UUID.randomUUID().toString
+        for {
+          updatedAnswers <- Future.fromTry(
+            userAnswers.set(NotificationIdempotencyKey, Some(newKey))
+          )
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield newKey
+      }(Future.successful)
 }
 
 object NotificationSubmitService {

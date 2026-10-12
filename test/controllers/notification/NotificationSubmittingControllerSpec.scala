@@ -52,7 +52,7 @@ class NotificationSubmittingControllerSpec extends SpecBase with MockitoSugar wi
   "NotificationPendingController.onPageLoad" - {
     "must return OK and the correct view" - {
       "when notificationSubmitService returns a pending result" in {
-        when(mockNotificationSubmitService.getStateOfWorkItem(any())(using any()))
+        when(mockNotificationSubmitService.getStateOfWorkItem(any(), any())(using any()))
           .thenReturn(Future.successful(NotificationState.Pending("key")))
 
         val application = applicationBuilder().build()
@@ -63,14 +63,14 @@ class NotificationSubmittingControllerSpec extends SpecBase with MockitoSugar wi
 
           status(result) mustEqual Status.OK
 
-          verify(mockNotificationSubmitService, times(1)).getStateOfWorkItem(any())(using any())
+          verify(mockNotificationSubmitService, times(1)).getStateOfWorkItem(any(), any())(using any())
         }
       }
     }
 
     "must return a redirect to the notification confirmation page" - {
       "when notificationSubmitService returns a success result" in {
-        when(mockNotificationSubmitService.getStateOfWorkItem(any())(using any()))
+        when(mockNotificationSubmitService.getStateOfWorkItem(any(), any())(using any()))
           .thenReturn(Future.successful(NotificationState.Success("notificationRef")))
 
         val application = applicationBuilder().build()
@@ -84,14 +84,14 @@ class NotificationSubmittingControllerSpec extends SpecBase with MockitoSugar wi
             .onPageLoad("notificationRef")
             .url
 
-          verify(mockNotificationSubmitService, times(1)).getStateOfWorkItem(any())(using any())
+          verify(mockNotificationSubmitService, times(1)).getStateOfWorkItem(any(), any())(using any())
         }
       }
     }
 
     "must return an exception" - {
       "when notificationSubmitService returns a failure" in {
-        when(mockNotificationSubmitService.getStateOfWorkItem(any())(using any()))
+        when(mockNotificationSubmitService.getStateOfWorkItem(any(), any())(using any()))
           .thenReturn(Future.successful(NotificationState.Failure(500)))
 
         val application = applicationBuilder().build()
@@ -103,7 +103,7 @@ class NotificationSubmittingControllerSpec extends SpecBase with MockitoSugar wi
           intercept[InternalServerException] {
             await(result)
           }
-          verify(mockNotificationSubmitService, times(1)).getStateOfWorkItem(any())(using any())
+          verify(mockNotificationSubmitService, times(1)).getStateOfWorkItem(any(), any())(using any())
         }
       }
     }
