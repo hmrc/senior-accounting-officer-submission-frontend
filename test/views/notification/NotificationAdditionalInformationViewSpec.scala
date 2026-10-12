@@ -62,7 +62,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButtons(
             action = notificationRoutes.NotificationAdditionalInformationController.onSubmit(mode),
@@ -124,7 +124,7 @@ class NotificationAdditionalInformationViewSpec extends ViewSpecBase[Notificatio
             hasError = true
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestMustShowTextarea(
             name = "value",

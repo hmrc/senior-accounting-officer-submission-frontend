@@ -37,7 +37,7 @@
 @paragraph1Key = @{if companyCount == 1 then "uploadTemplateTable.paragraph1.singular" else "uploadTemplateTable.paragraph1.plural"}
 
 @layout(pageTitle = titleNoForm(messages("uploadTemplateTable.title"), Some("section.notification"))) {
-    <span class="govuk-caption-m">@messages("uploadTemplateTable.caption")</span>
+    <span class="govuk-caption-l">@messages("uploadTemplateTable.caption")</span>
     <h1 class="govuk-heading-l">@messages("uploadTemplateTable.heading")</h1>
     <p class="govuk-body">@messages(paragraph1Key, companyCount.toString, saoName)</p>
     <p class="govuk-body">

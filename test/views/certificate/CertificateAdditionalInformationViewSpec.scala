@@ -61,7 +61,7 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithParagraphs(
             paragraphs
@@ -92,7 +92,7 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithParagraphs(
             paragraphs
@@ -133,7 +133,7 @@ class CertificateAdditionalInformationViewSpec extends ViewSpecBase[CertificateA
             hasError = true
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithParagraphs(
             paragraphs

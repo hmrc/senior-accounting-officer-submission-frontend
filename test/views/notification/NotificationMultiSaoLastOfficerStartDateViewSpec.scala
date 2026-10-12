@@ -109,7 +109,7 @@ class NotificationMultiSaoLastOfficerStartDateViewSpec
             hasError = true
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestMustShowHint(pageHint)
 

@@ -73,7 +73,7 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
         }
 
         "when the form is filled in" - {
@@ -106,7 +106,7 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
         }
 
         "when the form has errors" - {
@@ -139,7 +139,7 @@ class NotificationMoreThanOneSaoViewSpec extends ViewSpecBase[NotificationMoreTh
             hasError = true
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
         }
       }
     }

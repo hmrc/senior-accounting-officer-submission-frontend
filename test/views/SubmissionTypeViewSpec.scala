@@ -65,7 +65,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
             doc.createTestsWithRadioButtonDivider(radioButtonDivider)
 
-            doc.createTestsWithLargeCaption(pageCaption)
+            doc.createTestsWithCaption(pageCaption)
 
             doc.createTestsWithSubmissionButton(
               action = controllers.routes.SubmissionTypeController.onSubmit(),
@@ -101,7 +101,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
             doc.createTestsWithRadioButtonDivider(radioButtonDivider)
 
-            doc.createTestsWithLargeCaption(pageCaption)
+            doc.createTestsWithCaption(pageCaption)
 
             doc.createTestsWithSubmissionButton(
               action = controllers.routes.SubmissionTypeController.onSubmit(),
@@ -137,7 +137,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
 
             doc.createTestsWithRadioButtonDivider(radioButtonDivider)
 
-            doc.createTestsWithLargeCaption(pageCaption)
+            doc.createTestsWithCaption(pageCaption)
 
             doc.createTestsWithSubmissionButton(
               action = controllers.routes.SubmissionTypeController.onSubmit(),
@@ -172,7 +172,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
               hasError = false
             )
 
-            doc.createTestsWithLargeCaption(pageCaption)
+            doc.createTestsWithCaption(pageCaption)
 
             doc.createTestsWithSubmissionButton(
               action = controllers.routes.SubmissionTypeController.onSubmit(),
@@ -205,7 +205,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
               hasError = false
             )
 
-            doc.createTestsWithLargeCaption(pageCaption)
+            doc.createTestsWithCaption(pageCaption)
 
             doc.createTestsWithSubmissionButton(
               action = controllers.routes.SubmissionTypeController.onSubmit(),
@@ -238,7 +238,7 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
               hasError = true
             )
 
-            doc.createTestsWithLargeCaption(pageCaption)
+            doc.createTestsWithCaption(pageCaption)
 
             doc.createTestsWithSubmissionButton(
               action = controllers.routes.SubmissionTypeController.onSubmit(),

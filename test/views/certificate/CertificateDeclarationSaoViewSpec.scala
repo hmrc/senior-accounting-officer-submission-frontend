@@ -68,7 +68,7 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
           doc.createTestsForInputWidth()
@@ -102,7 +102,7 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
             hasError = false
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
           doc.createTestsForInputWidth()
@@ -136,7 +136,7 @@ class CertificateDeclarationSaoViewSpec extends ViewSpecBase[CertificateDeclarat
             hasError = true
           )
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
           doc.createTestsForInputWidth()

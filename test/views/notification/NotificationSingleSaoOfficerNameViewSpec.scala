@@ -62,7 +62,7 @@ class NotificationSingleSaoOfficerNameViewSpec extends ViewSpecBase[Notification
 
           doc.createTestsForInputWidth()
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = notificationRoutes.NotificationSingleSaoOfficerNameController.onSubmit(mode),
@@ -95,7 +95,7 @@ class NotificationSingleSaoOfficerNameViewSpec extends ViewSpecBase[Notification
 
           doc.createTestsForInputWidth()
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = notificationRoutes.NotificationSingleSaoOfficerNameController.onSubmit(mode),
@@ -128,7 +128,7 @@ class NotificationSingleSaoOfficerNameViewSpec extends ViewSpecBase[Notification
 
           doc.createTestsForInputWidth()
 
-          doc.createTestsWithLargeCaption(pageCaption)
+          doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
             action = notificationRoutes.NotificationSingleSaoOfficerNameController.onSubmit(mode),
