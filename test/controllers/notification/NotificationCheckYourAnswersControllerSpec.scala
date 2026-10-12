@@ -28,6 +28,7 @@ import models.upload.UploadTemplateTableData
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.notification.NotificationMoreThanOneSaoPage
 import pages.notification.NotificationSingleSaoOfficerNamePage
@@ -45,7 +46,17 @@ import views.html.notification.NotificationCheckYourAnswersView
 
 import scala.concurrent.Future
 
-class NotificationCheckYourAnswersControllerSpec extends SpecBase with FeatureToggleSupport {
+class NotificationCheckYourAnswersControllerSpec extends SpecBase with FeatureToggleSupport with BeforeAndAfterEach {
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(FaultTolerance)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(FaultTolerance)
+  }
 
   def onwardRoute: Call = Call("GET", "/foo")
 

@@ -43,7 +43,7 @@ class NotificationSubmitService @Inject() (
 ) {
   def submit(userAnswers: UserAnswers)(using HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
     protectedServiceConnector
-      .postNotification(userAnswers.toNotification(None))
+      .postNotification(userAnswers.toNotification(idempotencyKey = None))
       .flatMap { response =>
         response.status match {
           case OK => {

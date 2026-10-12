@@ -25,6 +25,7 @@ import models.JourneySection
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.*
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
@@ -36,7 +37,21 @@ import views.html.certificate.CertificateCheckYourAnswersView
 
 import scala.concurrent.Future
 
-class CertificateCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with FeatureToggleSupport {
+class CertificateCheckYourAnswersControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    disable(FaultTolerance)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(FaultTolerance)
+  }
 
   "CertificateCheckYourAnswers Controller" - {
 

@@ -48,15 +48,9 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
     given HeaderCarrier = HeaderCarrier()
 
     val userAnswers = emptyUserAnswers
-      .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-      .success
-      .value
-      .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
-      .success
-      .value
-      .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
-      .success
-      .value
+      .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+      .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
+      .add(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
 
     "must return notification response on success" in {
       val application = configureApplication(
@@ -114,20 +108,14 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
     given HeaderCarrier = HeaderCarrier()
 
     val userAnswers = emptyUserAnswers
-      .set(NotificationMoreThanOneSaoPage(NormalMode), false)
-      .success
-      .value
-      .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
-      .success
-      .value
-      .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
-      .success
-      .value
+      .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+      .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
+      .add(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Seq.empty))
 
     "must return notification response on success" in {
       val application = configureApplication(
         HttpResponse(ACCEPTED, Json.obj("idempotencyKey" -> exampleNotificationReference).toString),
-        true
+        mockRepositoryResponse = true
       )
 
       running(application) {
@@ -225,42 +213,18 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
   "NotificationSubmitService.toNotification" - {
     def buildUserAnswers(moreThanOneSao: Boolean): UserAnswers = {
       emptyUserAnswers
-        .set(NotificationAdditionalInformationPage, Some(exampleAdditionalInformation))
-        .success
-        .value
-        .set(NotificationMoreThanOneSaoPage(NormalMode), moreThanOneSao)
-        .success
-        .value
-        .set(NotificationSingleSaoOfficerNamePage(NormalMode), exampleSao1Name)
-        .success
-        .value
-        .set(NotificationMultiSaoLastOfficerNamePage(NormalMode), exampleSao2Name)
-        .success
-        .value
-        .set(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), exampleSao2StartDate)
-        .success
-        .value
-        .set(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), exampleSao3Name)
-        .success
-        .value
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), exampleSao3StartDate)
-        .success
-        .value
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), exampleSao3EndDate)
-        .success
-        .value
-        .set(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), exampleSao4Name)
-        .success
-        .value
-        .set(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), exampleSao4StartDate)
-        .success
-        .value
-        .set(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), exampleSao4EndDate)
-        .success
-        .value
-        .set(UploadTemplateTablePage, exampleTableData)
-        .success
-        .value
+        .add(NotificationAdditionalInformationPage, Some(exampleAdditionalInformation))
+        .add(NotificationMoreThanOneSaoPage(NormalMode), moreThanOneSao)
+        .add(NotificationSingleSaoOfficerNamePage(NormalMode), exampleSao1Name)
+        .add(NotificationMultiSaoLastOfficerNamePage(NormalMode), exampleSao2Name)
+        .add(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), exampleSao2StartDate)
+        .add(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), exampleSao3Name)
+        .add(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), exampleSao3StartDate)
+        .add(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), exampleSao3EndDate)
+        .add(NotificationMultiSaoPreviousOfficerNamePage(1, NormalMode), exampleSao4Name)
+        .add(NotificationMultiSaoPreviousOfficerStartDatePage(1, NormalMode), exampleSao4StartDate)
+        .add(NotificationMultiSaoPreviousOfficerEndDatePage(1, NormalMode), exampleSao4EndDate)
+        .add(UploadTemplateTablePage, exampleTableData)
     }
 
     "User has provided one SAO" in {
