@@ -31,7 +31,10 @@
     }
 }
 
-@layout(pageTitle = titleNoForm(messages("journeyRecovery.startAgain.title"), sectionMessageKey)) {
+@layout(
+    showBackLink = false,
+    pageTitle = titleNoForm(messages("journeyRecovery.startAgain.title"), sectionMessageKey)
+) {
 
     <h1 class="govuk-heading-xl">@messages("journeyRecovery.startAgain.heading")</h1>
 

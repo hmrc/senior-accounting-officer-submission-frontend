@@ -45,7 +45,7 @@ class JourneyRecoveryStartAgainViewSpec extends ViewSpecBase[JourneyRecoveryStar
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitleWithoutSection,
         pageHeading = pageHeading,
-        showBackLink = true,
+        showBackLink = false,
         showIsThisPageNotWorkingProperlyLink = true,
         hasError = false
       )
@@ -62,7 +62,7 @@ class JourneyRecoveryStartAgainViewSpec extends ViewSpecBase[JourneyRecoveryStar
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitleWithNotificationSection,
         pageHeading = pageHeading,
-        showBackLink = true,
+        showBackLink = false,
         showIsThisPageNotWorkingProperlyLink = true,
         hasError = false
       )
@@ -79,7 +79,7 @@ class JourneyRecoveryStartAgainViewSpec extends ViewSpecBase[JourneyRecoveryStar
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitleWithCertificateSection,
         pageHeading = pageHeading,
-        showBackLink = true,
+        showBackLink = false,
         showIsThisPageNotWorkingProperlyLink = true,
         hasError = false
       )

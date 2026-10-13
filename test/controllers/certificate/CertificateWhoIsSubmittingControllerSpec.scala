@@ -20,8 +20,8 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import forms.certificate.CertificateWhoIsSubmittingFormProvider
-import models.NormalMode
 import models.certificate.CertificateWhoIsSubmitting
+import models.{JourneySection, NormalMode}
 import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -145,7 +145,9 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Certificate))
+          .url
       }
     }
 
@@ -162,7 +164,9 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
 
         status(result) mustEqual SEE_OTHER
 
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad().url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Certificate))
+          .url
       }
     }
   }
