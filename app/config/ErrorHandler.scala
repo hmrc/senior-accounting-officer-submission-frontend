@@ -66,7 +66,7 @@ class ErrorHandler @Inject() (
     }
 
   private def sectionFor(path: String): Option[JourneySection] =
-    if path.contains("/notification/") then Some(JourneySection.Notification)
-    else if path.contains("/certificate/") then Some(JourneySection.Certificate)
+    if path.contains("/notification") then Some(JourneySection.Notification)
+    else if path.contains("/certificate") then Some(JourneySection.Certificate)
     else None
 }
