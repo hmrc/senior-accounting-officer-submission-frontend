@@ -94,8 +94,10 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
           .select("""[data-test-id="provide-sao-details"] a.govuk-link""")
           .get(0)
           .createTestWithLink(
+            linkTestDescription = "provide SAO details",
             linkText = provideSaoDetailsLinkText,
-            destinationUrl = certificateRoutes.CertificateSaoFullNameController.onPageLoad(NormalMode).url
+            destinationUrl = certificateRoutes.CertificateSaoFullNameController.onPageLoad(NormalMode).url,
+            isExternalLink = false
           )
       }
 
@@ -104,8 +106,10 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
           .select("""[data-test-id="upload-submission-template"] a.govuk-link""")
           .get(0)
           .createTestWithLink(
+            linkTestDescription = "upload submission template",
             linkText = uploadSubmissionTemplateLinkText,
-            destinationUrl = certificateRoutes.CertificateUploadFormController.onPageLoad().url
+            destinationUrl = certificateRoutes.CertificateUploadFormController.onPageLoad().url,
+            isExternalLink = false
           )
       }
 
@@ -114,8 +118,10 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
           .select("""[data-test-id="submit-certificate"] a.govuk-link""")
           .get(0)
           .createTestWithLink(
+            linkTestDescription = "submit certificate",
             linkText = submitCertificateLinkText,
-            destinationUrl = certificateRoutes.CertificateAdditionalInformationController.onPageLoad(NormalMode).url
+            destinationUrl = certificateRoutes.CertificateAdditionalInformationController.onPageLoad(NormalMode).url,
+            isExternalLink = false
           )
       }
 

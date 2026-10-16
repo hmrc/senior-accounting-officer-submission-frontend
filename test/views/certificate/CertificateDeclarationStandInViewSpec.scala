@@ -54,7 +54,7 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
-          doc.createTestsForSubHeadings(pageSubheading)
+          doc.createTestsForSubheadings(pageSubheading, includingError = false, tag = "h2")
 
           doc.createTestMustShowNumberOfInputs(2)
           doc.createTestMustShowTextInput(
@@ -95,7 +95,7 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
-          doc.createTestsForSubHeadings(pageSubheading)
+          doc.createTestsForSubheadings(pageSubheading, includingError = false, tag = "h2")
 
           doc.createTestMustShowNumberOfInputs(2)
           doc.createTestMustShowTextInput(
@@ -136,7 +136,7 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
 
           doc.createTestsWithParagraphs(pageParagraphs)
           doc.createTestsWithBulletPoints(pageBullets)
-          doc.createTestsForSubHeadings(pageSubheading)
+          doc.createTestsForSubheadings(pageSubheading, includingError = false, tag = "h2")
 
           doc.createTestMustShowNumberOfInputs(2)
           doc.createTestMustShowTextInput(
@@ -166,18 +166,6 @@ class CertificateDeclarationStandInViewSpec extends ViewSpecBase[CertificateDecl
       }
     }
   }
-
-  extension (doc: => Document) {
-    def createTestsForSubHeadings(expectedSubheading: String): Unit = {
-      val subheadings = doc.getMainContent.select("h2").not(".govuk-error-summary__title")
-      "must have expected number of subheadings" in {
-        subheadings.size() mustBe 1
-      }
-      s"must have heading '$expectedSubheading'" in {
-        subheadings.get(0).text mustBe expectedSubheading
-      }
-    }
-  }
 }
 
 object CertificateDeclarationStandInViewSpec {
@@ -196,10 +184,10 @@ object CertificateDeclarationStandInViewSpec {
     "you have been authorised by the SAO to submit this certificate"
   )
 
-  val pageSubheading  = "I confirm that I am authorised to submit this certificate."
-  val pageInput1Label = "Enter your full name"
-  val pageInput2Label = "Enter the full name of the SAO who authorised you"
-  val testInput1Value = "test value 1"
-  val testInput2Value = "test value 2"
-  val pageButtonText  = "Confirm"
+  val pageSubheading: Seq[String] = Seq("I confirm that I am authorised to submit this certificate.")
+  val pageInput1Label             = "Enter your full name"
+  val pageInput2Label             = "Enter the full name of the SAO who authorised you"
+  val testInput1Value             = "test value 1"
+  val testInput2Value             = "test value 2"
+  val pageButtonText              = "Confirm"
 }

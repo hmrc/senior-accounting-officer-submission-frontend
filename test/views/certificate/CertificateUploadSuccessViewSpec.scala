@@ -41,9 +41,7 @@ class CertificateUploadSuccessViewSpec extends ViewSpecBase[CertificateUploadSuc
 
     doc.createTestsWithParagraphs(paragraphs)
 
-    "must have a spinner" in {
-      doc.select("div.loader").size() mustBe 1
-    }
+    doc.createTestForSpinner()
 
     "must refresh the page without adding a browser history entry" in {
       val scriptAsString = doc.select("script").html()

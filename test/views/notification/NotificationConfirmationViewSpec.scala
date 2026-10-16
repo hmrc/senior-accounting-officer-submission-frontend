@@ -82,20 +82,26 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
         .select("li span a")
         .get(0)
         .createTestWithLink(
+          linkTestDescription = "download pdf link",
           linkText = downloadPdfLinkText,
-          destinationUrl = downloadPdfLinkUrl
+          destinationUrl = downloadPdfLinkUrl,
+          isExternalLink = false
         )
 
       doc.getMainContent
         .select("li span a")
         .get(1)
         .createTestWithLink(
+          linkTestDescription = "print page",
           linkText = printPageLinkText,
-          destinationUrl = "#"
+          destinationUrl = "#",
+          isExternalLink = false
         )
 
-      doc.createTestsForSubHeadings(
-        pageSubheadings
+      doc.createTestsForSubheadings(
+        pageSubheadings,
+        includingError = false,
+        tag = "h2"
       )
 
       doc.createTestForInsetText(pageInsetText)
@@ -153,12 +159,16 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
         .select("li span a")
         .get(0)
         .createTestWithLink(
+          linkTestDescription = "print page",
           linkText = printPageLinkText,
-          destinationUrl = "#"
+          destinationUrl = "#",
+          isExternalLink = false
         )
 
-      doc.createTestsForSubHeadings(
-        pageSubheadings
+      doc.createTestsForSubheadings(
+        pageSubheadings,
+        includingError = false,
+        tag = "h2"
       )
 
       doc.createTestForInsetText(pageInsetText)
@@ -169,23 +179,7 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
         buttonText = "Continue"
       )
     }
-
   }
-
-  extension (target: => Document) {
-    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
-      val headings = target.getMainContent.getElementsByTag("h2")
-      "must have expected number of headings" in {
-        headings.size() mustBe subheadings.length
-      }
-      subheadings.zipWithIndex.foreach((subheading, i) => {
-        s"must have heading '$subheading'" in {
-          headings.get(i).text mustBe subheading
-        }
-      })
-    }
-  }
-
 }
 
 object NotificationConfirmationViewSpec {

@@ -63,7 +63,12 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
       doc
         .select(linkLocator)
         .get(0)
-        .createTestWithLink(linkText, certificateRoutes.CertificateUploadFormController.onPageLoad().url)
+        .createTestWithLink(
+          linkTestDescription = "upload updated submission template",
+          linkText = linkText,
+          destinationUrl = certificateRoutes.CertificateUploadFormController.onPageLoad().url,
+          isExternalLink = false
+        )
 
       doc.createTestsWithUnqualifiedCompanyDescriptionList(unqualifiedCompanies)
 
@@ -95,7 +100,12 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
       doc
         .select(linkLocator)
         .get(0)
-        .createTestWithLink(linkText, certificateRoutes.CertificateUploadFormController.onPageLoad().url)
+        .createTestWithLink(
+          linkTestDescription = "update uploaded submission template",
+          linkText = linkText,
+          destinationUrl = certificateRoutes.CertificateUploadFormController.onPageLoad().url,
+          isExternalLink = false
+        )
 
       doc.createTestsWithUnqualifiedCompanyDescriptionList(Seq())
 
