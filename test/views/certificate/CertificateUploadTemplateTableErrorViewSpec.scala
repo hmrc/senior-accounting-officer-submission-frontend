@@ -58,12 +58,14 @@ class CertificateUploadTemplateTableErrorViewSpec extends ViewSpecBase[Certifica
 
         doc.createTestsWithParagraphs(expectedParagraphsByScenario(testScenario))
 
-        doc.getElementById(errorLinkId).createTestWithLink(
-          linkTestDescription = "guidance",
-          linkText = "Download a submission template and read guidance on how to complete it (opens in new tab)",
-          destinationUrl = routes.TemplateGuidanceController.onPageLoadNewTab().url,
-          isExternalLink = true
-        )
+        doc
+          .getElementById(errorLinkId)
+          .createTestWithLink(
+            linkTestDescription = "guidance",
+            linkText = "Download a submission template and read guidance on how to complete it (opens in new tab)",
+            destinationUrl = routes.TemplateGuidanceController.onPageLoadNewTab().url,
+            isExternalLink = true
+          )
 
         doc.createTestsWithSubmissionButton(
           certificateRoutes.CertificateReviewQualifiedController.onSubmit(),
@@ -159,7 +161,7 @@ object CertificateUploadTemplateTableErrorViewSpec {
 
   val invalidTemplates: Map[String, (UploadTemplateTableData, String)] = Map(
     "the template is invalid" -> (invalidTemplate, "file-format-error-link"),
-    "the template is empty" -> (emptyTemplate, "empty-error-link")
+    "the template is empty"   -> (emptyTemplate, "empty-error-link")
   )
 
   private def invalidTemplate: UploadTemplateTableData = UploadTemplateTableData(

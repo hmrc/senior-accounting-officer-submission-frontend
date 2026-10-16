@@ -85,12 +85,14 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
           isExternalLink = false
         )
 
-      doc.getElementById(pageAccountLinkId).createTestWithLink(
-        linkTestDescription = "page account",
-        linkText = pageAccountPage,
-        destinationUrl = appConfig.hubBaseUrl,
-        isExternalLink = false
-      )
+      doc
+        .getElementById(pageAccountLinkId)
+        .createTestWithLink(
+          linkTestDescription = "page account",
+          linkText = pageAccountPage,
+          destinationUrl = appConfig.hubBaseUrl,
+          isExternalLink = false
+        )
 
       doc.createTestForInsetText(pageInsetText)
       doc.createTestsForSubheadings(pageSubheadings, includingError = true, tag = "h2")
@@ -142,7 +144,14 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
           isExternalLink = false
         )
 
-      doc.getElementById(pageAccountLinkId).createTestWithLink(linkTestDescription = "page account", linkText = pageAccountPage, destinationUrl = appConfig.hubBaseUrl, isExternalLink = false)
+      doc
+        .getElementById(pageAccountLinkId)
+        .createTestWithLink(
+          linkTestDescription = "page account",
+          linkText = pageAccountPage,
+          destinationUrl = appConfig.hubBaseUrl,
+          isExternalLink = false
+        )
       doc.createTestsForSubheadings(pageSubheadings, includingError = true, tag = "h2")
       doc.createTestsWithOrWithoutError(hasError = false)
     }

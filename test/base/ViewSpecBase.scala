@@ -805,13 +805,13 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
     }
 
     def createTestWithLink(
-                            linkTestDescription: String,
-                            linkText: String,
-                            destinationUrl: String,
-                            isExternalLink: Boolean
-                          )(using
-                            pos: Position
-                          ): Unit = {
+        linkTestDescription: String,
+        linkText: String,
+        destinationUrl: String,
+        isExternalLink: Boolean
+    )(using
+        pos: Position
+    ): Unit = {
       s"the $linkTestDescription link" - {
         s"must have expected link with correct text: $linkText and correct url $destinationUrl within provided element" in {
           val element       = target.resolve
@@ -845,12 +845,14 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
     }
 
     def createTestsForSubheadings(
-                                  subheadings: Seq[String],
-                                  includingError: Boolean,
-                                  tag: String
-                                )(using pos: Position): Unit = {
+        subheadings: Seq[String],
+        includingError: Boolean,
+        tag: String
+    )(using pos: Position): Unit = {
 
-      val headings = if(includingError) target.resolve.select(tag) else target.resolve.select(tag).not(".govuk-error-summary__title")
+      val headings =
+        if includingError then target.resolve.select(tag)
+        else target.resolve.select(tag).not(".govuk-error-summary__title")
 
       "must have expected number of headings" in {
         headings.size() mustBe subheadings.size
