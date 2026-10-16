@@ -42,8 +42,10 @@ class UnexpectedErrorViewSpec extends ViewSpecBase[UnexpectedErrorView] {
       .select("p a")
       .get(0)
       .createTestWithLink(
+        linkTestDescription = "email",
         linkText = email,
-        destinationUrl = destinationEmail
+        destinationUrl = destinationEmail,
+        isExternalLink = false
       )
     doc.createTestsWithOrWithoutError(hasError = false)
   }

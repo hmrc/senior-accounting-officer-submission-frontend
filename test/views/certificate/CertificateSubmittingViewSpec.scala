@@ -39,13 +39,14 @@ class CertificateSubmittingViewSpec extends ViewSpecBase[CertificateSubmittingVi
         hasError = false
       )
 
-      "must have a paragraph telling the user that it may take a few minutes" in {
-        doc.getElementById("wait-text").text() mustBe waitText
+      "must have a paragraph telling the user that it may take a few minutes" - {
+        doc.getMainContent
+          .select("#wait-text")
+          .get(0)
+          .createTestWithText(waitText)
       }
 
-      "must have a spinner" in {
-        doc.select("div.loader").size() mustBe 1
-      }
+      doc.createTestForSpinner()
     }
   }
 }

@@ -45,7 +45,7 @@ class CertificateUploadTemplateTableErrorViewSpec extends ViewSpecBase[Certifica
       )
     )
 
-    invalidTemplates.foreach { case (testScenario, data) =>
+    invalidTemplates.foreach { case (testScenario, (data, errorLinkId)) =>
       def doc = generateView(data)
       s"when the UploadTemplateTableData indicates $testScenario" - {
         doc.createTestsWithStandardPageElements(
@@ -58,18 +58,12 @@ class CertificateUploadTemplateTableErrorViewSpec extends ViewSpecBase[Certifica
 
         doc.createTestsWithParagraphs(expectedParagraphsByScenario(testScenario))
 
-        "must render a guidance link" in {
-          val link = doc.getMainContent
-            .select("a.govuk-link")
-            .asScala
-            .find(
-              _.text()
-                .contains("Download a submission template and read guidance on how to complete it (opens in new tab)")
-            )
-            .value
-          link.attr("href") mustBe routes.TemplateGuidanceController.onPageLoadNewTab().url
-          link.attr("target") mustBe "_blank"
-        }
+        doc.getElementById(errorLinkId).createTestWithLink(
+          linkTestDescription = "guidance",
+          linkText = "Download a submission template and read guidance on how to complete it (opens in new tab)",
+          destinationUrl = routes.TemplateGuidanceController.onPageLoadNewTab().url,
+          isExternalLink = true
+        )
 
         doc.createTestsWithSubmissionButton(
           certificateRoutes.CertificateReviewQualifiedController.onSubmit(),
@@ -163,9 +157,9 @@ object CertificateUploadTemplateTableErrorViewSpec {
     errors = Seq.empty
   )
 
-  val invalidTemplates: Map[String, UploadTemplateTableData] = Map(
-    "the template is invalid" -> invalidTemplate,
-    "the template is empty"   -> emptyTemplate
+  val invalidTemplates: Map[String, (UploadTemplateTableData, String)] = Map(
+    "the template is invalid" -> (invalidTemplate, "file-format-error-link"),
+    "the template is empty" -> (emptyTemplate, "empty-error-link")
   )
 
   private def invalidTemplate: UploadTemplateTableData = UploadTemplateTableData(

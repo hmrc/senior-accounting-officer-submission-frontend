@@ -38,7 +38,6 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
   }
 
   "CertificateWhoIsSubmittingView" - {
-
     Seq(NormalMode, TransactionMode).foreach { mode =>
       s"when using $mode" - {
         "when the form is not filled in" - {
@@ -54,7 +53,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 
           doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
-          doc.createTestsForSubHeadings(subheadings)
+          doc.createTestsForSubheadings(subheadings, includingError = false, tag = "h2")
 
           doc.createTestsWithRadioButtons(
             name = "value",
@@ -89,7 +88,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 
           doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
-          doc.createTestsForSubHeadings(subheadings)
+          doc.createTestsForSubheadings(subheadings, includingError = false, tag = "h2")
 
           doc.createTestsWithRadioButtons(
             name = "value",
@@ -124,7 +123,7 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
 
           doc.createTestsWithCaption(pageCaption)
           doc.createTestsWithParagraphs(paragraphs)
-          doc.createTestsForSubHeadings(subheadingsPageError)
+          doc.createTestsForSubheadings(subheadingsPageError, includingError = true, tag = "h2")
 
           doc.createTestsWithRadioButtons(
             name = "value",
@@ -146,20 +145,6 @@ class CertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CertificateWhoIsSu
           )
         }
       }
-    }
-
-  }
-  extension (target: => Document) {
-    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
-      val headings = target.getMainContent.getElementsByTag("h2")
-      "must have expected number of headings" in {
-        headings.size() mustBe subheadings.length
-      }
-      subheadings.zipWithIndex.foreach((subheading, i) => {
-        s"must have heading '$subheading'" in {
-          headings.get(i).text mustBe subheading
-        }
-      })
     }
   }
 }

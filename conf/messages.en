@@ -279,11 +279,11 @@ uploadTemplateTable.table.emptyField = Not provided
 uploadTemplateTableError.title = There is a problem with your submission template file
 uploadTemplateTableError.caption = Submit a notification
 uploadTemplateTableError.heading = There is a problem with your submission template file
-uploadTemplateTableError.paragraph1WithLink = Review and correct the errors in your template before you upload another file. We only display the first 50 rows where there is an error. <a {0}>Read guidance on how to complete the submission template (opens in new tab)</a>
+uploadTemplateTableError.paragraph1WithLink = Review and correct the errors in your template before you upload another file. We only display the first 50 rows where there is an error. <a id="correct-errors-link" {0}>Read guidance on how to complete the submission template (opens in new tab)</a>
 uploadTemplateTableError.problems.heading = Problems with your file
 uploadTemplateTableError.problems.summary = Your file has {0} errors. At least one company has missing information or is not in the correct format.
-uploadTemplateTableError.fileFormat.error.paragraph1WithLink = The file you uploaded is not the Senior Accounting Officer notification and certificate submission template.<br/><a {0}>Download a submission template and read guidance on how to complete it (opens in new tab)</a>
-uploadTemplateTableError.empty.error.paragraph1WithLink = Your template does not contain any information.<br/><a {0}>Download a submission template and read guidance on how to complete it (opens in new tab)</a>
+uploadTemplateTableError.fileFormat.error.paragraph1WithLink = The file you uploaded is not the Senior Accounting Officer notification and certificate submission template.<br/><a id="file-format-error-link" {0}>Download a submission template and read guidance on how to complete it (opens in new tab)</a>
+uploadTemplateTableError.empty.error.paragraph1WithLink = Your template does not contain any information.<br/><a id="empty-error-link" {0}>Download a submission template and read guidance on how to complete it (opens in new tab)</a>
 uploadTemplateTableError.fileFormat.error.paragraph2 = Once you’ve completed the template, upload it again.
 uploadTemplateTableError.errors.none = No parse errors
 uploadTemplateTableError.errors.line = Row

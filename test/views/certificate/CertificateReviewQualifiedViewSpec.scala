@@ -61,7 +61,12 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       doc
         .select(secondParagraphLinkSelector)
         .get(0)
-        .createTestWithLink(secondParagraphLinkText, certificateRoutes.CertificateUploadFormController.onPageLoad().url)
+        .createTestWithLink(
+          linkTestDescription = "upload updated submission",
+          linkText = secondParagraphLinkText,
+          destinationUrl = certificateRoutes.CertificateUploadFormController.onPageLoad().url,
+          isExternalLink = false
+        )
 
       doc.createTestsWithQualifiedCompanyDescriptionList(Seq())
 
@@ -94,7 +99,12 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       doc
         .select(secondParagraphLinkSelector)
         .get(0)
-        .createTestWithLink(secondParagraphLinkText, certificateRoutes.CertificateUploadFormController.onPageLoad().url)
+        .createTestWithLink(
+          linkTestDescription = "upload updated submission",
+          linkText = secondParagraphLinkText,
+          destinationUrl = certificateRoutes.CertificateUploadFormController.onPageLoad().url,
+          isExternalLink = false
+        )
 
       doc.createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies)
 
@@ -135,7 +145,12 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       doc
         .select(secondParagraphLinkSelector)
         .get(0)
-        .createTestWithLink(secondParagraphLinkText, certificateRoutes.CertificateUploadFormController.onPageLoad().url)
+        .createTestWithLink(
+          linkTestDescription = "upload updated submission",
+          linkText = secondParagraphLinkText,
+          destinationUrl = certificateRoutes.CertificateUploadFormController.onPageLoad().url,
+          isExternalLink = false
+        )
 
       doc.createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies)
 

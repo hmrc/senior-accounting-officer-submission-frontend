@@ -70,8 +70,10 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
         .select("a.govuk-link")
         .get(0)
         .createTestWithLink(
+          linkTestDescription = "provide SAO details",
           linkText = provideSaoDetailsLinkText,
-          destinationUrl = notificationRoutes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url
+          destinationUrl = notificationRoutes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url,
+          isExternalLink = false
         )
 
       "must show the correct statuses" in {
@@ -108,8 +110,10 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
         .select("a.govuk-link")
         .get(0)
         .createTestWithLink(
+          linkTestDescription = "upload template",
           linkText = uploadTemplateLinkText,
-          destinationUrl = notificationRoutes.NotificationUploadFormController.onPageLoad().url
+          destinationUrl = notificationRoutes.NotificationUploadFormController.onPageLoad().url,
+          isExternalLink = false
         )
 
       "must show the correct statuses" in {
@@ -145,8 +149,10 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
         .select("a.govuk-link")
         .get(0)
         .createTestWithLink(
+          linkTestDescription = "submit notification",
           linkText = submitNotificationLinkText,
-          destinationUrl = notificationRoutes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url
+          destinationUrl = notificationRoutes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url,
+          isExternalLink = false
         )
 
       "must show the correct statuses" in {

@@ -80,8 +80,10 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       .select("a.govuk-link")
       .get(0)
       .createTestWithLink(
-        linkText,
-        notificationRoutes.NotificationUploadFormController.onPageLoad().url
+        linkTestDescription = "upload updated submission template",
+        linkText = linkText,
+        destinationUrl = notificationRoutes.NotificationUploadFormController.onPageLoad().url,
+        isExternalLink = false
       )
   }
 }

@@ -52,9 +52,14 @@ class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
     doc.getMainContent
       .select("a.govuk-link")
       .get(0)
-      .createTestWithLink(linkTexts, routes.DownloadTemplateController.downloadFile().url)
+      .createTestWithLink(
+        linkTestDescription = "download submission template",
+        linkText = linkTexts,
+        destinationUrl = routes.DownloadTemplateController.downloadFile().url,
+        isExternalLink = false
+      )
 
-    doc.createTestsForSubHeadings(pageSubheadings)
+    doc.createTestsForSubheadings(pageSubheadings, includingError = false, tag = "h3")
 
     doc.createTestsWithBulletPoints(pageBullets)
 
@@ -81,9 +86,14 @@ class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
     docWithinNewTab.getMainContent
       .select("a.govuk-link")
       .get(0)
-      .createTestWithLink(linkTexts, routes.DownloadTemplateController.downloadFile().url)
+      .createTestWithLink(
+        linkTestDescription = "download submission template",
+        linkText = linkTexts,
+        destinationUrl = routes.DownloadTemplateController.downloadFile().url,
+        isExternalLink = false
+      )
 
-    docWithinNewTab.createTestsForSubHeadings(pageSubheadings)
+    docWithinNewTab.createTestsForSubheadings(pageSubheadings, includingError = false, tag = "h3")
 
     docWithinNewTab.createTestsWithBulletPoints(pageBullets)
 
@@ -94,17 +104,6 @@ class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
   }
 
   extension (target: => Document) {
-    def createTestsForSubHeadings(subheadings: Seq[String]): Unit = {
-      val headings = target.getMainContent.getElementsByTag("h3")
-      "must have expected number of headings" in {
-        headings.size() mustBe subheadings.length
-      }
-      subheadings.zipWithIndex.foreach((subheading, i) => {
-        s"must have heading '$subheading'" in {
-          headings.get(i).text mustBe subheading
-        }
-      })
-    }
 
     def createTestForNoSubmissionButton(): Unit = {
       val btn = target.getElementsByAttributeValue("id", "submit")
