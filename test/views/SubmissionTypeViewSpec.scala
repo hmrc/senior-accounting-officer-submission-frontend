@@ -253,15 +253,6 @@ class SubmissionTypeViewSpec extends ViewSpecBase[SubmissionTypeView] {
       }
     }
   }
-
-  extension (doc: Document) {
-    def createTestsWithRadioButtonDivider(expectedText: String): Unit = {
-      "must have a divider" in {
-        doc.select(".govuk-radios__divider").size() mustBe 1
-        doc.select(".govuk-radios__divider").text() mustBe expectedText
-      }
-    }
-  }
 }
 
 object SubmissionTypeViewSpec {

@@ -587,6 +587,13 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
         }
     }
 
+    def createTestsWithRadioButtonDivider(expectedText: String): Unit = {
+      "must have a divider" in {
+        target.resolve.select(".govuk-radios__divider").size() mustBe 1
+        target.resolve.select(".govuk-radios__divider").text() mustBe expectedText
+      }
+    }
+
     def createTestsWithDateInput(values: DateFieldValues, hasError: Boolean): Unit = {
       def fieldsetElement = target.resolve.select("fieldset.govuk-fieldset")
 
@@ -790,35 +797,73 @@ class ViewSpecBase[T <: BaseScalaTemplate[HtmlFormat.Appendable, Format[HtmlForm
       )
     }
 
+    def createTestForSpinner()(using pos: Position): Unit = {
+      "must have a spinner" in {
+        val element = target.resolve
+        element.select("div.loader").size() mustBe 1
+      }
+    }
+
     def createTestWithLink(
+        linkTestDescription: String,
         linkText: String,
-        destinationUrl: String
+        destinationUrl: String,
+        isExternalLink: Boolean
     )(using
         pos: Position
-    ): Unit =
-      s"must have expected link with correct text: $linkText and correct url $destinationUrl within provided element" in {
-        val element       = target.resolve
-        val link: Element = if element.tagName() == "a" then {
-          element
-        } else {
-          val links = element.select("a").asScala
-          withClue(s"Expected to find exactly one link in the element but found ${links.size}\n") {
-            links.size mustBe 1
+    ): Unit = {
+      s"the $linkTestDescription link" - {
+        s"must have expected link with correct text: $linkText and correct url $destinationUrl within provided element" in {
+          val element       = target.resolve
+          val link: Element = if element.tagName() == "a" then {
+            element
+          } else {
+            val links = element.select("a").asScala
+            withClue(s"Expected to find exactly one link in the element but found ${links.size}\n") {
+              links.size mustBe 1
+            }
+            links.head
           }
-          links.head
-        }
-        withClue(s"link text was not as expected. Got ${link.text()}, expected '$linkText'\n") {
-          link.text mustBe linkText
-        }
-        withClue(s"link href was not as expected. Got ${link.attr("href")}, expected '$destinationUrl'\n") {
-          link.attr("href") mustBe destinationUrl
-        }
+          withClue(s"link text was not as expected. Got ${link.text()}, expected '$linkText'\n") {
+            link.text mustBe linkText
+          }
+          withClue(s"link href was not as expected. Got ${link.attr("href")}, expected '$destinationUrl'\n") {
+            link.attr("href") mustBe destinationUrl
+          }
 
-        withClue(s"link must have expected CSS class\n") {
-          link.className() must include("govuk-link")
+          withClue(s"link must have expected CSS class\n") {
+            link.className() must include("govuk-link")
+          }
+
+          if isExternalLink then {
+            withClue("external link must open to new tab") {
+              link.attr("target") mustBe "_blank"
+            }
+          }
         }
       }
+    }
 
+    def createTestsForSubheadings(
+        subheadings: Seq[String],
+        includingError: Boolean,
+        tag: String
+    )(using pos: Position): Unit = {
+
+      val headings =
+        if includingError then target.resolve.select(tag)
+        else target.resolve.select(tag).not(".govuk-error-summary__title")
+
+      "must have expected number of headings" in {
+        headings.size() mustBe subheadings.size
+      }
+
+      subheadings.zipWithIndex.foreach { case (subheading, i) =>
+        s"must have heading '$subheading'" in {
+          headings.get(i).text() mustBe subheading
+        }
+      }
+    }
   }
 
   @inline def radio(value: String, label: String, hint: Option[String] = None): RadioButton =

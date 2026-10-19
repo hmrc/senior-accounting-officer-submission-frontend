@@ -69,21 +69,33 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
         .select("li span a")
         .get(0)
         .createTestWithLink(
+          linkTestDescription = "page download",
           linkText = pageDownload,
-          destinationUrl = pageDownloadUrl
+          destinationUrl = pageDownloadUrl,
+          isExternalLink = false
         )
 
       doc.getMainContent
         .select("li span a")
         .get(1)
         .createTestWithLink(
+          linkTestDescription = "print this page",
           linkText = pagePrint,
-          destinationUrl = "#"
+          destinationUrl = "#",
+          isExternalLink = false
         )
 
-      doc.createTestForAccountHomepageLink(expectedLinkText = pageAccountPage, destinationUrl = appConfig.hubBaseUrl)
+      doc
+        .getElementById(pageAccountLinkId)
+        .createTestWithLink(
+          linkTestDescription = "page account",
+          linkText = pageAccountPage,
+          destinationUrl = appConfig.hubBaseUrl,
+          isExternalLink = false
+        )
+
       doc.createTestForInsetText(pageInsetText)
-      doc.createTestsForSubheadings(pageSubheadings)
+      doc.createTestsForSubheadings(pageSubheadings, includingError = true, tag = "h2")
       doc.createTestsWithOrWithoutError(hasError = false)
     }
 
@@ -126,40 +138,24 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
         .select("li span a")
         .get(0)
         .createTestWithLink(
+          linkTestDescription = "print this page",
           linkText = pagePrint,
-          destinationUrl = "#"
+          destinationUrl = "#",
+          isExternalLink = false
         )
 
-      doc.createTestForAccountHomepageLink(expectedLinkText = pageAccountPage, destinationUrl = appConfig.hubBaseUrl)
-      doc.createTestsForSubheadings(pageSubheadings)
+      doc
+        .getElementById(pageAccountLinkId)
+        .createTestWithLink(
+          linkTestDescription = "page account",
+          linkText = pageAccountPage,
+          destinationUrl = appConfig.hubBaseUrl,
+          isExternalLink = false
+        )
+      doc.createTestsForSubheadings(pageSubheadings, includingError = true, tag = "h2")
       doc.createTestsWithOrWithoutError(hasError = false)
     }
   }
-
-  extension (target: => Document) {
-    def createTestsForSubheadings(subheadings: Seq[String]): Unit = {
-      val headings = target.getMainContent.getElementsByTag("h2")
-      "must have expected number of headings" in {
-        headings.size() mustBe subheadings.length
-      }
-      subheadings.zipWithIndex.foreach((subheading, i) => {
-        s"must have heading '$subheading'" in {
-          headings.get(i).text mustBe subheading
-        }
-      })
-    }
-
-    def createTestForAccountHomepageLink(expectedLinkText: String, destinationUrl: String): Unit = {
-      val homepageLink = target.select(s"a[href=${appConfig.hubBaseUrl}]")
-
-      "must have account homepage link" in {
-        homepageLink.size() mustBe 2
-        homepageLink.get(1).text() mustBe expectedLinkText
-        homepageLink.get(1).attr("href") mustBe destinationUrl
-      }
-    }
-  }
-
 }
 
 object CertificateConfirmationViewSpec {
@@ -192,5 +188,6 @@ object CertificateConfirmationViewSpec {
   val pageDownload                 = "download a PDF"
   val pagePrint                    = "print this page"
   val pageAccountPage              = "account homepage"
+  val pageAccountLinkId            = "account-homepage-link"
   val pageSubheadings: Seq[String] = Seq("What happens next")
 }
