@@ -98,6 +98,7 @@ object UploadTemplateCsvSchema {
 
   enum TemplateError(val messageKey: String) {
     case InvalidTemplateError      extends TemplateError("uploadTemplateCsvParser.error.templateFile")
+    case TooManyRowsError          extends TemplateError("uploadTemplateCsvParser.error.tooManyRows")
     case CompanyNameError          extends TemplateError("uploadTemplateCsvParser.error.companyName")
     case UtrError                  extends TemplateError("uploadTemplateCsvParser.error.companyUtr")
     case CrnError                  extends TemplateError("uploadTemplateCsvParser.error.companyCrn")

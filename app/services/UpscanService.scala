@@ -58,19 +58,24 @@ class UpscanService @Inject() (
       _.fold(
         state => Future.successful(state),
         { case InterimResult(reference, downloadUrl) =>
-          downloadConnector.download(downloadUrl).map {
-            case HttpResponse(OK, body, _) =>
-              uploadTemplateCsvParser.parse(body, notificationOnly = journey == Notification) match {
-                case TemplateParseResult.Valid(rows) if rows.nonEmpty =>
-                  State.Result(reference, rows)
-                case TemplateParseResult.Valid(rows) =>
-                  State.ValidationFailed(Seq.empty)
-                case TemplateParseResult.Invalid(errors) =>
-                  State.ValidationFailed(errors)
-              }
-            case httpResponse =>
-              State.DownloadFromUpscanFailed(httpResponse)
-          }
+          downloadConnector
+            .download(downloadUrl)
+            .map[State] {
+              case HttpResponse(OK, body, _) =>
+                uploadTemplateCsvParser.parse(body, notificationOnly = journey == Notification) match {
+                  case TemplateParseResult.Valid(rows) if rows.nonEmpty =>
+                    State.Result(reference, rows)
+                  case TemplateParseResult.Valid(rows) =>
+                    State.ValidationFailed(Seq.empty)
+                  case TemplateParseResult.Invalid(errors) =>
+                    State.ValidationFailed(errors)
+                }
+              case httpResponse =>
+                State.DownloadFromUpscanFailed(httpResponse)
+            }
+            .recover { case scala.util.control.NonFatal(_) =>
+              State.DownloadFromUpscanErrored
+            }
         }
       )
     }
@@ -105,6 +110,7 @@ object UpscanService {
     case RejectedByUpscan                                          extends State
     case UnknownUpscanError                                        extends State
     case DownloadFromUpscanFailed(response: HttpResponse)          extends State
+    case DownloadFromUpscanErrored                                 extends State
     case ValidationFailed(errors: Seq[TemplateParseError])         extends State
     case Result(reference: String, rows: Seq[ParsedSubmissionRow]) extends State
   }

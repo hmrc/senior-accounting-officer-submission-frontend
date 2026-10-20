@@ -19,7 +19,8 @@
 @this(
         layout: templates.Layout,
         formHelper: FormWithCSRF,
-        govukButton: GovukButton
+        govukButton: GovukButton,
+        appConfig: config.AppConfig
 )
 
 @(tableData: models.upload.UploadTemplateTableData)(using request: Request[?], messages: Messages)
@@ -54,6 +55,8 @@
         @emptyTemplate()
     } else if(tableData.notSaoTemplateOrIsEmpty) {
         @notSaoTemplate()
+    } else if(tableData.tooManyRows) {
+        <p class="govuk-body">@messages("uploadTemplateCsvParser.error.tooManyRows", appConfig.maxUploadDataRows)</p>
     } else {
         @invalidData()
     }

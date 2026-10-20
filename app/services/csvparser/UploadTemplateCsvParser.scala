@@ -17,6 +17,7 @@
 package services.csvparser
 
 import com.github.tototoshi.csv.CSVReader
+import config.AppConfig
 import models.upload.TemplateParseResult.Invalid
 import models.upload.{TemplateParseError, TemplateParseResult}
 import services.csvparser.UploadTemplateCsvSchema.*
@@ -30,7 +31,8 @@ import javax.inject.Inject
 class UploadTemplateCsvParser @Inject() (
     structureValidator: UploadTemplateStructureValidator,
     rowParser: UploadTemplateRowParser,
-    dateHelper: DateHelper
+    dateHelper: DateHelper,
+    appConfig: AppConfig
 ) {
 
   def parse(
@@ -56,13 +58,16 @@ class UploadTemplateCsvParser @Inject() (
 
         errors match {
           case Nil =>
-            // this caches the UK's current LocalDate to be used for the validation of the entire template
-            given FutureDateHelper = dateHelper.futureDateHelper
-
-            rowParser.parseDataRows(
-              rows,
-              notificationOnly
-            )
+            val dataRowCount = rows.iterator.drop(DataStartIndex).count { row =>
+              ExpectedHeaders.indices.exists(index => cellValue(row, index).nonEmpty)
+            }
+            if dataRowCount > appConfig.maxUploadDataRows then
+              Invalid(Seq(TemplateParseError(line = 0, column = None, error = TemplateError.TooManyRowsError)))
+            else {
+              // this caches the UK's current LocalDate to be used for the validation of the entire template
+              given FutureDateHelper = dateHelper.futureDateHelper
+              rowParser.parseDataRows(rows, notificationOnly)
+            }
           case nonEmpty => Invalid(nonEmpty)
         }
     }

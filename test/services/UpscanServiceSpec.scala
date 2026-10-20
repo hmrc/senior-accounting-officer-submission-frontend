@@ -352,6 +352,30 @@ class UpscanServiceSpec extends SpecBase with GuiceOneAppPerSuite with BeforeAnd
       verify(mockUpscanDownloadConnector, times(1)).download(meq(testDownloadUrl))(using any())
     }
 
+    "must hide the download URL when the Upscan request throws an exception" in {
+      when(mockUpscanDownloadConnector.download(any())(using any())).thenReturn(
+        Future.failed(RuntimeException(s"Failed to GET $testDownloadUrl?signature=secret"))
+      )
+
+      val result = SUT
+        .fileUploadState(
+          UploadJourney.Notification,
+          userAnswersWithUploadStatus(
+            UploadJourney.Notification,
+            UploadStatus.UploadedSuccessfully(
+              name = "submission.csv",
+              mimeType = "",
+              downloadUrl = testDownloadUrl,
+              size = None
+            )
+          ),
+          Some(testFileReference)
+        )
+        .futureValue
+
+      result mustBe State.DownloadFromUpscanErrored
+    }
+
     "must return State.RejectedByUpscan when the uploaded file is empty" in {
       val result = SUT
         .fileUploadState(

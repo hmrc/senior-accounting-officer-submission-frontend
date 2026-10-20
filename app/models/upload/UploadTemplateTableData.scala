@@ -31,7 +31,8 @@ object UploadTemplateTableData {
     def isEmpty: Boolean                 = data.errors.isEmpty && data.rows.isEmpty
     def notSaoTemplateOrIsEmpty: Boolean =
       isEmpty || data.errors.exists(e => e.error == TemplateError.InvalidTemplateError)
-    def hasErrors = data.notSaoTemplateOrIsEmpty || data.errors.nonEmpty
+    def tooManyRows: Boolean = data.errors.exists(_.error == TemplateError.TooManyRowsError)
+    def hasErrors            = data.notSaoTemplateOrIsEmpty || data.errors.nonEmpty
   }
 
 }

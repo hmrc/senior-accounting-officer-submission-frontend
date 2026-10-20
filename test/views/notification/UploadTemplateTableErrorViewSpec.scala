@@ -35,6 +35,15 @@ class UploadTemplateTableErrorViewSpec extends ViewSpecBase[UploadTemplateTableE
 
   "UploadTemplateTableErrorView" - {
 
+    "must explain the configured row limit" in {
+      val data = UploadTemplateTableData(Seq.empty, Seq(TemplateParseError(0, None, TemplateError.TooManyRowsError)))
+      val doc  = generateView(data)
+
+      doc.text() must include("The selected file must have 1,000 rows or less. Remove the extra rows and try again.")
+      doc.select("table.upload-template-errors-table").size() mustBe 0
+      doc.select("#submit").size() mustBe 1
+    }
+
     val expectedParagraphsByScenario: Map[String, Seq[String]] = Map(
       "the template is invalid" -> Seq(
         "The file you uploaded is not the Senior Accounting Officer notification and certificate submission template. Download a submission template and read guidance on how to complete it (opens in new tab)",
