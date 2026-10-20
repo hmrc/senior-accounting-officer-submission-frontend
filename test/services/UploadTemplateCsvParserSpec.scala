@@ -20,6 +20,7 @@ import base.SpecBase
 import models.upload.*
 import models.upload.TemplateParseResult.{Invalid, Valid}
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
+import play.api.inject.guice.GuiceApplicationBuilder
 import services.csvparser.UploadTemplateCsvParser
 import services.csvparser.UploadTemplateCsvSchema.TemplateError.InvalidTemplateError
 import services.csvparser.UploadTemplateCsvSchema.{Column, TemplateError}
@@ -150,6 +151,55 @@ class UploadTemplateCsvParserSpec extends SpecBase with GuiceOneAppPerSuite {
     else value
 
   "UploadTemplateCsvParser.parse" - {
+
+    "must accept exactly the configured number of non-empty data rows" in {
+      val csv = toCsv(
+        descriptiveRows ++ sectionRows ++
+          Seq(UploadTemplateCsvParser.ExpectedHeaders) ++ Seq.fill(1000)(validQualifiedDataRow)
+      )
+
+      parser.parse(csv, notificationOnly = false) match {
+        case Valid(rows) => rows.size mustBe 1000
+        case result      => fail(s"Expected 1000 valid rows, got $result")
+      }
+    }
+
+    "must reject one non-empty data row over the configured limit" in {
+      val csv = toCsv(
+        descriptiveRows ++ sectionRows ++
+          Seq(UploadTemplateCsvParser.ExpectedHeaders) ++ Seq.fill(1001)(validQualifiedDataRow)
+      )
+
+      parser.parse(csv, notificationOnly = true) mustBe
+        Invalid(Seq(TemplateParseError(0, None, TemplateError.TooManyRowsError)))
+    }
+
+    "must ignore blank data rows when enforcing the limit" in {
+      val csv = toCsv(
+        descriptiveRows ++ sectionRows ++
+          Seq(UploadTemplateCsvParser.ExpectedHeaders) ++ Seq.fill(1000)(validQualifiedDataRow) ++
+          Seq.fill(20)(blankDataRow)
+      )
+
+      parser.parse(csv, notificationOnly = false) match {
+        case Valid(rows) => rows.size mustBe 1000
+        case result      => fail(s"Expected 1000 valid rows, got $result")
+      }
+    }
+
+    "must use an overridden row limit" in {
+      val configuredApp = GuiceApplicationBuilder().configure("upload-template.max-data-rows" -> 2).build()
+      try {
+        val configuredParser = configuredApp.injector.instanceOf[UploadTemplateCsvParser]
+        val csv              = toCsv(
+          descriptiveRows ++ sectionRows ++
+            Seq(UploadTemplateCsvParser.ExpectedHeaders) ++ Seq.fill(3)(validQualifiedDataRow)
+        )
+
+        configuredParser.parse(csv, notificationOnly = false) mustBe
+          Invalid(Seq(TemplateParseError(0, None, TemplateError.TooManyRowsError)))
+      } finally configuredApp.stop()
+    }
 
     "must parse a valid CSV and return typed rows" in {
       val csv = toCsv(

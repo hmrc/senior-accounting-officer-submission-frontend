@@ -311,6 +311,7 @@ uploadTemplateCsvParser.column.CertificateType = Certificate type
 uploadTemplateCsvParser.column.QualificationStatement = Explain why the certificate is qualified
 
 uploadTemplateCsvParser.error.templateFile = The selected file must use the template
+uploadTemplateCsvParser.error.tooManyRows = The selected file must have {0} rows or less. Remove the extra rows and try again.
 uploadTemplateCsvParser.error.companyName = Enter a company name. It must be 160 characters or less
 uploadTemplateCsvParser.error.companyCrn = Enter a CRN that is 8 characters long. These can be either 8 digits, or 2 letters followed by 6 digits.
 uploadTemplateCsvParser.error.companyUtr = Enter a company UTR. It must be 10 digits long
