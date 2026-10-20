@@ -38,7 +38,7 @@ class CertificateUploadTemplateTableErrorViewSpec extends ViewSpecBase[Certifica
       val data = UploadTemplateTableData(Seq.empty, Seq(TemplateParseError(0, None, TemplateError.TooManyRowsError)))
       val doc  = generateView(data)
 
-      doc.text() must include("The template must contain no more than 1,000 company rows")
+      doc.text() must include("The selected file must have 1,000 rows or less. Remove the extra rows and try again.")
       doc.select("table.upload-template-errors-table").size() mustBe 0
       doc.select("#submit").size() mustBe 1
     }
