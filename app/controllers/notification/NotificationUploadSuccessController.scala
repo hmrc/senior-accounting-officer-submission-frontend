@@ -72,6 +72,9 @@ class NotificationUploadSuccessController @Inject() (
         case State.DownloadFromUpscanFailed(response) =>
           logger.warn(s"Failed to download uploaded template from Upscan: ${response.status}")
           Future.successful(Redirect(notificationRoutes.NotificationUploadFormController.onPageLoad()))
+        case State.DownloadFromUpscanErrored =>
+          logger.warn("Failed to download uploaded template from Upscan")
+          Future.successful(Redirect(notificationRoutes.NotificationUploadFormController.onPageLoad()))
         case State.ValidationFailed(errors) =>
           logger.warn(s"Uploaded template failed validation with ${errors.size} error(s)")
           saveTableDataAndRedirect(
