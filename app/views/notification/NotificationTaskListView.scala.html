@@ -69,7 +69,7 @@
 @row(linkText: String, href: Call, testId: String, statusName: String, status: TaskStatus) = {
 <li class="govuk-task-list__item govuk-task-list__item--with-link">
     <div class="govuk-task-list__name-and-hint" data-test-id="@testId">
-        @if(status == TaskStatus.NotStarted) {
+        @if(status == TaskStatus.NotStarted || status == TaskStatus.Completed) {
             <a class="govuk-link govuk-task-list__link" href="@href" aria-describedby="@statusName-status">
                 @linkText
             </a>
