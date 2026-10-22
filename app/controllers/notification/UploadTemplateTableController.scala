@@ -19,6 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.notification.NotificationStage
 import models.upload.UploadTemplateTableData
 import models.{JourneySection, NormalMode}
 import navigation.NotificationNavigator
@@ -31,7 +32,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.{UploadTemplateTableErrorView, UploadTemplateTableView}
 
 import scala.concurrent.{ExecutionContext, Future}
-
 import javax.inject.Inject
 
 class UploadTemplateTableController @Inject() (
@@ -62,7 +62,7 @@ class UploadTemplateTableController @Inject() (
           } else {
             playbackService
               .getPlayback(request.userAnswers)
-              .fold(Redirect(notificationRoutes.NotificationTaskListController.onPageLoad())) { playback =>
+              .fold(Redirect(notificationRoutes.NotificationTaskListController.onPageLoad(NotificationStage.SubmitNotificationStage))) { playback =>
                 Ok(view(playback.tableData, playback.saoName))
               }
           }
