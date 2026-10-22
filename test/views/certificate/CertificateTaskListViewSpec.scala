@@ -89,7 +89,7 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
         statusTags.get(2).id() mustBe "submit-certificate-status"
       }
 
-      if expectedState.provideSaoDetailsStage == TaskStatus.NotStarted || expectedState.provideSaoDetailsStage == TaskStatus.Completed
+      if !expectedState.showViewYourConfirmationButton && (expectedState.provideSaoDetailsStage == TaskStatus.NotStarted || expectedState.provideSaoDetailsStage == TaskStatus.Completed)
       then {
         doc.getMainContent
           .select("""[data-test-id="provide-sao-details"] a.govuk-link""")
@@ -102,7 +102,7 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
           )
       }
 
-      if expectedState.uploadSubmissionTemplateStage == TaskStatus.NotStarted || expectedState.uploadSubmissionTemplateStage == TaskStatus.Completed
+      if !expectedState.showViewYourConfirmationButton && (expectedState.uploadSubmissionTemplateStage == TaskStatus.NotStarted || expectedState.uploadSubmissionTemplateStage == TaskStatus.Completed)
       then {
         doc.getMainContent
           .select("""[data-test-id="upload-submission-template"] a.govuk-link""")
@@ -115,7 +115,7 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
           )
       }
 
-      if expectedState.submitCertificateStage == TaskStatus.NotStarted || expectedState.submitCertificateStage == TaskStatus.Completed
+      if !expectedState.showViewYourConfirmationButton && (expectedState.submitCertificateStage == TaskStatus.NotStarted || expectedState.submitCertificateStage == TaskStatus.Completed)
       then {
         doc.getMainContent
           .select("""[data-test-id="submit-certificate"] a.govuk-link""")
