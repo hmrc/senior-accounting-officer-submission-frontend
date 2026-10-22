@@ -20,6 +20,7 @@ import controllers.certificate.routes as certificateRoutes
 import controllers.notification.routes as notificationRoutes
 import models.*
 import models.certificate.CertificateTaskListStage
+import models.notification.NotificationStage
 import pages.*
 import play.api.mvc.Call
 
@@ -32,7 +33,7 @@ class AgnosticNavigator @Inject() () extends Navigator {
     case SubmissionTypePage =>
       userAnswers =>
         userAnswers.get(SubmissionTypePage) match {
-          case Some(SubmissionType.Notification) => notificationRoutes.NotificationTaskListController.onPageLoad()
+          case Some(SubmissionType.Notification) => notificationRoutes.NotificationTaskListController.onPageLoad(NotificationStage.ProvideSaoDetailsStage)
           case Some(SubmissionType.Certificate)  =>
             certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
           case _ => ???

@@ -40,12 +40,18 @@ class NotificationTaskListController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view(NotificationStage.taskListStage(request.userAnswers)))
+  def onPageLoad(stage: NotificationStage.ProvideSaoDetailsStage): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+    {
+      Ok(view(stage.toState()))
+    }
   }
 
-  def onComplete: Action[AnyContent] = identify { implicit request =>
-    Ok(view(NotificationStage.AllStagesCompleted))
+  def onPageLoadComplete(stage: NotificationStage): Action[AnyContent] = (identify andThen getData andThen requireData) { 
+    implicit request =>
+    {
+      Ok(view(stage.toState()))
+    }
   }
 
   def onCompleteSubmit: Action[AnyContent] = identify {
