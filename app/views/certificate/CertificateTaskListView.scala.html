@@ -39,7 +39,8 @@
             href = certificateRoutes.CertificateSaoFullNameController.onPageLoad(NormalMode),
             testId = "provide-sao-details",
             statusName = "provide-sao-details",
-            status = state.provideSaoDetailsStage
+            status = state.provideSaoDetailsStage,
+            isTaskListCompleted = state.showViewYourConfirmationButton
         )
 
         @row(
@@ -47,7 +48,8 @@
             href = certificateRoutes.CertificateUploadFormController.onPageLoad(),
             testId = "upload-submission-template",
             statusName = "upload-submission-template",
-            status = state.uploadSubmissionTemplateStage
+            status = state.uploadSubmissionTemplateStage,
+            isTaskListCompleted = state.showViewYourConfirmationButton
         )
 
         @row(
@@ -55,7 +57,8 @@
             href = certificateRoutes.CertificateAdditionalInformationController.onPageLoad(NormalMode),
             testId = "submit-certificate",
             statusName = "submit-certificate",
-            status = state.submitCertificateStage
+            status = state.submitCertificateStage,
+            isTaskListCompleted = state.showViewYourConfirmationButton
         )
     </ul>
     @None
@@ -73,10 +76,10 @@
 }
 
 
-@row(linkText: String, href: Call, testId: String, statusName: String, status: TaskStatus) = {
+@row(linkText: String, href: Call, testId: String, statusName: String, status: TaskStatus, isTaskListCompleted: Boolean) = {
     <li class="govuk-task-list__item govuk-task-list__item--with-link">
         <div class="govuk-task-list__name-and-hint" data-test-id="@testId">
-            @if(status == TaskStatus.NotStarted) {
+            @if(!isTaskListCompleted && (status == TaskStatus.NotStarted || status == TaskStatus.Completed)) {
                 <a class="govuk-link govuk-task-list__link" href="@href" aria-describedby="@statusName-status">
                     @linkText
                 </a>

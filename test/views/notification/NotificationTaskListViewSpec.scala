@@ -110,6 +110,16 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
         .select("a.govuk-link")
         .get(0)
         .createTestWithLink(
+          linkTestDescription = "provide SAO details",
+          linkText = provideSaoDetailsLinkText,
+          destinationUrl = notificationRoutes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url,
+          isExternalLink = false
+        )
+
+      doc.getMainContent
+        .select("a.govuk-link")
+        .get(1)
+        .createTestWithLink(
           linkTestDescription = "upload template",
           linkText = uploadTemplateLinkText,
           destinationUrl = notificationRoutes.NotificationUploadFormController.onPageLoad().url,
@@ -148,6 +158,26 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
       doc.getMainContent
         .select("a.govuk-link")
         .get(0)
+        .createTestWithLink(
+          linkTestDescription = "provide SAO details",
+          linkText = provideSaoDetailsLinkText,
+          destinationUrl = notificationRoutes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url,
+          isExternalLink = false
+        )
+
+      doc.getMainContent
+        .select("a.govuk-link")
+        .get(1)
+        .createTestWithLink(
+          linkTestDescription = "upload template",
+          linkText = uploadTemplateLinkText,
+          destinationUrl = notificationRoutes.NotificationUploadFormController.onPageLoad().url,
+          isExternalLink = false
+        )
+
+      doc.getMainContent
+        .select("a.govuk-link")
+        .get(2)
         .createTestWithLink(
           linkTestDescription = "submit notification",
           linkText = submitNotificationLinkText,
