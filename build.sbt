@@ -16,6 +16,7 @@ lazy val microservice = (project in file("."))
     RoutesKeys.routesImport ++= Seq(
       "models.*",
       "models.certificate.*",
+      "models.notification.*",
       "models.upscan.*",
       "uk.gov.hmrc.play.bootstrap.binders.RedirectUrl"
     ),

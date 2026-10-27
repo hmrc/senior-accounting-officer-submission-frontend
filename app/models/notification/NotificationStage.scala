@@ -18,50 +18,63 @@ package models.notification
 
 import models.Area.COMMITTED_PATH
 import models.NormalMode
-import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
 import models.{TaskStatus, UserAnswers}
 import pages.*
 import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.libs.json.*
+import play.api.mvc.JavascriptLiteral
 
-enum NotificationStage(
-    val provideSaoDetailsStatus: TaskStatus = NotStarted,
-    val uploadNotificationTemplateStatus: TaskStatus = CannotStartYet,
-    val submitNotificationStatus: TaskStatus = CannotStartYet
-) {
-  case ProvideSaoDetails extends NotificationStage()
-  case UploadSubmissionTemplateDetails
-      extends NotificationStage(
-        provideSaoDetailsStatus = Completed,
-        uploadNotificationTemplateStatus = NotStarted,
-        submitNotificationStatus = CannotStartYet
-      )
-  case SubmitNotificationInfo
-      extends NotificationStage(
-        provideSaoDetailsStatus = Completed,
-        uploadNotificationTemplateStatus = Completed,
-        submitNotificationStatus = NotStarted
-      )
-
-  case AllStagesCompleted
-      extends NotificationStage(
-        provideSaoDetailsStatus = Completed,
-        uploadNotificationTemplateStatus = Completed,
-        submitNotificationStatus = Completed
-      )
+enum NotificationStage {
+    case ProvideSaoDetailsStage, UploadNotificationTemplateStage, SubmitNotificationStage, Complete
 }
 
 object NotificationStage {
 
-  def taskListStage(userAnswers: UserAnswers): NotificationStage =
-    if !isProvideSaoDetailsComplete(userAnswers) then {
-      ProvideSaoDetails
-    } else if !isUploadNotificationTemplateComplete(userAnswers) then {
-      UploadSubmissionTemplateDetails
-    } else {
-      SubmitNotificationInfo
+  given jsLiteral: JavascriptLiteral[NotificationStage] = new JavascriptLiteral[NotificationStage] {
+    override def to(value: NotificationStage): String = value match {
+      case ProvideSaoDetailsStage => "ProvideSaoDetailsStage"
+      case UploadNotificationTemplateStage => "UploadNotificationTemplateStage"
+      case SubmitNotificationStage => "SubmitNotificationStage"
+      case Complete => "Complete"
     }
+  }
+
+
+  extension (stage: NotificationStage) {
+    def toState(): NotificationTaskListState = {
+      stage match {
+        case NotificationStage.ProvideSaoDetailsStage =>
+          NotificationTaskListState(
+            provideSaoDetailsStage = TaskStatus.NotStarted,
+            uploadNotificationTemplateStage = TaskStatus.CannotStartYet,
+            submitNotificationStage = TaskStatus.CannotStartYet,
+            showViewYourConfirmationButton = false
+          )
+        case NotificationStage.UploadNotificationTemplateStage =>
+          NotificationTaskListState(
+            provideSaoDetailsStage = TaskStatus.Completed,
+            uploadNotificationTemplateStage = TaskStatus.NotStarted,
+            submitNotificationStage = TaskStatus.CannotStartYet,
+            showViewYourConfirmationButton = false
+          )
+        case NotificationStage.SubmitNotificationStage =>
+          NotificationTaskListState(
+            provideSaoDetailsStage = TaskStatus.Completed,
+            uploadNotificationTemplateStage = TaskStatus.Completed,
+            submitNotificationStage = TaskStatus.NotStarted,
+            showViewYourConfirmationButton = false
+          )
+        case NotificationStage.Complete =>
+          NotificationTaskListState(
+            provideSaoDetailsStage = TaskStatus.Completed,
+            uploadNotificationTemplateStage = TaskStatus.Completed,
+            submitNotificationStage = TaskStatus.Completed,
+            showViewYourConfirmationButton = true
+          )
+      }
+    }
+  }
 
   def canStartUploadNotificationTemplate(userAnswers: UserAnswers): Boolean =
     isProvideSaoDetailsComplete(userAnswers)
