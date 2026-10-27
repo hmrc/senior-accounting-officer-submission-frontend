@@ -76,7 +76,7 @@ object NotificationStage {
         _                <- userAnswers.get(NotificationSingleSaoOfficerNamePage(NormalMode))
       yield !isMoreThanOneSao).getOrElse(false)
 
-    val multiSaoCompleted = userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) == Some(true) &&
+    val multiSaoCompleted = userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).contains(true) &&
       ((userAnswers.data \ NOTIFICATION_PATH \ COMMITTED_PATH \ NotificationMultiSaoAreAllAddedPage(0, NormalMode).key)
         .asOpt[Seq[Boolean]] match {
         case Some(booleans) => booleans.contains(true)
