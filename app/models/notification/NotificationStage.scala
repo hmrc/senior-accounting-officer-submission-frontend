@@ -18,7 +18,6 @@ package models.notification
 
 import models.Area.COMMITTED_PATH
 import models.NormalMode
-import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
 import models.{TaskStatus, UserAnswers}
 import pages.*
 import pages.Page.NOTIFICATION_PATH

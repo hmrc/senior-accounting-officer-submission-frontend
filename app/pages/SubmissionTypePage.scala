@@ -23,5 +23,5 @@ case object SubmissionTypePage extends QuestionPage[SubmissionType] {
 
   override def path: JsPath = JsPath \ toString
 
-  override def toString: String = "submissionType"
+  override def toString: String = "submission"
 }

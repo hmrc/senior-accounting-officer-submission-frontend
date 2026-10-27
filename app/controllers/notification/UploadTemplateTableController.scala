@@ -32,6 +32,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.{UploadTemplateTableErrorView, UploadTemplateTableView}
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import javax.inject.Inject
 
 class UploadTemplateTableController @Inject() (
