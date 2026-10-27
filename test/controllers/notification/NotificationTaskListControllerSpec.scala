@@ -19,30 +19,24 @@ package controllers.notification
 import base.SpecBase
 import config.AppConfig
 import controllers.notification.routes as notificationRoutes
+import models.NormalMode
 import models.notification.NotificationStage
-import org.mockito.Mockito.when
-import org.scalatestplus.mockito.MockitoSugar
+import pages.notification.*
 import play.api.http.HeaderNames
-import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import repositories.SessionRepository
 import views.html.notification.NotificationTaskListView
 
-import scala.concurrent.Future
+import java.time.LocalDate
 
-class NotificationTaskListControllerSpec extends SpecBase with MockitoSugar {
+class NotificationTaskListControllerSpec extends SpecBase {
 
   "NotificationTaskList Controller" - {
 
     val hubBaseUrl = "http://localhost:10056/senior-accounting-officer"
 
     "must return OK and the initial task list view for a GET with no completed tasks" in {
-      val mockSessionRepository = mock[SessionRepository]
-      when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(emptyUserAnswers)))
-
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
         .build()
 
       running(application) {
@@ -61,11 +55,7 @@ class NotificationTaskListControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must return OK and unlock the upload task when SAO details are complete" in {
-      val mockSessionRepository = mock[SessionRepository]
-      when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(completedSaoDetailsAnswers)))
-
       val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers))
-        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
         .build()
 
       running(application) {
@@ -82,13 +72,56 @@ class NotificationTaskListControllerSpec extends SpecBase with MockitoSugar {
       }
     }
 
-    "must return OK and keep the upload task unlocked when the upload is complete but the review is not confirmed" in {
-      val mockSessionRepository = mock[SessionRepository]
-      when(mockSessionRepository.get(userAnswersId))
-        .thenReturn(Future.successful(Some(completedNotificationUploadAnswers)))
+    "must return OK and not unlock the upload task when SAO details are provided for one sao but prior answer indicates answers are related to multiple saos" in {
+      val userAnswers = emptyUserAnswers
+        .add(NotificationMoreThanOneSaoPage(NormalMode), true)
+        .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Jackson Brown")
 
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
+
+        val result = route(application, request).value
+        val view   = application.injector.instanceOf[NotificationTaskListView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(NotificationStage.ProvideSaoDetails)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must return OK and not unlock the upload task when SAO details are provided for multiple saos but prior answer indicates answers are related to one sao" in {
+      val userAnswers = emptyUserAnswers
+        .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+        .add(NotificationMultiSaoLastOfficerNamePage(NormalMode), "Jackson Brown")
+        .add(NotificationMultiSaoLastOfficerStartDatePage(NormalMode), LocalDate.of(2000, 1, 1))
+        .add(NotificationMultiSaoPreviousOfficerStartDatePage(0, NormalMode), LocalDate.of(2000, 1, 2))
+        .add(NotificationMultiSaoPreviousOfficerEndDatePage(0, NormalMode), LocalDate.of(2000, 1, 3))
+        .add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers))
+        .build()
+
+      running(application) {
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
+
+        val result = route(application, request).value
+        val view   = application.injector.instanceOf[NotificationTaskListView]
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(NotificationStage.ProvideSaoDetails)(using
+          request,
+          messages(application)
+        ).toString
+      }
+    }
+
+    "must return OK and keep the upload task unlocked when the upload is complete but the review is not confirmed" in {
       val application = applicationBuilder(userAnswers = Some(completedNotificationUploadAnswers))
-        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
         .build()
 
       running(application) {
@@ -106,12 +139,7 @@ class NotificationTaskListControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must return OK and unlock the submit task when the upload and review confirmation are complete" in {
-      val mockSessionRepository = mock[SessionRepository]
-      when(mockSessionRepository.get(userAnswersId))
-        .thenReturn(Future.successful(Some(completedNotificationReviewAnswers)))
-
       val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
         .build()
 
       running(application) {
@@ -129,11 +157,7 @@ class NotificationTaskListControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "must return OK and the completed task list view for a GET when all tasks is complete" in {
-      val mockSessionRepository = mock[SessionRepository]
-      when(mockSessionRepository.get(userAnswersId)).thenReturn(Future.successful(Some(emptyUserAnswers)))
-
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
-        .overrides(bind[SessionRepository].toInstance(mockSessionRepository))
         .build()
 
       running(application) {

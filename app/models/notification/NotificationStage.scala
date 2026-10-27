@@ -70,16 +70,16 @@ object NotificationStage {
     isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers)
 
   private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean = {
-    val singleSaoCompleted = userAnswers
-      .get(NotificationSingleSaoOfficerNamePage(NormalMode))
-      .nonEmpty
+    val singleSaoCompleted =
+      (for
+        isMoreThanOneSao <- userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode))
+        _                <- userAnswers.get(NotificationSingleSaoOfficerNamePage(NormalMode))
+      yield !isMoreThanOneSao).getOrElse(false)
 
-    val multiSaoCompleted =
+    val multiSaoCompleted = userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)).contains(true) &&
       (userAnswers.data \ NOTIFICATION_PATH \ COMMITTED_PATH \ NotificationMultiSaoAreAllAddedPage(0, NormalMode).key)
-        .asOpt[Seq[Boolean]] match {
-        case Some(booleans) => booleans.contains(true)
-        case None           => false
-      }
+        .asOpt[Seq[Boolean]]
+        .exists(_.contains(true))
 
     singleSaoCompleted || multiSaoCompleted
   }
