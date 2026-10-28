@@ -20,7 +20,6 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import forms.certificate.CertificateAdditionalInformationFormProvider
-import models.certificate.CertificateTaskListStage
 import models.{JourneySection, NormalMode}
 import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import org.mockito.ArgumentMatchers.any
@@ -178,9 +177,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController
-          .onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
-          .url
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController.onPageLoad.url
       }
     }
 
@@ -192,9 +189,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController
-          .onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
-          .url
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController.onPageLoad.url
       }
     }
 
@@ -207,9 +202,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController
-          .onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
-          .url
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController.onPageLoad.url
       }
     }
 
@@ -222,9 +215,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController
-          .onPageLoad(CertificateTaskListStage.UploadSubmissionTemplateStage)
-          .url
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController.onPageLoad.url
       }
     }
   }

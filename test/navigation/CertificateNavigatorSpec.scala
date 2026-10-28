@@ -19,7 +19,7 @@ package navigation
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.*
-import models.certificate.{CertificateTaskListStage, CertificateWhoIsSubmitting}
+import models.certificate.CertificateWhoIsSubmitting
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.*
 import pages.certificate.*
@@ -52,9 +52,7 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           CertificateSaoEmailPage,
           NormalMode,
           emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
-          CertificateTaskListStage.UploadSubmissionTemplateStage
-        )
+        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad
       }
 
       "when on CertificateReviewQualified, must go to CertificateReviewUnqualified page" in {
@@ -70,9 +68,7 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           CertificateReviewUnqualifiedPage,
           NormalMode,
           emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
-          CertificateTaskListStage.SubmitCertificateStage
-        )
+        ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad
       }
 
       "when on CertificateAdditionalInformation, must go to CertificateWhoIsSubmitting page" in {

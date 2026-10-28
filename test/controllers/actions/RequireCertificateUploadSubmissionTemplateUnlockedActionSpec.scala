@@ -19,7 +19,6 @@ package controllers.actions
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.UserAnswers
-import models.certificate.CertificateTaskListStage
 import models.requests.DataRequest
 import play.api.http.HeaderNames
 import play.api.test.FakeRequest
@@ -45,9 +44,7 @@ class RequireCertificateUploadSubmissionTemplateUnlockedActionSpec extends SpecB
       val result = new Harness().callFilter(emptyUserAnswers).futureValue.value
 
       result.header.status mustBe SEE_OTHER
-      result.header.headers(HeaderNames.LOCATION) mustBe certificateRoutes.CertificateTaskListController
-        .onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
-        .url
+      result.header.headers(HeaderNames.LOCATION) mustBe certificateRoutes.CertificateTaskListController.onPageLoad.url
     }
   }
 }
