@@ -17,19 +17,16 @@
 package services
 
 import models.*
-import models.UserAnswers
 import models.certificate.CertificateStage
 import models.certificate.CertificateStage.*
-import models.certificate.CertificateWhoIsSubmitting.*
 import pages.certificate.*
 
 class CertificateTaskListService {
   def determineStage(userAnswers: UserAnswers): CertificateStage = {
-    (userAnswers.hasSaoDetails, userAnswers.hasSubmissionTemplate, userAnswers.isCertificateSubmitted) match {
-      case (true, true, true) => Complete
-      case (true, true, _)    => SubmitCertificateStage
-      case (true, _, _)       => UploadSubmissionTemplateStage
-      case (_, _, _)          => ProvideSaoDetailsStage
+    (userAnswers.hasSaoDetails, userAnswers.hasSubmissionTemplate) match {
+      case (true, true) => SubmitCertificateStage
+      case (true, _)    => UploadSubmissionTemplateStage
+      case (_, _)       => ProvideSaoDetailsStage
     }
   }
 
@@ -46,18 +43,6 @@ class CertificateTaskListService {
         _ <- userAnswers.get(CertificateReviewQualifiedPage)
         _ <- userAnswers.get(CertificateReviewUnqualifiedPage)
         _ <- userAnswers.get(CertificateUploadTemplateTablePage)
-      } yield true).getOrElse(false)
-    }
-
-    private def isCertificateSubmitted: Boolean = {
-      (for {
-        _               <- userAnswers.getNullable(CertificateAdditionalInformationPage)
-        declarationKind <- userAnswers.get(CertificateWhoIsSubmittingPage(NormalMode))
-        saoCompleted     = userAnswers.get(CertificateDeclarationSaoPage(NormalMode)).nonEmpty && declarationKind == Sao
-        standInCompleted = userAnswers
-          .get(CertificateDeclarationStandInPage(NormalMode))
-          .nonEmpty && declarationKind == StandIn
-        if saoCompleted || standInCompleted
       } yield true).getOrElse(false)
     }
   }

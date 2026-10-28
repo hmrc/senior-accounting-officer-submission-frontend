@@ -49,10 +49,7 @@ class CertificateTaskListController @Inject() (
   def onPageLoadComplete(certificateReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       {
-        val state = certificateTaskListService
-          .determineStage(request.userAnswers)
-          .toState
-        Ok(view(state, Some(certificateReference)))
+        Ok(view(CertificateStage.Complete.toState, Some(certificateReference)))
       }
     }
 
