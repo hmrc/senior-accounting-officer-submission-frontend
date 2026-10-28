@@ -16,11 +16,11 @@
 
 package controllers.certificate
 
-import config.AppConfig
 import controllers.actions.*
-import models.certificate.CertificateTaskListStage
+import models.certificate.CertificateStage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.CertificateTaskListService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.certificate.CertificateTaskListView
 
@@ -33,23 +33,26 @@ class CertificateTaskListController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateTaskListView,
-    appConfig: AppConfig
+    certificateTaskListService: CertificateTaskListService
 ) extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(stage: CertificateTaskListStage): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      {
-        Ok(view(stage.toState()))
-      }
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+    {
+      val state = certificateTaskListService
+        .determineStage(request.userAnswers)
+        .toState
+      Ok(view(state))
+    }
   }
 
-  def onPageLoadComplete(stage: CertificateTaskListStage, certificateReference: String): Action[AnyContent] =
+  def onPageLoadComplete(certificateReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
       {
-        Ok(view(stage.toState(), Some(certificateReference)))
+        Ok(view(CertificateStage.Complete.toState, Some(certificateReference)))
       }
     }
+
   def onSubmit(certificateRef: String): Action[AnyContent] = identify {
     Redirect(routes.CertificateConfirmationController.onPageLoad(certificateRef))
   }
