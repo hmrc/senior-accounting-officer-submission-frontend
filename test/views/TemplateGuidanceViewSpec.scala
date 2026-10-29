@@ -132,12 +132,12 @@ object TemplateGuidanceViewSpec {
     "Do not change the layout or structure of the template. If you do, the upload will fail. Rows 1 to 9 of the template have guidance to help you complete each column.",
     "You’ll need to enter:",
     "If you have a qualified certificate, you must explain why in the template. Your explanation should include:",
-    "You can also include any plans to address the issues, this is optional.",
+    "You can also include any plans to address the issues. This is optional.",
     "You must complete the correct sections before uploading. The information we process from your template depends on which submission type you choose.",
     "If you choose to submit:",
     "When you’ve completed your template, follow these steps.",
     "If you submit a notification now and want to add your certificate later, complete all columns and upload the template again when you are ready.",
-    "If the template you uploaded has errors, you will be shown what to fix. Open your Excel file and correct the errors. Then save it again as a CSV (comma delimited) (*.csv) file and upload it again.",
+    "If the template you uploaded has errors, you will be shown what to fix. Open your Excel file and correct the errors. Then save it as a CSV (comma delimited) (*.csv) file and upload it again.",
     "If there are no errors, you will see a summary of your information to review before you continue.",
     "Complete the remaining steps in the service. Your template will only be sent to HMRC once you have reviewed your answers and selected ‘Confirm and submit’."
   )
@@ -155,7 +155,7 @@ object TemplateGuidanceViewSpec {
   )
   val pageBullets: Seq[String] = Seq(
     "company name",
-    "Company Registration Number (CRN)",
+    "Company registration number (CRN)",
     "Unique Taxpayer Reference (UTR)",
     "financial year end",
     "organisation type",
