@@ -53,7 +53,7 @@ section.notification = Submit a notification
 
 notificationTaskList.title = Submit a notification
 notificationTaskList.heading = Submit a notification
-notificationTaskList.paragraph1 = Submit one notification for each SAO in your organisation. Each notification must include the SAO’s details and all the companies they were responsible for in a previous financial year.
+notificationTaskList.paragraph1 = Submit one notification for each SAO in your group. Each notification must include the SAO’s details and all the companies they were responsible for in a previous financial year.
 notificationTaskList.provideSaoDetailsLinkText = Provide the SAO’s details
 notificationTaskList.uploadNotificationLinkText = Upload the submission template
 notificationTaskList.submitNotificationLinkText = Submit the notification
@@ -74,7 +74,7 @@ template.guidance.subheading1.paragraph1 = Complete all fields for each company 
 template.guidance.subheading1.paragraph2 = Do not change the layout or structure of the template. If you do, the upload will fail. Rows 1 to 9 of the template have guidance to help you complete each column.
 template.guidance.subheading1.paragraph3 = You’ll need to enter:
 template.guidance.subheading1.list.item1 = company name
-template.guidance.subheading1.list.item2 = Company Registration Number (CRN)
+template.guidance.subheading1.list.item2 = Company registration number (CRN)
 template.guidance.subheading1.list.item3 = Unique Taxpayer Reference (UTR)
 template.guidance.subheading1.list.item4 = financial year end
 template.guidance.subheading1.list.item5 = organisation type
@@ -87,7 +87,7 @@ template.guidance.subheading1.subSubheading.paragraph1 = If you have a qualified
 template.guidance.subheading1.subSubheading.item1 = what went wrong with the tax accounting arrangements
 template.guidance.subheading1.subSubheading.item2 = the reason the SAO decided to provide a qualified certificate
 template.guidance.subheading1.subSubheading.item3 = what led to the errors, not just a list
-template.guidance.subheading1.subSubheading.paragraph2 = You can also include any plans to address the issues, this is optional.
+template.guidance.subheading1.subSubheading.paragraph2 = You can also include any plans to address the issues. This is optional.
 template.guidance.subheading1.subSubheading.inset = When you make a submission for more than one SAO, you must complete a separate template for each one.
 
 template.guidance.subheading2 = Step 2: Upload your template
@@ -101,7 +101,7 @@ template.guidance.subheading2.list2.item2 = Upload the file to start your submis
 template.guidance.subheading2.paragraph4 = If you submit a notification now and want to add your certificate later, complete all columns and upload the template again when you are ready.
 
 template.guidance.subheading3 = Step 3: Check the information is correct
-template.guidance.subheading3.paragraph1 = If the template you uploaded has errors, you will be shown what to fix. Open your Excel file and correct the errors. Then save it again as a CSV (comma delimited) (*.csv) file and upload it again.
+template.guidance.subheading3.paragraph1 = If the template you uploaded has errors, you will be shown what to fix. Open your Excel file and correct the errors. Then save it as a CSV (comma delimited) (*.csv) file and upload it again.
 template.guidance.subheading3.paragraph2 = If there are no errors, you will see a summary of your information to review before you continue.
 
 template.guidance.subheading4 = Step 4: Complete your submission
@@ -121,7 +121,7 @@ notificationGuidance.paragraph1 = Tell HMRC who was responsible for your company
 notificationGuidance.paragraph2 = Each notification must include:
 notificationGuidance.list1.item1 = the name and contact details of each person who acted as the Senior Accounting Officer 
 notificationGuidance.list1.item2 = the accounting period they were responsible during the previous financial year 
-notificationGuidance.list1.item3 = the name, Unique Taxpayer Reference (UTR) and Company Registration Number (CRN) of every company the SAO was responsible for, if your company is part of a group 
+notificationGuidance.list1.item3 = the name, Unique Taxpayer Reference (UTR) and Company registration number (CRN) of every company the SAO was responsible for, if your company is part of a group
 notificationGuidance.paragraph3 = Only one notification can be submitted per financial year. If more than one person acted as SAO, include all of them in the same notification.
 notificationGuidance.inset.text = You can only submit the notification after the financial year has ended. The deadline is 6 months after the end of the financial year for public limited companies and 9 months after for other companies.
 
@@ -265,7 +265,7 @@ uploadTemplateTable.caption = Submit a notification
 uploadTemplateTable.heading = Review the companies in your notification
 uploadTemplateTable.paragraph1.plural = This list is from your submission template. It shows {0} companies {1} was responsible for in the financial year.
 uploadTemplateTable.paragraph1.singular = This list is from your submission template. It shows {0} company {1} was responsible for in the financial year.
-uploadTemplateTable.paragraph2WithLink = If any companies details are missing or incorrect, <a class="govuk-link" href="{0}">upload an updated submission template</a> before continuing.
+uploadTemplateTable.paragraph2WithLink = If any company’s details are missing or incorrect, <a class="govuk-link" href="{0}">upload an updated submission template</a> before continuing.
 uploadTemplateTable.parsedData.empty = No parsed rows
 uploadTemplateTable.continue = Continue
 uploadTemplateTable.table.companyName = Company name

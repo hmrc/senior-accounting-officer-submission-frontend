@@ -17,10 +17,7 @@
 package services
 
 import base.SpecBase
-import models.NormalMode
-import models.certificate.CertificateDeclarationStandIn
 import models.certificate.CertificateStage.*
-import models.certificate.CertificateWhoIsSubmitting
 import models.upload.UploadTemplateTableData
 import pages.certificate.*
 
