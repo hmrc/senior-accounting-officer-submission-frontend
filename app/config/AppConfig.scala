@@ -74,6 +74,8 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, val config: Configura
   require(maxUploadDataRows > 0, "upload-template.max-data-rows must be positive")
 
   val surveyLink: String = getValue("survey.link")
+
+  lazy val digitalContactStubUrl: String = servicesConfig.baseUrl("digital-contact-stub")
 }
 
 object AppConfig {

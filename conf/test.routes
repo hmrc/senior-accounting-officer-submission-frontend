@@ -20,3 +20,6 @@ GET         /object-store/delete                               controllers.testo
 
 GET         /feature-toggle                     controllers.testonly.FeatureToggleController.get()
 POST        /feature-toggle                     controllers.testonly.FeatureToggleController.update()
+
+GET         /email-viewer                       controllers.testonly.EmailViewerController.list
+GET         /email-viewer/:id                   controllers.testonly.EmailViewerController.render(id: String)
