@@ -492,7 +492,7 @@ certificateTaskList.submitCertificateLinkText = Submit the certificate
 certificateTaskList.row.status.notStarted = Not started
 certificateTaskList.row.status.cannotStartYet = Cannot start yet
 certificateTaskList.row.status.completed = Completed
-certificateTaskList.certificateConfirmationButton = View your confirmation
+certificateTaskList.certificateConfirmationButton = Submit
 
 certificateDeclarationStandIn.title = Declaration – Submit a certificate
 certificateDeclarationStandIn.caption = Submit a certificate

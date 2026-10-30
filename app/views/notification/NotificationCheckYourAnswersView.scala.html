@@ -33,7 +33,7 @@
 
     @formHelper(action = notificationRoutes.NotificationCheckYourAnswersController.onSubmit()){
         @govukButton(
-            ButtonViewModel(messages("site.confirmAndSubmit").toText)
+            ButtonViewModel(messages("site.continue").toText)
                 .withAttribute("id", "submit")
                 .preventingDoubleClick()
         )
