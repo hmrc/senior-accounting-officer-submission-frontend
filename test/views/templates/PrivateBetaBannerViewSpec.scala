@@ -38,6 +38,6 @@ class PrivateBetaBannerViewSpec extends ViewSpecBase[PrivateBetaBanner] {
 }
 
 object PrivateBetaBannerViewSpec {
-  val bannerTag = "Beta"
+  val bannerTag       = "Beta"
   val bannerParagraph = "This is a new service. We’re still working on ways to improve it."
 }
