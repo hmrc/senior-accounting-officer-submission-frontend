@@ -191,7 +191,8 @@ object CertificateConfirmationViewSpec {
     "To keep a record of your submission, you can:",
     "Someone from HMRC may contact you if they need more information.",
     "You can submit a notification or another certificate from your account homepage.",
-    "As a private beta user, you are using the first version of this service. Your feedback will help us improve it for future users. Take a short survey to tell us about your experience."
+    "As a private beta user, you are using the first version of this service. Your feedback will help us improve it for future users.",
+    "Take a short survey to tell us about your experience."
   )
   val pageListItemsWhenLinkDisplayed: Seq[String] = Seq(
     "download a PDF to save a copy of all the answers. You may not be able to do this after you leave this page",

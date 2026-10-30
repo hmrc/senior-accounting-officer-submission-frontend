@@ -77,8 +77,6 @@
         <div class="govuk-inset-text">@messages("certificateConfirmation.inset")</div>
 
         <h2 class="govuk-heading-m">@messages("survey.subheading")</h2>
-        <p class="govuk-body">
-            @messages("survey.paragraph1")
-            @Html(messages("survey.paragraph2",appConfig.surveyLink))
-        </p>
+        <p class="govuk-body">@messages("survey.paragraph1")</p>
+        <p class="govuk-body">@Html(messages("survey.paragraph2WithLink", appConfig.surveyLink))</p>
 }
