@@ -30,6 +30,8 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
   private def generateView(displayPdfLink: Boolean): Document =
     Jsoup.parse(SUT(testReferenceNumber, displayPdfLink).toString)
 
+  private val appConfig = app.injector.instanceOf[AppConfig]
+
   "NotificationConfirmationView" - {
     "when displayPdfLink is true" - {
       val displayPdfLink = true
@@ -104,6 +106,15 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
         tag = "h2"
       )
 
+      doc
+        .getElementById(surveyLinkId)
+        .createTestWithLink(
+          linkTestDescription = "survey link",
+          linkText = surveyLinkPage,
+          destinationUrl = appConfig.surveyLink,
+          isExternalLink = true
+        )
+
       doc.createTestForInsetText(pageInsetText)
 
       doc.createTestsWithOrWithoutError(hasError = false)
@@ -171,6 +182,15 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
         tag = "h2"
       )
 
+      doc
+        .getElementById(surveyLinkId)
+        .createTestWithLink(
+          linkTestDescription = "survey link",
+          linkText = surveyLinkPage,
+          destinationUrl = appConfig.surveyLink,
+          isExternalLink = true
+        )
+
       doc.createTestForInsetText(pageInsetText)
 
       doc.createTestsWithOrWithoutError(hasError = false)
@@ -189,7 +209,8 @@ object NotificationConfirmationViewSpec {
     "HMRC has received your notification. We’ve sent a confirmation email to all the contacts you provided during registration.",
     "To keep a record of your submission, you can:",
     "Someone from HMRC may contact you if they need more information.",
-    "You can submit a certificate or another notification from your account homepage."
+    "You can submit a certificate or another notification from your account homepage.",
+    "As a private beta user, you are using the first version of this service. Your feedback will help us improve it for future users. Take a short survey to tell us about your experience."
   )
   val panelTitle          = "Notification submitted"
   val testReferenceNumber = "SAONOT0123456789"
@@ -221,7 +242,10 @@ object NotificationConfirmationViewSpec {
   val accountHomepageLinkText = "account homepage"
   val accountHomepageLinkUrl  = "testHubUrl"
 
-  val pageSubheadings: Seq[String] = Seq("What happens next")
+  val surveyLinkPage = "Take a short survey"
+  val surveyLinkId   = "survey-link"
+
+  val pageSubheadings: Seq[String] = Seq("What happens next", "Before you go")
 
   val pageInsetText =
     "If you later realise the information is incorrect, contact your Customer Compliance Manager (CCM) if you have one, or email wmbc.saomailbox@hmrc.gov.uk for support."

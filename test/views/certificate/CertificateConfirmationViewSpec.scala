@@ -94,6 +94,15 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
           isExternalLink = false
         )
 
+      doc
+        .getElementById(surveyLinkId)
+        .createTestWithLink(
+          linkTestDescription = "survey link",
+          linkText = surveyLinkPage,
+          destinationUrl = appConfig.surveyLink,
+          isExternalLink = true
+        )
+
       doc.createTestForInsetText(pageInsetText)
       doc.createTestsForSubheadings(pageSubheadings, includingError = true, tag = "h2")
       doc.createTestsWithOrWithoutError(hasError = false)
@@ -152,6 +161,15 @@ class CertificateConfirmationViewSpec extends ViewSpecBase[CertificateConfirmati
           destinationUrl = appConfig.hubBaseUrl,
           isExternalLink = false
         )
+
+      doc
+        .getElementById(surveyLinkId)
+        .createTestWithLink(
+          linkTestDescription = "survey link",
+          linkText = surveyLinkPage,
+          destinationUrl = appConfig.surveyLink,
+          isExternalLink = true
+        )
       doc.createTestsForSubheadings(pageSubheadings, includingError = true, tag = "h2")
       doc.createTestsWithOrWithoutError(hasError = false)
     }
@@ -172,7 +190,8 @@ object CertificateConfirmationViewSpec {
     "HMRC has received your certificate. We’ve sent a confirmation email to all the contacts you provided during registration.",
     "To keep a record of your submission, you can:",
     "Someone from HMRC may contact you if they need more information.",
-    "You can submit a notification or another certificate from your account homepage."
+    "You can submit a notification or another certificate from your account homepage.",
+    "As a private beta user, you are using the first version of this service. Your feedback will help us improve it for future users. Take a short survey to tell us about your experience."
   )
   val pageListItemsWhenLinkDisplayed: Seq[String] = Seq(
     "download a PDF to save a copy of all the answers. You may not be able to do this after you leave this page",
@@ -189,5 +208,7 @@ object CertificateConfirmationViewSpec {
   val pagePrint                    = "print this page"
   val pageAccountPage              = "account homepage"
   val pageAccountLinkId            = "account-homepage-link"
-  val pageSubheadings: Seq[String] = Seq("What happens next")
+  val surveyLinkPage               = "Take a short survey"
+  val surveyLinkId                 = "survey-link"
+  val pageSubheadings: Seq[String] = Seq("What happens next", "Before you go")
 }
