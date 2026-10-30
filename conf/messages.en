@@ -24,6 +24,9 @@ error.title.prefix = Error:
 error.prefix = Error
 error.summary.title = There is a problem
 
+betaBanner.tag = Beta
+betaBanner.paragraph = This is a new service. We’re still working on ways to improve it.
+
 upload.label = Upload a file
 upload.error.quarantine = The selected file contains a virus
 upload.error.rejected = The selected file must be a CSV
@@ -601,3 +604,4 @@ unexpectedError.title = Error: Sorry, there is a problem with the service
 unexpectedError.heading = Sorry, there is a problem with the service
 unexpectedError.paragraph1 = Try again later.
 unexpectedError.paragraph2WithLink = Contact your Customer Compliance Manager (CCM) if you have one, or email <a href="mailto:wmbc.saomailbox@hmrc.gov.uk" class="govuk-link">wmbc.saomailbox@hmrc.gov.uk</a> for support.
+
