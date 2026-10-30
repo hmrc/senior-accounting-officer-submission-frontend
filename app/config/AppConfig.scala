@@ -73,7 +73,7 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, val config: Configura
   val maxUploadDataRows: Int      = config.get[Int]("upload-template.max-data-rows")
   require(maxUploadDataRows > 0, "upload-template.max-data-rows must be positive")
 
-  val surveyLink: String = getValue("survey-link.link")
+  val surveyLink: String = getValue("survey.link")
 }
 
 object AppConfig {
