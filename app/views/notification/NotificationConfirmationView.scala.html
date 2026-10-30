@@ -80,6 +80,11 @@
         @messages("notificationConfirmation.inset.text")
     </div>
 
+    <h2 class="govuk-heading-m">@messages("survey.subheading")</h2>
+    <p class="govuk-body">
+        @messages("survey.paragraph1")
+        @Html(messages("survey.paragraph2",appConfig.surveyLink))
+    </p>
 
     @formHelper(action = notificationRoutes.NotificationConfirmationController.onSubmit()) {
         @govukButton(
