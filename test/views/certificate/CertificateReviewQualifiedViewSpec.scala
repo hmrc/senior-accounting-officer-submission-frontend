@@ -236,7 +236,7 @@ object CertificateReviewQualifiedViewSpec {
   val firstParagraphOneCompany =
     "This list is from the certificate details in your submission template. There was 1 company the SAO was responsible for in a previous financial year."
   val secondParagraph =
-    "If any companies listed are missing or incorrect, upload an updated submission template before continuing."
+    "If any company’s details are missing or incorrect, upload an updated submission template before continuing."
   val thirdParagraphZeroQualifiedCompanies =
     "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that 0 companies did not have appropriate tax accounting arrangements."
   val thirdParagraphTwoQualifiedCompanies =
