@@ -26,20 +26,19 @@ import play.api.libs.json.*
 import play.api.mvc.JavascriptLiteral
 
 enum NotificationStage {
-    case ProvideSaoDetailsStage, UploadNotificationTemplateStage, SubmitNotificationStage, Complete
+  case ProvideSaoDetailsStage, UploadNotificationTemplateStage, SubmitNotificationStage, Complete
 }
 
 object NotificationStage {
 
   given jsLiteral: JavascriptLiteral[NotificationStage] = new JavascriptLiteral[NotificationStage] {
     override def to(value: NotificationStage): String = value match {
-      case ProvideSaoDetailsStage => "ProvideSaoDetailsStage"
+      case ProvideSaoDetailsStage          => "ProvideSaoDetailsStage"
       case UploadNotificationTemplateStage => "UploadNotificationTemplateStage"
-      case SubmitNotificationStage => "SubmitNotificationStage"
-      case Complete => "Complete"
+      case SubmitNotificationStage         => "SubmitNotificationStage"
+      case Complete                        => "Complete"
     }
   }
-
 
   extension (stage: NotificationStage) {
     def toState(): NotificationTaskListState = {

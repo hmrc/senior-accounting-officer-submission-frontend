@@ -42,17 +42,17 @@ class NotificationTaskListController @Inject() (
 
   def onPageLoad(stage: NotificationStage): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-    {
-      Ok(view(stage.toState()))
-    }
+      {
+        Ok(view(stage.toState()))
+      }
   }
 
-  def onPageLoadComplete(stage: NotificationStage): Action[AnyContent] = (identify andThen getData andThen requireData) { 
-    implicit request =>
-    {
-      Ok(view(stage.toState()))
+  def onPageLoadComplete(stage: NotificationStage): Action[AnyContent] =
+    (identify andThen getData andThen requireData) { implicit request =>
+      {
+        Ok(view(stage.toState()))
+      }
     }
-  }
 
   def onCompleteSubmit: Action[AnyContent] = identify {
     Redirect(appConfig.hubBaseUrl)

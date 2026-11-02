@@ -46,6 +46,9 @@ class CertificateSaoFullNameControllerSpec extends SpecBase with MockitoSugar {
   lazy val certificateSaoFullNameRoute: String =
     certificateRoutes.CertificateSaoFullNameController.onPageLoad(NormalMode).url
 
+  lazy val certificateSaoFullNamePostRoute: String =
+    certificateRoutes.CertificateSaoFullNameController.onSubmit(NormalMode).url
+
   "CertificateSaoFullName Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -101,7 +104,7 @@ class CertificateSaoFullNameControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateSaoFullNameRoute)
+          FakeRequest(POST, certificateSaoFullNamePostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -117,7 +120,7 @@ class CertificateSaoFullNameControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateSaoFullNameRoute)
+          FakeRequest(POST, certificateSaoFullNamePostRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -153,7 +156,7 @@ class CertificateSaoFullNameControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateSaoFullNameRoute)
+          FakeRequest(POST, certificateSaoFullNamePostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value

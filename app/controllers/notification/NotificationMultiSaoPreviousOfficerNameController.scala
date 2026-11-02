@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProvider
-import models.{JourneySection, Mode, NormalMode, UserAnswers}
+import models.{JourneySection, Mode, UserAnswers}
 import navigation.NotificationNavigator
 import pages.notification.{NotificationMultiSaoLastOfficerNamePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.data.Form
@@ -30,6 +30,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationMultiSaoPreviousOfficerNameView
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import javax.inject.Inject
 
 class NotificationMultiSaoPreviousOfficerNameController @Inject() (

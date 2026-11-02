@@ -63,7 +63,12 @@ class UploadTemplateTableController @Inject() (
           } else {
             playbackService
               .getPlayback(request.userAnswers)
-              .fold(Redirect(notificationRoutes.NotificationTaskListController.onPageLoad(NotificationStage.SubmitNotificationStage))) { playback =>
+              .fold(
+                Redirect(
+                  notificationRoutes.NotificationTaskListController
+                    .onPageLoad(NotificationStage.SubmitNotificationStage)
+                )
+              ) { playback =>
                 Ok(view(playback.tableData, playback.saoName))
               }
           }

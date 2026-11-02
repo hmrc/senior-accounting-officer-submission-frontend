@@ -46,6 +46,9 @@ class NotificationMultiSaoAreAllAddedControllerSpec extends SpecBase with Mockit
   lazy val notificationMultiSaoAreAllAddedRoute: String =
     notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(NormalMode).url
 
+  lazy val notificationMultiSaoAreAllAddedPostRoute: String =
+    notificationRoutes.NotificationMultiSaoAreAllAddedController.onSubmit(NormalMode).url
+
   val saoIndex = 0
 
   "NotificationMultiSaoAreAllAdded Controller" - {
@@ -106,7 +109,7 @@ class NotificationMultiSaoAreAllAddedControllerSpec extends SpecBase with Mockit
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMultiSaoAreAllAddedRoute)
+          FakeRequest(POST, notificationMultiSaoAreAllAddedPostRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value
@@ -122,7 +125,7 @@ class NotificationMultiSaoAreAllAddedControllerSpec extends SpecBase with Mockit
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMultiSaoAreAllAddedRoute)
+          FakeRequest(POST, notificationMultiSaoAreAllAddedPostRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -161,7 +164,7 @@ class NotificationMultiSaoAreAllAddedControllerSpec extends SpecBase with Mockit
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMultiSaoAreAllAddedRoute)
+          FakeRequest(POST, notificationMultiSaoAreAllAddedPostRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value

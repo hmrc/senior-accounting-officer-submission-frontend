@@ -30,7 +30,7 @@ class CertificateTaskListControllerSpec extends SpecBase {
   val hubBaseUrl                         = "http://localhost:10056/senior-accounting-officer"
   val certificateRef                     = "certificateRef"
   val certificateConfirmationUrl: String =
-    s"/senior-accounting-officer/submission/certificate-confirmation?certificateIdReferenceNumber=$certificateRef"
+    s"/senior-accounting-officer/submission/certificate/confirmation?certificateIdReferenceNumber=$certificateRef"
 
   "CertificateTaskList Controller" - {
     "must return OK and the correct view for a GET" in {

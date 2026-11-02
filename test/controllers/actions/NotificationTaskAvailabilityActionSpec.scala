@@ -52,7 +52,9 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
       result.header.status mustBe SEE_OTHER
       result.header
-        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad(NotificationStage.UploadNotificationTemplateStage).url
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController
+        .onPageLoad(NotificationStage.UploadNotificationTemplateStage)
+        .url
     }
   }
 
@@ -67,7 +69,9 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
       result.header.status mustBe SEE_OTHER
       result.header
-        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad(NotificationStage.SubmitNotificationStage).url
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController
+        .onPageLoad(NotificationStage.SubmitNotificationStage)
+        .url
     }
 
     "must redirect to the task list when the review confirmation is incomplete" in {
@@ -75,7 +79,9 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
       result.header.status mustBe SEE_OTHER
       result.header
-        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad(NotificationStage.SubmitNotificationStage).url
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController
+        .onPageLoad(NotificationStage.SubmitNotificationStage)
+        .url
     }
   }
 }

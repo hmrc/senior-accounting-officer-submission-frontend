@@ -18,13 +18,14 @@ package views.notification
 
 import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
+import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
+import models.notification.NotificationTaskListState
 import models.{NormalMode, TaskStatus}
-import models.notification.{NotificationTaskListState}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.notification.NotificationTaskListView
+
 import NotificationTaskListViewSpec.*
-import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
 
 class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView] {
 

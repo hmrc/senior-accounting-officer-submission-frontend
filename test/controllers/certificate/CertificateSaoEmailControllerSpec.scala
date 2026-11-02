@@ -46,6 +46,8 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
   private def form: Form[String] = formProvider()
 
   lazy val certificateSaoEmailRoute: String = certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode).url
+  lazy val certificateSaoEmailPostRoute: String =
+    certificateRoutes.CertificateSaoEmailController.onSubmit(NormalMode).url
 
   val userAnswers: UserAnswers = emptyUserAnswers
     .set(CertificateSaoFullNamePage, saoName)
@@ -123,7 +125,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateSaoEmailRoute)
+          FakeRequest(POST, certificateSaoEmailPostRoute)
             .withFormUrlEncodedBody(("value", testEmail))
 
         val result = route(application, request).value
@@ -139,7 +141,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateSaoEmailRoute)
+          FakeRequest(POST, certificateSaoEmailPostRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -162,7 +164,7 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateSaoEmailRoute)
+          FakeRequest(POST, certificateSaoEmailPostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value

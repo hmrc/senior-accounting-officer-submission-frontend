@@ -33,8 +33,9 @@ class AgnosticNavigator @Inject() () extends Navigator {
     case SubmissionTypePage =>
       userAnswers =>
         userAnswers.get(SubmissionTypePage) match {
-          case Some(SubmissionType.Notification) => notificationRoutes.NotificationTaskListController.onPageLoad(NotificationStage.ProvideSaoDetailsStage)
-          case Some(SubmissionType.Certificate)  =>
+          case Some(SubmissionType.Notification) =>
+            notificationRoutes.NotificationTaskListController.onPageLoad(NotificationStage.ProvideSaoDetailsStage)
+          case Some(SubmissionType.Certificate) =>
             certificateRoutes.CertificateTaskListController.onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
           case _ => ???
         }

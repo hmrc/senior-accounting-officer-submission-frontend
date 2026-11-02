@@ -58,6 +58,9 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
   lazy val notificationMultiSaoPreviousOfficerEndDateRoute: String =
     notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(NormalMode).url
 
+  lazy val notificationMultiSaoPreviousOfficerEndDatePostRoute: String =
+    notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(NormalMode).url
+
   val userAnswersWithSaoNameAndStartDate: UserAnswers =
     emptyUserAnswers
       .add(NotificationMultiSaoPreviousOfficerNamePage(0, NormalMode), testSaoName)
@@ -69,7 +72,7 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
     FakeRequest(GET, notificationMultiSaoPreviousOfficerEndDateRoute)
 
   def postRequest(): FakeRequest[AnyContentAsFormUrlEncoded] =
-    FakeRequest(POST, notificationMultiSaoPreviousOfficerEndDateRoute)
+    FakeRequest(POST, notificationMultiSaoPreviousOfficerEndDatePostRoute)
       .withFormUrlEncodedBody(
         "value.day"   -> testValidDate.getDayOfMonth.toString,
         "value.month" -> testValidDate.getMonthValue.toString,
@@ -159,7 +162,7 @@ class NotificationMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase 
         applicationBuilder(userAnswers = Some(userAnswersWithSaoNameAndStartDate)).build()
 
       val request =
-        FakeRequest(POST, notificationMultiSaoPreviousOfficerEndDateRoute)
+        FakeRequest(POST, notificationMultiSaoPreviousOfficerEndDatePostRoute)
           .withFormUrlEncodedBody(("value", "invalid value"))
 
       running(application) {

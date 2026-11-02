@@ -46,6 +46,8 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
   lazy val certificateAdditionalInformationRoute: String =
     certificateRoutes.CertificateAdditionalInformationController.onPageLoad(NormalMode).url
+  lazy val certificateAdditionalInformationPostRoute: String =
+    certificateRoutes.CertificateAdditionalInformationController.onSubmit(NormalMode).url
 
   "CertificateAdditionalInformation Controller" - {
 
@@ -106,7 +108,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateAdditionalInformationRoute)
+          FakeRequest(POST, certificateAdditionalInformationPostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -122,7 +124,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateAdditionalInformationRoute)
+          FakeRequest(POST, certificateAdditionalInformationPostRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -158,7 +160,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateAdditionalInformationRoute)
+          FakeRequest(POST, certificateAdditionalInformationPostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value

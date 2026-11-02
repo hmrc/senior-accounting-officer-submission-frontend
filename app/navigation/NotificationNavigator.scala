@@ -55,8 +55,10 @@ class NotificationNavigator @Inject() () extends Navigator {
           case _           => ???
         }
     case NotificationSingleSaoOfficerNamePage(mode) =>
-      _ => notificationRoutes.NotificationTaskListController.onPageLoad(stage =
-        NotificationStage.UploadNotificationTemplateStage)
+      _ =>
+        notificationRoutes.NotificationTaskListController.onPageLoad(stage =
+          NotificationStage.UploadNotificationTemplateStage
+        )
     case NotificationMultiSaoLastOfficerNamePage(mode) =>
       _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(NormalMode)
     case NotificationMultiSaoLastOfficerStartDatePage(mode) =>
@@ -70,7 +72,10 @@ class NotificationNavigator @Inject() () extends Navigator {
     case NotificationMultiSaoAreAllAddedPage(saoIndex, mode) =>
       userAnswers =>
         userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, mode)) match {
-          case Some(true)  => notificationRoutes.NotificationTaskListController.onPageLoad(stage = NotificationStage.UploadNotificationTemplateStage)
+          case Some(true) =>
+            notificationRoutes.NotificationTaskListController.onPageLoad(stage =
+              NotificationStage.UploadNotificationTemplateStage
+            )
           case Some(false) =>
             notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
           case _ => ???
@@ -82,7 +87,9 @@ class NotificationNavigator @Inject() () extends Navigator {
           .fold(routes.JourneyRecoveryController.onPageLoad()) {
             case UploadTemplateTableData(_, errors) if errors.nonEmpty =>
               notificationRoutes.NotificationUploadFormController.onPageLoad()
-            case _ => notificationRoutes.NotificationTaskListController.onPageLoad(stage = NotificationStage.SubmitNotificationStage)
+            case _ =>
+              notificationRoutes.NotificationTaskListController
+                .onPageLoad(stage = NotificationStage.SubmitNotificationStage)
           }
     case _ => _ => ???
   }

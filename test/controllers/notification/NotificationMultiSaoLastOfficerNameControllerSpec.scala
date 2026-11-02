@@ -49,6 +49,9 @@ class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase wit
   lazy val notificationMultiSaoPreviousOfficerNameRoute: String =
     notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode).url
 
+  lazy val notificationMultiSaoPreviousOfficerNamePostRoute: String =
+    notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onSubmit(NormalMode).url
+
   val userAnswersWithSaoName: UserAnswers =
     emptyUserAnswers.set(NotificationMultiSaoLastOfficerNamePage(NormalMode), saoName).success.value
 
@@ -173,7 +176,7 @@ class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase wit
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMultiSaoPreviousOfficerNameRoute)
+          FakeRequest(POST, notificationMultiSaoPreviousOfficerNamePostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -189,7 +192,7 @@ class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase wit
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMultiSaoPreviousOfficerNameRoute)
+          FakeRequest(POST, notificationMultiSaoPreviousOfficerNamePostRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -228,7 +231,7 @@ class NotificationMultiSaoPreviousOfficerNameControllerSpec extends SpecBase wit
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMultiSaoPreviousOfficerNameRoute)
+          FakeRequest(POST, notificationMultiSaoPreviousOfficerNamePostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value

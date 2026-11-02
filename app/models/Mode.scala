@@ -27,33 +27,34 @@ case object TransactionMode extends Mode // TODO: remove when we start using a l
 
 object Mode {
 
-  implicit def queryStringBinder(implicit intBinder: QueryStringBindable[String]): QueryStringBindable[Mode] = new QueryStringBindable[Mode] {
-    override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Mode]] = {
-      for {
-        mode <- intBinder.bind(key, params)
-      } yield {
-        mode match {
-          case Right(mode) =>
-            mode match {
-            case "NormalMode" => Right(NormalMode)
-            case "CheckMode" => Right(CheckMode)
-            case "TransactionMode" => Right(TransactionMode)
-            case _ => Left("Couldn't bind mode")
+  implicit def queryStringBinder(implicit intBinder: QueryStringBindable[String]): QueryStringBindable[Mode] =
+    new QueryStringBindable[Mode] {
+      override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Mode]] = {
+        for {
+          mode <- intBinder.bind(key, params)
+        } yield {
+          mode match {
+            case Right(mode) =>
+              mode match {
+                case "NormalMode"      => Right(NormalMode)
+                case "CheckMode"       => Right(CheckMode)
+                case "TransactionMode" => Right(TransactionMode)
+                case _                 => Left("Couldn't bind mode")
+              }
+            case _ => Left("Unable to bind a Mode")
           }
-          case _ => Left("Unable to bind a Mode")
+        }
+      }
+
+      override def unbind(key: String, mode: Mode): String = {
+        mode match {
+          case NormalMode      => intBinder.unbind(key, "NormalMode")
+          case CheckMode       => intBinder.unbind(key, "CheckMode")
+          case TransactionMode => intBinder.unbind(key, "TransactionMode")
+          case _               => intBinder.unbind(key, "Couldn't bind mode")
         }
       }
     }
-
-    override def unbind(key: String, mode: Mode): String = {
-      mode match {
-        case NormalMode => intBinder.unbind(key, "NormalMode")
-        case CheckMode => intBinder.unbind(key, "CheckMode")
-        case TransactionMode => intBinder.unbind(key, "TransactionMode")
-        case _ => intBinder.unbind(key, "Couldn't bind mode")
-      }
-    }
-  }
 
   given jsLiteral: JavascriptLiteral[Mode] = new JavascriptLiteral[Mode] {
     override def to(value: Mode): String = value match {

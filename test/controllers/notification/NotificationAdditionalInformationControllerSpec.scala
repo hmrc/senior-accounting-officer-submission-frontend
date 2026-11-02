@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import forms.notification.NotificationAdditionalInformationFormProvider
-import models.notification.NotificationStage.UploadNotificationTemplateStage
+import models.notification.NotificationStage.SubmitNotificationStage
 import models.{JourneySection, NormalMode}
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.any
@@ -46,6 +46,8 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
   lazy val notificationAdditionalInformationRoute: String =
     notificationRoutes.NotificationAdditionalInformationController.onPageLoad(NormalMode).url
+  lazy val notificationAdditionalInformationPostRoute: String =
+    notificationRoutes.NotificationAdditionalInformationController.onSubmit(NormalMode).url
 
   "NotificationAdditionalInformation Controller" - {
 
@@ -106,7 +108,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationAdditionalInformationRoute)
+          FakeRequest(POST, notificationAdditionalInformationPostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -121,7 +123,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationAdditionalInformationRoute)
+          FakeRequest(POST, notificationAdditionalInformationPostRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -161,7 +163,9 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController.onPageLoad(UploadNotificationTemplateStage).url
+        redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController
+          .onPageLoad(SubmitNotificationStage)
+          .url
       }
     }
 
@@ -171,7 +175,7 @@ class NotificationAdditionalInformationControllerSpec extends SpecBase with Mock
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationAdditionalInformationRoute)
+          FakeRequest(POST, notificationAdditionalInformationPostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value

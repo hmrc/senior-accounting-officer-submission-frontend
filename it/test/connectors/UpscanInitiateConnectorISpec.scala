@@ -113,16 +113,16 @@ object UpscanInitiateConnectorISpec extends ISpecBase{
   val expectedNotificationRequest = UpscanInitiateRequestV2(
     callbackUrl = "http://localhost:10058/internal/upscan-callback?journey=notification",
     successRedirect = Some(
-      "http://localhost:10058/senior-accounting-officer/submission/notification/upload/success"
+      "http://localhost:10058/senior-accounting-officer/submission/notification/uploading"
     ),
-    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload"),
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload-template"),
     maximumFileSize = Some(appConfig.maxUploadFileSizeBytes)
   )
 
   val expectedCertificateRequest = UpscanInitiateRequestV2(
     callbackUrl = "http://localhost:10058/internal/upscan-callback?journey=certificate",
     successRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload/success"),
-    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload"),
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/certificate/upload-template"),
     maximumFileSize = Some(appConfig.maxUploadFileSizeBytes)
   )
 }
