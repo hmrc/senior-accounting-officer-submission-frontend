@@ -23,6 +23,8 @@ import play.api.Configuration
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
+import scala.util.Try
+
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -75,7 +77,8 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, val config: Configura
 
   val surveyLink: String = getValue("survey.link")
 
-  lazy val digitalContactStubUrl: String = servicesConfig.baseUrl("digital-contact-stub")
+  def digitalContactStubUrl: Option[String] =
+    Try(servicesConfig.baseUrl("digital-contact-stub")).fold(_ => None, Some(_))
 }
 
 object AppConfig {

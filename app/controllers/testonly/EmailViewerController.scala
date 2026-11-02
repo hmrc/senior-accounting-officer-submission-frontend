@@ -41,8 +41,13 @@ class EmailViewerController @Inject() (
     ExecutionContext
 ) extends FrontendBaseController {
   def list: Action[AnyContent] = Action.async { implicit request =>
+    val digitalContactUrl = appConfig.digitalContactStubUrl match {
+      case Some(url) => url
+      case None      => ???
+    }
+
     httpClientV2
-      .get(url"${appConfig.digitalContactStubUrl}/digital-contact-stub/imi/messages")
+      .get(url"$digitalContactUrl/digital-contact-stub/imi/messages")
       .execute[HttpResponse]
       .map { response => Json.parse(response.body).as[Seq[JsValue]] }
       .map { json =>
