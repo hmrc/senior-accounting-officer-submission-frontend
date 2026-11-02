@@ -21,6 +21,7 @@ import controllers.certificate.routes as certificateRoutes
 import controllers.notification.routes as notificationRoutes
 import models.*
 import models.certificate.CertificateTaskListStage
+import models.notification.NotificationStage.ProvideSaoDetailsStage
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.*
 
@@ -46,7 +47,7 @@ class AgnosticNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
             SubmissionTypePage,
             NormalMode,
             emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Notification).get
-          ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
+          ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad(ProvideSaoDetailsStage)
         }
 
         "when on SubmissionTypePage and the user chose certificate only, must go to CertificateTaskList" in {

@@ -20,6 +20,7 @@ import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
+import models.notification.NotificationStage.{SubmitNotificationStage, UploadNotificationTemplateStage}
 import models.upload.UploadTemplateTableData
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.*
@@ -72,7 +73,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           NotificationConfirmationPage,
           NormalMode,
           emptyUserAnswers
-        ) mustBe notificationRoutes.NotificationTaskListController.onComplete()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoadComplete()
       }
 
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
@@ -147,7 +148,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           NotificationMultiSaoAreAllAddedPage(0, NormalMode),
           NormalMode,
           emptyUserAnswers.add(NotificationMultiSaoAreAllAddedPage(0, NormalMode), true)
-        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad(UploadNotificationTemplateStage)
       }
 
       "when on NotificationMultiSaoAreAllAddedPage, and the user answers no, must go to NotificationMultiSaoPreviousOfficerName page with an incremented saoIndex" in {
@@ -163,7 +164,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           NotificationSingleSaoOfficerNamePage(NormalMode),
           NormalMode,
           emptyUserAnswers.add(NotificationSingleSaoOfficerNamePage(NormalMode), "Firstname Lastname")
-        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad(UploadNotificationTemplateStage)
       }
 
       "when on UploadTemplateTablePage with no parsing errors, must go to notification start page" in {
@@ -175,7 +176,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           UploadTemplateTablePage,
           NormalMode,
           userAnswers
-        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoad(SubmitNotificationStage)
       }
 
       "when on UploadTemplateTablePage with parsing errors, must go to upload form page" in {

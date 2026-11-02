@@ -21,6 +21,7 @@ import connectors.UpscanInitiateConnector
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.JourneySection
+import models.notification.NotificationStage.ProvideSaoDetailsStage
 import models.upscan.*
 import org.mockito.ArgumentMatchers.{any, argThat, eq as meq}
 import org.mockito.Mockito.{times, verify, when}
@@ -214,7 +215,7 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController.onPageLoad().url
+        redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController.onPageLoad(ProvideSaoDetailsStage).url
       }
     }
 

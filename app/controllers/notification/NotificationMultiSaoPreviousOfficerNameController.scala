@@ -19,7 +19,7 @@ package controllers.notification
 import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerNameFormProvider
-import models.{CheckMode, JourneySection, Mode, NormalMode, UserAnswers}
+import models.{JourneySection, Mode, NormalMode, UserAnswers}
 import navigation.NotificationNavigator
 import pages.notification.{NotificationMultiSaoLastOfficerNamePage, NotificationMultiSaoPreviousOfficerNamePage}
 import play.api.data.Form

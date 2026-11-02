@@ -19,6 +19,7 @@ package controllers.notification
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
+import models.notification.NotificationStage.ProvideSaoDetailsStage
 import models.upload.*
 import models.{JourneySection, NormalMode}
 import navigation.{FakeNotificationNavigator, NotificationNavigator}
@@ -37,7 +38,6 @@ import services.csvparser.UploadTemplateCsvSchema.{Column, TemplateError}
 import views.html.notification.{UploadTemplateTableErrorView, UploadTemplateTableView}
 
 import scala.concurrent.Future
-
 import java.time.LocalDate
 
 class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
@@ -219,7 +219,7 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController.onPageLoad().url
+        redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController.onPageLoad(ProvideSaoDetailsStage).url
       }
     }
 

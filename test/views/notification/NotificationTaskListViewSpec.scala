@@ -18,24 +18,27 @@ package views.notification
 
 import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
-import models.NormalMode
-import models.notification.NotificationStage
-import models.notification.NotificationStage.{SubmitNotificationInfo, UploadSubmissionTemplateDetails}
+import models.{NormalMode, TaskStatus}
+import models.notification.{NotificationTaskListState}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.notification.NotificationTaskListView
-
 import NotificationTaskListViewSpec.*
+import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
 
 class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView] {
 
-  private def generateView(stage: NotificationStage): Document = Jsoup.parse(SUT(stage).toString)
+  private def generateView(state: NotificationTaskListState): Document = Jsoup.parse(SUT(state).toString)
 
   "NotificationTaskListView" - {
-
     "NotificationTaskListView with 'provide sao details' stage" - {
-
-      val doc: Document = generateView(NotificationStage.ProvideSaoDetails)
+      val state = NotificationTaskListState(
+        provideSaoDetailsStage = NotStarted,
+        uploadNotificationTemplateStage = CannotStartYet,
+        submitNotificationStage = CannotStartYet,
+        showViewYourConfirmationButton = false
+      )
+      val doc: Document = generateView(state)
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
         pageHeading = pageHeading,
@@ -93,7 +96,14 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
 
     "NotificationTaskListView with 'upload template' stage" - {
 
-      val doc: Document = generateView(UploadSubmissionTemplateDetails)
+      val uploadNotificationTemplateState = NotificationTaskListState(
+        provideSaoDetailsStage = Completed,
+        uploadNotificationTemplateStage = NotStarted,
+        submitNotificationStage = CannotStartYet,
+        showViewYourConfirmationButton = false
+      )
+
+      val doc: Document = generateView(uploadNotificationTemplateState)
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
         pageHeading = pageHeading,
@@ -107,18 +117,8 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
       doc.createTestsWithOrWithoutError(hasError = false)
 
       doc.getMainContent
-        .select("a.govuk-link")
+        .select("""[data-test-id="upload-submission-template"] a.govuk-link""")
         .get(0)
-        .createTestWithLink(
-          linkTestDescription = "provide SAO details",
-          linkText = provideSaoDetailsLinkText,
-          destinationUrl = notificationRoutes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url,
-          isExternalLink = false
-        )
-
-      doc.getMainContent
-        .select("a.govuk-link")
-        .get(1)
         .createTestWithLink(
           linkTestDescription = "upload template",
           linkText = uploadTemplateLinkText,
@@ -142,7 +142,15 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
     }
 
     "NotificationTaskListView with 'submit notification' stage" - {
-      val doc: Document = generateView(SubmitNotificationInfo)
+
+      val submitNotificationState = NotificationTaskListState(
+        provideSaoDetailsStage = Completed,
+        uploadNotificationTemplateStage = Completed,
+        submitNotificationStage = NotStarted,
+        showViewYourConfirmationButton = false
+      )
+
+      val doc: Document = generateView(submitNotificationState)
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
         pageHeading = pageHeading,
@@ -156,28 +164,8 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
       doc.createTestsWithOrWithoutError(hasError = false)
 
       doc.getMainContent
-        .select("a.govuk-link")
+        .select("""[data-test-id="submit-notification"] a.govuk-link""")
         .get(0)
-        .createTestWithLink(
-          linkTestDescription = "provide SAO details",
-          linkText = provideSaoDetailsLinkText,
-          destinationUrl = notificationRoutes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url,
-          isExternalLink = false
-        )
-
-      doc.getMainContent
-        .select("a.govuk-link")
-        .get(1)
-        .createTestWithLink(
-          linkTestDescription = "upload template",
-          linkText = uploadTemplateLinkText,
-          destinationUrl = notificationRoutes.NotificationUploadFormController.onPageLoad().url,
-          isExternalLink = false
-        )
-
-      doc.getMainContent
-        .select("a.govuk-link")
-        .get(2)
         .createTestWithLink(
           linkTestDescription = "submit notification",
           linkText = submitNotificationLinkText,
@@ -202,7 +190,15 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
   }
 
   "NotificationTaskListView with all stages complete" - {
-    val doc: Document = generateView(NotificationStage.AllStagesCompleted)
+
+    val completedState = NotificationTaskListState(
+      provideSaoDetailsStage = Completed,
+      uploadNotificationTemplateStage = Completed,
+      submitNotificationStage = Completed,
+      showViewYourConfirmationButton = true
+    )
+
+    val doc: Document = generateView(completedState)
     doc.createTestsWithStandardPageElements(
       pageTitle = pageTitle,
       pageHeading = pageHeading,

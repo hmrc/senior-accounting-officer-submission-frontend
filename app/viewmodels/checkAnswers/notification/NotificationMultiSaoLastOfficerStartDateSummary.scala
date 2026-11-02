@@ -17,6 +17,7 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
+import models.Mode.jsLiteral
 import models.NormalMode
 import models.{CheckMode, UserAnswers}
 import pages.notification.NotificationMultiSaoLastOfficerStartDatePage
