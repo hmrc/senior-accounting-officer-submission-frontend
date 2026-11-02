@@ -18,7 +18,6 @@ package navigation
 
 import controllers.certificate.routes as certificateRoutes
 import models.*
-import models.certificate.CertificateTaskListStage
 import models.certificate.CertificateWhoIsSubmitting.*
 import pages.*
 import pages.certificate.*
@@ -41,18 +40,10 @@ class CertificateNavigator @Inject() () extends Navigator {
   override protected val normalRoutes: Page => UserAnswers => Call = {
     case CertificateSaoFullNamePage =>
       _ => certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode)
-    case CertificateSaoEmailPage =>
-      _ =>
-        certificateRoutes.CertificateTaskListController.onPageLoad(stage =
-          CertificateTaskListStage.UploadSubmissionTemplateStage
-        )
+    case CertificateSaoEmailPage | CertificateReviewUnqualifiedPage =>
+      _ => certificateRoutes.CertificateTaskListController.onPageLoad
     case CertificateReviewQualifiedPage =>
       _ => certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
-    case CertificateReviewUnqualifiedPage =>
-      _ =>
-        certificateRoutes.CertificateTaskListController.onPageLoad(stage =
-          CertificateTaskListStage.SubmitCertificateStage
-        )
     case CertificateAdditionalInformationPage =>
       _ => certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
     case CertificateWhoIsSubmittingPage(_) =>

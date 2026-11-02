@@ -80,7 +80,7 @@ class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] 
       .select("a.govuk-link")
       .get(0)
       .createTestWithLink(
-        linkTestDescription = "upload updated submission template",
+        linkTestDescription = "upload an updated submission template",
         linkText = linkText,
         destinationUrl = notificationRoutes.NotificationUploadFormController.onPageLoad().url,
         isExternalLink = false
@@ -127,11 +127,11 @@ object UploadTemplateTableViewSpec {
   val saoName                               = "Jane Smith"
   val paragraphsWithOneCompany: Seq[String] = Seq(
     s"This list is from your submission template. It shows 1 company $saoName was responsible for in the financial year.",
-    "If any companies details are missing or incorrect, upload an updated submission template before continuing."
+    "If any company’s details are missing or incorrect, upload an updated submission template before continuing."
   )
   val paragraphsWithTwoCompanies: Seq[String] = Seq(
     s"This list is from your submission template. It shows 2 companies $saoName was responsible for in the financial year.",
-    "If any companies details are missing or incorrect, upload an updated submission template before continuing."
+    "If any company’s details are missing or incorrect, upload an updated submission template before continuing."
   )
   val pageCaption = "Submit a notification"
   val linkText    = "upload an updated submission template"

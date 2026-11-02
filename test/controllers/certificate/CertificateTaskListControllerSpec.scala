@@ -19,13 +19,18 @@ package controllers.certificate
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.TaskStatus
-import models.certificate.{CertificateTaskListStage, CertificateTaskListState}
+import models.certificate.{CertificateStage, CertificateTaskListState}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.HeaderNames
+import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
+import services.CertificateTaskListService
 import views.html.certificate.CertificateTaskListView
 
-class CertificateTaskListControllerSpec extends SpecBase {
+class CertificateTaskListControllerSpec extends SpecBase with MockitoSugar {
 
   val hubBaseUrl                         = "http://localhost:10056/senior-accounting-officer"
   val certificateRef                     = "certificateRef"
@@ -41,9 +46,7 @@ class CertificateTaskListControllerSpec extends SpecBase {
         val request =
           FakeRequest(
             GET,
-            certificateRoutes.CertificateTaskListController
-              .onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
-              .url
+            certificateRoutes.CertificateTaskListController.onPageLoad.url
           )
 
         val result = route(application, request).value
@@ -67,10 +70,19 @@ class CertificateTaskListControllerSpec extends SpecBase {
 
     "must return OK and the correct view for a GET onPageComplete" in {
 
-      val application    = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
+      val mockService = mock[CertificateTaskListService]
+
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers))
+        .overrides(
+          bind[CertificateTaskListService].toInstance(mockService)
+        )
+        .build()
       val certificateRef = "certificate_ref"
 
       running(application) {
+
+        when(mockService.determineStage(any())).thenReturn(CertificateStage.Complete)
+
         val request =
           FakeRequest(
             GET,
@@ -84,6 +96,7 @@ class CertificateTaskListControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[CertificateTaskListView]
 
         status(result) mustEqual OK
+
         contentAsString(result) mustEqual view(
           CertificateTaskListState(
             provideSaoDetailsStage = TaskStatus.Completed,

@@ -16,7 +16,7 @@
 
 package models
 
-import models.certificate.{CertificateTaskListStage, CertificateTaskListState}
+import models.certificate.{CertificateStage, CertificateTaskListState}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
 
@@ -24,8 +24,8 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
 
   "CertificateTaskListStage.toState" - {
     "must return correct state for provide sao details stage" in {
-      val stage  = CertificateTaskListStage.ProvideSaoDetailsStage
-      val result = stage.toState()
+      val stage  = CertificateStage.ProvideSaoDetailsStage
+      val result = stage.toState
 
       val expected = CertificateTaskListState(
         provideSaoDetailsStage = TaskStatus.NotStarted,
@@ -38,8 +38,8 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
     }
 
     "must return correct state for upload submission template stage" in {
-      val stage  = CertificateTaskListStage.UploadSubmissionTemplateStage
-      val result = stage.toState()
+      val stage  = CertificateStage.UploadSubmissionTemplateStage
+      val result = stage.toState
 
       val expected = CertificateTaskListState(
         provideSaoDetailsStage = TaskStatus.Completed,
@@ -53,8 +53,8 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
 
     "must return correct state for submit certificate stage" in {
 
-      val stage  = CertificateTaskListStage.SubmitCertificateStage
-      val result = stage.toState()
+      val stage  = CertificateStage.SubmitCertificateStage
+      val result = stage.toState
 
       val expected = CertificateTaskListState(
         provideSaoDetailsStage = TaskStatus.Completed,
@@ -68,8 +68,8 @@ class CertificateTaskListStageSpec extends AnyFreeSpec with Matchers {
 
     "must return correct state for completed stage" in {
 
-      val stage  = CertificateTaskListStage.Complete
-      val result = stage.toState()
+      val stage  = CertificateStage.Complete
+      val result = stage.toState
 
       val expected = CertificateTaskListState(
         provideSaoDetailsStage = TaskStatus.Completed,

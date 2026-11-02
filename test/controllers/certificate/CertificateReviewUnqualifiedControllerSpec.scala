@@ -19,7 +19,6 @@ package controllers.certificate
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import models.*
-import models.certificate.CertificateTaskListStage
 import models.upload.*
 import navigation.{CertificateNavigator, FakeCertificateNavigator}
 import pages.certificate.CertificateUploadTemplateTablePage
@@ -96,9 +95,7 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController
-          .onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
-          .url
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController.onPageLoad.url
       }
     }
 
@@ -110,9 +107,7 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController
-          .onPageLoad(CertificateTaskListStage.ProvideSaoDetailsStage)
-          .url
+        redirectLocation(result).value mustEqual certificateRoutes.CertificateTaskListController.onPageLoad.url
       }
     }
   }

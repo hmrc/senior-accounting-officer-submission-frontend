@@ -19,13 +19,13 @@ package models.certificate
 import models.TaskStatus
 import play.api.mvc.JavascriptLiteral
 
-enum CertificateTaskListStage {
+enum CertificateStage {
   case ProvideSaoDetailsStage, UploadSubmissionTemplateStage, SubmitCertificateStage, Complete
 }
 
-object CertificateTaskListStage {
-  given jsLiteral: JavascriptLiteral[CertificateTaskListStage] = new JavascriptLiteral[CertificateTaskListStage] {
-    override def to(value: CertificateTaskListStage): String = value match {
+object CertificateStage {
+  given jsLiteral: JavascriptLiteral[CertificateStage] = new JavascriptLiteral[CertificateStage] {
+    override def to(value: CertificateStage): String = value match {
       case ProvideSaoDetailsStage        => "ProvideSaoDetailsStage"
       case UploadSubmissionTemplateStage => "UploadSubmissionTemplateStage"
       case SubmitCertificateStage        => "SubmitCertificateStage"
@@ -33,31 +33,31 @@ object CertificateTaskListStage {
     }
   }
 
-  extension (stage: CertificateTaskListStage) {
-    def toState(): CertificateTaskListState = {
+  extension (stage: CertificateStage) {
+    def toState: CertificateTaskListState = {
       stage match {
-        case CertificateTaskListStage.ProvideSaoDetailsStage =>
+        case CertificateStage.ProvideSaoDetailsStage =>
           CertificateTaskListState(
             provideSaoDetailsStage = TaskStatus.NotStarted,
             uploadSubmissionTemplateStage = TaskStatus.CannotStartYet,
             submitCertificateStage = TaskStatus.CannotStartYet,
             showViewYourConfirmationButton = false
           )
-        case CertificateTaskListStage.UploadSubmissionTemplateStage =>
+        case CertificateStage.UploadSubmissionTemplateStage =>
           CertificateTaskListState(
             provideSaoDetailsStage = TaskStatus.Completed,
             uploadSubmissionTemplateStage = TaskStatus.NotStarted,
             submitCertificateStage = TaskStatus.CannotStartYet,
             showViewYourConfirmationButton = false
           )
-        case CertificateTaskListStage.SubmitCertificateStage =>
+        case CertificateStage.SubmitCertificateStage =>
           CertificateTaskListState(
             provideSaoDetailsStage = TaskStatus.Completed,
             uploadSubmissionTemplateStage = TaskStatus.Completed,
             submitCertificateStage = TaskStatus.NotStarted,
             showViewYourConfirmationButton = false
           )
-        case CertificateTaskListStage.Complete =>
+        case CertificateStage.Complete =>
           CertificateTaskListState(
             provideSaoDetailsStage = TaskStatus.Completed,
             uploadSubmissionTemplateStage = TaskStatus.Completed,
