@@ -67,14 +67,6 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         ) mustBe notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
       }
 
-      "when on NotificationConfirmationPage, must go to notification task list" in {
-        navigator.nextPage(
-          NotificationConfirmationPage,
-          NormalMode,
-          emptyUserAnswers
-        ) mustBe notificationRoutes.NotificationTaskListController.onComplete()
-      }
-
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
         navigator.nextPage(
           NotificationMoreThanOneSaoPage(NormalMode),

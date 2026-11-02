@@ -93,7 +93,6 @@ POST        /notification/check-your-answers                                    
 GET         /notification/submitting                                                  controllers.notification.NotificationSubmittingController.onPageLoad(idempotencyKey: String)
 
 GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
-POST        /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onSubmit()
 
 GET         /notification/download                                                    controllers.DownloadPdfController.notification(notificationReference: String)
 
