@@ -23,6 +23,8 @@ import play.api.Configuration
 import play.api.mvc.RequestHeader
 import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 
+import scala.util.Try
+
 import javax.inject.{Inject, Singleton}
 
 @Singleton
@@ -74,6 +76,9 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, val config: Configura
   require(maxUploadDataRows > 0, "upload-template.max-data-rows must be positive")
 
   val surveyLink: String = getValue("survey.link")
+
+  def digitalContactStubUrl: Option[String] =
+    Try(servicesConfig.baseUrl("digital-contact-stub")).fold(_ => None, Some(_))
 }
 
 object AppConfig {
