@@ -20,7 +20,6 @@ import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
 import controllers.notification.routes as notificationRoutes
 import models.*
-import models.certificate.CertificateTaskListStage
 import models.notification.NotificationStage.ProvideSaoDetailsStage
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.*
@@ -55,9 +54,7 @@ class AgnosticNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
             SubmissionTypePage,
             NormalMode,
             emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Certificate).get
-          ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad(
-            CertificateTaskListStage.ProvideSaoDetailsStage
-          )
+          ) mustBe certificateRoutes.CertificateTaskListController.onPageLoad
         }
 
         "when on SubmissionTypePage and the user chose both the notification and the certificate, must throw an exception" in {

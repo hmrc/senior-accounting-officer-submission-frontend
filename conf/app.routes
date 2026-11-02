@@ -75,10 +75,10 @@ POST        /submission/notification/confirm-notification                       
 # certificate only journey routes
 ##############################
 
-GET         /submission/certificate/task/provide-details                                                  controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.ProvideSaoDetailsStage)
-GET         /submission/certificate/task/upload-template                                                 controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.UploadSubmissionTemplateStage)
-GET         /submission/certificate/task/submit                                                  controllers.certificate.CertificateTaskListController.onPageLoad(stage: CertificateTaskListStage = CertificateTaskListStage.SubmitCertificateStage)
-GET         /submission/certificate/task/complete                                           controllers.certificate.CertificateTaskListController.onPageLoadComplete(stage: CertificateTaskListStage = CertificateTaskListStage.Complete, certificateReference: String)
+GET         /submission/certificate/task/provide-details                                                  controllers.certificate.CertificateTaskListController.onPageLoad
+GET         /submission/certificate/task/upload-template                                                 controllers.certificate.CertificateTaskListController.onPageLoad
+GET         /submission/certificate/task/submit                                                  controllers.certificate.CertificateTaskListController.onPageLoad
+GET         /submission/certificate/task/complete                                           controllers.certificate.CertificateTaskListController.onPageLoadComplete(certificateReference: String)
 POST        /submission/certificate/task                                                    controllers.certificate.CertificateTaskListController.onSubmit(certificateReference: String)
 
 GET         /submission/certificate/officer-name                             controllers.certificate.CertificateSaoFullNameController.onPageLoad(mode: Mode ?= NormalMode)
