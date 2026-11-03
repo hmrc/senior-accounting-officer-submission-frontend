@@ -33,9 +33,6 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, val config: Configura
 
   val cacheTtl: Long = config.get[Int]("mongodb.timeToLiveInSeconds")
 
-  val welshLanguageSupportEnabled: Boolean =
-    config.getOptional[Boolean]("features.welsh-language-support").getOrElse(false)
-
   val host: String = config.get[String]("host")
 
   private val contactHost                  = config.get[String]("contact-frontend.host")
@@ -52,9 +49,10 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, val config: Configura
 
   val loginContinueUrl: String = hubBaseUrl
 
-  lazy val upscanInitiateV2Url: String  = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
-  def isCombinedJourneyEnabled: Boolean = isEnabled(CombinedJourney)
-  def faultToleranceEnabled: Boolean    = isEnabled(FaultTolerance)
+  lazy val upscanInitiateV2Url: String     = servicesConfig.baseUrl("upscan-initiate") + "/upscan/v2/initiate"
+  def isCombinedJourneyEnabled: Boolean    = isEnabled(CombinedJourney)
+  def faultToleranceEnabled: Boolean       = isEnabled(FaultTolerance)
+  def welshLanguageSupportEnabled: Boolean = isEnabled(WelshTranslation)
 
   lazy val internalAuthTestOnlyTokenUrl: String = servicesConfig.baseUrl("internal-auth") + "/test-only/token"
 
