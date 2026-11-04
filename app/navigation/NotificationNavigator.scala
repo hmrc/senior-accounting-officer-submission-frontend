@@ -164,7 +164,7 @@ class NotificationNavigator @Inject() () extends Navigator {
     case NotificationMultiSaoLastOfficerNamePage(_) =>
       _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(TransactionMode)
     case NotificationMultiSaoLastOfficerStartDatePage(_) =>
-      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode, sao = 0)
+      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode)
     case NotificationMultiSaoAreAllAddedPage(saoIndex, _) =>
       userAnswers =>
         userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, TransactionMode)) match {

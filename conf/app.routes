@@ -55,8 +55,8 @@ GET         /submission/notification/uploading                                  
 GET         /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onPageLoad()
 POST        /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onSubmit()
 
-GET         /notification/additional-information                               controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode ?= NormalMode)
-POST        /notification/additional-information                               controllers.notification.NotificationAdditionalInformationController.onSubmit(mode: Mode)
+GET         /submission/notification/additional-information                               controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode ?= NormalMode)
+POST        /submission/notification/additional-information                               controllers.notification.NotificationAdditionalInformationController.onSubmit(mode: Mode)
 
 GET         /submission/notification/check-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
 POST        /submission/notification/check-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
