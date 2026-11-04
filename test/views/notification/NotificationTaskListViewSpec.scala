@@ -227,7 +227,7 @@ class NotificationTaskListViewSpec extends ViewSpecBase[NotificationTaskListView
 
     doc.createTestsWithSubmissionButton(
       action = notificationRoutes.NotificationTaskListController.onCompleteSubmit(),
-      buttonText = homepageBtnText
+      buttonText = viewConfirmation
     )
   }
 
@@ -243,8 +243,8 @@ object NotificationTaskListViewSpec {
   val uploadTemplateLinkText     = "Upload the submission template"
   val submitNotificationLinkText = "Submit the notification"
 
-  val notStartedText  = "Not started"
-  val cannotStartText = "Cannot start yet"
-  val completedText   = "Completed"
-  val homepageBtnText = "Go back to the homepage"
+  val notStartedText   = "Not started"
+  val cannotStartText  = "Cannot start yet"
+  val completedText    = "Completed"
+  val viewConfirmation = "View your confirmation"
 }

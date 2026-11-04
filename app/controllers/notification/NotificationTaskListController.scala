@@ -18,9 +18,12 @@ package controllers.notification
 
 import config.AppConfig
 import controllers.actions.*
+import controllers.notification.routes as notificationRoutes
 import models.notification.NotificationStage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import services.NotificationSubmitService
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationTaskListView
 
@@ -35,6 +38,8 @@ class NotificationTaskListController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationTaskListView,
+    notificationSubmitService: NotificationSubmitService,
+    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
     appConfig: AppConfig
 )(using ExecutionContext)
     extends FrontendBaseController
@@ -54,7 +59,27 @@ class NotificationTaskListController @Inject() (
       }
     }
 
-  def onCompleteSubmit: Action[AnyContent] = identify {
-    Redirect(appConfig.hubBaseUrl)
-  }
+  def onCompleteSubmit: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
+      if appConfig.faultToleranceEnabled then {
+        notificationSubmitService
+          .submitWithFaultTolerance(request.userAnswers)
+          .map {
+            _.fold(
+              error => throw new InternalServerException(error.message),
+              idempotencyKey => Redirect(notificationRoutes.NotificationSubmittingController.onPageLoad(idempotencyKey))
+            )
+          }
+      } else {
+        notificationSubmitService
+          .submit(request.userAnswers)
+          .map {
+            _.fold(
+              error => throw new InternalServerException(error.message),
+              notificationReference =>
+                Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
+            )
+          }
+      }
+    }
 }

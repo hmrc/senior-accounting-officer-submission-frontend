@@ -60,7 +60,7 @@
     @if(state.showViewYourConfirmationButton) {
         @formHelper(action = notificationRoutes.NotificationTaskListController.onCompleteSubmit()) {
             @govukButton(
-                ButtonViewModel(messages("notificationTaskList.homepageText").toText).withAttribute("id", "submit")
+                ButtonViewModel(messages("notificationTaskList.notificationConfirmationButton").toText).withAttribute("id", "submit")
             )
         }
     }

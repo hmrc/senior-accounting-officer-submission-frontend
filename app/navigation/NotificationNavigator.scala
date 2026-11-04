@@ -45,8 +45,6 @@ class NotificationNavigator @Inject() () extends Navigator {
       _ => notificationRoutes.ConfirmYourNotificationController.onPageLoad()
     case ConfirmYourNotificationPage =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-    case NotificationConfirmationPage =>
-      _ => notificationRoutes.NotificationTaskListController.onPageLoadComplete()
     case NotificationMoreThanOneSaoPage(NormalMode) =>
       userAnswers =>
         userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
@@ -91,6 +89,9 @@ class NotificationNavigator @Inject() () extends Navigator {
               notificationRoutes.NotificationTaskListController
                 .onPageLoad(stage = NotificationStage.SubmitNotificationStage)
           }
+
+    case NotificationCheckYourAnswersPage =>
+      - => notificationRoutes.NotificationTaskListController.onComplete()
     case _ => _ => ???
   }
 

@@ -18,14 +18,10 @@ package controllers.notification
 
 import base.SpecBase
 import config.FeatureToggleSupport
-import controllers.notification.NotificationCheckYourAnswersControllerSpec.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
-import models.FeatureToggle.FaultTolerance
-import models.notification.NotificationSubmissionError
 import models.upload.UploadTemplateTableData
-import navigation.{FakeNotificationNavigator, NotificationNavigator}
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.BeforeAndAfterEach
@@ -36,29 +32,14 @@ import pages.notification.UploadTemplateReviewPage
 import pages.notification.UploadTemplateTablePage
 import play.api.i18n.Messages
 import play.api.inject.bind
-import play.api.mvc.{AnyContentAsEmpty, Call, Request}
+import play.api.mvc.{AnyContentAsEmpty, Request}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
+import services.NotificationCheckYourAnswersService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
-import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, InternalServerException}
 import views.html.notification.NotificationCheckYourAnswersView
 
-import scala.concurrent.Future
-
 class NotificationCheckYourAnswersControllerSpec extends SpecBase with FeatureToggleSupport with BeforeAndAfterEach {
-
-  override def beforeEach(): Unit = {
-    super.beforeEach()
-    disable(FaultTolerance)
-  }
-
-  override def afterEach(): Unit = {
-    super.afterEach()
-    disable(FaultTolerance)
-  }
-
-  def onwardRoute: Call = Call("GET", "/foo")
 
   "NotificationCheckYourAnswers Controller" - {
 
@@ -113,163 +94,19 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase with FeatureTo
       }
     }
 
-    "onSubmit" - {
-      "when submission successful, must redirect to the notification confirmation page with the notification reference - fault tolerance disabled" in {
-        disable(FaultTolerance)
+    "must redirect to Task view page on submit" in {
 
-        val mockNotificationSubmitService = mock[NotificationSubmitService]
+      val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers)).build()
 
-        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Right(exampleNotificationReference)))
+      running(application) {
+        val request = FakeRequest(POST, notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url)
 
-        val application =
-          applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-            .overrides(
-              bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
-              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
-            )
-            .build()
+        val result = route(application, request).value
 
-        running(application) {
-          val request =
-            FakeRequest(
-              POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
-            )
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual notificationRoutes.NotificationConfirmationController
-            .onPageLoad(
-              exampleNotificationReference
-            )
-            .url
-        }
-      }
-
-      "when submission successful, must redirect to the notification confirmation page with the notification reference - fault tolerance enabled" in {
-        enable(FaultTolerance)
-
-        val mockNotificationSubmitService = mock[NotificationSubmitService]
-
-        when(mockNotificationSubmitService.submitWithFaultTolerance(any())(using any[HeaderCarrier]()))
-          .thenReturn(Future.successful(Right("key")))
-
-        val application =
-          applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-            .overrides(
-              bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
-              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
-            )
-            .build()
-
-        running(application) {
-          val request =
-            FakeRequest(
-              POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
-            )
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual notificationRoutes.NotificationSubmittingController
-            .onPageLoad(
-              "key"
-            )
-            .url
-        }
-      }
-
-      "must redirect to Journey Recovery for a POST if no existing data is found" in {
-
-        val application = applicationBuilder(userAnswers = None).build()
-
-        running(application) {
-          val request =
-            FakeRequest(
-              POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
-            )
-
-          val result = route(application, request).value
-
-          status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustEqual routes.JourneyRecoveryController
-            .onPageLoad(section = Some(JourneySection.Notification))
-            .url
-        }
-      }
-
-      "when submission unsuccessful, must throw an InternalServerException with an error message - fault tolerance disabled" in {
-        disable(FaultTolerance)
-
-        val mockNotificationSubmitService = mock[NotificationSubmitService]
-
-        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
-          .thenReturn(
-            Future.successful(
-              Left(NotificationSubmissionError.HttpError(HttpResponse(INTERNAL_SERVER_ERROR)))
-            )
-          )
-
-        val application =
-          applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-            .overrides(
-              bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
-              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
-            )
-            .build()
-
-        running(application) {
-          val request =
-            FakeRequest(
-              POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
-            )
-
-          val exception = intercept[InternalServerException] {
-            val result = route(application, request).value
-            status(result)
-          }
-          exception.message mustEqual expectedHttpFailureMessage
-        }
-      }
-
-      "when submission unsuccessful, must throw an InternalServerException with an error message - fault tolerance enabled" in {
-        enable(FaultTolerance)
-
-        val mockNotificationSubmitService = mock[NotificationSubmitService]
-
-        when(mockNotificationSubmitService.submitWithFaultTolerance(any())(using any[HeaderCarrier]()))
-          .thenReturn(
-            Future.successful(
-              Left(NotificationSubmissionError.HttpError(HttpResponse(INTERNAL_SERVER_ERROR)))
-            )
-          )
-
-        val application =
-          applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-            .overrides(
-              bind[NotificationNavigator].toInstance(new FakeNotificationNavigator(onwardRoute)),
-              bind[NotificationSubmitService].toInstance(mockNotificationSubmitService)
-            )
-            .build()
-
-        running(application) {
-          val request =
-            FakeRequest(
-              POST,
-              notificationRoutes.NotificationCheckYourAnswersController.onSubmit().url
-            )
-
-          val exception = intercept[InternalServerException] {
-            val result = route(application, request).value
-            status(result)
-          }
-          exception.message mustEqual expectedHttpFailureMessage
-        }
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController
+          .onCompleteSubmit()
+          .url
       }
     }
   }

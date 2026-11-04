@@ -16,16 +16,15 @@
 
 package controllers.notification
 
-import config.AppConfig
 import controllers.actions.*
-import controllers.notification.routes as notificationRoutes
-import models.UserAnswers
+import models.{NormalMode, UserAnswers}
+import navigation.NotificationNavigator
+import pages.notification.NotificationCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import services.NotificationCheckYourAnswersService
 import services.SaoUserAnswersService
-import services.{NotificationCheckYourAnswersService, NotificationSubmitService}
-import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationCheckYourAnswersView
 
@@ -43,9 +42,8 @@ class NotificationCheckYourAnswersController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
     notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
-    notificationSubmitService: NotificationSubmitService,
     saoUserAnswersService: SaoUserAnswersService,
-    appConfig: AppConfig
+    navigator: NotificationNavigator
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -63,29 +61,7 @@ class NotificationCheckYourAnswersController @Inject() (
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-      {
-        if appConfig.faultToleranceEnabled then {
-          notificationSubmitService
-            .submitWithFaultTolerance(request.userAnswers)
-            .map {
-              _.fold(
-                error => throw new InternalServerException(error.message),
-                idempotencyKey =>
-                  Redirect(notificationRoutes.NotificationSubmittingController.onPageLoad(idempotencyKey))
-              )
-            }
-        } else {
-          notificationSubmitService
-            .submit(request.userAnswers)
-            .map {
-              _.fold(
-                error => throw new InternalServerException(error.message),
-                notificationReference =>
-                  Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationReference))
-              )
-            }
-        }
-      }
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+      Redirect(navigator.nextPage(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers))
     }
 }

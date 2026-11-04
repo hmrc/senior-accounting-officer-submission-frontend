@@ -18,7 +18,6 @@ package views.notification
 
 import base.ViewSpecBase
 import config.AppConfig
-import controllers.notification.routes as notificationRoutes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.html.notification.NotificationConfirmationView
@@ -118,10 +117,6 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
       doc.createTestForInsetText(pageInsetText)
 
       doc.createTestsWithOrWithoutError(hasError = false)
-      doc.createTestsWithSubmissionButton(
-        action = notificationRoutes.NotificationConfirmationController.onSubmit(),
-        buttonText = "Continue"
-      )
     }
 
     "when displayPdfLink is false" - {
@@ -194,10 +189,6 @@ class NotificationConfirmationViewSpec extends ViewSpecBase[NotificationConfirma
       doc.createTestForInsetText(pageInsetText)
 
       doc.createTestsWithOrWithoutError(hasError = false)
-      doc.createTestsWithSubmissionButton(
-        action = notificationRoutes.NotificationConfirmationController.onSubmit(),
-        buttonText = "Continue"
-      )
     }
   }
 }

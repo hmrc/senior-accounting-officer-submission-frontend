@@ -17,9 +17,7 @@
 package controllers.notification
 
 import controllers.actions.*
-import models.NormalMode
 import navigation.NotificationNavigator
-import pages.notification.NotificationConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import services.ObjectStoreService
@@ -54,10 +52,5 @@ class NotificationConfirmationController @Inject() (
             )
           )
       }
-    }
-
-  def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData) { implicit request =>
-      Redirect(navigator.nextPage(NotificationConfirmationPage, NormalMode, request.userAnswers))
     }
 }

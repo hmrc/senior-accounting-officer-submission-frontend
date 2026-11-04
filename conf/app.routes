@@ -61,6 +61,7 @@ POST        /submission/notification/additional-information                     
 GET         /submission/notification/check-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
 POST        /submission/notification/check-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
 
+GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 GET         /submission/notification/submitting                                                  controllers.notification.NotificationSubmittingController.onPageLoad(idempotencyKey: String)
 
 GET         /submission/notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
