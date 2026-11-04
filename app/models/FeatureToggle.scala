@@ -23,8 +23,9 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.content.Text
 
 enum FeatureToggle(val key: String, val name: String) {
   override def toString: String = s"features.$key"
-  case CombinedJourney extends FeatureToggle("combined", "Combined")
-  case FaultTolerance  extends FeatureToggle("fault-tolerance", "Enable Fault Tolerance Endpoint and Spinner page")
+  case CombinedJourney  extends FeatureToggle("combined", "Combined")
+  case FaultTolerance   extends FeatureToggle("fault-tolerance", "Enable Fault Tolerance Endpoint and Spinner page")
+  case WelshTranslation extends FeatureToggle("welsh-translation", "Enable Welsh language toggle")
 }
 
 object FeatureToggle extends FeatureConfigSupport {
