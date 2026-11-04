@@ -17,8 +17,9 @@
 package controllers.notification
 
 import controllers.actions.*
-import controllers.notification.routes as notificationRoutes
-import models.UserAnswers
+import models.{NormalMode, UserAnswers}
+import navigation.NotificationNavigator
+import pages.notification.NotificationCheckYourAnswersPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -41,7 +42,8 @@ class NotificationCheckYourAnswersController @Inject() (
     val controllerComponents: MessagesControllerComponents,
     view: NotificationCheckYourAnswersView,
     notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
-    saoUserAnswersService: SaoUserAnswersService
+    saoUserAnswersService: SaoUserAnswersService,
+    navigator: NotificationNavigator
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -59,7 +61,7 @@ class NotificationCheckYourAnswersController @Inject() (
     }
 
   def onSubmit(): Action[AnyContent] =
-    identify {
-      Redirect(notificationRoutes.NotificationTaskListController.onComplete())
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
+      Redirect(navigator.nextPage(NotificationCheckYourAnswersPage, NormalMode, request.userAnswers))
     }
 }
