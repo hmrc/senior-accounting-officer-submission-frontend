@@ -249,5 +249,5 @@ object NotificationTaskListViewSpec {
   val notStartedText   = "Not started"
   val cannotStartText  = "Cannot start yet"
   val completedText    = "Completed"
-  val viewConfirmation = "View your confirmation"
+  val viewConfirmation = "Submit"
 }
