@@ -60,7 +60,7 @@ notificationTaskList.paragraph1 = Submit one notification for each SAO in your g
 notificationTaskList.provideSaoDetailsLinkText = Provide the SAO’s details
 notificationTaskList.uploadNotificationLinkText = Upload the submission template
 notificationTaskList.submitNotificationLinkText = Submit the notification
-notificationTaskList.notificationConfirmationButton = View your confirmation
+notificationTaskList.notificationConfirmationButton = Submit
 
 notificationTaskList.row.status.cannotStartYet = Cannot start yet
 notificationTaskList.row.status.completed = Completed
