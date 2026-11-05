@@ -33,13 +33,23 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
   private def generateView(
       saoName: String,
       qualifiedCompanies: Seq[QualifiedCompany],
-      companyCount: Int
+      companyCount: Int,
+      totalQualifiedCompanies: Int = 0,
+      currentPage: Int = 1,
+      pageCount: Int = 1
   ): Document =
-    Jsoup.parse(SUT(saoName, companyCount, qualifiedCompanies).toString)
+    Jsoup.parse(
+      SUT(saoName, companyCount, qualifiedCompanies, totalQualifiedCompanies, currentPage, pageCount).toString
+    )
 
   "CertificateReviewQualifiedView" - {
     "When no rows are passed to the view must render empty table" - {
-      val doc: Document = generateView(firstSaoName, Seq(), 0)
+      val doc: Document = generateView(
+        saoName = firstSaoName,
+        qualifiedCompanies = Seq.empty,
+        companyCount = 0,
+        totalQualifiedCompanies = 0
+      )
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -77,7 +87,12 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
     }
 
     "When rows are passed to the view must render populated table" - {
-      val doc: Document = generateView(firstSaoName, qualifiedCompanies, 2)
+      val doc: Document = generateView(
+        saoName = firstSaoName,
+        qualifiedCompanies = qualifiedCompanies,
+        companyCount = 2,
+        totalQualifiedCompanies = 2
+      )
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -115,7 +130,12 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
     }
 
     "When one company is passed to the view must render singular wording" - {
-      val doc = generateView(firstSaoName, qualifiedCompanies.take(1), 1)
+      val doc = generateView(
+        saoName = firstSaoName,
+        qualifiedCompanies = qualifiedCompanies.take(1),
+        companyCount = 1,
+        totalQualifiedCompanies = 1
+      )
 
       doc.createTestsWithParagraphs(
         Seq(firstParagraphOneCompany, secondParagraph, thirdParagraphOneQualifiedCompany)
@@ -123,7 +143,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
     }
 
     "When rows are and a different sao name are passed to the view must render populated table with different sao name" - {
-      val doc: Document = generateView(secondSaoName, qualifiedCompanies, 2)
+      val doc: Document = generateView(secondSaoName, qualifiedCompanies, 2, totalQualifiedCompanies = 2)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -162,11 +182,32 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
 
     "The content of SAO's name is properly escaped" in {
       val unescapedText = "<script>alert(123)</script>"
-      val doc: Document = generateView(unescapedText, qualifiedCompanies, 2)
+      val doc: Document = generateView(
+        saoName = unescapedText,
+        qualifiedCompanies = qualifiedCompanies,
+        companyCount = 2,
+        totalQualifiedCompanies = 2
+      )
 
       doc.select(excludeHelpLinkAndErrorMessageParagraphsSelector).eachText().toArray.toSeq.mkString(",") must include(
         unescapedText
       )
+    }
+
+    "renders pagination when there is more than one page" in {
+      val doc: Document =
+        generateView(
+          saoName = firstSaoName,
+          qualifiedCompanies = qualifiedCompanies.take(1),
+          companyCount = 30,
+          totalQualifiedCompanies = 30,
+          currentPage = 1,
+          pageCount = 2
+        )
+
+      doc.select(".govuk-pagination").size() mustBe 1
+      doc.select(".govuk-pagination__next").size() mustBe 1
+      doc.select(".govuk-pagination__prev").size() mustBe 0
     }
   }
 

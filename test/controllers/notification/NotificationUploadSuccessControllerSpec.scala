@@ -280,7 +280,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustBe notificationRoutes.UploadTemplateTableController.onPageLoad().url
+          redirectLocation(result).value mustBe notificationRoutes.UploadTemplateTableController.onPageLoad(0).url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             meq(UploadJourney.Notification),
@@ -316,7 +316,7 @@ class NotificationUploadSuccessControllerSpec extends SpecBase with BeforeAndAft
           application.injector.instanceOf[NotificationUploadSuccessView]
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).get mustBe notificationRoutes.UploadTemplateTableController.onPageLoad().url
+          redirectLocation(result).get mustBe notificationRoutes.UploadTemplateTableController.onPageLoad(0).url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             meq(UploadJourney.Notification),

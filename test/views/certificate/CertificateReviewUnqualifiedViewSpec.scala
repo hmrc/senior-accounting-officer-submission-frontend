@@ -33,13 +33,18 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
   private def generateView(
       saoName: String,
       unqualifiedCompanies: Seq[UnqualifiedCompany],
-      companyCount: Int
-  ): Document = Jsoup.parse(SUT(saoName, unqualifiedCompanies, companyCount).toString)
+      companyCount: Int,
+      totalUnqualifiedCompanies: Int = 0,
+      currentPage: Int = 1,
+      pageCount: Int = 1
+  ): Document = Jsoup.parse(
+    SUT(saoName, unqualifiedCompanies, companyCount, totalUnqualifiedCompanies, currentPage, pageCount).toString
+  )
 
   "CertificateReviewUnqualifiedView" - {
     "will populate the table correctly when data is present" - {
 
-      val doc: Document = generateView(saoName, unqualifiedCompanies, 10)
+      val doc: Document = generateView(saoName, unqualifiedCompanies, 10, totalUnqualifiedCompanies = 2)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -76,7 +81,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
 
     "will populate the table correctly when no data is present" - {
 
-      val doc: Document = generateView("", Seq.empty, 0)
+      val doc: Document = generateView("", Seq.empty, 0, totalUnqualifiedCompanies = 0)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -112,7 +117,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
     }
 
     "will use singular wording when one company is present" - {
-      val doc = generateView(saoName, unqualifiedCompanies.take(1), 1)
+      val doc = generateView(saoName, unqualifiedCompanies.take(1), 1, totalUnqualifiedCompanies = 1)
 
       doc.createTestsWithParagraphs(paragraphsWithOneCompany)
 
@@ -120,11 +125,26 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
 
     "The content of SAO's name is properly escaped" in {
       val unescapedText = "<script>alert(123)</script>"
-      val doc: Document = generateView(unescapedText, unqualifiedCompanies, 2)
+      val doc: Document = generateView(unescapedText, unqualifiedCompanies, 2, totalUnqualifiedCompanies = 2)
 
       doc.select(excludeHelpLinkAndErrorMessageParagraphsSelector).eachText().toArray.toSeq.mkString(",") must include(
         unescapedText
       )
+    }
+
+    "Will paginate correctly" in {
+      val doc = generateView(
+        saoName,
+        unqualifiedCompanies,
+        companyCount = 20,
+        totalUnqualifiedCompanies = 20,
+        currentPage = 1,
+        pageCount = 2
+      )
+
+      doc.select(".govuk-pagination").size() mustBe 1
+      doc.select(".govuk-pagination__next").size() mustBe 1
+      doc.select(".govuk-pagination__prev").size() mustBe 0
     }
   }
   extension (doc: Document) {
