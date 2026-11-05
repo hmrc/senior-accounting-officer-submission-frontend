@@ -106,8 +106,8 @@ POST        /submission/certificate/declaration/confirm-certificate             
 GET         /submission/certificate/declaration/confirm-authorised-submission                                         controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /submission/certificate/declaration/confirm-authorised-submission                                         controllers.certificate.CertificateDeclarationStandInController.onSubmit(mode: Mode)
 
-GET         /submission/certificate/check-confirm-answers                                              controllers.certificate.CertificateCheckYourAnswersController.onPageLoad()
-POST        /submission/certificate/check-confirm-answers                                              controllers.certificate.CertificateCheckYourAnswersController.onSubmit()
+GET         /submission/certificate/check-answers                                              controllers.certificate.CertificateCheckYourAnswersController.onPageLoad()
+POST        /submission/certificate/check-answers                                              controllers.certificate.CertificateCheckYourAnswersController.onSubmit()
 
 GET         /submission/certificate/submitting                                                   controllers.certificate.CertificateSubmittingController.onPageLoad(idempotencyKey: String)
 
