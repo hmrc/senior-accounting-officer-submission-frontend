@@ -60,7 +60,7 @@ notificationTaskList.paragraph1 = Submit one notification for each SAO in your g
 notificationTaskList.provideSaoDetailsLinkText = Provide the SAO’s details
 notificationTaskList.uploadNotificationLinkText = Upload the submission template
 notificationTaskList.submitNotificationLinkText = Submit the notification
-notificationTaskList.notificationConfirmationButton = View your confirmation
+notificationTaskList.notificationConfirmationButton = Submit
 
 notificationTaskList.row.status.cannotStartYet = Cannot start yet
 notificationTaskList.row.status.completed = Completed
@@ -492,7 +492,7 @@ certificateTaskList.submitCertificateLinkText = Submit the certificate
 certificateTaskList.row.status.notStarted = Not started
 certificateTaskList.row.status.cannotStartYet = Cannot start yet
 certificateTaskList.row.status.completed = Completed
-certificateTaskList.certificateConfirmationButton = View your confirmation
+certificateTaskList.certificateConfirmationButton = Submit
 
 certificateDeclarationStandIn.title = Declaration – Submit a certificate
 certificateDeclarationStandIn.caption = Submit a certificate
