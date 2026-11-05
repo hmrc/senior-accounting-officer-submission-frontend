@@ -255,6 +255,7 @@ notificationUploadError.validation.missingRequiredValue = A required value is mi
 notificationUploadError.validation.invalidEnumValue = A value in the uploaded template is not valid
 notificationUploadError.validation.invalidCertificateType = Certificate type must be Qualified, Unqualified or blank
 
+notificationMoreThanOneSao.caption = Submit a notification
 notificationMoreThanOneSao.title = Did the SAO change during the financial year you are submitting for?
 notificationMoreThanOneSao.heading = Did the SAO change during the financial year you are submitting for?
 notificationMoreThanOneSao.checkYourAnswersLabel = Did the SAO change during the financial year?
