@@ -23,20 +23,19 @@ import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
 import models.FeatureToggle.FaultTolerance
-import models.notification.NotificationStage
-import models.notification.NotificationSubmissionError
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.when
-import org.scalatest.BeforeAndAfterEach
-import org.scalatestplus.mockito.MockitoSugar.mock
 import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
+import models.notification.NotificationStage
 import models.notification.NotificationStage.{
   ProvideSaoDetailsStage,
   SubmitNotificationStage,
   UploadNotificationTemplateStage
 }
-import models.notification.{NotificationStage, NotificationTaskListState}
-import models.{NormalMode, TaskStatus}
+import models.notification.NotificationSubmissionError
+import models.notification.NotificationTaskListState
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.notification.*
 import play.api.inject
 import play.api.inject.bind

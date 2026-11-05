@@ -45,7 +45,8 @@ class CertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
   private val formProvider       = new CertificateSaoEmailFormProvider()
   private def form: Form[String] = formProvider()
 
-  lazy val certificateSaoEmailPageRoute: String = certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode).url
+  lazy val certificateSaoEmailPageRoute: String =
+    certificateRoutes.CertificateSaoEmailController.onPageLoad(NormalMode).url
   lazy val certificateSaoEmailSubmitRoute: String =
     certificateRoutes.CertificateSaoEmailController.onSubmit(NormalMode).url
 
