@@ -39,9 +39,9 @@ object Mode {
                 case "NormalMode"      => Right(NormalMode)
                 case "CheckMode"       => Right(CheckMode)
                 case "TransactionMode" => Right(TransactionMode)
-                case _                 => Left("Unbindable Mode")
+                case _                 => Left(UnbindableMode)
               }
-            case _ => Left("Unable to bind a Mode")
+            case _ => Left(UnbindableMode)
           }
         }
       }
@@ -51,7 +51,7 @@ object Mode {
           case NormalMode      => intBinder.unbind(key, "NormalMode")
           case CheckMode       => intBinder.unbind(key, "CheckMode")
           case TransactionMode => intBinder.unbind(key, "TransactionMode")
-          case _               => intBinder.unbind(key, "Unbindable Mode")
+          case _               => intBinder.unbind(key, UnbindableMode)
         }
       }
     }
@@ -65,4 +65,6 @@ object Mode {
   }
 
   val values: List[Mode] = List(NormalMode, CheckMode)
+
+  private val UnbindableMode: String = "Unable to bind a Mode"
 }
