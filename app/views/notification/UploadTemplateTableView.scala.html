@@ -22,7 +22,7 @@
         govukButton: GovukButton
 )
 
-@(tableData: models.upload.UploadTemplateTableData, saoName: String)(using request: Request[?], messages: Messages)
+@(tableData: models.upload.UploadTemplateTableData, saoName: String, currentPage: Int, pageCount: Int)(using request: Request[?], messages: Messages)
 
 @asDisplay(value: Option[String]) = {
     @value.getOrElse(messages("uploadTemplateTable.table.emptyField"))
@@ -75,6 +75,45 @@
             }
         </tbody>
     </table>
+
+    @if(pageCount > 1) {
+        <nav class="govuk-pagination" aria-label=@messages("pagination.label")>
+            @if(currentPage > 1) {
+                <div class="govuk-pagination__prev">
+                    <a class="govuk-link govuk-pagination__link"
+                       href="@notificationRoutes.UploadTemplateTableController.onPageLoad(Some(currentPage - 1))"
+                       rel="prev">
+                        <span aria-hidden="true">←</span>
+                        <span class="govuk-pagination__link-title">@messages("pagination.previous")</span>
+                    </a>
+                </div>
+            }
+
+
+            <ul class="govuk-pagination__list">
+                @for(pageNumber <- 1 to pageCount) {
+                    <li class="govuk-pagination__item @if(pageNumber == currentPage) {govuk-pagination__item--current}">
+                        <a class="govuk-link govuk-pagination__link"
+                           href="@notificationRoutes.UploadTemplateTableController.onPageLoad(Some(pageNumber))"
+                           @if(pageNumber == currentPage) {aria-current="page"}>
+                            @pageNumber
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            @if(currentPage < pageCount) {
+                <div class="govuk-pagination__next">
+                    <a class="govuk-link govuk-pagination__link"
+                       href="@notificationRoutes.UploadTemplateTableController.onPageLoad(Some(currentPage + 1))"
+                       rel="next">
+                        <span class="govuk-pagination__link-title">@messages("pagination.next")</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            }
+        </nav>
+    }
 
     @formHelper(action = notificationRoutes.UploadTemplateTableController.onSubmit()) {
         @govukButton(

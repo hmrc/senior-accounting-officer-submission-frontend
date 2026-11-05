@@ -79,7 +79,7 @@ POST        /notification/one-sao/transaction-submit-notification-full-name     
 
 GET         /notification/upload                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
 GET         /notification/upload/success                                              controllers.notification.NotificationUploadSuccessController.onPageLoad(key: Option[String])
-GET         /notification/upload/table                                                controllers.notification.UploadTemplateTableController.onPageLoad()
+GET         /notification/upload/table                                                controllers.notification.UploadTemplateTableController.onPageLoad(page: Option[Int])
 POST        /notification/upload/table                                                controllers.notification.UploadTemplateTableController.onSubmit()
 
 GET         /notification/additional-information                                      controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)
@@ -120,10 +120,10 @@ POST        /certificate-only/change-sao-email                                  
 GET         /certificate/upload                                                       controllers.certificate.CertificateUploadFormController.onPageLoad()
 GET         /certificate/upload/success                                               controllers.certificate.CertificateUploadSuccessController.onPageLoad(key: Option[String])
 
-GET         /certificateReviewQualified                                               controllers.certificate.CertificateReviewQualifiedController.onPageLoad()
+GET         /certificateReviewQualified                                               controllers.certificate.CertificateReviewQualifiedController.onPageLoad(page: Option[Int])
 POST        /certificateReviewQualified                                               controllers.certificate.CertificateReviewQualifiedController.onSubmit()
 
-GET         /certificateReviewUnqualified                                             controllers.certificate.CertificateReviewUnqualifiedController.onPageLoad()
+GET         /certificateReviewUnqualified                                             controllers.certificate.CertificateReviewUnqualifiedController.onPageLoad(page: Option[Int])
 POST        /certificateReviewUnqualified                                             controllers.certificate.CertificateReviewUnqualifiedController.onSubmit()
 
 GET         /certificateAdditionalInformation                                         controllers.certificate.CertificateAdditionalInformationController.onPageLoad(mode: Mode = NormalMode)

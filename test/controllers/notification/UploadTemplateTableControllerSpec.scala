@@ -104,14 +104,14 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(populatedAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad().url)
+        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad(None).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[UploadTemplateTableView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(tableData, saoName)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(tableData, saoName, 30, 1)(using request, messages(application)).toString
       }
     }
 
@@ -141,7 +141,7 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(populatedErrorAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad().url)
+        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad(None).url)
 
         val result = route(application, request).value
 
@@ -183,14 +183,17 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad().url)
+        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad(None).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[UploadTemplateTableView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(tableData, lastSaoName)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(tableData, lastSaoName, 30, 1)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -198,7 +201,7 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad().url)
+        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad(None).url)
 
         val result = route(application, request).value
 
@@ -214,7 +217,7 @@ class UploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
       val application = applicationBuilder(userAnswers = Some(answers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad().url)
+        val request = FakeRequest(GET, notificationRoutes.UploadTemplateTableController.onPageLoad(None).url)
 
         val result = route(application, request).value
 
