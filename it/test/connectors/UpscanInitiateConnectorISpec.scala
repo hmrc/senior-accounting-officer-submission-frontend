@@ -115,7 +115,7 @@ object UpscanInitiateConnectorISpec extends ISpecBase{
     successRedirect = Some(
       "http://localhost:10058/senior-accounting-officer/submission/notification/uploading"
     ),
-    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/upload-template"),
+    errorRedirect = Some("http://localhost:10058/senior-accounting-officer/submission/notification/submission-template"),
     maximumFileSize = Some(appConfig.maxUploadFileSizeBytes)
   )
 
