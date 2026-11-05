@@ -172,7 +172,7 @@ class SubmissionTypeControllerSpec
           verify(mockSessionRepository, times(1)).set(argThat { insertedUserAnswer =>
             insertedUserAnswer.id mustBe userAnswersId
             insertedUserAnswer.data mustBe Json.parse(
-              s"""{"submission":"${SubmissionType.values.head.toString}"}"""
+              s"""{"submissionType":"${SubmissionType.values.head.toString}"}"""
             )
             true
           })
@@ -287,7 +287,7 @@ class SubmissionTypeControllerSpec
           verify(mockSessionRepository, times(1)).set(argThat { insertedUserAnswer =>
             insertedUserAnswer.id mustBe userAnswersId
             insertedUserAnswer.data mustBe Json.parse(
-              s"""{"submission":"${SubmissionType.values.head.toString}"}"""
+              s"""{"submissionType":"${SubmissionType.values.head.toString}"}"""
             )
             true
           })

@@ -57,7 +57,7 @@ class NotificationNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           NotificationCheckYourAnswersPage,
           NormalMode,
           emptyUserAnswers
-        ) mustBe notificationRoutes.NotificationTaskListController.onComplete()
+        ) mustBe notificationRoutes.NotificationTaskListController.onPageLoadComplete()
       }
 
       "when on ConfirmYourNotificationPage, must go to check your answers page" in {

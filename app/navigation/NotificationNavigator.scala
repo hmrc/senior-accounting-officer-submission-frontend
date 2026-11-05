@@ -91,7 +91,7 @@ class NotificationNavigator @Inject() () extends Navigator {
           }
 
     case NotificationCheckYourAnswersPage =>
-      - => notificationRoutes.NotificationTaskListController.onComplete()
+      - => notificationRoutes.NotificationTaskListController.onPageLoadComplete()
     case _ => _ => ???
   }
 

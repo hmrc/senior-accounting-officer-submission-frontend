@@ -43,8 +43,6 @@ class NotificationUploadFormControllerSpec extends SpecBase with MockitoSugar {
 
   "NotificationUploadFormController must" - {
 
-    notificationRoutes.NotificationUploadFormController.onPageLoad().url
-
     "return OK and the correct view for a GET" in {
       val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
       val mockSessionRepository          = mock[SessionRepository]

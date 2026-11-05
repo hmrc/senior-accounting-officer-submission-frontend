@@ -43,9 +43,9 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
   val formProvider               = new CertificateAdditionalInformationFormProvider()
   val form: Form[Option[String]] = formProvider()
 
-  lazy val certificateAdditionalInformationRoute: String =
+  lazy val certificateAdditionalInformationPageRoute: String =
     certificateRoutes.CertificateAdditionalInformationController.onPageLoad(NormalMode).url
-  lazy val certificateAdditionalInformationPostRoute: String =
+  lazy val certificateAdditionalInformationSubmitRoute: String =
     certificateRoutes.CertificateAdditionalInformationController.onSubmit(NormalMode).url
 
   "CertificateAdditionalInformation Controller" - {
@@ -55,7 +55,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
       val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateUploadedTemplate)).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateAdditionalInformationRoute)
+        val request = FakeRequest(GET, certificateAdditionalInformationPageRoute)
 
         val result = route(application, request).value
 
@@ -77,7 +77,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateAdditionalInformationRoute)
+        val request = FakeRequest(GET, certificateAdditionalInformationPageRoute)
 
         val view = application.injector.instanceOf[CertificateAdditionalInformationView]
 
@@ -107,7 +107,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateAdditionalInformationPostRoute)
+          FakeRequest(POST, certificateAdditionalInformationSubmitRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -123,7 +123,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateAdditionalInformationPostRoute)
+          FakeRequest(POST, certificateAdditionalInformationSubmitRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -142,7 +142,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateAdditionalInformationRoute)
+        val request = FakeRequest(GET, certificateAdditionalInformationPageRoute)
 
         val result = route(application, request).value
 
@@ -159,7 +159,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateAdditionalInformationPostRoute)
+          FakeRequest(POST, certificateAdditionalInformationSubmitRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -174,7 +174,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
     "must redirect to task list on upload submission template stage when user answers is empty for a GET" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
-        val request = FakeRequest(GET, certificateAdditionalInformationRoute)
+        val request = FakeRequest(GET, certificateAdditionalInformationPageRoute)
 
         val result = route(application, request).value
 
@@ -186,7 +186,7 @@ class CertificateAdditionalInformationControllerSpec extends SpecBase with Mocki
     "must redirect to task list on upload submission template stage when upload submission template stage has not been completed for a GET" in {
       val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
       running(application) {
-        val request = FakeRequest(GET, certificateAdditionalInformationRoute)
+        val request = FakeRequest(GET, certificateAdditionalInformationPageRoute)
 
         val result = route(application, request).value
 

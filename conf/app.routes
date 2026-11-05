@@ -50,7 +50,7 @@ POST        /submission/notification/add-officer                               c
 GET         /submission/notification/officer-name                controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode ?= NormalMode)
 POST        /submission/notification/officer-name                controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode)
 
-GET         /submission/notification/upload-template                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
+GET         /submission/notification/submission-template                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
 GET         /submission/notification/uploading                                              controllers.notification.NotificationUploadSuccessController.onPageLoad(key: Option[String])
 GET         /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onPageLoad()
 POST        /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onSubmit()
@@ -61,12 +61,9 @@ POST        /submission/notification/additional-information                     
 GET         /submission/notification/check-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
 POST        /submission/notification/check-answers                                          controllers.notification.NotificationCheckYourAnswersController.onSubmit()
 
-GET         /notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
 GET         /submission/notification/submitting                                                  controllers.notification.NotificationSubmittingController.onPageLoad(idempotencyKey: String)
 
 GET         /submission/notification/confirmation                                                controllers.notification.NotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
-POST        /submission/notification/confirmation                                                controllers.notification.NotificationConfirmationController.onSubmit()
-
 GET         /submission/notification/download                                                    controllers.DownloadPdfController.notification(notificationReference: String)
 
 GET         /submission/notification/confirm-notification                                   controllers.notification.ConfirmYourNotificationController.onPageLoad()
