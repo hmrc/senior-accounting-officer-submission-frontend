@@ -64,7 +64,8 @@ class AppConfig @Inject() (servicesConfig: ServicesConfig, val config: Configura
   private def getValue(key: String): String =
     sys.props.getOrElse(key, config.get[String](key))
 
-  def templateFile: String = getValue("templateFile")
+  def templateFile: String      = getValue("templateFile")
+  def templateFileWelsh: String = getValue("templateFileWelsh")
 
   val timeout: Int   = config.get[Int]("timeout-dialog.timeout")
   val countdown: Int = config.get[Int]("timeout-dialog.countdown")
