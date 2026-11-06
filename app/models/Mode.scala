@@ -27,7 +27,7 @@ case object TransactionMode extends Mode // TODO: remove when we start using a l
 
 object Mode {
 
-  implicit def queryStringBinder(implicit stringBinder: QueryStringBindable[String]): QueryStringBindable[Mode] =
+  given queryStringBinder(using stringBinder: QueryStringBindable[String]): QueryStringBindable[Mode] =
     new QueryStringBindable[Mode] {
       override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Mode]] = {
         for {
@@ -51,7 +51,6 @@ object Mode {
           case NormalMode      => stringBinder.unbind(key, "NormalMode")
           case CheckMode       => stringBinder.unbind(key, "CheckMode")
           case TransactionMode => stringBinder.unbind(key, "TransactionMode")
-          case _               => stringBinder.unbind(key, UnbindableMode)
         }
       }
     }
