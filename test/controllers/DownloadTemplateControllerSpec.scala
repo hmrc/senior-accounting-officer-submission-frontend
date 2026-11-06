@@ -24,7 +24,8 @@ import org.apache.pekko.stream.scaladsl.StreamConverters
 import org.apache.poi.ss.usermodel.DataValidationConstraint
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import play.api.http.Status
-import play.api.mvc.{AnyContentAsEmpty, Result}
+import play.api.i18n.Lang
+import play.api.mvc.{AnyContentAsEmpty, Request, Result}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import uk.gov.hmrc.http.InternalServerException
@@ -36,125 +37,126 @@ import java.io.InputStream
 
 class DownloadTemplateControllerSpec extends SpecBase {
 
-  given request: FakeRequest[AnyContentAsEmpty.type] =
-    FakeRequest(GET, routes.DownloadTemplateController.downloadFile().url)
+  def request(language: String): Request[AnyContentAsEmpty.type] = {
+    FakeRequest(GET, routes.DownloadTemplateController.downloadFile().url).withTransientLang(Lang(language))
+  }
+
+  val validLanguageList: Seq[String] = Seq("en", "cy")
 
   "GET must " - {
-    "return a file with correct name,type and headers" in {
+    validLanguageList.foreach { language =>
+      s"return a file with correct name,type and headers - $language" in {
 
-      val app = applicationBuilder(userAnswers = None).build()
-      running(app) {
-        val result = route(app, request).value
+        val app = applicationBuilder(userAnswers = None).build()
+        running(app) {
+          val result = route(app, request(language)).value
 
-        status(result) mustBe Status.OK
+          status(result) mustBe Status.OK
 
-        val contentDisposition = header("Content-Disposition", result)
+          val contentDisposition = header("Content-Disposition", result)
 
-        contentDisposition mustBe Some(
-          "attachment; filename=Senior Accounting Officer notification and certificate submission template.xlsx"
-        )
-        contentType(result) mustBe Some("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-      }
-
-    }
-
-    "the returned Excel template must be saved with active cell in A1 or unspecified" in {
-      val app = applicationBuilder(userAnswers = None).build()
-
-      running(app) {
-
-        given Materializer = app.injector.instanceOf
-
-        val result = route(app, request).value
-
-        status(result) mustBe Status.OK
-
-        val workbook          = contentAsXlsxWorkBook(result)
-        val activeCellAddress = workbook.getSheetAt(workbook.getActiveSheetIndex).getActiveCell
-
-        withClue("""Excel must open with the A1 cell selected for accessibility reasons
-            |(This can be achieved either by explicit configuring it to A1 or left unset)
-            |e.g.
-            |Steps to set the workbook to open on this cell on Mac
-            |Open Microsoft Excel.
-            |Select the A1 cell.
-            |Save your workbook.
-            |""".stripMargin) {
-          Option(activeCellAddress).fold("A1")(_.formatAsString()) mustBe "A1"
-        }
-      }
-    }
-
-    "the returned Excel template must not have author or last save by information" in {
-      val app = applicationBuilder(userAnswers = None).build()
-
-      running(app) {
-
-        given Materializer = app.injector.instanceOf
-
-        val result = route(app, request).value
-
-        status(result) mustBe Status.OK
-
-        val workbook  = contentAsXlsxWorkBook(result)
-        val coreProps = workbook.getProperties.getCoreProperties
-
-        withClue("""Personal information in the xlsx template must be removed.
-            |e.g.
-            |Steps to Remove "Author" and "Last Saved By" on Mac
-            |Open Microsoft Excel.
-            |Click Excel in the top menu bar and select Preferences (or go to Tools > Protect Document).
-            |Click on the Security section. Check the box for "Remove personal information from this file on save".
-            |Close the preferences window and save your workbook.
-            |""".stripMargin) {
-          Option(coreProps.getCreator) mustBe None
-          Option(coreProps.getLastModifiedByUser) mustBe None
-        }
-      }
-
-    }
-
-    "the returned Excel template must not have leading or trialing spaces in its dropdown formula's enums" in {
-      val app = applicationBuilder(userAnswers = None).build()
-
-      running(app) {
-
-        given Materializer = app.injector.instanceOf
-
-        val result = route(app, request).value
-
-        status(result) mustBe Status.OK
-
-        val workbook = contentAsXlsxWorkBook(result)
-
-        workbook
-          .getSheetAt(0)
-          .getDataValidations
-          .iterator()
-          .asScala
-          .filter(
-            _.getValidationConstraint.getValidationType == DataValidationConstraint.ValidationType.LIST
+          contentDisposition mustBe Some(
+            "attachment; filename=Senior Accounting Officer notification and certificate submission template.xlsx"
           )
-          .foreach { v =>
-            val dropdownFormula = v.getValidationConstraint.getFormula1
-            val dropdownValues  = v.getValidationConstraint.getExplicitListValues
-            withClue(s"""Dropdown formulas must not include leading or trailing spaces
-                    |$dropdownFormula
-                    |Otherwise once selected, Excel will flag it as a validation error
-                    |
-                    |This test compares the formula split (by comma)
-                    |against getExplicitListValues which would be split + trim
-                    |e.g.
-                    |getFormula1=""Active,Administration ,Dormant,Liquidation""
-                    |getExplicitListValues=Array("Active", "Administration", "Dormant", "Liquidation")
-                    |\n""".stripMargin) {
-              val dropdownFormulaWithoutQuotes = dropdownFormula.replaceAll("""^"(.*)"$""", "$1")
-              dropdownFormulaWithoutQuotes.split(",") mustBe dropdownValues
-            }
-          }
-
+          contentType(result) mustBe Some("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        }
       }
 
+      s"the returned Excel template must be saved with active cell in A1 or unspecified - $language" in {
+        val app = applicationBuilder(userAnswers = None).build()
+
+        running(app) {
+
+          given Materializer = app.injector.instanceOf
+
+          val result = route(app, request(language)).value
+
+          status(result) mustBe Status.OK
+
+          val workbook          = contentAsXlsxWorkBook(result)
+          val activeCellAddress = workbook.getSheetAt(workbook.getActiveSheetIndex).getActiveCell
+
+          withClue("""Excel must open with the A1 cell selected for accessibility reasons
+              |(This can be achieved either by explicit configuring it to A1 or left unset)
+              |e.g.
+              |Steps to set the workbook to open on this cell on Mac
+              |Open Microsoft Excel.
+              |Select the A1 cell.
+              |Save your workbook.
+              |""".stripMargin) {
+            Option(activeCellAddress).fold("A1")(_.formatAsString()) mustBe "A1"
+          }
+        }
+      }
+
+      s"the returned Excel template must not have author or last save by information - $language" in {
+        val app = applicationBuilder(userAnswers = None).build()
+
+        running(app) {
+
+          given Materializer = app.injector.instanceOf
+
+          val result = route(app, request(language)).value
+
+          status(result) mustBe Status.OK
+
+          val workbook  = contentAsXlsxWorkBook(result)
+          val coreProps = workbook.getProperties.getCoreProperties
+
+          withClue("""Personal information in the xlsx template must be removed.
+              |e.g.
+              |Steps to Remove "Author" and "Last Saved By" on Mac
+              |Open Microsoft Excel.
+              |Click Excel in the top menu bar and select Preferences (or go to Tools > Protect Document).
+              |Click on the Security section. Check the box for "Remove personal information from this file on save".
+              |Close the preferences window and save your workbook.
+              |""".stripMargin) {
+            Option(coreProps.getCreator) mustBe None
+            Option(coreProps.getLastModifiedByUser) mustBe None
+          }
+        }
+      }
+
+      s"the returned Excel template must not have leading or trialing spaces in its dropdown formula's enums $language" in {
+        val app = applicationBuilder(userAnswers = None).build()
+
+        running(app) {
+
+          given Materializer = app.injector.instanceOf
+
+          val result = route(app, request(language)).value
+
+          status(result) mustBe Status.OK
+
+          val workbook = contentAsXlsxWorkBook(result)
+
+          workbook
+            .getSheetAt(0)
+            .getDataValidations
+            .iterator()
+            .asScala
+            .filter(
+              _.getValidationConstraint.getValidationType == DataValidationConstraint.ValidationType.LIST
+            )
+            .foreach { v =>
+              val dropdownFormula = v.getValidationConstraint.getFormula1
+              val dropdownValues  = v.getValidationConstraint.getExplicitListValues
+              withClue(s"""Dropdown formulas must not include leading or trailing spaces
+                   |$dropdownFormula
+                   |Otherwise once selected, Excel will flag it as a validation error
+                   |
+                   |This test compares the formula split (by comma)
+                   |against getExplicitListValues which would be split + trim
+                   |e.g.
+                   |getFormula1=""Active,Administration ,Dormant,Liquidation""
+                   |getExplicitListValues=Array("Active", "Administration", "Dormant", "Liquidation")
+                   |\n""".stripMargin) {
+                val dropdownFormulaWithoutQuotes = dropdownFormula.replaceAll("""^"(.*)"$""", "$1")
+                dropdownFormulaWithoutQuotes.split(",") mustBe dropdownValues
+              }
+            }
+        }
+      }
     }
 
     "throw an InternalServerException if template file is unavailable" in {
@@ -162,7 +164,7 @@ class DownloadTemplateControllerSpec extends SpecBase {
       val app = applicationBuilder(userAnswers = None).build()
       running(app) {
         AppConfig.setValue("templateFile", "nonsense/file/path")
-        val result = route(app, request).value
+        val result = route(app, request("en")).value
 
         intercept[InternalServerException] {
           status(result)
