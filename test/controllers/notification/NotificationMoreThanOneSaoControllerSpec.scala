@@ -45,6 +45,8 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
 
   lazy val notificationMoreThanOneSaoRoute: String =
     notificationRoutes.NotificationMoreThanOneSaoController.onPageLoad(NormalMode).url
+  lazy val notificationMoreThanOneSaoPostRoute: String =
+    notificationRoutes.NotificationMoreThanOneSaoController.onSubmit(NormalMode).url
 
   "NotificationMoreThanOneSao Controller" - {
 
@@ -96,7 +98,7 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMoreThanOneSaoRoute)
+          FakeRequest(POST, notificationMoreThanOneSaoPostRoute)
             .withFormUrlEncodedBody(("value", "true"))
         val result = route(application, request).value
 
@@ -111,7 +113,7 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMoreThanOneSaoRoute)
+          FakeRequest(POST, notificationMoreThanOneSaoPostRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -144,7 +146,7 @@ class NotificationMoreThanOneSaoControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationMoreThanOneSaoRoute)
+          FakeRequest(POST, notificationMoreThanOneSaoPostRoute)
             .withFormUrlEncodedBody(("value", "true"))
         val result = route(application, request).value
 

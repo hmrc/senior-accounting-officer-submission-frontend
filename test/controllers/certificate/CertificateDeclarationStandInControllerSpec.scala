@@ -44,8 +44,11 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
   val formProvider                              = new CertificateDeclarationStandInFormProvider()
   val form: Form[CertificateDeclarationStandIn] = formProvider()
 
-  lazy val certificateDeclarationStandInRoute: String =
+  lazy val certificateDeclarationStandInPageRoute: String =
     certificateRoutes.CertificateDeclarationStandInController.onPageLoad(NormalMode).url
+
+  lazy val certificateDeclarationStandInSubmitRoute: String =
+    certificateRoutes.CertificateDeclarationStandInController.onSubmit(NormalMode).url
 
   val userAnswers: UserAnswers =
     emptyUserAnswers.add(
@@ -60,7 +63,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateDeclarationStandInRoute)
+        val request = FakeRequest(GET, certificateDeclarationStandInPageRoute)
 
         val view = application.injector.instanceOf[CertificateDeclarationStandInView]
 
@@ -76,7 +79,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateDeclarationStandInRoute)
+        val request = FakeRequest(GET, certificateDeclarationStandInPageRoute)
 
         val view = application.injector.instanceOf[CertificateDeclarationStandInView]
 
@@ -106,7 +109,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateDeclarationStandInRoute)
+          FakeRequest(POST, certificateDeclarationStandInSubmitRoute)
             .withFormUrlEncodedBody(("StandInName", "value 1"), ("SaoName", "value 2"))
 
         val result = route(application, request).value
@@ -122,7 +125,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateDeclarationStandInRoute)
+          FakeRequest(POST, certificateDeclarationStandInSubmitRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
@@ -141,7 +144,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateDeclarationStandInRoute)
+        val request = FakeRequest(GET, certificateDeclarationStandInPageRoute)
 
         val result = route(application, request).value
 
@@ -158,7 +161,7 @@ class CertificateDeclarationStandInControllerSpec extends SpecBase with MockitoS
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateDeclarationStandInRoute)
+          FakeRequest(POST, certificateDeclarationStandInSubmitRoute)
             .withFormUrlEncodedBody(("StandInName", "value 1"), ("SaoName", "value 2"))
 
         val result = route(application, request).value

@@ -105,7 +105,7 @@ class NotificationCheckYourAnswersControllerSpec extends SpecBase with FeatureTo
 
         status(result) mustEqual SEE_OTHER
         redirectLocation(result).value mustEqual notificationRoutes.NotificationTaskListController
-          .onCompleteSubmit()
+          .onPageLoadComplete()
           .url
       }
     }

@@ -17,8 +17,7 @@
 package viewmodels.checkAnswers.notification
 
 import controllers.notification.routes as notificationRoutes
-import models.NormalMode
-import models.{CheckMode, UserAnswers}
+import models.{CheckMode, NormalMode, UserAnswers}
 import pages.notification.NotificationMultiSaoLastOfficerNamePage
 import play.api.i18n.Messages
 import play.twirl.api.HtmlFormat

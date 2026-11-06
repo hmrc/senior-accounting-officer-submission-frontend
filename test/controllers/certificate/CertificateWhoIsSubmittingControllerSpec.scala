@@ -41,8 +41,11 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  lazy val certificateWhoIsSubmittingRoute: String =
+  lazy val certificateWhoIsSubmittingPageRoute: String =
     certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode).url
+
+  lazy val certificateWhoIsSubmittingSubmitRoute: String =
+    certificateRoutes.CertificateWhoIsSubmittingController.onSubmit(NormalMode).url
 
   val formProvider                           = new CertificateWhoIsSubmittingFormProvider()
   val form: Form[CertificateWhoIsSubmitting] = formProvider()
@@ -54,7 +57,7 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateWhoIsSubmittingRoute)
+        val request = FakeRequest(GET, certificateWhoIsSubmittingPageRoute)
 
         val result = route(application, request).value
 
@@ -75,7 +78,7 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateWhoIsSubmittingRoute)
+        val request = FakeRequest(GET, certificateWhoIsSubmittingPageRoute)
 
         val view = application.injector.instanceOf[CertificateWhoIsSubmittingView]
 
@@ -105,7 +108,7 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateWhoIsSubmittingRoute)
+          FakeRequest(POST, certificateWhoIsSubmittingSubmitRoute)
             .withFormUrlEncodedBody(("value", CertificateWhoIsSubmitting.values.head.toString))
 
         val result = route(application, request).value
@@ -121,7 +124,7 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateWhoIsSubmittingRoute)
+          FakeRequest(POST, certificateWhoIsSubmittingSubmitRoute)
             .withFormUrlEncodedBody(("value", "invalid value"))
 
         val boundForm = form.bind(Map("value" -> "invalid value"))
@@ -140,7 +143,7 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateWhoIsSubmittingRoute)
+        val request = FakeRequest(GET, certificateWhoIsSubmittingPageRoute)
 
         val result = route(application, request).value
 
@@ -157,7 +160,7 @@ class CertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSuga
 
       running(application) {
         val request =
-          FakeRequest(POST, certificateWhoIsSubmittingRoute)
+          FakeRequest(POST, certificateWhoIsSubmittingSubmitRoute)
             .withFormUrlEncodedBody(("value", CertificateWhoIsSubmitting.values.head.toString))
 
         val result = route(application, request).value
