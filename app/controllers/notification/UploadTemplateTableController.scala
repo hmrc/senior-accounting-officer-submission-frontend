@@ -50,7 +50,7 @@ class UploadTemplateTableController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] =
+  def onPageLoad(page: Option[Int]): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
       request.userAnswers
         .get(UploadTemplateTablePage)
@@ -63,7 +63,20 @@ class UploadTemplateTableController @Inject() (
             playbackService
               .getPlayback(request.userAnswers)
               .fold(Redirect(notificationRoutes.NotificationTaskListController.onPageLoad())) { playback =>
-                Ok(view(playback.tableData, playback.saoName))
+                val pageSize = 15
+
+                val pageCount   = (tableData.rows.size + pageSize - 1) / pageSize
+                val currentPage =
+                  if pageCount == 0 then 1
+                  else page.getOrElse(1).max(1).min(pageCount)
+
+                val rowsOnPage =
+                  tableData.rows.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+
+                val pageTableData =
+                  tableData.copy(rows = rowsOnPage)
+
+                Ok(view(pageTableData, playback.saoName, currentPage, pageCount))
               }
           }
         }

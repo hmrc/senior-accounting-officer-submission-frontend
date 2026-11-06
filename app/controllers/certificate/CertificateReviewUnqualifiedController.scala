@@ -50,7 +50,7 @@ class CertificateReviewUnqualifiedController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] =
+  def onPageLoad(page: Option[Int]): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
         val userAnswers = request.userAnswers
@@ -60,11 +60,26 @@ class CertificateReviewUnqualifiedController @Inject() (
           totalCompanies       = parsedTemplate.rows.size
           unqualifiedCompanies = parsedTemplate.rows.flatMap(_.toUnqualifiedCompany)
         } yield {
+          val allUnqualifiedCompanies = unqualifiedCompanies
+          val pageSize                = 15
+          val pageCount               = (allUnqualifiedCompanies.size + pageSize - 1) / pageSize
+          val currentPage             =
+            if pageCount == 0 then 1
+            else page.getOrElse(1).max(1).min(pageCount)
+
+          val companiesOnPage =
+            allUnqualifiedCompanies.slice(
+              (currentPage - 1) * pageSize,
+              currentPage * pageSize
+            )
           Ok(
             view(
               saoName = saoName,
-              unqualifiedCompanies = unqualifiedCompanies,
-              companyCount = totalCompanies
+              unqualifiedCompanies = companiesOnPage,
+              companyCount = totalCompanies,
+              totalUnqualifiedCompanies = allUnqualifiedCompanies.size,
+              currentPage = currentPage,
+              pageCount = pageCount
             )
           )
         }).fold(

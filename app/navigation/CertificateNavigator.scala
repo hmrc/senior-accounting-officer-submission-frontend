@@ -43,7 +43,7 @@ class CertificateNavigator @Inject() () extends Navigator {
     case CertificateSaoEmailPage | CertificateReviewUnqualifiedPage =>
       _ => certificateRoutes.CertificateTaskListController.onPageLoad
     case CertificateReviewQualifiedPage =>
-      _ => certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
+      _ => certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad(None)
     case CertificateAdditionalInformationPage =>
       _ => certificateRoutes.CertificateWhoIsSubmittingController.onPageLoad(NormalMode)
     case CertificateWhoIsSubmittingPage(_) =>

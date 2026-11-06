@@ -52,7 +52,7 @@ class CertificateReviewQualifiedController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] =
+  def onPageLoad(page: Option[Int]): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
         val userAnswers = request.userAnswers
@@ -72,11 +72,28 @@ class CertificateReviewQualifiedController @Inject() (
                     routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate))
                   )
                 ) { saoName =>
+                  val allQualifiedCompanies =
+                    parsedTemplate.rows.flatMap(_.toQualifiedCompany)
+
+                  val pageSize    = 15
+                  val pageCount   = (allQualifiedCompanies.size + pageSize - 1) / pageSize
+                  val currentPage =
+                    if pageCount == 0 then 1
+                    else page.getOrElse(1).max(1).min(pageCount)
+
+                  val companiesOnPage =
+                    allQualifiedCompanies.slice(
+                      (currentPage - 1) * pageSize,
+                      currentPage * pageSize
+                    )
                   Ok(
                     view(
                       saoName = saoName,
                       companyCount = parsedTemplate.rows.size,
-                      qualifiedCompanies = parsedTemplate.rows.flatMap(_.toQualifiedCompany)
+                      qualifiedCompanies = companiesOnPage,
+                      totalQualifiedCompanies = allQualifiedCompanies.size,
+                      currentPage = currentPage,
+                      pageCount = pageCount
                     )
                   )
                 }

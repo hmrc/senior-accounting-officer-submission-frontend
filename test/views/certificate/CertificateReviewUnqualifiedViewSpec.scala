@@ -33,13 +33,18 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
   private def generateView(
       saoName: String,
       unqualifiedCompanies: Seq[UnqualifiedCompany],
-      companyCount: Int
-  ): Document = Jsoup.parse(SUT(saoName, unqualifiedCompanies, companyCount).toString)
+      companyCount: Int,
+      totalUnqualifiedCompanies: Int = 0,
+      currentPage: Int = 1,
+      pageCount: Int = 1
+  ): Document = Jsoup.parse(
+    SUT(saoName, unqualifiedCompanies, companyCount, totalUnqualifiedCompanies, currentPage, pageCount).toString
+  )
 
   "CertificateReviewUnqualifiedView" - {
     "will populate the table correctly when data is present" - {
 
-      val doc: Document = generateView(saoName, unqualifiedCompanies, 10)
+      val doc: Document = generateView(saoName, unqualifiedCompanies, 10, totalUnqualifiedCompanies = 2)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -70,13 +75,13 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
           isExternalLink = false
         )
 
-      doc.createTestsWithUnqualifiedCompanyDescriptionList(unqualifiedCompanies)
+      doc.createTestsWithUnqualifiedCompanyTable(unqualifiedCompanies)
 
     }
 
     "will populate the table correctly when no data is present" - {
 
-      val doc: Document = generateView("", Seq.empty, 0)
+      val doc: Document = generateView("", Seq.empty, 0, totalUnqualifiedCompanies = 0)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
@@ -107,12 +112,12 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
           isExternalLink = false
         )
 
-      doc.createTestsWithUnqualifiedCompanyDescriptionList(Seq())
+      doc.createTestsWithUnqualifiedCompanyTable(Seq())
 
     }
 
     "will use singular wording when one company is present" - {
-      val doc = generateView(saoName, unqualifiedCompanies.take(1), 1)
+      val doc = generateView(saoName, unqualifiedCompanies.take(1), 1, totalUnqualifiedCompanies = 1)
 
       doc.createTestsWithParagraphs(paragraphsWithOneCompany)
 
@@ -126,42 +131,60 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
         unescapedText
       )
     }
+
+    "Will paginate correctly" in {
+      val doc = generateView(
+        saoName,
+        unqualifiedCompanies,
+        companyCount = 20,
+        totalUnqualifiedCompanies = 20,
+        currentPage = 1,
+        pageCount = 2
+      )
+
+      doc.select(".govuk-pagination").size() mustBe 1
+      doc.select(".govuk-pagination__next").size() mustBe 1
+      doc.select(".govuk-pagination__prev").size() mustBe 0
+    }
   }
   extension (doc: Document) {
-    def createTestsWithUnqualifiedCompanyDescriptionList(unqualifiedCompanies: Seq[UnqualifiedCompany]): Unit = {
-      val expectedCountOfDescriptionLists = unqualifiedCompanies.size
-
-      "must be one description list per unqualified company" in {
-        val descriptionLists = doc.select("dl.govuk-summary-list")
-        descriptionLists.size() mustBe expectedCountOfDescriptionLists
+    def createTestsWithUnqualifiedCompanyTable(
+        unqualifiedCompanies: Seq[UnqualifiedCompany]
+    ): Unit = {
+      "must render one table" in {
+        doc.select("table.govuk-table").size() mustBe 1
       }
 
-      "must be five description terms per unqualified company with expected text" in {
-        val descriptionTerms = doc.select("div.govuk-summary-list__row > dt.govuk-summary-list__key")
+      "must render the expected table headers" in {
+        val headers = doc.select("table.govuk-table thead th").eachText().toArray.toSeq
 
-        descriptionTerms.size() mustBe expectedCountOfDescriptionLists * 6
-
-        for i <- unqualifiedCompanies.indices do {
-          descriptionTerms.get(i * 6).text() mustBe companyNameDescriptionTermText
-          descriptionTerms.get(i * 6 + 1).text() mustBe utrDescriptionTermText
-          descriptionTerms.get(i * 6 + 2).text() mustBe crnDescriptionTermText
-          descriptionTerms.get(i * 6 + 3).text() mustBe typeDescriptionTermText
-          descriptionTerms.get(i * 6 + 4).text() mustBe statusDescriptionTermText
-          descriptionTerms.get(i * 6 + 5).text() mustBe financialYearEndDateDescriptionTermText
-        }
+        headers mustBe Seq(
+          companyNameDescriptionTermText,
+          crnDescriptionTermText,
+          utrDescriptionTermText,
+          typeDescriptionTermText,
+          statusDescriptionTermText,
+          financialYearEndDateDescriptionTermText
+        )
       }
 
-      "must be five description details per unqualified company with expected text" in {
-        val descriptionDetails = doc.select("div.govuk-summary-list__row > dd.govuk-summary-list__value")
-        descriptionDetails.size() mustBe expectedCountOfDescriptionLists * 6
+      "must render one table row per company" in {
+        val rows = doc.select("table.govuk-table tbody tr")
+
+        rows.size() mustBe unqualifiedCompanies.size
 
         for i <- unqualifiedCompanies.indices do {
-          descriptionDetails.get(i * 6).text() mustBe unqualifiedCompanies(i).name
-          descriptionDetails.get(i * 6 + 1).text() mustBe unqualifiedCompanies(i).utr
-          descriptionDetails.get(i * 6 + 2).text() mustBe unqualifiedCompanies(i).crn.fold("")(identity)
-          descriptionDetails.get(i * 6 + 3).text() mustBe unqualifiedCompanies(i).companyType.toString
-          descriptionDetails.get(i * 6 + 4).text() mustBe unqualifiedCompanies(i).companyStatus.toString
-          descriptionDetails.get(i * 6 + 5).text() mustBe testDateAsString(unqualifiedCompanies(i).financialYearEndDate)
+          val cells   = rows.get(i).select("td").eachText().toArray.toSeq
+          val company = unqualifiedCompanies(i)
+
+          cells mustBe Seq(
+            company.name,
+            company.crn.fold("")(identity),
+            company.utr,
+            company.companyType.toString,
+            company.companyStatus.toString,
+            testDateAsString(company.financialYearEndDate)
+          )
         }
       }
     }

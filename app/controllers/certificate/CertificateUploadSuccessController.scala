@@ -76,13 +76,13 @@ class CertificateUploadSuccessController @Inject() (
           logger.warn(s"Uploaded template failed validation with ${errors.size} error(s)")
           saveTableDataAndRedirect(
             UploadTemplateTableData(rows = Seq.empty, errors = errors),
-            certificateRoutes.CertificateReviewQualifiedController.onPageLoad()
+            certificateRoutes.CertificateReviewQualifiedController.onPageLoad(None)
           )
         case State.Result(reference, rows) =>
           logger.info(s"Uploaded template parsed successfully, reference: $reference, rows: ${rows.size}")
           saveTableDataAndRedirect(
             UploadTemplateTableData(rows = rows, errors = Seq.empty),
-            certificateRoutes.CertificateReviewQualifiedController.onPageLoad()
+            certificateRoutes.CertificateReviewQualifiedController.onPageLoad(None)
           )
       }
     }
