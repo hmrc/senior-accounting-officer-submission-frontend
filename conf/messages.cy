@@ -66,10 +66,6 @@ upload.success.paragraph1 = This may take a few minutes
 
 
 
-
-
-
-
 template.guidance.title = Submission template guidance
 template.guidance.heading = Sut i gwblhau a chyflwyno’ch templed cyflwyno
 
@@ -114,6 +110,10 @@ template.guidance.subheading3.paragraph2 = Os nad oes gwallau, fe welwch grynode
 template.guidance.subheading4 = Cam 4: Cwblhewch eich cyflwyniad
 template.guidance.subheading4.paragraph1 = Cwblhewch y camau sy’n weddill yn y gwasanaeth. Dim ond ar ôl i chi adolygu’ch atebion a dewis ‘Cadarnhau a chyflwyno’ y bydd eich templed yn cael ei anfon at CThEF.
 template.guidance.submissionButton = Gwnewch gyflwyniad
+
+
+
+
 
 
 
@@ -520,24 +520,6 @@ certificateDeclarationStandIn.checkYourAnswersLabel = Enw awdurdodedig ar y datg
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-certificateCheckYourAnswers.title = Gwiriwch eich atebion – Cyflwynwch dystysgrif
-certificateCheckYourAnswers.heading = Gwiriwch eich atebion
-certificateCheckYourAnswers.caption = Cyflwynwch dystysgrif
-
 certificateWhoIsSubmitting.title = Certificate submission and authorisation
 certificateWhoIsSubmitting.caption = Cyflwynwch dystysgrif
 certificateWhoIsSubmitting.heading = Certificate submission and authorisation
@@ -549,6 +531,13 @@ certificateWhoIsSubmitting.standIn = A person authorised to submit on behalf of 
 certificateWhoIsSubmitting.checkYourAnswersLabel = Pwy sy’n cyflwyno’r dystysgrif?
 certificateWhoIsSubmitting.error.required = Select who is submitting the certificate
 certificateWhoIsSubmitting.change.hidden = Pwy sy’n cyflwyno’r dystysgrif
+
+certificateCheckYourAnswers.title = Gwiriwch eich atebion – Cyflwynwch dystysgrif
+certificateCheckYourAnswers.heading = Gwiriwch eich atebion
+certificateCheckYourAnswers.caption = Cyflwynwch dystysgrif
+
+
+
 
 certificateDeclarationSao.title = Declaration
 certificateDeclarationSao.heading = Declaration
@@ -575,6 +564,15 @@ submissionType.heading = Beth hoffech chi ei gyflwyno?
 submissionType.notification = Hysbysiad
 submissionType.certificate = Tystysgrif
 
+
+
+
+
+
+certificateSubmitting.title = Submitting your certificate
+certificateSubmitting.heading = Submitting your certificate
+certificateSubmitting.paragraph1 = This may take a few minutes - do not close or refresh the page.
+
 certificateConfirmation.title = Tystysgrif wedi’i chyflwyno
 certificateConfirmation.heading = Tystysgrif wedi’i chyflwyno
 certificateConfirmation.reference.text = Eich cyfeirnod
@@ -589,13 +587,12 @@ certificateConfirmation.list1.item2 = to keep a paper copy of your confirmation
 certificateConfirmation.inset = Os byddwch chi’n sylweddoli’n nes ymlaen fod yr wybodaeth yn anghywir, cysylltwch â’ch Rheolwr Cydymffurfiad Cwsmeriaid (CCM) os oes gennych un, neu e-bostiwch wmbc.saomailbox@hmrc.gov.uk am gymorth.
 certificateConfirmation.subheading = Beth sy’n digwydd nesaf
 
-
-
-
-
-
-
-
+certificateUploadForm.title = Uwchlwythwch dempled cyflwyno
+certificateUploadForm.heading = Uwchlwythwch dempled cyflwyno
+certificateUploadForm.caption = Cyflwynwch dystysgrif
+certificateUploadForm.paragraph1 = Mae’n rhaid uwchlwytho’r templed mewn fformat CSV. Os yw’ch templed wedi’i gadw fel .xls neu .xlsx, cadwch ef eto fel ffeil CSV (‘coma delimited’) (.csv) cyn ei uwchlwytho.
+certificateUploadForm.paragraph2 = Darllenwch arweiniad ar sut i gwblhau’r templed cyflwyno (yn agor mewn tab newydd)
+certificateUploadForm.inset.text = If your group has more than one SAO, you must submit a separate certificate for each one. After you complete this submission, you can start another certificate.
 
 
 
@@ -611,39 +608,3 @@ certificateConfirmation.subheading = Beth sy’n digwydd nesaf
 survey.subheading = Before you go
 survey.paragraph1 = As a private beta user, you are using the first version of this service. Your feedback will help us improve it for future users.
 survey.paragraph2WithLink = <a href="{0}" class="govuk-link" id=survey-link target="_blank">Take a short survey</a> to tell us about your experience.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-certificateUploadForm.title = Uwchlwythwch dempled cyflwyno
-certificateUploadForm.heading = Uwchlwythwch dempled cyflwyno
-certificateUploadForm.caption = Cyflwynwch dystysgrif
-certificateUploadForm.paragraph1 = Mae’n rhaid uwchlwytho’r templed mewn fformat CSV. Os yw’ch templed wedi’i gadw fel .xls neu .xlsx, cadwch ef eto fel ffeil CSV (‘coma delimited’) (.csv) cyn ei uwchlwytho.
-certificateUploadForm.paragraph2 = Darllenwch arweiniad ar sut i gwblhau’r templed cyflwyno (yn agor mewn tab newydd)
-certificateUploadForm.inset.text = If your group has more than one SAO, you must submit a separate certificate for each one. After you complete this submission, you can start another certificate.
