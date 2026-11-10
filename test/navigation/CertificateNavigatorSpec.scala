@@ -60,7 +60,7 @@ class CertificateNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           CertificateReviewQualifiedPage,
           NormalMode,
           emptyUserAnswers
-        ) mustBe certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad()
+        ) mustBe certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad(0)
       }
 
       "when on CertificateReviewUnqualified, must go to CertificateTaskList page" in {

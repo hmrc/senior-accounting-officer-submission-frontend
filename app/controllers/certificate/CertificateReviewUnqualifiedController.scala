@@ -19,7 +19,7 @@ package controllers.certificate
 import controllers.actions.*
 import controllers.routes
 import models.upload.*
-import models.{JourneySection, NormalMode}
+import models.{CompanyPagination, JourneySection, NormalMode}
 import navigation.CertificateNavigator
 import pages.certificate.{
   CertificateReviewUnqualifiedPage,
@@ -50,7 +50,7 @@ class CertificateReviewUnqualifiedController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] =
+  def onPageLoad(page: Int = 0): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
         val userAnswers = request.userAnswers
@@ -60,11 +60,16 @@ class CertificateReviewUnqualifiedController @Inject() (
           totalCompanies       = parsedTemplate.rows.size
           unqualifiedCompanies = parsedTemplate.rows.flatMap(_.toUnqualifiedCompany)
         } yield {
+          val allUnqualifiedCompanies = unqualifiedCompanies
+          val paginatedData = CompanyPagination(items = allUnqualifiedCompanies, requestedPage = page, pageSize = 15)
           Ok(
             view(
               saoName = saoName,
-              unqualifiedCompanies = unqualifiedCompanies,
-              companyCount = totalCompanies
+              unqualifiedCompanies = paginatedData.items,
+              companyCount = totalCompanies,
+              totalUnqualifiedCompanies = allUnqualifiedCompanies.size,
+              currentPage = paginatedData.currentPage,
+              pageCount = paginatedData.pageCount
             )
           )
         }).fold(

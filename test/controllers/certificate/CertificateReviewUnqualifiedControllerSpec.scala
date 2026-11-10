@@ -52,7 +52,7 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
       ).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad().url)
+        val request = FakeRequest(GET, certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 
@@ -62,7 +62,10 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
         contentAsString(result) mustEqual view(
           saoName = "Firstname Lastname",
           unqualifiedCompanies = testUnqualifiedCompanies,
-          companyCount = testTemplateData.rows.size
+          companyCount = testTemplateData.rows.size,
+          totalUnqualifiedCompanies = testTemplateData.rows.flatMap(_.toUnqualifiedCompany).size,
+          currentPage = 1,
+          pageCount = 1
         )(using request, messages(application)).toString
       }
     }
@@ -90,7 +93,7 @@ class CertificateReviewUnqualifiedControllerSpec extends SpecBase {
     "must redirect to task list on provide sao details stage when user answers is empty for a GET" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
-        val request = FakeRequest(GET, certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad().url)
+        val request = FakeRequest(GET, certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 

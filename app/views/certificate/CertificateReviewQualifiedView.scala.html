@@ -23,10 +23,10 @@
     formHelper: FormWithCSRF
 )
 
-@(saoName: String, companyCount: Int, qualifiedCompanies: Seq[QualifiedCompany])(using request: Request[?], messages: Messages)
+@(saoName: String, companyCount: Int, qualifiedCompanies: Seq[QualifiedCompany], totalQualifiedCompanies: Int, currentPage: Int, pageCount: Int)(using request: Request[?], messages: Messages)
 
 @paragraph1Key = @{if companyCount == 1 then "certificateReviewQualified.paragraph1.singular" else "certificateReviewQualified.paragraph1.plural"}
-@paragraph3Key = @{if qualifiedCompanies.size == 1 then "certificateReviewQualified.paragraph3.singular" else "certificateReviewQualified.paragraph3.plural"}
+@paragraph3Key = @{if totalQualifiedCompanies == 1 then "certificateReviewQualified.paragraph3.singular" else "certificateReviewQualified.paragraph3.plural"}
 
 @layout(pageTitle = titleNoForm(messages("certificateReviewQualified.title"), Some(messages("certificateReviewQualified.caption")))) {
 
@@ -40,7 +40,7 @@
 
     <hr style="border: 0; border-top: 1px solid; color: var(--govuk-border-colour,#cecece);"/>
 
-    <p class="govuk-body">@Html(messages(paragraph3Key, HtmlFormat.escape(saoName), qualifiedCompanies.size))</p>
+    <p class="govuk-body">@Html(messages(paragraph3Key, HtmlFormat.escape(saoName), totalQualifiedCompanies))</p>
 
     @for(qualifiedCompany <- qualifiedCompanies) {
         <dl class="govuk-summary-list">
@@ -77,6 +77,51 @@
                 <dd class="govuk-summary-list__value">@qualifiedCompany.additionalInformation</dd>
             </div>
         </dl>
+    }
+
+    @if(pageCount > 1) {
+        <nav class="govuk-pagination" aria-label=@messages("pagination.label")>
+            @if(currentPage > 1) {
+                <div class="govuk-pagination__prev">
+                    <a class="govuk-link govuk-pagination__link"
+                       href="@certificateRoutes.CertificateReviewQualifiedController.onPageLoad(currentPage - 1)"
+                       rel="prev">
+                        <span aria-hidden="true">←</span>
+                        <span class="govuk-pagination__link-title">@messages("pagination.previous")</span>
+                    </a>
+                </div>
+            }
+
+            <ul class="govuk-pagination__list">
+                @for(pageNumber <- 1 to pageCount) {
+                    <li class="govuk-pagination__item @if(pageNumber == currentPage) {govuk-pagination__item--current}">
+                        @if(pageNumber == currentPage) {
+                        <a class="govuk-link govuk-pagination__link"
+                           href="@certificateRoutes.CertificateReviewQualifiedController.onPageLoad(pageNumber)"
+                           aria-current="page">
+                            @pageNumber
+                        </a>
+                        } else {
+                        <a class="govuk-link govuk-pagination__link"
+                           href="@certificateRoutes.CertificateReviewQualifiedController.onPageLoad(pageNumber)">
+                            @pageNumber
+                        </a>
+                        }
+                    </li>
+                }
+            </ul>
+
+            @if(currentPage < pageCount) {
+                <div class="govuk-pagination__next">
+                    <a class="govuk-link govuk-pagination__link"
+                       href="@certificateRoutes.CertificateReviewQualifiedController.onPageLoad(currentPage + 1)"
+                       rel="next">
+                        <span class="govuk-pagination__link-title">@messages("pagination.next")</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            }
+        </nav>
     }
 
     @formHelper(action = certificateRoutes.CertificateReviewQualifiedController.onSubmit()) {
