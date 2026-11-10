@@ -195,7 +195,7 @@ class CertificateTaskListViewSpec extends ViewSpecBase[CertificateTaskListView] 
 object CertificateTaskListViewSpec {
   val pageHeading    = "Submit a certificate"
   val pageTitle      = "Submit a certificate"
-  val pageButtonText = "View your confirmation"
+  val pageButtonText = "Submit"
   val certificateRef = "certificateRef"
 
   val paragraphs: Seq[String] = Seq(

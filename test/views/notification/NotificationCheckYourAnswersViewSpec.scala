@@ -254,7 +254,7 @@ object NotificationCheckYourAnswersViewSpec {
   val pageHeading              = "Check your answers"
   val pageTitle                = "Check your answers - Submit a notification"
   val pageCaption              = "Submit a notification"
-  val pageButtonText           = "Confirm and submit"
+  val pageButtonText           = "Continue"
   val testFinancialYearEndDate = "'Dummy Date'"
   val testKey1                 = "testKey"
   val testValue1               = "nonEmptyString"

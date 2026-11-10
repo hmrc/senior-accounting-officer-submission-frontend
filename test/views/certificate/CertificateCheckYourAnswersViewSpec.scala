@@ -248,7 +248,7 @@ object CertificateCheckYourAnswersViewSpec {
   val pageHeading                = "Check your answers"
   val pageTitle                  = "Check your answers – Submit a certificate"
   val pageCaption                = "Submit a certificate"
-  val pageButtonText             = "Confirm and submit"
+  val pageButtonText             = "Continue"
   val certificateSubmissionToken = "test-token"
   val testKey1                   = "testKey"
   val testValue1                 = "nonEmptyString"

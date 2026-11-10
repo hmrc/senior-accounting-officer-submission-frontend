@@ -30,7 +30,7 @@ import UploadTemplateTableViewSpec.*
 class UploadTemplateTableViewSpec extends ViewSpecBase[UploadTemplateTableView] {
 
   private def generateView(data: UploadTemplateTableData = tableData): Document =
-    Jsoup.parse(SUT(data, saoName).toString)
+    Jsoup.parse(SUT(data, saoName, 30, 1).toString)
 
   "UploadTemplateTableView" - {
     val doc: Document = generateView()

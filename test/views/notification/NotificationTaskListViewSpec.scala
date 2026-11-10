@@ -19,7 +19,6 @@ package views.notification
 import base.ViewSpecBase
 import controllers.notification.routes as notificationRoutes
 import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
-import models.notification.NotificationTaskListState
 import models.{NormalMode, TaskStatus}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -246,5 +245,5 @@ object NotificationTaskListViewSpec {
   val notStartedText   = "Not started"
   val cannotStartText  = "Cannot start yet"
   val completedText    = "Completed"
-  val viewConfirmation = "View your confirmation"
+  val viewConfirmation = "Submit"
 }

@@ -20,7 +20,7 @@ import controllers.actions.*
 import controllers.certificate.routes as certificateRoutes
 import controllers.routes
 import models.upload.*
-import models.{JourneySection, NormalMode}
+import models.{CompanyPagination, JourneySection, NormalMode}
 import navigation.CertificateNavigator
 import pages.certificate.{
   CertificateReviewQualifiedPage,
@@ -52,7 +52,7 @@ class CertificateReviewQualifiedController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] =
+  def onPageLoad(page: Int = 0): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
       implicit request =>
         val userAnswers = request.userAnswers
@@ -72,11 +72,18 @@ class CertificateReviewQualifiedController @Inject() (
                     routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate))
                   )
                 ) { saoName =>
+                  val allQualifiedCompanies =
+                    parsedTemplate.rows.flatMap(_.toQualifiedCompany)
+                  val paginatedData =
+                    CompanyPagination(items = allQualifiedCompanies, requestedPage = page, pageSize = 15)
                   Ok(
                     view(
                       saoName = saoName,
                       companyCount = parsedTemplate.rows.size,
-                      qualifiedCompanies = parsedTemplate.rows.flatMap(_.toQualifiedCompany)
+                      qualifiedCompanies = paginatedData.items,
+                      totalQualifiedCompanies = allQualifiedCompanies.size,
+                      currentPage = paginatedData.currentPage,
+                      pageCount = paginatedData.pageCount
                     )
                   )
                 }

@@ -19,11 +19,9 @@ POST        /submission                                                         
 # Notification only journey routes
 ##############################
 
-GET         /submission/notification/task/provide-details                                                  controllers.notification.NotificationTaskListController.onPageLoad(stage: NotificationStage = NotificationStage.ProvideSaoDetailsStage)
-GET         /submission/notification/task/upload-template                                                 controllers.notification.NotificationTaskListController.onPageLoad(stage: NotificationStage = NotificationStage.UploadNotificationTemplateStage)
-GET         /submission/notification/task/submit                                                  controllers.notification.NotificationTaskListController.onPageLoad(stage: NotificationStage = NotificationStage.SubmitNotificationStage)
-GET         /submission/notification/task/complete                                           controllers.notification.NotificationTaskListController.onPageLoadComplete(stage: NotificationStage = NotificationStage.Complete)
-POST        /submission/notification/task                                                    controllers.notification.NotificationTaskListController.onCompleteSubmit()
+GET         /notification/task                                                       controllers.notification.NotificationTaskListController.onPageLoad()
+GET         /notification/complete                                                    controllers.notification.NotificationTaskListController.onComplete()
+POST        /notification/complete                                                    controllers.notification.NotificationTaskListController.onCompleteSubmit()
 
 GET         /submission/notification/confirm-multiple-officers                                           controllers.notification.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode)
 POST        /submission/notification/confirm-multiple-officers                                           controllers.notification.NotificationMoreThanOneSaoController.onSubmit(mode: Mode)
@@ -50,9 +48,10 @@ POST        /submission/notification/add-officer                               c
 GET         /submission/notification/officer-name                controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode)
 POST        /submission/notification/officer-name                controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode)
 
+
 GET         /submission/notification/submission-template                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
 GET         /submission/notification/uploading                                              controllers.notification.NotificationUploadSuccessController.onPageLoad(key: Option[String])
-GET         /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onPageLoad()
+GET         /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onPageLoad(page: Int)
 POST        /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onSubmit()
 
 GET         /submission/notification/additional-information                               controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode)
@@ -86,10 +85,10 @@ POST        /submission/certificate/email-address                               
 GET         /submission/certificate/upload-template                                                       controllers.certificate.CertificateUploadFormController.onPageLoad()
 GET         /submission/certificate/upload/success                                               controllers.certificate.CertificateUploadSuccessController.onPageLoad(key: Option[String])
 
-GET         /submission/certificate/review-qualified-certificate                                               controllers.certificate.CertificateReviewQualifiedController.onPageLoad()
+GET         /submission/certificate/review-qualified-certificate                                               controllers.certificate.CertificateReviewQualifiedController.onPageLoad(page: Int)
 POST        /submission/certificate/review-qualified-certificate                                               controllers.certificate.CertificateReviewQualifiedController.onSubmit()
 
-GET         /submission/certificate/review-unqualified-certificate                                             controllers.certificate.CertificateReviewUnqualifiedController.onPageLoad()
+GET         /submission/certificate/review-unqualified-certificate                                             controllers.certificate.CertificateReviewUnqualifiedController.onPageLoad(page: Int)
 POST        /submission/certificate/review-unqualified-certificate                                             controllers.certificate.CertificateReviewUnqualifiedController.onSubmit()
 
 GET         /submission/certificate/additional-information                                         controllers.certificate.CertificateAdditionalInformationController.onPageLoad(mode: Mode)

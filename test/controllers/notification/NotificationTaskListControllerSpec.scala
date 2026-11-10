@@ -31,7 +31,6 @@ import models.notification.NotificationStage.{
   UploadNotificationTemplateStage
 }
 import models.notification.NotificationSubmissionError
-import models.notification.NotificationTaskListState
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.BeforeAndAfterEach

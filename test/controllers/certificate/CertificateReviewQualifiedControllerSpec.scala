@@ -59,7 +59,7 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSuga
       ).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad().url)
+        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 
@@ -69,7 +69,10 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSuga
         contentAsString(result) mustEqual view(
           saoName = "Firstname Lastname",
           companyCount = testTemplateData.rows.size,
-          qualifiedCompanies = testQualifiedCompanies
+          qualifiedCompanies = testQualifiedCompanies,
+          totalQualifiedCompanies = testTemplateData.rows.flatMap(_.toQualifiedCompany).size,
+          currentPage = 1,
+          pageCount = 1
         )(using
           request,
           messages(application)
@@ -119,7 +122,7 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSuga
       ).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad().url)
+        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 
@@ -157,7 +160,7 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSuga
       val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
 
       running(application) {
-        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad().url)
+        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 
@@ -186,7 +189,7 @@ class CertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSuga
     "must redirect to task list on provide sao details stage when user answers is empty for a GET" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
-        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad().url)
+        val request = FakeRequest(GET, certificateRoutes.CertificateReviewQualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 

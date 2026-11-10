@@ -35,7 +35,7 @@
     @formHelper(action = certificateRoutes.CertificateCheckYourAnswersController.onSubmit()) {
         <input type="hidden" name="certificateSubmissionToken" value="@certificateSubmissionToken">
         @govukButton(
-            ButtonViewModel(messages("site.confirmAndSubmit").toText)
+            ButtonViewModel(messages("site.continue").toText)
                 .withAttribute("id", "submit")
                 .withAttribute("data-prevent-double-click", "true")
         )

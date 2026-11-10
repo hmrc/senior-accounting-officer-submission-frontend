@@ -19,9 +19,8 @@ package controllers.notification
 import controllers.actions.*
 import controllers.notification.routes as notificationRoutes
 import controllers.routes
-import models.notification.NotificationStage
 import models.upload.UploadTemplateTableData
-import models.{JourneySection, NormalMode}
+import models.{CompanyPagination, JourneySection, NormalMode}
 import navigation.NotificationNavigator
 import pages.notification.{UploadTemplateReviewPage, UploadTemplateTablePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -51,7 +50,7 @@ class UploadTemplateTableController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(): Action[AnyContent] =
+  def onPageLoad(page: Int = 0): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
       request.userAnswers
         .get(UploadTemplateTablePage)
@@ -63,13 +62,12 @@ class UploadTemplateTableController @Inject() (
           } else {
             playbackService
               .getPlayback(request.userAnswers)
-              .fold(
-                Redirect(
-                  notificationRoutes.NotificationTaskListController
-                    .onPageLoad(NotificationStage.SubmitNotificationStage)
-                )
-              ) { playback =>
-                Ok(view(playback.tableData, playback.saoName))
+              .fold(Redirect(notificationRoutes.NotificationTaskListController.onPageLoad())) { playback =>
+                val paginatedData = CompanyPagination(items = tableData.rows, requestedPage = page, pageSize = 15)
+                val pageTableData =
+                  tableData.copy(rows = paginatedData.items)
+
+                Ok(view(pageTableData, playback.saoName, paginatedData.currentPage, paginatedData.pageCount))
               }
           }
         }

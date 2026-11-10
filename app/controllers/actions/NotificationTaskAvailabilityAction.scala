@@ -32,11 +32,7 @@ class RequireNotificationUploadUnlockedAction @Inject() (implicit val executionC
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] =
     Future.successful {
       Option.unless(NotificationStage.canStartUploadNotificationTemplate(request.userAnswers)) {
-        Redirect(
-          notificationRoutes.NotificationTaskListController.onPageLoad(
-            NotificationStage.UploadNotificationTemplateStage
-          )
-        )
+        Redirect(notificationRoutes.NotificationTaskListController.onPageLoad())
       }
     }
 }
@@ -47,9 +43,7 @@ class RequireSubmitNotificationUnlockedAction @Inject() (implicit val executionC
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] =
     Future.successful {
       Option.unless(NotificationStage.canStartSubmitNotification(request.userAnswers)) {
-        Redirect(
-          notificationRoutes.NotificationTaskListController.onPageLoad(NotificationStage.SubmitNotificationStage)
-        )
+        Redirect(notificationRoutes.NotificationTaskListController.onPageLoad())
       }
     }
 }
