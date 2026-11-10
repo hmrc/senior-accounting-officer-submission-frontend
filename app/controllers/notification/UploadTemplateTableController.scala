@@ -63,7 +63,7 @@ class UploadTemplateTableController @Inject() (
             playbackService
               .getPlayback(request.userAnswers)
               .fold(Redirect(notificationRoutes.NotificationTaskListController.onPageLoad())) { playback =>
-                val paginatedData = CompanyPagination(tableData.rows, page, 15)
+                val paginatedData = CompanyPagination(items = tableData.rows, requestedPage = page, pageSize = 15)
                 val pageTableData =
                   tableData.copy(rows = paginatedData.items)
 

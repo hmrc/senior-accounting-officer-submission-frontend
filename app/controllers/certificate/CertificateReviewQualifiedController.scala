@@ -74,7 +74,8 @@ class CertificateReviewQualifiedController @Inject() (
                 ) { saoName =>
                   val allQualifiedCompanies =
                     parsedTemplate.rows.flatMap(_.toQualifiedCompany)
-                  val paginatedData = CompanyPagination(allQualifiedCompanies, page, 15)
+                  val paginatedData =
+                    CompanyPagination(items = allQualifiedCompanies, requestedPage = page, pageSize = 15)
                   Ok(
                     view(
                       saoName = saoName,
