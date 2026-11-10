@@ -132,7 +132,7 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
       )
     }
 
-    "Will paginate correctly" in {
+    "renders pagination when there is more than one page and on page 1" in {
       val doc = generateView(
         saoName,
         unqualifiedCompanies,
@@ -145,6 +145,21 @@ class CertificateReviewUnqualifiedViewSpec extends ViewSpecBase[CertificateRevie
       doc.select(".govuk-pagination").size() mustBe 1
       doc.select(".govuk-pagination__next").size() mustBe 1
       doc.select(".govuk-pagination__prev").size() mustBe 0
+    }
+
+    "renders pagination when there is more than one page and on page 2" in {
+      val doc = generateView(
+        saoName,
+        unqualifiedCompanies,
+        companyCount = 45,
+        totalUnqualifiedCompanies = 45,
+        currentPage = 2,
+        pageCount = 3
+      )
+
+      doc.select(".govuk-pagination").size() mustBe 1
+      doc.select(".govuk-pagination__next").size() mustBe 1
+      doc.select(".govuk-pagination__prev").size() mustBe 1
     }
   }
   extension (doc: Document) {
