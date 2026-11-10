@@ -73,9 +73,7 @@ POST        /submission/notification/confirm-notification                       
 # certificate only journey routes
 ##############################
 
-GET         /submission/certificate/task/provide-details                                                  controllers.certificate.CertificateTaskListController.onPageLoad
-GET         /submission/certificate/task/upload-template                                                 controllers.certificate.CertificateTaskListController.onPageLoad
-GET         /submission/certificate/task/submit                                                  controllers.certificate.CertificateTaskListController.onPageLoad
+GET         /submission/certificate/task                                                  controllers.certificate.CertificateTaskListController.onPageLoad
 GET         /submission/certificate/task/complete                                           controllers.certificate.CertificateTaskListController.onPageLoadComplete(certificateReference: String)
 POST        /submission/certificate/task                                                    controllers.certificate.CertificateTaskListController.onSubmit(certificateReference: String)
 
