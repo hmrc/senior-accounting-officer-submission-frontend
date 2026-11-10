@@ -25,29 +25,29 @@ GET         /submission/notification/task/submit                                
 GET         /submission/notification/task/complete                                           controllers.notification.NotificationTaskListController.onPageLoadComplete(stage: NotificationStage = NotificationStage.Complete)
 POST        /submission/notification/task                                                    controllers.notification.NotificationTaskListController.onCompleteSubmit()
 
-GET         /submission/notification/confirm-multiple-officers                                           controllers.notification.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/notification/confirm-multiple-officers                                           controllers.notification.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode)
 POST        /submission/notification/confirm-multiple-officers                                           controllers.notification.NotificationMoreThanOneSaoController.onSubmit(mode: Mode)
 
 
-GET         /submission/notification/last/officer-name                controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/notification/last/officer-name                controllers.notification.NotificationMultiSaoLastOfficerNameController.onPageLoad(mode: Mode)
 POST        /submission/notification/last/officer-name               controllers.notification.NotificationMultiSaoLastOfficerNameController.onSubmit(mode: Mode)
 
-GET         /submission/notification/last/officer-start-date        controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/notification/last/officer-start-date        controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(mode: Mode)
 POST        /submission/notification/last/officer-start-date        controllers.notification.NotificationMultiSaoLastOfficerStartDateController.onSubmit(mode: Mode)
 
-GET         /submission/notification/previous/officer-name                               controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(mode: Mode ?= NormalMode, sao: Int ?= 0)
+GET         /submission/notification/previous/officer-name                               controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(mode: Mode, sao: Int ?= 0)
 POST        /submission/notification/previous/officer-name                               controllers.notification.NotificationMultiSaoPreviousOfficerNameController.onSubmit(mode: Mode, sao: Int ?= 0)
 
-GET         /submission/notification/previous/officer-start-date                          controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(mode: Mode ?= NormalMode, sao: Int ?= 0)
+GET         /submission/notification/previous/officer-start-date                          controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(mode: Mode, sao: Int ?= 0)
 POST        /submission/notification/previous/officer-start-date                          controllers.notification.NotificationMultiSaoPreviousOfficerStartDateController.onSubmit(mode: Mode, sao: Int ?= 0)
 
-GET         /submission/notification/previous/officer-end-date                                   controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(mode: Mode ?= NormalMode, sao: Int ?= 0)
+GET         /submission/notification/previous/officer-end-date                                   controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(mode: Mode, sao: Int ?= 0)
 POST        /submission/notification/previous/officer-end-date                                   controllers.notification.NotificationMultiSaoPreviousOfficerEndDateController.onSubmit(mode: Mode, sao: Int ?= 0)
 
-GET         /submission/notification/add-officer                               controllers.notification.NotificationMultiSaoAreAllAddedController.onPageLoad(mode: Mode ?= NormalMode, sao: Int ?= 0)
+GET         /submission/notification/add-officer                               controllers.notification.NotificationMultiSaoAreAllAddedController.onPageLoad(mode: Mode, sao: Int ?= 0)
 POST        /submission/notification/add-officer                               controllers.notification.NotificationMultiSaoAreAllAddedController.onSubmit(mode: Mode, sao: Int ?= 0)
 
-GET         /submission/notification/officer-name                controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/notification/officer-name                controllers.notification.NotificationSingleSaoOfficerNameController.onPageLoad(mode: Mode)
 POST        /submission/notification/officer-name                controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode)
 
 GET         /submission/notification/submission-template                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
@@ -55,7 +55,7 @@ GET         /submission/notification/uploading                                  
 GET         /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onPageLoad()
 POST        /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onSubmit()
 
-GET         /submission/notification/additional-information                               controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/notification/additional-information                               controllers.notification.NotificationAdditionalInformationController.onPageLoad(mode: Mode)
 POST        /submission/notification/additional-information                               controllers.notification.NotificationAdditionalInformationController.onSubmit(mode: Mode)
 
 GET         /submission/notification/check-answers                                          controllers.notification.NotificationCheckYourAnswersController.onPageLoad()
@@ -79,10 +79,10 @@ GET         /submission/certificate/task/submit                                 
 GET         /submission/certificate/task/complete                                           controllers.certificate.CertificateTaskListController.onPageLoadComplete(certificateReference: String)
 POST        /submission/certificate/task                                                    controllers.certificate.CertificateTaskListController.onSubmit(certificateReference: String)
 
-GET         /submission/certificate/officer-name                             controllers.certificate.CertificateSaoFullNameController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/certificate/officer-name                             controllers.certificate.CertificateSaoFullNameController.onPageLoad(mode: Mode)
 POST        /submission/certificate/officer-name                             controllers.certificate.CertificateSaoFullNameController.onSubmit(mode: Mode)
 
-GET         /submission/certificate/email-address                                               controllers.certificate.CertificateSaoEmailController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/certificate/email-address                                               controllers.certificate.CertificateSaoEmailController.onPageLoad(mode: Mode)
 POST        /submission/certificate/email-address                                               controllers.certificate.CertificateSaoEmailController.onSubmit(mode: Mode)
 
 GET         /submission/certificate/upload-template                                                       controllers.certificate.CertificateUploadFormController.onPageLoad()
@@ -94,16 +94,16 @@ POST        /submission/certificate/review-qualified-certificate                
 GET         /submission/certificate/review-unqualified-certificate                                             controllers.certificate.CertificateReviewUnqualifiedController.onPageLoad()
 POST        /submission/certificate/review-unqualified-certificate                                             controllers.certificate.CertificateReviewUnqualifiedController.onSubmit()
 
-GET         /submission/certificate/additional-information                                         controllers.certificate.CertificateAdditionalInformationController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/certificate/additional-information                                         controllers.certificate.CertificateAdditionalInformationController.onPageLoad(mode: Mode)
 POST        /submission/certificate/additional-information                                         controllers.certificate.CertificateAdditionalInformationController.onSubmit(mode: Mode)
 
-GET         /submission/certificate/officer-submit-certificate                                            controllers.certificate.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/certificate/officer-submit-certificate                                            controllers.certificate.CertificateWhoIsSubmittingController.onPageLoad(mode: Mode)
 POST        /submission/certificate/officer-submit-certificate                                            controllers.certificate.CertificateWhoIsSubmittingController.onSubmit(mode: Mode)
 
-GET         /submission/certificate/declaration/confirm-certificate                               controllers.certificate.CertificateDeclarationSaoController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/certificate/declaration/confirm-certificate                               controllers.certificate.CertificateDeclarationSaoController.onPageLoad(mode: Mode)
 POST        /submission/certificate/declaration/confirm-certificate                               controllers.certificate.CertificateDeclarationSaoController.onSubmit(mode: Mode)
 
-GET         /submission/certificate/declaration/confirm-authorised-submission                                         controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode ?= NormalMode)
+GET         /submission/certificate/declaration/confirm-authorised-submission                                         controllers.certificate.CertificateDeclarationStandInController.onPageLoad(mode: Mode)
 POST        /submission/certificate/declaration/confirm-authorised-submission                                         controllers.certificate.CertificateDeclarationStandInController.onSubmit(mode: Mode)
 
 GET         /submission/certificate/check-answers                                              controllers.certificate.CertificateCheckYourAnswersController.onPageLoad()
