@@ -19,8 +19,6 @@ package controllers.actions
 import base.SpecBase
 import controllers.notification.routes as notificationRoutes
 import models.UserAnswers
-import models.notification
-import models.notification.NotificationStage
 import models.requests.DataRequest
 import play.api.http.HeaderNames
 import play.api.test.FakeRequest
@@ -52,9 +50,7 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
       result.header.status mustBe SEE_OTHER
       result.header
-        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController
-        .onPageLoad(NotificationStage.UploadNotificationTemplateStage)
-        .url
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad().url
     }
   }
 
@@ -69,9 +65,7 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
       result.header.status mustBe SEE_OTHER
       result.header
-        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController
-        .onPageLoad(NotificationStage.SubmitNotificationStage)
-        .url
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad().url
     }
 
     "must redirect to the task list when the review confirmation is incomplete" in {
@@ -79,9 +73,7 @@ class NotificationTaskAvailabilityActionSpec extends SpecBase {
 
       result.header.status mustBe SEE_OTHER
       result.header
-        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController
-        .onPageLoad(NotificationStage.SubmitNotificationStage)
-        .url
+        .headers(HeaderNames.LOCATION) mustBe notificationRoutes.NotificationTaskListController.onPageLoad().url
     }
   }
 }

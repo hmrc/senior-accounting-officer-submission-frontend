@@ -23,13 +23,7 @@ import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
 import models.FeatureToggle.FaultTolerance
-import models.TaskStatus.{CannotStartYet, Completed, NotStarted}
 import models.notification.NotificationStage
-import models.notification.NotificationStage.{
-  ProvideSaoDetailsStage,
-  SubmitNotificationStage,
-  UploadNotificationTemplateStage
-}
 import models.notification.NotificationSubmissionError
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -68,22 +62,14 @@ class NotificationTaskListControllerSpec extends SpecBase with FeatureToggleSupp
         .build()
 
       running(application) {
-        val request =
-          FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad(ProvideSaoDetailsStage).url)
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          NotificationTaskListState(
-            provideSaoDetailsStage = NotStarted,
-            uploadNotificationTemplateStage = CannotStartYet,
-            submitNotificationStage = CannotStartYet,
-            showViewYourConfirmationButton = false
-          )
-        )(using
+        contentAsString(result) mustEqual view(NotificationStage.ProvideSaoDetails)(using
           request,
           messages(application)
         ).toString
@@ -95,23 +81,13 @@ class NotificationTaskListControllerSpec extends SpecBase with FeatureToggleSupp
         .build()
 
       running(application) {
-        val request = FakeRequest(
-          GET,
-          notificationRoutes.NotificationTaskListController.onPageLoad(UploadNotificationTemplateStage).url
-        )
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
 
         val result = route(application, request).value
         val view   = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          NotificationTaskListState(
-            provideSaoDetailsStage = Completed,
-            uploadNotificationTemplateStage = NotStarted,
-            submitNotificationStage = CannotStartYet,
-            showViewYourConfirmationButton = false
-          )
-        )(using
+        contentAsString(result) mustEqual view(NotificationStage.UploadSubmissionTemplateDetails)(using
           request,
           messages(application)
         ).toString
@@ -127,21 +103,13 @@ class NotificationTaskListControllerSpec extends SpecBase with FeatureToggleSupp
         .build()
 
       running(application) {
-        val request =
-          FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad(ProvideSaoDetailsStage).url)
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
 
         val result = route(application, request).value
         val view   = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          NotificationTaskListState(
-            provideSaoDetailsStage = NotStarted,
-            uploadNotificationTemplateStage = CannotStartYet,
-            submitNotificationStage = CannotStartYet,
-            showViewYourConfirmationButton = false
-          )
-        )(using
+        contentAsString(result) mustEqual view(NotificationStage.ProvideSaoDetails)(using
           request,
           messages(application)
         ).toString
@@ -161,21 +129,13 @@ class NotificationTaskListControllerSpec extends SpecBase with FeatureToggleSupp
         .build()
 
       running(application) {
-        val request =
-          FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad(ProvideSaoDetailsStage).url)
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
 
         val result = route(application, request).value
         val view   = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          NotificationTaskListState(
-            provideSaoDetailsStage = NotStarted,
-            uploadNotificationTemplateStage = CannotStartYet,
-            submitNotificationStage = CannotStartYet,
-            showViewYourConfirmationButton = false
-          )
-        )(using
+        contentAsString(result) mustEqual view(NotificationStage.ProvideSaoDetails)(using
           request,
           messages(application)
         ).toString
@@ -187,23 +147,13 @@ class NotificationTaskListControllerSpec extends SpecBase with FeatureToggleSupp
         .build()
 
       running(application) {
-        val request = FakeRequest(
-          GET,
-          notificationRoutes.NotificationTaskListController.onPageLoad(UploadNotificationTemplateStage).url
-        )
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
 
         val result = route(application, request).value
         val view   = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          NotificationTaskListState(
-            provideSaoDetailsStage = Completed,
-            uploadNotificationTemplateStage = NotStarted,
-            submitNotificationStage = CannotStartYet,
-            showViewYourConfirmationButton = false
-          )
-        )(using
+        contentAsString(result) mustEqual view(NotificationStage.UploadSubmissionTemplateDetails)(using
           request,
           messages(application)
         ).toString
@@ -215,21 +165,13 @@ class NotificationTaskListControllerSpec extends SpecBase with FeatureToggleSupp
         .build()
 
       running(application) {
-        val request =
-          FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad(SubmitNotificationStage).url)
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoad().url)
 
         val result = route(application, request).value
         val view   = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          NotificationTaskListState(
-            provideSaoDetailsStage = Completed,
-            uploadNotificationTemplateStage = Completed,
-            submitNotificationStage = NotStarted,
-            showViewYourConfirmationButton = false
-          )
-        )(using
+        contentAsString(result) mustEqual view(NotificationStage.SubmitNotificationInfo)(using
           request,
           messages(application)
         ).toString
@@ -241,21 +183,14 @@ class NotificationTaskListControllerSpec extends SpecBase with FeatureToggleSupp
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onPageLoadComplete().url)
+        val request = FakeRequest(GET, notificationRoutes.NotificationTaskListController.onComplete().url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[NotificationTaskListView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(
-          NotificationTaskListState(
-            provideSaoDetailsStage = Completed,
-            uploadNotificationTemplateStage = Completed,
-            submitNotificationStage = Completed,
-            showViewYourConfirmationButton = true
-          )
-        )(using
+        contentAsString(result) mustEqual view(NotificationStage.AllStagesCompleted)(using
           request,
           messages(application)
         ).toString
