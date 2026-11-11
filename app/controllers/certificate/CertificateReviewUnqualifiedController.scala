@@ -61,7 +61,7 @@ class CertificateReviewUnqualifiedController @Inject() (
           unqualifiedCompanies = parsedTemplate.rows.flatMap(_.toUnqualifiedCompany)
         } yield {
           val allUnqualifiedCompanies = unqualifiedCompanies
-          val paginatedData = CompanyPagination(items = allUnqualifiedCompanies, requestedPage = page, pageSize = 15)
+          val paginatedData = CompanyPagination(items = allUnqualifiedCompanies, requestedPage = page, pageSize = 10)
           Ok(
             view(
               saoName = saoName,
