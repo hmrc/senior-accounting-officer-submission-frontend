@@ -46,6 +46,9 @@ class NotificationSingleSaoOfficerNameControllerSpec extends SpecBase with Mocki
   lazy val notificationSingleSaoOfficerNameRoute: String =
     notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(NormalMode).url
 
+  lazy val notificationSingleSaoOfficerNamePostRoute: String =
+    notificationRoutes.NotificationSingleSaoOfficerNameController.onSubmit(NormalMode).url
+
   "NotificationSingleSaoOfficerName Controller" - {
 
     "must return OK and the correct view for a GET" in {
@@ -101,7 +104,7 @@ class NotificationSingleSaoOfficerNameControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationSingleSaoOfficerNameRoute)
+          FakeRequest(POST, notificationSingleSaoOfficerNamePostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
@@ -117,7 +120,7 @@ class NotificationSingleSaoOfficerNameControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationSingleSaoOfficerNameRoute)
+          FakeRequest(POST, notificationSingleSaoOfficerNamePostRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
@@ -153,7 +156,7 @@ class NotificationSingleSaoOfficerNameControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, notificationSingleSaoOfficerNameRoute)
+          FakeRequest(POST, notificationSingleSaoOfficerNamePostRoute)
             .withFormUrlEncodedBody(("value", "answer"))
 
         val result = route(application, request).value
