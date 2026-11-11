@@ -38,8 +38,14 @@ class DownloadTemplateController @Inject (appConfig: AppConfig)(
 
   def downloadFile(): Action[AnyContent] = identify { implicit request =>
     {
+      val templateFileLocation = request.lang.code match {
+        case "en" => appConfig.templateFile
+        case "cy" => appConfig.templateFileWelsh
+        case lang => throw new IllegalStateException(s"Unsupported language: $lang")
+      }
+
       val templateFile: File =
-        Option(getClass.getResource(appConfig.templateFile))
+        Option(getClass.getResource(templateFileLocation))
           .map(resource => new File(resource.toURI))
           .filter(file => file.exists && !file.isDirectory)
           .getOrElse(throw InternalServerException("Unable to provide template"))
