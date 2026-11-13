@@ -57,6 +57,4 @@ object Mode {
 
   val values: List[Mode] = List(CheckMode, NormalMode)
 
-  private val UnbindableMode: String = "Unable to bind a Mode"
-
 }
