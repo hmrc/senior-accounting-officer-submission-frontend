@@ -26,83 +26,87 @@ import views.html.TemplateGuidanceView
 
 class TemplateGuidanceViewSpec extends ViewSpecBase[TemplateGuidanceView] {
 
-  private def generateView(isNewTab: Boolean = false): Document = {
-    val view = SUT(isNewTab = isNewTab)
+  private def generateView(isNewTab: Boolean = false, isCombinedJourney: Boolean): Document = {
+    val view = SUT(isNewTab = isNewTab, isCombinedJourneyEnabled = isCombinedJourney)
     Jsoup.parse(view.toString)
   }
 
-  "TemplateGuidanceView not opened in a new tab" - {
+  Seq(true, false).foreach { isCombinedJourneyEnabled =>
+    s"TemplateGuidanceView not opened in a new tab - CombinedJourneyEnabled = $isCombinedJourneyEnabled" - {
 
-    val doc = generateView()
+      val doc                 = generateView(isCombinedJourney = isCombinedJourneyEnabled)
+      val templatePageBullets = if isCombinedJourneyEnabled then combinedPageBullets else pageBullets
 
-    doc.createTestsWithStandardPageElements(
-      pageTitle = pageTitle,
-      pageHeading = pageHeading,
-      showBackLink = false,
-      showIsThisPageNotWorkingProperlyLink = true,
-      hasError = false
-    )
-
-    doc.createTestWithSubmissionButtonOutsideOfAForm(routes.SubmissionTypeController.onPageLoad(), submissionBtnText)
-
-    doc.createTestsWithOrWithoutError(hasError = false)
-
-    doc.createTestsWithParagraphs(paragraphs)
-
-    doc.getMainContent
-      .select("a.govuk-link")
-      .get(0)
-      .createTestWithLink(
-        linkTestDescription = "download submission template",
-        linkText = linkTexts,
-        destinationUrl = routes.DownloadTemplateController.downloadFile().url,
-        isExternalLink = false
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
       )
 
-    doc.createTestsForSubheadings(pageSubheadings, includingError = false, tag = "h3")
+      doc.createTestWithSubmissionButtonOutsideOfAForm(routes.SubmissionTypeController.onPageLoad(), submissionBtnText)
 
-    doc.createTestsWithBulletPoints(pageBullets)
+      doc.createTestsWithOrWithoutError(hasError = false)
 
-    doc.createTestsWithNumberedItems(pageNumberedListItems)
+      doc.createTestsWithParagraphs(paragraphs)
 
-    doc.createTestForInsetText(pageInsetText)
+      doc.getMainContent
+        .select("a.govuk-link")
+        .get(0)
+        .createTestWithLink(
+          linkTestDescription = "download submission template",
+          linkText = linkTexts,
+          destinationUrl = routes.DownloadTemplateController.downloadFile().url,
+          isExternalLink = false
+        )
 
-  }
+      doc.createTestsForSubheadings(pageSubheadings, includingError = false, tag = "h3")
 
-  "TemplateGuidanceView opened in a new tab" - {
-    val docWithinNewTab = generateView(isNewTab = true)
-    docWithinNewTab.createTestForNoSubmissionButton()
+      doc.createTestsWithBulletPoints(templatePageBullets)
 
-    docWithinNewTab.createTestsWithStandardPageElements(
-      pageTitle = pageTitle,
-      pageHeading = pageHeading,
-      showBackLink = false,
-      showIsThisPageNotWorkingProperlyLink = true,
-      hasError = false
-    )
+      doc.createTestsWithNumberedItems(pageNumberedListItems)
 
-    docWithinNewTab.createTestsWithParagraphs(paragraphs)
+      doc.createTestForInsetText(pageInsetText)
 
-    docWithinNewTab.getMainContent
-      .select("a.govuk-link")
-      .get(0)
-      .createTestWithLink(
-        linkTestDescription = "download submission template",
-        linkText = linkTexts,
-        destinationUrl = routes.DownloadTemplateController.downloadFile().url,
-        isExternalLink = false
+    }
+
+    s"TemplateGuidanceView opened in a new tab - CombinedJourneyEnabled = $isCombinedJourneyEnabled" - {
+      val docWithinNewTab     = generateView(isNewTab = true, isCombinedJourney = isCombinedJourneyEnabled)
+      val templatePageBullets = if isCombinedJourneyEnabled then combinedPageBullets else pageBullets
+
+      docWithinNewTab.createTestForNoSubmissionButton()
+
+      docWithinNewTab.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
       )
 
-    docWithinNewTab.createTestsForSubheadings(pageSubheadings, includingError = false, tag = "h3")
+      docWithinNewTab.createTestsWithParagraphs(paragraphs)
 
-    docWithinNewTab.createTestsWithBulletPoints(pageBullets)
+      docWithinNewTab.getMainContent
+        .select("a.govuk-link")
+        .get(0)
+        .createTestWithLink(
+          linkTestDescription = "download submission template",
+          linkText = linkTexts,
+          destinationUrl = routes.DownloadTemplateController.downloadFile().url,
+          isExternalLink = false
+        )
 
-    docWithinNewTab.createTestsWithNumberedItems(pageNumberedListItems)
+      docWithinNewTab.createTestsForSubheadings(pageSubheadings, includingError = false, tag = "h3")
 
-    docWithinNewTab.createTestForInsetText(pageInsetText)
+      docWithinNewTab.createTestsWithBulletPoints(templatePageBullets)
 
+      docWithinNewTab.createTestsWithNumberedItems(pageNumberedListItems)
+
+      docWithinNewTab.createTestForInsetText(pageInsetText)
+
+    }
   }
-
   extension (target: => Document) {
 
     def createTestForNoSubmissionButton(): Unit = {
@@ -168,6 +172,10 @@ object TemplateGuidanceViewSpec {
     "a notification only, we will process the notification details",
     "a certificate only, we will process both sections – the certificate needs your company details from the notification section to be complete"
   )
+
+  val combinedPageBullets: Seq[String] =
+    pageBullets ++ Seq("a notification and a certificate together, we will process both sections")
+
   val pageInsetText =
     "When you make a submission for more than one SAO, you must complete a separate template for each one."
 
