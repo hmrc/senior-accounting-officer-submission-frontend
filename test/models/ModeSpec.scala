@@ -48,9 +48,9 @@ class ModeSpec extends AnyFreeSpec with Matchers with EitherValues with OptionVa
     }
 
     "invalid parameter" in {
-      val modeParams: Map[String, Seq[String]] = Map("" -> Seq(""))
+      val queryParameters: Map[String, Seq[String]] = Map("" -> Seq(""))
       val error                                = intercept[IllegalArgumentException] {
-        Mode.queryStringBinder.bind("", modeParams)
+        Mode.queryStringBinder.bind("", queryParameters)
       }
       error.getMessage mustBe "Unable to bind a Mode"
     }
