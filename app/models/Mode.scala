@@ -22,7 +22,7 @@ sealed trait Mode
 
 case object CheckMode       extends Mode
 case object NormalMode      extends Mode
-case object TransactionMode extends Mode
+case object TransactionMode extends Mode // TODO: remove when we start using a list pattern for multiple sao CYA
 
 object Mode {
 
