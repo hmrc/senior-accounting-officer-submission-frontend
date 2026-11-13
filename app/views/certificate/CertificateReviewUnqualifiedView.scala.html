@@ -77,7 +77,8 @@
                 <div class="govuk-pagination__prev">
                     <a class="govuk-link govuk-pagination__link"
                        href="@certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad(currentPage - 1)"
-                       rel="prev">
+                       rel="prev"
+                       aria-label="@messages("pagination.previous")">
                         <span aria-hidden="true">←</span>
                         <span class="govuk-pagination__link-title">@messages("pagination.previous")</span>
                     </a>
@@ -90,12 +91,14 @@
                         @if(pageNumber == currentPage) {
                         <a class="govuk-link govuk-pagination__link"
                            href="@certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad(pageNumber)"
-                           aria-current="page">
+                           aria-current="page"
+                           aria-label="@messages("pagination.hidden", pageNumber)">
                             @pageNumber
                         </a>
                         } else {
                         <a class="govuk-link govuk-pagination__link"
-                           href="@certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad(pageNumber)">
+                           href="@certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad(pageNumber)"
+                           aria-label="@messages("pagination.hidden", pageNumber)">
                             @pageNumber
                         </a>
                         }
@@ -107,7 +110,8 @@
                 <div class="govuk-pagination__next">
                     <a class="govuk-link govuk-pagination__link"
                        href="@certificateRoutes.CertificateReviewUnqualifiedController.onPageLoad(currentPage + 1)"
-                       rel="next">
+                       rel="next"
+                       aria-label="@messages("pagination.next")">
                         <span class="govuk-pagination__link-title">@messages("pagination.next")</span>
                         <span aria-hidden="true">→</span>
                     </a>
