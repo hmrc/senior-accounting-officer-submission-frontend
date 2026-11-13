@@ -16,41 +16,34 @@
 
 package models
 
-import play.api.mvc.JavascriptLiteral
-import play.api.mvc.QueryStringBindable
+import play.api.mvc.{JavascriptLiteral, QueryStringBindable}
 
 sealed trait Mode
 
 case object CheckMode       extends Mode
 case object NormalMode      extends Mode
-case object TransactionMode extends Mode // TODO: remove when we start using a list pattern for multiple sao CYA
+case object TransactionMode extends Mode
 
 object Mode {
 
   given queryStringBinder(using stringBinder: QueryStringBindable[String]): QueryStringBindable[Mode] =
     new QueryStringBindable[Mode] {
-      override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Mode]] = {
-        for {
-          mode <- stringBinder.bind(key, params)
-        } yield {
-          mode match {
-            case Right(mode) =>
-              mode match {
-                case "NormalMode"      => Right(NormalMode)
-                case "CheckMode"       => Right(CheckMode)
-                case "TransactionMode" => Right(TransactionMode)
-                case _                 => Left(UnbindableMode)
-              }
-            case _ => Left(UnbindableMode)
-          }
-        }
-      }
+      override def bind(key: String, params: Map[String, Seq[String]]): Option[Either[String, Mode]] =
+        stringBinder
+          .bind(key, params)
+          .map(_.flatMap {
+            case "NormalMode"      => Right(NormalMode)
+            case "CheckMode"       => Right(CheckMode)
+            case "TransactionMode" => Right(TransactionMode)
+            case _                 => Left(UnbindableMode)
+          })
 
       override def unbind(key: String, mode: Mode): String = {
         mode match {
           case NormalMode      => stringBinder.unbind(key, "NormalMode")
           case CheckMode       => stringBinder.unbind(key, "CheckMode")
           case TransactionMode => stringBinder.unbind(key, "TransactionMode")
+          case _               => stringBinder.unbind(key, UnbindableMode)
         }
       }
     }
@@ -63,7 +56,8 @@ object Mode {
     }
   }
 
-  val values: List[Mode] = List(NormalMode, CheckMode)
+  val values: List[Mode] = List(CheckMode, NormalMode)
 
   private val UnbindableMode: String = "Unable to bind a Mode"
+
 }
