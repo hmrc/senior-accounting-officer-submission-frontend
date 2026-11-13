@@ -35,7 +35,7 @@ object Mode {
             case "NormalMode"      => Right(NormalMode)
             case "CheckMode"       => Right(CheckMode)
             case "TransactionMode" => Right(TransactionMode)
-            case _                 => Left(UnbindableMode)
+            case _                 => throw new IllegalArgumentException(UnbindableMode)
           })
 
       override def unbind(key: String, mode: Mode): String = {
@@ -43,7 +43,6 @@ object Mode {
           case NormalMode      => stringBinder.unbind(key, "NormalMode")
           case CheckMode       => stringBinder.unbind(key, "CheckMode")
           case TransactionMode => stringBinder.unbind(key, "TransactionMode")
-          case _               => stringBinder.unbind(key, UnbindableMode)
         }
       }
     }

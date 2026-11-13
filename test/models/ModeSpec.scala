@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,34 +25,34 @@ class ModeSpec extends AnyFreeSpec with Matchers with EitherValues with OptionVa
   "Mode query string binder should bind" - {
 
     "Normal Mode" in {
-      val modeParams: Map[String, Seq[String]] = Map("NormalMode" -> Seq("NormalMode"))
-      val result                               = Mode.queryStringBinder.bind("NormalMode", modeParams)
+      val queryParameters: Map[String, Seq[String]] = Map("mode" -> Seq("NormalMode"))
+      val result                                    = Mode.queryStringBinder.bind("mode", queryParameters)
       result mustBe Some(Right(NormalMode))
 
     }
 
     "Check Mode" in {
 
-      val modeParams: Map[String, Seq[String]] = Map("CheckMode" -> Seq("CheckMode"))
-      val result                               = Mode.queryStringBinder.bind("CheckMode", modeParams)
+      val queryParameters: Map[String, Seq[String]] = Map("mode" -> Seq("CheckMode"))
+      val result                                    = Mode.queryStringBinder.bind("mode", queryParameters)
       result mustBe Some(Right(CheckMode))
 
     }
 
     "Transaction Mode" in {
 
-      val modeParams: Map[String, Seq[String]] = Map("TransactionMode" -> Seq("TransactionMode"))
-      val result                               = Mode.queryStringBinder.bind("TransactionMode", modeParams)
+      val queryParameters: Map[String, Seq[String]] = Map("mode" -> Seq("TransactionMode"))
+      val result                                    = Mode.queryStringBinder.bind("mode", queryParameters)
       result mustBe Some(Right(TransactionMode))
 
     }
 
     "invalid parameter" in {
-
       val modeParams: Map[String, Seq[String]] = Map("" -> Seq(""))
-      val result                               = Mode.queryStringBinder.bind("", modeParams)
-      result mustBe Some(Left("Unable to bind a Mode"))
-
+      val error                                = intercept[IllegalArgumentException] {
+        Mode.queryStringBinder.bind("", modeParams)
+      }
+      error.getMessage mustBe "Unable to bind a Mode"
     }
   }
 
