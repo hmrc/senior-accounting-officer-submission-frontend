@@ -16,6 +16,7 @@
 
 package controllers
 
+import config.AppConfig
 import controllers.actions.*
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -28,15 +29,16 @@ class TemplateGuidanceController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     val controllerComponents: MessagesControllerComponents,
-    view: TemplateGuidanceView
+    view: TemplateGuidanceView,
+    appConfig: AppConfig
 ) extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = identify { implicit request =>
-    Ok(view())
+    Ok(view(isCombinedJourneyEnabled = appConfig.isCombinedJourneyEnabled))
   }
 
   def onPageLoadNewTab: Action[AnyContent] = identify { implicit request =>
-    Ok(view(isNewTab = true))
+    Ok(view(isNewTab = true, isCombinedJourneyEnabled = appConfig.isCombinedJourneyEnabled))
   }
 }
