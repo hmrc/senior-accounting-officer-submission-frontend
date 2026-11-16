@@ -37,7 +37,10 @@ class TemplateGuidanceControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[TemplateGuidanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view()(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(isCombinedJourneyEnabled = false)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -53,7 +56,10 @@ class TemplateGuidanceControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[TemplateGuidanceView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(isNewTab = true)(using request, messages(application)).toString
+        contentAsString(result) mustEqual view(isNewTab = true, isCombinedJourneyEnabled = false)(using
+          request,
+          messages(application)
+        ).toString
       }
     }
   }
