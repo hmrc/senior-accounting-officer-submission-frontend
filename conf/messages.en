@@ -615,3 +615,4 @@ pagination.previous = Previous
 pagination.next = Next
 pagination.currentPage = Page {0}
 pagination.goToPage = Go to page {0}
+pagination.hidden = Page {0}

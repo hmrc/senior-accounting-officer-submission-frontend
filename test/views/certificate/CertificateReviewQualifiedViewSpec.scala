@@ -208,6 +208,7 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       doc.select(".govuk-pagination").size() mustBe 1
       doc.select(".govuk-pagination__next").size() mustBe 1
       doc.select(".govuk-pagination__prev").size() mustBe 0
+      doc.select(".govuk-pagination__next a").attr("aria-label") mustBe paginationNextHidden
     }
 
     "renders pagination when there is more than one page and on page 2" in {
@@ -224,6 +225,8 @@ class CertificateReviewQualifiedViewSpec extends ViewSpecBase[CertificateReviewQ
       doc.select(".govuk-pagination").size() mustBe 1
       doc.select(".govuk-pagination__next").size() mustBe 1
       doc.select(".govuk-pagination__prev").size() mustBe 1
+      doc.select(".govuk-pagination__next a").attr("aria-label") mustBe paginationNextHidden
+      doc.select(".govuk-pagination__prev a").attr("aria-label") mustBe paginationPreviousHidden
     }
   }
 
@@ -367,4 +370,7 @@ object CertificateReviewQualifiedViewSpec {
   val financialYearEndDescriptionTermText      = "Financial year end"
   val taxRegimesDescriptionTermText            = "Tax Regimes"
   val additionalInformationDescriptionTermText = "Explain why the certificate is qualified"
+
+  val paginationPreviousHidden = "Previous"
+  val paginationNextHidden     = "Next"
 }
