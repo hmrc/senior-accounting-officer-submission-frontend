@@ -65,7 +65,7 @@ class NotificationUploadFormController @Inject() (
         .fold(formProvider())(err => formProvider().withError(fileInputField, err))
 
       for {
-        upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Notification)
+        upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Notification, isCombinedJourney = false)
         updatedAnswers         <- Future.fromTry(
           request.userAnswers.set(
             NotificationUploadStatePage,

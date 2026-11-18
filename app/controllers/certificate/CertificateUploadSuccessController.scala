@@ -53,7 +53,7 @@ class CertificateUploadSuccessController @Inject() (
 
   def onPageLoad(key: Option[String]): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      upscanService.fileUploadState(UploadJourney.Certificate, request.userAnswers, key).flatMap {
+      upscanService.fileUploadState(UploadJourney.Certificate, request.userAnswers, key, isCombinedJourney = false).flatMap {
         case State.NoReference =>
           Future.successful(
             Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))

@@ -40,18 +40,18 @@ class UpscanService @Inject() (
   def fileUploadState(
       journey: UploadJourney,
       userAnswers: UserAnswers,
-      reference: Option[String]
+      reference: Option[String],
+      isCombinedJourney: Boolean
   )(using hc: HeaderCarrier): Future[State] =
     userAnswers.get(journey.page).fold(Future.successful(State.NoReference)) { uploadState =>
       reference match {
         case Some(expectedReference) if uploadState.reference != expectedReference =>
           Future.successful(State.NoReference)
-        case _ =>
-          fileUploadState(journey, uploadState)
+        case _ => fileUploadState(journey, uploadState, isCombinedJourney)
       }
     }
 
-  private def fileUploadState(journey: UploadJourney, uploadState: FileUploadState)(using
+  private def fileUploadState(journey: UploadJourney, uploadState: FileUploadState, isCombinedJourney: Boolean)(using
       hc: HeaderCarrier
   ): Future[State] =
     checkUploadState(uploadState).flatMap {
@@ -62,7 +62,7 @@ class UpscanService @Inject() (
             .download(downloadUrl)
             .map[State] {
               case HttpResponse(OK, body, _) =>
-                uploadTemplateCsvParser.parse(body, notificationOnly = journey == Notification) match {
+                uploadTemplateCsvParser.parse(body, notificationOnly = (journey == Notification && !isCombinedJourney)) match {
                   case TemplateParseResult.Valid(rows) if rows.nonEmpty =>
                     State.Result(reference, rows)
                   case TemplateParseResult.Valid(rows) =>
