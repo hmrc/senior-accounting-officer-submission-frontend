@@ -22,6 +22,7 @@ import forms.UploadFormProvider
 import forms.UploadFormProvider.*
 import models.*
 import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
+import pages.combined.CombinedUploadStatePage
 import pages.notification.NotificationUploadStatePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -64,10 +65,10 @@ class CombinedUploadFormController @Inject()(
         .fold(formProvider())(err => formProvider().withError(fileInputField, err))
 
       for {
-        upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Notification, isCombinedJourney = true)
+        upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Combined)
         updatedAnswers         <- Future.fromTry(
           request.userAnswers.set(
-            NotificationUploadStatePage,
+            CombinedUploadStatePage,
             FileUploadState(
               reference = upscanInitiateResponse.reference,
               status = UploadStatus.InProgress

@@ -66,7 +66,7 @@ class CertificateUploadFormController @Inject() (
           .fold(formProvider())(err => formProvider().withError(fileInputField, err))
 
         for {
-          upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Certificate, isCombinedJourney = false)
+          upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Certificate)
           updatedAnswers         <- Future.fromTry(
             request.userAnswers.set(
               CertificateUploadStatePage,
