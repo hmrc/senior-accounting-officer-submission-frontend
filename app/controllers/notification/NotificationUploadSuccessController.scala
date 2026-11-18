@@ -54,7 +54,7 @@ class NotificationUploadSuccessController @Inject() (
 
   def onPageLoad(key: Option[String]): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
-      upscanService.fileUploadState(UploadJourney.Notification, request.userAnswers, key).flatMap {
+      upscanService.fileUploadState(UploadJourney.Notification, request.userAnswers, key, isCombinedJourney = false).flatMap {
         case State.NoReference =>
           Future.successful(
             Redirect(

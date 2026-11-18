@@ -41,17 +41,20 @@ class NotificationSubmitService @Inject() (
 )(using
     ec: ExecutionContext
 ) {
-  def submit(userAnswers: UserAnswers)(using HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
+  def submit(userAnswers: UserAnswers, wipeNotificationData: Boolean)(using HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
     protectedServiceConnector
       .postNotification(userAnswers.toNotification(idempotencyKey = None))
       .flatMap { response =>
         response.status match {
-          case OK => {
+          case OK =>
             val notificationReference = Json.parse(response.body).as[NotificationResponse].notificationRef
-            sessionRepository
-              .set(userAnswers.copy(data = Json.obj()))
-              .map(_ => Right(notificationReference))
-          }
+            if(wipeNotificationData) {
+              sessionRepository
+                .set(userAnswers.copy(data = Json.obj()))
+                .map(_ => Right(notificationReference))
+            } else {
+              Future.successful(Right(notificationReference))
+            }
           case _ => Future.successful(Left(NotificationSubmissionError.HttpError(response)))
         }
       }
@@ -74,7 +77,7 @@ class NotificationSubmitService @Inject() (
     }
   }
 
-  def getStateOfWorkItem(idempotencyKey: String, userAnswers: UserAnswers)(using
+  def getStateOfWorkItem(idempotencyKey: String, userAnswers: UserAnswers, wipeNotificationData: Boolean)(using
       HeaderCarrier
   ): Future[NotificationState] = {
     protectedServiceConnector
@@ -85,7 +88,9 @@ class NotificationSubmitService @Inject() (
             Future.successful(Pending(idempotencyKey))
           case OK =>
             val notificationReference = Json.parse(response.body).as[NotificationResponse].notificationRef
-            sessionRepository.set(userAnswers.copy(data = Json.obj()))
+            if(wipeNotificationData) {
+              sessionRepository.set(userAnswers.copy(data = Json.obj()))
+            }
             Future.successful(NotificationState.Success(notificationReference))
           case _ => Future.successful(NotificationState.Failure(response.status))
         }

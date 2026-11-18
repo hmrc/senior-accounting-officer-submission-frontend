@@ -19,6 +19,7 @@ package connectors
 import config.AppConfig
 import controllers.certificate.routes as certificateRoutes
 import controllers.notification.routes as notificationRoutes
+import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import models.upscan.{UploadJourney, UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue
@@ -36,11 +37,11 @@ class UpscanInitiateConnector @Inject() (
     appConfig: AppConfig
 )(using ExecutionContext) {
 
-  def initiateV2(journey: UploadJourney)(using HeaderCarrier): Future[UpscanInitiateResponse] = {
+  def initiateV2(journey: UploadJourney, isCombinedJourney: Boolean)(using HeaderCarrier): Future[UpscanInitiateResponse] = {
     val request = UpscanInitiateRequestV2(
       callbackUrl = appConfig.upscanCallbackTarget(journey),
-      successRedirect = Some(appConfig.host + successRedirect(journey)),
-      errorRedirect = Some(appConfig.host + errorRedirect(journey)),
+      successRedirect = Some(appConfig.host + successRedirect(journey, isCombinedJourney)),
+      errorRedirect = Some(appConfig.host + errorRedirect(journey, isCombinedJourney)),
       maximumFileSize = Some(appConfig.maxUploadFileSizeBytes)
     )
 
@@ -50,15 +51,17 @@ class UpscanInitiateConnector @Inject() (
       .execute[UpscanInitiateResponse]
   }
 
-  private def successRedirect(journey: UploadJourney): Call =
-    journey match {
-      case UploadJourney.Notification => notificationRoutes.NotificationUploadSuccessController.onPageLoad(key = None)
-      case UploadJourney.Certificate  => certificateRoutes.CertificateUploadSuccessController.onPageLoad(key = None)
+  private def successRedirect(journey: UploadJourney, isCombinedJourney: Boolean): Call =
+    (journey, isCombinedJourney) match {
+      case (UploadJourney.Notification, false) => notificationRoutes.NotificationUploadSuccessController.onPageLoad(key = None)
+      case (UploadJourney.Notification, true)  => uploadTemplateRoutes.CombinedUploadSuccessController.onPageLoad(key = None)
+      case (UploadJourney.Certificate, _)      => certificateRoutes.CertificateUploadSuccessController.onPageLoad(key = None)
     }
 
-  private def errorRedirect(journey: UploadJourney): Call =
-    journey match {
-      case UploadJourney.Notification => notificationRoutes.NotificationUploadFormController.onPageLoad()
-      case UploadJourney.Certificate  => certificateRoutes.CertificateUploadFormController.onPageLoad()
+  private def errorRedirect(journey: UploadJourney, isCombinedJourney: Boolean): Call =
+    (journey, isCombinedJourney) match {
+      case (UploadJourney.Notification, false) => notificationRoutes.NotificationUploadFormController.onPageLoad()
+      case (UploadJourney.Notification, true)  => uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()
+      case (UploadJourney.Certificate, _)      => certificateRoutes.CertificateUploadFormController.onPageLoad()
     }
 }

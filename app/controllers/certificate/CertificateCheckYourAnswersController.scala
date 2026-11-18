@@ -76,8 +76,8 @@ class CertificateCheckYourAnswersController @Inject() (
         case Some(token) =>
           val submission =
             if appConfig.faultToleranceEnabled then
-              certificateSubmissionService.submitWithFaultTolerance(request.userId, request.userAnswers, token)
-            else certificateSubmissionService.submit(request.userId, request.userAnswers, token)
+              certificateSubmissionService.submitWithFaultTolerance(request.userId, request.userAnswers, token, isCombinedJourney = false)
+            else certificateSubmissionService.submit(request.userId, request.userAnswers, token, isCombinedJourney = false)
           submission.map {
             case CertificateSubmissionResult.Submitted(certificateRef) =>
               Redirect(certificateRoutes.CertificateTaskListController.onPageLoadComplete(certificateRef))
