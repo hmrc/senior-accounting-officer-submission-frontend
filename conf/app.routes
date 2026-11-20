@@ -20,8 +20,8 @@ POST        /submission                                                         
 ##############################
 
 GET         /submission/notification/task                                                       controllers.notification.NotificationTaskListController.onPageLoad()
-GET         /submission/notification/complete                                                    controllers.notification.NotificationTaskListController.onComplete()
-POST        /submission/notification/complete                                                    controllers.notification.NotificationTaskListController.onCompleteSubmit()
+GET         /submission/notification/task/complete                                                    controllers.notification.NotificationTaskListController.onComplete()
+POST        /submission/notification/task/complete                                                    controllers.notification.NotificationTaskListController.onCompleteSubmit()
 
 GET         /submission/notification/confirm-multiple-officers                                           controllers.notification.NotificationMoreThanOneSaoController.onPageLoad(mode: Mode)
 POST        /submission/notification/confirm-multiple-officers                                           controllers.notification.NotificationMoreThanOneSaoController.onSubmit(mode: Mode)
