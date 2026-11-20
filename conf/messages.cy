@@ -56,10 +56,10 @@ upload.success.paragraph1 = This may take a few minutes
 
 notificationTaskList.title = Cyflwynwch hysbysiad
 notificationTaskList.heading = Cyflwynwch hysbysiad
-notificationTaskList.paragraph1 = Cyflwynwch un hysbysiad ar gyfer pob SAO yn eich sefydliad. Mae’n rhaid i bob hysbysiad gynnwys manylion yr SAO a’r holl gwmnïau roedd yn gyfrifol amdanyn nhw mewn blwyddyn ariannol flaenorol.
+notificationTaskList.paragraph1 = Cyflwynwch un hysbysiad ar gyfer pob SAO yn eich grŵp. Mae’n rhaid i bob hysbysiad gynnwys manylion yr SAO a’r holl gwmnïau roedd yn gyfrifol amdanyn nhw mewn blwyddyn ariannol flaenorol.
 notificationTaskList.provideSaoDetailsLinkText = Nodwch fanylion yr SAO
 notificationTaskList.uploadNotificationLinkText = Uwchlwythwch y templed cyflwyno
-notificationTaskList.submitNotificationLinkText = Cyflwynwch y cyflwyniad
+notificationTaskList.submitNotificationLinkText = Cyflwynwch yr hysbysiad
 notificationTaskList.notificationConfirmationButton = Bwrw golwg dros eich cadarnhad
 
 notificationTaskList.row.status.cannotStartYet = Methu dechrau ar y funud
