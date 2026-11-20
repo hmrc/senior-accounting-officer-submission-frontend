@@ -27,7 +27,7 @@ import views.html.combined.submitNotification.CombinedConfirmYourNotificationVie
 
 import javax.inject.Inject
 
-class CombinedConfirmYourNotificationController @Inject()(
+class CombinedConfirmYourNotificationController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,

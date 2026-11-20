@@ -31,21 +31,22 @@ import services.UploadTemplatePlaybackService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.uploadTemplate.{CombinedUploadTemplateTableErrorView, CombinedUploadTemplateTableView}
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedUploadTemplateTableController @Inject()(
-                                                       override val messagesApi: MessagesApi,
-                                                       identify: IdentifierAction,
-                                                       getData: DataRetrievalAction,
-                                                       requireData: DataRequiredAction,
-                                                       requireNotificationUploadUnlocked: RequireCombinedNotificationUploadUnlockedAction,
-                                                       val controllerComponents: MessagesControllerComponents,
-                                                       view: CombinedUploadTemplateTableView,
-                                                       errorView: CombinedUploadTemplateTableErrorView,
-                                                       playbackService: UploadTemplatePlaybackService,
-                                                       navigator: CombinedNavigator,
-                                                       sessionRepository: SessionRepository
+import javax.inject.Inject
+
+class CombinedUploadTemplateTableController @Inject() (
+    override val messagesApi: MessagesApi,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    requireNotificationUploadUnlocked: RequireCombinedNotificationUploadUnlockedAction,
+    val controllerComponents: MessagesControllerComponents,
+    view: CombinedUploadTemplateTableView,
+    errorView: CombinedUploadTemplateTableErrorView,
+    playbackService: UploadTemplatePlaybackService,
+    navigator: CombinedNavigator,
+    sessionRepository: SessionRepository
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {

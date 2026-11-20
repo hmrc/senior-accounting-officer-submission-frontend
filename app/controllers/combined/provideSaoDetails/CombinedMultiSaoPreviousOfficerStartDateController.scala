@@ -31,10 +31,11 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.provideSaoDetails.CombinedMultiSaoPreviousOfficerStartDateView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedMultiSaoPreviousOfficerStartDateController @Inject()(
+import javax.inject.Inject
+
+class CombinedMultiSaoPreviousOfficerStartDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: CombinedNavigator,

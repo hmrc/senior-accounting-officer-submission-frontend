@@ -17,25 +17,30 @@
 package controllers.combined.provideSaoDetails
 
 import base.SpecBase
+import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
 import models.{JourneySection, NormalMode, UserAnswers}
+import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage, NotificationMultiSaoPreviousOfficerStartDatePage}
+import pages.notification.{
+  NotificationMultiSaoPreviousOfficerEndDatePage,
+  NotificationMultiSaoPreviousOfficerNamePage,
+  NotificationMultiSaoPreviousOfficerStartDatePage
+}
 import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
-import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import views.html.combined.provideSaoDetails.CombinedMultiSaoPreviousOfficerEndDateView
 
-import java.time.{LocalDate, ZoneOffset}
 import scala.concurrent.Future
+
+import java.time.{LocalDate, ZoneOffset}
 
 class CombinedMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase with MockitoSugar {
 
@@ -102,7 +107,9 @@ class CombinedMultiSaoPreviousOfficerEndDateControllerSpec extends SpecBase with
         val result = route(application, getRequest()).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)).url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Combined))
+          .url
       }
     }
 

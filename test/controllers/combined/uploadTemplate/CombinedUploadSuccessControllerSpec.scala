@@ -17,7 +17,11 @@
 package controllers.combined.uploadTemplate
 
 import base.SpecBase
-import controllers.combined.uploadTemplate.CombinedUploadSuccessControllerSpec.{parsedRows, testFileContent, testFileReference}
+import controllers.combined.uploadTemplate.CombinedUploadSuccessControllerSpec.{
+  parsedRows,
+  testFileContent,
+  testFileReference
+}
 import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.routes
 import models.*
@@ -63,8 +67,8 @@ class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEa
     "when UpscanService returns State.NoReference" - {
       "must return Redirect to Journey recovery" in {
         when(
-          mockUpscanService.fileUploadState(meq(UploadJourney.Combined), any[UserAnswers], any[Option[String]])(
-            using any()
+          mockUpscanService.fileUploadState(meq(UploadJourney.Combined), any[UserAnswers], any[Option[String]])(using
+            any()
           )
         ).thenReturn(
           Future.successful(State.NoReference)
@@ -133,8 +137,8 @@ class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEa
         val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
         when(
-          mockUpscanService.fileUploadState(meq(UploadJourney.Combined), any[UserAnswers], any[Option[String]])(
-            using any()
+          mockUpscanService.fileUploadState(meq(UploadJourney.Combined), any[UserAnswers], any[Option[String]])(using
+            any()
           )
         ).thenReturn(
           Future.successful(State.WaitingForUpscan)
@@ -217,8 +221,8 @@ class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEa
         val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
         when(
-          mockUpscanService.fileUploadState(meq(UploadJourney.Combined), any[UserAnswers], any[Option[String]])(
-            using any()
+          mockUpscanService.fileUploadState(meq(UploadJourney.Combined), any[UserAnswers], any[Option[String]])(using
+            any()
           )
         ).thenReturn(
           Future.successful(State.DownloadFromUpscanFailed(HttpResponse(status = BAD_REQUEST, body = testFileContent)))
@@ -279,7 +283,9 @@ class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEa
           val result = route(application, request).value
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).value mustBe uploadTemplateRoutes.CombinedUploadTemplateTableController.onPageLoad(0).url
+          redirectLocation(result).value mustBe uploadTemplateRoutes.CombinedUploadTemplateTableController
+            .onPageLoad(0)
+            .url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             meq(UploadJourney.Combined),
@@ -296,8 +302,8 @@ class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEa
         val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()
 
         when(
-          mockUpscanService.fileUploadState(meq(UploadJourney.Combined), any[UserAnswers], any[Option[String]])(
-            using any()
+          mockUpscanService.fileUploadState(meq(UploadJourney.Combined), any[UserAnswers], any[Option[String]])(using
+            any()
           )
         ).thenReturn(
           Future.successful(State.Result(testFileReference, parsedRows))
@@ -315,7 +321,9 @@ class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEa
           application.injector.instanceOf[CombinedUploadSuccessView]
 
           status(result) mustEqual SEE_OTHER
-          redirectLocation(result).get mustBe uploadTemplateRoutes.CombinedUploadTemplateTableController.onPageLoad(0).url
+          redirectLocation(result).get mustBe uploadTemplateRoutes.CombinedUploadTemplateTableController
+            .onPageLoad(0)
+            .url
 
           verify(mockUpscanService, times(1)).fileUploadState(
             meq(UploadJourney.Combined),

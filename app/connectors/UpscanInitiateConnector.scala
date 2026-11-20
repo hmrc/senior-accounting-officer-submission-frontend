@@ -18,8 +18,8 @@ package connectors
 
 import config.AppConfig
 import controllers.certificate.routes as certificateRoutes
-import controllers.notification.routes as notificationRoutes
 import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
+import controllers.notification.routes as notificationRoutes
 import models.upscan.{UploadJourney, UpscanInitiateRequestV2, UpscanInitiateResponse}
 import play.api.libs.json.*
 import play.api.libs.ws.writeableOf_JsValue

@@ -1,5 +1,5 @@
 @*
- * Copyright 2025 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@
 
 @(form: Form[?], mode: Mode)(using request: Request[?], messages: Messages)
 
-@layout(pageTitle = title(form, messages("notificationAdditionalInformation.title"), Some("section.notification"))) {
+@layout(pageTitle = title(form, messages("notificationAdditionalInformation.title"), Some("section.combined"))) {
 
     @formHelper(action = submitNotificationRoutes.CombinedNotificationAdditionalInformationController.onSubmit(mode)) {
         @if(form.errors.nonEmpty) {

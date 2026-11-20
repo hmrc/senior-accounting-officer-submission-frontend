@@ -28,20 +28,21 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitCertificate.CombinedCertificateAdditionalInformationView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedCertificateAdditionalInformationController @Inject()(
-                                                                    override val messagesApi: MessagesApi,
-                                                                    sessionRepository: SessionRepository,
-                                                                    navigator: CombinedNavigator,
-                                                                    identify: IdentifierAction,
-                                                                    getData: DataRetrievalAction,
-                                                                    requireData: DataRequiredAction,
-                                                                    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction,
-                                                                    formProvider: CertificateAdditionalInformationFormProvider,
-                                                                    val controllerComponents: MessagesControllerComponents,
-                                                                    view: CombinedCertificateAdditionalInformationView
+import javax.inject.Inject
+
+class CombinedCertificateAdditionalInformationController @Inject() (
+    override val messagesApi: MessagesApi,
+    sessionRepository: SessionRepository,
+    navigator: CombinedNavigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction,
+    formProvider: CertificateAdditionalInformationFormProvider,
+    val controllerComponents: MessagesControllerComponents,
+    view: CombinedCertificateAdditionalInformationView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {

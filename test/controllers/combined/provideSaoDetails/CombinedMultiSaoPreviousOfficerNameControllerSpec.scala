@@ -40,10 +40,10 @@ class CombinedMultiSaoPreviousOfficerNameControllerSpec extends SpecBase with Mo
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  val saoName = "Firstname Lastname"
+  val saoName         = "Firstname Lastname"
   val previousSaoName = "Previous Name"
 
-  val formProvider = new NotificationMultiSaoPreviousOfficerNameFormProvider()
+  val formProvider       = new NotificationMultiSaoPreviousOfficerNameFormProvider()
   val form: Form[String] = formProvider(saoName = Some(saoName))
 
   lazy val notificationMultiSaoPreviousOfficerNameRoute: String =

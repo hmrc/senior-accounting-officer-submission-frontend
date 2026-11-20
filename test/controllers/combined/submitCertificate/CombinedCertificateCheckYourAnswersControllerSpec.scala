@@ -19,7 +19,6 @@ package controllers.combined.submitCertificate
 import base.SpecBase
 import config.FeatureToggleSupport
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
-import controllers.combined.routes as combinedRoutes
 import controllers.routes
 import models.FeatureToggle.FaultTolerance
 import models.JourneySection
@@ -72,7 +71,8 @@ class CombinedCertificateCheckYourAnswersControllerSpec
         .build()
 
       running(application) {
-        val request = FakeRequest(GET, submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad().url)
+        val request =
+          FakeRequest(GET, submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad().url)
 
         val result = route(application, request).value
 
@@ -223,7 +223,9 @@ class CombinedCertificateCheckYourAnswersControllerSpec
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)).url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Combined))
+          .url
       }
     }
 
@@ -247,7 +249,9 @@ class CombinedCertificateCheckYourAnswersControllerSpec
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)).url
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Combined))
+          .url
       }
     }
 
@@ -308,7 +312,8 @@ class CombinedCertificateCheckYourAnswersControllerSpec
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad().url)
+        val request =
+          FakeRequest(GET, submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad().url)
 
         val result = route(application, request).value
 

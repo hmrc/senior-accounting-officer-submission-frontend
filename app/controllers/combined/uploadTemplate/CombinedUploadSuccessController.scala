@@ -33,10 +33,11 @@ import services.UpscanService.*
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.uploadTemplate.CombinedUploadSuccessView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedUploadSuccessController @Inject()(
+import javax.inject.Inject
+
+class CombinedUploadSuccessController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,

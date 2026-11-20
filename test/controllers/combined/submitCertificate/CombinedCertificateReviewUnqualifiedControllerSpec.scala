@@ -18,8 +18,8 @@ package controllers.combined.submitCertificate
 
 import base.SpecBase
 import controllers.combined.routes as combinedRoutes
-import controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedControllerSpec.testTemplateData
 import controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedControllerSpec.*
+import controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedControllerSpec.testTemplateData
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import models.*
 import models.upload.*
@@ -32,8 +32,9 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.combined.submitCertificate.CombinedCertificateReviewUnqualifiedView
 
-import java.time.LocalDate
 import scala.util.Random
+
+import java.time.LocalDate
 
 class CombinedCertificateReviewUnqualifiedControllerSpec extends SpecBase {
 
@@ -53,7 +54,8 @@ class CombinedCertificateReviewUnqualifiedControllerSpec extends SpecBase {
       ).build()
 
       running(application) {
-        val request = FakeRequest(GET, submitCertificateRoutes.CombinedCertificateReviewUnqualifiedController.onPageLoad(0).url)
+        val request =
+          FakeRequest(GET, submitCertificateRoutes.CombinedCertificateReviewUnqualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 
@@ -94,7 +96,8 @@ class CombinedCertificateReviewUnqualifiedControllerSpec extends SpecBase {
     "must redirect to task list on provide sao details stage when user answers is empty for a GET" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
-        val request = FakeRequest(GET, submitCertificateRoutes.CombinedCertificateReviewUnqualifiedController.onPageLoad(0).url)
+        val request =
+          FakeRequest(GET, submitCertificateRoutes.CombinedCertificateReviewUnqualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 
@@ -106,7 +109,8 @@ class CombinedCertificateReviewUnqualifiedControllerSpec extends SpecBase {
     "must redirect to task list on provide sao details stage when user answers is empty for a POST" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
-        val request = FakeRequest(POST, submitCertificateRoutes.CombinedCertificateReviewUnqualifiedController.onSubmit().url)
+        val request =
+          FakeRequest(POST, submitCertificateRoutes.CombinedCertificateReviewUnqualifiedController.onSubmit().url)
 
         val result = route(application, request).value
 

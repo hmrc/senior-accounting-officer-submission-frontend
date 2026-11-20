@@ -28,10 +28,11 @@ import services.SaoUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.provideSaoDetails.CombinedMultiSaoAreAllAddedView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedMultiSaoAreAllAddedController @Inject()(
+import javax.inject.Inject
+
+class CombinedMultiSaoAreAllAddedController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: CombinedNavigator,

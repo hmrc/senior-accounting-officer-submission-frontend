@@ -31,20 +31,21 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitNotification.CombinedNotificationAdditionalInformationView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedNotificationAdditionalInformationController @Inject()(
-                                                         override val messagesApi: MessagesApi,
-                                                         sessionRepository: SessionRepository,
-                                                         navigator: CombinedNavigator,
-                                                         identify: IdentifierAction,
-                                                         getData: DataRetrievalAction,
-                                                         requireData: DataRequiredAction,
-                                                         requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
-                                                         formProvider: NotificationAdditionalInformationFormProvider,
-                                                         val controllerComponents: MessagesControllerComponents,
-                                                         view: CombinedNotificationAdditionalInformationView
+import javax.inject.Inject
+
+class CombinedNotificationAdditionalInformationController @Inject() (
+    override val messagesApi: MessagesApi,
+    sessionRepository: SessionRepository,
+    navigator: CombinedNavigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
+    formProvider: NotificationAdditionalInformationFormProvider,
+    val controllerComponents: MessagesControllerComponents,
+    view: CombinedNotificationAdditionalInformationView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {

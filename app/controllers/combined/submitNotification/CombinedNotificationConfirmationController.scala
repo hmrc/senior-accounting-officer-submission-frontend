@@ -20,7 +20,6 @@ import controllers.actions.*
 import models.NormalMode
 import navigation.CombinedNavigator
 import pages.combined.CombinedNotificationConfirmationPage
-import pages.notification.NotificationConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -28,10 +27,11 @@ import services.ObjectStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitNotification.CombinedNotificationConfirmationView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedNotificationConfirmationController @Inject()(
+import javax.inject.Inject
+
+class CombinedNotificationConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
@@ -58,10 +58,9 @@ class CombinedNotificationConfirmationController @Inject()(
           )
       }
     }
-    
+
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-
       for {
         updatedAnswers <- Future.fromTry(request.userAnswers.set(CombinedNotificationConfirmationPage, true))
         _              <- sessionRepository.set(updatedAnswers)

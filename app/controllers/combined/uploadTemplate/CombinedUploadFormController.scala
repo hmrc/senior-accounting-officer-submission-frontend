@@ -29,10 +29,11 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 import views.html.combined.uploadTemplate.CombinedUploadFormView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedUploadFormController @Inject()(
+import javax.inject.Inject
+
+class CombinedUploadFormController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,

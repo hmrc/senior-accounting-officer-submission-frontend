@@ -24,5 +24,5 @@ object Page {
 
   val NOTIFICATION_PATH = "notification"
   val CERTIFICATE_PATH  = "certificate"
-  val COMBINED_PATH = "combined"
+  val COMBINED_PATH     = "combined"
 }

@@ -27,10 +27,11 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitCertificate.CombinedCertificateSaoFullNameView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedCertificateSaoFullNameController @Inject()(
+import javax.inject.Inject
+
+class CombinedCertificateSaoFullNameController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: CombinedNavigator,
@@ -44,24 +45,26 @@ class CombinedCertificateSaoFullNameController @Inject()(
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
-    val form         = formProvider()
-    val preparedForm = request.userAnswers.get(CertificateSaoFullNamePage).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
-  }
+  def onPageLoad(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
+      val form         = formProvider()
+      val preparedForm = request.userAnswers.get(CertificateSaoFullNamePage).fold(form)(form.fill)
+      Ok(view(preparedForm, mode))
+    }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-    implicit request =>
-      val form = formProvider()
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateSaoFullNamePage, value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateSaoFullNamePage, mode, updatedAnswers))
-        )
-  }
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
+      implicit request =>
+        val form = formProvider()
+        form
+          .bindFromRequest()
+          .fold(
+            formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+            value =>
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateSaoFullNamePage, value))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(CertificateSaoFullNamePage, mode, updatedAnswers))
+          )
+    }
 }

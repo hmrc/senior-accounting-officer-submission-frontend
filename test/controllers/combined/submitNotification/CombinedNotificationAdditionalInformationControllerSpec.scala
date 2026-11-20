@@ -17,9 +17,12 @@
 package controllers.combined.submitNotification
 
 import base.SpecBase
+import controllers.combined.routes as combinedRoutes
+import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import controllers.routes
 import forms.notification.NotificationAdditionalInformationFormProvider
 import models.{JourneySection, NormalMode}
+import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -30,9 +33,6 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import controllers.combined.submitNotification.routes as submitNotificationRoutes
-import controllers.combined.routes as combinedRoutes
-import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import views.html.combined.submitNotification.CombinedNotificationAdditionalInformationView
 
 import scala.concurrent.Future

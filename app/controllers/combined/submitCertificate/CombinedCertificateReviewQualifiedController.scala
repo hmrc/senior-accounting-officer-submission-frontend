@@ -31,10 +31,11 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitCertificate.CombinedCertificateReviewQualifiedView
 import views.html.combined.uploadTemplate.CombinedUploadTemplateTableErrorView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedCertificateReviewQualifiedController @Inject()(
+import javax.inject.Inject
+
+class CombinedCertificateReviewQualifiedController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     navigator: CombinedNavigator,
@@ -50,42 +51,41 @@ class CombinedCertificateReviewQualifiedController @Inject()(
     with I18nSupport {
 
   def onPageLoad(page: Int = 0): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) {
-      implicit request =>
-        val userAnswers = request.userAnswers
-        
-        userAnswers
-          .get(UploadTemplateTablePage)
-          .fold(
-            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
-          ) { parsedTemplate =>
-            if parsedTemplate.hasErrors then {
-              Ok(errorView(parsedTemplate))
-            } else {
-              userAnswers
-                .get(CertificateSaoFullNamePage)
-                .fold(
-                  Redirect(
-                    routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
+      val userAnswers = request.userAnswers
+
+      userAnswers
+        .get(UploadTemplateTablePage)
+        .fold(
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
+        ) { parsedTemplate =>
+          if parsedTemplate.hasErrors then {
+            Ok(errorView(parsedTemplate))
+          } else {
+            userAnswers
+              .get(CertificateSaoFullNamePage)
+              .fold(
+                Redirect(
+                  routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
+                )
+              ) { saoName =>
+                val allQualifiedCompanies =
+                  parsedTemplate.rows.flatMap(_.toQualifiedCompany)
+                val paginatedData =
+                  CompanyPagination(items = allQualifiedCompanies, requestedPage = page, pageSize = 5)
+                Ok(
+                  view(
+                    saoName = saoName,
+                    companyCount = parsedTemplate.rows.size,
+                    qualifiedCompanies = paginatedData.items,
+                    totalQualifiedCompanies = allQualifiedCompanies.size,
+                    currentPage = paginatedData.currentPage,
+                    pageCount = paginatedData.pageCount
                   )
-                ) { saoName =>
-                  val allQualifiedCompanies =
-                    parsedTemplate.rows.flatMap(_.toQualifiedCompany)
-                  val paginatedData =
-                    CompanyPagination(items = allQualifiedCompanies, requestedPage = page, pageSize = 5)
-                  Ok(
-                    view(
-                      saoName = saoName,
-                      companyCount = parsedTemplate.rows.size,
-                      qualifiedCompanies = paginatedData.items,
-                      totalQualifiedCompanies = allQualifiedCompanies.size,
-                      currentPage = paginatedData.currentPage,
-                      pageCount = paginatedData.pageCount
-                    )
-                  )
-                }
-            }
+                )
+              }
           }
+        }
     }
 
   def onSubmit(): Action[AnyContent] =

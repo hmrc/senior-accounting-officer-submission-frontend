@@ -17,9 +17,11 @@
 package controllers.combined.provideSaoDetails
 
 import base.SpecBase
+import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoLastOfficerStartDateFormProvider
 import models.{JourneySection, NormalMode, UserAnswers}
+import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -30,12 +32,11 @@ import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import repositories.SessionRepository
-import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
-import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import views.html.combined.provideSaoDetails.CombinedMultiSaoLastOfficerStartDateView
 
-import java.time.{LocalDate, ZoneOffset}
 import scala.concurrent.Future
+
+import java.time.{LocalDate, ZoneOffset}
 
 class CombinedMultiSaoLastOfficerStartDateControllerSpec extends SpecBase with MockitoSugar {
 
