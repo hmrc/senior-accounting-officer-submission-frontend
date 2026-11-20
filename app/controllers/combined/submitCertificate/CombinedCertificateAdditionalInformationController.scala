@@ -38,7 +38,7 @@ class CombinedCertificateAdditionalInformationController @Inject()(
                                                                     identify: IdentifierAction,
                                                                     getData: DataRetrievalAction,
                                                                     requireData: DataRequiredAction,
-                                                                    requireSubmitCertificateStageUnlocked: RequireCertificateSubmitCertificateStageUnlockedAction,
+                                                                    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction,
                                                                     formProvider: CertificateAdditionalInformationFormProvider,
                                                                     val controllerComponents: MessagesControllerComponents,
                                                                     view: CombinedCertificateAdditionalInformationView

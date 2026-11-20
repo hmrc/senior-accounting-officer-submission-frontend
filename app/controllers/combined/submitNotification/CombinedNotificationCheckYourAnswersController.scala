@@ -39,12 +39,11 @@ class CombinedNotificationCheckYourAnswersController @Inject()(
     sessionRepository: SessionRepository,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
+    requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedNotificationCheckYourAnswersView,
     notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
     saoUserAnswersService: SaoUserAnswersService,
-    navigator: CombinedNavigator,
     notificationSubmitService: NotificationSubmitService,
     appConfig: AppConfig
 )(using ec: ExecutionContext)

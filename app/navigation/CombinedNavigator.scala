@@ -16,23 +16,21 @@
 
 package navigation
 
-import controllers.certificate.routes as certificateRoutes
-import controllers.notification.routes as notificationRoutes
 import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
-import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
-import controllers.combined.submitNotification.routes as submitNotificationRoutes
-import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.combined.routes as combinedRoutes
+import controllers.combined.submitCertificate.routes as submitCertificateRoutes
+import controllers.combined.submitNotification.routes as submitNotificationRoutes
+import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
+import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
 import models.certificate.CertificateWhoIsSubmitting.{Sao, StandIn}
 import models.upload.UploadTemplateTableData
 import pages.*
 import pages.Page.NOTIFICATION_PATH
-import pages.certificate.CertificateSaoFullNamePage
+import pages.certificate.*
 import pages.combined.{CombinedCertificateConfirmationPage, CombinedNotificationConfirmationPage}
 import pages.notification.*
-import pages.certificate.*
 import play.api.mvc.Call
 
 import javax.inject.{Inject, Singleton}
@@ -55,7 +53,7 @@ class CombinedNavigator @Inject() () extends Navigator {
         userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
           case Some(true)  => provideSaoDetailsRoutes.CombinedMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
           case Some(false) => provideSaoDetailsRoutes.CombinedSingleSaoOfficerNameController.onPageLoad(NormalMode)
-          case _           => ???
+          case answer      => throw new IllegalStateException(s"Unexpected NotificationMoreThanOneSaoPage value - $answer")
         }
     case NotificationSingleSaoOfficerNamePage(mode) =>
       _ => combinedRoutes.CombinedTaskListController.onPageLoad
@@ -74,7 +72,7 @@ class CombinedNavigator @Inject() () extends Navigator {
         userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, mode)) match {
           case Some(true)  => combinedRoutes.CombinedTaskListController.onPageLoad
           case Some(false) => provideSaoDetailsRoutes.CombinedMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
-          case _ => ???
+          case answer      => throw new IllegalStateException(s"Unexpected NotificationMultiSaoAreAllAddedPage value - $answer")
         }
 
     case UploadTemplateTablePage =>
@@ -111,14 +109,14 @@ class CombinedNavigator @Inject() () extends Navigator {
             submitCertificateRoutes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
           case Some(StandIn) =>
             submitCertificateRoutes.CombinedCertificateDeclarationStandInController.onPageLoad(NormalMode)
-          case _ => ???
+          case answer => throw new IllegalStateException(s"Unexpected CertificateWhoIsSubmittingPage value - $answer")
         }
     case CertificateDeclarationSaoPage(_) | CertificateDeclarationStandInPage(_) =>
       _ => submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad()
     case CombinedCertificateConfirmationPage =>
       _ => combinedRoutes.CombinedTaskListController.onComplete
 
-    case _ => _ => ???
+    case page => _ => throw new IllegalStateException(s"Unexpected Page in normalRoutes - $page")
   }
 
   override protected val checkRouteMap: Page => UserAnswers => Call = {
@@ -143,7 +141,7 @@ class CombinedNavigator @Inject() () extends Navigator {
         }
     case NotificationAdditionalInformationPage =>
       _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
-    case _ => _ => ???
+    case page => _ => throw new IllegalStateException(s"Unexpected Page in checkRouteMap - $page")
   }
 
   private def hasSingleSaoAnswers(userAnswers: UserAnswers, mode: Mode): Boolean = {
@@ -205,7 +203,7 @@ class CombinedNavigator @Inject() () extends Navigator {
                 )
               case Some(false) => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
             }
-          case _ => ???
+          case answer => throw new IllegalStateException(s"Unexpected NotificationMultiSaoAreAllAddedPage value - $answer")
         }
     case NotificationMultiSaoPreviousOfficerNamePage(saoIndex, _) =>
       _ =>
@@ -214,6 +212,6 @@ class CombinedNavigator @Inject() () extends Navigator {
       _ => notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(TransactionMode, saoIndex)
     case NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, _) =>
       _ => notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(TransactionMode, saoIndex)
-    case _ => _ => ???
+    case page => _ => throw new IllegalStateException(s"Unexpected page - $page")
   }
 }

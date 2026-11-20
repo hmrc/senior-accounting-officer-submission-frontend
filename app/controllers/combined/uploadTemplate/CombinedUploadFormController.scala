@@ -23,7 +23,6 @@ import forms.UploadFormProvider.*
 import models.*
 import models.upscan.{FileUploadState, UploadJourney, UploadStatus}
 import pages.combined.CombinedUploadStatePage
-import pages.notification.NotificationUploadStatePage
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -37,7 +36,7 @@ class CombinedUploadFormController @Inject()(
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
+    requireNotificationUploadUnlocked: RequireCombinedNotificationUploadUnlockedAction,
     mcc: MessagesControllerComponents,
     combinedUploadFormView: CombinedUploadFormView,
     upscanInitiateConnector: UpscanInitiateConnector,
@@ -54,7 +53,7 @@ class CombinedUploadFormController @Inject()(
         code  <- codes.headOption
       } yield syncErrorKey(code)
 
-      val asyncError = request.userAnswers.get(NotificationUploadStatePage).collect {
+      val asyncError = request.userAnswers.get(CombinedUploadStatePage).collect {
         case FileUploadState(_, UploadStatus.Quarantined)    => "upload.error.quarantine"
         case FileUploadState(_, UploadStatus.Rejected)       => "upload.error.rejected"
         case FileUploadState(_, UploadStatus.UnknownFailure) => "upload.error.unknown"

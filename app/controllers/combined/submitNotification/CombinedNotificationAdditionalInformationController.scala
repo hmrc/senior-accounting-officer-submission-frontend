@@ -41,7 +41,7 @@ class CombinedNotificationAdditionalInformationController @Inject()(
                                                          identify: IdentifierAction,
                                                          getData: DataRetrievalAction,
                                                          requireData: DataRequiredAction,
-                                                         requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
+                                                         requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
                                                          formProvider: NotificationAdditionalInformationFormProvider,
                                                          val controllerComponents: MessagesControllerComponents,
                                                          view: CombinedNotificationAdditionalInformationView

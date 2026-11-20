@@ -21,7 +21,7 @@ import controllers.routes
 import models.upload.*
 import models.{CompanyPagination, JourneySection, NormalMode}
 import navigation.CombinedNavigator
-import pages.certificate.{CertificateReviewUnqualifiedPage, CertificateSaoFullNamePage, CertificateUploadTemplateTablePage}
+import pages.certificate.{CertificateReviewUnqualifiedPage, CertificateSaoFullNamePage}
 import pages.notification.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -37,17 +37,17 @@ class CombinedCertificateReviewUnqualifiedController @Inject()(
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    requireUploadSubmissionTemplateStageUnlocked: RequireCertificateUploadSubmissionTemplateUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedCertificateReviewUnqualifiedView,
     navigator: CombinedNavigator,
-    sessionRepository: SessionRepository
+    sessionRepository: SessionRepository,
+    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(page: Int = 0): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) {
       implicit request =>
         val userAnswers = request.userAnswers
         (for {
@@ -69,12 +69,12 @@ class CombinedCertificateReviewUnqualifiedController @Inject()(
             )
           )
         }).fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
         )(identity)
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked).async {
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
       implicit request =>
         for {
           updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateReviewUnqualifiedPage, true))

@@ -83,6 +83,10 @@ object CombinedStage {
   def canStartSubmitNotification(userAnswers: UserAnswers): Boolean =
     isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers)
 
+  def canStartSubmitCertificate(userAnswers: UserAnswers): Boolean = {
+    isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers) && isSubmitNotificationComplete(userAnswers)
+  }
+
   private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean = {
     val singleSaoCompleted =
       (for

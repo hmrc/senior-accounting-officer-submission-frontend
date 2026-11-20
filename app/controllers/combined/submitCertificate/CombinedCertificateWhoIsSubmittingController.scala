@@ -39,7 +39,8 @@ class CombinedCertificateWhoIsSubmittingController @Inject()(
     requireData: DataRequiredAction,
     formProvider: CertificateWhoIsSubmittingFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: CombinedCertificateWhoIsSubmittingView
+    view: CombinedCertificateWhoIsSubmittingView,
+    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
@@ -49,7 +50,7 @@ class CombinedCertificateWhoIsSubmittingController @Inject()(
     Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
     implicit request =>
       val form = formProvider()
       form

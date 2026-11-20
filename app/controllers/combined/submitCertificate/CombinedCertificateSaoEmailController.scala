@@ -40,21 +40,22 @@ class CombinedCertificateSaoEmailController @Inject()(
     requireData: DataRequiredAction,
     formProvider: CertificateSaoEmailFormProvider,
     val controllerComponents: MessagesControllerComponents,
-    view: CombinedCertificateSaoEmailView
+    view: CombinedCertificateSaoEmailView,
+    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.get(CertificateSaoEmailPage).fold(form)(form.fill)
     request.userAnswers
       .get(CertificateSaoFullNamePage)
       .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
+        Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
       )(saoName => Ok(view(saoName, preparedForm, mode)))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
     implicit request =>
       val form = formProvider()
       request.userAnswers.get(CertificateSaoFullNamePage) match {
@@ -71,7 +72,7 @@ class CombinedCertificateSaoEmailController @Inject()(
             )
         case None =>
           Future.successful(
-            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
           )
       }
   }

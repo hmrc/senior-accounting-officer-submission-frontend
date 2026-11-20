@@ -29,9 +29,9 @@ class CombinedNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "in Normal mode" - {
 
-      "must throw an not-implemented error for an unspecified configuration" in {
+      "must throw an illegal state error for an unspecified configuration" in {
         case object UnknownPage extends Page
-        intercept[NotImplementedError] {
+        intercept[IllegalStateException] {
           navigator.nextPage(UnknownPage, NormalMode, emptyUserAnswers)
         }
       }
@@ -40,9 +40,9 @@ class CombinedNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "in Check mode" - {
 
-      "must throw an not-implemented error for an unspecified configuration" in {
+      "must throw an illegal state error for an unspecified configuration" in {
         case object UnknownPage extends Page
-        intercept[NotImplementedError] {
+        intercept[IllegalStateException] {
           navigator.nextPage(UnknownPage, CheckMode, emptyUserAnswers)
         }
       }

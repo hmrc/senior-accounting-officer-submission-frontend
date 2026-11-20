@@ -62,7 +62,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, saoUserAnswers, "token")
+        .submit(userAnswersId, saoUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
@@ -113,7 +113,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, standInUserAnswers, "token")
+        .submit(userAnswersId, standInUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
@@ -171,7 +171,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
 
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
-      service.submit(userAnswersId, answers, "token").futureValue mustBe
+      service.submit(userAnswersId, answers, "token", isCombinedJourney = false).futureValue mustBe
         CertificateSubmissionResult.Submitted("CRT0123456789")
       verify(connector).submit(requestCaptor.capture())(using any())
       requestCaptor.getValue.saoName mustBe "Senior Officer"
@@ -192,7 +192,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
           .value
         val service = new CertificateSubmissionService(connector, sessionRepository)
 
-        service.submit(userAnswersId, answers, "token").futureValue mustBe CertificateSubmissionResult.MissingData
+        service.submit(userAnswersId, answers, "token", isCombinedJourney = false).futureValue mustBe CertificateSubmissionResult.MissingData
         verify(sessionRepository, never()).claimCertificateSubmissionToken(any(), any())
         verify(connector, never()).submit(any())(using any())
       }
@@ -208,7 +208,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, standInUserAnswers, "token")
+        .submit(userAnswersId, standInUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Duplicate
@@ -228,7 +228,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, standInUserAnswers, "token")
+        .submit(userAnswersId, standInUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Failed
@@ -248,7 +248,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, standInUserAnswers, "token")
+        .submit(userAnswersId, standInUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Submitted("CRT0123456789")
@@ -261,7 +261,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service           = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submit(userAnswersId, emptyUserAnswers, "token")
+        .submit(userAnswersId, emptyUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.MissingData
@@ -285,7 +285,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submitWithFaultTolerance(userAnswersId, saoUserAnswers, "token")
+        .submitWithFaultTolerance(userAnswersId, saoUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Pending("key")
@@ -338,7 +338,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submitWithFaultTolerance(userAnswersId, standInUserAnswers, "token")
+        .submitWithFaultTolerance(userAnswersId, standInUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Pending("key")
@@ -389,7 +389,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submitWithFaultTolerance(userAnswersId, standInUserAnswers, "token")
+        .submitWithFaultTolerance(userAnswersId, standInUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Duplicate
@@ -410,7 +410,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submitWithFaultTolerance(userAnswersId, standInUserAnswers, "token")
+        .submitWithFaultTolerance(userAnswersId, standInUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Failed
@@ -430,7 +430,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       val service = new CertificateSubmissionService(connector, sessionRepository)
 
       val result = service
-        .submitWithFaultTolerance(userAnswersId, standInUserAnswers, "token")
+        .submitWithFaultTolerance(userAnswersId, standInUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Pending("key")
@@ -445,7 +445,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
       when(sessionRepository.set(any())).thenReturn(Future.successful(true))
 
       val result = service
-        .submitWithFaultTolerance(userAnswersId, emptyUserAnswers, "token")
+        .submitWithFaultTolerance(userAnswersId, emptyUserAnswers, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.MissingData
@@ -472,7 +472,7 @@ class CertificateSubmissionServiceSpec extends SpecBase {
           .value
 
       val result = service
-        .submitWithFaultTolerance(userAnswersId, saoAnswersWithIdempotencyKey, "token")
+        .submitWithFaultTolerance(userAnswersId, saoAnswersWithIdempotencyKey, "token", isCombinedJourney = false)
         .futureValue
 
       result mustBe CertificateSubmissionResult.Pending("idemKey")

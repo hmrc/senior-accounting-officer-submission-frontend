@@ -39,7 +39,7 @@ class CombinedUploadTemplateTableController @Inject()(
                                                        identify: IdentifierAction,
                                                        getData: DataRetrievalAction,
                                                        requireData: DataRequiredAction,
-                                                       requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
+                                                       requireNotificationUploadUnlocked: RequireCombinedNotificationUploadUnlockedAction,
                                                        val controllerComponents: MessagesControllerComponents,
                                                        view: CombinedUploadTemplateTableView,
                                                        errorView: CombinedUploadTemplateTableErrorView,
@@ -55,7 +55,7 @@ class CombinedUploadTemplateTableController @Inject()(
       request.userAnswers
         .get(UploadTemplateTablePage)
         .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification)))
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
         ) { tableData =>
           if tableData.hasErrors then {
             Ok(errorView(tableData))
@@ -80,7 +80,7 @@ class CombinedUploadTemplateTableController @Inject()(
         .fold(
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
             )
           )
         ) {
