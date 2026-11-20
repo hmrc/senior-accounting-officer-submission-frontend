@@ -1,0 +1,91 @@
+/*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.combined.submitNotification
+
+import config.AppConfig
+import controllers.actions.*
+import controllers.combined.submitNotification.routes as submitNotificationRoutes
+import models.UserAnswers
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
+import services.{NotificationCheckYourAnswersService, NotificationSubmitService, SaoUserAnswersService}
+import uk.gov.hmrc.http.InternalServerException
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.combined.submitNotification.CombinedNotificationCheckYourAnswersView
+
+import scala.concurrent.ExecutionContext
+
+import javax.inject.Inject
+
+class CombinedNotificationCheckYourAnswersController @Inject() (
+    override val messagesApi: MessagesApi,
+    identify: IdentifierAction,
+    sessionRepository: SessionRepository,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
+    val controllerComponents: MessagesControllerComponents,
+    view: CombinedNotificationCheckYourAnswersView,
+    notificationCheckYourAnswersService: NotificationCheckYourAnswersService,
+    saoUserAnswersService: SaoUserAnswersService,
+    notificationSubmitService: NotificationSubmitService,
+    appConfig: AppConfig
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport {
+
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
+      val sanitisedUserAnswers = saoUserAnswersService.sanitiseUserAnswers(request.userAnswers)
+      for {
+        _ <- sessionRepository.set(sanitisedUserAnswers)
+      } yield {
+        val summaryList = notificationCheckYourAnswersService.getSummaryList(sanitisedUserAnswers)
+
+        Ok(view(summaryList, sanitisedUserAnswers.getFinancialYearEndDate))
+      }
+    }
+
+  def onSubmit(): Action[AnyContent] = {
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
+      if appConfig.faultToleranceEnabled then {
+        notificationSubmitService
+          .submitWithFaultTolerance(request.userAnswers)
+          .map {
+            _.fold(
+              error => throw new InternalServerException(error.message),
+              idempotencyKey =>
+                Redirect(submitNotificationRoutes.CombinedNotificationSubmittingController.onPageLoad(idempotencyKey))
+            )
+          }
+      } else {
+        notificationSubmitService
+          .submit(request.userAnswers, wipeNotificationData = false)
+          .map {
+            _.fold(
+              error => throw new InternalServerException(error.message),
+              notificationReference =>
+                Redirect(
+                  submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(notificationReference)
+                )
+            )
+          }
+      }
+    }
+  }
+}

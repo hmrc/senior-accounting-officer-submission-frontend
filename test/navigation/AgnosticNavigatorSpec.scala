@@ -18,6 +18,7 @@ package navigation
 
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
+import controllers.combined.routes as combinedRoutes
 import controllers.notification.routes as notificationRoutes
 import models.*
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -31,9 +32,9 @@ class AgnosticNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "in Normal mode" - {
 
-      "must throw an not-implemented error for an unspecified configuration" in {
+      "must throw an illegal state error for an unspecified configuration" in {
         case object UnknownPage extends Page
-        intercept[NotImplementedError] {
+        intercept[IllegalStateException] {
           navigator.nextPage(UnknownPage, NormalMode, emptyUserAnswers)
         }
       }
@@ -57,20 +58,18 @@ class AgnosticNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         }
 
         "when on SubmissionTypePage and the user chose both the notification and the certificate, must throw an exception" in {
-          intercept[NotImplementedError] {
-            navigator.nextPage(
-              SubmissionTypePage,
-              NormalMode,
-              emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Combined).get
-            )
-          }
+          navigator.nextPage(
+            SubmissionTypePage,
+            NormalMode,
+            emptyUserAnswers.set(SubmissionTypePage, SubmissionType.Combined).get
+          ) mustBe combinedRoutes.CombinedTaskListController.onPageLoad
         }
       }
     }
 
     "in Check mode" - {
 
-      "must throw an not-implemented error for an unspecified configuration" in {
+      "must throw an illegal state error for an unspecified configuration" in {
         case object UnknownPage extends Page
         intercept[NotImplementedError] {
           navigator.nextPage(UnknownPage, CheckMode, emptyUserAnswers)

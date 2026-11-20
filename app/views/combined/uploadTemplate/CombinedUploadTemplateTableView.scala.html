@@ -1,0 +1,126 @@
+@*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.combined.uploadTemplate.{ routes => uploadTemplateRoutes }
+@import utils.DateTimeFormats.dateTimeFormat
+@this(
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukButton: GovukButton
+)
+
+@(tableData: models.upload.UploadTemplateTableData, saoName: String, currentPage: Int, pageCount: Int)(using request: Request[?], messages: Messages)
+
+@asDisplay(value: Option[String]) = {
+    @value.getOrElse(messages("uploadTemplateTable.table.emptyField"))
+}
+
+@asDisplayCrn(value: Option[models.upload.CompanyCrn]) = {
+    @value.map(_.value).getOrElse(messages("uploadTemplateTable.table.emptyField"))
+}
+
+@uploadUrl = @{uploadTemplateRoutes.CombinedUploadFormController.onPageLoad().url}
+@companyCount = @{tableData.rows.size}
+@paragraph1Key = @{if companyCount == 1 then "uploadTemplateTable.paragraph1.singular" else "uploadTemplateTable.paragraph1.plural"}
+
+@layout(pageTitle = titleNoForm(messages("uploadTemplateTable.title"), Some("section.combined"))) {
+    <span class="govuk-caption-l">@messages("uploadTemplateTable.caption")</span>
+    <h1 class="govuk-heading-l">@messages("uploadTemplateTable.heading")</h1>
+    <p class="govuk-body">@messages(paragraph1Key, companyCount.toString, saoName)</p>
+    <p class="govuk-body">
+        @Html(messages("uploadTemplateTable.paragraph2WithLink", uploadUrl))
+    </p>
+
+
+    <table class="govuk-table govuk-!-font-size-16">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">@messages("uploadTemplateTable.table.companyName")</th>
+                <th scope="col" class="govuk-table__header">@messages("uploadTemplateTable.table.companyCrn")</th>
+                <th scope="col" class="govuk-table__header">@messages("uploadTemplateTable.table.companyUtr")</th>
+                <th scope="col" class="govuk-table__header">@messages("uploadTemplateTable.table.companyType")</th>
+                <th scope="col" class="govuk-table__header">@messages("uploadTemplateTable.table.companyStatus")</th>
+                <th scope="col" class="govuk-table__header">@messages("uploadTemplateTable.table.financialYearEndDate")</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            @if(tableData.rows.isEmpty) {
+                <tr class="govuk-table__row">
+                    <td class="govuk-table__cell" colspan="6">@messages("uploadTemplateTable.parsedData.empty")</td>
+                </tr>
+            } else {
+                @for(row <- tableData.rows) {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">@row.notification.companyName</td>
+                        <td class="govuk-table__cell">@asDisplayCrn(row.notification.companyCrn)</td>
+                        <td class="govuk-table__cell">@row.notification.companyUtr.value</td>
+                        <td class="govuk-table__cell">@row.notification.companyType</td>
+                        <td class="govuk-table__cell">@row.notification.companyStatus</td>
+                        <td class="govuk-table__cell">@row.notification.financialYearEndDate.format(dateTimeFormat()(using messages.lang))</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    @if(pageCount > 1) {
+        <nav class="govuk-pagination" aria-label=@messages("pagination.label")>
+            @if(currentPage > 1) {
+                <div class="govuk-pagination__prev">
+                    <a class="govuk-link govuk-pagination__link"
+                       href="@uploadTemplateRoutes.CombinedUploadTemplateTableController.onPageLoad(currentPage - 1)"
+                       rel="prev"
+                       aria-label="@messages("pagination.previous")">
+                        <span aria-hidden="true">←</span>
+                        <span class="govuk-pagination__link-title">@messages("pagination.previous")</span>
+                    </a>
+                </div>
+            }
+
+
+            <ul class="govuk-pagination__list">
+                @for(pageNumber <- 1 to pageCount) {
+                    <li class="govuk-pagination__item @if(pageNumber == currentPage) {govuk-pagination__item--current}">
+                        <a class="govuk-link govuk-pagination__link"
+                           href="@uploadTemplateRoutes.CombinedUploadTemplateTableController.onPageLoad(pageNumber)"
+                           aria-label="@messages("pagination.hidden", pageNumber)"
+                           @if(pageNumber == currentPage) {aria-current="page"}>
+                            @pageNumber
+                        </a>
+                    </li>
+                }
+            </ul>
+
+            @if(currentPage < pageCount) {
+                <div class="govuk-pagination__next">
+                    <a class="govuk-link govuk-pagination__link"
+                       href="@uploadTemplateRoutes.CombinedUploadTemplateTableController.onPageLoad(currentPage + 1)"
+                       rel="next"
+                       aria-label="@messages("pagination.next")">
+                        <span class="govuk-pagination__link-title">@messages("pagination.next")</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            }
+        </nav>
+    }
+
+    @formHelper(action = uploadTemplateRoutes.CombinedUploadTemplateTableController.onSubmit()) {
+        @govukButton(
+            ButtonViewModel(messages("uploadTemplateTable.continue").toText).withAttribute("id", "submit")
+        )
+    }
+}

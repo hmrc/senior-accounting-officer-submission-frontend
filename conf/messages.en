@@ -166,6 +166,7 @@ notificationConfirmation.paragraph1 = HMRC has received your notification. We’
 notificationConfirmation.paragraph2 = To keep a record of your submission, you can:
 notificationConfirmation.paragraph3 = Someone from HMRC may contact you if they need more information.
 notificationConfirmation.paragraph4WithLink = You can submit a certificate or another notification from your <a href="{0}" class="govuk-link" id="account-homepage-link">account homepage</a>.
+notificationConfirmation.paragraph4Combined = You can submit a certificate.
 notificationConfirmation.list1.item1WithLink = <a href="{0}" class="govuk-link" id="download-pdf-link">download a PDF</a> to save a copy of all the answers. You may not be able to do this after you leave this page
 notificationConfirmation.list1.item2WithLink = <a href="{0}" class="govuk-link" id="print-page-link">print this page</a> to keep a paper copy of your confirmation
 notificationConfirmation.subheading = What happens next
@@ -595,6 +596,25 @@ certificateUploadForm.caption = Submit a certificate
 certificateUploadForm.paragraph1 = The template must be uploaded in CSV format. If your template is saved as .xls or .xlsx, save it again as a CSV (comma delimited) (.csv) file before uploading.
 certificateUploadForm.paragraph2 = Read guidance on how to complete the submission template (opens in new tab)
 certificateUploadForm.inset.text = If your group has more than one SAO, you must submit a separate certificate for each one. After you complete this submission, you can start another certificate.
+
+## Combined Journey ##
+section.combined = Submit a notification and certificate
+
+combinedTaskList.title = Submit a notification and certificate
+combinedTaskList.heading = Submit a notification and certificate
+combinedTaskList.paragraph1 = Submit a notification and certificate for each SAO in your organisation. The notification must include the SAO’s name and all the companies they were responsible for. The certificate confirms whether your company’s tax accounting arrangements were appropriate for a previous financial year.
+combinedTaskList.provideSaoDetailsLinkText = Provide the SAO’s details
+combinedTaskList.uploadNotificationLinkText = Upload the submission template
+combinedTaskList.submitNotificationLinkText = Submit the notification
+combinedTaskList.submitCertificateLinkText = Submit the certificate
+
+combinedTaskList.row.status.cannotStartYet = Cannot start yet
+combinedTaskList.row.status.completed = Completed
+combinedTaskList.row.status.notStarted = Not started
+
+combinedJourney.provideSaoDetails.caption = Provide the SAO’s details
+
+combinedTaskList.homepageButton = Go back to the homepage
 
 pageNotFound.title = Error: Page not found
 pageNotFound.heading = Page not found

@@ -1,0 +1,107 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.combined.provideSaoDetails
+
+import controllers.actions.*
+import controllers.routes
+import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
+import models.JourneySection.Combined
+import models.{JourneySection, Mode}
+import navigation.CombinedNavigator
+import pages.notification.{
+  NotificationMultiSaoPreviousOfficerEndDatePage,
+  NotificationMultiSaoPreviousOfficerNamePage,
+  NotificationMultiSaoPreviousOfficerStartDatePage
+}
+import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import repositories.SessionRepository
+import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import views.html.combined.provideSaoDetails.CombinedMultiSaoPreviousOfficerEndDateView
+
+import scala.concurrent.{ExecutionContext, Future}
+
+import javax.inject.Inject
+
+class CombinedMultiSaoPreviousOfficerEndDateController @Inject() (
+    override val messagesApi: MessagesApi,
+    sessionRepository: SessionRepository,
+    navigator: CombinedNavigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    formProvider: NotificationMultiSaoPreviousOfficerEndDateFormProvider,
+    val controllerComponents: MessagesControllerComponents,
+    view: CombinedMultiSaoPreviousOfficerEndDateView
+)(using ec: ExecutionContext)
+    extends FrontendBaseController
+    with I18nSupport {
+
+  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
+    implicit request =>
+      val saoNameAnswer      = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
+      val saoStartPageAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
+
+      (saoNameAnswer, saoStartPageAnswer) match {
+        case (Some(saoName), Some(saoStartDate)) =>
+          val form         = formProvider(saoName, saoStartDate)
+          val preparedForm =
+            request.userAnswers
+              .get(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, mode))
+              .fold(form)(form.fill)
+          Ok(view(saoName, preparedForm, mode, saoIndex))
+        case _ =>
+          Redirect(
+            routes.JourneyRecoveryController
+              .onPageLoad(section = Some(Combined))
+          )
+      }
+  }
+
+  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      val saoNameAnswer      = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
+      val saoStartPageAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
+
+      (saoNameAnswer, saoStartPageAnswer) match {
+        case (Some(saoName), Some(saoStartDate)) =>
+          val form = formProvider(saoName, saoStartDate)
+          form
+            .bindFromRequest()
+            .fold(
+              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode, saoIndex))),
+              value =>
+                for {
+                  updatedAnswers <- Future
+                    .fromTry(
+                      request.userAnswers.set(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, mode), value)
+                    )
+                  _ <- sessionRepository.set(updatedAnswers)
+                } yield Redirect(
+                  navigator
+                    .nextPage(NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, mode), mode, updatedAnswers)
+                )
+            )
+        case _ =>
+          Future.successful(
+            Redirect(
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
+            )
+          )
+      }
+  }
+}
