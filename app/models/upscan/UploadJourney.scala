@@ -41,11 +41,11 @@ enum UploadJourney(
         s"data.$CERTIFICATE_PATH.$CertificateUploadStatePage"
       )
   case Combined
-    extends UploadJourney(
-      "combined",
-      CombinedUploadStatePage,
-      s"data.$COMBINED_PATH.$CombinedUploadStatePage"
-    )
+      extends UploadJourney(
+        "combined",
+        CombinedUploadStatePage,
+        s"data.$COMBINED_PATH.$CombinedUploadStatePage"
+      )
 }
 
 object UploadJourney {

@@ -48,12 +48,12 @@ enum CombinedStage(
       )
 
   case SubmitCertificateInfo
-    extends CombinedStage(
-      provideSaoDetailsStatus = Completed,
-      uploadTemplateStatus = Completed,
-      submitNotificationStatus = Completed,
-      submitCertificateStatus = NotStarted
-  )
+      extends CombinedStage(
+        provideSaoDetailsStatus = Completed,
+        uploadTemplateStatus = Completed,
+        submitNotificationStatus = Completed,
+        submitCertificateStatus = NotStarted
+      )
 
   case AllStagesCompleted
       extends CombinedStage(
@@ -84,7 +84,9 @@ object CombinedStage {
     isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers)
 
   def canStartSubmitCertificate(userAnswers: UserAnswers): Boolean = {
-    isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(userAnswers) && isSubmitNotificationComplete(userAnswers)
+    isProvideSaoDetailsComplete(userAnswers) && isUploadNotificationTemplateComplete(
+      userAnswers
+    ) && isSubmitNotificationComplete(userAnswers)
   }
 
   private def isProvideSaoDetailsComplete(userAnswers: UserAnswers): Boolean = {

@@ -17,8 +17,7 @@
 package pages.combined
 
 import models.Area.*
-import models.Mode
-import pages.Page.{CERTIFICATE_PATH, NOTIFICATION_PATH}
+import pages.Page.CERTIFICATE_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 

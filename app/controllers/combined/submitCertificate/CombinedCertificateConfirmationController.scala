@@ -26,10 +26,11 @@ import services.ObjectStoreService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitCertificate.CombinedCertificateConfirmationView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedCertificateConfirmationController @Inject()(
+import javax.inject.Inject
+
+class CombinedCertificateConfirmationController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,
@@ -57,6 +58,8 @@ class CombinedCertificateConfirmationController @Inject()(
 
   def onSubmit(): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      Future.successful(Redirect(navigator.nextPage(CombinedCertificateConfirmationPage, NormalMode, request.userAnswers)))
+      Future.successful(
+        Redirect(navigator.nextPage(CombinedCertificateConfirmationPage, NormalMode, request.userAnswers))
+      )
     }
 }

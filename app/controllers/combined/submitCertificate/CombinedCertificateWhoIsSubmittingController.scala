@@ -27,10 +27,11 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitCertificate.CombinedCertificateWhoIsSubmittingView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedCertificateWhoIsSubmittingController @Inject()(
+import javax.inject.Inject
+
+class CombinedCertificateWhoIsSubmittingController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: CombinedNavigator,
@@ -50,18 +51,19 @@ class CombinedCertificateWhoIsSubmittingController @Inject()(
     Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-    implicit request =>
-      val form = formProvider()
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateWhoIsSubmittingPage(mode), value))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateWhoIsSubmittingPage(mode), mode, updatedAnswers))
-        )
-  }
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
+      implicit request =>
+        val form = formProvider()
+        form
+          .bindFromRequest()
+          .fold(
+            formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+            value =>
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateWhoIsSubmittingPage(mode), value))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(CertificateWhoIsSubmittingPage(mode), mode, updatedAnswers))
+          )
+    }
 }

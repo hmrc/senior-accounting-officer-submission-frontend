@@ -17,8 +17,8 @@
 package controllers.combined.uploadTemplate
 
 import base.SpecBase
-import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.combined.routes as combinedRoutes
+import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.routes
 import models.upload.*
 import models.{JourneySection, NormalMode}
@@ -37,8 +37,9 @@ import repositories.SessionRepository
 import services.csvparser.UploadTemplateCsvSchema.{Column, TemplateError}
 import views.html.combined.uploadTemplate.{CombinedUploadTemplateTableErrorView, CombinedUploadTemplateTableView}
 
-import java.time.LocalDate
 import scala.concurrent.Future
+
+import java.time.LocalDate
 
 class CombinedUploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
 

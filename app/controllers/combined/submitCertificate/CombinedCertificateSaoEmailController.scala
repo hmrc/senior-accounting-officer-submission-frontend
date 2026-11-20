@@ -28,10 +28,11 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitCertificate.CombinedCertificateSaoEmailView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedCertificateSaoEmailController @Inject()(
+import javax.inject.Inject
+
+class CombinedCertificateSaoEmailController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: CombinedNavigator,
@@ -45,35 +46,37 @@ class CombinedCertificateSaoEmailController @Inject()(
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
-    val form         = formProvider()
-    val preparedForm = request.userAnswers.get(CertificateSaoEmailPage).fold(form)(form.fill)
-    request.userAnswers
-      .get(CertificateSaoFullNamePage)
-      .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
-      )(saoName => Ok(view(saoName, preparedForm, mode)))
-  }
+  def onPageLoad(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
+      val form         = formProvider()
+      val preparedForm = request.userAnswers.get(CertificateSaoEmailPage).fold(form)(form.fill)
+      request.userAnswers
+        .get(CertificateSaoFullNamePage)
+        .fold(
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
+        )(saoName => Ok(view(saoName, preparedForm, mode)))
+    }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-    implicit request =>
-      val form = formProvider()
-      request.userAnswers.get(CertificateSaoFullNamePage) match {
-        case Some(saoName) =>
-          form
-            .bindFromRequest()
-            .fold(
-              formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
-              value =>
-                for {
-                  updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateSaoEmailPage, value))
-                  _              <- sessionRepository.set(updatedAnswers)
-                } yield Redirect(navigator.nextPage(CertificateSaoEmailPage, mode, updatedAnswers))
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
+      implicit request =>
+        val form = formProvider()
+        request.userAnswers.get(CertificateSaoFullNamePage) match {
+          case Some(saoName) =>
+            form
+              .bindFromRequest()
+              .fold(
+                formWithErrors => Future.successful(BadRequest(view(saoName, formWithErrors, mode))),
+                value =>
+                  for {
+                    updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateSaoEmailPage, value))
+                    _              <- sessionRepository.set(updatedAnswers)
+                  } yield Redirect(navigator.nextPage(CertificateSaoEmailPage, mode, updatedAnswers))
+              )
+          case None =>
+            Future.successful(
+              Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
             )
-        case None =>
-          Future.successful(
-            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
-          )
-      }
-  }
+        }
+    }
 }

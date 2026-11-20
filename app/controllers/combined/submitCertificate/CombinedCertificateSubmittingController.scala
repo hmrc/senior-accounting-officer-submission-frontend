@@ -18,7 +18,6 @@ package controllers.combined.submitCertificate
 
 import com.google.inject.Inject
 import controllers.actions.*
-import controllers.certificate.routes as certificateRoutes
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import play.api.i18n.I18nSupport
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -30,7 +29,7 @@ import views.html.combined.submitCertificate.CombinedCertificateSubmittingView
 
 import scala.concurrent.ExecutionContext
 
-class CombinedCertificateSubmittingController @Inject()(
+class CombinedCertificateSubmittingController @Inject() (
     view: CombinedCertificateSubmittingView,
     certificateSubmissionService: CertificateSubmissionService,
     identify: IdentifierAction,
@@ -43,12 +42,13 @@ class CombinedCertificateSubmittingController @Inject()(
     with I18nSupport {
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async { implicit request =>
-      certificateSubmissionService.getStateOfWorkItem(idempotencyKey, request.userAnswers).map {
-        case CertificateSubmissionResult.Submitted(certificateRef) =>
-          Redirect(submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef))
-        case CertificateSubmissionResult.Pending(_) => Ok(view())
-        case _ => throw new InternalServerException(s"Error getting certificate state")
-      }
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
+      implicit request =>
+        certificateSubmissionService.getStateOfWorkItem(idempotencyKey, request.userAnswers).map {
+          case CertificateSubmissionResult.Submitted(certificateRef) =>
+            Redirect(submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef))
+          case CertificateSubmissionResult.Pending(_) => Ok(view())
+          case _ => throw new InternalServerException(s"Error getting certificate state")
+        }
     }
 }

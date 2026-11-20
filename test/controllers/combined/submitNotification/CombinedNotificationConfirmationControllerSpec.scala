@@ -17,6 +17,7 @@
 package controllers.combined.submitNotification
 
 import base.SpecBase
+import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import controllers.routes
 import models.JourneySection
 import org.mockito.ArgumentMatchers.any
@@ -27,7 +28,6 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import services.ObjectStoreService
-import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import views.html.combined.submitNotification.CombinedNotificationConfirmationView
 
 import scala.concurrent.Future
@@ -55,7 +55,10 @@ class CombinedNotificationConfirmationControllerSpec extends SpecBase {
 
         running(application) {
           val request =
-            FakeRequest(GET, submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
+            FakeRequest(
+              GET,
+              submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(hardCodedNotRef).url
+            )
 
           val result = route(application, request).value
 
@@ -83,7 +86,10 @@ class CombinedNotificationConfirmationControllerSpec extends SpecBase {
 
         running(application) {
           val request =
-            FakeRequest(GET, submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
+            FakeRequest(
+              GET,
+              submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(hardCodedNotRef).url
+            )
 
           val result = route(application, request).value
 
@@ -103,7 +109,10 @@ class CombinedNotificationConfirmationControllerSpec extends SpecBase {
 
         running(application) {
           val request =
-            FakeRequest(GET, submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(hardCodedNotRef).url)
+            FakeRequest(
+              GET,
+              submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(hardCodedNotRef).url
+            )
 
           val result = route(application, request).value
 

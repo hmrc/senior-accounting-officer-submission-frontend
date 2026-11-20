@@ -18,8 +18,8 @@ package navigation
 
 import base.SpecBase
 import controllers.certificate.routes as certificateRoutes
-import controllers.notification.routes as notificationRoutes
 import controllers.combined.routes as combinedRoutes
+import controllers.notification.routes as notificationRoutes
 import models.*
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.*

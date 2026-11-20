@@ -29,10 +29,11 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.provideSaoDetails.CombinedMultiSaoPreviousOfficerNameView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedMultiSaoPreviousOfficerNameController @Inject()(
+import javax.inject.Inject
+
+class CombinedMultiSaoPreviousOfficerNameController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: CombinedNavigator,

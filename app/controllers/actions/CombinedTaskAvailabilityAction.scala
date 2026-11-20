@@ -22,8 +22,9 @@ import models.requests.DataRequest
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{ActionFilter, Result}
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+
+import javax.inject.Inject
 
 class RequireCombinedNotificationUploadUnlockedAction @Inject() (implicit val executionContext: ExecutionContext)
     extends ActionFilter[DataRequest] {
@@ -48,7 +49,7 @@ class RequireCombinedSubmitNotificationUnlockedAction @Inject() (implicit val ex
 }
 
 class RequireCombinedSubmitCertificateUnlockedAction @Inject() (implicit val executionContext: ExecutionContext)
-  extends ActionFilter[DataRequest] {
+    extends ActionFilter[DataRequest] {
 
   override protected def filter[A](request: DataRequest[A]): Future[Option[Result]] =
     Future.successful {

@@ -22,17 +22,22 @@ import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
 import models.JourneySection.Combined
 import models.{JourneySection, Mode}
 import navigation.CombinedNavigator
-import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage, NotificationMultiSaoPreviousOfficerStartDatePage}
+import pages.notification.{
+  NotificationMultiSaoPreviousOfficerEndDatePage,
+  NotificationMultiSaoPreviousOfficerNamePage,
+  NotificationMultiSaoPreviousOfficerStartDatePage
+}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.provideSaoDetails.CombinedMultiSaoPreviousOfficerEndDateView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedMultiSaoPreviousOfficerEndDateController @Inject()(
+import javax.inject.Inject
+
+class CombinedMultiSaoPreviousOfficerEndDateController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: CombinedNavigator,

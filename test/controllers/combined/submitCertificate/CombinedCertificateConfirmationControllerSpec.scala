@@ -54,7 +54,10 @@ class CombinedCertificateConfirmationControllerSpec extends SpecBase {
 
         running(application) {
           val request =
-            FakeRequest(GET, submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef).url)
+            FakeRequest(
+              GET,
+              submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef).url
+            )
 
           val result = route(application, request).value
 
@@ -79,7 +82,10 @@ class CombinedCertificateConfirmationControllerSpec extends SpecBase {
 
         running(application) {
           val request =
-            FakeRequest(GET, submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef).url)
+            FakeRequest(
+              GET,
+              submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef).url
+            )
 
           val result = route(application, request).value
 
@@ -96,7 +102,10 @@ class CombinedCertificateConfirmationControllerSpec extends SpecBase {
 
         running(application) {
           val request =
-            FakeRequest(GET, submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef).url)
+            FakeRequest(
+              GET,
+              submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef).url
+            )
 
           val result = route(application, request).value
 

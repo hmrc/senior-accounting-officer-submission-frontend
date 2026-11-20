@@ -29,7 +29,7 @@ import views.html.combined.submitNotification.CombinedNotificationSubmittingView
 
 import scala.concurrent.ExecutionContext
 
-class CombinedNotificationSubmittingController @Inject()(
+class CombinedNotificationSubmittingController @Inject() (
     view: CombinedNotificationSubmittingView,
     notificationSubmitService: NotificationSubmitService,
     identify: IdentifierAction,
@@ -43,12 +43,14 @@ class CombinedNotificationSubmittingController @Inject()(
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-      notificationSubmitService.getStateOfWorkItem(idempotencyKey, request.userAnswers, wipeNotificationData = false).map {
-        case Success(notificationRef) =>
-          Redirect(submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(notificationRef))
-        case Pending(_)      => Ok(view())
-        case Failure(status) =>
-          throw new InternalServerException(s"Error getting notification state with status $status")
-      }
+      notificationSubmitService
+        .getStateOfWorkItem(idempotencyKey, request.userAnswers, wipeNotificationData = false)
+        .map {
+          case Success(notificationRef) =>
+            Redirect(submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(notificationRef))
+          case Pending(_)      => Ok(view())
+          case Failure(status) =>
+            throw new InternalServerException(s"Error getting notification state with status $status")
+        }
     }
 }

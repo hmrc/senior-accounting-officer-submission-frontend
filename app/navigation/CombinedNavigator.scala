@@ -53,7 +53,7 @@ class CombinedNavigator @Inject() () extends Navigator {
         userAnswers.get(NotificationMoreThanOneSaoPage(NormalMode)) match {
           case Some(true)  => provideSaoDetailsRoutes.CombinedMultiSaoLastOfficerNameController.onPageLoad(NormalMode)
           case Some(false) => provideSaoDetailsRoutes.CombinedSingleSaoOfficerNameController.onPageLoad(NormalMode)
-          case answer      => throw new IllegalStateException(s"Unexpected NotificationMoreThanOneSaoPage value - $answer")
+          case answer => throw new IllegalStateException(s"Unexpected NotificationMoreThanOneSaoPage value - $answer")
         }
     case NotificationSingleSaoOfficerNamePage(mode) =>
       _ => combinedRoutes.CombinedTaskListController.onPageLoad
@@ -71,8 +71,10 @@ class CombinedNavigator @Inject() () extends Navigator {
       userAnswers =>
         userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, mode)) match {
           case Some(true)  => combinedRoutes.CombinedTaskListController.onPageLoad
-          case Some(false) => provideSaoDetailsRoutes.CombinedMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
-          case answer      => throw new IllegalStateException(s"Unexpected NotificationMultiSaoAreAllAddedPage value - $answer")
+          case Some(false) =>
+            provideSaoDetailsRoutes.CombinedMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
+          case answer =>
+            throw new IllegalStateException(s"Unexpected NotificationMultiSaoAreAllAddedPage value - $answer")
         }
 
     case UploadTemplateTablePage =>
@@ -146,16 +148,16 @@ class CombinedNavigator @Inject() () extends Navigator {
 
   private def hasSingleSaoAnswers(userAnswers: UserAnswers, mode: Mode): Boolean = {
     userAnswers.get(NotificationMoreThanOneSaoPage(mode)).nonEmpty &&
-      userAnswers.get(NotificationSingleSaoOfficerNamePage(mode)).nonEmpty
+    userAnswers.get(NotificationSingleSaoOfficerNamePage(mode)).nonEmpty
   }
 
   private def hasMultiSaoAnswers(userAnswers: UserAnswers, mode: Mode): Boolean = {
     userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage(mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(0, mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(0, mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(0, mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoAreAllAddedPage(0, mode)).nonEmpty
+    userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage(mode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(0, mode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(0, mode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(0, mode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoAreAllAddedPage(0, mode)).nonEmpty
   }
 
   private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean = {
@@ -203,7 +205,8 @@ class CombinedNavigator @Inject() () extends Navigator {
                 )
               case Some(false) => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
             }
-          case answer => throw new IllegalStateException(s"Unexpected NotificationMultiSaoAreAllAddedPage value - $answer")
+          case answer =>
+            throw new IllegalStateException(s"Unexpected NotificationMultiSaoAreAllAddedPage value - $answer")
         }
     case NotificationMultiSaoPreviousOfficerNamePage(saoIndex, _) =>
       _ =>

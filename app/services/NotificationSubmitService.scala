@@ -41,14 +41,16 @@ class NotificationSubmitService @Inject() (
 )(using
     ec: ExecutionContext
 ) {
-  def submit(userAnswers: UserAnswers, wipeNotificationData: Boolean)(using HeaderCarrier): Future[Either[NotificationSubmissionError, String]] = {
+  def submit(userAnswers: UserAnswers, wipeNotificationData: Boolean)(using
+      HeaderCarrier
+  ): Future[Either[NotificationSubmissionError, String]] = {
     protectedServiceConnector
       .postNotification(userAnswers.toNotification(idempotencyKey = None))
       .flatMap { response =>
         response.status match {
           case OK =>
             val notificationReference = Json.parse(response.body).as[NotificationResponse].notificationRef
-            if(wipeNotificationData) {
+            if wipeNotificationData then {
               sessionRepository
                 .set(userAnswers.copy(data = Json.obj()))
                 .map(_ => Right(notificationReference))
@@ -88,7 +90,7 @@ class NotificationSubmitService @Inject() (
             Future.successful(Pending(idempotencyKey))
           case OK =>
             val notificationReference = Json.parse(response.body).as[NotificationResponse].notificationRef
-            if(wipeNotificationData) {
+            if wipeNotificationData then {
               sessionRepository.set(userAnswers.copy(data = Json.obj()))
             }
             Future.successful(NotificationState.Success(notificationReference))

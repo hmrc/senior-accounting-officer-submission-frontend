@@ -17,8 +17,8 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
-import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.combined.routes as combinedRoutes
+import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.routes
 import forms.certificate.CertificateAdditionalInformationFormProvider
 import models.{JourneySection, NormalMode}
@@ -200,7 +200,10 @@ class CombinedCertificateAdditionalInformationControllerSpec extends SpecBase wi
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
         val request =
-          FakeRequest(POST, submitCertificateRoutes.CombinedCertificateAdditionalInformationController.onSubmit(NormalMode).url)
+          FakeRequest(
+            POST,
+            submitCertificateRoutes.CombinedCertificateAdditionalInformationController.onSubmit(NormalMode).url
+          )
 
         val result = route(application, request).value
 
@@ -213,7 +216,10 @@ class CombinedCertificateAdditionalInformationControllerSpec extends SpecBase wi
       val application = applicationBuilder(userAnswers = Some(userAnswersWithCertificateSaoDetails)).build()
       running(application) {
         val request =
-          FakeRequest(POST, submitCertificateRoutes.CombinedCertificateAdditionalInformationController.onSubmit(NormalMode).url)
+          FakeRequest(
+            POST,
+            submitCertificateRoutes.CombinedCertificateAdditionalInformationController.onSubmit(NormalMode).url
+          )
 
         val result = route(application, request).value
 

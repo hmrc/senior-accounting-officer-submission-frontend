@@ -27,7 +27,7 @@ import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
-import pages.notification.{NotificationMoreThanOneSaoPage, NotificationSingleSaoOfficerNamePage, UploadTemplateReviewPage, UploadTemplateTablePage}
+import pages.notification.*
 import play.api.i18n.Messages
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, Request}
@@ -40,7 +40,10 @@ import views.html.combined.submitNotification.CombinedNotificationCheckYourAnswe
 
 import scala.concurrent.Future
 
-class CombinedNotificationCheckYourAnswersControllerSpec extends SpecBase with FeatureToggleSupport with BeforeAndAfterEach {
+class CombinedNotificationCheckYourAnswersControllerSpec
+    extends SpecBase
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
 
   "CombinedNotificationCheckYourAnswers Controller" - {
 
@@ -84,7 +87,8 @@ class CombinedNotificationCheckYourAnswersControllerSpec extends SpecBase with F
       val application = applicationBuilder(userAnswers = None).build()
 
       running(application) {
-        val request = FakeRequest(GET, submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad().url)
+        val request =
+          FakeRequest(GET, submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad().url)
 
         val result = route(application, request).value
 
@@ -109,7 +113,8 @@ class CombinedNotificationCheckYourAnswersControllerSpec extends SpecBase with F
           .build()
 
       running(application) {
-        val request = FakeRequest(POST, submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onSubmit().url)
+        val request =
+          FakeRequest(POST, submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onSubmit().url)
 
         val result = route(application, request).value
 

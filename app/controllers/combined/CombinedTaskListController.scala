@@ -18,19 +18,17 @@ package controllers.combined
 
 import config.AppConfig
 import controllers.actions.*
-import controllers.notification.routes as notificationRoutes
 import models.combined.CombinedStage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.NotificationSubmitService
-import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.CombinedTaskListView
 
-import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
-class CombinedTaskListController @Inject()(
+import javax.inject.Inject
+
+class CombinedTaskListController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     getData: DataRetrievalAction,

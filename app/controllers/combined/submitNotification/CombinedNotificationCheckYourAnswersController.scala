@@ -18,22 +18,21 @@ package controllers.combined.submitNotification
 
 import config.AppConfig
 import controllers.actions.*
-import models.{NormalMode, UserAnswers}
-import navigation.CombinedNavigator
-import pages.notification.NotificationCheckYourAnswersPage
+import controllers.combined.submitNotification.routes as submitNotificationRoutes
+import models.UserAnswers
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import services.{NotificationCheckYourAnswersService, NotificationSubmitService, SaoUserAnswersService}
+import uk.gov.hmrc.http.InternalServerException
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitNotification.CombinedNotificationCheckYourAnswersView
-import controllers.combined.submitNotification.routes as submitNotificationRoutes
-import uk.gov.hmrc.http.InternalServerException
 
-import javax.inject.Inject
 import scala.concurrent.ExecutionContext
 
-class CombinedNotificationCheckYourAnswersController @Inject()(
+import javax.inject.Inject
+
+class CombinedNotificationCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     sessionRepository: SessionRepository,
@@ -70,7 +69,8 @@ class CombinedNotificationCheckYourAnswersController @Inject()(
           .map {
             _.fold(
               error => throw new InternalServerException(error.message),
-              idempotencyKey => Redirect(submitNotificationRoutes.CombinedNotificationSubmittingController.onPageLoad(idempotencyKey))
+              idempotencyKey =>
+                Redirect(submitNotificationRoutes.CombinedNotificationSubmittingController.onPageLoad(idempotencyKey))
             )
           }
       } else {
@@ -80,7 +80,9 @@ class CombinedNotificationCheckYourAnswersController @Inject()(
             _.fold(
               error => throw new InternalServerException(error.message),
               notificationReference =>
-                Redirect(submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(notificationReference))
+                Redirect(
+                  submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(notificationReference)
+                )
             )
           }
       }

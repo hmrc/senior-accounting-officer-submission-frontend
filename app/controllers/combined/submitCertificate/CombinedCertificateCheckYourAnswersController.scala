@@ -32,9 +32,10 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import views.html.combined.submitCertificate.CombinedCertificateCheckYourAnswersView
 
+import scala.concurrent.{ExecutionContext, Future}
+
 import java.util.UUID
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext, Future}
 
 class CombinedCertificateCheckYourAnswersController @Inject() (
     override val messagesApi: MessagesApi,
@@ -53,46 +54,60 @@ class CombinedCertificateCheckYourAnswersController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async { implicit request =>
-    val sanitisedAnswers = declarationUserAnswersService.sanitise(request.userAnswers)
-    val summaryList      = certificateCheckYourAnswersService.getSummaryList(sanitisedAnswers)
-    val token            = UUID.randomUUID().toString
+  def onPageLoad: Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
+      implicit request =>
+        val sanitisedAnswers = declarationUserAnswersService.sanitise(request.userAnswers)
+        val summaryList      = certificateCheckYourAnswersService.getSummaryList(sanitisedAnswers)
+        val token            = UUID.randomUUID().toString
 
-    for {
-      updatedAnswers <- Future.fromTry(sanitisedAnswers.set(CertificateSubmissionTokenPage, token))
-      _              <- sessionRepository.set(updatedAnswers)
-    } yield Ok(view(summaryList, token))
-  }
+        for {
+          updatedAnswers <- Future.fromTry(sanitisedAnswers.set(CertificateSubmissionTokenPage, token))
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield Ok(view(summaryList, token))
+    }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async { implicit request =>
-      given HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
-      request.body.asFormUrlEncoded.flatMap(submissionToken) match {
-        case None =>
-          Future.successful(
-            Redirect(
-              controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
+      implicit request =>
+        given HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
+        request.body.asFormUrlEncoded.flatMap(submissionToken) match {
+          case None =>
+            Future.successful(
+              Redirect(
+                controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
+              )
             )
-          )
-        case Some(token) =>
-          val submission =
-            if appConfig.faultToleranceEnabled then
-              certificateSubmissionService.submitWithFaultTolerance(request.userId, request.userAnswers, token, isCombinedJourney = true)
-            else certificateSubmissionService.submit(request.userId, request.userAnswers, token, isCombinedJourney = true)
-          
-          submission.map {
-            case CertificateSubmissionResult.Submitted(certificateRef) =>
-              Redirect(submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef))
-            case CertificateSubmissionResult.Pending(idempotencyKey) =>
-              Redirect(submitCertificateRoutes.CombinedCertificateSubmittingController.onPageLoad(idempotencyKey))
-            case CertificateSubmissionResult.Duplicate =>
-              Redirect(submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad())
-            case CertificateSubmissionResult.MissingData =>
-              Redirect(controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(Combined)))
-            case CertificateSubmissionResult.Failed =>
-              throw CombinedCertificateCheckYourAnswersController.SubmissionFailedException
-          }
-      }
+          case Some(token) =>
+            val submission =
+              if appConfig.faultToleranceEnabled then
+                certificateSubmissionService.submitWithFaultTolerance(
+                  request.userId,
+                  request.userAnswers,
+                  token,
+                  isCombinedJourney = true
+                )
+              else
+                certificateSubmissionService.submit(
+                  request.userId,
+                  request.userAnswers,
+                  token,
+                  isCombinedJourney = true
+                )
+
+            submission.map {
+              case CertificateSubmissionResult.Submitted(certificateRef) =>
+                Redirect(submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef))
+              case CertificateSubmissionResult.Pending(idempotencyKey) =>
+                Redirect(submitCertificateRoutes.CombinedCertificateSubmittingController.onPageLoad(idempotencyKey))
+              case CertificateSubmissionResult.Duplicate =>
+                Redirect(submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad())
+              case CertificateSubmissionResult.MissingData =>
+                Redirect(controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(Combined)))
+              case CertificateSubmissionResult.Failed =>
+                throw CombinedCertificateCheckYourAnswersController.SubmissionFailedException
+            }
+        }
     }
 
   private def submissionToken(form: Map[String, Seq[String]]): Option[String] =

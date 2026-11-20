@@ -69,7 +69,8 @@ class CombinedCertificateDeclarationSaoControllerSpec extends SpecBase with Mock
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = completedSubmittedNotificationAnswers.set(CertificateDeclarationSaoPage(NormalMode), "answer").success.value
+      val userAnswers =
+        completedSubmittedNotificationAnswers.set(CertificateDeclarationSaoPage(NormalMode), "answer").success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
 

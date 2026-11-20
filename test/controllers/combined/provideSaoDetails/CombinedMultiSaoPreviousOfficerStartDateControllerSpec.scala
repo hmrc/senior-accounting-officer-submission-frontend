@@ -25,7 +25,10 @@ import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.notification.{NotificationMultiSaoPreviousOfficerNamePage, NotificationMultiSaoPreviousOfficerStartDatePage}
+import pages.notification.{
+  NotificationMultiSaoPreviousOfficerNamePage,
+  NotificationMultiSaoPreviousOfficerStartDatePage
+}
 import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.{AnyContentAsEmpty, AnyContentAsFormUrlEncoded, Call}
@@ -34,8 +37,9 @@ import play.api.test.Helpers.*
 import repositories.SessionRepository
 import views.html.combined.provideSaoDetails.CombinedMultiSaoPreviousOfficerStartDateView
 
-import java.time.{LocalDate, ZoneOffset}
 import scala.concurrent.Future
+
+import java.time.{LocalDate, ZoneOffset}
 
 class CombinedMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBase with MockitoSugar {
 

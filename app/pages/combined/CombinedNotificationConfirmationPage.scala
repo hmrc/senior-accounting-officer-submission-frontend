@@ -17,7 +17,6 @@
 package pages.combined
 
 import models.Area.*
-import models.Mode
 import pages.Page.NOTIFICATION_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath

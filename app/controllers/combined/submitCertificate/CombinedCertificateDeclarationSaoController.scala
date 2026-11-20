@@ -28,10 +28,11 @@ import services.DeclarationUserAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitCertificate.CombinedCertificateDeclarationSaoView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedCertificateDeclarationSaoController @Inject()(
+import javax.inject.Inject
+
+class CombinedCertificateDeclarationSaoController @Inject() (
     override val messagesApi: MessagesApi,
     sessionRepository: SessionRepository,
     navigator: CombinedNavigator,
@@ -46,28 +47,30 @@ class CombinedCertificateDeclarationSaoController @Inject()(
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
-    val form         = formProvider()
-    val preparedForm = request.userAnswers.get(CertificateDeclarationSaoPage(mode)).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
-  }
+  def onPageLoad(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
+      val form         = formProvider()
+      val preparedForm = request.userAnswers.get(CertificateDeclarationSaoPage(mode)).fold(form)(form.fill)
+      Ok(view(preparedForm, mode))
+    }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-    implicit request =>
-      val form = formProvider()
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationSaoPage(mode), value))
-              committedAnswers =
-                if mode == TransactionMode
-                then { declarationUserAnswersService.commitTransaction(updatedAnswers) }
-                else { updatedAnswers }
-              _ <- sessionRepository.set(committedAnswers)
-            } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage(mode), mode, committedAnswers))
-        )
-  }
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
+      implicit request =>
+        val form = formProvider()
+        form
+          .bindFromRequest()
+          .fold(
+            formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+            value =>
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(CertificateDeclarationSaoPage(mode), value))
+                committedAnswers =
+                  if mode == TransactionMode
+                  then { declarationUserAnswersService.commitTransaction(updatedAnswers) }
+                  else { updatedAnswers }
+                _ <- sessionRepository.set(committedAnswers)
+              } yield Redirect(navigator.nextPage(CertificateDeclarationSaoPage(mode), mode, committedAnswers))
+          )
+    }
 }

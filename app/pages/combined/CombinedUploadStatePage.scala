@@ -17,7 +17,7 @@
 package pages.combined
 
 import models.upscan.FileUploadState
-import pages.Page.{COMBINED_PATH, NOTIFICATION_PATH}
+import pages.Page.COMBINED_PATH
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 

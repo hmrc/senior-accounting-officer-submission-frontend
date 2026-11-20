@@ -30,6 +30,7 @@ import repositories.SessionRepository
 import uk.gov.hmrc.http.{HeaderCarrier, UpstreamErrorResponse}
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 import javax.inject.Inject
@@ -155,7 +156,7 @@ class CertificateSubmissionService @Inject() (
       saoName            <- userAnswers.get(CertificateSaoFullNamePage).toRight("missing SAO name")
       saoEmail           <- userAnswers.get(CertificateSaoEmailPage).toRight("missing SAO email")
       saoDeclarationName <- declarationName(userAnswers).toRight("missing SAO declaration name")
-      tablePageData = if(isCombinedJourney) UploadTemplateTablePage else CertificateUploadTemplateTablePage
+      tablePageData = if isCombinedJourney then UploadTemplateTablePage else CertificateUploadTemplateTablePage
       tableData <- userAnswers.get(tablePageData).toRight("missing uploaded certificate data")
       companies = tableData.rows.collect { case ParsedSubmissionRow(notification, Some(certificate)) =>
         toCompany(notification, certificate)

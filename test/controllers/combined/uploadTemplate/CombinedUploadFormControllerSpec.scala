@@ -18,8 +18,8 @@ package controllers.combined.uploadTemplate
 
 import base.SpecBase
 import connectors.UpscanInitiateConnector
-import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.combined.routes as combinedRoutes
+import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.routes
 import models.JourneySection
 import models.upscan.*
@@ -43,9 +43,9 @@ class CombinedUploadFormControllerSpec extends SpecBase with MockitoSugar {
   "CombinedUploadFormController must" - {
 
     "return OK and the correct view for a GET" in {
-      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockSessionRepository          = mock[SessionRepository]
-      val mockCombinedUploadFormView     = mock[CombinedUploadFormView]
+      val mockUpscanInitiateConnector = mock[UpscanInitiateConnector]
+      val mockSessionRepository       = mock[SessionRepository]
+      val mockCombinedUploadFormView  = mock[CombinedUploadFormView]
 
       val upscanInitiateResponse =
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
@@ -81,9 +81,9 @@ class CombinedUploadFormControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "return an error when upscan initiate connector fails" in {
-      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockSessionRepository          = mock[SessionRepository]
-      val mockCombinedUploadFormView = mock[CombinedUploadFormView]
+      val mockUpscanInitiateConnector = mock[UpscanInitiateConnector]
+      val mockSessionRepository       = mock[SessionRepository]
+      val mockCombinedUploadFormView  = mock[CombinedUploadFormView]
 
       when(
         mockUpscanInitiateConnector.initiateV2(meq(UploadJourney.Combined))(using
@@ -112,9 +112,9 @@ class CombinedUploadFormControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "return 400 when there are errors in the query parameter" in {
-      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockSessionRepository          = mock[SessionRepository]
-      val mockCombinedUploadFormView = mock[CombinedUploadFormView]
+      val mockUpscanInitiateConnector = mock[UpscanInitiateConnector]
+      val mockSessionRepository       = mock[SessionRepository]
+      val mockCombinedUploadFormView  = mock[CombinedUploadFormView]
 
       val upscanInitiateResponse =
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
@@ -153,9 +153,9 @@ class CombinedUploadFormControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "return an error when upload progress tracker fails" in {
-      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockSessionRepository          = mock[SessionRepository]
-      val mockCombinedUploadFormView = mock[CombinedUploadFormView]
+      val mockUpscanInitiateConnector = mock[UpscanInitiateConnector]
+      val mockSessionRepository       = mock[SessionRepository]
+      val mockCombinedUploadFormView  = mock[CombinedUploadFormView]
 
       val upscanInitiateResponse =
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
@@ -219,9 +219,9 @@ class CombinedUploadFormControllerSpec extends SpecBase with MockitoSugar {
     }
 
     "store the Upscan reference in user answers as soon as the upload is initiated" in {
-      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockSessionRepository          = mock[SessionRepository]
-      val mockCombinedUploadFormView = mock[CombinedUploadFormView]
+      val mockUpscanInitiateConnector = mock[UpscanInitiateConnector]
+      val mockSessionRepository       = mock[SessionRepository]
+      val mockCombinedUploadFormView  = mock[CombinedUploadFormView]
 
       val upscanInitiateResponse =
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))
@@ -263,9 +263,9 @@ class CombinedUploadFormControllerSpec extends SpecBase with MockitoSugar {
         uploadStatus: UploadStatus,
         expectedMessageKey: String
     ): Unit = {
-      val mockUpscanInitiateConnector    = mock[UpscanInitiateConnector]
-      val mockSessionRepository          = mock[SessionRepository]
-      val mockCombinedUploadFormView = mock[CombinedUploadFormView]
+      val mockUpscanInitiateConnector = mock[UpscanInitiateConnector]
+      val mockSessionRepository       = mock[SessionRepository]
+      val mockCombinedUploadFormView  = mock[CombinedUploadFormView]
 
       val upscanInitiateResponse =
         UpscanInitiateResponse(reference = "foo", postTarget = "bar", formFields = Map("foo2" -> "foo2Val"))

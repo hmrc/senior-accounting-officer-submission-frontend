@@ -36,9 +36,10 @@ import repositories.SessionRepository
 import services.csvparser.UploadTemplateCsvSchema.{Column, TemplateError}
 import views.html.combined.submitCertificate.CombinedCertificateReviewQualifiedView
 
-import java.time.LocalDate
 import scala.concurrent.Future
 import scala.util.Random
+
+import java.time.LocalDate
 
 class CombinedCertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSugar {
 
@@ -57,7 +58,8 @@ class CombinedCertificateReviewQualifiedControllerSpec extends SpecBase with Moc
       ).build()
 
       running(application) {
-        val request = FakeRequest(GET, submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onPageLoad(0).url)
+        val request =
+          FakeRequest(GET, submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 
@@ -111,7 +113,8 @@ class CombinedCertificateReviewQualifiedControllerSpec extends SpecBase with Moc
     "must redirect to task list on provide sao details stage when user answers is empty for a GET" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
-        val request = FakeRequest(GET, submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onPageLoad(0).url)
+        val request =
+          FakeRequest(GET, submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onPageLoad(0).url)
 
         val result = route(application, request).value
 
@@ -123,7 +126,8 @@ class CombinedCertificateReviewQualifiedControllerSpec extends SpecBase with Moc
     "must redirect to task list on provide sao details stage when user answers is empty for a POST" in {
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers)).build()
       running(application) {
-        val request = FakeRequest(POST, submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onSubmit().url)
+        val request =
+          FakeRequest(POST, submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onSubmit().url)
 
         val result = route(application, request).value
 

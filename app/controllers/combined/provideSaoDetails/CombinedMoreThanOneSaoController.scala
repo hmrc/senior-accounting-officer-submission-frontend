@@ -31,19 +31,20 @@ import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.provideSaoDetails.CombinedMoreThanOneSaoView
 
-import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
-class CombinedMoreThanOneSaoController @Inject()(
-                                                  override val messagesApi: MessagesApi,
-                                                  sessionRepository: SessionRepository,
-                                                  navigator: CombinedNavigator,
-                                                  identify: IdentifierAction,
-                                                  getData: DataRetrievalAction,
-                                                  requireData: DataRequiredAction,
-                                                  formProvider: NotificationMoreThanOneSaoFormProvider,
-                                                  val controllerComponents: MessagesControllerComponents,
-                                                  view: CombinedMoreThanOneSaoView
+import javax.inject.Inject
+
+class CombinedMoreThanOneSaoController @Inject() (
+    override val messagesApi: MessagesApi,
+    sessionRepository: SessionRepository,
+    navigator: CombinedNavigator,
+    identify: IdentifierAction,
+    getData: DataRetrievalAction,
+    requireData: DataRequiredAction,
+    formProvider: NotificationMoreThanOneSaoFormProvider,
+    val controllerComponents: MessagesControllerComponents,
+    view: CombinedMoreThanOneSaoView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport
