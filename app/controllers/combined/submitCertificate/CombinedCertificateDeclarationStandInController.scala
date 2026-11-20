@@ -41,17 +41,18 @@ class CombinedCertificateDeclarationStandInController @Inject()(
     formProvider: CertificateDeclarationStandInFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedCertificateDeclarationStandInView,
-    declarationUserAnswersService: DeclarationUserAnswersService
+    declarationUserAnswersService: DeclarationUserAnswersService,
+    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
+  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
     val form         = formProvider()
     val preparedForm = request.userAnswers.get(CertificateDeclarationStandInPage(mode)).fold(form)(form.fill)
     Ok(view(preparedForm, mode))
   }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
     implicit request =>
       val form = formProvider()
       form

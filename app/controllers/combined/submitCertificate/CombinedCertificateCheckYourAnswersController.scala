@@ -20,6 +20,7 @@ import config.AppConfig
 import controllers.actions.*
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import models.JourneySection
+import models.JourneySection.Combined
 import pages.certificate.CertificateSubmissionTokenPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.*
@@ -46,12 +47,13 @@ class CombinedCertificateCheckYourAnswersController @Inject() (
     certificateSubmissionService: CertificateSubmissionService,
     declarationUserAnswersService: DeclarationUserAnswersService,
     view: CombinedCertificateCheckYourAnswersView,
-    appConfig: AppConfig
+    appConfig: AppConfig,
+    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData).async { implicit request =>
+  def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async { implicit request =>
     val sanitisedAnswers = declarationUserAnswersService.sanitise(request.userAnswers)
     val summaryList      = certificateCheckYourAnswersService.getSummaryList(sanitisedAnswers)
     val token            = UUID.randomUUID().toString
@@ -63,13 +65,13 @@ class CombinedCertificateCheckYourAnswersController @Inject() (
   }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async { implicit request =>
       given HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       request.body.asFormUrlEncoded.flatMap(submissionToken) match {
         case None =>
           Future.successful(
             Redirect(
-              controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate))
+              controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
             )
           )
         case Some(token) =>
@@ -86,7 +88,7 @@ class CombinedCertificateCheckYourAnswersController @Inject() (
             case CertificateSubmissionResult.Duplicate =>
               Redirect(submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad())
             case CertificateSubmissionResult.MissingData =>
-              Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
+              Redirect(controllers.routes.JourneyRecoveryController.onPageLoad(section = Some(Combined)))
             case CertificateSubmissionResult.Failed =>
               throw CombinedCertificateCheckYourAnswersController.SubmissionFailedException
           }

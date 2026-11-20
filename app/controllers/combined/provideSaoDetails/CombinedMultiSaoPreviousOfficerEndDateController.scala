@@ -19,13 +19,10 @@ package controllers.combined.provideSaoDetails
 import controllers.actions.*
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerEndDateFormProvider
+import models.JourneySection.Combined
 import models.{JourneySection, Mode}
 import navigation.CombinedNavigator
-import pages.notification.{
-  NotificationMultiSaoPreviousOfficerEndDatePage,
-  NotificationMultiSaoPreviousOfficerNamePage,
-  NotificationMultiSaoPreviousOfficerStartDatePage
-}
+import pages.notification.{NotificationMultiSaoPreviousOfficerEndDatePage, NotificationMultiSaoPreviousOfficerNamePage, NotificationMultiSaoPreviousOfficerStartDatePage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
@@ -65,7 +62,7 @@ class CombinedMultiSaoPreviousOfficerEndDateController @Inject()(
         case _ =>
           Redirect(
             routes.JourneyRecoveryController
-              .onPageLoad()
+              .onPageLoad(section = Some(Combined))
           )
       }
   }
@@ -97,7 +94,7 @@ class CombinedMultiSaoPreviousOfficerEndDateController @Inject()(
         case _ =>
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
             )
           )
       }

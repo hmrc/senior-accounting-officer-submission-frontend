@@ -61,7 +61,7 @@ class CombinedMultiSaoPreviousOfficerNameController @Inject()(
         request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)).fold(form)(form.fill)
       saoNameForPage(mode, saoIndex, request.userAnswers)
         .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification)))
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
         )(saoName => Ok(view(saoName, preparedForm, mode, saoIndex)))
 
   }
@@ -72,7 +72,7 @@ class CombinedMultiSaoPreviousOfficerNameController @Inject()(
         case None =>
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
             )
           )
         case Some(saoName) =>

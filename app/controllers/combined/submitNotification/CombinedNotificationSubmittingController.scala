@@ -35,13 +35,14 @@ class CombinedNotificationSubmittingController @Inject()(
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
       notificationSubmitService.getStateOfWorkItem(idempotencyKey, request.userAnswers, wipeNotificationData = false).map {
         case Success(notificationRef) =>
           Redirect(submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(notificationRef))

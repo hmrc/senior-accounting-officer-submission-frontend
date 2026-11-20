@@ -21,6 +21,7 @@ import play.api.mvc.QueryStringBindable
 enum JourneySection {
   case Notification
   case Certificate
+  case Combined
 }
 
 object JourneySection {

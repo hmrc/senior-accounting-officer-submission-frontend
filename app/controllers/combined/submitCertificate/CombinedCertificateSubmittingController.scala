@@ -36,13 +36,14 @@ class CombinedCertificateSubmittingController @Inject()(
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction,
     val controllerComponents: MessagesControllerComponents
 )(using ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async { implicit request =>
       certificateSubmissionService.getStateOfWorkItem(idempotencyKey, request.userAnswers).map {
         case CertificateSubmissionResult.Submitted(certificateRef) =>
           Redirect(submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef))

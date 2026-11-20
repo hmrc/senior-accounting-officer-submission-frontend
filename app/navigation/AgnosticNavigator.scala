@@ -35,9 +35,9 @@ class AgnosticNavigator @Inject() () extends Navigator {
           case Some(SubmissionType.Notification) => notificationRoutes.NotificationTaskListController.onPageLoad()
           case Some(SubmissionType.Certificate)  => certificateRoutes.CertificateTaskListController.onPageLoad
           case Some(SubmissionType.Combined) => combinedRoutes.CombinedTaskListController.onPageLoad
-          case _ => ???
+          case submissionType => throw new IllegalStateException(s"Unexpected Submission Type - $submissionType")
         }
-    case _ => _ => ???
+    case page => _ => throw new IllegalStateException(s"Unexpected Page - $page")
   }
 
   override protected val checkRouteMap: Page => UserAnswers => Call = { case _ =>

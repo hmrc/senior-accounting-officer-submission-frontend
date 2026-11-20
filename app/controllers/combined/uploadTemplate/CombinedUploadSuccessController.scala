@@ -41,7 +41,7 @@ class CombinedUploadSuccessController @Inject()(
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    requireNotificationUploadUnlocked: RequireNotificationUploadUnlockedAction,
+    requireNotificationUploadUnlocked: RequireCombinedNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     sessionRepository: SessionRepository,
     upscanService: UpscanService,
@@ -57,7 +57,7 @@ class CombinedUploadSuccessController @Inject()(
         case State.NoReference =>
           Future.successful(
             Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Notification))
+              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
             )
           )
         case State.WaitingForUpscan =>

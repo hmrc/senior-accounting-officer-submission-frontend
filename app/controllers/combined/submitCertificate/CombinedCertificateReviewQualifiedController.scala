@@ -22,7 +22,7 @@ import controllers.routes
 import models.upload.*
 import models.{CompanyPagination, JourneySection, NormalMode}
 import navigation.CombinedNavigator
-import pages.certificate.{CertificateReviewQualifiedPage, CertificateSaoFullNamePage, CertificateUploadTemplateTablePage}
+import pages.certificate.{CertificateReviewQualifiedPage, CertificateSaoFullNamePage}
 import pages.notification.UploadTemplateTablePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -41,23 +41,23 @@ class CombinedCertificateReviewQualifiedController @Inject()(
     sessionRepository: SessionRepository,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    requireUploadSubmissionTemplateStageUnlocked: RequireCertificateUploadSubmissionTemplateUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedCertificateReviewQualifiedView,
-    errorView: CombinedUploadTemplateTableErrorView
+    errorView: CombinedUploadTemplateTableErrorView,
+    requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(page: Int = 0): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked) {
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) {
       implicit request =>
         val userAnswers = request.userAnswers
         
         userAnswers
           .get(UploadTemplateTablePage)
           .fold(
-            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate)))
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
           ) { parsedTemplate =>
             if parsedTemplate.hasErrors then {
               Ok(errorView(parsedTemplate))
@@ -66,7 +66,7 @@ class CombinedCertificateReviewQualifiedController @Inject()(
                 .get(CertificateSaoFullNamePage)
                 .fold(
                   Redirect(
-                    routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Certificate))
+                    routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
                   )
                 ) { saoName =>
                   val allQualifiedCompanies =
@@ -89,7 +89,7 @@ class CombinedCertificateReviewQualifiedController @Inject()(
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireUploadSubmissionTemplateStageUnlocked).async {
+    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
       implicit request =>
         request.userAnswers
           .get(UploadTemplateTablePage)

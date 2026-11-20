@@ -202,7 +202,7 @@ class NotificationTaskListControllerSpec extends SpecBase with FeatureToggleSupp
 
         val mockNotificationSubmitService = mock[NotificationSubmitService]
 
-        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
+        when(mockNotificationSubmitService.submit(any(), any())(using any[HeaderCarrier]()))
           .thenReturn(Future.successful(Right(exampleNotificationReference)))
 
         val application =
@@ -286,7 +286,7 @@ class NotificationTaskListControllerSpec extends SpecBase with FeatureToggleSupp
 
         val mockNotificationSubmitService = mock[NotificationSubmitService]
 
-        when(mockNotificationSubmitService.submit(any())(using any[HeaderCarrier]()))
+        when(mockNotificationSubmitService.submit(any(), any())(using any[HeaderCarrier]()))
           .thenReturn(
             Future.successful(
               Left(NotificationSubmissionError.HttpError(HttpResponse(INTERNAL_SERVER_ERROR)))

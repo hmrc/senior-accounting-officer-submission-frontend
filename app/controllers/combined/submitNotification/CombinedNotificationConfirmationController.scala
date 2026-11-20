@@ -40,13 +40,14 @@ class CombinedNotificationConfirmationController @Inject()(
     view: CombinedNotificationConfirmationView,
     objectStoreService: ObjectStoreService,
     navigator: CombinedNavigator,
-    sessionRepository: SessionRepository
+    sessionRepository: SessionRepository,
+    requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(notificationReference: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
       objectStoreService.isNotificationPdfAvailable(request.saoSubscriptionId, notificationReference).map {
         isPdfAvailable =>
           Ok(
@@ -59,7 +60,7 @@ class CombinedNotificationConfirmationController @Inject()(
     }
     
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
+    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
 
       for {
         updatedAnswers <- Future.fromTry(request.userAnswers.set(CombinedNotificationConfirmationPage, true))

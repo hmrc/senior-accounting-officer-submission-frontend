@@ -32,7 +32,7 @@ class CombinedConfirmYourNotificationController @Inject()(
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
-    requireSubmitNotificationUnlocked: RequireSubmitNotificationUnlockedAction,
+    requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedConfirmYourNotificationView,
     navigator: CombinedNavigator
