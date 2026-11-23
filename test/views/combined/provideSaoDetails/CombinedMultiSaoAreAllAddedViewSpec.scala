@@ -36,7 +36,7 @@ class CombinedMultiSaoAreAllAddedViewSpec extends ViewSpecBase[CombinedMultiSaoA
     Jsoup.parse(view.toString)
   }
 
-  "NotificationMultiSaoAreAllAddedView" - {
+  "CombinedMultiSaoAreAllAddedView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {

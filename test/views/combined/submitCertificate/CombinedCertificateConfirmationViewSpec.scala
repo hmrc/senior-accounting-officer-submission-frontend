@@ -22,6 +22,7 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.combined.submitCertificate.CombinedCertificateConfirmationViewSpec.*
 import views.html.combined.submitCertificate.CombinedCertificateConfirmationView
+import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 
 class CombinedCertificateConfirmationViewSpec extends ViewSpecBase[CombinedCertificateConfirmationView] {
 
@@ -171,6 +172,10 @@ class CombinedCertificateConfirmationViewSpec extends ViewSpecBase[CombinedCerti
         )
       doc.createTestsForSubheadings(pageSubheadings, includingError = true, tag = "h2")
       doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithSubmissionButton(
+        submitCertificateRoutes.CombinedCertificateConfirmationController.onSubmit(),
+        continueText
+      )
     }
   }
 }
@@ -211,4 +216,5 @@ object CombinedCertificateConfirmationViewSpec {
   val surveyLinkPage               = "Take a short survey"
   val surveyLinkId                 = "survey-link"
   val pageSubheadings: Seq[String] = Seq("What happens next", "Before you go")
+  val continueText                 = "Continue"
 }

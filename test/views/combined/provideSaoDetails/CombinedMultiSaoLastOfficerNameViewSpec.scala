@@ -36,7 +36,7 @@ class CombinedMultiSaoLastOfficerNameViewSpec extends ViewSpecBase[CombinedMulti
     Jsoup.parse(view.toString)
   }
 
-  "NotificationMultiSaoLastOfficerNameView" - {
+  "CombinedMultiSaoLastOfficerNameView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {

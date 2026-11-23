@@ -47,9 +47,7 @@ class CombinedCertificateReviewQualifiedViewSpec extends ViewSpecBase[CombinedCe
       val doc: Document = generateView(
         saoName = firstSaoName,
         qualifiedCompanies = Seq.empty,
-        companyCount = 0,
-        totalQualifiedCompanies = 0
-      )
+        companyCount = 0)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,

@@ -22,10 +22,10 @@ import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.combined.submitCertificate.CertificateSaoEmailViewSpec.*
-import views.html.certificate.CertificateSaoEmailView
+import views.combined.submitCertificate.CombinedCertificateSaoEmailViewSpec.*
+import views.html.combined.submitCertificate.CombinedCertificateSaoEmailView
 
-class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] {
+class CombinedCertificateSaoEmailViewSpec extends ViewSpecBase[CombinedCertificateSaoEmailView] {
 
   private val formProvider       = app.injector.instanceOf[CertificateSaoEmailFormProvider]
   private val form: Form[String] = formProvider()
@@ -35,7 +35,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
     Jsoup.parse(view.toString)
   }
 
-  "CertificateSaoEmailView" - {
+  "CombinedCertificateSaoEmailView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -59,7 +59,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.certificate.routes.CertificateSaoEmailController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateSaoEmailController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -98,7 +98,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.certificate.routes.CertificateSaoEmailController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateSaoEmailController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -137,7 +137,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.certificate.routes.CertificateSaoEmailController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateSaoEmailController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -160,7 +160,7 @@ class CertificateSaoEmailViewSpec extends ViewSpecBase[CertificateSaoEmailView] 
   }
 }
 
-object CertificateSaoEmailViewSpec {
+object CombinedCertificateSaoEmailViewSpec {
   val pageHeading       = "What is the email address for Firstname Lastname?"
   val pageCaption       = "Submit a certificate"
   val pageTitle: String = s"What is the email address for the SAO? - Submit a certificate"

@@ -22,10 +22,10 @@ import models.Mode
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import play.api.data.Form
-import views.combined.submitCertificate.CertificateSaoFullNameViewSpec.*
-import views.html.certificate.CertificateSaoFullNameView
+import views.combined.submitCertificate.CombinedCertificateSaoFullNameViewSpec.*
+import views.html.combined.submitCertificate.CombinedCertificateSaoFullNameView
 
-class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullNameView] {
+class CombinedCertificateSaoFullNameViewSpec extends ViewSpecBase[CombinedCertificateSaoFullNameView] {
 
   private val formProvider       = app.injector.instanceOf[CertificateSaoFullNameFormProvider]
   private val form: Form[String] = formProvider()
@@ -35,7 +35,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
     Jsoup.parse(view.toString)
   }
 
-  "CertificateSaoFullNameView" - {
+  "CombinedCertificateSaoFullNameView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {
@@ -61,7 +61,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
           doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.certificate.routes.CertificateSaoFullNameController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateSaoFullNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -95,7 +95,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
           doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.certificate.routes.CertificateSaoFullNameController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateSaoFullNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -129,7 +129,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
           doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.certificate.routes.CertificateSaoFullNameController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateSaoFullNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -144,7 +144,7 @@ class CertificateSaoFullNameViewSpec extends ViewSpecBase[CertificateSaoFullName
   }
 }
 
-object CertificateSaoFullNameViewSpec {
+object CombinedCertificateSaoFullNameViewSpec {
   val pageHeading       = "What is the name of the SAO responsible for the certificate?"
   val pageCaption       = "Submit a certificate"
   val pageTitle: String = "What is the name of the SAO responsible for the certificate? - Submit a certificate"

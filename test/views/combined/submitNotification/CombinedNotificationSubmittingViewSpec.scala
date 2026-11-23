@@ -25,7 +25,7 @@ import views.notification.NotificationSubmittingViewSpec.{panelHeading, panelTit
 
 class CombinedNotificationSubmittingViewSpec extends ViewSpecBase[CombinedNotificationSubmittingView] {
 
-  "NotificationSubmittingView" - {
+  "CombinedNotificationSubmittingView" - {
     "must generate a view" - {
       AppConfig.setValue("senior-accounting-officer-hub-frontend.host", "hub-url")
 

@@ -31,7 +31,7 @@ class CombinedUploadTemplateTableViewSpec extends ViewSpecBase[CombinedUploadTem
   private def generateView(data: UploadTemplateTableData = tableData): Document =
     Jsoup.parse(SUT(data, saoName, 30, 1).toString)
 
-  "UploadTemplateTableView" - {
+  "CombinedUploadTemplateTableView" - {
     val doc: Document = generateView()
 
     doc.createTestsWithStandardPageElements(

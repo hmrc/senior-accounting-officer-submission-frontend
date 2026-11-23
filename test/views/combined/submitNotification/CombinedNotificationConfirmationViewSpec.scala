@@ -30,7 +30,7 @@ class CombinedNotificationConfirmationViewSpec extends ViewSpecBase[CombinedNoti
 
   private val appConfig = app.injector.instanceOf[AppConfig]
 
-  "NotificationConfirmationView" - {
+  "CombinedNotificationConfirmationView" - {
     "when displayPdfLink is true" - {
       val displayPdfLink = true
       AppConfig.setValue("hub-frontend.host", accountHomepageLinkUrl)

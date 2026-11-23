@@ -36,7 +36,7 @@ class CombinedMultiSaoPreviousOfficerNameViewSpec extends ViewSpecBase[CombinedM
     Jsoup.parse(view.toString)
   }
 
-  "NotificationMultiSaoPreviousOfficerNameView" - {
+  "CombinedMultiSaoPreviousOfficerNameView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {

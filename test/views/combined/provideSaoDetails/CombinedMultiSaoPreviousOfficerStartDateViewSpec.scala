@@ -40,7 +40,7 @@ class CombinedMultiSaoPreviousOfficerStartDateViewSpec
     Jsoup.parse(view.toString)
   }
 
-  "NotificationMultiSaoPreviousOfficerStartDateView" - {
+  "CombinedMultiSaoPreviousOfficerStartDateView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {

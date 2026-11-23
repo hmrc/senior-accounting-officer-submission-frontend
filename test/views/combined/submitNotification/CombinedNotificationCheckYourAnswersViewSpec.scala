@@ -34,7 +34,7 @@ class CombinedNotificationCheckYourAnswersViewSpec extends ViewSpecBase[Combined
   private def generateView(summaryList: SummaryList): Document =
     Jsoup.parse(SUT(summaryList, testFinancialYearEndDate).toString)
 
-  "NotificationCheckYourAnswersView" - {
+  "CombinedNotificationCheckYourAnswersView" - {
 
     "empty summary list must result in no table rows" - {
       val summaryList   = SummaryList()

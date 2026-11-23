@@ -36,7 +36,7 @@ class CombinedMoreThanOneSaoViewSpec extends ViewSpecBase[CombinedMoreThanOneSao
     Jsoup.parse(view.toString)
   }
 
-  "NotificationMoreThanOneSaoView" - {
+  "CombinedMoreThanOneSaoView" - {
 
     Seq(NormalMode, TransactionMode).foreach { mode =>
       s"when using $mode" - {

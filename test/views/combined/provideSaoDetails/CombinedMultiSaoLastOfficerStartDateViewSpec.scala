@@ -40,7 +40,7 @@ class CombinedMultiSaoLastOfficerStartDateViewSpec extends ViewSpecBase[Combined
     Jsoup.parse(view.toString)
   }
 
-  "NotificationMultiSaoLastOfficerStartDateView" - {
+  "CombinedMultiSaoLastOfficerStartDateView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {

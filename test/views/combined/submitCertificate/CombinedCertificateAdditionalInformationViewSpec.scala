@@ -112,7 +112,7 @@ class CombinedCertificateAdditionalInformationViewSpec extends ViewSpecBase[Comb
           )
 
           doc.createTestsWithSubmissionButtons(
-            action = controllers.certificate.routes.CertificateAdditionalInformationController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateAdditionalInformationController.onSubmit(mode),
             buttonTexts = Seq("Continue", "Skip")
           )
 
@@ -152,7 +152,7 @@ class CombinedCertificateAdditionalInformationViewSpec extends ViewSpecBase[Comb
           )
 
           doc.createTestsWithSubmissionButtons(
-            action = controllers.certificate.routes.CertificateAdditionalInformationController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateAdditionalInformationController.onSubmit(mode),
             buttonTexts = Seq("Continue", "Skip")
           )
 

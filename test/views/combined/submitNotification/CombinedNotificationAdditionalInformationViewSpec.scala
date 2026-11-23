@@ -38,7 +38,7 @@ class CombinedNotificationAdditionalInformationViewSpec
     Jsoup.parse(view.toString)
   }
 
-  "CombinedAdditionalInformationView" - {
+  "CombinedNotificationAdditionalInformationView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {

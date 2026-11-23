@@ -36,7 +36,7 @@ class CombinedSingleSaoOfficerNameViewSpec extends ViewSpecBase[CombinedSingleSa
     Jsoup.parse(view.toString)
   }
 
-  "NotificationSingleSaoOfficerNameView" - {
+  "CombinedSingleSaoOfficerNameView" - {
 
     Mode.values.foreach { mode =>
       s"when using $mode" - {

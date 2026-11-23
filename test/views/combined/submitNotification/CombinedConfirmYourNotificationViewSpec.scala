@@ -26,7 +26,7 @@ class CombinedConfirmYourNotificationViewSpec extends ViewSpecBase[CombinedConfi
 
   private def generateView(): Document = Jsoup.parse(SUT().toString)
 
-  "ConfirmYourNotificationView" - {
+  "CombinedConfirmYourNotificationView" - {
     val doc: Document = generateView()
 
     doc.createTestsWithStandardPageElements(

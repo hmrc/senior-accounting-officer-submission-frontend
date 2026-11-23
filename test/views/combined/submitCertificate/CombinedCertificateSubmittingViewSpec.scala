@@ -21,11 +21,11 @@ import config.AppConfig
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.certificate.CertificateSubmittingViewSpec.{panelHeading, panelTitle, waitText}
-import views.html.certificate.CertificateSubmittingView
+import views.html.combined.submitCertificate.CombinedCertificateSubmittingView
 
-class CertificateSubmittingViewSpec extends ViewSpecBase[CertificateSubmittingView] {
+class CombinedCertificateSubmittingViewSpec extends ViewSpecBase[CombinedCertificateSubmittingView] {
 
-  "CertificateSubmittingView" - {
+  "CombinedCertificateSubmittingView" - {
     "must generate a view" - {
       AppConfig.setValue("senior-accounting-officer-hub-frontend.host", "hub-url")
 
@@ -51,7 +51,7 @@ class CertificateSubmittingViewSpec extends ViewSpecBase[CertificateSubmittingVi
   }
 }
 
-object CertificateSubmittingViewSpec {
+object CombinedCertificateSubmittingViewSpec {
   val panelTitle: String   = "Submitting your certificate"
   val panelHeading: String = "Submitting your certificate"
   val waitText: String     = "This may take a few minutes - do not close or refresh the page."
