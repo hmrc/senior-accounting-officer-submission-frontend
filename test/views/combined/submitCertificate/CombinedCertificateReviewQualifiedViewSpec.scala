@@ -1,0 +1,376 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package views.combined.submitCertificate
+
+import base.ViewSpecBase
+import base.ViewSpecBase.excludeHelpLinkAndErrorMessageParagraphsSelector
+import controllers.combined.submitCertificate.routes as submitCertificateRoutes
+import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
+import models.{QualifiedCompany, displayRegimes}
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import views.combined.submitCertificate.CombinedCertificateReviewQualifiedViewSpec.*
+import views.html.combined.submitCertificate.CombinedCertificateReviewQualifiedView
+
+import java.time.LocalDate
+
+class CombinedCertificateReviewQualifiedViewSpec extends ViewSpecBase[CombinedCertificateReviewQualifiedView] {
+
+  private def generateView(
+      saoName: String,
+      qualifiedCompanies: Seq[QualifiedCompany],
+      companyCount: Int,
+      totalQualifiedCompanies: Int = 0,
+      currentPage: Int = 1,
+      pageCount: Int = 1
+  ): Document =
+    Jsoup.parse(
+      SUT(saoName, companyCount, qualifiedCompanies, totalQualifiedCompanies, currentPage, pageCount).toString
+    )
+
+  "CombinedCertificateReviewQualifiedView" - {
+    "When no rows are passed to the view must render empty table" - {
+      val doc: Document = generateView(
+        saoName = firstSaoName,
+        qualifiedCompanies = Seq.empty,
+        companyCount = 0,
+        totalQualifiedCompanies = 0
+      )
+
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
+
+      doc.createTestsWithCaption(pageCaption)
+      doc.createTestsWithOrWithoutError(hasError = false)
+
+      doc.createTestsWithParagraphs(
+        Seq(firstParagraphZeroCompanies, secondParagraph, thirdParagraphZeroQualifiedCompanies)
+      )
+
+      doc.createTestForHorizontalLine()
+
+      doc
+        .select(secondParagraphLinkSelector)
+        .get(0)
+        .createTestWithLink(
+          linkTestDescription = "upload updated submission",
+          linkText = secondParagraphLinkText,
+          destinationUrl = uploadTemplateRoutes.CombinedUploadFormController.onPageLoad().url,
+          isExternalLink = false
+        )
+
+      doc.createTestsWithQualifiedCompanyDescriptionList(Seq())
+
+      doc.createTestsWithSubmissionButton(
+        action = submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onSubmit(),
+        buttonText = "Continue"
+      )
+    }
+
+    "When rows are passed to the view must render populated table" - {
+      val doc: Document = generateView(
+        saoName = firstSaoName,
+        qualifiedCompanies = qualifiedCompanies,
+        companyCount = 2,
+        totalQualifiedCompanies = 2
+      )
+
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithCaption(pageCaption)
+
+      doc.createTestForHorizontalLine()
+
+      doc.createTestsWithParagraphs(
+        Seq(firstParagraphTwoCompanies, secondParagraph, thirdParagraphTwoQualifiedCompanies)
+      )
+
+      doc
+        .select(secondParagraphLinkSelector)
+        .get(0)
+        .createTestWithLink(
+          linkTestDescription = "upload updated submission",
+          linkText = secondParagraphLinkText,
+          destinationUrl = uploadTemplateRoutes.CombinedUploadFormController.onPageLoad().url,
+          isExternalLink = false
+        )
+
+      doc.createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies)
+
+      doc.createTestsWithSubmissionButton(
+        action = submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onSubmit(),
+        buttonText = "Continue"
+      )
+    }
+
+    "When one company is passed to the view must render singular wording" - {
+      val doc = generateView(
+        saoName = firstSaoName,
+        qualifiedCompanies = qualifiedCompanies.take(1),
+        companyCount = 1,
+        totalQualifiedCompanies = 1
+      )
+
+      doc.createTestsWithParagraphs(
+        Seq(firstParagraphOneCompany, secondParagraph, thirdParagraphOneQualifiedCompany)
+      )
+    }
+
+    "When rows are and a different sao name are passed to the view must render populated table with different sao name" - {
+      val doc: Document = generateView(secondSaoName, qualifiedCompanies, 2, totalQualifiedCompanies = 2)
+
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = true,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+      doc.createTestsWithCaption(pageCaption)
+
+      doc.createTestForHorizontalLine()
+
+      doc.createTestsWithParagraphs(
+        Seq(firstParagraphTwoCompanies, secondParagraph, thirdParagraphTwoQualifiedCompaniesDifferentSao)
+      )
+
+      doc
+        .select(secondParagraphLinkSelector)
+        .get(0)
+        .createTestWithLink(
+          linkTestDescription = "upload updated submission",
+          linkText = secondParagraphLinkText,
+          destinationUrl = uploadTemplateRoutes.CombinedUploadFormController.onPageLoad().url,
+          isExternalLink = false
+        )
+
+      doc.createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies)
+
+      doc.createTestsWithSubmissionButton(
+        action = submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onSubmit(),
+        buttonText = "Continue"
+      )
+    }
+
+    "The content of SAO's name is properly escaped" in {
+      val unescapedText = "<script>alert(123)</script>"
+      val doc: Document = generateView(
+        saoName = unescapedText,
+        qualifiedCompanies = qualifiedCompanies,
+        companyCount = 2,
+        totalQualifiedCompanies = 2
+      )
+
+      doc.select(excludeHelpLinkAndErrorMessageParagraphsSelector).eachText().toArray.toSeq.mkString(",") must include(
+        unescapedText
+      )
+    }
+
+    "renders pagination when there is more than one page and on page 1" in {
+      val doc: Document =
+        generateView(
+          saoName = firstSaoName,
+          qualifiedCompanies = qualifiedCompanies.take(1),
+          companyCount = 30,
+          totalQualifiedCompanies = 30,
+          currentPage = 1,
+          pageCount = 2
+        )
+
+      doc.select(".govuk-pagination").size() mustBe 1
+      doc.select(".govuk-pagination__next").size() mustBe 1
+      doc.select(".govuk-pagination__prev").size() mustBe 0
+      doc.select(".govuk-pagination__next a").attr("aria-label") mustBe paginationNextHidden
+    }
+
+    "renders pagination when there is more than one page and on page 2" in {
+      val doc: Document =
+        generateView(
+          saoName = firstSaoName,
+          qualifiedCompanies = qualifiedCompanies.take(1),
+          companyCount = 45,
+          totalQualifiedCompanies = 45,
+          currentPage = 2,
+          pageCount = 3
+        )
+
+      doc.select(".govuk-pagination").size() mustBe 1
+      doc.select(".govuk-pagination__next").size() mustBe 1
+      doc.select(".govuk-pagination__prev").size() mustBe 1
+      doc.select(".govuk-pagination__next a").attr("aria-label") mustBe paginationNextHidden
+      doc.select(".govuk-pagination__prev a").attr("aria-label") mustBe paginationPreviousHidden
+    }
+  }
+
+  extension (doc: Document) {
+
+    def createTestForHorizontalLine(): Unit = {
+      val hr     = doc.select("hr")
+      val styles = hr.eachAttr("style")
+      styles.size mustBe 1
+      styles.get(0) mustBe hrStyle
+      hr.size mustBe 1
+
+    }
+    def createTestsWithQualifiedCompanyDescriptionList(qualifiedCompanies: Seq[QualifiedCompany]): Unit = {
+      val expectedCountOfDescriptionLists = qualifiedCompanies.size
+
+      "must be one description list per qualified company" in {
+        val descriptionLists = doc.select("dl.govuk-summary-list")
+        descriptionLists.size() mustBe expectedCountOfDescriptionLists
+      }
+
+      "must be four description terms per qualified company with expected text" in {
+        val descriptionTerms = doc.select("div.govuk-summary-list__row > dt.govuk-summary-list__key")
+
+        descriptionTerms.size() mustBe expectedCountOfDescriptionLists * 8
+
+        for i <- qualifiedCompanies.indices do {
+          descriptionTerms.get(i * 8).text() mustBe companyNameDescriptionTermText
+          descriptionTerms.get(i * 8 + 1).text() mustBe utrDescriptionTermText
+          descriptionTerms.get(i * 8 + 2).text() mustBe crnDescriptionTermText
+          descriptionTerms.get(i * 8 + 3).text() mustBe typeDescriptionTermText
+          descriptionTerms.get(i * 8 + 4).text() mustBe statusDescriptionTermText
+          descriptionTerms.get(i * 8 + 5).text() mustBe financialYearEndDescriptionTermText
+          descriptionTerms.get(i * 8 + 6).text() mustBe taxRegimesDescriptionTermText
+          descriptionTerms.get(i * 8 + 7).text() mustBe additionalInformationDescriptionTermText
+        }
+      }
+
+      "must be four description details per qualified company with expected text" in {
+        val descriptionDetails = doc.select("div.govuk-summary-list__row > dd.govuk-summary-list__value")
+        descriptionDetails.size() mustBe expectedCountOfDescriptionLists * 8
+
+        for i <- qualifiedCompanies.indices do {
+          descriptionDetails.get(i * 8).text() mustBe qualifiedCompanies(i).name
+          descriptionDetails.get(i * 8 + 1).text() mustBe qualifiedCompanies(i).utr
+          descriptionDetails.get(i * 8 + 2).text() mustBe qualifiedCompanies(i).crn.fold("Not provided")(identity)
+          descriptionDetails.get(i * 8 + 3).text() mustBe qualifiedCompanies(i).companyType
+          descriptionDetails.get(i * 8 + 4).text() mustBe qualifiedCompanies(i).status
+          descriptionDetails.get(i * 8 + 5).text() mustBe testDateAsString(qualifiedCompanies(i).financialYearEndDate)
+          descriptionDetails.get(i * 8 + 6).text() mustBe qualifiedCompanies(i).displayRegimes
+          descriptionDetails.get(i * 8 + 7).text() mustBe qualifiedCompanies(i).additionalInformation
+        }
+      }
+    }
+  }
+}
+
+object CombinedCertificateReviewQualifiedViewSpec {
+  val pageHeading                 = "Review the companies with a qualified certificate"
+  val pageCaption                 = "Submit a certificate"
+  val pageTitle: String           = "Review the companies with a qualified certificate - Submit a certificate"
+  val hrStyle                     = "border: 0; border-top: 1px solid; color: var(--govuk-border-colour,#cecece);"
+  val firstParagraphZeroCompanies =
+    "This list is from the certificate details in your submission template. There were 0 companies the SAO was responsible for in a previous financial year."
+  val firstParagraphTwoCompanies =
+    "This list is from the certificate details in your submission template. There were 2 companies the SAO was responsible for in a previous financial year."
+  val firstParagraphOneCompany =
+    "This list is from the certificate details in your submission template. There was 1 company the SAO was responsible for in a previous financial year."
+  val secondParagraph =
+    "If any company’s details are missing or incorrect, upload an updated submission template before continuing."
+  val thirdParagraphZeroQualifiedCompanies =
+    "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that 0 companies did not have appropriate tax accounting arrangements."
+  val thirdParagraphTwoQualifiedCompanies =
+    "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that 2 companies did not have appropriate tax accounting arrangements."
+  val thirdParagraphOneQualifiedCompany =
+    "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname, the Senior Accounting Officer, hereby certify that 1 company did not have appropriate tax accounting arrangements."
+  val thirdParagraphTwoQualifiedCompaniesDifferentSao =
+    "In accordance with paragraph 2, Schedule 46 of the Finance Act 2009, I Firstname Lastname II, the Senior Accounting Officer, hereby certify that 2 companies did not have appropriate tax accounting arrangements."
+  val firstSaoName                  = "Firstname Lastname"
+  val secondSaoName                 = "Firstname Lastname II"
+  val zeroQualifiedCompanyCountText = "0"
+  val twoQualifiedCompanyCountText  = "2"
+  val secondParagraphLinkText       = "upload an updated submission template"
+  val secondParagraphLinkSelector   = ".govuk-body:nth-of-type(2) .govuk-link"
+
+  val testDate1: LocalDate = LocalDate.of(2026, 1, 1)
+  val testDate2: LocalDate = LocalDate.of(2027, 2, 3)
+
+  def testDateAsString(localDate: LocalDate): String =
+    Map(
+      testDate1 -> "1 January 2026",
+      testDate2 -> "3 February 2027"
+    ).get(localDate).fold(throw RuntimeException("Unknown test date"))(identity)
+
+  val qualifiedCompanies: Seq[QualifiedCompany] = Seq(
+    QualifiedCompany(
+      name = "example company name",
+      utr = "example company utr",
+      crn = Some("example company crn"),
+      companyType = "LTD",
+      status = "Active",
+      financialYearEndDate = testDate1,
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = false,
+      petroleumRevenueTax = true,
+      customsDuties = false,
+      exciseDuties = false,
+      bankLevy = false,
+      additionalInformation = "example additional information"
+    ),
+    QualifiedCompany(
+      name = "example company name 2",
+      utr = "example company utr 2",
+      crn = None,
+      companyType = "PLC",
+      status = "Active",
+      financialYearEndDate = testDate2,
+      corporationTax = false,
+      valueAddedTax = true,
+      paye = false,
+      insurancePremiumTax = true,
+      stampDutyLandTax = false,
+      stampDutyReserveTax = true,
+      petroleumRevenueTax = false,
+      customsDuties = false,
+      exciseDuties = true,
+      bankLevy = false,
+      additionalInformation = "example additional information 2"
+    )
+  )
+
+  val companyNameDescriptionTermText           = "Company name"
+  val utrDescriptionTermText                   = "UTR"
+  val crnDescriptionTermText                   = "CRN"
+  val typeDescriptionTermText                  = "Type"
+  val statusDescriptionTermText                = "Status"
+  val financialYearEndDescriptionTermText      = "Financial year end"
+  val taxRegimesDescriptionTermText            = "Tax Regimes"
+  val additionalInformationDescriptionTermText = "Explain why the certificate is qualified"
+
+  val paginationPreviousHidden = "Previous"
+  val paginationNextHidden     = "Next"
+}

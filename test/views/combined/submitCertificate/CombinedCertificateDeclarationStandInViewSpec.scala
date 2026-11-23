@@ -1,0 +1,192 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package views.combined.submitCertificate
+
+import base.ViewSpecBase
+import forms.certificate.CertificateDeclarationStandInFormProvider
+import models.Mode
+import models.certificate.CertificateDeclarationStandIn
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import play.api.data.Form
+import views.combined.submitCertificate.CombinedCertificateDeclarationStandInViewSpec.*
+import views.html.combined.submitCertificate.CombinedCertificateDeclarationStandInView
+
+class CombinedCertificateDeclarationStandInViewSpec extends ViewSpecBase[CombinedCertificateDeclarationStandInView] {
+
+  private val formProvider = app.injector.instanceOf[CertificateDeclarationStandInFormProvider]
+  private val form: Form[CertificateDeclarationStandIn] = formProvider()
+
+  private def generateView(form: Form[CertificateDeclarationStandIn], mode: Mode): Document = {
+    val view = SUT(form, mode)
+    Jsoup.parse(view.toString)
+  }
+
+  "CertificateDeclarationStandInView" - {
+
+    Mode.values.foreach { mode =>
+      s"when using $mode" - {
+        "when the form is not filled in" - {
+          val doc = generateView(form, mode)
+
+          doc.createTestsWithStandardPageElements(
+            pageTitle = pageTitle,
+            pageHeading = pageHeading,
+            showBackLink = true,
+            showIsThisPageNotWorkingProperlyLink = true,
+            hasError = false
+          )
+
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestsForSubheadings(pageSubheading, includingError = false, tag = "h2")
+
+          doc.createTestMustShowNumberOfInputs(2)
+          doc.createTestMustShowTextInput(
+            name = "StandInName",
+            label = pageInput1Label,
+            value = "",
+            hint = None,
+            hasError = false
+          )
+          doc.createTestMustShowTextInput(
+            name = "SaoName",
+            label = pageInput2Label,
+            value = "",
+            hint = None,
+            hasError = false
+          )
+
+          doc.createTestsWithSubmissionButton(
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateDeclarationStandInController.onSubmit(mode),
+            buttonText = pageButtonText
+          )
+
+          doc.createTestsWithOrWithoutError(
+            hasError = false
+          )
+        }
+
+        "when the form is filled in" - {
+          val doc = generateView(form.bind(Map("StandInName" -> testInput1Value, "SaoName" -> testInput2Value)), mode)
+
+          doc.createTestsWithStandardPageElements(
+            pageTitle = pageTitle,
+            pageHeading = pageHeading,
+            showBackLink = true,
+            showIsThisPageNotWorkingProperlyLink = true,
+            hasError = false
+          )
+
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestsForSubheadings(pageSubheading, includingError = false, tag = "h2")
+
+          doc.createTestMustShowNumberOfInputs(2)
+          doc.createTestMustShowTextInput(
+            name = "StandInName",
+            label = pageInput1Label,
+            value = testInput1Value,
+            hint = None,
+            hasError = false
+          )
+          doc.createTestMustShowTextInput(
+            name = "SaoName",
+            label = pageInput2Label,
+            value = testInput2Value,
+            hint = None,
+            hasError = false
+          )
+
+          doc.createTestsWithSubmissionButton(
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateDeclarationStandInController.onSubmit(mode),
+            buttonText = pageButtonText
+          )
+
+          doc.createTestsWithOrWithoutError(
+            hasError = false
+          )
+        }
+
+        "when the form has errors" - {
+          val doc = generateView(form.withError("StandInName", "broken").withError("SaoName", "broken"), mode)
+
+          doc.createTestsWithStandardPageElements(
+            pageTitle = pageTitle,
+            pageHeading = pageHeading,
+            showBackLink = true,
+            showIsThisPageNotWorkingProperlyLink = true,
+            hasError = true
+          )
+
+          doc.createTestsWithParagraphs(pageParagraphs)
+          doc.createTestsWithBulletPoints(pageBullets)
+          doc.createTestsForSubheadings(pageSubheading, includingError = false, tag = "h2")
+
+          doc.createTestMustShowNumberOfInputs(2)
+          doc.createTestMustShowTextInput(
+            name = "StandInName",
+            label = pageInput1Label,
+            value = "",
+            hint = None,
+            hasError = true
+          )
+          doc.createTestMustShowTextInput(
+            name = "SaoName",
+            label = pageInput2Label,
+            value = "",
+            hint = None,
+            hasError = true
+          )
+
+          doc.createTestsWithSubmissionButton(
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateDeclarationStandInController.onSubmit(mode),
+            buttonText = pageButtonText
+          )
+
+          doc.createTestsWithOrWithoutError(
+            hasError = true
+          )
+        }
+      }
+    }
+  }
+}
+
+object CombinedCertificateDeclarationStandInViewSpec {
+  val pageTitle   = "Declaration – Submit a certificate"
+  val pageCaption = "Submit a certificate"
+  val pageHeading = "Declaration"
+
+  val pageParagraphs: Seq[String] = Seq(
+    "It is your responsibility to make sure the SAO has reviewed and approved the certificate before you submit.",
+    "By submitting this certificate, you confirm that:",
+    "If you deliberately give wrong or incomplete information, or do not report changes, the SAO may have to pay a penalty of £5,000."
+  )
+
+  val pageBullets: Seq[String] = Seq(
+    "the information provided is complete and correct",
+    "you have been authorised by the SAO to submit this certificate"
+  )
+
+  val pageSubheading: Seq[String] = Seq("I confirm that I am authorised to submit this certificate.")
+  val pageInput1Label             = "Enter your full name"
+  val pageInput2Label             = "Enter the full name of the SAO who authorised you"
+  val testInput1Value             = "test value 1"
+  val testInput2Value             = "test value 2"
+  val pageButtonText              = "Confirm"
+}
