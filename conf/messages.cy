@@ -83,14 +83,14 @@ template.guidance.subheading1.list.item4 = diwedd y flwyddyn ariannol
 template.guidance.subheading1.list.item5 = y math o sefydliad
 template.guidance.subheading1.list.item6 = statws y cwmni
 template.guidance.subheading1.list.item7 = y math o dystysgrif
-template.guidance.subheading1.list.item8 = esboniad o dystysgrif gymwysedig a’r cyfundrefnau treth y mae'n ymwneud â nhw
+template.guidance.subheading1.list.item8 = esboniad o dystysgrif gymwysedig a’r cyfundrefnau treth y mae’n ymwneud â nhw
 
 template.guidance.subheading1.subSubheading = Tystysgrif gymwysedig: beth i’w gynnwys yn eich esboniad
 template.guidance.subheading1.subSubheading.paragraph1 = Os oes gennych dystysgrif gymwysedig, mae’n rhaid i chi esbonio pam yn y templed. Dylai’ch esboniad gynnwys:
 template.guidance.subheading1.subSubheading.item1 = beth aeth o’i le gyda’r trefniadau cyfrifyddu treth
 template.guidance.subheading1.subSubheading.item2 = y rheswm pam y penderfynodd yr SAO roi tystysgrif gymwysedig
 template.guidance.subheading1.subSubheading.item3 = beth arweiniodd at y gwallau, nid rhestr yn unig
-template.guidance.subheading1.subSubheading.paragraph2 = Gallwch hefyd gynnwys unrhyw gynlluniau i fynd i'r afael â’r problemau, mae hyn yn ddewisol.
+template.guidance.subheading1.subSubheading.paragraph2 = Gallwch hefyd gynnwys unrhyw gynlluniau i fynd i’r afael â’r problemau, mae hyn yn ddewisol.
 template.guidance.subheading1.subSubheading.inset = Pan fyddwch chi’n gwneud cyflwyniad ar gyfer mwy nag un SAO, mae’n rhaid i chi gwblhau templed ar wahân ar gyfer pob un.
 
 template.guidance.subheading2 = Cam 2: Uwchlwytho’ch templed
