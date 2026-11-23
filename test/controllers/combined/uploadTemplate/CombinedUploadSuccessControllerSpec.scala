@@ -216,6 +216,12 @@ class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEa
       }
     }
 
+    "when UpscanService returns State.DownloadFromUpscanErrored" - {
+      "must redirect to CombinedUploadFormController" in {
+        testFileUploadStateCausesUploadFormRedirect(State.DownloadFromUpscanErrored)
+      }
+    }
+
     "when UpscanService returns State.DownloadFromUpscanFailed" - {
       "must redirect to combined upload form page" in {
         val application = applicationBuilder(userAnswers = Some(completedSaoDetailsAnswers)).build()

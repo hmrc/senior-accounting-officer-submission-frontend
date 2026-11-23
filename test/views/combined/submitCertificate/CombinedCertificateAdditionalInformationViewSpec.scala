@@ -26,7 +26,8 @@ import play.api.data.Form
 import views.combined.submitCertificate.CombinedCertificateAdditionalInformationViewSpec.*
 import views.html.combined.submitCertificate.CombinedCertificateAdditionalInformationView
 
-class CombinedCertificateAdditionalInformationViewSpec extends ViewSpecBase[CombinedCertificateAdditionalInformationView] {
+class CombinedCertificateAdditionalInformationViewSpec
+    extends ViewSpecBase[CombinedCertificateAdditionalInformationView] {
 
   private val formProvider               = app.injector.instanceOf[CertificateAdditionalInformationFormProvider]
   private val form: Form[Option[String]] = formProvider()
@@ -71,7 +72,8 @@ class CombinedCertificateAdditionalInformationViewSpec extends ViewSpecBase[Comb
           )
 
           doc.createTestsWithSubmissionButtons(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateAdditionalInformationController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateAdditionalInformationController
+              .onSubmit(mode),
             buttonTexts = Seq("Continue", "Skip")
           )
 
@@ -112,7 +114,8 @@ class CombinedCertificateAdditionalInformationViewSpec extends ViewSpecBase[Comb
           )
 
           doc.createTestsWithSubmissionButtons(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateAdditionalInformationController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateAdditionalInformationController
+              .onSubmit(mode),
             buttonTexts = Seq("Continue", "Skip")
           )
 
@@ -152,7 +155,8 @@ class CombinedCertificateAdditionalInformationViewSpec extends ViewSpecBase[Comb
           )
 
           doc.createTestsWithSubmissionButtons(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateAdditionalInformationController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateAdditionalInformationController
+              .onSubmit(mode),
             buttonTexts = Seq("Continue", "Skip")
           )
 

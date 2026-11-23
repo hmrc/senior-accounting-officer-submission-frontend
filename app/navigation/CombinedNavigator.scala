@@ -21,7 +21,6 @@ import controllers.combined.routes as combinedRoutes
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
-import controllers.notification.routes as notificationRoutes
 import controllers.routes
 import models.*
 import models.certificate.CertificateWhoIsSubmitting.{Sao, StandIn}
@@ -123,26 +122,26 @@ class CombinedNavigator @Inject() () extends Navigator {
 
   override protected val checkRouteMap: Page => UserAnswers => Call = {
     case NotificationSingleSaoOfficerNamePage(mode) =>
-      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+      _ => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoLastOfficerNamePage(mode) =>
-      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+      _ => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoLastOfficerStartDatePage(mode) =>
-      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+      _ => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoPreviousOfficerNamePage(_, mode) =>
-      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+      _ => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoPreviousOfficerStartDatePage(_, mode) =>
-      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+      _ => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoPreviousOfficerEndDatePage(_, mode) =>
-      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+      _ => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoAreAllAddedPage(saoIndex, mode) =>
       userAnswers =>
         if hasCompletedMoreSaoDetails(userAnswers) then {
-          notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+          submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
         } else {
-          notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
+          provideSaoDetailsRoutes.CombinedMultiSaoPreviousOfficerNameController.onPageLoad(NormalMode, saoIndex + 1)
         }
     case NotificationAdditionalInformationPage =>
-      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+      _ => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
     case page => _ => throw new IllegalStateException(s"Unexpected Page in checkRouteMap - $page")
   }
 
@@ -172,49 +171,50 @@ class CombinedNavigator @Inject() () extends Navigator {
         userAnswers.get(NotificationMoreThanOneSaoPage(TransactionMode)) match {
           case Some(true) => {
             if hasMultiSaoAnswers(userAnswers, NormalMode) then {
-              notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+              submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
             } else {
-              notificationRoutes.NotificationMultiSaoLastOfficerNameController.onPageLoad(TransactionMode)
+              provideSaoDetailsRoutes.CombinedMultiSaoLastOfficerNameController.onPageLoad(TransactionMode)
             }
           }
           case Some(false) => {
             if hasSingleSaoAnswers(userAnswers, NormalMode) then {
-              notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+              submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
             } else {
-              notificationRoutes.NotificationSingleSaoOfficerNameController.onPageLoad(TransactionMode)
+              provideSaoDetailsRoutes.CombinedSingleSaoOfficerNameController.onPageLoad(TransactionMode)
             }
           }
           case None => ???
         }
     case NotificationSingleSaoOfficerNamePage(_) =>
-      _ => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+      _ => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
     case NotificationMultiSaoLastOfficerNamePage(_) =>
-      _ => notificationRoutes.NotificationMultiSaoLastOfficerStartDateController.onPageLoad(TransactionMode)
+      _ => provideSaoDetailsRoutes.CombinedMultiSaoLastOfficerStartDateController.onPageLoad(TransactionMode)
     case NotificationMultiSaoLastOfficerStartDatePage(_) =>
-      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode)
+      _ => provideSaoDetailsRoutes.CombinedMultiSaoPreviousOfficerNameController.onPageLoad(TransactionMode)
     case NotificationMultiSaoAreAllAddedPage(saoIndex, _) =>
       userAnswers =>
         userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, TransactionMode)) match {
-          case Some(true)  => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+          case Some(true)  => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
           case Some(false) =>
             userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, NormalMode)) match {
               case Some(true) | None =>
-                notificationRoutes.NotificationMultiSaoPreviousOfficerNameController.onPageLoad(
+                provideSaoDetailsRoutes.CombinedMultiSaoPreviousOfficerNameController.onPageLoad(
                   TransactionMode,
                   saoIndex + 1
                 )
-              case Some(false) => notificationRoutes.NotificationCheckYourAnswersController.onPageLoad()
+              case Some(false) => submitNotificationRoutes.CombinedNotificationCheckYourAnswersController.onPageLoad()
             }
           case answer =>
             throw new IllegalStateException(s"Unexpected NotificationMultiSaoAreAllAddedPage value - $answer")
         }
     case NotificationMultiSaoPreviousOfficerNamePage(saoIndex, _) =>
       _ =>
-        notificationRoutes.NotificationMultiSaoPreviousOfficerStartDateController.onPageLoad(TransactionMode, saoIndex)
+        provideSaoDetailsRoutes.CombinedMultiSaoPreviousOfficerStartDateController.onPageLoad(TransactionMode, saoIndex)
     case NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, _) =>
-      _ => notificationRoutes.NotificationMultiSaoPreviousOfficerEndDateController.onPageLoad(TransactionMode, saoIndex)
+      _ =>
+        provideSaoDetailsRoutes.CombinedMultiSaoPreviousOfficerEndDateController.onPageLoad(TransactionMode, saoIndex)
     case NotificationMultiSaoPreviousOfficerEndDatePage(saoIndex, _) =>
-      _ => notificationRoutes.NotificationMultiSaoAreAllAddedController.onPageLoad(TransactionMode, saoIndex)
+      _ => provideSaoDetailsRoutes.CombinedMultiSaoAreAllAddedController.onPageLoad(TransactionMode, saoIndex)
     case page => _ => throw new IllegalStateException(s"Unexpected page - $page")
   }
 }

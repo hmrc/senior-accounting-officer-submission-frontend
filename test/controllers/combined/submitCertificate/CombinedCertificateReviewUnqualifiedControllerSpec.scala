@@ -19,7 +19,6 @@ package controllers.combined.submitCertificate
 import base.SpecBase
 import controllers.combined.routes as combinedRoutes
 import controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedControllerSpec.*
-import controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedControllerSpec.testTemplateData
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import models.*
 import models.upload.*

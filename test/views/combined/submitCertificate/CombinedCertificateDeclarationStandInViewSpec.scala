@@ -72,7 +72,8 @@ class CombinedCertificateDeclarationStandInViewSpec extends ViewSpecBase[Combine
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateDeclarationStandInController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateDeclarationStandInController
+              .onSubmit(mode),
             buttonText = pageButtonText
           )
 
@@ -113,7 +114,8 @@ class CombinedCertificateDeclarationStandInViewSpec extends ViewSpecBase[Combine
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateDeclarationStandInController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateDeclarationStandInController
+              .onSubmit(mode),
             buttonText = pageButtonText
           )
 
@@ -154,7 +156,8 @@ class CombinedCertificateDeclarationStandInViewSpec extends ViewSpecBase[Combine
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateDeclarationStandInController.onSubmit(mode),
+            action = controllers.combined.submitCertificate.routes.CombinedCertificateDeclarationStandInController
+              .onSubmit(mode),
             buttonText = pageButtonText
           )
 

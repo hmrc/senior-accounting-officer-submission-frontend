@@ -17,14 +17,14 @@
 package views.combined
 
 import base.ViewSpecBase
-import controllers.combined.routes as combinedRoutes
 import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
-import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
-import controllers.combined.submitNotification.routes as submitNotificationRoutes
+import controllers.combined.routes as combinedRoutes
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
+import controllers.combined.submitNotification.routes as submitNotificationRoutes
+import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import models.NormalMode
 import models.combined.CombinedStage
-import models.combined.CombinedStage.{AllStagesCompleted, SubmitCertificateInfo, SubmitNotificationInfo, UploadSubmissionTemplateDetails}
+import models.combined.CombinedStage.*
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.combined.CombinedTaskListViewSpec.*
@@ -190,7 +190,8 @@ class CombinedTaskListViewSpec extends ViewSpecBase[CombinedTaskListView] {
         .createTestWithLink(
           linkTestDescription = "submit notification",
           linkText = submitNotificationLinkText,
-          destinationUrl = submitNotificationRoutes.CombinedNotificationAdditionalInformationController.onPageLoad(NormalMode).url,
+          destinationUrl =
+            submitNotificationRoutes.CombinedNotificationAdditionalInformationController.onPageLoad(NormalMode).url,
           isExternalLink = false
         )
 
@@ -251,7 +252,8 @@ class CombinedTaskListViewSpec extends ViewSpecBase[CombinedTaskListView] {
         .createTestWithLink(
           linkTestDescription = "submit notification",
           linkText = submitNotificationLinkText,
-          destinationUrl = submitNotificationRoutes.CombinedNotificationAdditionalInformationController.onPageLoad(NormalMode).url,
+          destinationUrl =
+            submitNotificationRoutes.CombinedNotificationAdditionalInformationController.onPageLoad(NormalMode).url,
           isExternalLink = false
         )
 
@@ -269,7 +271,7 @@ class CombinedTaskListViewSpec extends ViewSpecBase[CombinedTaskListView] {
         val statusTags = doc.getMainContent.getElementsByClass("govuk-task-list__status")
         statusTags.size() mustBe 4
 
-        val provideSaoDetailsTag = statusTags.get(0)
+        val provideSaoDetailsTag  = statusTags.get(0)
         val uploadNotificationTag = statusTags.get(1)
         val submitNotificationTag = statusTags.get(2)
         val submitCertificateTag  = statusTags.get(3)

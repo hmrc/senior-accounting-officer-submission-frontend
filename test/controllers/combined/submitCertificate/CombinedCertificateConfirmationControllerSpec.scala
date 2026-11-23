@@ -17,6 +17,7 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
+import controllers.combined.routes as combinedRoutes
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.routes
 import models.JourneySection
@@ -113,6 +114,22 @@ class CombinedCertificateConfirmationControllerSpec extends SpecBase {
           redirectLocation(result).value mustEqual routes.JourneyRecoveryController
             .onPageLoad(section = Some(JourneySection.Combined))
             .url
+        }
+      }
+    }
+
+    "onSubmit" - {
+      "must redirect to the combined task list page for a POST" in {
+        val application = applicationBuilder(userAnswers = Some(completedSubmittedNotificationAnswers)).build()
+
+        running(application) {
+          val request =
+            FakeRequest(POST, submitCertificateRoutes.CombinedCertificateConfirmationController.onSubmit().url)
+
+          val result = route(application, request).value
+
+          status(result) mustEqual SEE_OTHER
+          redirectLocation(result).value mustEqual combinedRoutes.CombinedTaskListController.onComplete.url
         }
       }
     }

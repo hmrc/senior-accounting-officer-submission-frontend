@@ -65,7 +65,8 @@ class CombinedCertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CombinedCe
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateWhoIsSubmittingController.onSubmit(mode),
+            action =
+              controllers.combined.submitCertificate.routes.CombinedCertificateWhoIsSubmittingController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -100,7 +101,8 @@ class CombinedCertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CombinedCe
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateWhoIsSubmittingController.onSubmit(mode),
+            action =
+              controllers.combined.submitCertificate.routes.CombinedCertificateWhoIsSubmittingController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -135,7 +137,8 @@ class CombinedCertificateWhoIsSubmittingViewSpec extends ViewSpecBase[CombinedCe
           )
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateWhoIsSubmittingController.onSubmit(mode),
+            action =
+              controllers.combined.submitCertificate.routes.CombinedCertificateWhoIsSubmittingController.onSubmit(mode),
             buttonText = "Continue"
           )
 

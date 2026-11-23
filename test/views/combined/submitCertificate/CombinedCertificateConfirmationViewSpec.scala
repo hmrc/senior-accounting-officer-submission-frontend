@@ -18,11 +18,11 @@ package views.combined.submitCertificate
 
 import base.ViewSpecBase
 import config.AppConfig
+import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.combined.submitCertificate.CombinedCertificateConfirmationViewSpec.*
 import views.html.combined.submitCertificate.CombinedCertificateConfirmationView
-import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 
 class CombinedCertificateConfirmationViewSpec extends ViewSpecBase[CombinedCertificateConfirmationView] {
 

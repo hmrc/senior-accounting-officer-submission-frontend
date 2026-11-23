@@ -61,7 +61,8 @@ class CombinedCertificateSaoFullNameViewSpec extends ViewSpecBase[CombinedCertif
           doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateSaoFullNameController.onSubmit(mode),
+            action =
+              controllers.combined.submitCertificate.routes.CombinedCertificateSaoFullNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -95,7 +96,8 @@ class CombinedCertificateSaoFullNameViewSpec extends ViewSpecBase[CombinedCertif
           doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateSaoFullNameController.onSubmit(mode),
+            action =
+              controllers.combined.submitCertificate.routes.CombinedCertificateSaoFullNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 
@@ -129,7 +131,8 @@ class CombinedCertificateSaoFullNameViewSpec extends ViewSpecBase[CombinedCertif
           doc.createTestsWithCaption(pageCaption)
 
           doc.createTestsWithSubmissionButton(
-            action = controllers.combined.submitCertificate.routes.CombinedCertificateSaoFullNameController.onSubmit(mode),
+            action =
+              controllers.combined.submitCertificate.routes.CombinedCertificateSaoFullNameController.onSubmit(mode),
             buttonText = "Continue"
           )
 

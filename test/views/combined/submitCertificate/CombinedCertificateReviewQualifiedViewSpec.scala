@@ -44,10 +44,7 @@ class CombinedCertificateReviewQualifiedViewSpec extends ViewSpecBase[CombinedCe
 
   "CombinedCertificateReviewQualifiedView" - {
     "When no rows are passed to the view must render empty table" - {
-      val doc: Document = generateView(
-        saoName = firstSaoName,
-        qualifiedCompanies = Seq.empty,
-        companyCount = 0)
+      val doc: Document = generateView(saoName = firstSaoName, qualifiedCompanies = Seq.empty, companyCount = 0)
 
       doc.createTestsWithStandardPageElements(
         pageTitle = pageTitle,
