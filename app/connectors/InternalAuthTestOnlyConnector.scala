@@ -19,7 +19,6 @@ package connectors
 import config.AppConfig
 import play.api.libs.json.{JsObject, Json}
 import play.api.libs.ws.writeableOf_JsValue
-import services.ObjectStoreService
 import uk.gov.hmrc.http.HttpReads.Implicits.*
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
@@ -46,7 +45,7 @@ class InternalAuthTestOnlyConnector @Inject() (
       "permissions" -> Json.arr(
         Json.obj(
           "resourceType"     -> "object-store",
-          "resourceLocation" -> ObjectStoreService.objectStoreOwner,
+          "resourceLocation" -> "senior-accounting-officer",
           "actions"          -> Json.arr("READ", "WRITE", "DELETE")
         )
       )

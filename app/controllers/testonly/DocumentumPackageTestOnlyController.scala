@@ -17,7 +17,7 @@
 package controllers.testonly
 
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.ObjectStoreService
+import services.PDFAccessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendController
 
 import scala.concurrent.ExecutionContext
@@ -27,12 +27,12 @@ import javax.inject.Inject
 
 class DocumentumPackageTestOnlyController @Inject() (
     mcc: MessagesControllerComponents,
-    objectStoreService: ObjectStoreService
+    pdfAccessService: PDFAccessService
 )(using ExecutionContext)
     extends FrontendController(mcc) {
 
   def download(submissionId: String, fileName: String): Action[AnyContent] = Action.async { implicit request =>
-    objectStoreService
+    pdfAccessService
       .downloadDocumentumPackage(submissionId, fileName)
       .map {
         case Some(source) => Ok.chunked(source).as("application/zip")

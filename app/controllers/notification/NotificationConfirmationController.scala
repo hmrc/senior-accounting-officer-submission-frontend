@@ -17,9 +17,10 @@
 package controllers.notification
 
 import controllers.actions.*
+import models.SubmissionDocumentType
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.ObjectStoreService
+import services.PDFAccessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.notification.NotificationConfirmationView
 
@@ -34,21 +35,22 @@ class NotificationConfirmationController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: NotificationConfirmationView,
-    objectStoreService: ObjectStoreService
+    pdfAccessService: PDFAccessService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(notificationReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      objectStoreService.isNotificationPdfAvailable(request.saoSubscriptionId, notificationReference).map {
-        isPdfAvailable =>
+      pdfAccessService
+        .checkPDFStatus(request.saoSubscriptionId, notificationReference, SubmissionDocumentType.Notification)
+        .map { isPdfAvailable =>
           Ok(
             view(
               notificationReference = notificationReference,
               displayPdfLink = isPdfAvailable
             )
           )
-      }
+        }
     }
 }

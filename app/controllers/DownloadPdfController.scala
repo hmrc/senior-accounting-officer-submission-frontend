@@ -22,7 +22,7 @@ import models.SubmissionDocumentType
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.*
-import services.ObjectStoreService
+import services.PDFAccessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -33,7 +33,7 @@ class DownloadPdfController @Inject() (
     override val messagesApi: MessagesApi,
     identify: IdentifierAction,
     val controllerComponents: MessagesControllerComponents,
-    objectStoreService: ObjectStoreService,
+    pdfAccessService: PDFAccessService,
     errorHandler: ErrorHandler
 )(using ec: ExecutionContext)
     extends FrontendBaseController
@@ -48,13 +48,13 @@ class DownloadPdfController @Inject() (
 
   private def download(reference: String, documentType: SubmissionDocumentType): Action[AnyContent] =
     identify.async { implicit request =>
-      objectStoreService.downloadSubmissionPdf(request.saoSubscriptionId, reference, documentType).flatMap {
+      pdfAccessService.getPDF(request.saoSubscriptionId, reference, documentType).flatMap {
         case Some(pdf) =>
           Future.successful(
             Ok.streamed(
               content = pdf.content,
-              contentLength = Some(pdf.metadata.contentLength),
-              contentType = Some(pdf.metadata.contentType)
+              contentLength = pdf.contentLength,
+              contentType = Some(pdf.contentType)
             ).withHeaders(
               Results
                 .contentDispositionHeader(inline = false, name = Some(documentType.pdfFileName(reference)))

@@ -12,12 +12,7 @@ GET         /pdf/open-html-to-pdf/example      controllers.testonly.TestPdfContr
 
 +nocsrf
 POST        /internal-auth/object-store        controllers.testonly.InternalAuthTestOnlyController.grantSaoObjectStoreAccess()
-
 GET         /documentum-package/:submissionId/:fileName        controllers.testonly.DocumentumPackageTestOnlyController.download(submissionId, fileName)
-GET         /object-store/list                                 controllers.testonly.ObjectStoreViewerController.listDirectory(stubInternalAuth:Boolean ?= true)
-GET         /object-store/download                             controllers.testonly.ObjectStoreViewerController.download(location:String, fileName:String)
-GET         /object-store/delete                               controllers.testonly.ObjectStoreViewerController.delete(location:String, fileName:String)
-
 GET         /feature-toggle                     controllers.testonly.FeatureToggleController.get()
 POST        /feature-toggle                     controllers.testonly.FeatureToggleController.update()
 
