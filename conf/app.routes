@@ -49,7 +49,7 @@ GET         /submission/notification/officer-name                controllers.not
 POST        /submission/notification/officer-name                controllers.notification.NotificationSingleSaoOfficerNameController.onSubmit(mode: Mode)
 
 
-GET         /submission/notification/submission-template                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
+GET         /submission/notification/upload-template                                                      controllers.notification.NotificationUploadFormController.onPageLoad()
 GET         /submission/notification/uploading                                              controllers.notification.NotificationUploadSuccessController.onPageLoad(key: Option[String])
 GET         /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onPageLoad(page: Int)
 POST        /submission/notification/review-companies                                                controllers.notification.UploadTemplateTableController.onSubmit()
