@@ -17,14 +17,17 @@
 package controllers.combined.submitNotification
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.routes as combinedRoutes
 import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import controllers.routes
 import forms.notification.NotificationAdditionalInformationFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.{JourneySection, NormalMode}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.notification.NotificationAdditionalInformationPage
 import play.api.data.Form
@@ -37,7 +40,11 @@ import views.html.combined.submitNotification.CombinedNotificationAdditionalInfo
 
 import scala.concurrent.Future
 
-class CombinedNotificationAdditionalInformationControllerSpec extends SpecBase with MockitoSugar {
+class CombinedNotificationAdditionalInformationControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -46,6 +53,16 @@ class CombinedNotificationAdditionalInformationControllerSpec extends SpecBase w
 
   lazy val notificationAdditionalInformationRoute: String =
     submitNotificationRoutes.CombinedNotificationAdditionalInformationController.onPageLoad(NormalMode).url
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "NotificationAdditionalInformation Controller" - {
 

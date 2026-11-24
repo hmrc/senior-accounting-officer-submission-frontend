@@ -20,7 +20,7 @@ import base.SpecBase
 import config.FeatureToggleSupport
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.routes
-import models.FeatureToggle.FaultTolerance
+import models.FeatureToggle.{CombinedJourney, FaultTolerance}
 import models.JourneySection
 import org.jsoup.Jsoup
 import org.mockito.ArgumentMatchers.{any, eq as meq}
@@ -46,11 +46,13 @@ class CombinedCertificateCheckYourAnswersControllerSpec
   override def beforeEach(): Unit = {
     super.beforeEach()
     disable(FaultTolerance)
+    enable(CombinedJourney)
   }
 
   override def afterEach(): Unit = {
     super.afterEach()
     disable(FaultTolerance)
+    disable(CombinedJourney)
   }
 
   "CombinedCertificateCheckYourAnswers Controller" - {

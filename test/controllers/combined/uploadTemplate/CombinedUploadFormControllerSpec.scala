@@ -17,14 +17,17 @@
 package controllers.combined.uploadTemplate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import connectors.UpscanInitiateConnector
 import controllers.combined.routes as combinedRoutes
 import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.routes
+import models.FeatureToggle.CombinedJourney
 import models.JourneySection
 import models.upscan.*
 import org.mockito.ArgumentMatchers.{any, argThat, eq as meq}
 import org.mockito.Mockito.{times, verify, when}
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.combined.CombinedUploadStatePage
 import play.api.data.Form
@@ -38,7 +41,21 @@ import views.html.combined.uploadTemplate.CombinedUploadFormView
 
 import scala.concurrent.Future
 
-class CombinedUploadFormControllerSpec extends SpecBase with MockitoSugar {
+class CombinedUploadFormControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedUploadFormController must" - {
 

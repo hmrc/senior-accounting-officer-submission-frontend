@@ -17,8 +17,11 @@
 package controllers.combined.submitNotification
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.submitNotification.routes as submitNotificationRoutes
+import models.FeatureToggle.CombinedJourney
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
+import org.scalatest.BeforeAndAfterEach
 import play.api.http.HeaderNames
 import play.api.inject.*
 import play.api.mvc.Call
@@ -26,9 +29,19 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers.*
 import views.html.combined.submitNotification.CombinedConfirmYourNotificationView
 
-class CombinedConfirmYourNotificationControllerSpec extends SpecBase {
+class CombinedConfirmYourNotificationControllerSpec extends SpecBase with FeatureToggleSupport with BeforeAndAfterEach {
 
   def onwardRoute: Call = Call("GET", "/foo")
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "ConfirmYourNotification Controller" - {
 

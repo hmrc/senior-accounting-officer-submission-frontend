@@ -38,6 +38,7 @@ class CombinedCertificateSaoFullNameController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     formProvider: CertificateSaoFullNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedCertificateSaoFullNameView,
@@ -46,15 +47,16 @@ class CombinedCertificateSaoFullNameController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
   def onPageLoad(mode: Mode): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
-      val form         = formProvider()
-      val preparedForm = request.userAnswers.get(CertificateSaoFullNamePage).fold(form)(form.fill)
-      Ok(view(preparedForm, mode))
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked) {
+      implicit request =>
+        val form         = formProvider()
+        val preparedForm = request.userAnswers.get(CertificateSaoFullNamePage).fold(form)(form.fill)
+        Ok(view(preparedForm, mode))
     }
 
   def onSubmit(mode: Mode): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-      implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked)
+      .async { implicit request =>
         val form = formProvider()
         form
           .bindFromRequest()
@@ -66,5 +68,5 @@ class CombinedCertificateSaoFullNameController @Inject() (
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(navigator.nextPage(CertificateSaoFullNamePage, mode, updatedAnswers))
           )
-    }
+      }
 }

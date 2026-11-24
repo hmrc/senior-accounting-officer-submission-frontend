@@ -17,13 +17,16 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.routes
 import forms.certificate.CertificateSaoEmailFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.{JourneySection, NormalMode, UserAnswers}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.certificate.{CertificateSaoEmailPage, CertificateSaoFullNamePage}
 import play.api.data.Form
@@ -36,7 +39,11 @@ import views.html.combined.submitCertificate.CombinedCertificateSaoEmailView
 
 import scala.concurrent.Future
 
-class CombinedCertificateSaoEmailControllerSpec extends SpecBase with MockitoSugar {
+class CombinedCertificateSaoEmailControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -54,6 +61,16 @@ class CombinedCertificateSaoEmailControllerSpec extends SpecBase with MockitoSug
     .set(CertificateSaoFullNamePage, saoName)
     .success
     .value
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedCertificateSaoEmail Controller" - {
 

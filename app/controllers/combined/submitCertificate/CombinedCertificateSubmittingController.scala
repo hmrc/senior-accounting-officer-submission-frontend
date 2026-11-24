@@ -35,6 +35,7 @@ class CombinedCertificateSubmittingController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction,
     val controllerComponents: MessagesControllerComponents
 )(using ExecutionContext)
@@ -42,13 +43,13 @@ class CombinedCertificateSubmittingController @Inject() (
     with I18nSupport {
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-      implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked)
+      .async { implicit request =>
         certificateSubmissionService.getStateOfWorkItem(idempotencyKey, request.userAnswers).map {
           case CertificateSubmissionResult.Submitted(certificateRef) =>
             Redirect(submitCertificateRoutes.CombinedCertificateConfirmationController.onPageLoad(certificateRef))
           case CertificateSubmissionResult.Pending(_) => Ok(view())
           case _ => throw new InternalServerException(s"Error getting certificate state")
         }
-    }
+      }
 }

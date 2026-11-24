@@ -17,13 +17,16 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.routes
 import forms.certificate.CertificateSaoFullNameFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.{JourneySection, NormalMode}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.certificate.CertificateSaoFullNamePage
 import play.api.data.Form
@@ -36,7 +39,11 @@ import views.html.combined.submitCertificate.CombinedCertificateSaoFullNameView
 
 import scala.concurrent.Future
 
-class CombinedCertificateSaoFullNameControllerSpec extends SpecBase with MockitoSugar {
+class CombinedCertificateSaoFullNameControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -48,6 +55,16 @@ class CombinedCertificateSaoFullNameControllerSpec extends SpecBase with Mockito
 
   lazy val certificateSaoFullNameSubmitRoute: String =
     submitCertificateRoutes.CombinedCertificateSaoFullNameController.onSubmit(NormalMode).url
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedCertificateSaoFullName Controller" - {
 

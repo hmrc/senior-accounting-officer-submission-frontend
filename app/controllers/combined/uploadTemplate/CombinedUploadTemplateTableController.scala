@@ -40,6 +40,7 @@ class CombinedUploadTemplateTableController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     requireNotificationUploadUnlocked: RequireCombinedNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedUploadTemplateTableView,
@@ -52,46 +53,48 @@ class CombinedUploadTemplateTableController @Inject() (
     with I18nSupport {
 
   def onPageLoad(page: Int = 0): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked) { implicit request =>
-      request.userAnswers
-        .get(UploadTemplateTablePage)
-        .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
-        ) { tableData =>
-          if tableData.hasErrors then {
-            Ok(errorView(tableData))
-          } else {
-            playbackService
-              .getPlayback(request.userAnswers)
-              .fold(Redirect(combinedRoutes.CombinedTaskListController.onPageLoad)) { playback =>
-                val paginatedData = CompanyPagination(items = tableData.rows, requestedPage = page, pageSize = 15)
-                val pageTableData =
-                  tableData.copy(rows = paginatedData.items)
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireNotificationUploadUnlocked) {
+      implicit request =>
+        request.userAnswers
+          .get(UploadTemplateTablePage)
+          .fold(
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
+          ) { tableData =>
+            if tableData.hasErrors then {
+              Ok(errorView(tableData))
+            } else {
+              playbackService
+                .getPlayback(request.userAnswers)
+                .fold(Redirect(combinedRoutes.CombinedTaskListController.onPageLoad)) { playback =>
+                  val paginatedData = CompanyPagination(items = tableData.rows, requestedPage = page, pageSize = 15)
+                  val pageTableData =
+                    tableData.copy(rows = paginatedData.items)
 
-                Ok(view(pageTableData, playback.saoName, paginatedData.currentPage, paginatedData.pageCount))
-              }
+                  Ok(view(pageTableData, playback.saoName, paginatedData.currentPage, paginatedData.pageCount))
+                }
+            }
           }
-        }
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
-      request.userAnswers
-        .get(UploadTemplateTablePage)
-        .fold(
-          Future.successful(
-            Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireNotificationUploadUnlocked)
+      .async { implicit request =>
+        request.userAnswers
+          .get(UploadTemplateTablePage)
+          .fold(
+            Future.successful(
+              Redirect(
+                routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
+              )
             )
-          )
-        ) {
-          case tableData if tableData.hasErrors =>
-            Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
-          case _ =>
-            for {
-              updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadTemplateReviewPage, true))
-              _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, updatedAnswers))
-        }
-    }
+          ) {
+            case tableData if tableData.hasErrors =>
+              Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
+            case _ =>
+              for {
+                updatedAnswers <- Future.fromTry(request.userAnswers.set(UploadTemplateReviewPage, true))
+                _              <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(UploadTemplateTablePage, NormalMode, updatedAnswers))
+          }
+      }
 }

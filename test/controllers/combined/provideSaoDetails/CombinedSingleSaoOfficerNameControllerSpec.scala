@@ -17,13 +17,16 @@
 package controllers.combined.provideSaoDetails
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
 import controllers.routes
 import forms.notification.NotificationSingleSaoOfficerNameFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.{JourneySection, NormalMode}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.notification.NotificationSingleSaoOfficerNamePage
 import play.api.data.Form
@@ -36,7 +39,11 @@ import views.html.combined.provideSaoDetails.CombinedSingleSaoOfficerNameView
 
 import scala.concurrent.Future
 
-class CombinedSingleSaoOfficerNameControllerSpec extends SpecBase with MockitoSugar {
+class CombinedSingleSaoOfficerNameControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -48,6 +55,16 @@ class CombinedSingleSaoOfficerNameControllerSpec extends SpecBase with MockitoSu
 
   lazy val notificationSingleSaoOfficerNamePostRoute: String =
     provideSaoDetailsRoutes.CombinedSingleSaoOfficerNameController.onSubmit(NormalMode).url
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedSingleSaoOfficerName Controller" - {
 

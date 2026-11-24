@@ -42,6 +42,7 @@ class CombinedNotificationAdditionalInformationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
     formProvider: NotificationAdditionalInformationFormProvider,
     val controllerComponents: MessagesControllerComponents,
@@ -53,27 +54,29 @@ class CombinedNotificationAdditionalInformationController @Inject() (
   val form: Form[Option[String]] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
-      val preparedForm =
-        request.userAnswers
-          .getNullable(NotificationAdditionalInformationPage)
-          .fold(form)(value => form.fill(Some(value)))
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked) {
+      implicit request =>
+        val preparedForm =
+          request.userAnswers
+            .getNullable(NotificationAdditionalInformationPage)
+            .fold(form)(value => form.fill(Some(value)))
 
-      Ok(view(preparedForm, mode))
+        Ok(view(preparedForm, mode))
     }
 
   def onSubmit(mode: Mode): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-      form
-        .bindFromRequest()
-        .fold(
-          formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
-          value =>
-            for {
-              updatedAnswers <- Future
-                .fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
-              _ <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
-        )
-    }
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked)
+      .async { implicit request =>
+        form
+          .bindFromRequest()
+          .fold(
+            formWithErrors => Future.successful(BadRequest(view(formWithErrors, mode))),
+            value =>
+              for {
+                updatedAnswers <- Future
+                  .fromTry(request.userAnswers.set(NotificationAdditionalInformationPage, value))
+                _ <- sessionRepository.set(updatedAnswers)
+              } yield Redirect(navigator.nextPage(NotificationAdditionalInformationPage, mode, updatedAnswers))
+          )
+      }
 }

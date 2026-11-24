@@ -40,6 +40,7 @@ class CombinedMultiSaoPreviousOfficerNameController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     formProvider: NotificationMultiSaoPreviousOfficerNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedMultiSaoPreviousOfficerNameView
@@ -56,8 +57,8 @@ class CombinedMultiSaoPreviousOfficerNameController @Inject() (
       userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex - 1, mode))
     }
 
-  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck) { implicit request =>
       val preparedForm =
         request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)).fold(form)(form.fill)
       saoNameForPage(mode, saoIndex, request.userAnswers)
@@ -65,10 +66,10 @@ class CombinedMultiSaoPreviousOfficerNameController @Inject() (
           Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
         )(saoName => Ok(view(saoName, preparedForm, mode, saoIndex)))
 
-  }
+    }
 
-  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
       saoNameForPage(mode, saoIndex, request.userAnswers) match {
         case None =>
           Future.successful(
@@ -94,5 +95,5 @@ class CombinedMultiSaoPreviousOfficerNameController @Inject() (
                 )
             )
       }
-  }
+    }
 }

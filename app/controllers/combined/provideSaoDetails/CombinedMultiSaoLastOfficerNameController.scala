@@ -38,21 +38,23 @@ class CombinedMultiSaoLastOfficerNameController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     formProvider: NotificationMultiSaoLastOfficerNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedMultiSaoLastOfficerNameView
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val form         = formProvider()
-    val preparedForm =
-      request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode)).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
-  }
+  def onPageLoad(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck) { implicit request =>
+      val form         = formProvider()
+      val preparedForm =
+        request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode)).fold(form)(form.fill)
+      Ok(view(preparedForm, mode))
+    }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
       val form = formProvider()
       form
         .bindFromRequest()
@@ -65,5 +67,5 @@ class CombinedMultiSaoLastOfficerNameController @Inject() (
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(navigator.nextPage(NotificationMultiSaoLastOfficerNamePage(mode), mode, updatedAnswers))
         )
-  }
+    }
 }

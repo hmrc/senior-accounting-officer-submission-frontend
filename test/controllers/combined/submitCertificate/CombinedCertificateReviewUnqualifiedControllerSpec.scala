@@ -17,12 +17,15 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.routes as combinedRoutes
 import controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedControllerSpec.*
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import models.*
+import models.FeatureToggle.CombinedJourney
 import models.upload.*
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
+import org.scalatest.BeforeAndAfterEach
 import pages.certificate.{CertificateSaoEmailPage, CertificateSaoFullNamePage}
 import pages.notification.UploadTemplateTablePage
 import play.api.inject.bind
@@ -35,11 +38,24 @@ import scala.util.Random
 
 import java.time.LocalDate
 
-class CombinedCertificateReviewUnqualifiedControllerSpec extends SpecBase {
+class CombinedCertificateReviewUnqualifiedControllerSpec
+    extends SpecBase
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
-  "CertificateReviewUnqualified Controller" - {
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
+
+  "CombinedCertificateReviewUnqualified Controller" - {
 
     "must return OK and the correct view for a GET" in {
 

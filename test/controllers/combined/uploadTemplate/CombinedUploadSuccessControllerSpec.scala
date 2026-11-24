@@ -17,6 +17,7 @@
 package controllers.combined.uploadTemplate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.uploadTemplate.CombinedUploadSuccessControllerSpec.{
   parsedRows,
   testFileContent,
@@ -25,6 +26,7 @@ import controllers.combined.uploadTemplate.CombinedUploadSuccessControllerSpec.{
 import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.routes
 import models.*
+import models.FeatureToggle.CombinedJourney
 import models.upload.{ParsedSubmissionRow, TemplateParseError}
 import models.upscan.UploadJourney
 import org.mockito.ArgumentMatchers.{eq as meq, *}
@@ -45,7 +47,7 @@ import views.html.combined.uploadTemplate.CombinedUploadSuccessView
 import scala.concurrent.Future
 import scala.util.Random
 
-class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEach {
+class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEach with FeatureToggleSupport {
   val mockUpscanService: UpscanService         = mock[UpscanService]
   val mockSessionRepository: SessionRepository = mock[SessionRepository]
 
@@ -53,6 +55,12 @@ class CombinedUploadSuccessControllerSpec extends SpecBase with BeforeAndAfterEa
     reset(mockUpscanService)
     reset(mockSessionRepository)
     when(mockSessionRepository.set(any())).thenReturn(Future.successful(true))
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
   }
 
   override def applicationBuilder(userAnswers: Option[UserAnswers] = None): GuiceApplicationBuilder = super

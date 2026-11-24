@@ -17,13 +17,16 @@
 package controllers.combined.provideSaoDetails
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoAreAllAddedFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.{JourneySection, NormalMode}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.notification.NotificationMultiSaoAreAllAddedPage
 import play.api.data.Form
@@ -36,7 +39,11 @@ import views.html.combined.provideSaoDetails.CombinedMultiSaoAreAllAddedView
 
 import scala.concurrent.Future
 
-class CombinedMultiSaoAreAllAddedControllerSpec extends SpecBase with MockitoSugar {
+class CombinedMultiSaoAreAllAddedControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -50,6 +57,16 @@ class CombinedMultiSaoAreAllAddedControllerSpec extends SpecBase with MockitoSug
     provideSaoDetailsRoutes.CombinedMultiSaoAreAllAddedController.onSubmit(NormalMode).url
 
   val saoIndex = 0
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedMultiSaoAreAllAdded Controller" - {
 

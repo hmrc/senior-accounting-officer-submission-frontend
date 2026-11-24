@@ -17,6 +17,8 @@
 package controllers.combined.submitNotification
 
 import base.SpecBase
+import config.FeatureToggleSupport
+import models.FeatureToggle.CombinedJourney
 import models.UserAnswers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.*
@@ -33,7 +35,11 @@ import uk.gov.hmrc.http.InternalServerException
 
 import scala.concurrent.Future
 
-class CombinedNotificationSubmittingControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
+class CombinedNotificationSubmittingControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
 
   val mockNotificationSubmitService: NotificationSubmitService = mock[NotificationSubmitService]
 
@@ -47,6 +53,12 @@ class CombinedNotificationSubmittingControllerSpec extends SpecBase with Mockito
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(mockNotificationSubmitService)
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
   }
 
   "NotificationPendingController.onPageLoad" - {

@@ -39,6 +39,7 @@ class CombinedCertificateAdditionalInformationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     requireSubmitCertificateStageUnlocked: RequireCombinedSubmitCertificateUnlockedAction,
     formProvider: CertificateAdditionalInformationFormProvider,
     val controllerComponents: MessagesControllerComponents,
@@ -50,16 +51,17 @@ class CombinedCertificateAdditionalInformationController @Inject() (
   inline def form: Form[Option[String]] = formProvider()
 
   def onPageLoad(mode: Mode): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
-      val preparedForm = request.userAnswers
-        .getNullable(CertificateAdditionalInformationPage)
-        .fold(form)(value => form.fill(Some(value)))
-      Ok(view(preparedForm, mode))
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked) {
+      implicit request =>
+        val preparedForm = request.userAnswers
+          .getNullable(CertificateAdditionalInformationPage)
+          .fold(form)(value => form.fill(Some(value)))
+        Ok(view(preparedForm, mode))
     }
 
   def onSubmit(mode: Mode): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-      implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked)
+      .async { implicit request =>
         form
           .bindFromRequest()
           .fold(
@@ -70,5 +72,5 @@ class CombinedCertificateAdditionalInformationController @Inject() (
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(navigator.nextPage(CertificateAdditionalInformationPage, mode, updatedAnswers))
           )
-    }
+      }
 }

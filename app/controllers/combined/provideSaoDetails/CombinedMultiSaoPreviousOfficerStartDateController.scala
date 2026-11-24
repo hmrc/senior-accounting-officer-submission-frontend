@@ -42,6 +42,7 @@ class CombinedMultiSaoPreviousOfficerStartDateController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     formProvider: NotificationMultiSaoPreviousOfficerStartDateFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedMultiSaoPreviousOfficerStartDateView
@@ -49,8 +50,8 @@ class CombinedMultiSaoPreviousOfficerStartDateController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck) { implicit request =>
       request.userAnswers
         .get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
         case Some(saoName) =>
@@ -63,10 +64,10 @@ class CombinedMultiSaoPreviousOfficerStartDateController @Inject() (
         case None =>
           Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
       }
-  }
+    }
 
   def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
       request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode)) match {
         case None =>
           Future.successful(

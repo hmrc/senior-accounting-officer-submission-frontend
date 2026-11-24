@@ -17,14 +17,17 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.routes
 import forms.certificate.CertificateDeclarationStandInFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.certificate.CertificateDeclarationStandIn
 import models.{JourneySection, NormalMode, UserAnswers}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.certificate.CertificateDeclarationStandInPage
 import play.api.data.Form
@@ -37,7 +40,11 @@ import views.html.combined.submitCertificate.CombinedCertificateDeclarationStand
 
 import scala.concurrent.Future
 
-class CombinedCertificateDeclarationStandInControllerSpec extends SpecBase with MockitoSugar {
+class CombinedCertificateDeclarationStandInControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -55,6 +62,16 @@ class CombinedCertificateDeclarationStandInControllerSpec extends SpecBase with 
       CertificateDeclarationStandInPage(NormalMode),
       CertificateDeclarationStandIn("value 1", "value 2")
     )
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedCertificateDeclarationStandIn Controller" - {
 

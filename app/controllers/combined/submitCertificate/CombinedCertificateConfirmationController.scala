@@ -35,6 +35,7 @@ class CombinedCertificateConfirmationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedCertificateConfirmationView,
     objectStoreService: ObjectStoreService,
@@ -44,7 +45,7 @@ class CombinedCertificateConfirmationController @Inject() (
     with I18nSupport {
 
   def onPageLoad(certificateReference: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
       objectStoreService.isCertificatePdfAvailable(request.saoSubscriptionId, certificateReference).map {
         isPdfAvailable =>
           Ok(
@@ -57,7 +58,7 @@ class CombinedCertificateConfirmationController @Inject() (
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData).async { implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
       Future.successful(
         Redirect(navigator.nextPage(CombinedCertificateConfirmationPage, NormalMode, request.userAnswers))
       )

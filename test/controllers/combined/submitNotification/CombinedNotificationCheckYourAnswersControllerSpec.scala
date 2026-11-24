@@ -22,6 +22,7 @@ import controllers.combined.submitNotification.CombinedNotificationCheckYourAnsw
 import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import controllers.routes
 import models.*
+import models.FeatureToggle.CombinedJourney
 import models.upload.UploadTemplateTableData
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
@@ -44,6 +45,16 @@ class CombinedNotificationCheckYourAnswersControllerSpec
     extends SpecBase
     with FeatureToggleSupport
     with BeforeAndAfterEach {
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedNotificationCheckYourAnswers Controller" - {
 

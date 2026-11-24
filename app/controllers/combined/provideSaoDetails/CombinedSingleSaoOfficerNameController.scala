@@ -42,6 +42,7 @@ class CombinedSingleSaoOfficerNameController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     formProvider: NotificationSingleSaoOfficerNameFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedSingleSaoOfficerNameView,
@@ -52,13 +53,14 @@ class CombinedSingleSaoOfficerNameController @Inject() (
 
   val form: Form[String] = formProvider()
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    val preparedForm = request.userAnswers.get(NotificationSingleSaoOfficerNamePage(mode)).fold(form)(form.fill)
-    Ok(view(preparedForm, mode))
-  }
+  def onPageLoad(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck) { implicit request =>
+      val preparedForm = request.userAnswers.get(NotificationSingleSaoOfficerNamePage(mode)).fold(form)(form.fill)
+      Ok(view(preparedForm, mode))
+    }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
       form
         .bindFromRequest()
         .fold(
@@ -75,5 +77,5 @@ class CombinedSingleSaoOfficerNameController @Inject() (
               _ <- sessionRepository.set(committedAnswers)
             } yield Redirect(navigator.nextPage(NotificationSingleSaoOfficerNamePage(mode), mode, updatedAnswers))
         )
-  }
+    }
 }

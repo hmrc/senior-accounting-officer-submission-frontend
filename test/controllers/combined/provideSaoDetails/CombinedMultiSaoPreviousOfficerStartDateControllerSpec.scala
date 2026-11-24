@@ -17,13 +17,16 @@
 package controllers.combined.provideSaoDetails
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoPreviousOfficerStartDateFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.{JourneySection, NormalMode, UserAnswers}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.notification.{
   NotificationMultiSaoPreviousOfficerNamePage,
@@ -41,7 +44,11 @@ import scala.concurrent.Future
 
 import java.time.{LocalDate, ZoneOffset}
 
-class CombinedMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBase with MockitoSugar {
+class CombinedMultiSaoPreviousOfficerStartDateControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
 
   val testSaoName              = "Firstname Lastname"
   val testValidDate: LocalDate = LocalDate.now(ZoneOffset.UTC).minusDays(1)
@@ -74,6 +81,16 @@ class CombinedMultiSaoPreviousOfficerStartDateControllerSpec extends SpecBase wi
         "value.month" -> testValidDate.getMonthValue.toString,
         "value.year"  -> testValidDate.getYear.toString
       )
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "NotificationMultiSaoPreviousOfficerStartDate Controller" - {
 

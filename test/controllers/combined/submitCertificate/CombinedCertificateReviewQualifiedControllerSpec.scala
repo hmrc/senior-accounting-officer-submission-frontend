@@ -17,14 +17,17 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.routes as combinedRoutes
 import controllers.combined.submitCertificate.CombinedCertificateReviewQualifiedControllerSpec.*
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
+import models.FeatureToggle.CombinedJourney
 import models.QualifiedCompany
 import models.upload.*
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{verify, when}
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.certificate.CertificateSaoFullNamePage
 import pages.notification.UploadTemplateTablePage
@@ -41,9 +44,23 @@ import scala.util.Random
 
 import java.time.LocalDate
 
-class CombinedCertificateReviewQualifiedControllerSpec extends SpecBase with MockitoSugar {
+class CombinedCertificateReviewQualifiedControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
 
   def onwardRoute: Call = Call("GET", "/foo")
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedCertificateReviewQualified Controller" - {
 

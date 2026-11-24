@@ -32,6 +32,7 @@ class CombinedConfirmYourNotificationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedConfirmYourNotificationView,
@@ -40,13 +41,15 @@ class CombinedConfirmYourNotificationController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
-      Ok(view())
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked) {
+      implicit request =>
+        Ok(view())
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked) { implicit request =>
-      Redirect(navigator.nextPage(ConfirmYourNotificationPage, NormalMode, request.userAnswers))
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked) {
+      implicit request =>
+        Redirect(navigator.nextPage(ConfirmYourNotificationPage, NormalMode, request.userAnswers))
     }
 
 }

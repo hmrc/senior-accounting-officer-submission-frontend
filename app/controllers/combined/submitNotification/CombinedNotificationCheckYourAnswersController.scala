@@ -38,6 +38,7 @@ class CombinedNotificationCheckYourAnswersController @Inject() (
     sessionRepository: SessionRepository,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedNotificationCheckYourAnswersView,
@@ -50,42 +51,45 @@ class CombinedNotificationCheckYourAnswersController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-      val sanitisedUserAnswers = saoUserAnswersService.sanitiseUserAnswers(request.userAnswers)
-      for {
-        _ <- sessionRepository.set(sanitisedUserAnswers)
-      } yield {
-        val summaryList = notificationCheckYourAnswersService.getSummaryList(sanitisedUserAnswers)
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked)
+      .async { implicit request =>
+        val sanitisedUserAnswers = saoUserAnswersService.sanitiseUserAnswers(request.userAnswers)
+        for {
+          _ <- sessionRepository.set(sanitisedUserAnswers)
+        } yield {
+          val summaryList = notificationCheckYourAnswersService.getSummaryList(sanitisedUserAnswers)
 
-        Ok(view(summaryList, sanitisedUserAnswers.getFinancialYearEndDate))
+          Ok(view(summaryList, sanitisedUserAnswers.getFinancialYearEndDate))
+        }
       }
-    }
 
   def onSubmit(): Action[AnyContent] = {
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-      if appConfig.faultToleranceEnabled then {
-        notificationSubmitService
-          .submitWithFaultTolerance(request.userAnswers)
-          .map {
-            _.fold(
-              error => throw new InternalServerException(error.message),
-              idempotencyKey =>
-                Redirect(submitNotificationRoutes.CombinedNotificationSubmittingController.onPageLoad(idempotencyKey))
-            )
-          }
-      } else {
-        notificationSubmitService
-          .submit(request.userAnswers, wipeNotificationData = false)
-          .map {
-            _.fold(
-              error => throw new InternalServerException(error.message),
-              notificationReference =>
-                Redirect(
-                  submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(notificationReference)
-                )
-            )
-          }
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked)
+      .async { implicit request =>
+        if appConfig.faultToleranceEnabled then {
+          notificationSubmitService
+            .submitWithFaultTolerance(request.userAnswers)
+            .map {
+              _.fold(
+                error => throw new InternalServerException(error.message),
+                idempotencyKey =>
+                  Redirect(submitNotificationRoutes.CombinedNotificationSubmittingController.onPageLoad(idempotencyKey))
+              )
+            }
+        } else {
+          notificationSubmitService
+            .submit(request.userAnswers, wipeNotificationData = false)
+            .map {
+              _.fold(
+                error => throw new InternalServerException(error.message),
+                notificationReference =>
+                  Redirect(
+                    submitNotificationRoutes.CombinedNotificationConfirmationController
+                      .onPageLoad(notificationReference)
+                  )
+              )
+            }
+        }
       }
-    }
   }
 }

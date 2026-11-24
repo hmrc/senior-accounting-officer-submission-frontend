@@ -42,6 +42,7 @@ class CombinedUploadSuccessController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     requireNotificationUploadUnlocked: RequireCombinedNotificationUploadUnlockedAction,
     val controllerComponents: MessagesControllerComponents,
     sessionRepository: SessionRepository,
@@ -53,42 +54,43 @@ class CombinedUploadSuccessController @Inject() (
     with Logging {
 
   def onPageLoad(key: Option[String]): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
-      upscanService.fileUploadState(UploadJourney.Combined, request.userAnswers, key).flatMap {
-        case State.NoReference =>
-          Future.successful(
-            Redirect(
-              routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireNotificationUploadUnlocked)
+      .async { implicit request =>
+        upscanService.fileUploadState(UploadJourney.Combined, request.userAnswers, key).flatMap {
+          case State.NoReference =>
+            Future.successful(
+              Redirect(
+                routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
+              )
             )
-          )
-        case State.WaitingForUpscan =>
-          Future.successful(Ok(view()))
-        case State.QuarantinedByUpscan =>
-          Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
-        case State.RejectedByUpscan =>
-          Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
-        case State.UnknownUpscanError =>
-          Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
-        case State.DownloadFromUpscanFailed(response) =>
-          logger.warn(s"Failed to download uploaded template from Upscan: ${response.status}")
-          Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
-        case State.DownloadFromUpscanErrored =>
-          logger.warn("Failed to download uploaded template from Upscan")
-          Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
-        case State.ValidationFailed(errors) =>
-          logger.warn(s"Uploaded template failed validation with ${errors.size} error(s)")
-          saveTableDataAndRedirect(
-            UploadTemplateTableData(rows = Seq.empty, errors = errors),
-            uploadTemplateRoutes.CombinedUploadTemplateTableController.onPageLoad(0)
-          )
-        case State.Result(reference, rows) =>
-          logger.info(s"Uploaded template parsed successfully, reference: $reference, rows: ${rows.size}")
-          saveTableDataAndRedirect(
-            UploadTemplateTableData(rows = rows, errors = Seq.empty),
-            uploadTemplateRoutes.CombinedUploadTemplateTableController.onPageLoad(0)
-          )
+          case State.WaitingForUpscan =>
+            Future.successful(Ok(view()))
+          case State.QuarantinedByUpscan =>
+            Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
+          case State.RejectedByUpscan =>
+            Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
+          case State.UnknownUpscanError =>
+            Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
+          case State.DownloadFromUpscanFailed(response) =>
+            logger.warn(s"Failed to download uploaded template from Upscan: ${response.status}")
+            Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
+          case State.DownloadFromUpscanErrored =>
+            logger.warn("Failed to download uploaded template from Upscan")
+            Future.successful(Redirect(uploadTemplateRoutes.CombinedUploadFormController.onPageLoad()))
+          case State.ValidationFailed(errors) =>
+            logger.warn(s"Uploaded template failed validation with ${errors.size} error(s)")
+            saveTableDataAndRedirect(
+              UploadTemplateTableData(rows = Seq.empty, errors = errors),
+              uploadTemplateRoutes.CombinedUploadTemplateTableController.onPageLoad(0)
+            )
+          case State.Result(reference, rows) =>
+            logger.info(s"Uploaded template parsed successfully, reference: $reference, rows: ${rows.size}")
+            saveTableDataAndRedirect(
+              UploadTemplateTableData(rows = rows, errors = Seq.empty),
+              uploadTemplateRoutes.CombinedUploadTemplateTableController.onPageLoad(0)
+            )
+        }
       }
-    }
 
   private def saveTableDataAndRedirect(
       tableData: UploadTemplateTableData,

@@ -17,6 +17,8 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
+import config.FeatureToggleSupport
+import models.FeatureToggle.CombinedJourney
 import models.UserAnswers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.*
@@ -33,7 +35,11 @@ import uk.gov.hmrc.http.InternalServerException
 
 import scala.concurrent.Future
 
-class CombinedCertificateSubmittingControllerSpec extends SpecBase with MockitoSugar with BeforeAndAfterEach {
+class CombinedCertificateSubmittingControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
 
   val mockCertificateSubmitService: CertificateSubmissionService = mock[CertificateSubmissionService]
 
@@ -47,6 +53,12 @@ class CombinedCertificateSubmittingControllerSpec extends SpecBase with MockitoS
   override def beforeEach(): Unit = {
     super.beforeEach()
     reset(mockCertificateSubmitService)
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
   }
 
   "CombinedCertificatePendingController.onPageLoad" - {

@@ -44,6 +44,7 @@ class CombinedMultiSaoPreviousOfficerEndDateController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     formProvider: NotificationMultiSaoPreviousOfficerEndDateFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedMultiSaoPreviousOfficerEndDateView
@@ -51,8 +52,8 @@ class CombinedMultiSaoPreviousOfficerEndDateController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck) { implicit request =>
       val saoNameAnswer      = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
       val saoStartPageAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
 
@@ -70,10 +71,10 @@ class CombinedMultiSaoPreviousOfficerEndDateController @Inject() (
               .onPageLoad(section = Some(Combined))
           )
       }
-  }
+    }
 
-  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
       val saoNameAnswer      = request.userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(saoIndex, mode))
       val saoStartPageAnswer = request.userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(saoIndex, mode))
 
@@ -103,5 +104,5 @@ class CombinedMultiSaoPreviousOfficerEndDateController @Inject() (
             )
           )
       }
-  }
+    }
 }

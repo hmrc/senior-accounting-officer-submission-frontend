@@ -39,6 +39,7 @@ class CombinedCertificateSaoEmailController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     formProvider: CertificateSaoEmailFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedCertificateSaoEmailView,
@@ -47,19 +48,20 @@ class CombinedCertificateSaoEmailController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
   def onPageLoad(mode: Mode): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
-      val form         = formProvider()
-      val preparedForm = request.userAnswers.get(CertificateSaoEmailPage).fold(form)(form.fill)
-      request.userAnswers
-        .get(CertificateSaoFullNamePage)
-        .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
-        )(saoName => Ok(view(saoName, preparedForm, mode)))
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked) {
+      implicit request =>
+        val form         = formProvider()
+        val preparedForm = request.userAnswers.get(CertificateSaoEmailPage).fold(form)(form.fill)
+        request.userAnswers
+          .get(CertificateSaoFullNamePage)
+          .fold(
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
+          )(saoName => Ok(view(saoName, preparedForm, mode)))
     }
 
   def onSubmit(mode: Mode): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-      implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked)
+      .async { implicit request =>
         val form = formProvider()
         request.userAnswers.get(CertificateSaoFullNamePage) match {
           case Some(saoName) =>
@@ -78,5 +80,5 @@ class CombinedCertificateSaoEmailController @Inject() (
               Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
             )
         }
-    }
+      }
 }

@@ -39,6 +39,7 @@ class CombinedMultiSaoLastOfficerStartDateController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     formProvider: NotificationMultiSaoLastOfficerStartDateFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedMultiSaoLastOfficerStartDateView
@@ -46,23 +47,24 @@ class CombinedMultiSaoLastOfficerStartDateController @Inject() (
     extends FrontendBaseController
     with I18nSupport {
 
-  def onPageLoad(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    request.userAnswers
-      .get(NotificationMultiSaoLastOfficerNamePage(mode))
-      .fold(
-        Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
-      ) { saoName =>
-        val form         = formProvider(saoName)
-        val preparedForm =
-          request.userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage(mode)).fold(form)(form.fill)
+  def onPageLoad(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck) { implicit request =>
+      request.userAnswers
+        .get(NotificationMultiSaoLastOfficerNamePage(mode))
+        .fold(
+          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
+        ) { saoName =>
+          val form         = formProvider(saoName)
+          val preparedForm =
+            request.userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage(mode)).fold(form)(form.fill)
 
-        Ok(view(saoName, preparedForm, mode))
-      }
+          Ok(view(saoName, preparedForm, mode))
+        }
 
-  }
+    }
 
-  def onSubmit(mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
       request.userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode)) match {
         case Some(saoName) =>
           val form = formProvider(saoName)
@@ -87,5 +89,5 @@ class CombinedMultiSaoLastOfficerStartDateController @Inject() (
             )
           )
       }
-  }
+    }
 }

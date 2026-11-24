@@ -37,6 +37,7 @@ class CombinedUploadFormController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     requireNotificationUploadUnlocked: RequireCombinedNotificationUploadUnlockedAction,
     mcc: MessagesControllerComponents,
     combinedUploadFormView: CombinedUploadFormView,
@@ -48,37 +49,38 @@ class CombinedUploadFormController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireNotificationUploadUnlocked).async { implicit request =>
-      val syncError = for {
-        codes <- request.queryString.get(ERROR_CODE_QUERY)
-        code  <- codes.headOption
-      } yield syncErrorKey(code)
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireNotificationUploadUnlocked)
+      .async { implicit request =>
+        val syncError = for {
+          codes <- request.queryString.get(ERROR_CODE_QUERY)
+          code  <- codes.headOption
+        } yield syncErrorKey(code)
 
-      val asyncError = request.userAnswers.get(CombinedUploadStatePage).collect {
-        case FileUploadState(_, UploadStatus.Quarantined)    => "upload.error.quarantine"
-        case FileUploadState(_, UploadStatus.Rejected)       => "upload.error.rejected"
-        case FileUploadState(_, UploadStatus.UnknownFailure) => "upload.error.unknown"
-      }
+        val asyncError = request.userAnswers.get(CombinedUploadStatePage).collect {
+          case FileUploadState(_, UploadStatus.Quarantined)    => "upload.error.quarantine"
+          case FileUploadState(_, UploadStatus.Rejected)       => "upload.error.rejected"
+          case FileUploadState(_, UploadStatus.UnknownFailure) => "upload.error.unknown"
+        }
 
-      val form = syncError
-        .orElse(asyncError)
-        .fold(formProvider())(err => formProvider().withError(fileInputField, err))
+        val form = syncError
+          .orElse(asyncError)
+          .fold(formProvider())(err => formProvider().withError(fileInputField, err))
 
-      for {
-        upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Combined)
-        updatedAnswers         <- Future.fromTry(
-          request.userAnswers.set(
-            CombinedUploadStatePage,
-            FileUploadState(
-              reference = upscanInitiateResponse.reference,
-              status = UploadStatus.InProgress
+        for {
+          upscanInitiateResponse <- upscanInitiateConnector.initiateV2(UploadJourney.Combined)
+          updatedAnswers         <- Future.fromTry(
+            request.userAnswers.set(
+              CombinedUploadStatePage,
+              FileUploadState(
+                reference = upscanInitiateResponse.reference,
+                status = UploadStatus.InProgress
+              )
             )
           )
-        )
-        _ <- sessionRepository.set(updatedAnswers)
-      } yield {
-        if form.hasErrors then BadRequest(combinedUploadFormView(form, upscanInitiateResponse))
-        else Ok(combinedUploadFormView(form, upscanInitiateResponse))
+          _ <- sessionRepository.set(updatedAnswers)
+        } yield {
+          if form.hasErrors then BadRequest(combinedUploadFormView(form, upscanInitiateResponse))
+          else Ok(combinedUploadFormView(form, upscanInitiateResponse))
+        }
       }
-    }
 }

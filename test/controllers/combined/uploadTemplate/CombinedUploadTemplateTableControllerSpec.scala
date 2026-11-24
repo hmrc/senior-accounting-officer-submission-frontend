@@ -17,14 +17,17 @@
 package controllers.combined.uploadTemplate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.routes as combinedRoutes
 import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.routes
+import models.FeatureToggle.CombinedJourney
 import models.upload.*
 import models.{JourneySection, NormalMode}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{never, verify, when}
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.*
 import pages.notification.*
@@ -41,7 +44,11 @@ import scala.concurrent.Future
 
 import java.time.LocalDate
 
-class CombinedUploadTemplateTableControllerSpec extends SpecBase with MockitoSugar {
+class CombinedUploadTemplateTableControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -98,6 +105,16 @@ class CombinedUploadTemplateTableControllerSpec extends SpecBase with MockitoSug
     .set(UploadTemplateTablePage, errorTableData)
     .success
     .value
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedUploadTemplateTable Controller" - {
 

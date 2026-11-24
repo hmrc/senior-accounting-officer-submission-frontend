@@ -17,12 +17,15 @@
 package controllers.combined.submitNotification
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.routes as combinedRoutes
 import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import controllers.routes
+import models.FeatureToggle.CombinedJourney
 import models.JourneySection
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -33,11 +36,24 @@ import views.html.combined.submitNotification.CombinedNotificationConfirmationVi
 
 import scala.concurrent.Future
 
-class CombinedNotificationConfirmationControllerSpec extends SpecBase {
+class CombinedNotificationConfirmationControllerSpec
+    extends SpecBase
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
   def hardCodedNotRef: String = "SAONOT0123456789"
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedNotificationConfirmation Controller" - {
 

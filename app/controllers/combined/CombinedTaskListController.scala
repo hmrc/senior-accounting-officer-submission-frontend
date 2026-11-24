@@ -20,7 +20,8 @@ import config.AppConfig
 import controllers.actions.*
 import models.combined.CombinedStage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.*
+import play.api.mvc.Results.Redirect
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.CombinedTaskListView
 
@@ -41,15 +42,23 @@ class CombinedTaskListController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] = (identify andThen getData andThen requireData) { implicit request =>
-    Ok(view(CombinedStage.taskListStage(request.userAnswers)))
+    canAccessCombinedJourney(Ok(view(CombinedStage.taskListStage(request.userAnswers))))
   }
 
   def onComplete: Action[AnyContent] = identify { implicit request =>
-    Ok(view(CombinedStage.AllStagesCompleted))
+    canAccessCombinedJourney(Ok(view(CombinedStage.AllStagesCompleted)))
   }
 
   def onCompleteSubmit: Action[AnyContent] =
     identify { implicit request =>
+      canAccessCombinedJourney(Redirect(appConfig.hubBaseUrl))
+    }
+
+  private def canAccessCombinedJourney(journeyResult: Result): Result = {
+    if appConfig.isCombinedJourneyEnabled then {
+      journeyResult
+    } else {
       Redirect(appConfig.hubBaseUrl)
     }
+  }
 }

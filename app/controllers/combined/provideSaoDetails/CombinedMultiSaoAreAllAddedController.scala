@@ -39,6 +39,7 @@ class CombinedMultiSaoAreAllAddedController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     formProvider: NotificationMultiSaoAreAllAddedFormProvider,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedMultiSaoAreAllAddedView,
@@ -46,16 +47,16 @@ class CombinedMultiSaoAreAllAddedController @Inject() (
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
-  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
+  def onPageLoad(mode: Mode, saoIndex: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck) { implicit request =>
       val form         = formProvider()
       val preparedForm =
         request.userAnswers.get(NotificationMultiSaoAreAllAddedPage(saoIndex, mode)).fold(form)(form.fill)
       Ok(view(preparedForm, mode, saoIndex))
-  }
+    }
 
-  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
+  def onSubmit(mode: Mode, saoIndex: Int): Action[AnyContent] =
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
       val form = formProvider()
       form
         .bindFromRequest()
@@ -82,5 +83,5 @@ class CombinedMultiSaoAreAllAddedController @Inject() (
                 )
             )
         )
-  }
+    }
 }

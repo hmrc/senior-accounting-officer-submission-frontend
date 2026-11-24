@@ -35,6 +35,7 @@ class CombinedNotificationSubmittingController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     requireSubmitNotificationUnlocked: RequireCombinedSubmitNotificationUnlockedAction,
     val controllerComponents: MessagesControllerComponents
 )(using ExecutionContext)
@@ -42,15 +43,16 @@ class CombinedNotificationSubmittingController @Inject() (
     with I18nSupport {
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-      notificationSubmitService
-        .getStateOfWorkItem(idempotencyKey, request.userAnswers, wipeNotificationData = false)
-        .map {
-          case Success(notificationRef) =>
-            Redirect(submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(notificationRef))
-          case Pending(_)      => Ok(view())
-          case Failure(status) =>
-            throw new InternalServerException(s"Error getting notification state with status $status")
-        }
-    }
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked)
+      .async { implicit request =>
+        notificationSubmitService
+          .getStateOfWorkItem(idempotencyKey, request.userAnswers, wipeNotificationData = false)
+          .map {
+            case Success(notificationRef) =>
+              Redirect(submitNotificationRoutes.CombinedNotificationConfirmationController.onPageLoad(notificationRef))
+            case Pending(_)      => Ok(view())
+            case Failure(status) =>
+              throw new InternalServerException(s"Error getting notification state with status $status")
+          }
+      }
 }

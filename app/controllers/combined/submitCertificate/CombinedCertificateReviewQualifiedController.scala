@@ -42,6 +42,7 @@ class CombinedCertificateReviewQualifiedController @Inject() (
     sessionRepository: SessionRepository,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedCertificateReviewQualifiedView,
     errorView: CombinedUploadTemplateTableErrorView,
@@ -51,46 +52,47 @@ class CombinedCertificateReviewQualifiedController @Inject() (
     with I18nSupport {
 
   def onPageLoad(page: Int = 0): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked) { implicit request =>
-      val userAnswers = request.userAnswers
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked) {
+      implicit request =>
+        val userAnswers = request.userAnswers
 
-      userAnswers
-        .get(UploadTemplateTablePage)
-        .fold(
-          Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
-        ) { parsedTemplate =>
-          if parsedTemplate.hasErrors then {
-            Ok(errorView(parsedTemplate))
-          } else {
-            userAnswers
-              .get(CertificateSaoFullNamePage)
-              .fold(
-                Redirect(
-                  routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
-                )
-              ) { saoName =>
-                val allQualifiedCompanies =
-                  parsedTemplate.rows.flatMap(_.toQualifiedCompany)
-                val paginatedData =
-                  CompanyPagination(items = allQualifiedCompanies, requestedPage = page, pageSize = 5)
-                Ok(
-                  view(
-                    saoName = saoName,
-                    companyCount = parsedTemplate.rows.size,
-                    qualifiedCompanies = paginatedData.items,
-                    totalQualifiedCompanies = allQualifiedCompanies.size,
-                    currentPage = paginatedData.currentPage,
-                    pageCount = paginatedData.pageCount
+        userAnswers
+          .get(UploadTemplateTablePage)
+          .fold(
+            Redirect(routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined)))
+          ) { parsedTemplate =>
+            if parsedTemplate.hasErrors then {
+              Ok(errorView(parsedTemplate))
+            } else {
+              userAnswers
+                .get(CertificateSaoFullNamePage)
+                .fold(
+                  Redirect(
+                    routes.JourneyRecoveryController.onPageLoad(section = Some(JourneySection.Combined))
                   )
-                )
-              }
+                ) { saoName =>
+                  val allQualifiedCompanies =
+                    parsedTemplate.rows.flatMap(_.toQualifiedCompany)
+                  val paginatedData =
+                    CompanyPagination(items = allQualifiedCompanies, requestedPage = page, pageSize = 5)
+                  Ok(
+                    view(
+                      saoName = saoName,
+                      companyCount = parsedTemplate.rows.size,
+                      qualifiedCompanies = paginatedData.items,
+                      totalQualifiedCompanies = allQualifiedCompanies.size,
+                      currentPage = paginatedData.currentPage,
+                      pageCount = paginatedData.pageCount
+                    )
+                  )
+                }
+            }
           }
-        }
     }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-      implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked)
+      .async { implicit request =>
         request.userAnswers
           .get(UploadTemplateTablePage)
           .fold(
@@ -109,5 +111,5 @@ class CombinedCertificateReviewQualifiedController @Inject() (
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(navigator.nextPage(CertificateReviewQualifiedPage, NormalMode, updatedAnswers))
           }
-    }
+      }
 }

@@ -17,14 +17,17 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.routes
 import forms.certificate.CertificateWhoIsSubmittingFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.certificate.CertificateWhoIsSubmitting
 import models.{JourneySection, NormalMode}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.certificate.CertificateWhoIsSubmittingPage
 import play.api.data.Form
@@ -37,7 +40,11 @@ import views.html.combined.submitCertificate.CombinedCertificateWhoIsSubmittingV
 
 import scala.concurrent.Future
 
-class CombinedCertificateWhoIsSubmittingControllerSpec extends SpecBase with MockitoSugar {
+class CombinedCertificateWhoIsSubmittingControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with BeforeAndAfterEach
+    with FeatureToggleSupport {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -49,6 +56,16 @@ class CombinedCertificateWhoIsSubmittingControllerSpec extends SpecBase with Moc
 
   val formProvider                           = new CertificateWhoIsSubmittingFormProvider()
   val form: Form[CertificateWhoIsSubmitting] = formProvider()
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CertificateWhoIsSubmitting Controller" - {
 

@@ -42,6 +42,7 @@ class CombinedCertificateCheckYourAnswersController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     val controllerComponents: MessagesControllerComponents,
     sessionRepository: SessionRepository,
     certificateCheckYourAnswersService: CertificateCheckYourAnswersService,
@@ -55,8 +56,8 @@ class CombinedCertificateCheckYourAnswersController @Inject() (
     with I18nSupport {
 
   def onPageLoad: Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-      implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked)
+      .async { implicit request =>
         val sanitisedAnswers = declarationUserAnswersService.sanitise(request.userAnswers)
         val summaryList      = certificateCheckYourAnswersService.getSummaryList(sanitisedAnswers)
         val token            = UUID.randomUUID().toString
@@ -65,11 +66,11 @@ class CombinedCertificateCheckYourAnswersController @Inject() (
           updatedAnswers <- Future.fromTry(sanitisedAnswers.set(CertificateSubmissionTokenPage, token))
           _              <- sessionRepository.set(updatedAnswers)
         } yield Ok(view(summaryList, token))
-    }
+      }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitCertificateStageUnlocked).async {
-      implicit request =>
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitCertificateStageUnlocked)
+      .async { implicit request =>
         given HeaderCarrier = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
         request.body.asFormUrlEncoded.flatMap(submissionToken) match {
           case None =>
@@ -108,7 +109,7 @@ class CombinedCertificateCheckYourAnswersController @Inject() (
                 throw CombinedCertificateCheckYourAnswersController.SubmissionFailedException
             }
         }
-    }
+      }
 
   private def submissionToken(form: Map[String, Seq[String]]): Option[String] =
     form.collectFirst { case (CombinedCertificateCheckYourAnswersController.TokenField, token +: _) =>

@@ -17,12 +17,15 @@
 package controllers.combined.submitCertificate
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.routes as combinedRoutes
 import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.routes
+import models.FeatureToggle.CombinedJourney
 import models.JourneySection
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -33,10 +36,20 @@ import views.html.combined.submitCertificate.CombinedCertificateConfirmationView
 
 import scala.concurrent.Future
 
-class CombinedCertificateConfirmationControllerSpec extends SpecBase {
+class CombinedCertificateConfirmationControllerSpec extends SpecBase with BeforeAndAfterEach with FeatureToggleSupport {
 
   def onwardRoute: Call = Call("GET", "/senior-accounting-officer/submission/certificate/task-list/complete")
   def certificateRef    = "SAOCRT0123456789"
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedCertificateConfirmation Controller" - {
 

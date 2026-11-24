@@ -36,6 +36,7 @@ class CombinedNotificationConfirmationController @Inject() (
     identify: IdentifierAction,
     getData: DataRetrievalAction,
     requireData: DataRequiredAction,
+    combinedJourneyCheck: CombinedJourneyAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedNotificationConfirmationView,
     objectStoreService: ObjectStoreService,
@@ -47,23 +48,25 @@ class CombinedNotificationConfirmationController @Inject() (
     with I18nSupport {
 
   def onPageLoad(notificationReference: String): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-      objectStoreService.isNotificationPdfAvailable(request.saoSubscriptionId, notificationReference).map {
-        isPdfAvailable =>
-          Ok(
-            view(
-              notificationReference = notificationReference,
-              displayPdfLink = isPdfAvailable
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked)
+      .async { implicit request =>
+        objectStoreService.isNotificationPdfAvailable(request.saoSubscriptionId, notificationReference).map {
+          isPdfAvailable =>
+            Ok(
+              view(
+                notificationReference = notificationReference,
+                displayPdfLink = isPdfAvailable
+              )
             )
-          )
+        }
       }
-    }
 
   def onSubmit(): Action[AnyContent] =
-    (identify andThen getData andThen requireData andThen requireSubmitNotificationUnlocked).async { implicit request =>
-      for {
-        updatedAnswers <- Future.fromTry(request.userAnswers.set(CombinedNotificationConfirmationPage, true))
-        _              <- sessionRepository.set(updatedAnswers)
-      } yield Redirect(navigator.nextPage(CombinedNotificationConfirmationPage, NormalMode, updatedAnswers))
-    }
+    (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked)
+      .async { implicit request =>
+        for {
+          updatedAnswers <- Future.fromTry(request.userAnswers.set(CombinedNotificationConfirmationPage, true))
+          _              <- sessionRepository.set(updatedAnswers)
+        } yield Redirect(navigator.nextPage(CombinedNotificationConfirmationPage, NormalMode, updatedAnswers))
+      }
 }

@@ -20,6 +20,7 @@ import base.SpecBase
 import config.{AppConfig, FeatureToggleSupport}
 import controllers.combined.routes as combinedRoutes
 import models.*
+import models.FeatureToggle.CombinedJourney
 import models.combined.CombinedStage
 import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
@@ -38,10 +39,12 @@ class CombinedTaskListControllerSpec
 
   override def beforeEach(): Unit = {
     super.beforeEach()
+    enable(CombinedJourney)
   }
 
   override def afterEach(): Unit = {
     super.afterEach()
+    disable(CombinedJourney)
   }
 
   val appConfig: AppConfig = app.injector.instanceOf[AppConfig]

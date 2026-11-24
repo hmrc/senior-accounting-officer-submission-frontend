@@ -17,13 +17,16 @@
 package controllers.combined.provideSaoDetails
 
 import base.SpecBase
+import config.FeatureToggleSupport
 import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
 import controllers.routes
 import forms.notification.NotificationMultiSaoLastOfficerNameFormProvider
+import models.FeatureToggle.CombinedJourney
 import models.{JourneySection, NormalMode, UserAnswers}
 import navigation.{CombinedNavigator, FakeCombinedNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
 import org.scalatestplus.mockito.MockitoSugar
 import pages.notification.{NotificationMoreThanOneSaoPage, NotificationMultiSaoLastOfficerNamePage}
 import play.api.data.Form
@@ -36,7 +39,11 @@ import views.html.combined.provideSaoDetails.CombinedMultiSaoLastOfficerNameView
 
 import scala.concurrent.Future
 
-class CombinedMultiSaoLastOfficerNameControllerSpec extends SpecBase with MockitoSugar {
+class CombinedMultiSaoLastOfficerNameControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
 
   def onwardRoute: Call = Call("GET", "/foo")
 
@@ -51,6 +58,16 @@ class CombinedMultiSaoLastOfficerNameControllerSpec extends SpecBase with Mockit
 
   val userAnswersWithMultiSaoChoice: UserAnswers =
     emptyUserAnswers.set(NotificationMoreThanOneSaoPage(NormalMode), true).success.value
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
 
   "CombinedMultiSaoLastOfficerName Controller" - {
 
