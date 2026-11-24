@@ -19,15 +19,17 @@ package navigation
 import base.SpecBase
 import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
 import controllers.combined.routes as combinedRoutes
+import controllers.combined.submitCertificate.routes as submitCertificateRoutes
 import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.routes
 import models.*
+import models.certificate.CertificateWhoIsSubmitting
 import models.upload.UploadTemplateTableData
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
 import pages.*
 import pages.certificate.*
-import pages.combined.CombinedNotificationConfirmationPage
+import pages.combined.{CombinedCertificateConfirmationPage, CombinedNotificationConfirmationPage}
 import pages.notification.*
 import play.api.mvc.Call
 import services.csvparser.UploadTemplateCsvSchema.{Column, TemplateError}
@@ -150,70 +152,70 @@ class CombinedNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           emptyUserAnswers
         ) mustBe combinedRoutes.CombinedTaskListController.onPageLoad
       }
-//
-//      "must navigate from CertificateSaoFullNamePage to CertificateSaoEmail" in {
-//        navigator.nextPage(
-//          CertificateSaoFullNamePage,
-//          NormalMode,
-//          emptyUserAnswers
-//        ) mustBe submitCertificateRoutes.CombinedCertificateSaoEmailController.onPageLoad(NormalMode)
-//      }
-//
-//      "must navigate from CertificateSaoEmailPage to ReviewQualified" in {
-//        navigator.nextPage(
-//          CertificateSaoEmailPage,
-//          NormalMode,
-//          emptyUserAnswers
-//        ) mustBe submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onPageLoad(page = 0)
-//      }
-//
-//      "must navigate from CertificateReviewQualifiedPage to ReviewUnqualified" in {
-//        navigator.nextPage(
-//          CertificateReviewQualifiedPage,
-//          NormalMode,
-//          emptyUserAnswers
-//        ) mustBe submitCertificateRoutes.CombinedCertificateReviewUnqualifiedController.onPageLoad(page = 0)
-//      }
-//
-//      "must navigate from CertificateReviewUnqualifiedPage to AdditionalInformation" in {
-//        navigator.nextPage(
-//          CertificateReviewUnqualifiedPage,
-//          NormalMode,
-//          emptyUserAnswers
-//        ) mustBe submitCertificateRoutes.CombinedCertificateAdditionalInformationController.onPageLoad(NormalMode)
-//      }
-//
-//      "must navigate from CertificateAdditionalInformationPage to WhoIsSubmitting" in {
-//        navigator.nextPage(
-//          CertificateAdditionalInformationPage,
-//          NormalMode,
-//          emptyUserAnswers
-//        ) mustBe submitCertificateRoutes.CombinedCertificateWhoIsSubmittingController.onPageLoad(NormalMode)
-//      }
-//
-//      "must navigate from CertificateDeclarationSaoPage to CertificateCheckYourAnswers" in {
-//        navigator.nextPage(
-//          CertificateDeclarationSaoPage(NormalMode),
-//          NormalMode,
-//          emptyUserAnswers
-//        ) mustBe submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-//      }
-//
-//      "must navigate from CertificateDeclarationStandInPage to CertificateCheckYourAnswers" in {
-//        navigator.nextPage(
-//          CertificateDeclarationStandInPage(NormalMode),
-//          NormalMode,
-//          emptyUserAnswers
-//        ) mustBe submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad()
-//      }
 
-//      "must navigate from CombinedCertificateConfirmationPage to Complete" in {
-//        navigator.nextPage(
-//          CombinedCertificateConfirmationPage,
-//          NormalMode,
-//          emptyUserAnswers
-//        ) mustBe combinedRoutes.CombinedTaskListController.onComplete
-//      }
+      "must navigate from CertificateSaoFullNamePage to CertificateSaoEmail" in {
+        navigator.nextPage(
+          CertificateSaoFullNamePage,
+          NormalMode,
+          emptyUserAnswers
+        ) mustBe submitCertificateRoutes.CombinedCertificateSaoEmailController.onPageLoad(NormalMode)
+      }
+
+      "must navigate from CertificateSaoEmailPage to ReviewQualified" in {
+        navigator.nextPage(
+          CertificateSaoEmailPage,
+          NormalMode,
+          emptyUserAnswers
+        ) mustBe submitCertificateRoutes.CombinedCertificateReviewQualifiedController.onPageLoad(page = 0)
+      }
+
+      "must navigate from CertificateReviewQualifiedPage to ReviewUnqualified" in {
+        navigator.nextPage(
+          CertificateReviewQualifiedPage,
+          NormalMode,
+          emptyUserAnswers
+        ) mustBe submitCertificateRoutes.CombinedCertificateReviewUnqualifiedController.onPageLoad(page = 0)
+      }
+
+      "must navigate from CertificateReviewUnqualifiedPage to AdditionalInformation" in {
+        navigator.nextPage(
+          CertificateReviewUnqualifiedPage,
+          NormalMode,
+          emptyUserAnswers
+        ) mustBe submitCertificateRoutes.CombinedCertificateAdditionalInformationController.onPageLoad(NormalMode)
+      }
+
+      "must navigate from CertificateAdditionalInformationPage to WhoIsSubmitting" in {
+        navigator.nextPage(
+          CertificateAdditionalInformationPage,
+          NormalMode,
+          emptyUserAnswers
+        ) mustBe submitCertificateRoutes.CombinedCertificateWhoIsSubmittingController.onPageLoad(NormalMode)
+      }
+
+      "must navigate from CertificateDeclarationSaoPage to CertificateCheckYourAnswers" in {
+        navigator.nextPage(
+          CertificateDeclarationSaoPage(NormalMode),
+          NormalMode,
+          emptyUserAnswers
+        ) mustBe submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "must navigate from CertificateDeclarationStandInPage to CertificateCheckYourAnswers" in {
+        navigator.nextPage(
+          CertificateDeclarationStandInPage(NormalMode),
+          NormalMode,
+          emptyUserAnswers
+        ) mustBe submitCertificateRoutes.CombinedCertificateCheckYourAnswersController.onPageLoad()
+      }
+
+      "must navigate from CombinedCertificateConfirmationPage to Complete" in {
+        navigator.nextPage(
+          CombinedCertificateConfirmationPage,
+          NormalMode,
+          emptyUserAnswers
+        ) mustBe combinedRoutes.CombinedTaskListController.onComplete
+      }
 
       "when on NotificationMoreThanOneSaoPage and the user selected No, must go to Sao name page" in {
         navigator.nextPage(
@@ -284,22 +286,22 @@ class CombinedNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
           emptyUserAnswers
         ) mustBe routes.JourneyRecoveryController.onPageLoad()
       }
-//
-//      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationSao page" in {
-//        navigator.nextPage(
-//          CertificateWhoIsSubmittingPage(NormalMode),
-//          NormalMode,
-//          emptyUserAnswers.set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.Sao).get
-//        ) mustBe submitCertificateRoutes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
-//      }
-//
-//      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationStandIn page" in {
-//        navigator.nextPage(
-//          CertificateWhoIsSubmittingPage(NormalMode),
-//          NormalMode,
-//          emptyUserAnswers.set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.StandIn).get
-//        ) mustBe submitCertificateRoutes.CombinedCertificateDeclarationStandInController.onPageLoad(NormalMode)
-//      }
+
+      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationSao page" in {
+        navigator.nextPage(
+          CertificateWhoIsSubmittingPage(NormalMode),
+          NormalMode,
+          emptyUserAnswers.set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.Sao).get
+        ) mustBe submitCertificateRoutes.CombinedCertificateDeclarationSaoController.onPageLoad(NormalMode)
+      }
+
+      "when on CertificateWhoIsSubmitting, must go to CertificateDeclarationStandIn page" in {
+        navigator.nextPage(
+          CertificateWhoIsSubmittingPage(NormalMode),
+          NormalMode,
+          emptyUserAnswers.set(CertificateWhoIsSubmittingPage(NormalMode), CertificateWhoIsSubmitting.StandIn).get
+        ) mustBe submitCertificateRoutes.CombinedCertificateDeclarationStandInController.onPageLoad(NormalMode)
+      }
     }
 
     "in Check mode" - {
@@ -590,6 +592,5 @@ class CombinedNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
         }
       }
     }
-
   }
 }
