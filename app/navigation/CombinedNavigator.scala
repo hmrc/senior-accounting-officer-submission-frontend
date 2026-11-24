@@ -17,17 +17,17 @@
 package navigation
 
 import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
-import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
-import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import controllers.combined.routes as combinedRoutes
+import controllers.combined.submitNotification.routes as submitNotificationRoutes
+import controllers.combined.uploadTemplate.routes as uploadTemplateRoutes
 import controllers.routes
 import models.*
+import models.upload.UploadTemplateTableData
 import pages.*
 import pages.Page.NOTIFICATION_PATH
 import pages.combined.CombinedNotificationConfirmationPage
 import pages.notification.*
 import play.api.mvc.Call
-import models.upload.UploadTemplateTableData
 
 import javax.inject.{Inject, Singleton}
 
@@ -144,16 +144,16 @@ class CombinedNavigator @Inject() () extends Navigator {
 
   private def hasSingleSaoAnswers(userAnswers: UserAnswers, mode: Mode): Boolean = {
     userAnswers.get(NotificationMoreThanOneSaoPage(mode)).nonEmpty &&
-      userAnswers.get(NotificationSingleSaoOfficerNamePage(mode)).nonEmpty
+    userAnswers.get(NotificationSingleSaoOfficerNamePage(mode)).nonEmpty
   }
 
   private def hasMultiSaoAnswers(userAnswers: UserAnswers, mode: Mode): Boolean = {
     userAnswers.get(NotificationMultiSaoLastOfficerNamePage(mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage(mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(0, mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(0, mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(0, mode)).nonEmpty &&
-      userAnswers.get(NotificationMultiSaoAreAllAddedPage(0, mode)).nonEmpty
+    userAnswers.get(NotificationMultiSaoLastOfficerStartDatePage(mode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerNamePage(0, mode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerStartDatePage(0, mode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoPreviousOfficerEndDatePage(0, mode)).nonEmpty &&
+    userAnswers.get(NotificationMultiSaoAreAllAddedPage(0, mode)).nonEmpty
   }
 
   private def hasCompletedMoreSaoDetails(userAnswers: UserAnswers): Boolean = {
