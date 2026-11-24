@@ -28,6 +28,7 @@ import pages.Page.NOTIFICATION_PATH
 import pages.combined.CombinedNotificationConfirmationPage
 import pages.notification.*
 import play.api.mvc.Call
+import models.upload.UploadTemplateTableData
 
 import javax.inject.{Inject, Singleton}
 
