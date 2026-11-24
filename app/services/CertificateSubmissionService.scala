@@ -22,6 +22,7 @@ import models.UserAnswers
 import models.certificate.*
 import models.upload.{CertificateFields, NotificationFields, ParsedSubmissionRow}
 import pages.certificate.*
+import pages.notification.UploadTemplateTablePage
 import play.api.Logging
 import play.api.http.Status.{CREATED, NO_CONTENT, OK}
 import play.api.libs.json.{JsSuccess, Json}
@@ -45,9 +46,10 @@ class CertificateSubmissionService @Inject() (
   def submit(
       userId: String,
       userAnswers: UserAnswers,
-      token: String
+      token: String,
+      isCombinedJourney: Boolean
   )(using HeaderCarrier): Future[CertificateSubmissionResult] =
-    buildRequest(userAnswers, None) match {
+    buildRequest(userAnswers, None, isCombinedJourney) match {
       case Left(error) =>
         logger.warn(s"Certificate submission could not be built: $error")
         Future.successful(CertificateSubmissionResult.MissingData)
@@ -78,10 +80,11 @@ class CertificateSubmissionService @Inject() (
   def submitWithFaultTolerance(
       userId: String,
       userAnswers: UserAnswers,
-      token: String
+      token: String,
+      isCombinedJourney: Boolean
   )(using HeaderCarrier): Future[CertificateSubmissionResult] = {
     getIdempotencyKey(userAnswers).flatMap { idempotencyKey =>
-      buildRequest(userAnswers, Some(idempotencyKey)) match {
+      buildRequest(userAnswers, Some(idempotencyKey), isCombinedJourney) match {
         case Left(error) =>
           logger.warn(s"Certificate submission could not be built: $error")
           Future.successful(CertificateSubmissionResult.MissingData)
@@ -146,13 +149,15 @@ class CertificateSubmissionService @Inject() (
 
   private def buildRequest(
       userAnswers: UserAnswers,
-      idempotencyKey: Option[String]
+      idempotencyKey: Option[String],
+      isCombinedJourney: Boolean
   ): Either[String, CertificateSubmissionRequest] =
     for {
       saoName            <- userAnswers.get(CertificateSaoFullNamePage).toRight("missing SAO name")
       saoEmail           <- userAnswers.get(CertificateSaoEmailPage).toRight("missing SAO email")
       saoDeclarationName <- declarationName(userAnswers).toRight("missing SAO declaration name")
-      tableData <- userAnswers.get(CertificateUploadTemplateTablePage).toRight("missing uploaded certificate data")
+      tablePageData = if isCombinedJourney then UploadTemplateTablePage else CertificateUploadTemplateTablePage
+      tableData <- userAnswers.get(tablePageData).toRight("missing uploaded certificate data")
       companies = tableData.rows.collect { case ParsedSubmissionRow(notification, Some(certificate)) =>
         toCompany(notification, certificate)
       }
