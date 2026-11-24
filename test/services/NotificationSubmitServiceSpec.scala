@@ -60,7 +60,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
       running(application) {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
-        val result = SUT.submit(userAnswers).futureValue
+        val result = SUT.submit(userAnswers, wipeNotificationData = true).futureValue
         result mustBe Right(exampleNotificationReference)
       }
     }
@@ -73,7 +73,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
       running(application) {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
-        val result = SUT.submit(userAnswers).futureValue
+        val result = SUT.submit(userAnswers, wipeNotificationData = true).futureValue
         result.isLeft mustBe true
         result.left.map(error => error.message mustBe expectedHttpFailureMessage)
       }
@@ -175,7 +175,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
       running(application) {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
-        val result = SUT.getStateOfWorkItem("key", emptyUserAnswers).futureValue
+        val result = SUT.getStateOfWorkItem("key", emptyUserAnswers, wipeNotificationData = true).futureValue
         result mustBe NotificationState.Success(exampleNotificationReference)
       }
     }
@@ -187,7 +187,7 @@ class NotificationSubmitServiceSpec extends SpecBase with GuiceOneAppPerSuite {
 
       running(application) {
         val SUT    = application.injector.instanceOf[NotificationSubmitService]
-        val result = SUT.getStateOfWorkItem("key", emptyUserAnswers).futureValue
+        val result = SUT.getStateOfWorkItem("key", emptyUserAnswers, wipeNotificationData = true).futureValue
         result mustBe NotificationState.Pending("key")
       }
     }

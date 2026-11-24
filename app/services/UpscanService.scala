@@ -46,8 +46,7 @@ class UpscanService @Inject() (
       reference match {
         case Some(expectedReference) if uploadState.reference != expectedReference =>
           Future.successful(State.NoReference)
-        case _ =>
-          fileUploadState(journey, uploadState)
+        case _ => fileUploadState(journey, uploadState)
       }
     }
 

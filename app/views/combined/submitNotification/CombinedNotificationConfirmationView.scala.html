@@ -1,0 +1,94 @@
+@*
+ * Copyright 2025 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *@
+
+@import controllers.combined.submitNotification.{ routes => submitNotificationRoutes }
+@import config.AppConfig
+@import views.html.helper.CSPNonce
+
+@this(
+    layout: templates.Layout,
+    govukButton: GovukButton,
+    formHelper: FormWithCSRF,
+    appConfig: AppConfig
+)
+
+@(notificationReference: String, displayPdfLink: Boolean)(using request: Request[?], messages: Messages)
+
+@layout(showBackLink = false, pageTitle = titleNoForm(messages("notificationConfirmation.title"), Some("section.combined"))) {
+
+    <div class="govuk-panel govuk-panel--confirmation">
+        <h1 class="govuk-panel__title">
+            @messages("notificationConfirmation.heading")
+        </h1>
+        <div class="govuk-panel__body">
+            @messages("notificationConfirmation.reference.text")
+            <br>
+            <strong data-test-id="notification-reference-number">@notificationReference</strong>
+        </div>
+    </div>
+
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph1")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph2")</p>
+
+    <ul class="govuk-list govuk-list--bullet">
+        @if(displayPdfLink) {
+            <li>
+                <span>
+                    @Html(
+                        messages(
+                            "notificationConfirmation.list1.item1WithLink",
+                            controllers.routes.DownloadPdfController.notification(notificationReference)
+                        )
+                    )
+                </span>
+            </li>
+        }
+        <li>
+            <span>
+                @Html(
+                    messages("notificationConfirmation.list1.item2WithLink", "#")
+                )
+            </span>
+        </li>
+    </ul>
+
+    <script @CSPNonce.attr>
+        document.getElementById('print-page-link').addEventListener('click', function() {
+            event.preventDefault();
+            window.print();
+        })
+    </script>
+
+    <h2 class="govuk-heading-m">@messages("notificationConfirmation.subheading")</h2>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph3")</p>
+    <p class="govuk-body">@messages("notificationConfirmation.paragraph4Combined")</p>
+
+    <div class="govuk-inset-text">
+        @messages("notificationConfirmation.inset.text")
+    </div>
+
+    <h2 class="govuk-heading-m">@messages("survey.subheading")</h2>
+    <p class="govuk-body">@messages("survey.paragraph1")</p>
+    <p class="govuk-body">@Html(messages("survey.paragraph2WithLink", appConfig.surveyLink))</p>
+
+    @formHelper(action = submitNotificationRoutes.CombinedNotificationConfirmationController.onSubmit()) {
+        @govukButton(
+            ButtonViewModel(messages("uploadTemplateTable.continue").toText).withAttribute("id", "submit")
+        )
+    }
+
+}
+
