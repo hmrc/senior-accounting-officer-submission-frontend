@@ -42,12 +42,14 @@ class NotificationSubmittingController @Inject() (
 
   def onPageLoad(idempotencyKey: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      notificationSubmitService.getStateOfWorkItem(idempotencyKey, request.userAnswers).map {
-        case Success(notificationRef) =>
-          Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationRef))
-        case Pending(_)      => Ok(view())
-        case Failure(status) =>
-          throw new InternalServerException(s"Error getting notification state with status $status")
-      }
+      notificationSubmitService
+        .getStateOfWorkItem(idempotencyKey, request.userAnswers, wipeNotificationData = true)
+        .map {
+          case Success(notificationRef) =>
+            Redirect(notificationRoutes.NotificationConfirmationController.onPageLoad(notificationRef))
+          case Pending(_)      => Ok(view())
+          case Failure(status) =>
+            throw new InternalServerException(s"Error getting notification state with status $status")
+        }
     }
 }
