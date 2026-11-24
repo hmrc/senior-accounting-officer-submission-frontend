@@ -116,10 +116,10 @@ GET         /submission/certificate/download                                    
 # combined journey routes
 ##############################
 
-## Task List ##
-GET         /submission/notification-certificate/task/provide-details                                    controllers.combined.CombinedTaskListController.onPageLoad
-GET         /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onComplete
-POST        /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onCompleteSubmit
+### Task List ##
+#GET         /submission/notification-certificate/task/provide-details                                    controllers.combined.CombinedTaskListController.onPageLoad
+#GET         /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onComplete
+#POST        /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onCompleteSubmit
 
 ## Provide SAO Details ##
 GET         /submission/notification-certificate/confirm-multiple-officers                               controllers.combined.provideSaoDetails.CombinedMoreThanOneSaoController.onPageLoad(mode: Mode)
@@ -146,59 +146,59 @@ POST        /submission/notification-certificate/previous/officer-end-date      
 GET         /submission/notification-certificate/add-officer                                             controllers.combined.provideSaoDetails.CombinedMultiSaoAreAllAddedController.onPageLoad(mode: Mode, sao: Int ?= 0)
 POST        /submission/notification-certificate/add-officer                                             controllers.combined.provideSaoDetails.CombinedMultiSaoAreAllAddedController.onSubmit(mode: Mode, sao: Int ?= 0)
 
-## Upload a Submission Template ##
-GET         /submission/notification-certificate/upload-template                                         controllers.combined.uploadTemplate.CombinedUploadFormController.onPageLoad()
-
-GET         /submission/notification-certificate/uploading                                               controllers.combined.uploadTemplate.CombinedUploadSuccessController.onPageLoad(key: Option[String])
-
-GET         /submission/notification-certificate/review-companies                                        controllers.combined.uploadTemplate.CombinedUploadTemplateTableController.onPageLoad(page: Int)
-POST        /submission/notification-certificate/review-companies                                        controllers.combined.uploadTemplate.CombinedUploadTemplateTableController.onSubmit()
-
-## Submit a Notification ##
-GET         /submission/notification-certificate/additional-information                                  controllers.combined.submitNotification.CombinedNotificationAdditionalInformationController.onPageLoad(mode: Mode)
-POST        /submission/notification-certificate/additional-information                                  controllers.combined.submitNotification.CombinedNotificationAdditionalInformationController.onSubmit(mode: Mode)
-
-GET         /submission/notification-certificate/confirm-notification                                    controllers.combined.submitNotification.CombinedConfirmYourNotificationController.onPageLoad()
-POST        /submission/notification-certificate/confirm-notification                                    controllers.combined.submitNotification.CombinedConfirmYourNotificationController.onSubmit()
-
-GET         /submission/notification-certificate/notification-check-answers                              controllers.combined.submitNotification.CombinedNotificationCheckYourAnswersController.onPageLoad()
-POST        /submission/notification-certificate/notification-check-answers                              controllers.combined.submitNotification.CombinedNotificationCheckYourAnswersController.onSubmit()
-
-GET         /submission/notification-certificate/submitting                                              controllers.combined.submitNotification.CombinedNotificationSubmittingController.onPageLoad(idempotencyKey: String)
-
-GET         /submission/notification-certificate/confirmation                                            controllers.combined.submitNotification.CombinedNotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
-POST        /submission/notification-certificate/confirmation                                            controllers.combined.submitNotification.CombinedNotificationConfirmationController.onSubmit()
-GET         /submission/notification-certificate/download                                                controllers.DownloadPdfController.notification(notificationReference: String)
-
-## Submit a Certificate ##
-GET         /submission/notification-certificate/sao-name                                                controllers.combined.submitCertificate.CombinedCertificateSaoFullNameController.onPageLoad(mode: Mode)
-POST        /submission/notification-certificate/sao-name                                                controllers.combined.submitCertificate.CombinedCertificateSaoFullNameController.onSubmit(mode: Mode)
-
-GET         /submission/notification-certificate/sao-email-address                                       controllers.combined.submitCertificate.CombinedCertificateSaoEmailController.onPageLoad(mode: Mode)
-POST        /submission/notification-certificate/sao-email-address                                       controllers.combined.submitCertificate.CombinedCertificateSaoEmailController.onSubmit(mode: Mode)
-
-GET         /submission/notification-certificate/review-qualified-certificate                            controllers.combined.submitCertificate.CombinedCertificateReviewQualifiedController.onPageLoad(page: Int)
-POST        /submission/notification-certificate/review-qualified-certificate                            controllers.combined.submitCertificate.CombinedCertificateReviewQualifiedController.onSubmit()
-
-GET         /submission/notification-certificate/review-unqualified-certificate                          controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedController.onPageLoad(page: Int)
-POST        /submission/notification-certificate/review-unqualified-certificate                          controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedController.onSubmit()
-
-GET         /submission/notification-certificate/additional-information-explanation                      controllers.combined.submitCertificate.CombinedCertificateAdditionalInformationController.onPageLoad(mode: Mode)
-POST        /submission/notification-certificate/additional-information-explanation                      controllers.combined.submitCertificate.CombinedCertificateAdditionalInformationController.onSubmit(mode: Mode)
-
-GET         /submission/notification-certificate/officer-submit-certificate                              controllers.combined.submitCertificate.CombinedCertificateWhoIsSubmittingController.onPageLoad(mode: Mode)
-POST        /submission/notification-certificate/officer-submit-certificate                              controllers.combined.submitCertificate.CombinedCertificateWhoIsSubmittingController.onSubmit(mode: Mode)
-
-GET         /submission/notification-certificate/declaration/confirm-certificate                         controllers.combined.submitCertificate.CombinedCertificateDeclarationSaoController.onPageLoad(mode: Mode)
-POST        /submission/notification-certificate/declaration/confirm-certificate                         controllers.combined.submitCertificate.CombinedCertificateDeclarationSaoController.onSubmit(mode: Mode)
-
-GET         /submission/notification-certificate/declaration/confirm-authorised-submission               controllers.combined.submitCertificate.CombinedCertificateDeclarationStandInController.onPageLoad(mode: Mode)
-POST        /submission/notification-certificate/declaration/confirm-authorised-submission               controllers.combined.submitCertificate.CombinedCertificateDeclarationStandInController.onSubmit(mode: Mode)
-
-GET         /submission/notification-certificate/certificate-check-answers                               controllers.combined.submitCertificate.CombinedCertificateCheckYourAnswersController.onPageLoad()
-POST        /submission/notification-certificate/certificate-check-answers                               controllers.combined.submitCertificate.CombinedCertificateCheckYourAnswersController.onSubmit()
-
-GET         /submission/notification-certificate/certificate-submitting                                  controllers.combined.submitCertificate.CombinedCertificateSubmittingController.onPageLoad(idempotencyKey: String)
-
-GET         /submission/notification-certificate/certifcate-confirmation                                 controllers.combined.submitCertificate.CombinedCertificateConfirmationController.onPageLoad(certificateIdReferenceNumber: String)
-POST        /submission/notification-certificate/certifcate-confirmation                                 controllers.combined.submitCertificate.CombinedCertificateConfirmationController.onSubmit()
+### Upload a Submission Template ##
+#GET         /submission/notification-certificate/upload-template                                         controllers.combined.uploadTemplate.CombinedUploadFormController.onPageLoad()
+#
+#GET         /submission/notification-certificate/uploading                                               controllers.combined.uploadTemplate.CombinedUploadSuccessController.onPageLoad(key: Option[String])
+#
+#GET         /submission/notification-certificate/review-companies                                        controllers.combined.uploadTemplate.CombinedUploadTemplateTableController.onPageLoad(page: Int)
+#POST        /submission/notification-certificate/review-companies                                        controllers.combined.uploadTemplate.CombinedUploadTemplateTableController.onSubmit()
+#
+### Submit a Notification ##
+#GET         /submission/notification-certificate/additional-information                                  controllers.combined.submitNotification.CombinedNotificationAdditionalInformationController.onPageLoad(mode: Mode)
+#POST        /submission/notification-certificate/additional-information                                  controllers.combined.submitNotification.CombinedNotificationAdditionalInformationController.onSubmit(mode: Mode)
+#
+#GET         /submission/notification-certificate/confirm-notification                                    controllers.combined.submitNotification.CombinedConfirmYourNotificationController.onPageLoad()
+#POST        /submission/notification-certificate/confirm-notification                                    controllers.combined.submitNotification.CombinedConfirmYourNotificationController.onSubmit()
+#
+#GET         /submission/notification-certificate/notification-check-answers                              controllers.combined.submitNotification.CombinedNotificationCheckYourAnswersController.onPageLoad()
+#POST        /submission/notification-certificate/notification-check-answers                              controllers.combined.submitNotification.CombinedNotificationCheckYourAnswersController.onSubmit()
+#
+#GET         /submission/notification-certificate/submitting                                              controllers.combined.submitNotification.CombinedNotificationSubmittingController.onPageLoad(idempotencyKey: String)
+#
+#GET         /submission/notification-certificate/confirmation                                            controllers.combined.submitNotification.CombinedNotificationConfirmationController.onPageLoad(notificationIdReferenceNumber: String)
+#POST        /submission/notification-certificate/confirmation                                            controllers.combined.submitNotification.CombinedNotificationConfirmationController.onSubmit()
+#GET         /submission/notification-certificate/download                                                controllers.DownloadPdfController.notification(notificationReference: String)
+#
+### Submit a Certificate ##
+#GET         /submission/notification-certificate/sao-name                                                controllers.combined.submitCertificate.CombinedCertificateSaoFullNameController.onPageLoad(mode: Mode)
+#POST        /submission/notification-certificate/sao-name                                                controllers.combined.submitCertificate.CombinedCertificateSaoFullNameController.onSubmit(mode: Mode)
+#
+#GET         /submission/notification-certificate/sao-email-address                                       controllers.combined.submitCertificate.CombinedCertificateSaoEmailController.onPageLoad(mode: Mode)
+#POST        /submission/notification-certificate/sao-email-address                                       controllers.combined.submitCertificate.CombinedCertificateSaoEmailController.onSubmit(mode: Mode)
+#
+#GET         /submission/notification-certificate/review-qualified-certificate                            controllers.combined.submitCertificate.CombinedCertificateReviewQualifiedController.onPageLoad(page: Int)
+#POST        /submission/notification-certificate/review-qualified-certificate                            controllers.combined.submitCertificate.CombinedCertificateReviewQualifiedController.onSubmit()
+#
+#GET         /submission/notification-certificate/review-unqualified-certificate                          controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedController.onPageLoad(page: Int)
+#POST        /submission/notification-certificate/review-unqualified-certificate                          controllers.combined.submitCertificate.CombinedCertificateReviewUnqualifiedController.onSubmit()
+#
+#GET         /submission/notification-certificate/additional-information-explanation                      controllers.combined.submitCertificate.CombinedCertificateAdditionalInformationController.onPageLoad(mode: Mode)
+#POST        /submission/notification-certificate/additional-information-explanation                      controllers.combined.submitCertificate.CombinedCertificateAdditionalInformationController.onSubmit(mode: Mode)
+#
+#GET         /submission/notification-certificate/officer-submit-certificate                              controllers.combined.submitCertificate.CombinedCertificateWhoIsSubmittingController.onPageLoad(mode: Mode)
+#POST        /submission/notification-certificate/officer-submit-certificate                              controllers.combined.submitCertificate.CombinedCertificateWhoIsSubmittingController.onSubmit(mode: Mode)
+#
+#GET         /submission/notification-certificate/declaration/confirm-certificate                         controllers.combined.submitCertificate.CombinedCertificateDeclarationSaoController.onPageLoad(mode: Mode)
+#POST        /submission/notification-certificate/declaration/confirm-certificate                         controllers.combined.submitCertificate.CombinedCertificateDeclarationSaoController.onSubmit(mode: Mode)
+#
+#GET         /submission/notification-certificate/declaration/confirm-authorised-submission               controllers.combined.submitCertificate.CombinedCertificateDeclarationStandInController.onPageLoad(mode: Mode)
+#POST        /submission/notification-certificate/declaration/confirm-authorised-submission               controllers.combined.submitCertificate.CombinedCertificateDeclarationStandInController.onSubmit(mode: Mode)
+#
+#GET         /submission/notification-certificate/certificate-check-answers                               controllers.combined.submitCertificate.CombinedCertificateCheckYourAnswersController.onPageLoad()
+#POST        /submission/notification-certificate/certificate-check-answers                               controllers.combined.submitCertificate.CombinedCertificateCheckYourAnswersController.onSubmit()
+#
+#GET         /submission/notification-certificate/certificate-submitting                                  controllers.combined.submitCertificate.CombinedCertificateSubmittingController.onPageLoad(idempotencyKey: String)
+#
+#GET         /submission/notification-certificate/certifcate-confirmation                                 controllers.combined.submitCertificate.CombinedCertificateConfirmationController.onPageLoad(certificateIdReferenceNumber: String)
+#POST        /submission/notification-certificate/certifcate-confirmation                                 controllers.combined.submitCertificate.CombinedCertificateConfirmationController.onSubmit()
