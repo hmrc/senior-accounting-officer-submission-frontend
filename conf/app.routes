@@ -118,8 +118,8 @@ GET         /submission/certificate/download                                    
 
 ## Task List ##
 GET         /submission/notification-certificate/task/provide-details                                    controllers.combined.CombinedTaskListController.onPageLoad
-GET         /submission/notification-certificate/task/complete                                           controllers.combined.CombinedTaskListController.onComplete
-POST        /submission/notification-certificate/task/provide-details                                    controllers.combined.CombinedTaskListController.onCompleteSubmit
+GET         /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onComplete
+POST        /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onCompleteSubmit
 
 ## Provide SAO Details ##
 GET         /submission/notification-certificate/confirm-multiple-officers                               controllers.combined.provideSaoDetails.CombinedMoreThanOneSaoController.onPageLoad(mode: Mode)
@@ -147,7 +147,7 @@ GET         /submission/notification-certificate/add-officer                    
 POST        /submission/notification-certificate/add-officer                                             controllers.combined.provideSaoDetails.CombinedMultiSaoAreAllAddedController.onSubmit(mode: Mode, sao: Int ?= 0)
 
 ## Upload a Submission Template ##
-GET         /submission/notification-certificate/submission-template                                     controllers.combined.uploadTemplate.CombinedUploadFormController.onPageLoad()
+GET         /submission/notification-certificate/upload-template                                         controllers.combined.uploadTemplate.CombinedUploadFormController.onPageLoad()
 
 GET         /submission/notification-certificate/uploading                                               controllers.combined.uploadTemplate.CombinedUploadSuccessController.onPageLoad(key: Option[String])
 
