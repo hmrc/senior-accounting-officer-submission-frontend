@@ -18,6 +18,7 @@ package navigation
 
 import controllers.certificate.routes as certificateRoutes
 import controllers.notification.routes as notificationRoutes
+import controllers.combined.routes as combinedRoutes
 import models.*
 import pages.*
 import play.api.mvc.Call
@@ -33,7 +34,7 @@ class AgnosticNavigator @Inject() () extends Navigator {
         userAnswers.get(SubmissionTypePage) match {
           case Some(SubmissionType.Notification) => notificationRoutes.NotificationTaskListController.onPageLoad()
           case Some(SubmissionType.Certificate)  => certificateRoutes.CertificateTaskListController.onPageLoad
-//          case Some(SubmissionType.Combined)     => combinedRoutes.CombinedTaskListController.onPageLoad
+          case Some(SubmissionType.Combined)     => combinedRoutes.CombinedTaskListController.onPageLoad
           case submissionType => throw new IllegalStateException(s"Unexpected Submission Type - $submissionType")
         }
     case page => _ => throw new IllegalStateException(s"Unexpected Page - $page")

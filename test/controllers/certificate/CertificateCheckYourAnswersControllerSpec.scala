@@ -108,7 +108,7 @@ class CertificateCheckYourAnswersControllerSpec
       val mockSubmissionService = mock[CertificateSubmissionService]
       val certificateRef        = "CRT0123456789"
 
-      when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submit(meq("id"), any(), meq("token"), any())(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Submitted(certificateRef)))
 
       val application =
@@ -134,7 +134,7 @@ class CertificateCheckYourAnswersControllerSpec
       enable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"), any())(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Pending("key")))
 
       val application =
@@ -160,7 +160,7 @@ class CertificateCheckYourAnswersControllerSpec
       disable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submit(meq("id"), any(), meq("token"), any())(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Failed))
 
       val application =
@@ -183,7 +183,7 @@ class CertificateCheckYourAnswersControllerSpec
       enable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"), any())(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Failed))
 
       val application =
@@ -206,7 +206,7 @@ class CertificateCheckYourAnswersControllerSpec
       disable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submit(meq("id"), any(), meq("token"), any())(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.MissingData))
 
       val application =
@@ -230,7 +230,7 @@ class CertificateCheckYourAnswersControllerSpec
       enable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"), any())(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.MissingData))
 
       val application =
@@ -254,7 +254,7 @@ class CertificateCheckYourAnswersControllerSpec
       disable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submit(meq("id"), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submit(meq("id"), any(), meq("token"), any())(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Duplicate))
 
       val application =
@@ -280,7 +280,7 @@ class CertificateCheckYourAnswersControllerSpec
       enable(FaultTolerance)
       val mockSubmissionService = mock[CertificateSubmissionService]
 
-      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"))(using any()))
+      when(mockSubmissionService.submitWithFaultTolerance(meq("id"), any(), meq("token"), any())(using any()))
         .thenReturn(Future.successful(CertificateSubmissionResult.Duplicate))
 
       val application =
