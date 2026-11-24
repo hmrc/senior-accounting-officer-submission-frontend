@@ -17,8 +17,8 @@
 package navigation
 
 import controllers.certificate.routes as certificateRoutes
-import controllers.notification.routes as notificationRoutes
 import controllers.combined.routes as combinedRoutes
+import controllers.notification.routes as notificationRoutes
 import models.*
 import pages.*
 import play.api.mvc.Call
