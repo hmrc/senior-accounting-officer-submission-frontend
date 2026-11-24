@@ -1,0 +1,159 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package views.combined.provideSaoDetails
+
+import base.ViewSpecBase
+import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
+import forms.notification.NotificationMoreThanOneSaoFormProvider
+import models.{Mode, NormalMode, TransactionMode}
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import play.api.data.Form
+import views.combined.provideSaoDetails.CombinedMoreThanOneSaoViewSpec.*
+import views.html.combined.provideSaoDetails.CombinedMoreThanOneSaoView
+
+class CombinedMoreThanOneSaoViewSpec extends ViewSpecBase[CombinedMoreThanOneSaoView] {
+
+  private val formProvider        = app.injector.instanceOf[NotificationMoreThanOneSaoFormProvider]
+  private val form: Form[Boolean] = formProvider()
+
+  private def generateView(form: Form[Boolean], mode: Mode): Document = {
+    val view = SUT(form, mode)
+    Jsoup.parse(view.toString)
+  }
+
+  "CombinedMoreThanOneSaoView" - {
+
+    Seq(NormalMode, TransactionMode).foreach { mode =>
+      s"when using $mode" - {
+        "when the form is not filled in" - {
+          val doc = generateView(form, mode)
+
+          doc.createTestsWithStandardPageElements(
+            pageTitle = pageTitle,
+            pageHeading = pageHeading,
+            showBackLink = true,
+            showIsThisPageNotWorkingProperlyLink = true,
+            hasError = false
+          )
+
+          doc.createTestsWithRadioButtons(
+            name = "value",
+            radios = List(
+              radio(value = yesKey, label = yesLabel, hint = None),
+              radio(value = noKey, label = noLabel, hint = None)
+            ),
+            isChecked = None,
+            hasError = false
+          )
+
+          doc.createTestsWithSubmissionButton(
+            action = provideSaoDetailsRoutes.CombinedMoreThanOneSaoController.onSubmit(mode),
+            buttonText = "Continue"
+          )
+
+          doc.createTestsWithOrWithoutError(
+            hasError = false
+          )
+
+          doc.createTestsWithCaption(pageCaption)
+        }
+
+        "when the form is filled in" - {
+          val doc = generateView(form.bind(Map("value" -> yesKey)), mode)
+
+          doc.createTestsWithStandardPageElements(
+            pageTitle = pageTitle,
+            pageHeading = pageHeading,
+            showBackLink = true,
+            showIsThisPageNotWorkingProperlyLink = true,
+            hasError = false
+          )
+
+          doc.createTestsWithRadioButtons(
+            name = "value",
+            radios = List(
+              radio(value = yesKey, label = yesLabel, hint = None),
+              radio(value = noKey, label = noLabel, hint = None)
+            ),
+            isChecked = Some(radio(value = yesKey, label = yesLabel, hint = None)),
+            hasError = false
+          )
+
+          doc.createTestsWithSubmissionButton(
+            action = provideSaoDetailsRoutes.CombinedMoreThanOneSaoController.onSubmit(mode),
+            buttonText = "Continue"
+          )
+
+          doc.createTestsWithOrWithoutError(
+            hasError = false
+          )
+
+          doc.createTestsWithCaption(pageCaption)
+        }
+
+        "when the form has errors" - {
+          val doc = generateView(form.withError("value", "broken"), mode)
+
+          doc.createTestsWithStandardPageElements(
+            pageTitle = pageTitle,
+            pageHeading = pageHeading,
+            showBackLink = true,
+            showIsThisPageNotWorkingProperlyLink = true,
+            hasError = true
+          )
+
+          doc.createTestsWithRadioButtons(
+            name = "value",
+            radios = List(
+              radio(value = yesKey, label = yesLabel, hint = None),
+              radio(value = noKey, label = noLabel, hint = None)
+            ),
+            isChecked = None,
+            hasError = true
+          )
+
+          doc.createTestsWithSubmissionButton(
+            action = provideSaoDetailsRoutes.CombinedMoreThanOneSaoController.onSubmit(mode),
+            buttonText = "Continue"
+          )
+
+          doc.createTestsWithOrWithoutError(
+            hasError = true
+          )
+
+          doc.createTestsWithCaption(pageCaption)
+        }
+      }
+    }
+
+  }
+
+}
+
+object CombinedMoreThanOneSaoViewSpec {
+  val pageHeading = "Did the SAO change during the financial year you are submitting for?"
+  val pageTitle   =
+    "Did the SAO change during the financial year you are submitting for? - Submit a notification and certificate"
+  val yesKey      = "true"
+  val yesLabel    = "Yes"
+  val noKey       = "false"
+  val noLabel     = "No"
+  val yesHint     = "There was more than one SAO, the SAO changed during the financial year"
+  val noHint      = "Only one person held the role for the entire financial year"
+  val pageCaption = "Provide the SAO’s details"
+}

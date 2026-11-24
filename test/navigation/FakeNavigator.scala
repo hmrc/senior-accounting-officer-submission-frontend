@@ -34,3 +34,5 @@ class FakeAgnosticNavigator(override val desiredRoute: Call) extends AgnosticNav
 class FakeNotificationNavigator(override val desiredRoute: Call) extends NotificationNavigator with FakeNavigator
 
 class FakeCertificateNavigator(override val desiredRoute: Call) extends CertificateNavigator with FakeNavigator
+
+class FakeCombinedNavigator(override val desiredRoute: Call) extends CombinedNavigator with FakeNavigator
