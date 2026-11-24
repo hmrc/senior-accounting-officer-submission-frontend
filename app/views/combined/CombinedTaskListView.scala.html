@@ -17,8 +17,8 @@
 @import controllers.combined.{ routes => combinedRoutes }
 @import controllers.combined.provideSaoDetails.{ routes => provideSaoDetailsRoutes }
 @import controllers.combined.uploadTemplate.{ routes => uploadTemplateRoutes }
-@import controllers.combined.submitNotification.{ routes => submitNotificationRoutes }
-@import controllers.combined.submitCertificate.{ routes => submitCertificateRoutes }
+@*@import controllers.combined.submitNotification.{ routes => submitNotificationRoutes }*@
+@*@import controllers.combined.submitCertificate.{ routes => submitCertificateRoutes }*@
 @import models.combined.CombinedStage
 
 @this(
@@ -56,7 +56,7 @@
 
         @row(
             linkText = messages("combinedTaskList.submitNotificationLinkText"),
-            href = submitNotificationRoutes.CombinedNotificationAdditionalInformationController.onPageLoad(NormalMode),
+            href = uploadTemplateRoutes.CombinedUploadFormController.onPageLoad(),
             testId = "submit-notification",
             statusName = "submit-notification-details",
             status = currentStage.submitNotificationStatus,
@@ -65,7 +65,7 @@
 
         @row(
             linkText = messages("combinedTaskList.submitCertificateLinkText"),
-            href = submitCertificateRoutes.CombinedCertificateSaoFullNameController.onPageLoad(NormalMode),
+            href = uploadTemplateRoutes.CombinedUploadFormController.onPageLoad(),
             testId = "submit-certificate",
             statusName = "submit-certificate-details",
             status = currentStage.submitCertificateStatus,
