@@ -47,6 +47,12 @@ class DownloadTemplateControllerSpec extends SpecBase {
     validLanguageList.foreach { language =>
       s"return a file with correct name,type and headers - $language" in {
 
+        val fileName = if(language == "cy") {
+          "Hysbysiad a thystysgrif Uwch-swyddog Cyfrifyddu templed cyflwyno.xlsx"
+        } else {
+          "Senior Accounting Officer notification and certificate submission template.xlsx"
+        }
+
         val app = applicationBuilder(userAnswers = None).build()
         running(app) {
           val result = route(app, request(language)).value
@@ -56,7 +62,7 @@ class DownloadTemplateControllerSpec extends SpecBase {
           val contentDisposition = header("Content-Disposition", result)
 
           contentDisposition mustBe Some(
-            "attachment; filename=Senior Accounting Officer notification and certificate submission template.xlsx"
+            s"attachment; filename=$fileName"
           )
           contentType(result) mustBe Some("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         }

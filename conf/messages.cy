@@ -73,6 +73,7 @@ template.guidance.paragraph1 = Dilynwch y camau hyn i lawrlwytho templed, cwblha
 
 template.guidance.subheading1 = Cam 1: Lawrlwytho a chwblhau templed cyflwyno
 template.guidance.subheading1.downloadTemplateLinkText = Lawrlwytho templed cyflwyno
+template.guidance.downloadTemplate.fileName = Hysbysiad a thystysgrif Uwch-swyddog Cyfrifyddu templed cyflwyno
 template.guidance.subheading1.paragraph1 = Cwblhewch bob maes ar gyfer pob cwmni yn eich grŵp. Dylai pob rhes gynrychioli un cwmni roedd eich SAO yn gyfrifol amdano yn y flwyddyn ariannol.
 template.guidance.subheading1.paragraph2 = Peidiwch â newid cynllun na strwythur y templed. Os gwnewch hynny, bydd y broses lawrlwytho yn methu. Mae rhesi 1 i 9 o’r templed yn cynnwys arweiniad i’ch helpu i gwblhau pob colofn.
 template.guidance.subheading1.paragraph3 = Bydd angen i chi nodi:
