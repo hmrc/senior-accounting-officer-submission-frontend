@@ -110,10 +110,10 @@ class CombinedNotificationCheckYourAnswersControllerSpec
       }
     }
 
-    "must redirect to Confirmation page on submit" in {
+    "must redirect to Submitting page on submit" in {
       val mockNotificationSubmitService = mock[NotificationSubmitService]
 
-      when(mockNotificationSubmitService.submit(any(), any())(using any[HeaderCarrier]()))
+      when(mockNotificationSubmitService.submitWithFaultTolerance(any())(using any[HeaderCarrier]()))
         .thenReturn(Future.successful(Right(exampleNotificationReference)))
 
       val application =
@@ -130,7 +130,7 @@ class CombinedNotificationCheckYourAnswersControllerSpec
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual submitNotificationRoutes.CombinedNotificationConfirmationController
+        redirectLocation(result).value mustEqual submitNotificationRoutes.CombinedNotificationSubmittingController
           .onPageLoad(exampleNotificationReference)
           .url()
       }
