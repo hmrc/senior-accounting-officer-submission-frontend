@@ -42,7 +42,7 @@ import views.html.combined.submitNotification.CombinedNotificationCheckYourAnswe
 import scala.concurrent.Future
 
 class CombinedNotificationCheckYourAnswersControllerSpec
-    extends SpecBase
+  extends SpecBase
     with FeatureToggleSupport
     with BeforeAndAfterEach {
 
