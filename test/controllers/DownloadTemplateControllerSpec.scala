@@ -47,7 +47,7 @@ class DownloadTemplateControllerSpec extends SpecBase {
     validLanguageList.foreach { language =>
       s"return a file with correct name,type and headers - $language" in {
 
-        val fileName = if(language == "cy") {
+        val fileName = if language == "cy" then {
           "Hysbysiad a thystysgrif Uwch-swyddog Cyfrifyddu templed cyflwyno.xlsx"
         } else {
           "Senior Accounting Officer notification and certificate submission template.xlsx"
