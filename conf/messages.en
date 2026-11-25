@@ -73,6 +73,7 @@ template.guidance.paragraph1 = Follow these steps to download a template, comple
 
 template.guidance.subheading1 = Step 1: Download and complete a submission template
 template.guidance.subheading1.downloadTemplateLinkText = Download a submission template
+template.guidance.downloadTemplate.fileName = Senior Accounting Officer notification and certificate submission template
 template.guidance.subheading1.paragraph1 = Complete all fields for each company in your group. Each row should represent one company your SAO was responsible for in the financial year.
 template.guidance.subheading1.paragraph2 = Do not change the layout or structure of the template. If you do, the upload will fail. Rows 1 to 9 of the template have guidance to help you complete each column.
 template.guidance.subheading1.paragraph3 = You’ll need to enter:
