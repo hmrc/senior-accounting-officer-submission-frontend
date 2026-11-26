@@ -22,7 +22,7 @@ import controllers.combined.submitNotification.CombinedNotificationCheckYourAnsw
 import controllers.combined.submitNotification.routes as submitNotificationRoutes
 import controllers.routes
 import models.*
-import models.FeatureToggle.CombinedJourney
+import models.FeatureToggle.{CombinedJourney, FaultTolerance}
 import models.upload.UploadTemplateTableData
 import org.mockito.ArgumentMatchers.{any, eq as meq}
 import org.mockito.Mockito.{verify, when}
@@ -49,6 +49,7 @@ class CombinedNotificationCheckYourAnswersControllerSpec
   override def beforeEach(): Unit = {
     super.beforeEach()
     enable(CombinedJourney)
+    enable(FaultTolerance)
   }
 
   override def afterEach(): Unit = {

@@ -17,12 +17,12 @@
 package controllers.combined.submitCertificate
 
 import controllers.actions.*
-import models.NormalMode
+import models.{NormalMode, SubmissionDocumentType}
 import navigation.CombinedNavigator
 import pages.combined.CombinedCertificateConfirmationPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.ObjectStoreService
+import services.PDFAccessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitCertificate.CombinedCertificateConfirmationView
 
@@ -38,7 +38,7 @@ class CombinedCertificateConfirmationController @Inject() (
     combinedJourneyCheck: CombinedJourneyAction,
     val controllerComponents: MessagesControllerComponents,
     view: CombinedCertificateConfirmationView,
-    objectStoreService: ObjectStoreService,
+    pdfAccessService: PDFAccessService,
     navigator: CombinedNavigator
 )(using ec: ExecutionContext)
     extends FrontendBaseController
@@ -46,15 +46,16 @@ class CombinedCertificateConfirmationController @Inject() (
 
   def onPageLoad(certificateReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen combinedJourneyCheck).async { implicit request =>
-      objectStoreService.isCertificatePdfAvailable(request.saoSubscriptionId, certificateReference).map {
-        isPdfAvailable =>
+      pdfAccessService
+        .checkPDFStatus(request.saoSubscriptionId, certificateReference, SubmissionDocumentType.Certificate)
+        .map { isPdfAvailable =>
           Ok(
             view(
               certificateReference = certificateReference,
               displayPdfLink = isPdfAvailable
             )
           )
-      }
+        }
     }
 
   def onSubmit(): Action[AnyContent] =

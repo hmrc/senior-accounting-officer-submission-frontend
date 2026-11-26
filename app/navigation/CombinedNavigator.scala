@@ -31,7 +31,6 @@ import pages.certificate.*
 import pages.combined.{CombinedCertificateConfirmationPage, CombinedNotificationConfirmationPage}
 import pages.notification.*
 import play.api.mvc.Call
-import models.upload.UploadTemplateTableData
 
 import javax.inject.{Inject, Singleton}
 
