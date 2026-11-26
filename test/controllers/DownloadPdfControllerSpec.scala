@@ -20,7 +20,6 @@ import base.SpecBase
 import config.ErrorHandler
 import controllers.DownloadPdfControllerSpec.*
 import models.SubmissionDocumentType
-import org.apache.pekko.NotUsed
 import org.apache.pekko.stream.Materializer
 import org.apache.pekko.stream.scaladsl.Source
 import org.apache.pekko.util.ByteString
@@ -33,44 +32,39 @@ import play.api.http.HeaderNames
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.ObjectStoreService
-import uk.gov.hmrc.objectstore.client.Md5Hash
-import uk.gov.hmrc.objectstore.client.Object as ObjectStoreObject
-import uk.gov.hmrc.objectstore.client.ObjectMetadata
-import uk.gov.hmrc.objectstore.client.Path
+import services.{DownloadedPDF, PDFAccessService}
 
 import scala.concurrent.Future
 
-import java.time.Instant
-
 class DownloadPdfControllerSpec extends SpecBase with BeforeAndAfterEach {
 
-  private val mockObjectStoreService = mock[ObjectStoreService]
+  private val mockPDFAccessService = mock[PDFAccessService]
 
   override def beforeEach(): Unit = {
     super.beforeEach()
-    reset(mockObjectStoreService)
+    reset(mockPDFAccessService)
   }
 
   private def application: Application =
     applicationBuilder()
-      .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
+      .overrides(bind[PDFAccessService].toInstance(mockPDFAccessService))
       .build()
 
-  private def storedPdf(reference: String, documentType: SubmissionDocumentType) =
-    ObjectStoreObject(
-      Path.Directory(s"/senior-accounting-officer/$reference/").file(documentType.pdfFileName(reference)),
+  private def downloadedPdf: DownloadedPDF =
+    DownloadedPDF(
       Source.single(ByteString(pdfContent)),
-      ObjectMetadata("application/pdf", pdfContent.length.toLong, Md5Hash("hash"), Instant.now(), Map.empty)
+      Some(pdfContent.length.toLong),
+      "application/pdf"
     )
 
-  private def stubDownload(result: Future[Option[ObjectStoreObject[Source[ByteString, NotUsed]]]]): Unit =
-    when(mockObjectStoreService.downloadSubmissionPdf(any(), any(), any())(using any())).thenReturn(result)
+  private def stubDownload(result: Future[Option[DownloadedPDF]]): Unit =
+    when(mockPDFAccessService.getPDF(any(), any(), any())(using any()))
+      .thenReturn(result)
 
   "DownloadPdfController" - {
     "notification" - {
       "must stream the pdf as an attachment when it is in object store" in {
-        stubDownload(Future.successful(Some(storedPdf(notificationReference, SubmissionDocumentType.Notification))))
+        stubDownload(Future.successful(Some(downloadedPdf)))
 
         val app = application
         running(app) {
@@ -86,7 +80,7 @@ class DownloadPdfControllerSpec extends SpecBase with BeforeAndAfterEach {
           result.futureValue.body.contentLength.value mustEqual pdfContent.length.toLong
           contentAsString(result) mustEqual pdfContent
 
-          verify(mockObjectStoreService).downloadSubmissionPdf(
+          verify(mockPDFAccessService).getPDF(
             meq(testSaoSubscriptionId),
             meq(notificationReference),
             meq(SubmissionDocumentType.Notification)
@@ -125,7 +119,7 @@ class DownloadPdfControllerSpec extends SpecBase with BeforeAndAfterEach {
 
     "certificate" - {
       "must stream the pdf as an attachment when it is in object store" in {
-        stubDownload(Future.successful(Some(storedPdf(certificateReference, SubmissionDocumentType.Certificate))))
+        stubDownload(Future.successful(Some(downloadedPdf)))
 
         val app = application
         running(app) {
@@ -141,7 +135,7 @@ class DownloadPdfControllerSpec extends SpecBase with BeforeAndAfterEach {
           result.futureValue.body.contentLength.value mustEqual pdfContent.length.toLong
           contentAsString(result) mustEqual pdfContent
 
-          verify(mockObjectStoreService).downloadSubmissionPdf(
+          verify(mockPDFAccessService).getPDF(
             meq(testSaoSubscriptionId),
             meq(certificateReference),
             meq(SubmissionDocumentType.Certificate)

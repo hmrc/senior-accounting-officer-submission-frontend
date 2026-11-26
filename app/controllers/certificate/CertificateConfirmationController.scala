@@ -17,9 +17,10 @@
 package controllers.certificate
 
 import controllers.actions.*
+import models.SubmissionDocumentType
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import services.ObjectStoreService
+import services.PDFAccessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.certificate.CertificateConfirmationView
 
@@ -34,21 +35,22 @@ class CertificateConfirmationController @Inject() (
     requireData: DataRequiredAction,
     val controllerComponents: MessagesControllerComponents,
     view: CertificateConfirmationView,
-    objectStoreService: ObjectStoreService
+    pdfAccessService: PDFAccessService
 )(using ec: ExecutionContext)
     extends FrontendBaseController
     with I18nSupport {
 
   def onPageLoad(certificateReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      objectStoreService.isCertificatePdfAvailable(request.saoSubscriptionId, certificateReference).map {
-        isPdfAvailable =>
+      pdfAccessService
+        .checkPDFStatus(request.saoSubscriptionId, certificateReference, SubmissionDocumentType.Certificate)
+        .map { isPdfAvailable =>
           Ok(
             view(
               certificateReference = certificateReference,
               displayPdfLink = isPdfAvailable
             )
           )
-      }
+        }
     }
 }

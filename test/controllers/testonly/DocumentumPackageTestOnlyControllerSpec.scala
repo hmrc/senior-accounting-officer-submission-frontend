@@ -25,7 +25,7 @@ import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.ObjectStoreService
+import services.PDFAccessService
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.Future
@@ -38,14 +38,14 @@ class DocumentumPackageTestOnlyControllerSpec extends SpecBase with MockitoSugar
 
   "DocumentumPackageTestOnlyController.download" - {
     "return the zip stream when object store contains the package" in {
-      val mockObjectStoreService = mock[ObjectStoreService]
-      val application            = applicationBuilder()
-        .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
+      val mockPDFAccessService = mock[PDFAccessService]
+      val application          = applicationBuilder()
+        .overrides(bind[PDFAccessService].toInstance(mockPDFAccessService))
         .build()
 
       running(application) {
         when(
-          mockObjectStoreService.downloadDocumentumPackage(any(), any())(using any[HeaderCarrier]())
+          mockPDFAccessService.downloadDocumentumPackage(any(), any())(using any[HeaderCarrier]())
         ).thenReturn(Future.successful(Some(Source.single(ByteString("zip-content")))))
 
         val request    = FakeRequest(GET, packagePath)
@@ -55,20 +55,20 @@ class DocumentumPackageTestOnlyControllerSpec extends SpecBase with MockitoSugar
 
         status(result) mustBe OK
         contentType(result) mustBe Some("application/zip")
-        verify(mockObjectStoreService, times(1))
+        verify(mockPDFAccessService, times(1))
           .downloadDocumentumPackage(eqTo(submissionId), eqTo(fileName))(using any[HeaderCarrier]())
       }
     }
 
     "return not found when object store does not contain the package" in {
-      val mockObjectStoreService = mock[ObjectStoreService]
-      val application            = applicationBuilder()
-        .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
+      val mockPDFAccessService = mock[PDFAccessService]
+      val application          = applicationBuilder()
+        .overrides(bind[PDFAccessService].toInstance(mockPDFAccessService))
         .build()
 
       running(application) {
         when(
-          mockObjectStoreService.downloadDocumentumPackage(any(), any())(using any[HeaderCarrier]())
+          mockPDFAccessService.downloadDocumentumPackage(any(), any())(using any[HeaderCarrier]())
         ).thenReturn(Future.successful(None))
 
         val request    = FakeRequest(GET, packagePath)
@@ -77,7 +77,7 @@ class DocumentumPackageTestOnlyControllerSpec extends SpecBase with MockitoSugar
         val result = controller.download(submissionId, fileName)(request)
 
         status(result) mustBe NOT_FOUND
-        verify(mockObjectStoreService, times(1))
+        verify(mockPDFAccessService, times(1))
           .downloadDocumentumPackage(eqTo(submissionId), eqTo(fileName))(using any[HeaderCarrier]())
       }
     }
