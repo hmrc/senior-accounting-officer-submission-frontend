@@ -31,7 +31,7 @@ import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers.*
-import services.ObjectStoreService
+import services.PDFAccessService
 import views.html.combined.submitNotification.CombinedNotificationConfirmationView
 
 import scala.concurrent.Future
@@ -60,14 +60,14 @@ class CombinedNotificationConfirmationControllerSpec
     "onPageLoad" - {
       "must return OK and a view with no link displayed when pdf is not available" in {
 
-        val mockObjectStoreService = mock[ObjectStoreService]
+        val mockPDFAccessService = mock[PDFAccessService]
         when(
-          mockObjectStoreService.isNotificationPdfAvailable(any(), any())(using any())
+          mockPDFAccessService.checkPDFStatus(any(), any(), (any()))(using any())
         )
           .thenReturn(Future.successful(false))
 
         val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
+          .overrides(bind[PDFAccessService].toInstance(mockPDFAccessService))
           .build()
 
         running(application) {
@@ -91,14 +91,14 @@ class CombinedNotificationConfirmationControllerSpec
 
       "must return OK and a view with a link displayed when pdf is available" in {
 
-        val mockObjectStoreService = mock[ObjectStoreService]
+        val mockPDFAccessService = mock[PDFAccessService]
         when(
-          mockObjectStoreService.isNotificationPdfAvailable(any(), any())(using any())
+          mockPDFAccessService.checkPDFStatus(any(), any(), any())(using any())
         )
           .thenReturn(Future.successful(true))
 
         val application = applicationBuilder(userAnswers = Some(completedNotificationReviewAnswers))
-          .overrides(bind[ObjectStoreService].toInstance(mockObjectStoreService))
+          .overrides(bind[PDFAccessService].toInstance(mockPDFAccessService))
           .build()
 
         running(application) {

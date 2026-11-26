@@ -28,6 +28,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.combined.submitNotification.CombinedNotificationConfirmationView
 
 import scala.concurrent.{ExecutionContext, Future}
+
 import javax.inject.Inject
 
 class CombinedNotificationConfirmationController @Inject() (
@@ -49,15 +50,16 @@ class CombinedNotificationConfirmationController @Inject() (
   def onPageLoad(notificationReference: String): Action[AnyContent] =
     (identify andThen getData andThen requireData andThen combinedJourneyCheck andThen requireSubmitNotificationUnlocked)
       .async { implicit request =>
-        pdfAccessService.checkPDFStatus(request.saoSubscriptionId, notificationReference, SubmissionDocumentType.Notification).map {
-          isPdfAvailable =>
+        pdfAccessService
+          .checkPDFStatus(request.saoSubscriptionId, notificationReference, SubmissionDocumentType.Notification)
+          .map { isPdfAvailable =>
             Ok(
               view(
                 notificationReference = notificationReference,
                 displayPdfLink = isPdfAvailable
               )
             )
-        }
+          }
       }
 
   def onSubmit(): Action[AnyContent] =
