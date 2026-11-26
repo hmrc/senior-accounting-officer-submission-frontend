@@ -19,7 +19,6 @@ package navigation
 import controllers.combined.provideSaoDetails.routes as provideSaoDetailsRoutes
 import models.*
 import pages.*
-import pages.Page.NOTIFICATION_PATH
 import pages.notification.*
 import play.api.mvc.Call
 
