@@ -39,8 +39,8 @@ class CombinedStageSpec extends SpecBase with OptionValues {
 
       val answers =
         emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO").success.value
+          .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+          .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO")
 
       CombinedStage.taskListStage(answers) mustBe UploadSubmissionTemplateDetails
     }
@@ -49,10 +49,10 @@ class CombinedStageSpec extends SpecBase with OptionValues {
 
       val answers =
         emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO").success.value
-          .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil)).success.value
-          .set(UploadTemplateReviewPage, true).success.value
+          .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+          .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO")
+          .add(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil))
+          .add(UploadTemplateReviewPage, true)
 
       CombinedStage.taskListStage(answers) mustBe SubmitNotificationInfo
     }
@@ -61,11 +61,11 @@ class CombinedStageSpec extends SpecBase with OptionValues {
 
       val answers =
         emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO").success.value
-          .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil)).success.value
-          .set(UploadTemplateReviewPage, true).success.value
-          .set(CombinedNotificationConfirmationPage, true).success.value
+          .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+          .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO")
+          .add(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil))
+          .add(UploadTemplateReviewPage, true)
+          .add(CombinedNotificationConfirmationPage, true)
 
       CombinedStage.taskListStage(answers) mustBe SubmitCertificateInfo
     }
@@ -82,8 +82,8 @@ class CombinedStageSpec extends SpecBase with OptionValues {
 
       val answers =
         emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO").success.value
+          .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+          .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO")
 
       CombinedStage.canStartUploadNotificationTemplate(answers) mustBe true
     }
@@ -95,8 +95,8 @@ class CombinedStageSpec extends SpecBase with OptionValues {
 
       val answers =
         emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO").success.value
+          .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+          .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO")
 
       CombinedStage.canStartSubmitNotification(answers) mustBe false
     }
@@ -105,10 +105,10 @@ class CombinedStageSpec extends SpecBase with OptionValues {
 
       val answers =
         emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO").success.value
-          .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil)).success.value
-          .set(UploadTemplateReviewPage, true).success.value
+          .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+          .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO")
+          .add(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil))
+          .add(UploadTemplateReviewPage, true)
 
       CombinedStage.canStartSubmitNotification(answers) mustBe true
     }
@@ -120,10 +120,18 @@ class CombinedStageSpec extends SpecBase with OptionValues {
 
       val answers =
         emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO").success.value
-          .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil)).success.value
-          .set(UploadTemplateReviewPage, true).success.value
+          .set(NotificationMoreThanOneSaoPage(NormalMode), false)
+          .success
+          .value
+          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO")
+          .success
+          .value
+          .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil))
+          .success
+          .value
+          .set(UploadTemplateReviewPage, true)
+          .success
+          .value
 
       CombinedStage.canStartSubmitCertificate(answers) mustBe false
     }
@@ -132,11 +140,11 @@ class CombinedStageSpec extends SpecBase with OptionValues {
 
       val answers =
         emptyUserAnswers
-          .set(NotificationMoreThanOneSaoPage(NormalMode), false).success.value
-          .set(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO").success.value
-          .set(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil)).success.value
-          .set(UploadTemplateReviewPage, true).success.value
-          .set(CombinedNotificationConfirmationPage, true).success.value
+          .add(NotificationMoreThanOneSaoPage(NormalMode), false)
+          .add(NotificationSingleSaoOfficerNamePage(NormalMode), "Test SAO")
+          .add(UploadTemplateTablePage, UploadTemplateTableData(rows = Seq.empty, errors = Nil))
+          .add(UploadTemplateReviewPage, true)
+          .add(CombinedNotificationConfirmationPage, true)
 
       CombinedStage.canStartSubmitCertificate(answers) mustBe true
     }
