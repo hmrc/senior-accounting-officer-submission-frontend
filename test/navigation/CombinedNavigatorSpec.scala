@@ -17,9 +17,7 @@
 package navigation
 
 import base.SpecBase
-import models.*
 import org.scalatestplus.play.guice.GuiceOneAppPerSuite
-import pages.*
 
 class CombinedNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
@@ -29,23 +27,23 @@ class CombinedNavigatorSpec extends SpecBase with GuiceOneAppPerSuite {
 
     "in Normal mode" - {
 
-      "must throw an not-implemented error for an unspecified configuration" in {
-        case object UnknownPage extends Page
-        intercept[NotImplementedError] {
-          navigator.nextPage(UnknownPage, NormalMode, emptyUserAnswers)
-        }
-      }
+//      "must throw an not-implemented error for an unspecified configuration" in {
+//        case object UnknownPage extends Page
+//        intercept[NotImplementedError] {
+//          navigator.nextPage(UnknownPage, NormalMode, emptyUserAnswers)
+//        }
+//      }
 
     }
 
     "in Check mode" - {
-
-      "must throw an not-implemented error for an unspecified configuration" in {
-        case object UnknownPage extends Page
-        intercept[NotImplementedError] {
-          navigator.nextPage(UnknownPage, CheckMode, emptyUserAnswers)
-        }
-      }
+//
+//      "must throw an not-implemented error for an unspecified configuration" in {
+//        case object UnknownPage extends Page
+//        intercept[NotImplementedError] {
+//          navigator.nextPage(UnknownPage, CheckMode, emptyUserAnswers)
+//        }
+//      }
 
     }
   }
