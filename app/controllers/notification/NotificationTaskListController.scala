@@ -66,7 +66,7 @@ class NotificationTaskListController @Inject() (
           }
       } else {
         notificationSubmitService
-          .submit(request.userAnswers)
+          .submit(request.userAnswers, wipeNotificationData = true)
           .map {
             _.fold(
               error => throw new InternalServerException(error.message),

@@ -1,0 +1,243 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package views.combined.submitNotification
+
+import base.ViewSpecBase
+import config.AppConfig
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Document
+import views.combined.submitNotification.CombinedNotificationConfirmationViewSpec.*
+import views.html.combined.submitNotification.CombinedNotificationConfirmationView
+
+class CombinedNotificationConfirmationViewSpec extends ViewSpecBase[CombinedNotificationConfirmationView] {
+
+  private def generateView(displayPdfLink: Boolean): Document =
+    Jsoup.parse(SUT(testReferenceNumber, displayPdfLink).toString)
+
+  private val appConfig = app.injector.instanceOf[AppConfig]
+
+  "CombinedNotificationConfirmationView" - {
+    "when displayPdfLink is true" - {
+      val displayPdfLink = true
+      AppConfig.setValue("hub-frontend.host", accountHomepageLinkUrl)
+      val doc: Document = generateView(displayPdfLink)
+
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
+
+      "with a confirmation panel that" - {
+        "must have the correct title" - {
+          doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+        }
+
+        "must have the correct body" - {
+          doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
+        }
+
+        "must have the reference number in bold" in {
+          val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
+          strongTags.size() mustBe 1
+          strongTags.get(0).text() mustBe testReferenceNumber
+        }
+      }
+
+      doc.createTestsWithParagraphs(
+        pageParagraphs
+      )
+
+      doc.createTestsWithBulletPoints(
+        pageListItemsWhenLinkDisplayed
+      )
+
+      doc.getMainContent
+        .select("li span")
+        .get(0)
+        .createTestWithText(pageListItemsWhenLinkDisplayed(0))
+
+      doc.getMainContent
+        .select("li span")
+        .get(1)
+        .createTestWithText(pageListItemsWhenLinkDisplayed(1))
+
+      doc.getMainContent
+        .select("li span a")
+        .get(0)
+        .createTestWithLink(
+          linkTestDescription = "download pdf link",
+          linkText = downloadPdfLinkText,
+          destinationUrl = downloadPdfLinkUrl,
+          isExternalLink = false
+        )
+
+      doc.getMainContent
+        .select("li span a")
+        .get(1)
+        .createTestWithLink(
+          linkTestDescription = "print page",
+          linkText = printPageLinkText,
+          destinationUrl = "#",
+          isExternalLink = false
+        )
+
+      doc.createTestsForSubheadings(
+        pageSubheadings,
+        includingError = false,
+        tag = "h2"
+      )
+
+      doc
+        .getElementById(surveyLinkId)
+        .createTestWithLink(
+          linkTestDescription = "survey link",
+          linkText = surveyLinkPage,
+          destinationUrl = appConfig.surveyLink,
+          isExternalLink = true
+        )
+
+      doc.createTestForInsetText(pageInsetText)
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+    }
+
+    "when displayPdfLink is false" - {
+      val displayPdfLink = false
+      AppConfig.setValue("hub-frontend.host", accountHomepageLinkUrl)
+      val doc: Document = generateView(displayPdfLink)
+
+      doc.createTestsWithStandardPageElements(
+        pageTitle = pageTitle,
+        pageHeading = pageHeading,
+        showBackLink = false,
+        showIsThisPageNotWorkingProperlyLink = true,
+        hasError = false
+      )
+
+      "with a confirmation panel that" - {
+        "must have the correct title" - {
+          doc.getConfirmationPanel.getPanelTitle.createTestWithText(text = panelTitle)
+        }
+
+        "must have the correct body" - {
+          doc.getConfirmationPanel.getPanelBody.createTestWithText(text = panelBody)
+        }
+
+        "must have the reference number in bold" in {
+          val strongTags = doc.getConfirmationPanel.getPanelBody.select("strong")
+          strongTags.size() mustBe 1
+          strongTags.get(0).text() mustBe testReferenceNumber
+        }
+      }
+
+      doc.createTestsWithParagraphs(
+        pageParagraphs
+      )
+
+      doc.createTestsWithBulletPoints(
+        pageListItemsWhenLinkNotDisplayed
+      )
+
+      doc.getMainContent
+        .select("li span")
+        .get(0)
+        .createTestWithText(pageListItemsWhenLinkNotDisplayed(0))
+
+      doc.getMainContent
+        .select("li span a")
+        .get(0)
+        .createTestWithLink(
+          linkTestDescription = "print page",
+          linkText = printPageLinkText,
+          destinationUrl = "#",
+          isExternalLink = false
+        )
+
+      doc.createTestsForSubheadings(
+        pageSubheadings,
+        includingError = false,
+        tag = "h2"
+      )
+
+      doc
+        .getElementById(surveyLinkId)
+        .createTestWithLink(
+          linkTestDescription = "survey link",
+          linkText = surveyLinkPage,
+          destinationUrl = appConfig.surveyLink,
+          isExternalLink = true
+        )
+
+      doc.createTestForInsetText(pageInsetText)
+
+      doc.createTestsWithOrWithoutError(hasError = false)
+    }
+  }
+}
+
+object CombinedNotificationConfirmationViewSpec {
+  val pageHeading                 = "Notification submitted"
+  val pageTitle                   = "Notification submitted - Submit a notification and certificate"
+  val pageParagraphs: Seq[String] = Seq(
+    "HMRC has received your notification. We’ve sent a confirmation email to all the contacts you provided during registration.",
+    "To keep a record of your submission, you can:",
+    "Someone from HMRC may contact you if they need more information.",
+    "You can submit a certificate.",
+    "As a private beta user, you are using the first version of this service. Your feedback will help us improve it for future users.",
+    "Take a short survey to tell us about your experience."
+  )
+  val panelTitle          = "Notification submitted"
+  val testReferenceNumber = "SAONOT0123456789"
+  val panelBody: String   = s"Your reference number $testReferenceNumber"
+  val testDate            = "17 January 2025 at 14:15am (GMT)"
+
+  val downloadAPdfPageListItem =
+    "download a PDF to save a copy of all the answers. You may not be able to do this after you leave this page"
+  val printThisPagePageListItem =
+    "print this page to keep a paper copy of your confirmation"
+
+  val pageListItemsWhenLinkDisplayed: Seq[String] =
+    Seq(
+      downloadAPdfPageListItem,
+      printThisPagePageListItem
+    )
+
+  val pageListItemsWhenLinkNotDisplayed: Seq[String] =
+    Seq(
+      printThisPagePageListItem
+    )
+
+  val downloadPdfLinkText        = "download a PDF"
+  val downloadPdfLinkUrl: String =
+    s"/senior-accounting-officer/submission/notification/download?notificationReference=$testReferenceNumber"
+
+  val printPageLinkText = "print this page"
+
+  val accountHomepageLinkText = "account homepage"
+  val accountHomepageLinkUrl  = "testHubUrl"
+
+  val surveyLinkPage = "Take a short survey"
+  val surveyLinkId   = "survey-link"
+
+  val pageSubheadings: Seq[String] = Seq("What happens next", "Before you go")
+
+  val pageInsetText =
+    "If you later realise the information is incorrect, contact your Customer Compliance Manager (CCM) if you have one, or email wmbc.saomailbox@hmrc.gov.uk for support."
+}
