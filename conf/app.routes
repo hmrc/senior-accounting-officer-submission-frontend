@@ -116,10 +116,10 @@ GET         /submission/certificate/download                                    
 # combined journey routes
 ##############################
 
-### Task List ##
-#GET         /submission/notification-certificate/task/provide-details                                    controllers.combined.CombinedTaskListController.onPageLoad
-#GET         /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onComplete
-#POST        /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onCompleteSubmit
+## Task List ##
+GET         /submission/notification-certificate/task/provide-details                                    controllers.combined.CombinedTaskListController.onPageLoad
+GET         /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onComplete
+POST        /submission/notification-certificate/complete                                                controllers.combined.CombinedTaskListController.onCompleteSubmit
 
 ## Provide SAO Details ##
 GET         /submission/notification-certificate/confirm-multiple-officers                               controllers.combined.provideSaoDetails.CombinedMoreThanOneSaoController.onPageLoad(mode: Mode)
@@ -146,14 +146,14 @@ POST        /submission/notification-certificate/previous/officer-end-date      
 GET         /submission/notification-certificate/add-officer                                             controllers.combined.provideSaoDetails.CombinedMultiSaoAreAllAddedController.onPageLoad(mode: Mode, sao: Int ?= 0)
 POST        /submission/notification-certificate/add-officer                                             controllers.combined.provideSaoDetails.CombinedMultiSaoAreAllAddedController.onSubmit(mode: Mode, sao: Int ?= 0)
 
-### Upload a Submission Template ##
-#GET         /submission/notification-certificate/upload-template                                         controllers.combined.uploadTemplate.CombinedUploadFormController.onPageLoad()
-#
-#GET         /submission/notification-certificate/uploading                                               controllers.combined.uploadTemplate.CombinedUploadSuccessController.onPageLoad(key: Option[String])
-#
-#GET         /submission/notification-certificate/review-companies                                        controllers.combined.uploadTemplate.CombinedUploadTemplateTableController.onPageLoad(page: Int)
-#POST        /submission/notification-certificate/review-companies                                        controllers.combined.uploadTemplate.CombinedUploadTemplateTableController.onSubmit()
-#
+## Upload a Submission Template ##
+GET         /submission/notification-certificate/upload-template                                         controllers.combined.uploadTemplate.CombinedUploadFormController.onPageLoad()
+
+GET         /submission/notification-certificate/uploading                                               controllers.combined.uploadTemplate.CombinedUploadSuccessController.onPageLoad(key: Option[String])
+
+GET         /submission/notification-certificate/review-companies                                        controllers.combined.uploadTemplate.CombinedUploadTemplateTableController.onPageLoad(page: Int)
+POST        /submission/notification-certificate/review-companies                                        controllers.combined.uploadTemplate.CombinedUploadTemplateTableController.onSubmit()
+
 ### Submit a Notification ##
 #GET         /submission/notification-certificate/additional-information                                  controllers.combined.submitNotification.CombinedNotificationAdditionalInformationController.onPageLoad(mode: Mode)
 #POST        /submission/notification-certificate/additional-information                                  controllers.combined.submitNotification.CombinedNotificationAdditionalInformationController.onSubmit(mode: Mode)
