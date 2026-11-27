@@ -1,0 +1,193 @@
+/*
+ * Copyright 2026 HM Revenue & Customs
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package controllers.combined.submitCertificate
+
+import base.SpecBase
+import config.FeatureToggleSupport
+import controllers.combined.submitCertificate.routes as submitCertificateRoutes
+import controllers.routes
+import forms.certificate.CertificateDeclarationStandInFormProvider
+import models.FeatureToggle.CombinedJourney
+import models.certificate.CertificateDeclarationStandIn
+import models.{JourneySection, NormalMode, UserAnswers}
+import navigation.{CombinedNavigator, FakeCombinedNavigator}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito.when
+import org.scalatest.BeforeAndAfterEach
+import org.scalatestplus.mockito.MockitoSugar
+import pages.certificate.CertificateDeclarationStandInPage
+import play.api.data.Form
+import play.api.inject.bind
+import play.api.mvc.Call
+import play.api.test.FakeRequest
+import play.api.test.Helpers.*
+import repositories.SessionRepository
+import views.html.combined.submitCertificate.CombinedCertificateDeclarationStandInView
+
+import scala.concurrent.Future
+
+class CombinedCertificateDeclarationStandInControllerSpec
+    extends SpecBase
+    with MockitoSugar
+    with FeatureToggleSupport
+    with BeforeAndAfterEach {
+
+  def onwardRoute: Call = Call("GET", "/foo")
+
+  val formProvider                              = new CertificateDeclarationStandInFormProvider()
+  val form: Form[CertificateDeclarationStandIn] = formProvider()
+
+  lazy val certificateDeclarationStandInPageRoute: String =
+    submitCertificateRoutes.CombinedCertificateDeclarationStandInController.onPageLoad(NormalMode).url
+
+  lazy val certificateDeclarationStandInSubmitRoute: String =
+    submitCertificateRoutes.CombinedCertificateDeclarationStandInController.onSubmit(NormalMode).url
+
+  val userAnswers: UserAnswers =
+    completedSubmittedNotificationAnswers.add(
+      CertificateDeclarationStandInPage(NormalMode),
+      CertificateDeclarationStandIn("value 1", "value 2")
+    )
+
+  override def beforeEach(): Unit = {
+    super.beforeEach()
+    enable(CombinedJourney)
+  }
+
+  override def afterEach(): Unit = {
+    super.afterEach()
+    disable(CombinedJourney)
+  }
+
+  "CombinedCertificateDeclarationStandIn Controller" - {
+
+    "must return OK and the correct view for a GET" in {
+
+      val application = applicationBuilder(userAnswers = Some(completedSubmittedNotificationAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, certificateDeclarationStandInPageRoute)
+
+        val view = application.injector.instanceOf[CombinedCertificateDeclarationStandInView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(form, NormalMode)(using request, messages(application)).toString
+      }
+    }
+
+    "must populate the view correctly on a GET when the question has previously been answered" in {
+
+      val application = applicationBuilder(userAnswers = Some(userAnswers)).build()
+
+      running(application) {
+        val request = FakeRequest(GET, certificateDeclarationStandInPageRoute)
+
+        val view = application.injector.instanceOf[CombinedCertificateDeclarationStandInView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual OK
+        contentAsString(result) mustEqual view(
+          form.fill(CertificateDeclarationStandIn("value 1", "value 2")),
+          NormalMode
+        )(using request, messages(application)).toString
+      }
+    }
+
+    "must redirect to the next page when valid data is submitted" in {
+
+      val mockSessionRepository = mock[SessionRepository]
+
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
+
+      val application =
+        applicationBuilder(userAnswers = Some(completedSubmittedNotificationAnswers))
+          .overrides(
+            bind[CombinedNavigator].toInstance(new FakeCombinedNavigator(onwardRoute)),
+            bind[SessionRepository].toInstance(mockSessionRepository)
+          )
+          .build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateDeclarationStandInSubmitRoute)
+            .withFormUrlEncodedBody(("StandInName", "value 1"), ("SaoName", "value 2"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual onwardRoute.url
+      }
+    }
+
+    "must return a Bad Request and errors when invalid data is submitted" in {
+
+      val application = applicationBuilder(userAnswers = Some(completedSubmittedNotificationAnswers)).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateDeclarationStandInSubmitRoute)
+            .withFormUrlEncodedBody(("value", "invalid value"))
+
+        val boundForm = form.bind(Map("value" -> "invalid value"))
+
+        val view = application.injector.instanceOf[CombinedCertificateDeclarationStandInView]
+
+        val result = route(application, request).value
+
+        status(result) mustEqual BAD_REQUEST
+        contentAsString(result) mustEqual view(boundForm, NormalMode)(using request, messages(application)).toString
+      }
+    }
+
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request = FakeRequest(GET, certificateDeclarationStandInPageRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Combined))
+          .url
+      }
+    }
+
+    "must redirect to Journey Recovery for a POST if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None).build()
+
+      running(application) {
+        val request =
+          FakeRequest(POST, certificateDeclarationStandInSubmitRoute)
+            .withFormUrlEncodedBody(("StandInName", "value 1"), ("SaoName", "value 2"))
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual routes.JourneyRecoveryController
+          .onPageLoad(section = Some(JourneySection.Combined))
+          .url
+      }
+    }
+  }
+}
