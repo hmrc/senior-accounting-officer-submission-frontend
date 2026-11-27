@@ -25,7 +25,7 @@ error.prefix = Error
 error.summary.title = There is a problem
 
 betaBanner.tag = Beta
-betaBanner.paragraph = This is a new service. We’re still working on ways to improve it.
+betaBanner.paragraph = Gwasanaeth newydd yw hwn. Rydym yn dal i fod yn gweithio ar ffyrdd i’w wella.
 
 upload.label = Uwchlwythwch ffeil
 upload.error.quarantine = The selected file contains a virus
@@ -35,8 +35,8 @@ upload.error.EntityTooLarge = The selected file could not be uploaded. Check it 
 
 upload.success.title.notification = Upload a submission template for your notification
 upload.success.title.certificate = Upload a submission template for your certificate
-upload.success.heading = Your submission template is uploading
-upload.success.paragraph1 = This may take a few minutes
+upload.success.heading = Mae’r templed a wnaethoch ei chyflwyno yn cael ei uwchlwytho
+upload.success.paragraph1 = Gall hyn gymryd rhai munudau.
 
 
 
@@ -91,21 +91,21 @@ template.guidance.subheading1.subSubheading.paragraph1 = Os oes gennych dystysgr
 template.guidance.subheading1.subSubheading.item1 = beth aeth o’i le gyda’r trefniadau cyfrifyddu treth
 template.guidance.subheading1.subSubheading.item2 = y rheswm pam y penderfynodd yr SAO roi tystysgrif gymwysedig
 template.guidance.subheading1.subSubheading.item3 = beth arweiniodd at y gwallau, nid rhestr yn unig
-template.guidance.subheading1.subSubheading.paragraph2 = Gallwch hefyd gynnwys unrhyw gynlluniau i fynd i’r afael â’r problemau, mae hyn yn ddewisol.
+template.guidance.subheading1.subSubheading.paragraph2 = Gallwch hefyd gynnwys unrhyw gynlluniau i fynd i’r afael â’r problemau. Mae hyn yn ddewisol.
 template.guidance.subheading1.subSubheading.inset = Pan fyddwch chi’n gwneud cyflwyniad ar gyfer mwy nag un SAO, mae’n rhaid i chi gwblhau templed ar wahân ar gyfer pob un.
 
 template.guidance.subheading2 = Cam 2: Uwchlwytho’ch templed
 template.guidance.subheading2.paragraph1 = Mae’n rhaid i chi gwblhau’r adrannau cywir cyn uwchlwytho’r templed. Mae’r wybodaeth rydyn ni’n ei phrosesu o’ch templed yn dibynnu ar ba fath o gyflwyniad rydych chi’n ei ddewis.
 template.guidance.subheading2.paragraph2 = Os ydych chi’n dewis cyflwyno:
-template.guidance.subheading2.list1.item1 = hysbysiad yn unig, byddwn yn prosesu manylion yr hysbysiad
-template.guidance.subheading2.list1.item2 = tystysgrif yn unig, byddwn yn prosesu’r ddwy adran - er mwyn bod yn gyflawn, mae angen nodi manylion eich cwmni yn yr adran hysbysu o’r dystysgrif
+template.guidance.subheading2.list1.item1 = hysbysiad, byddwn yn prosesu manylion yr hysbysiad
+template.guidance.subheading2.list1.item2 = tystysgrif, byddwn yn prosesu’r ddwy adran - er mwyn bod yn gyflawn, mae angen nodi manylion eich cwmni yn yr adran hysbysu o’r dystysgrif
 template.guidance.subheading2.paragraph3 = Pan fyddwch wedi cwblhau eich templed:
 template.guidance.subheading2.list2.item1 = Cadwch ef fel ffeil CSV (‘coma delimited’) (*.csv)
 template.guidance.subheading2.list2.item2 = Uwchlwythwch y ffeil i ddechrau’ch cyflwyniad
 template.guidance.subheading2.paragraph4 = Os byddwch chi’n cyflwyno hysbysiad nawr ac eisiau ychwanegu eich tystysgrif yn nes ymlaen, cwblhewch yr holl golofnau ac uwchlwythwch y templed eto pan fyddwch chi’n barod.
 
 template.guidance.subheading3 = Cam 3: Gwiriwch fod yr wybodaeth yn gywir
-template.guidance.subheading3.paragraph1 = Os oes gwallau gan y templed y gwnaethoch ei uwchlwytho, byddwch yn cael gwybod beth i’w drwsio. Agorwch eich ffeil Excel a chywirwch y gwallau. Yna, dylech ei chadw eto fel ffeil CSV (‘coma delimited’) (*.csv) a’i uwchlwytho eto.
+template.guidance.subheading3.paragraph1 = Os oes gwallau gan y templed y gwnaethoch ei uwchlwytho, byddwch yn cael gwybod beth i’w drwsio. Agorwch eich ffeil Excel ac ewch ati i gywiro’r gwallau. Yna, cadwch hi fel ffeil CSV (‘coma delimited’) (*.csv) ac ewch ati i’w huwchlwytho eto.
 template.guidance.subheading3.paragraph2 = Os nad oes gwallau, fe welwch grynodeb o’ch gwybodaeth i’w hadolygu cyn i chi barhau.
 
 template.guidance.subheading4 = Cam 4: Cwblhewch eich cyflwyniad
@@ -140,7 +140,7 @@ notificationAdditionalInformation.label = Oes unrhyw beth arall y dylen ni ei wy
 notificationAdditionalInformation.checkYourAnswersLabel = Gwybodaeth ychwanegol am eich hysbysiad
 notificationAdditionalInformation.error.required = Enter information about your notification, or select skip if there’s nothing to add
 notificationAdditionalInformation.error.length = Additional information about your notification must be 5000 characters or less
-notificationAdditionalInformation.change.hidden = the additional information about your notification
+notificationAdditionalInformation.change.hidden = yr wybodaeth ychwanegol am eich hysbysiad
 
 notificationCheckYourAnswers.title = Gwiriwch eich atebion
 notificationCheckYourAnswers.heading = Gwiriwch eich atebion
@@ -155,9 +155,9 @@ notificationCheckYourAnswers.card.title = Financial year end {0}
 
 
 
-notificationSubmitting.title = Submitting your notification
-notificationSubmitting.heading = Submitting your notification
-notificationSubmitting.paragraph1 = This may take a few minutes - do not close or refresh the page.
+notificationSubmitting.title = Cyflwyno’ch cais
+notificationSubmitting.heading = Cyflwyno’ch cais
+notificationSubmitting.paragraph1 = Gall hyn gymryd rhai munudau – peidiwch a chau nac adnewyddu’r dudalen.
 
 notificationConfirmation.title = Hysbysiad wedi’i gyflwyno
 notificationConfirmation.heading = Hysbysiad wedi’i gyflwyno
@@ -261,7 +261,7 @@ notificationMoreThanOneSao.title = A wnaeth yr SAO newid yn ystod y flwyddyn ari
 notificationMoreThanOneSao.heading = A wnaeth yr SAO newid yn ystod y flwyddyn ariannol dan sylw?
 notificationMoreThanOneSao.checkYourAnswersLabel = A wnaeth yr SAO newid yn ystod y flwyddyn ariannol dan sylw?
 notificationMoreThanOneSao.error.required = Select yes, if the SAO changed during the financial year you are submitting for
-notificationMoreThanOneSao.change.hidden = if there was more than one SAO during the financial year
+notificationMoreThanOneSao.change.hidden = os oedd yna fwy nag un SAO yn ystod y flwyddyn ariannol
 notificationMoreThanOneSao.yes = There was more than one SAO, the SAO changed during the financial year
 notificationMoreThanOneSao.no = Only one person held the role for the entire financial year
 
@@ -337,7 +337,7 @@ notificationSingleSaoOfficerName.checkYourAnswersLabel = Enw’r SAO
 notificationSingleSaoOfficerName.error.required = Enter the name of the SAO
 notificationSingleSaoOfficerName.error.length = Name of the SAO must be 105 characters or less
 notificationSingleSaoOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
-notificationSingleSaoOfficerName.change.hidden = the name of the SAO
+notificationSingleSaoOfficerName.change.hidden = enw’r SAO
 
 notificationMultiSaoPreviousOfficerName.title = Who was the SAO before the last SAO?
 notificationMultiSaoPreviousOfficerName.heading = Pwy oedd yr SAO cyn {0}?
@@ -346,7 +346,7 @@ notificationMultiSaoPreviousOfficerName.checkYourAnswersLabel = SAO cyn {0}
 notificationMultiSaoPreviousOfficerName.error.required = Enter the name of the SAO before {0}
 notificationMultiSaoPreviousOfficerName.error.length = Name of the SAO must be 105 characters or less
 notificationMultiSaoPreviousOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
-notificationMultiSaoPreviousOfficerName.change.hidden = the name of the SAO before the last one
+notificationMultiSaoPreviousOfficerName.change.hidden = enw’r SAO cyn yr un olaf ohonynt
 
 notificationMultiSaoLastOfficerStartDate.title = What date did the last SAO become the SAO?
 notificationMultiSaoLastOfficerStartDate.heading = Ar ba ddyddiad y daeth {0} yn SAO?
@@ -358,7 +358,7 @@ notificationMultiSaoLastOfficerStartDate.error.required = Enter the date {1} bec
 notificationMultiSaoLastOfficerStartDate.error.required.two = Enter the date {2} became the SAO
 notificationMultiSaoLastOfficerStartDate.error.invalid = Start date of the SAO must be a real date
 notificationMultiSaoLastOfficerStartDate.error.notPastDate = Start date of the SAO must be in the past
-notificationMultiSaoLastOfficerStartDate.change.hidden = the start date of the SAO at the end of the financial year
+notificationMultiSaoLastOfficerStartDate.change.hidden = y dyddiad dechreuodd yr SAO ar ddiwedd y flwyddyn ariannol
 
 notificationMultiSaoLastOfficerName.title = Beth yw enw’r SAO ar ddiwedd y flwyddyn ariannol?
 notificationMultiSaoLastOfficerName.caption = Cyflwynwch hysbysiad
@@ -367,7 +367,7 @@ notificationMultiSaoLastOfficerName.checkYourAnswersLabel = SAO ar ddiwedd y flw
 notificationMultiSaoLastOfficerName.error.required = Enter the name of the SAO at the end of the financial year
 notificationMultiSaoLastOfficerName.error.length = Name of the SAO must be 105 characters or less
 notificationMultiSaoLastOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
-notificationMultiSaoLastOfficerName.change.hidden = the name of the SAO at the end of the financial year
+notificationMultiSaoLastOfficerName.change.hidden = enw’r SAO ar ddiwedd y flwyddyn ariannol
 
 notificationMultiSaoPreviousOfficerStartDate.title = What date did the previous SAO responsibility start?
 notificationMultiSaoPreviousOfficerStartDate.heading = Pryd y daeth {0} yn SAO?
@@ -379,14 +379,14 @@ notificationMultiSaoPreviousOfficerStartDate.error.required.two = The date must 
 notificationMultiSaoPreviousOfficerStartDate.error.required = The date must include a {0}
 notificationMultiSaoPreviousOfficerStartDate.error.invalid = Start date of the SAO must be a real date
 notificationMultiSaoPreviousOfficerStartDate.error.notPastDate = Start date of the SAO must be in the past
-notificationMultiSaoPreviousOfficerStartDate.change.hidden = the start date of the SAO before the last one
+notificationMultiSaoPreviousOfficerStartDate.change.hidden = y dyddiad y dechreuodd yr SAO cyn yr un olaf ohonynt
 
 notificationMultiSaoAreAllAdded.title = Ydych chi wedi ychwanegu pob SAO ar gyfer yr hysbysiad hwn?
 notificationMultiSaoAreAllAdded.heading = Ydych chi wedi ychwanegu pob SAO ar gyfer yr hysbysiad hwn?
 notificationMultiSaoAreAllAdded.caption = Cyflwynwch hysbysiad
 notificationMultiSaoAreAllAdded.checkYourAnswersLabel = Ydych chi wedi ychwanegu pob SAO ar gyfer yr hysbysiad hwn?
 notificationMultiSaoAreAllAdded.error.required = Select yes if you have added all the SAOs for this notification
-notificationMultiSaoAreAllAdded.change.hidden = if there are more SAO in the notification
+notificationMultiSaoAreAllAdded.change.hidden = os oes yna fwy nag un SAO yn yr hysbysiad
 
 notificationMultiSaoPreviousOfficerEndDate.title = What date did the previous SAO responsibility stop?
 notificationMultiSaoPreviousOfficerEndDate.caption = Cyflwynwch hysbysiad
@@ -399,7 +399,7 @@ notificationMultiSaoPreviousOfficerEndDate.error.required = The date must includ
 notificationMultiSaoPreviousOfficerEndDate.error.invalid = End date of the SAO must be a real date
 notificationMultiSaoPreviousOfficerEndDate.error.notPastDate = End date of the SAO must be in the past
 notificationMultiSaoPreviousOfficerEndDate.error.endDateBeforeStartDate = The end date must be the same as or after the start date
-notificationMultiSaoPreviousOfficerEndDate.change.hidden = the end date of the SAO before the last one
+notificationMultiSaoPreviousOfficerEndDate.change.hidden = y dyddiad y gorffennodd yr SAO cyn yr un olaf ohonynt
 
 confirmYourNotification.title = Cadarnhewch eich hysbysiad
 confirmYourNotification.caption = Cyflwynwch hysbysiad
@@ -607,6 +607,14 @@ certificateUploadForm.inset.text = If your group has more than one SAO, you must
 
 
 
-survey.subheading = Before you go
-survey.paragraph1 = As a private beta user, you are using the first version of this service. Your feedback will help us improve it for future users.
+
+survey.subheading = Cyn i chi fynd
+survey.paragraph1 = Fel defnyddiwr beta preifat, rydych chi’n defnyddio’r fersiwn gyntaf o’r gwasanaeth hwn. Bydd eich adborth yn ein helpu i’w wella i ddefnyddwyr yn y dyfodol.
 survey.paragraph2WithLink = <a href="{0}" class="govuk-link" id=survey-link target="_blank">Take a short survey</a> to tell us about your experience.
+
+pagination.label = Rhifo tudalennau
+pagination.previous = Blaenorol
+pagination.next = Nesaf
+pagination.currentPage = Page {0}
+pagination.goToPage = Ewch i dudalen {0}
+pagination.hidden = Page {0}
