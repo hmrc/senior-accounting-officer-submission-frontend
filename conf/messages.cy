@@ -33,8 +33,8 @@ upload.error.rejected = The selected file must be a CSV
 upload.error.unknown = The selected file could not be uploaded. Check it is a CSV, smaller than 10MB and try again
 upload.error.EntityTooLarge = The selected file could not be uploaded. Check it is a CSV, smaller than 10MB and try again
 
-upload.success.title.notification = Upload a submission template for your notification
-upload.success.title.certificate = Upload a submission template for your certificate
+upload.success.title.notification = Uwchlwythwch y templed cyflwyno hysbysiad
+upload.success.title.certificate = Uwchlwythwch y templed cyflwyno dystysgrif
 upload.success.heading = Mae’r templed a wnaethoch ei chyflwyno yn cael ei uwchlwytho
 upload.success.paragraph1 = Gall hyn gymryd rhai munudau.
 
@@ -339,7 +339,7 @@ notificationSingleSaoOfficerName.error.length = Name of the SAO must be 105 char
 notificationSingleSaoOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
 notificationSingleSaoOfficerName.change.hidden = enw’r SAO
 
-notificationMultiSaoPreviousOfficerName.title = Who was the SAO before the last SAO?
+notificationMultiSaoPreviousOfficerName.title = Pwy oedd yr SAO cyn yr SAO diwethaf?
 notificationMultiSaoPreviousOfficerName.heading = Pwy oedd yr SAO cyn {0}?
 notificationMultiSaoPreviousOfficerName.caption = Cyflwynwch hysbysiad
 notificationMultiSaoPreviousOfficerName.checkYourAnswersLabel = SAO cyn {0}
@@ -348,7 +348,7 @@ notificationMultiSaoPreviousOfficerName.error.length = Name of the SAO must be 1
 notificationMultiSaoPreviousOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
 notificationMultiSaoPreviousOfficerName.change.hidden = enw’r SAO cyn yr un olaf ohonynt
 
-notificationMultiSaoLastOfficerStartDate.title = What date did the last SAO become the SAO?
+notificationMultiSaoLastOfficerStartDate.title = Ar ba ddyddiad y daeth yr SAO diwethaf yn SAO?
 notificationMultiSaoLastOfficerStartDate.heading = Ar ba ddyddiad y daeth {0} yn SAO?
 notificationMultiSaoLastOfficerStartDate.caption = Cyflwynwch hysbysiad
 notificationMultiSaoLastOfficerStartDate.hint = Er enghraifft 01 6 2024
@@ -369,7 +369,7 @@ notificationMultiSaoLastOfficerName.error.length = Name of the SAO must be 105 c
 notificationMultiSaoLastOfficerName.error.invalidSymbols = Name of the SAO must not include <, > or "
 notificationMultiSaoLastOfficerName.change.hidden = enw’r SAO ar ddiwedd y flwyddyn ariannol
 
-notificationMultiSaoPreviousOfficerStartDate.title = What date did the previous SAO responsibility start?
+notificationMultiSaoPreviousOfficerStartDate.title = Pryd y dechreuodd yr SAO blaenorol?
 notificationMultiSaoPreviousOfficerStartDate.heading = Pryd y daeth {0} yn SAO?
 notificationMultiSaoPreviousOfficerStartDate.caption = Cyflwynwch hysbysiad
 notificationMultiSaoPreviousOfficerStartDate.hint = Er enghraifft 01 6 2024
@@ -388,7 +388,7 @@ notificationMultiSaoAreAllAdded.checkYourAnswersLabel = Ydych chi wedi ychwanegu
 notificationMultiSaoAreAllAdded.error.required = Select yes if you have added all the SAOs for this notification
 notificationMultiSaoAreAllAdded.change.hidden = os oes yna fwy nag un SAO yn yr hysbysiad
 
-notificationMultiSaoPreviousOfficerEndDate.title = What date did the previous SAO responsibility stop?
+notificationMultiSaoPreviousOfficerEndDate.title = Pryd y daeth yr SAO blaenorol i ben?
 notificationMultiSaoPreviousOfficerEndDate.caption = Cyflwynwch hysbysiad
 notificationMultiSaoPreviousOfficerEndDate.heading = Pryd y rhoddodd {0} y gorau i fod yn SAO?
 notificationMultiSaoPreviousOfficerEndDate.hint = Er enghraifft 01 6 2024
@@ -615,6 +615,6 @@ survey.paragraph2WithLink = <a href="{0}" class="govuk-link" id=survey-link targ
 pagination.label = Rhifo tudalennau
 pagination.previous = Blaenorol
 pagination.next = Nesaf
-pagination.currentPage = Page {0}
+pagination.currentPage = Dudalen {0}
 pagination.goToPage = Ewch i dudalen {0}
-pagination.hidden = Page {0}
+pagination.hidden = Dudalen {0}
