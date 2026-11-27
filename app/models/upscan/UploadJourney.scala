@@ -16,8 +16,9 @@
 
 package models.upscan
 
-import pages.Page.{CERTIFICATE_PATH, NOTIFICATION_PATH}
+import pages.Page.{CERTIFICATE_PATH, COMBINED_PATH, NOTIFICATION_PATH}
 import pages.certificate.CertificateUploadStatePage
+import pages.combined.CombinedUploadStatePage
 import pages.notification.NotificationUploadStatePage
 import play.api.mvc.QueryStringBindable
 import queries.{Gettable, Settable}
@@ -38,6 +39,12 @@ enum UploadJourney(
         "certificate",
         CertificateUploadStatePage,
         s"data.$CERTIFICATE_PATH.$CertificateUploadStatePage"
+      )
+  case Combined
+      extends UploadJourney(
+        "combined",
+        CombinedUploadStatePage,
+        s"data.$COMBINED_PATH.$CombinedUploadStatePage"
       )
 }
 
