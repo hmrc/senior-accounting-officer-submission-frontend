@@ -165,9 +165,9 @@ notificationConfirmation.reference.text = Eich cyfeirnod
 notificationConfirmation.paragraph1 = Mae’ch hysbysiad wedi dod i law. Rydym wedi anfon e-bost cadarnhau at bob un o’r cysylltiadau a roesoch yn y cam cofrestru.
 notificationConfirmation.paragraph2 = I gadw cofnod o’ch cyflwyniad, gallwch wneud y canlynol:
 notificationConfirmation.paragraph3 = Efallai y bydd rhywun o CThEF yn cysylltu â chi os bydd angen rhagor o wybodaeth gennych.
-notificationConfirmation.paragraph4WithLink = You can submit a certificate or another notification from your <a href="{0}" class="govuk-link" id="account-homepage-link">account homepage</a>.
-notificationConfirmation.list1.item1WithLink = <a href="{0}" class="govuk-link" id="download-pdf-link">download a PDF</a> to save a copy of all the answers. You may not be able to do this after you leave this page
-notificationConfirmation.list1.item2WithLink = <a href="{0}" class="govuk-link" id="print-page-link">print this page</a> to keep a paper copy of your confirmation
+notificationConfirmation.paragraph4WithLink = Gallwch gyflwyno tystysgrif neu hysbysiad arall o <a href="{0}" class="govuk-link" id="account-homepage-link">hafan eich cyfrif</a>.
+notificationConfirmation.list1.item1WithLink = <a href="{0}" class="govuk-link" id="download-pdf-link">lawrlwytho PDF</a> i gadw copi o’r holl atebion. Efallai na fyddwch yn gallu gwneud hyn ar ôl i chi adael y dudalen hon
+notificationConfirmation.list1.item2WithLink = <a href="{0}" class="govuk-link" id="print-page-link">argraffu’r dudalen hon</a> i gadw copi papur o’ch cadarnhad
 notificationConfirmation.subheading = Beth sy’n digwydd nesaf
 notificationConfirmation.inset.text = Os byddwch chi’n sylweddoli’n nes ymlaen fod yr wybodaeth yn anghywir, cysylltwch â’ch Rheolwr Cydymffurfiad Cwsmeriaid (CCM) os oes gennych un, neu e-bostiwch wmbc.saomailbox@hmrc.gov.uk am gymorth.
 
@@ -270,7 +270,7 @@ uploadTemplateTable.caption = Cyflwynwch hysbysiad
 uploadTemplateTable.heading = Adolygwch y cwmnïau yn eich hysbysiad
 uploadTemplateTable.paragraph1.plural = Mae’r rhestr hon yn dod o’ch templed cyflwyno. Mae’n dangos bod {1} yn gyfrifol am {0} o gwmnïau yn y flwyddyn ariannol.
 uploadTemplateTable.paragraph1.singular = Mae’r rhestr hon yn dod o’ch templed cyflwyno. Mae’n dangos bod {1} yn gyfrifol am {0} o gwmnïau yn y flwyddyn ariannol.
-uploadTemplateTable.paragraph2WithLink = If any company’s details are missing or incorrect, <a class="govuk-link" href="{0}">upload an updated submission template</a> before continuing.
+uploadTemplateTable.paragraph2WithLink = Os yw manylion unrhyw gwmnïau ar goll neu’n anghywir, <a class="govuk-link" href="{0}">uwchlwythwch dempled cyflwyno</a> wedi’i ddiweddaru cyn parhau.
 uploadTemplateTable.parsedData.empty = No parsed rows
 uploadTemplateTable.continue = Parhau
 uploadTemplateTable.table.companyName = Enw’r cwmni
@@ -414,7 +414,7 @@ certificateReviewQualified.heading = Adolygwch y cwmnïau gyda thystysgrif gymwy
 certificateReviewQualified.caption = Cyflwynwch dystysgrif
 certificateReviewQualified.paragraph1.plural = Mae’r rhestr hon yn dod o fanylion y dystysgrif ar eich templed cyflwyno. Mae’n dangos bod yr SAO yn gyfrifol am {0} o gwmnïau mewn blwyddyn ariannol flaenorol.
 certificateReviewQualified.paragraph1.singular = Mae’r rhestr hon yn dod o fanylion y dystysgrif ar eich templed cyflwyno. Mae’n dangos bod yr SAO yn gyfrifol am {0} o gwmnïau mewn blwyddyn ariannol flaenorol.
-certificateReviewQualified.paragraph2WithLink = If any company’s details are missing or incorrect, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
+certificateReviewQualified.paragraph2WithLink = Os yw manylion unrhyw gwmnïau ar goll neu’n anghywir, <a class="govuk-link" href={0}>uwchlwythwch dempled cyflwyno</a> wedi’i ddiweddaru cyn parhau.
 certificateReviewQualified.paragraph3.plural = Yn unol â pharagraff 2, Atodlen 46 i Ddeddf Cyllid 2009, rwyf i, {0}, Uwch-swyddog Cyfrifyddu, drwy hyn, yn tystio nad oedd gan {1} o gwmnïau y trefniadau cyfrifyddu treth priodol.
 certificateReviewQualified.paragraph3.singular = Yn unol â pharagraff 2, Atodlen 46 i Ddeddf Cyllid 2009, rwyf i, {0}, Uwch-swyddog Cyfrifyddu, drwy hyn, yn tystio nad oedd gan {1} o gwmnïau y trefniadau cyfrifyddu treth priodol.
 certificateReviewQualified.rows.name = Enw’r cwmni
@@ -440,7 +440,7 @@ certificateReviewUnqualified.heading = Adolygwch y cwmnïau sydd â thystysgrif 
 certificateReviewUnqualified.caption = Cyflwynwch dystysgrif
 certificateReviewUnqualified.paragraph1.plural = Mae’r rhestr hon yn dod o fanylion y dystysgrif ar eich templed cyflwyno. Mae’n dangos bod yr SAO yn gyfrifol am {0} o gwmnïau mewn blwyddyn ariannol flaenorol.
 certificateReviewUnqualified.paragraph1.singular = Mae’r rhestr hon yn dod o fanylion y dystysgrif ar eich templed cyflwyno. Mae’n dangos bod yr SAO yn gyfrifol am {0} o gwmnïau mewn blwyddyn ariannol flaenorol.
-certificateReviewUnqualified.paragraph2WithLink = If any company’s details are missing or incorrect, <a class="govuk-link" href={0}>upload an updated submission template</a> before continuing.
+certificateReviewUnqualified.paragraph2WithLink = Os yw manylion unrhyw gwmnïau ar goll neu’n anghywir, <a class="govuk-link" href={0}>uwchlwythwch dempled cyflwyno</a> wedi’i ddiweddaru cyn parhau.
 certificateReviewUnqualified.paragraph3.plural = Yn unol â pharagraff 2, Atodlen 46 i Ddeddf Cyllid 2009, rwyf i, {0}, Uwch-swyddog Cyfrifyddu, drwy hyn, yn tystio nad oedd gan {1} o gwmnïau y trefniadau cyfrifyddu treth priodol.
 certificateReviewUnqualified.paragraph3.singular = Yn unol â pharagraff 2, Atodlen 46 i Ddeddf Cyllid 2009, rwyf i, {0}, Uwch-swyddog Cyfrifyddu, drwy hyn, yn tystio nad oedd gan {1} o gwmnïau y trefniadau cyfrifyddu treth priodol.
 certificateReviewUnqualified.rows.companyName = Enw’r cwmni
@@ -581,11 +581,11 @@ certificateConfirmation.reference.text = Eich cyfeirnod
 certificateConfirmation.paragraph1 = Mae’ch tystysgrif wedi dod i law. Rydym wedi anfon e-bost cadarnhau at bob un o’r cysylltiadau a roesoch yn y cam cofrestru.
 certificateConfirmation.paragraph2 = I gadw cofnod o’ch cyflwyniad, gallwch wneud y canlynol:
 certificateConfirmation.paragraph3 = Efallai y bydd rhywun o CThEF yn cysylltu â chi os bydd angen rhagor o wybodaeth gennych.
-certificateConfirmation.paragraph4WithLink = You can submit a notification or another certificate from your <a href="{0}" class="govuk-link" id="account-homepage-link"> account homepage</a>.
-certificateConfirmation.downloadPdf = download a PDF
-certificateConfirmation.printPage = print this page
-certificateConfirmation.list1.item1 = to save a copy of all the answers. You may not be able to do this after you leave this page
-certificateConfirmation.list1.item2 = to keep a paper copy of your confirmation
+certificateConfirmation.paragraph4WithLink = Gallwch gyflwyno hysbysiad neu dystysgrif arall o <a href="{0}" class="govuk-link" id="account-homepage-link"> hafan eich cyfrif</a>.
+certificateConfirmation.downloadPdf = lawrlwytho PDF
+certificateConfirmation.printPage = argraffu’r dudalen hon
+certificateConfirmation.list1.item1 = i gadw copi o’r holl atebion. Efallai na fyddwch yn gallu gwneud hyn ar ôl i chi adael y dudalen hon
+certificateConfirmation.list1.item2 = i gadw copi papur o’ch cadarnhad
 certificateConfirmation.inset = Os byddwch chi’n sylweddoli’n nes ymlaen fod yr wybodaeth yn anghywir, cysylltwch â’ch Rheolwr Cydymffurfiad Cwsmeriaid (CCM) os oes gennych un, neu e-bostiwch wmbc.saomailbox@hmrc.gov.uk am gymorth.
 certificateConfirmation.subheading = Beth sy’n digwydd nesaf
 
@@ -609,4 +609,4 @@ certificateUploadForm.inset.text = If your group has more than one SAO, you must
 
 survey.subheading = Before you go
 survey.paragraph1 = As a private beta user, you are using the first version of this service. Your feedback will help us improve it for future users.
-survey.paragraph2WithLink = <a href="{0}" class="govuk-link" id=survey-link target="_blank">Take a short survey</a> to tell us about your experience.
+survey.paragraph2WithLink = <a href="{0}" class="govuk-link" id=survey-link target="_blank">Llenwch arolwg byr</a> i roi gwybod i ni am eich profiad.
