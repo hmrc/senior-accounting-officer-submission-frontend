@@ -160,6 +160,27 @@ class CombinedStageSpec extends SpecBase with OptionValues {
       ProvideSaoDetails.submitCertificateStatus mustBe TaskStatus.CannotStartYet
     }
 
+    "have expected statuses for UploadSubmissionTemplateDetails" in {
+      UploadSubmissionTemplateDetails.provideSaoDetailsStatus mustBe TaskStatus.Completed
+      UploadSubmissionTemplateDetails.uploadTemplateStatus mustBe TaskStatus.NotStarted
+      UploadSubmissionTemplateDetails.submitNotificationStatus mustBe TaskStatus.CannotStartYet
+      UploadSubmissionTemplateDetails.submitCertificateStatus mustBe TaskStatus.CannotStartYet
+    }
+
+    "have expected statuses for SubmitNotificationInfo" in {
+      SubmitNotificationInfo.provideSaoDetailsStatus mustBe TaskStatus.Completed
+      SubmitNotificationInfo.uploadTemplateStatus mustBe TaskStatus.Completed
+      SubmitNotificationInfo.submitNotificationStatus mustBe TaskStatus.NotStarted
+      SubmitNotificationInfo.submitCertificateStatus mustBe TaskStatus.CannotStartYet
+    }
+
+    "have expected statuses for SubmitCertificateInfo" in {
+      SubmitCertificateInfo.provideSaoDetailsStatus mustBe TaskStatus.Completed
+      SubmitCertificateInfo.uploadTemplateStatus mustBe TaskStatus.Completed
+      SubmitCertificateInfo.submitNotificationStatus mustBe TaskStatus.Completed
+      SubmitCertificateInfo.submitCertificateStatus mustBe TaskStatus.NotStarted
+    }
+
     "have expected statuses for AllStagesCompleted" in {
 
       AllStagesCompleted.provideSaoDetailsStatus mustBe TaskStatus.Completed
