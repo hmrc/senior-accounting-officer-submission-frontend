@@ -17,7 +17,7 @@
 package connectors
 
 import config.AppConfig
-import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.client.{HttpClientV2, readStreamHttpResponse}
 import uk.gov.hmrc.http.{HeaderCarrier, HttpResponse, StringContextOps}
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -56,7 +56,7 @@ class PDFAccessConnector @Inject() (appConfig: AppConfig, httpClient: HttpClient
         url"${appConfig.protectedServiceUrl}/senior-accounting-officer/certificatePdf/$saoSubscriptionId/$certificateReference"
       )
       .setHeader("correlationId" -> UUID.randomUUID().toString)
-      .execute[HttpResponse]
+      .stream[HttpResponse]
   }
 
   def getNotificationPDF(saoSubscriptionId: String, notificationReference: String)(using
@@ -67,13 +67,13 @@ class PDFAccessConnector @Inject() (appConfig: AppConfig, httpClient: HttpClient
         url"${appConfig.protectedServiceUrl}/senior-accounting-officer/notificationPdf/$saoSubscriptionId/$notificationReference"
       )
       .setHeader("correlationId" -> UUID.randomUUID().toString)
-      .execute[HttpResponse]
+      .stream[HttpResponse]
   }
 
   def getDocumentumPackage(submissionId: String, fileName: String)(using hc: HeaderCarrier): Future[HttpResponse] = {
     httpClient
       .get(url"${appConfig.protectedServiceUrl}/senior-accounting-officer/documentumPackage/$submissionId/$fileName")
       .setHeader("correlationId" -> UUID.randomUUID().toString)
-      .execute[HttpResponse]
+      .stream[HttpResponse]
   }
 }
